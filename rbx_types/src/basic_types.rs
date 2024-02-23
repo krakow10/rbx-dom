@@ -29,6 +29,37 @@ impl Enum {
     }
 }
 
+/// Represents any Roblox enum value with an explicitly known name.
+///
+/// This enum is strongly typed, meaning it can only be assigned to fields with the same enum name.
+///
+/// A list of all enums and their values are available [on the Roblox Developer
+/// Hub](https://developer.roblox.com/en-us/api-reference/enum).
+#[derive(Debug, Clone, PartialEq, Eq)]
+#[cfg_attr(
+    feature = "serde",
+    derive(serde::Serialize, serde::Deserialize),
+    serde(rename_all = "camelCase")
+)]
+pub struct ExplicitEnum {
+    name: String,
+    value: Enum,
+}
+
+impl ExplicitEnum {
+    pub fn new(name: String, value: u32) -> Self {
+        Self { name, value: Enum::from_u32(value) }
+    }
+
+    pub fn name(&self) -> &str {
+        self.name.as_str()
+    }
+
+    pub fn value(&self) -> Enum {
+        self.value
+    }
+}
+
 /// The standard 2D vector type used in Roblox.
 ///
 /// ## See Also
