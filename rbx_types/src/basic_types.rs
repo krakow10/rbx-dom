@@ -42,17 +42,20 @@ impl Enum {
     serde(rename_all = "camelCase")
 )]
 pub struct ExplicitEnum {
-    name: String,
+    name: Box<str>,
     value: Enum,
 }
 
 impl ExplicitEnum {
-    pub fn new(name: String, value: u32) -> Self {
-        Self { name, value: Enum::from_u32(value) }
+    pub fn new<I: Into<Box<str>>>(name: I, value: u32) -> Self {
+        Self {
+            name: name.into(),
+            value: Enum::from_u32(value),
+        }
     }
 
     pub fn name(&self) -> &str {
-        self.name.as_str()
+        &self.name
     }
 
     pub fn value(&self) -> Enum {
