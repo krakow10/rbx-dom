@@ -14,9 +14,9 @@ edition = "2018"
 unstable_text_format = ["serde"]
 
 [dependencies]
-rbx_dom_weak = { version = "2.9.0", path = "../rbx_dom_weak" }
-rbx_reflection = { version = "4.7.0", path = "../rbx_reflection" }
-rbx_reflection_database = { version = "0.2.12", path = "../rbx_reflection_database" }
+rbx_dom_weak = { version = "2.9.0", path = "../rbx_dom_weak", registry = "strafesnet" }
+rbx_reflection = { version = "4.7.0", path = "../rbx_reflection", registry = "strafesnet" }
+rbx_reflection_database = { version = "0.2.12", path = "../rbx_reflection_database", registry = "strafesnet" }
 
 log = "0.4.17"
 lz4 = "1.23.3"
