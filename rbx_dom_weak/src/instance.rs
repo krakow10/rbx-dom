@@ -199,7 +199,7 @@ impl InstanceBuilder {
 /// Operations that could affect other instances contained in the
 /// [`WeakDom`][crate::WeakDom] cannot be performed on an `Instance` correctly.
 #[derive(Debug)]
-pub struct Instance {
+pub struct Instance<T> {
     pub(crate) referent: Ref,
     pub(crate) children: Vec<Ref>,
     pub(crate) parent: Ref,
@@ -212,6 +212,11 @@ pub struct Instance {
 
     /// Any properties stored on the object that are not `Name` or `ClassName`.
     pub properties: UstrMap<Variant>,
+
+    /// Custom data owned by this instance.
+    /// For example: a custom RBXScriptSignal can be
+    /// implemented with T = UstrMap<mlua::AnyUserData>
+    pub userdata: T,
 }
 
 impl Instance {
