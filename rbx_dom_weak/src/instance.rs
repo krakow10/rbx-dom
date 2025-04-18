@@ -219,7 +219,7 @@ pub struct Instance<T> {
     pub userdata: T,
 }
 
-impl Instance {
+impl<T> Instance<T> {
     /// Returns this instance's referent. It will always be non-null.
     #[inline]
     pub fn referent(&self) -> Ref {

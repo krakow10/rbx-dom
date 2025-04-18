@@ -14,15 +14,15 @@ use crate::instance::{Instance, InstanceBuilder};
 /// When constructing instances, you'll want to create [`InstanceBuilder`]
 /// objects and insert them into the tree.
 #[derive(Debug)]
-pub struct WeakDom {
-    instances: AHashMap<Ref, Instance>,
+pub struct WeakDom<T> {
+    instances: AHashMap<Ref, Instance<T>>,
     root_ref: Ref,
     unique_ids: AHashSet<UniqueId>,
 }
 
-impl WeakDom {
+impl<T> WeakDom<T> {
     /// Construct a new `WeakDom` described by the given [`InstanceBuilder`].
-    pub fn new(builder: InstanceBuilder) -> WeakDom {
+    pub fn new(builder: InstanceBuilder) -> Self {
         let mut dom = WeakDom {
             instances: AHashMap::new(),
             root_ref: builder.referent,
