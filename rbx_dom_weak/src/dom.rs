@@ -177,7 +177,7 @@ impl WeakDom {
                     class: builder.class,
                     properties: builder.properties.into_iter().collect(),
                     #[cfg(feature = "instance-userdata")]
-                    userdata: Default::default()
+                    userdata: Default::default(),
                 },
             );
 
