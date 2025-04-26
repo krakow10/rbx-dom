@@ -10,7 +10,9 @@ use rbx_dom_weak::{
         SharedString, Tags, UDim, UDim2, UniqueId, Variant, VariantType, Vector2, Vector3,
         Vector3int16,
     },
-    InstanceBuilder, Ustr, WeakDom,
+    InstanceBuilder, HashStr, WeakDom,
+    hstr,
+    hash_str::{HashStrHost,HashStrCache},
 };
 use rbx_reflection::{DataType, PropertyKind, PropertySerialization, ReflectionDatabase};
 
@@ -41,6 +43,9 @@ pub(super) struct DeserializerState<'db, R> {
     /// appear in the file.
     shared_strings: Vec<SharedString>,
 
+    interned_string_storage: HashStrHost,
+    interned_strings: HashStrCache<'db>,
+
     /// All of the instance types described by the file so far.
     type_infos: HashMap<u32, TypeInfo>,
 
@@ -65,7 +70,7 @@ struct TypeInfo {
     type_id: u32,
 
     /// The common name for this type like `Folder` or `UserInputService`.
-    type_name: Ustr,
+    type_name: &'static HashStr,
 
     /// A list of the instances described by this file that are this type.
     referents: Vec<i32>,
@@ -89,7 +94,7 @@ struct Instance {
 /// others (like Font, which has been superceded by FontFace).
 #[derive(Debug)]
 struct CanonicalProperty<'db> {
-    name: Ustr,
+    name: &'db HashStr,
     ty: VariantType,
     migration: Option<&'db PropertySerialization<'db>>,
 }
@@ -97,8 +102,8 @@ struct CanonicalProperty<'db> {
 fn find_canonical_property<'de>(
     database: &'de ReflectionDatabase,
     binary_type: Type,
-    class_name: Ustr,
-    prop_name: Ustr,
+    class_name: &'de HashStr,
+    prop_name: &'de HashStr,
 ) -> Option<CanonicalProperty<'de>> {
     match find_property_descriptors(database, class_name, prop_name) {
         Some(descriptors) => {
@@ -151,6 +156,7 @@ fn find_canonical_property<'de>(
                 migration,
             );
 
+            self.
             Some(CanonicalProperty {
                 name: canonical_name.as_ref().into(),
                 ty: canonical_type,
@@ -210,7 +216,7 @@ impl<'db, R: Read> DeserializerState<'db, R> {
         deserializer: &'db Deserializer<'db>,
         mut input: R,
     ) -> Result<Self, InnerError> {
-        let mut tree = WeakDom::new(InstanceBuilder::new("DataModel"));
+        let mut tree = WeakDom::new(InstanceBuilder::new(hstr!("DataModel")));
 
         let header = FileHeader::decode(&mut input)?;
 
@@ -225,6 +231,8 @@ impl<'db, R: Read> DeserializerState<'db, R> {
             tree,
             metadata: HashMap::new(),
             shared_strings: Vec::new(),
+            interned_strings:HashStrCache::new(),
+            interned_string_storage:HashStrHost::new(),
             type_infos,
             instances_by_ref,
             root_instance_refs: Vec::new(),

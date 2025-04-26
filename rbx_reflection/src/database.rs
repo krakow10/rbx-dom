@@ -12,6 +12,11 @@ use serde::{Deserialize, Serialize};
 
 use crate::{ClassTag, PropertyMigration, PropertyTag};
 
+// The plan:
+// - static immutable global cache of valid strings located in database
+// - mutable local cache per WeakDom containing invalid strings
+// spill invalid strings into local cache on insert
+
 /// Contains information extracted from Roblox to describe all known Instances
 /// and enums.
 #[derive(Debug, Clone, Serialize, Deserialize)]
