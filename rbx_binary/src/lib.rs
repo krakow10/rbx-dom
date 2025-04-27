@@ -80,6 +80,13 @@ pub use crate::{
     serializer::{CompressionType, Error as EncodeError, Serializer},
 };
 
+// 2 decode options:
+// - disallow invalid properties
+//   - all lifetimes are 'static
+//   - throws an error upon encountering an invalid property
+// - allow invalid properties
+//   - requires a context to host the invalid properties
+
 /// Deserialize a Roblox binary model or place from a stream.
 pub fn from_reader<R: Read>(reader: R) -> Result<WeakDom, DecodeError> {
     Deserializer::new().deserialize(reader)
