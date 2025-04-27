@@ -31,19 +31,18 @@ let dom = WeakDom::new(data_model);
 ```
 */
 #[derive(Debug)]
-pub struct InstanceBuilder {
+pub struct InstanceBuilder<'a> {
     pub(crate) referent: Ref,
     pub(crate) name: String,
-    pub(crate) class: &'static HashStr,
-    pub(crate) properties: Vec<(&'static HashStr, Variant)>,
-    pub(crate) children: Vec<InstanceBuilder>,
+    pub(crate) class: &'a HashStr,
+    pub(crate) properties: Vec<(&'a HashStr, Variant)>,
+    pub(crate) children: Vec<InstanceBuilder<'a>>,
 }
 
-impl InstanceBuilder {
+impl<'a> InstanceBuilder<'a> {
     /// Create a new `InstanceBuilder` with the given ClassName. This is also
     /// used as the instance's Name, unless overwritten later.
-    pub fn new<S: Into<&'static HashStr>>(class: S) -> Self {
-        let class = class.into();
+    pub fn new(class: &'a HashStr) -> Self {
         let name = class.to_string();
 
         InstanceBuilder {
@@ -166,13 +165,13 @@ impl InstanceBuilder {
     }
 
     /// Add a new child to the `InstanceBuilder`.
-    pub fn with_child(mut self, child: InstanceBuilder) -> Self {
+    pub fn with_child(mut self, child: InstanceBuilder<'a>) -> Self {
         self.children.push(child);
         self
     }
 
     /// Add a new child to the `InstanceBuilder`.
-    pub fn add_child(&mut self, child: InstanceBuilder) {
+    pub fn add_child(&mut self, child: InstanceBuilder<'a>) {
         self.children.push(child);
     }
 
@@ -181,7 +180,7 @@ impl InstanceBuilder {
     /// Order of the children will be preserved.
     pub fn with_children<I>(mut self, children: I) -> Self
     where
-        I: IntoIterator<Item = InstanceBuilder>,
+        I: IntoIterator<Item = InstanceBuilder<'a>>,
     {
         self.children.extend(children);
         self
@@ -192,7 +191,7 @@ impl InstanceBuilder {
     /// Order of the children will be preserved.
     pub fn add_children<I>(&mut self, children: I)
     where
-        I: IntoIterator<Item = InstanceBuilder>,
+        I: IntoIterator<Item = InstanceBuilder<'a>>,
     {
         self.children.extend(children);
     }
@@ -203,7 +202,7 @@ impl InstanceBuilder {
 /// Operations that could affect other instances contained in the
 /// [`WeakDom`][crate::WeakDom] cannot be performed on an `Instance` correctly.
 #[derive(Debug)]
-pub struct Instance {
+pub struct Instance<'a> {
     pub(crate) referent: Ref,
     pub(crate) children: Vec<Ref>,
     pub(crate) parent: Ref,
@@ -212,13 +211,13 @@ pub struct Instance {
     pub name: String,
 
     /// The instance's class, corresponding to the `ClassName` property.
-    pub class: &'static HashStr,
+    pub class: &'a HashStr,
 
     /// Any properties stored on the object that are not `Name` or `ClassName`.
-    pub properties: HashStrMap<'static, Variant>,
+    pub properties: HashStrMap<'a, Variant>,
 }
 
-impl Instance {
+impl Instance<'_> {
     /// Returns this instance's referent. It will always be non-null.
     #[inline]
     pub fn referent(&self) -> Ref {

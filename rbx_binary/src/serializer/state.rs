@@ -67,7 +67,7 @@ pub(super) struct SerializerState<'dom, 'db, W> {
     shared_strings: Vec<SharedString>,
 
     interned_string_storage: HashStrHost,
-    interned_strings: HashStrCache<'dom>,
+    interned_strings: HashStrCache<'db>,
 
     /// A map of SharedStrings to where it is in the SSTR chunk. This is used
     /// for writing PROP chunks.
@@ -165,7 +165,7 @@ struct TypeInfos<'dom, 'db> {
     ///
     /// These are stored sorted so that we naturally iterate over them in order
     /// and improve our chances of being deterministic.
-    values: BTreeMap<&'dom HashStr, TypeInfo<'dom, 'db>>,
+    values: BTreeMap<&'db HashStr, TypeInfo<'dom, 'db>>,
 
     /// The next type ID that should be assigned if a type is discovered and
     /// added to the serializer.
@@ -322,11 +322,11 @@ impl<'dom, 'db, W: Write> SerializerState<'dom, 'db, W> {
     // clone canonical_name in a cold branch. We don't want to do that.
     #[allow(clippy::map_entry)]
     #[profiling::function]
-    pub fn collect_type_info(&mut self, instance: &'dom Instance) -> Result<(), InnerError> {
+    pub fn collect_type_info(&mut self, instance: &'dom Instance) -> Result<(), InnerError> where 'db:'dom {
         let type_info = self.type_infos.get_or_create(instance.class);
         type_info.instances.push(instance);
 
-        for (prop_name, prop_value) in &instance.properties {
+        for (&prop_name, prop_value) in &instance.properties {
             // Discover and track any shared strings we come across.
             if let Variant::SharedString(shared_string) = prop_value {
                 if !self.shared_string_ids.contains_key(shared_string) {
@@ -344,7 +344,7 @@ impl<'dom, 'db, W: Write> SerializerState<'dom, 'db, W> {
 
             // ...but add it to the set of visited properties if we haven't seen
             // it.
-            type_info.properties_visited.insert(*prop_name);
+            type_info.properties_visited.insert(prop_name);
 
             let canonical_name;
             let serialized_name;
@@ -352,7 +352,7 @@ impl<'dom, 'db, W: Write> SerializerState<'dom, 'db, W> {
             let mut migration = None;
 
             let database = self.serializer.database;
-            match find_property_descriptors(database, instance.class, *prop_name) {
+            match find_property_descriptors(database, instance.class, prop_name) {
                 Some(descriptors) => {
                     // For any properties that do not serialize, we can skip
                     // adding them to the set of type_infos.
@@ -484,11 +484,11 @@ impl<'dom, 'db, W: Write> SerializerState<'dom, 'db, W> {
             // If the property we found on this instance is different than the
             // canonical name for this property, stash it into the set of known
             // aliases for this PropInfo.
-            if *prop_name != canonical_name {
+            if prop_name != canonical_name {
                 let prop_info = type_info.properties.get_mut(&canonical_name).unwrap();
 
                 if !prop_info.aliases.contains(prop_name) {
-                    prop_info.aliases.insert(*prop_name);
+                    prop_info.aliases.insert(prop_name);
                 }
 
                 prop_info.migration = migration;

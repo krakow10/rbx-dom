@@ -110,14 +110,14 @@ impl DomViewer {
                     other => ViewedValue::Other(other.clone()),
                 };
 
-                (key.as_str(), new_value)
+                (key.to_string(), new_value)
             })
             .collect();
 
         ViewedInstance {
             referent: self.referent_to_id.get(&referent).unwrap().clone(),
             name: instance.name.clone(),
-            class: instance.class,
+            class: instance.class.to_string(),
             properties,
             children,
         }
@@ -136,8 +136,8 @@ impl Default for DomViewer {
 pub struct ViewedInstance {
     referent: String,
     name: String,
-    class: &'static str,
-    properties: BTreeMap<&'static str, ViewedValue>,
+    class: String,
+    properties: BTreeMap<String, ViewedValue>,
     children: Vec<ViewedInstance>,
 }
 
