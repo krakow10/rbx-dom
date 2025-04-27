@@ -56,8 +56,7 @@ impl<'a> InstanceBuilder<'a> {
 
     /// Create a new `InstanceBuilder` with the given ClassName and with a
     /// property table with at least enough space for the given capacity.
-    pub fn with_property_capacity<S: Into<&'static HashStr>>(class: S, capacity: usize) -> Self {
-        let class = class.into();
+    pub fn with_property_capacity(class: &'a HashStr, capacity: usize) -> Self {
         let name = class.to_string();
 
         InstanceBuilder {
@@ -107,45 +106,43 @@ impl<'a> InstanceBuilder<'a> {
     }
 
     /// Change the class of the `InstanceBuilder`.
-    pub fn with_class<S: Into<&'static HashStr>>(self, class: S) -> Self {
+    pub fn with_class(self, class: &'a HashStr) -> Self {
         Self {
-            class: class.into(),
+            class,
             ..self
         }
     }
 
     /// Change the class of the `InstanceBuilder`.
-    pub fn set_class<S: Into<&'static HashStr>>(&mut self, class: S) {
-        self.class = class.into();
+    pub fn set_class(&mut self, class: &'a HashStr) {
+        self.class = class;
     }
 
     /// Add a new property to the `InstanceBuilder`.
-    pub fn with_property<K: Into<&'static HashStr>, V: Into<Variant>>(
+    pub fn with_property<V: Into<Variant>>(
         mut self,
-        key: K,
+        key: &'a HashStr,
         value: V,
     ) -> Self {
-        self.properties.push((key.into(), value.into()));
+        self.properties.push((key, value.into()));
         self
     }
 
     /// Add a new property to the `InstanceBuilder`.
-    pub fn add_property<K: Into<&'static HashStr>, V: Into<Variant>>(&mut self, key: K, value: V) {
+    pub fn add_property<V: Into<Variant>>(&mut self, key: &'a HashStr, value: V) {
         self.properties.push((key.into(), value.into()));
     }
 
     /// Check if the `InstanceBuilder` already has a property with the given key.
-    pub fn has_property<K: Into<&'static HashStr>>(&self, key: K) -> bool {
-        let key = key.into();
+    pub fn has_property(&self, key: &'a HashStr) -> bool {
         self.properties.iter().any(|(k, _)| *k == key)
     }
 
     /// Add multiple properties to the `InstanceBuilder` at once.
-    pub fn with_properties<K, V, I>(mut self, props: I) -> Self
+    pub fn with_properties<V, I>(mut self, props: I) -> Self
     where
-        K: Into<&'static HashStr>,
         V: Into<Variant>,
-        I: IntoIterator<Item = (K, V)>,
+        I: IntoIterator<Item = (&'a HashStr, V)>,
     {
         let props = props.into_iter().map(|(k, v)| (k.into(), v.into()));
         self.properties.extend(props);
@@ -154,11 +151,10 @@ impl<'a> InstanceBuilder<'a> {
     }
 
     /// Add multiple properties to the `InstanceBuilder` at once.
-    pub fn add_properties<K, V, I>(&mut self, props: I)
+    pub fn add_properties<V, I>(&mut self, props: I)
     where
-        K: Into<&'static HashStr>,
         V: Into<Variant>,
-        I: IntoIterator<Item = (K, V)>,
+        I: IntoIterator<Item = (&'a HashStr, V)>,
     {
         let props = props.into_iter().map(|(k, v)| (k.into(), v.into()));
         self.properties.extend(props);

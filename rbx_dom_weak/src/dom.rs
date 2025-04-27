@@ -1,7 +1,7 @@
 use std::collections::VecDeque;
 
 use ahash::{AHashMap, AHashSet};
-use hash_str::{hstr, HashStrCache, HashStrHost};
+use hash_str::hstr;
 use rbx_types::{Ref, UniqueId, Variant};
 
 use crate::instance::{Instance, InstanceBuilder};
@@ -540,13 +540,13 @@ impl CloneContext {
     ///
     /// This method only clones the instance's class name, name, and properties; it
     /// does not clone any children.
-    fn clone_ref_as_builder<'a>(&mut self, source: &WeakDom<'a>, original_ref: Ref) -> InstanceBuilder<'a> {
+    fn clone_ref_as_builder<'a>(&mut self, source: &'a WeakDom<'a>, original_ref: Ref) -> InstanceBuilder<'a> {
         let instance = source
             .get_by_ref(original_ref)
             .expect("Cannot clone an instance that does not exist");
 
         let builder = InstanceBuilder::new(instance.class)
-            .with_name(instance.name.to_string())
+            .with_name(instance.name.as_str())
             .with_properties(instance.properties.clone());
 
         let new_ref = builder.referent;
