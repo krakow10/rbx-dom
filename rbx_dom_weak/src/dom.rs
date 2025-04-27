@@ -108,7 +108,7 @@ impl<'a> WeakDom<'a> {
 
     /// Returns a reference to an instance by referent, or `None` if it is not
     /// found.
-    pub fn get_by_ref(&self, referent: Ref) -> Option<&Instance> {
+    pub fn get_by_ref(&self, referent: Ref) -> Option<&Instance<'a>> {
         self.instances.get(&referent)
     }
 
@@ -376,7 +376,7 @@ impl<'a> WeakDom<'a> {
     /// This means that if you call this method on multiple different instances, Ref
     /// properties will not necessarily be preserved in the destination dom. If you're
     /// cloning multiple instances, prefer `clone_multiple_into_external` instead!
-    pub fn clone_into_external(&self, referent: Ref, dest: &mut WeakDom<'a>) -> Ref {
+    pub fn clone_into_external(&'a self, referent: Ref, dest: &mut WeakDom<'a>) -> Ref {
         let mut ctx = CloneContext::default();
         let root_builder = ctx.clone_ref_as_builder(self, referent);
         let root_ref = dest.insert(Ref::none(), root_builder);
@@ -392,7 +392,7 @@ impl<'a> WeakDom<'a> {
 
     /// Similar to `clone_into_external`, but clones multiple subtrees all at once. This
     /// method will preserve Ref properties that point across the cloned subtrees.
-    pub fn clone_multiple_into_external(&self, referents: &[Ref], dest: &mut WeakDom<'a>) -> Vec<Ref> {
+    pub fn clone_multiple_into_external(&'a self, referents: &[Ref], dest: &mut WeakDom<'a>) -> Vec<Ref> {
         let mut ctx = CloneContext::default();
         let mut root_refs = Vec::with_capacity(referents.len());
 
@@ -540,7 +540,7 @@ impl CloneContext {
     ///
     /// This method only clones the instance's class name, name, and properties; it
     /// does not clone any children.
-    fn clone_ref_as_builder<'a>(&mut self, source: &'a WeakDom<'a>, original_ref: Ref) -> InstanceBuilder<'a> {
+    fn clone_ref_as_builder<'a>(&mut self, source: &WeakDom<'a>, original_ref: Ref) -> InstanceBuilder<'a> {
         let instance = source
             .get_by_ref(original_ref)
             .expect("Cannot clone an instance that does not exist");
