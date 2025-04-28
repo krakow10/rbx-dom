@@ -18,8 +18,11 @@ use crate::{
 
 use crate::deserializer_core::{XmlEventReader, XmlReadEvent};
 
-pub fn decode_internal<R: Read>(source: R, options: DecodeOptions) -> Result<WeakDom, DecodeError> {
-    let mut tree = WeakDom::new(InstanceBuilder::new("DataModel"));
+pub fn decode_internal<R: Read>(
+    source: R,
+    options: DecodeOptions,
+) -> Result<WeakDom<'static>, DecodeError> {
+    let mut tree = WeakDom::new(InstanceBuilder::new(hstr!("DataModel")));
 
     let root_id = tree.root_ref();
 
@@ -115,7 +118,7 @@ impl<'db> Default for DecodeOptions<'db> {
 
 /// The state needed to deserialize an XML model into an `WeakDom`.
 pub struct ParseState<'dom, 'db> {
-    tree: &'dom mut WeakDom,
+    tree: &'dom mut WeakDom<'static>,
 
     options: DecodeOptions<'db>,
 
@@ -163,7 +166,7 @@ struct SharedStringRewrite {
 }
 
 impl<'dom, 'db> ParseState<'dom, 'db> {
-    fn new(tree: &'dom mut WeakDom, options: DecodeOptions<'db>) -> ParseState<'dom, 'db> {
+    fn new(tree: &'dom mut WeakDom<'static>, options: DecodeOptions<'db>) -> ParseState<'dom, 'db> {
         ParseState {
             tree,
             options,
@@ -459,7 +462,7 @@ fn deserialize_instance<R: Read>(
         .map(|class| class.default_properties.len())
         .unwrap_or(0);
 
-    let builder = InstanceBuilder::with_property_capacity(class_name, prop_capacity);
+    let builder = InstanceBuilder::with_property_capacity(class_name.into(), prop_capacity);
     let instance_id = state.tree.insert(parent_id, builder);
 
     if let Some(referent) = referent {
