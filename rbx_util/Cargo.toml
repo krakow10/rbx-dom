@@ -22,6 +22,7 @@ name = "rbx-util"
 [dependencies]
 rbx_binary = { path = "../rbx_binary", features = ["unstable_text_format"] }
 rbx_xml = { path = "../rbx_xml" }
+hash_str = { version = "0.1.1", features = ["global"] }
 
 serde_yaml = "0.8.24"
 clap = { version = "4.5.4", features = ["derive"] }
