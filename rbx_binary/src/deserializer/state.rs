@@ -10,7 +10,7 @@ use rbx_dom_weak::{
         SharedString, Tags, UDim, UDim2, UniqueId, Variant, VariantType, Vector2, Vector3,
         Vector3int16,
     },
-    InstanceBuilder, Ustr, WeakDom,
+    HashStr, InstanceBuilder, WeakDom,
 };
 use rbx_reflection::{DataType, PropertyKind, PropertySerialization, ReflectionDatabase};
 
@@ -65,7 +65,7 @@ struct TypeInfo {
     type_id: u32,
 
     /// The common name for this type like `Folder` or `UserInputService`.
-    type_name: Ustr,
+    type_name: &'static HashStr,
 
     /// A list of the instances described by this file that are this type.
     referents: Vec<i32>,
@@ -89,7 +89,7 @@ struct Instance {
 /// others (like Font, which has been superceded by FontFace).
 #[derive(Debug)]
 struct CanonicalProperty<'db> {
-    name: Ustr,
+    name: &'static HashStr,
     ty: VariantType,
     migration: Option<&'db PropertySerialization<'db>>,
 }
@@ -97,8 +97,8 @@ struct CanonicalProperty<'db> {
 fn find_canonical_property<'de>(
     database: &'de ReflectionDatabase,
     binary_type: Type,
-    class_name: Ustr,
-    prop_name: Ustr,
+    class_name: &'static HashStr,
+    prop_name: &'static HashStr,
 ) -> Option<CanonicalProperty<'de>> {
     match find_property_descriptors(database, class_name, prop_name) {
         Some(descriptors) => {
