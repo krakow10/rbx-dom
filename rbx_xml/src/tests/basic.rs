@@ -66,7 +66,7 @@ fn read_tags() {
 fn write_empty_tags() {
     let _ = env_logger::try_init();
 
-    let part = InstanceBuilder::new("Part").with_property("Tags", Tags::new());
+    let part = InstanceBuilder::new(hstr!("Part")).with_property(hstr!("Tags"), Tags::new());
     let dom = WeakDom::new(part);
 
     let mut encoded = Vec::new();
@@ -82,7 +82,7 @@ fn write_tags() {
     tags.push("Hello");
     tags.push("World");
 
-    let part = InstanceBuilder::new("Part").with_property("Tags", tags);
+    let part = InstanceBuilder::new(hstr!("Part")).with_property(hstr!("Tags"), tags);
     let dom = WeakDom::new(part);
 
     let mut encoded = Vec::new();
@@ -200,8 +200,8 @@ fn read_attributes() {
 fn write_material_colors() {
     let _ = env_logger::try_init();
 
-    let terrain =
-        InstanceBuilder::new("Terrain").with_property("MaterialColors", MaterialColors::new());
+    let terrain = InstanceBuilder::new(hstr!("Terrain"))
+        .with_property(hstr!("MaterialColors"), MaterialColors::new());
     let dom = WeakDom::new(terrain);
 
     let mut encoded = Vec::new();
@@ -326,15 +326,23 @@ fn number_widening() {
 
 #[test]
 fn migrated_properties() {
-    let tree = WeakDom::new(InstanceBuilder::new("Folder").with_children([
-        InstanceBuilder::new("ScreenGui").with_property("ScreenInsets", Enum::from_u32(0)),
-        InstanceBuilder::new("ScreenGui").with_property("IgnoreGuiInset", true),
-        InstanceBuilder::new("Part").with_property("Color", Color3::new(1.0, 1.0, 1.0)),
-        InstanceBuilder::new("Part").with_property("BrickColor", BrickColor::Alder),
-        InstanceBuilder::new("Part").with_property("brickColor", BrickColor::Alder),
-        InstanceBuilder::new("TextLabel").with_property("FontFace", Font::default()),
-        InstanceBuilder::new("TextLabel").with_property("Font", Enum::from_u32(8)),
-    ]));
+    let tree = WeakDom::new(
+        InstanceBuilder::new(hstr!("Folder")).with_children([
+            InstanceBuilder::new(hstr!("ScreenGui"))
+                .with_property(hstr!("ScreenInsets"), Enum::from_u32(0)),
+            InstanceBuilder::new(hstr!("ScreenGui")).with_property(hstr!("IgnoreGuiInset"), true),
+            InstanceBuilder::new(hstr!("Part"))
+                .with_property(hstr!("Color"), Color3::new(1.0, 1.0, 1.0)),
+            InstanceBuilder::new(hstr!("Part"))
+                .with_property(hstr!("BrickColor"), BrickColor::Alder),
+            InstanceBuilder::new(hstr!("Part"))
+                .with_property(hstr!("BrickColor"), BrickColor::Alder),
+            InstanceBuilder::new(hstr!("TextLabel"))
+                .with_property(hstr!("FontFace"), Font::default()),
+            InstanceBuilder::new(hstr!("TextLabel"))
+                .with_property(hstr!("Font"), Enum::from_u32(8)),
+        ]),
+    );
 
     let mut encoded = Vec::new();
     crate::to_writer_default(&mut encoded, &tree, &[tree.root_ref()]).unwrap();
@@ -343,9 +351,11 @@ fn migrated_properties() {
 
 #[test]
 fn bad_migrated_property() {
-    let tree = WeakDom::new(InstanceBuilder::new("Folder").with_children([
-        InstanceBuilder::new("TextLabel").with_property("Font", Enum::from_u32(u32::MAX)),
-    ]));
+    let tree = WeakDom::new(
+        InstanceBuilder::new(hstr!("Folder"))
+            .with_children([InstanceBuilder::new(hstr!("TextLabel"))
+                .with_property(hstr!("Font"), Enum::from_u32(u32::MAX))]),
+    );
 
     let mut encoded = Vec::new();
     crate::to_writer_default(&mut encoded, &tree, &[tree.root_ref()]).unwrap();
@@ -354,8 +364,8 @@ fn bad_migrated_property() {
 
 #[test]
 fn enum_item_to_enum() {
-    let tree = WeakDom::new(InstanceBuilder::new("Part").with_property(
-        "Material",
+    let tree = WeakDom::new(InstanceBuilder::new(hstr!("Part")).with_property(
+        hstr!("Material"),
         EnumItem {
             ty: "Material".into(),
             value: 256,

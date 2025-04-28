@@ -137,24 +137,30 @@ pub use crate::{
 
 /// Decodes an XML-format model or place from something that implements the
 /// `std::io::Read` trait.
-pub fn from_reader<R: Read>(reader: R, options: DecodeOptions) -> Result<WeakDom, DecodeError> {
+pub fn from_reader<R: Read>(
+    reader: R,
+    options: DecodeOptions,
+) -> Result<WeakDom<'static>, DecodeError> {
     decode_internal(reader, options)
 }
 
 /// Decodes an XML-format model or place from something that implements the
 /// `std::io::Read` trait using the default decoder options.
-pub fn from_reader_default<R: Read>(reader: R) -> Result<WeakDom, DecodeError> {
+pub fn from_reader_default<R: Read>(reader: R) -> Result<WeakDom<'static>, DecodeError> {
     decode_internal(reader, DecodeOptions::default())
 }
 
 /// Decodes an XML-format model or place from a string.
-pub fn from_str<S: AsRef<str>>(reader: S, options: DecodeOptions) -> Result<WeakDom, DecodeError> {
+pub fn from_str<S: AsRef<str>>(
+    reader: S,
+    options: DecodeOptions,
+) -> Result<WeakDom<'static>, DecodeError> {
     decode_internal(reader.as_ref().as_bytes(), options)
 }
 
 /// Decodes an XML-format model or place from a string using the default decoder
 /// options.
-pub fn from_str_default<S: AsRef<str>>(reader: S) -> Result<WeakDom, DecodeError> {
+pub fn from_str_default<S: AsRef<str>>(reader: S) -> Result<WeakDom<'static>, DecodeError> {
     decode_internal(reader.as_ref().as_bytes(), DecodeOptions::default())
 }
 
@@ -162,7 +168,7 @@ pub fn from_str_default<S: AsRef<str>>(reader: S) -> Result<WeakDom, DecodeError
 /// writing to something that implements the `std::io::Write` trait.
 pub fn to_writer<W: Write>(
     writer: W,
-    tree: &WeakDom,
+    tree: &WeakDom<'static>,
     ids: &[Ref],
     options: EncodeOptions,
 ) -> Result<(), EncodeError> {
@@ -174,7 +180,7 @@ pub fn to_writer<W: Write>(
 /// default encoder options.
 pub fn to_writer_default<W: Write>(
     writer: W,
-    tree: &WeakDom,
+    tree: &WeakDom<'static>,
     ids: &[Ref],
 ) -> Result<(), EncodeError> {
     encode_internal(writer, tree, ids, EncodeOptions::default())
