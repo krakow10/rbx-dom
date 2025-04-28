@@ -81,12 +81,16 @@ pub use crate::{
 };
 
 /// Deserialize a Roblox binary model or place from a stream.
-pub fn from_reader<R: Read>(reader: R) -> Result<WeakDom, DecodeError> {
+pub fn from_reader<R: Read>(reader: R) -> Result<WeakDom<'static>, DecodeError> {
     Deserializer::new().deserialize(reader)
 }
 
 /// Serializes a subset of the given DOM to a binary format model or place,
 /// writing to something that implements the `std::io::Write` trait.
-pub fn to_writer<W: Write>(writer: W, dom: &WeakDom, refs: &[Ref]) -> Result<(), EncodeError> {
+pub fn to_writer<W: Write>(
+    writer: W,
+    dom: &WeakDom<'static>,
+    refs: &[Ref],
+) -> Result<(), EncodeError> {
     Serializer::new().serialize(writer, dom, refs)
 }
