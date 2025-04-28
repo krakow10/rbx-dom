@@ -31,19 +31,18 @@ let dom = WeakDom::new(data_model);
 ```
 */
 #[derive(Debug)]
-pub struct InstanceBuilder {
+pub struct InstanceBuilder<'a> {
     pub(crate) referent: Ref,
     pub(crate) name: String,
-    pub(crate) class: &'static HashStr,
-    pub(crate) properties: Vec<(&'static HashStr, Variant)>,
-    pub(crate) children: Vec<InstanceBuilder>,
+    pub(crate) class: &'a HashStr,
+    pub(crate) properties: Vec<(&'a HashStr, Variant)>,
+    pub(crate) children: Vec<InstanceBuilder<'a>>,
 }
 
-impl InstanceBuilder {
+impl<'a> InstanceBuilder<'a> {
     /// Create a new `InstanceBuilder` with the given ClassName. This is also
     /// used as the instance's Name, unless overwritten later.
-    pub fn new<S: Into<&'static HashStr>>(class: S) -> Self {
-        let class = class.into();
+    pub fn new(class: &'a HashStr) -> Self {
         let name = class.to_string();
 
         InstanceBuilder {
@@ -57,8 +56,7 @@ impl InstanceBuilder {
 
     /// Create a new `InstanceBuilder` with the given ClassName and with a
     /// property table with at least enough space for the given capacity.
-    pub fn with_property_capacity<S: Into<&'static HashStr>>(class: S, capacity: usize) -> Self {
-        let class = class.into();
+    pub fn with_property_capacity(class: &'a HashStr, capacity: usize) -> Self {
         let name = class.to_string();
 
         InstanceBuilder {
@@ -108,45 +106,36 @@ impl InstanceBuilder {
     }
 
     /// Change the class of the `InstanceBuilder`.
-    pub fn with_class<S: Into<&'static HashStr>>(self, class: S) -> Self {
-        Self {
-            class: class.into(),
-            ..self
-        }
+    pub fn with_class(self, class: &'a HashStr) -> Self {
+        Self { class, ..self }
     }
 
     /// Change the class of the `InstanceBuilder`.
-    pub fn set_class<S: Into<&'static HashStr>>(&mut self, class: S) {
-        self.class = class.into();
+    pub fn set_class(&mut self, class: &'a HashStr) {
+        self.class = class;
     }
 
     /// Add a new property to the `InstanceBuilder`.
-    pub fn with_property<K: Into<&'static HashStr>, V: Into<Variant>>(
-        mut self,
-        key: K,
-        value: V,
-    ) -> Self {
-        self.properties.push((key.into(), value.into()));
+    pub fn with_property<V: Into<Variant>>(mut self, key: &'a HashStr, value: V) -> Self {
+        self.properties.push((key, value.into()));
         self
     }
 
     /// Add a new property to the `InstanceBuilder`.
-    pub fn add_property<K: Into<&'static HashStr>, V: Into<Variant>>(&mut self, key: K, value: V) {
+    pub fn add_property<V: Into<Variant>>(&mut self, key: &'a HashStr, value: V) {
         self.properties.push((key.into(), value.into()));
     }
 
     /// Check if the `InstanceBuilder` already has a property with the given key.
-    pub fn has_property<K: Into<&'static HashStr>>(&self, key: K) -> bool {
-        let key = key.into();
+    pub fn has_property(&self, key: &'a HashStr) -> bool {
         self.properties.iter().any(|(k, _)| *k == key)
     }
 
     /// Add multiple properties to the `InstanceBuilder` at once.
-    pub fn with_properties<K, V, I>(mut self, props: I) -> Self
+    pub fn with_properties<V, I>(mut self, props: I) -> Self
     where
-        K: Into<&'static HashStr>,
         V: Into<Variant>,
-        I: IntoIterator<Item = (K, V)>,
+        I: IntoIterator<Item = (&'a HashStr, V)>,
     {
         let props = props.into_iter().map(|(k, v)| (k.into(), v.into()));
         self.properties.extend(props);
@@ -155,24 +144,23 @@ impl InstanceBuilder {
     }
 
     /// Add multiple properties to the `InstanceBuilder` at once.
-    pub fn add_properties<K, V, I>(&mut self, props: I)
+    pub fn add_properties<V, I>(&mut self, props: I)
     where
-        K: Into<&'static HashStr>,
         V: Into<Variant>,
-        I: IntoIterator<Item = (K, V)>,
+        I: IntoIterator<Item = (&'a HashStr, V)>,
     {
         let props = props.into_iter().map(|(k, v)| (k.into(), v.into()));
         self.properties.extend(props);
     }
 
     /// Add a new child to the `InstanceBuilder`.
-    pub fn with_child(mut self, child: InstanceBuilder) -> Self {
+    pub fn with_child(mut self, child: InstanceBuilder<'a>) -> Self {
         self.children.push(child);
         self
     }
 
     /// Add a new child to the `InstanceBuilder`.
-    pub fn add_child(&mut self, child: InstanceBuilder) {
+    pub fn add_child(&mut self, child: InstanceBuilder<'a>) {
         self.children.push(child);
     }
 
@@ -181,7 +169,7 @@ impl InstanceBuilder {
     /// Order of the children will be preserved.
     pub fn with_children<I>(mut self, children: I) -> Self
     where
-        I: IntoIterator<Item = InstanceBuilder>,
+        I: IntoIterator<Item = InstanceBuilder<'a>>,
     {
         self.children.extend(children);
         self
@@ -192,7 +180,7 @@ impl InstanceBuilder {
     /// Order of the children will be preserved.
     pub fn add_children<I>(&mut self, children: I)
     where
-        I: IntoIterator<Item = InstanceBuilder>,
+        I: IntoIterator<Item = InstanceBuilder<'a>>,
     {
         self.children.extend(children);
     }
@@ -203,7 +191,7 @@ impl InstanceBuilder {
 /// Operations that could affect other instances contained in the
 /// [`WeakDom`][crate::WeakDom] cannot be performed on an `Instance` correctly.
 #[derive(Debug)]
-pub struct Instance {
+pub struct Instance<'a> {
     pub(crate) referent: Ref,
     pub(crate) children: Vec<Ref>,
     pub(crate) parent: Ref,
@@ -212,13 +200,13 @@ pub struct Instance {
     pub name: String,
 
     /// The instance's class, corresponding to the `ClassName` property.
-    pub class: &'static HashStr,
+    pub class: &'a HashStr,
 
     /// Any properties stored on the object that are not `Name` or `ClassName`.
-    pub properties: HashStrMap<'static, Variant>,
+    pub properties: HashStrMap<'a, Variant>,
 }
 
-impl Instance {
+impl Instance<'_> {
     /// Returns this instance's referent. It will always be non-null.
     #[inline]
     pub fn referent(&self) -> Ref {
