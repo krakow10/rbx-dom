@@ -1,4 +1,5 @@
 use rbx_dom_weak::{
+    hstr,
     types::{BrickColor, Color3, Color3uint8, Enum, Font, Ref, Region3, SharedString, Vector3},
     InstanceBuilder, WeakDom,
 };
@@ -8,7 +9,7 @@ use crate::{text_deserializer::DecodedModel, to_writer};
 /// A basic test to make sure we can serialize the simplest instance: a Folder.
 #[test]
 fn just_folder() {
-    let tree = WeakDom::new(InstanceBuilder::new("Folder"));
+    let tree = WeakDom::new(InstanceBuilder::new(hstr!("Folder")));
     let mut buffer = Vec::new();
 
     to_writer(&mut buffer, &tree, &[tree.root_ref()]).expect("failed to encode model");
@@ -21,11 +22,11 @@ fn just_folder() {
 /// without will correctly fall back to (some) default value.
 #[test]
 fn partially_present() {
-    let tree = WeakDom::new(InstanceBuilder::new("Folder").with_children(vec![
+    let tree = WeakDom::new(InstanceBuilder::new(hstr!("Folder")).with_children(vec![
         // This instance's `Value` property should be preserved.
-        InstanceBuilder::new("StringValue").with_property("Value", "Hello"),
+        InstanceBuilder::new(hstr!("StringValue")).with_property(hstr!("Value"), "Hello"),
         // This instance's `Value` property should be the empty string.
-        InstanceBuilder::new("StringValue"),
+        InstanceBuilder::new(hstr!("StringValue")),
     ]));
 
     let root_refs = tree.root().children();
@@ -40,8 +41,9 @@ fn partially_present() {
 /// Ensures that unknown properties get serialized on instances.
 #[test]
 fn unknown_property() {
-    let tree =
-        WeakDom::new(InstanceBuilder::new("Folder").with_property("WILL_NEVER_EXIST", "Hi, mom!"));
+    let tree = WeakDom::new(
+        InstanceBuilder::new(hstr!("Folder")).with_property(hstr!("WILL_NEVER_EXIST"), "Hi, mom!"),
+    );
 
     let mut buffer = Vec::new();
     to_writer(&mut buffer, &tree, &[tree.root_ref()]).expect("failed to encode model");
@@ -56,8 +58,8 @@ fn unknown_property() {
 /// This test will need to be updated once we implement the type used here.
 #[test]
 fn unimplemented_type_known_property() {
-    let tree = WeakDom::new(InstanceBuilder::new("UIListLayout").with_property(
-        "Padding",
+    let tree = WeakDom::new(InstanceBuilder::new(hstr!("UIListLayout")).with_property(
+        hstr!("Padding"),
         Region3::new(Vector3::new(0.0, 0.0, 50.0), Vector3::new(0.0, 0.0, 50.0)),
     ));
 
@@ -76,8 +78,8 @@ fn unimplemented_type_known_property() {
 /// This test will need to be updated once we implement the type used here.
 #[test]
 fn unimplemented_type_unknown_property() {
-    let tree = WeakDom::new(InstanceBuilder::new("Folder").with_property(
-        "WILL_NEVER_EXIST",
+    let tree = WeakDom::new(InstanceBuilder::new(hstr!("Folder")).with_property(
+        hstr!("WILL_NEVER_EXIST"),
         Region3::new(Vector3::new(0.0, 0.0, 50.0), Vector3::new(0.0, 0.0, 50.0)),
     ));
 
@@ -91,7 +93,7 @@ fn unimplemented_type_unknown_property() {
 /// it an ID not present in the tree.
 #[test]
 fn unknown_id() {
-    let tree = WeakDom::new(InstanceBuilder::new("Folder"));
+    let tree = WeakDom::new(InstanceBuilder::new(hstr!("Folder")));
 
     let mut buffer = Vec::new();
     let result = to_writer(&mut buffer, &tree, &[Ref::new()]);
@@ -101,15 +103,23 @@ fn unknown_id() {
 
 #[test]
 fn migrated_properties() {
-    let tree = WeakDom::new(InstanceBuilder::new("Folder").with_children([
-        InstanceBuilder::new("ScreenGui").with_property("ScreenInsets", Enum::from_u32(0)),
-        InstanceBuilder::new("ScreenGui").with_property("IgnoreGuiInset", true),
-        InstanceBuilder::new("Part").with_property("Color", Color3::new(1.0, 1.0, 1.0)),
-        InstanceBuilder::new("Part").with_property("BrickColor", BrickColor::Alder),
-        InstanceBuilder::new("Part").with_property("brickColor", BrickColor::Alder),
-        InstanceBuilder::new("TextLabel").with_property("FontFace", Font::default()),
-        InstanceBuilder::new("TextLabel").with_property("Font", Enum::from_u32(8)),
-    ]));
+    let tree = WeakDom::new(
+        InstanceBuilder::new(hstr!("Folder")).with_children([
+            InstanceBuilder::new(hstr!("ScreenGui"))
+                .with_property(hstr!("ScreenInsets"), Enum::from_u32(0)),
+            InstanceBuilder::new(hstr!("ScreenGui")).with_property(hstr!("IgnoreGuiInset"), true),
+            InstanceBuilder::new(hstr!("Part"))
+                .with_property(hstr!("Color"), Color3::new(1.0, 1.0, 1.0)),
+            InstanceBuilder::new(hstr!("Part"))
+                .with_property(hstr!("BrickColor"), BrickColor::Alder),
+            InstanceBuilder::new(hstr!("Part"))
+                .with_property(hstr!("brickColor"), BrickColor::Alder),
+            InstanceBuilder::new(hstr!("TextLabel"))
+                .with_property(hstr!("FontFace"), Font::default()),
+            InstanceBuilder::new(hstr!("TextLabel"))
+                .with_property(hstr!("Font"), Enum::from_u32(8)),
+        ]),
+    );
 
     let mut buffer = Vec::new();
 
@@ -128,14 +138,16 @@ fn migrated_properties() {
 #[test]
 fn logical_properties_basepart_size() {
     let tree = WeakDom::new(
-        InstanceBuilder::new("Folder")
+        InstanceBuilder::new(hstr!("Folder"))
             .with_child(
-                InstanceBuilder::new("Part").with_property("Size", Vector3::new(1.0, 2.0, 3.0)),
+                InstanceBuilder::new(hstr!("Part"))
+                    .with_property(hstr!("Size"), Vector3::new(1.0, 2.0, 3.0)),
             )
             .with_child(
-                InstanceBuilder::new("Part").with_property("size", Vector3::new(4.0, 5.0, 6.0)),
+                InstanceBuilder::new(hstr!("Part"))
+                    .with_property(hstr!("size"), Vector3::new(4.0, 5.0, 6.0)),
             )
-            .with_child(InstanceBuilder::new("Part")),
+            .with_child(InstanceBuilder::new(hstr!("Part"))),
     );
 
     let mut buffer = Vec::new();
@@ -150,20 +162,22 @@ fn logical_properties_basepart_size() {
 #[test]
 fn part_color() {
     let tree = WeakDom::new(
-        InstanceBuilder::new("Folder")
+        InstanceBuilder::new(hstr!("Folder"))
             .with_child(
-                InstanceBuilder::new("Part")
-                    .with_property("Color3uint8", Color3::new(-0.25, 0.5, 1.2)),
+                InstanceBuilder::new(hstr!("Part"))
+                    .with_property(hstr!("Color3uint8"), Color3::new(-0.25, 0.5, 1.2)),
             )
             .with_child(
-                InstanceBuilder::new("Part")
-                    .with_property("Color3uint8", Color3uint8::new(25, 86, 254)),
+                InstanceBuilder::new(hstr!("Part"))
+                    .with_property(hstr!("Color3uint8"), Color3uint8::new(25, 86, 254)),
             )
             .with_child(
-                InstanceBuilder::new("Part").with_property("Color", Color3::new(0.0, 0.5, 1.0)),
+                InstanceBuilder::new(hstr!("Part"))
+                    .with_property(hstr!("Color"), Color3::new(0.0, 0.5, 1.0)),
             )
             .with_child(
-                InstanceBuilder::new("Part").with_property("Color", Color3uint8::new(1, 30, 100)),
+                InstanceBuilder::new(hstr!("Part"))
+                    .with_property(hstr!("Color"), Color3uint8::new(1, 30, 100)),
             ),
     );
 
@@ -176,16 +190,16 @@ fn part_color() {
 
 #[test]
 fn default_shared_string() {
-    let mut tree = WeakDom::new(InstanceBuilder::new("Folder"));
+    let mut tree = WeakDom::new(InstanceBuilder::new(hstr!("Folder")));
     let ref_1 = tree.insert(
         tree.root_ref(),
-        InstanceBuilder::new("Model").with_property(
+        InstanceBuilder::new(hstr!("Model")).with_property(
             // This is the first SharedString property I saw in the database
-            "ModelMeshData",
+            hstr!("ModelMeshData"),
             SharedString::new(b"arbitrary string".to_vec()),
         ),
     );
-    let ref_2 = tree.insert(tree.root_ref(), InstanceBuilder::new("Model"));
+    let ref_2 = tree.insert(tree.root_ref(), InstanceBuilder::new(hstr!("Model")));
 
     let mut buf = Vec::new();
     let _ = to_writer(&mut buf, &tree, &[ref_1, ref_2]);

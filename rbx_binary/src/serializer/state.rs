@@ -43,7 +43,7 @@ pub(super) struct SerializerState<'dom, 'db, W> {
     serializer: &'db Serializer<'db>,
 
     /// The dom containing all of the instances that we're serializing.
-    dom: &'dom WeakDom,
+    dom: &'dom WeakDom<'static>,
 
     /// Where the binary output should be written.
     output: W,
@@ -82,7 +82,7 @@ struct TypeInfo<'dom, 'db> {
     is_service: bool,
 
     /// All of the instances referenced by this type.
-    instances: Vec<&'dom Instance>,
+    instances: Vec<&'dom Instance<'static>>,
 
     /// All of the defined properties for this type found on any instance of
     /// this type. Properties are keyed by their canonical name, and only one
@@ -229,7 +229,7 @@ impl<'dom, 'db> TypeInfos<'dom, 'db> {
 }
 
 impl<'dom, 'db, W: Write> SerializerState<'dom, 'db, W> {
-    pub fn new(serializer: &'db Serializer<'db>, dom: &'dom WeakDom, output: W) -> Self {
+    pub fn new(serializer: &'db Serializer<'db>, dom: &'dom WeakDom<'static>, output: W) -> Self {
         SerializerState {
             serializer,
             dom,
@@ -315,7 +315,10 @@ impl<'dom, 'db, W: Write> SerializerState<'dom, 'db, W> {
     // clone canonical_name in a cold branch. We don't want to do that.
     #[allow(clippy::map_entry)]
     #[profiling::function]
-    pub fn collect_type_info(&mut self, instance: &'dom Instance) -> Result<(), InnerError> {
+    pub fn collect_type_info(
+        &mut self,
+        instance: &'dom Instance<'static>,
+    ) -> Result<(), InnerError> {
         let type_info = self.type_infos.get_or_create(instance.class);
         type_info.instances.push(instance);
 

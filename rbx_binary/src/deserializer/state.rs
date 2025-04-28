@@ -2,6 +2,7 @@ use std::{borrow::Cow, collections::VecDeque, convert::TryInto, io::Read};
 
 use ahash::{HashMap, HashMapExt, HashSet, HashSetExt};
 use rbx_dom_weak::{
+    hstr,
     types::{
         Attributes, Axes, BinaryString, BrickColor, CFrame, Color3, Color3uint8, ColorSequence,
         ColorSequenceKeypoint, Content, ContentId, CustomPhysicalProperties, Enum, Faces, Font,
@@ -31,7 +32,7 @@ pub(super) struct DeserializerState<'db, R> {
 
     /// The tree that instances should be written into. Eventually returned to
     /// the user.
-    tree: WeakDom,
+    tree: WeakDom<'static>,
 
     /// The metadata contained in the file, which affects how some constructs
     /// are interpreted by Roblox.
@@ -76,7 +77,7 @@ struct TypeInfo {
 /// chunks.
 struct Instance {
     /// A work-in-progress builder that will be used to construct this instance.
-    builder: InstanceBuilder,
+    builder: InstanceBuilder<'static>,
 
     /// Document-defined IDs for the children of this instance.
     children: Vec<i32>,
@@ -179,7 +180,7 @@ fn find_canonical_property<'de>(
 
 fn add_property(instance: &mut Instance, canonical_property: &CanonicalProperty, value: Variant) {
     if let Some(PropertySerialization::Migrate(migration)) = canonical_property.migration {
-        let new_property_name = &migration.new_property_name;
+        let new_property_name = migration.new_property_name.as_str().into();
         let old_property_name = canonical_property.name;
 
         if !instance.builder.has_property(new_property_name) {
@@ -210,7 +211,7 @@ impl<'db, R: Read> DeserializerState<'db, R> {
         deserializer: &'db Deserializer<'db>,
         mut input: R,
     ) -> Result<Self, InnerError> {
-        let mut tree = WeakDom::new(InstanceBuilder::new("DataModel"));
+        let mut tree = WeakDom::new(InstanceBuilder::new(hstr!("DataModel")));
 
         let header = FileHeader::decode(&mut input)?;
 
@@ -306,7 +307,7 @@ impl<'db, R: Read> DeserializerState<'db, R> {
                 referent,
                 Instance {
                     builder: InstanceBuilder::with_property_capacity(
-                        type_name.as_str(),
+                        type_name.as_str().into(),
                         prop_capacity,
                     ),
                     children: Vec::new(),
@@ -1541,7 +1542,7 @@ rbx-dom may require changes to fully support this property. Please open an issue
     /// Combines together all the decoded information to build and emplace
     /// instances in our tree.
     #[profiling::function]
-    pub(super) fn finish(mut self) -> WeakDom {
+    pub(super) fn finish(mut self) -> WeakDom<'static> {
         log::trace!("Constructing tree from deserialized data");
 
         // Track all the instances we need to construct. Order of construction
