@@ -1,5 +1,5 @@
+use hash_str::{hstr, HashStr, HashStrMap};
 use rbx_types::{Ref, Variant};
-use ustr::{Ustr, UstrMap};
 
 /**
 Represents an instance that can be turned into a new
@@ -34,15 +34,15 @@ let dom = WeakDom::new(data_model);
 pub struct InstanceBuilder {
     pub(crate) referent: Ref,
     pub(crate) name: String,
-    pub(crate) class: Ustr,
-    pub(crate) properties: Vec<(Ustr, Variant)>,
+    pub(crate) class: &'static HashStr,
+    pub(crate) properties: Vec<(&'static HashStr, Variant)>,
     pub(crate) children: Vec<InstanceBuilder>,
 }
 
 impl InstanceBuilder {
     /// Create a new `InstanceBuilder` with the given ClassName. This is also
     /// used as the instance's Name, unless overwritten later.
-    pub fn new<S: Into<Ustr>>(class: S) -> Self {
+    pub fn new<S: Into<&'static HashStr>>(class: S) -> Self {
         let class = class.into();
         let name = class.to_string();
 
@@ -57,7 +57,7 @@ impl InstanceBuilder {
 
     /// Create a new `InstanceBuilder` with the given ClassName and with a
     /// property table with at least enough space for the given capacity.
-    pub fn with_property_capacity<S: Into<Ustr>>(class: S, capacity: usize) -> Self {
+    pub fn with_property_capacity<S: Into<&'static HashStr>>(class: S, capacity: usize) -> Self {
         let class = class.into();
         let name = class.to_string();
 
@@ -75,7 +75,7 @@ impl InstanceBuilder {
         InstanceBuilder {
             referent: Ref::new(),
             name: String::new(),
-            class: Ustr::default(),
+            class: hstr!(""),
             properties: Vec::new(),
             children: Vec::new(),
         }
@@ -108,7 +108,7 @@ impl InstanceBuilder {
     }
 
     /// Change the class of the `InstanceBuilder`.
-    pub fn with_class<S: Into<Ustr>>(self, class: S) -> Self {
+    pub fn with_class<S: Into<&'static HashStr>>(self, class: S) -> Self {
         Self {
             class: class.into(),
             ..self
@@ -116,23 +116,27 @@ impl InstanceBuilder {
     }
 
     /// Change the class of the `InstanceBuilder`.
-    pub fn set_class<S: Into<Ustr>>(&mut self, class: S) {
+    pub fn set_class<S: Into<&'static HashStr>>(&mut self, class: S) {
         self.class = class.into();
     }
 
     /// Add a new property to the `InstanceBuilder`.
-    pub fn with_property<K: Into<Ustr>, V: Into<Variant>>(mut self, key: K, value: V) -> Self {
+    pub fn with_property<K: Into<&'static HashStr>, V: Into<Variant>>(
+        mut self,
+        key: K,
+        value: V,
+    ) -> Self {
         self.properties.push((key.into(), value.into()));
         self
     }
 
     /// Add a new property to the `InstanceBuilder`.
-    pub fn add_property<K: Into<Ustr>, V: Into<Variant>>(&mut self, key: K, value: V) {
+    pub fn add_property<K: Into<&'static HashStr>, V: Into<Variant>>(&mut self, key: K, value: V) {
         self.properties.push((key.into(), value.into()));
     }
 
     /// Check if the `InstanceBuilder` already has a property with the given key.
-    pub fn has_property<K: Into<Ustr>>(&self, key: K) -> bool {
+    pub fn has_property<K: Into<&'static HashStr>>(&self, key: K) -> bool {
         let key = key.into();
         self.properties.iter().any(|(k, _)| *k == key)
     }
@@ -140,7 +144,7 @@ impl InstanceBuilder {
     /// Add multiple properties to the `InstanceBuilder` at once.
     pub fn with_properties<K, V, I>(mut self, props: I) -> Self
     where
-        K: Into<Ustr>,
+        K: Into<&'static HashStr>,
         V: Into<Variant>,
         I: IntoIterator<Item = (K, V)>,
     {
@@ -153,7 +157,7 @@ impl InstanceBuilder {
     /// Add multiple properties to the `InstanceBuilder` at once.
     pub fn add_properties<K, V, I>(&mut self, props: I)
     where
-        K: Into<Ustr>,
+        K: Into<&'static HashStr>,
         V: Into<Variant>,
         I: IntoIterator<Item = (K, V)>,
     {
@@ -208,10 +212,10 @@ pub struct Instance {
     pub name: String,
 
     /// The instance's class, corresponding to the `ClassName` property.
-    pub class: Ustr,
+    pub class: &'static HashStr,
 
     /// Any properties stored on the object that are not `Name` or `ClassName`.
-    pub properties: UstrMap<Variant>,
+    pub properties: HashStrMap<'static, Variant>,
 }
 
 impl Instance {
