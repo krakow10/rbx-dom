@@ -38,12 +38,12 @@ impl DefaultsPlaceSubcommand {
         }
 
         let contents = fs::read_to_string(&self.api_dump).context("Could not read API dump")?;
+
         let dump = serde_json::from_str(&contents).context("Invalid API dump")?;
 
         // Studio leaves a .lock file behind because the defaults place crashes on close. This uses a temporary
         // directory to ignore the lock file.
-        let temp_dir = tempdir()?;
-        let temp_place_path = temp_dir.path().join("defaults-place.rbxlx");
+        let temp_place_path = self.output.clone();
 
         generate_place_with_all_classes(&temp_place_path, &dump)?;
         let studio_info = save_place_in_studio(&temp_place_path)?;
@@ -101,7 +101,7 @@ tell application "System Events"
     -- Studio process only has one window.
 
     -- This could be hazardous - for example, escape may not close every modal,
-    -- or Roblox Studio could one day gain more windows. So, we'll also cap the 
+    -- or Roblox Studio could one day gain more windows. So, we'll also cap the
     -- number of times this loop can execute to 100.
     set attemptCount to 0
     repeat until count of windows of robloxStudio is 1 or attemptCount >= 100
@@ -207,6 +207,8 @@ fn generate_place_with_all_classes(path: &PathBuf, dump: &Dump) -> anyhow::Resul
     }
 
     writeln!(place_contents, "</roblox>").unwrap();
+
+    println!("path={path:?}");
 
     fs::write(path, place_contents)?;
 

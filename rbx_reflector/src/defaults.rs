@@ -6,9 +6,14 @@ use std::{
 };
 
 use anyhow::Context;
-use rbx_dom_weak::Instance;
+use rbx_dom_weak::UnhashedStr;
+use rbx_dom_weak_old::Instance;
 use rbx_reflection::ReflectionDatabase;
-use rbx_types::VariantType;
+use rbx_types_old::VariantType;
+
+fn old_variant_to_new(variant:rbx_types_old::Variant)->rbx_types::Variant{
+    unsafe{core::mem::transmute(variant)}
+}
 
 pub fn apply_defaults(
     database: &mut ReflectionDatabase,
@@ -16,12 +21,12 @@ pub fn apply_defaults(
 ) -> anyhow::Result<()> {
     let file = BufReader::new(File::open(defaults_place).context("Could not find defaults place")?);
 
-    let decode_options = rbx_xml::DecodeOptions::new()
-        .property_behavior(rbx_xml::DecodePropertyBehavior::IgnoreUnknown)
-        .reflection_database(database);
+    // let decode_options = rbx_xml::DecodeOptions::new()
+    //     .property_behavior(rbx_xml::DecodePropertyBehavior::IgnoreUnknown)
+    //     .reflection_database(database);
 
     let tree =
-        rbx_xml::from_reader(file, decode_options).context("Could not decode defaults place")?;
+        rbx_xml_old::from_reader(file, Default::default()).context("Could not decode defaults place")?;
 
     let mut found_classes = HashSet::new();
     let mut to_visit = VecDeque::from_iter(tree.root().children());
@@ -44,8 +49,8 @@ pub fn apply_defaults(
     Ok(())
 }
 
-fn apply_instance_defaults<'a>(database: &mut ReflectionDatabase<'a>, instance: &Instance<'a>) {
-    let class = match database.classes.get_mut(instance.class) {
+fn apply_instance_defaults<'a>(database: &mut ReflectionDatabase<'a>, instance: &Instance) {
+    let class = match database.classes.get_mut(UnhashedStr::from_ref(instance.class.as_str())) {
         Some(class_descriptor) => class_descriptor,
         None => {
             log::warn!(
@@ -64,7 +69,7 @@ fn apply_instance_defaults<'a>(database: &mut ReflectionDatabase<'a>, instance: 
 
             _ => class
                 .default_properties
-                .insert(property_name, property_value.clone()),
+                .insert(property_name.as_str().into(), old_variant_to_new(property_value.clone())),
         };
     }
 }

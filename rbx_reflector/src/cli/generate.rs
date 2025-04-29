@@ -44,46 +44,53 @@ pub struct GenerateSubcommand {
 
 impl GenerateSubcommand {
     pub fn run(&self) -> anyhow::Result<()> {
-        let temp_dir = tempdir()?;
-        let api_dump_path = temp_dir.path().join("api-dump.json");
-        let defaults_place_path = temp_dir.path().join("defaults-place.rbxlx");
+        let api_dump_path = std::env::current_dir().unwrap().join("api-dump.json");
+        let defaults_place_path = std::env::current_dir().unwrap().join("defaults-place.rbxlx");
 
-        DumpSubcommand {
-            output: api_dump_path.clone(),
-        }
-        .run()?;
+        // DumpSubcommand {
+        //     output: api_dump_path.clone(),
+        // }
+        // .run()?;
 
         let contents = fs::read_to_string(&api_dump_path).context("Could not read API dump")?;
         let dump = serde_json::from_str(&contents).context("Invalid API dump")?;
 
-        let studio_info = DefaultsPlaceSubcommand {
-            api_dump: api_dump_path,
-            output: defaults_place_path.clone(),
-        }
-        .run()?;
+        // let studio_info = DefaultsPlaceSubcommand {
+        //     api_dump: api_dump_path,
+        //     output: defaults_place_path.clone(),
+        // }
+        // .run()?;
+
+        println!("1");
 
         let mut database = ReflectionDatabase::new();
 
         apply_dump(&mut database, &dump)?;
 
+        println!("2");
         let patches = if let Some(patches_path) = &self.patches {
             Some(Patches::load(patches_path)?)
         } else {
             None
         };
 
+        println!("3");
         if let Some(patches) = &patches {
             patches.apply_pre_default(&mut database)?;
         }
 
+        println!("4");
         apply_defaults(&mut database, &defaults_place_path)?;
 
+        println!("5");
         if let Some(patches) = &patches {
             patches.apply_post_default(&mut database)?;
         }
 
-        database.version = studio_info.version;
+        println!("6");
+        database.version = [1,0,3,670];
 
+        println!("7");
         for path in &self.output {
             let extension = path.extension().unwrap_or_default().to_str();
 
@@ -127,6 +134,7 @@ impl GenerateSubcommand {
 
             file.flush()?;
         }
+        println!("1");
 
         Ok(())
     }

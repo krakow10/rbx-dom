@@ -14,7 +14,9 @@ publish = false
 rbx_dom_weak = { path = "../rbx_dom_weak" }
 rbx_reflection = { path = "../rbx_reflection" }
 rbx_types = { path = "../rbx_types", features = ["serde"] }
-rbx_xml = { path = "../rbx_xml" }
+rbx_dom_weak_old = { package = "rbx_dom_weak", version = "3.0.0" }
+rbx_types_old = { package = "rbx_types", version = "2.0.0", features = ["serde"] }
+rbx_xml_old = { package = "rbx_xml", version = "1.0.0" }
 
 anyhow = "1.0.57"
 clap = { version = "4.1.4", features = ["derive"] }
