@@ -88,7 +88,10 @@ impl GenerateSubcommand {
         }
 
         println!("6");
-        database.version = [1,0,3,670];
+        database.version = [0,
+        670,
+        0,
+        6700713];
 
         println!("7");
         for path in &self.output {
