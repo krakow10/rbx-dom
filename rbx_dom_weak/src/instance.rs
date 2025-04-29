@@ -9,23 +9,23 @@ Represents an instance that can be turned into a new
 Instances have the given ClassName and Name and no properties by default.
 
 ```
-use rbx_dom_weak::{InstanceBuilder, WeakDom};
+use rbx_dom_weak::{hstr, InstanceBuilder, WeakDom};
 
-let data_model = InstanceBuilder::new("DataModel");
+let data_model = InstanceBuilder::new(hstr!("DataModel"));
 let dom = WeakDom::new(data_model);
 ```
 
 Properties and children can be added to the builder.
 
 ```
-use rbx_dom_weak::{InstanceBuilder, WeakDom};
+use rbx_dom_weak::{hstr, InstanceBuilder, WeakDom};
 use rbx_dom_weak::types::Color3;
 
-let data_model = InstanceBuilder::new("DataModel")
-    .with_child(InstanceBuilder::new("Workspace")
-        .with_property("FilteringEnabled", true))
-    .with_child(InstanceBuilder::new("Lighting")
-        .with_property("Ambient", Color3::new(1.0, 0.0, 0.0)));
+let data_model = InstanceBuilder::new(hstr!("DataModel"))
+    .with_child(InstanceBuilder::new(hstr!("Workspace"))
+        .with_property(hstr!("FilteringEnabled"), true))
+    .with_child(InstanceBuilder::new(hstr!("Lighting"))
+        .with_property(hstr!("Ambient"), Color3::new(1.0, 0.0, 0.0)));
 
 let dom = WeakDom::new(data_model);
 ```
