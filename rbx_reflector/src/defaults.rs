@@ -1,5 +1,4 @@
 use std::{
-    borrow::Cow,
     collections::{HashSet, VecDeque},
     fs::File,
     io::BufReader,
@@ -45,8 +44,8 @@ pub fn apply_defaults(
     Ok(())
 }
 
-fn apply_instance_defaults(database: &mut ReflectionDatabase, instance: &Instance) {
-    let class = match database.classes.get_mut(instance.class.as_str()) {
+fn apply_instance_defaults<'a>(database: &mut ReflectionDatabase<'a>, instance: &Instance<'a>) {
+    let class = match database.classes.get_mut(instance.class) {
         Some(class_descriptor) => class_descriptor,
         None => {
             log::warn!(
@@ -59,8 +58,6 @@ fn apply_instance_defaults(database: &mut ReflectionDatabase, instance: &Instanc
     };
 
     for (property_name, property_value) in &instance.properties {
-        let property_name = Cow::Owned(property_name.to_string());
-
         match property_value.ty() {
             // We skip the Ref type because its default value is not useful.
             VariantType::Ref => continue,
