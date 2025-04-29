@@ -2,11 +2,9 @@
 // for most cases.
 #![allow(clippy::new_without_default)]
 
-use std::{
-    borrow::Cow,
-    collections::{HashMap, HashSet},
-};
+use std::collections::HashSet;
 
+use hash_str::{HashStr, HashStrMap};
 use rbx_types::{Variant, VariantType};
 use serde::{Deserialize, Serialize};
 
@@ -22,12 +20,14 @@ pub struct ReflectionDatabase<'a> {
     pub version: [u32; 4],
 
     /// All of the the known classes in the database.
+    #[serde(borrow)]
     #[serde(serialize_with = "crate::serde_util::ordered_map")]
-    pub classes: HashMap<Cow<'a, str>, ClassDescriptor<'a>>,
+    pub classes: HashStrMap<'a, ClassDescriptor<'a>>,
 
     /// All of the known enums in the database.
+    #[serde(borrow)]
     #[serde(default, serialize_with = "crate::serde_util::ordered_map")]
-    pub enums: HashMap<Cow<'a, str>, EnumDescriptor<'a>>,
+    pub enums: HashStrMap<'a, EnumDescriptor<'a>>,
 }
 
 impl<'a> ReflectionDatabase<'a> {
@@ -35,8 +35,8 @@ impl<'a> ReflectionDatabase<'a> {
     pub fn new() -> Self {
         Self {
             version: [0, 0, 0, 0],
-            classes: HashMap::new(),
-            enums: HashMap::new(),
+            classes: HashStrMap::default(),
+            enums: HashStrMap::default(),
         }
     }
 
@@ -87,7 +87,7 @@ impl<'a> ReflectionDatabase<'a> {
     pub fn find_default_property(
         &'a self,
         mut class: &'a ClassDescriptor<'a>,
-        property_name: &str,
+        property_name: &'a HashStr,
     ) -> Option<&'a Variant> {
         loop {
             match class.default_properties.get(property_name) {
@@ -110,7 +110,8 @@ impl<'a> ReflectionDatabase<'a> {
 #[non_exhaustive]
 pub struct ClassDescriptor<'a> {
     /// The name of the class, like "Folder" or "FlagStand".
-    pub name: Cow<'a, str>,
+    #[serde(borrow)]
+    pub name: &'a HashStr,
 
     /// A set of all of the tags attached to this class.
     #[serde(serialize_with = "crate::serde_util::ordered_set")]
@@ -119,27 +120,30 @@ pub struct ClassDescriptor<'a> {
     /// If this class descends from another class, contains the name of that
     /// class.
     #[serde(default)]
-    pub superclass: Option<Cow<'a, str>>,
+    #[serde(borrow)]
+    pub superclass: Option<&'a HashStr>,
 
     /// A map of all of the properties available on this class.
+    #[serde(borrow)]
     #[serde(serialize_with = "crate::serde_util::ordered_map")]
-    pub properties: HashMap<Cow<'a, str>, PropertyDescriptor<'a>>,
+    pub properties: HashStrMap<'a, PropertyDescriptor<'a>>,
 
     /// A map of the default properties for this instance if a value is not
     /// defined in serialization or freshly inserted with `Instance.new`.
+    #[serde(borrow)]
     #[serde(serialize_with = "crate::serde_util::ordered_map")]
-    pub default_properties: HashMap<Cow<'a, str>, Variant>,
+    pub default_properties: HashStrMap<'a, Variant>,
 }
 
 impl<'a> ClassDescriptor<'a> {
     /// Creates a new `ClassDescriptor` with the given name.
-    pub fn new<S: Into<Cow<'a, str>>>(name: S) -> Self {
+    pub fn new(name: &'a HashStr) -> Self {
         Self {
-            name: name.into(),
+            name,
             tags: HashSet::new(),
             superclass: None,
-            properties: HashMap::new(),
-            default_properties: HashMap::new(),
+            properties: HashStrMap::default(),
+            default_properties: HashStrMap::default(),
         }
     }
 }
@@ -150,12 +154,14 @@ impl<'a> ClassDescriptor<'a> {
 #[non_exhaustive]
 pub struct PropertyDescriptor<'a> {
     /// The name of the property, like "Position" or "heat_xml".
-    pub name: Cow<'a, str>,
+    #[serde(borrow)]
+    pub name: &'a HashStr,
 
     /// The maximum access to this property available to Lua.
     pub scriptability: Scriptability,
 
     /// The type of the value described by this descriptor.
+    #[serde(borrow)]
     pub data_type: DataType<'a>,
 
     /// A set of the tags that apply to this property.
@@ -163,14 +169,15 @@ pub struct PropertyDescriptor<'a> {
     pub tags: HashSet<PropertyTag>,
 
     /// The kind of property this is, including whether it is canonical.
+    #[serde(borrow)]
     pub kind: PropertyKind<'a>,
 }
 
 impl<'a> PropertyDescriptor<'a> {
     /// Creates a new `PropertyDescriptor` with the given name and type.
-    pub fn new<S: Into<Cow<'a, str>>>(name: S, data_type: DataType<'a>) -> Self {
+    pub fn new(name: &'a HashStr, data_type: DataType<'a>) -> Self {
         Self {
-            name: name.into(),
+            name,
             scriptability: Scriptability::None,
             data_type,
             tags: HashSet::new(),
@@ -187,12 +194,16 @@ pub enum PropertyKind<'a> {
     /// This property is canonical.
     #[serde(rename_all = "PascalCase")]
     Canonical {
+        #[serde(borrow)]
         serialization: PropertySerialization<'a>,
     },
 
     /// This property is an alias to another property that is canonical.
     #[serde(rename_all = "PascalCase")]
-    Alias { alias_for: Cow<'a, str> },
+    Alias {
+        #[serde(borrow)]
+        alias_for: &'a HashStr,
+    },
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
@@ -206,12 +217,12 @@ pub enum PropertySerialization<'a> {
 
     /// The property aliases a property with the given name and should serialize
     /// from that property descriptor instead.
-    SerializesAs(Cow<'a, str>),
+    SerializesAs(#[serde(borrow)] &'a HashStr),
 
     /// The property was originally serialized as itself, but should be migrated
     /// to a new property on deserialization. If the new property already
     /// exists, this property should be ignored.
-    Migrate(PropertyMigration),
+    Migrate(PropertyMigration<'a>),
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
@@ -221,7 +232,7 @@ pub enum DataType<'a> {
     Value(VariantType),
 
     /// The property is an enum with the given name.
-    Enum(Cow<'a, str>),
+    Enum(#[serde(borrow)] &'a HashStr),
 }
 
 /// Defines how Lua can access a property, if at all.
@@ -252,19 +263,21 @@ pub enum Scriptability {
 #[non_exhaustive]
 pub struct EnumDescriptor<'a> {
     /// The name of the enum, like "FormFactor" or "Material".
-    pub name: Cow<'a, str>,
+    #[serde(borrow)]
+    pub name: &'a HashStr,
 
     /// All of the members of this enum, stored as a map from names to values.
+    #[serde(borrow)]
     #[serde(serialize_with = "crate::serde_util::ordered_map")]
-    pub items: HashMap<Cow<'a, str>, u32>,
+    pub items: HashStrMap<'a, u32>,
 }
 
 impl<'a> EnumDescriptor<'a> {
     /// Create a new `EnumDescriptor` with the given name and no items.
-    pub fn new<S: Into<Cow<'a, str>>>(name: S) -> Self {
+    pub fn new(name: &'a HashStr) -> Self {
         Self {
-            name: name.into(),
-            items: HashMap::new(),
+            name,
+            items: HashStrMap::default(),
         }
     }
 }
