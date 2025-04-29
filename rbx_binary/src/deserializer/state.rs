@@ -292,11 +292,13 @@ impl<'db, R: Read> DeserializerState<'db, R> {
         let mut referents = vec![0; number_instances as usize];
         chunk.read_referent_array(&mut referents)?;
 
+        let type_name = type_name.into();
+
         let prop_capacity = self
             .deserializer
             .database
             .classes
-            .get(type_name.as_str())
+            .get(type_name)
             .map(|class| class.default_properties.len())
             .unwrap_or(0);
 
