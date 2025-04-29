@@ -268,14 +268,26 @@ fn apply_dump(database: &mut ReflectionDatabase, dump: &Dump) -> anyhow::Result<
             }
         }
 
-        let mut class = ClassDescriptor::new(dump_class.name.as_str().into());
+        let class_name=dump_class.name.as_str().into();
+
+        let mut class = ClassDescriptor::new(class_name);
         class.superclass = superclass;
         class.tags = tags;
         class.properties = properties;
 
+        if class_name=="Part"{
+            println!("Part hash = {}",class_name.precomputed_hash());
+        }
+
+        let class_name=dump_class.name.as_str().into();
+
         database
             .classes
-            .insert(dump_class.name.as_str().into(), class);
+            .insert(class_name, class);
+
+        if class_name=="Part"{
+            println!("Part hash = {}",class_name.precomputed_hash());
+        }
     }
 
     log::debug!("Skipped the following properties because their data types are not implemented, and do not need to serialize:");
