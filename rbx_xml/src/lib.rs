@@ -14,7 +14,7 @@
 //! pass in custom options.
 //!
 //! ```
-//! use rbx_dom_weak::{ustr, types::Variant};
+//! use rbx_dom_weak::{hstr, types::Variant};
 //!
 //! let model_file = r#"
 //! <roblox version="4">
@@ -34,7 +34,7 @@
 //! let number_value = model.get_by_ref(number_value_ref).unwrap();
 //!
 //! assert_eq!(
-//!     number_value.properties.get(&ustr("Value")),
+//!     number_value.properties.get(hstr!("Value")),
 //!     Some(&Variant::Float64(12345.0)),
 //! );
 //! # Ok::<(), Box<dyn std::error::Error>>(())
@@ -74,9 +74,9 @@
 //!     io::BufWriter,
 //!     fs::File,
 //! };
-//! use rbx_dom_weak::{WeakDom, InstanceBuilder};
+//! use rbx_dom_weak::{hstr, WeakDom, InstanceBuilder};
 //!
-//! let place = WeakDom::new(InstanceBuilder::new("DataModel"));
+//! let place = WeakDom::new(InstanceBuilder::new(hstr!("DataModel")));
 //!
 //! // A Roblox place file contains all of its top-level instances.
 //! let top_level_refs = place.root().children();

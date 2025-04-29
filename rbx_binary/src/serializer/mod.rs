@@ -18,9 +18,9 @@ pub use self::error::Error;
 /// use std::io::BufWriter;
 ///
 /// use rbx_binary::Serializer;
-/// use rbx_dom_weak::{InstanceBuilder, WeakDom};
+/// use rbx_dom_weak::{hstr, InstanceBuilder, WeakDom};
 ///
-/// let dom = WeakDom::new(InstanceBuilder::new("Folder"));
+/// let dom = WeakDom::new(InstanceBuilder::new(hstr!("Folder")));
 ///
 /// let output = BufWriter::new(File::create("PlainFolder.rbxm")?);
 /// let serializer = Serializer::new();
