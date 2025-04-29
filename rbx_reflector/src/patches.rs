@@ -1,9 +1,9 @@
-use std::{borrow::Cow, collections::HashMap, fs, path::Path};
+use std::{collections::HashMap, fs, path::Path};
 
 use anyhow::{anyhow, bail, Context};
+use rbx_dom_weak::UnhashedStr;
 use rbx_reflection::{
-    DataType, PropertyKind, PropertyMigration, PropertySerialization, ReflectionDatabase,
-    Scriptability,
+    MigrationOperation, PropertyKind, PropertySerialization, ReflectionDatabase, Scriptability,
 };
 use rbx_types::{Variant, VariantType};
 use serde::Deserialize;
@@ -32,7 +32,7 @@ impl Patches {
         for (class_name, class_changes) in &self.change {
             let class = database
                 .classes
-                .get_mut(class_name.as_str())
+                .get_mut(UnhashedStr::from_ref(class_name))
                 .ok_or_else(|| {
                     anyhow!(
                         "Class {} modified in patch file does not exist in database",
@@ -43,7 +43,7 @@ impl Patches {
             for (property_name, property_change) in class_changes {
                 let existing_property = class
                     .properties
-                    .get_mut(property_name.as_str())
+                    .get_mut(UnhashedStr::from_ref(property_name))
                     .ok_or_else(|| {
                         anyhow!(
                             "Property {}.{} modified in patch file does not exist in database",
@@ -53,7 +53,7 @@ impl Patches {
                     })?;
 
                 if let Some(data_type) = &property_change.data_type {
-                    existing_property.data_type = data_type.clone();
+                    existing_property.data_type = data_type.into();
                 }
 
                 if let Some(kind) = property_change.kind() {
@@ -116,15 +116,15 @@ impl Patches {
                 };
                 let prop_data = database
                     .classes
-                    .get(class_name.as_str())
+                    .get(UnhashedStr::from_ref(class_name))
                     // This is already validated pre-default application, so unwrap is fine
                     .unwrap()
                     .properties
-                    .get(prop_name.as_str());
+                    .get(UnhashedStr::from_ref(prop_name));
                 if let Some(prop_data) = prop_data {
                     match (&prop_data.data_type, default_value.ty()) {
-                        (DataType::Enum(_), VariantType::Enum) => {}
-                        (DataType::Value(existing), new) if *existing == new => {}
+                        (rbx_reflection::DataType::Enum(_), VariantType::Enum) => {}
+                        (rbx_reflection::DataType::Value(existing), new) if *existing == new => {}
                         (expected, actual) => bail!(
                             "Bad type given for {class_name}.{prop_name}'s DefaultValue patch.\n\
                             Expected {expected:?}, got {actual:?}"
@@ -140,11 +140,11 @@ impl Patches {
                 for descendant in subclass_list {
                     let class = database
                         .classes
-                        .get_mut(descendant.as_str())
+                        .get_mut(UnhashedStr::from_ref(descendant))
                         .expect("class listed in subclass map should exist");
                     class
                         .default_properties
-                        .insert(prop_name.clone().into(), default_value.clone());
+                        .insert(prop_name.as_str().into(), default_value.clone());
                 }
             }
         }
@@ -163,18 +163,36 @@ struct Patch {
 #[derive(Deserialize)]
 #[serde(rename_all = "PascalCase", deny_unknown_fields)]
 struct PropertyChange {
-    data_type: Option<DataType<'static>>,
+    data_type: Option<DataType>,
     alias_for: Option<String>,
     serialization: Option<Serialization>,
     scriptability: Option<Scriptability>,
     default_value: Option<Variant>,
 }
 
+#[derive(Debug, Clone, Deserialize)]
+#[non_exhaustive]
+pub enum DataType {
+    /// The property is a regular value of the given type.
+    Value(VariantType),
+
+    /// The property is an enum with the given name.
+    Enum(String),
+}
+impl From<&DataType> for rbx_reflection::DataType<'_> {
+    fn from(value: &DataType) -> Self {
+        match value {
+            &DataType::Value(variant_type) => rbx_reflection::DataType::Value(variant_type),
+            DataType::Enum(enum_name) => rbx_reflection::DataType::Enum(enum_name.into()),
+        }
+    }
+}
+
 impl PropertyChange {
     fn kind(&self) -> Option<PropertyKind<'static>> {
         match (&self.alias_for, &self.serialization) {
             (Some(alias), None) => Some(PropertyKind::Alias {
-                alias_for: Cow::Owned(alias.clone()),
+                alias_for: alias.into(),
             }),
 
             (None, Some(serialization)) => Some(PropertyKind::Canonical {
@@ -201,15 +219,29 @@ pub enum Serialization {
     Migrate(PropertyMigration),
 }
 
+#[derive(Debug, Clone, Deserialize)]
+#[serde(rename_all = "PascalCase")]
+pub struct PropertyMigration {
+    #[serde(rename = "To")]
+    new_property_name: String,
+    migration: MigrationOperation,
+}
+
 impl From<Serialization> for PropertySerialization<'_> {
     fn from(value: Serialization) -> Self {
         match value {
             Serialization::Serializes => PropertySerialization::Serializes,
             Serialization::DoesNotSerialize => PropertySerialization::DoesNotSerialize,
             Serialization::SerializesAs { serializes_as } => {
-                PropertySerialization::SerializesAs(Cow::Owned(serializes_as))
+                PropertySerialization::SerializesAs(serializes_as.into())
             }
-            Serialization::Migrate(migration) => PropertySerialization::Migrate(migration),
+            Serialization::Migrate(PropertyMigration {
+                new_property_name,
+                migration,
+            }) => PropertySerialization::Migrate(rbx_reflection::PropertyMigration {
+                new_property_name: new_property_name.into(),
+                migration,
+            }),
         }
     }
 }
