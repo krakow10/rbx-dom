@@ -89,6 +89,7 @@ pub trait RbxReadExt: Read {
     /// generally aren't dilligent about data being valid Unicode.
     fn read_string(&mut self) -> io::Result<String> {
         let length = self.read_le_u32()?;
+        // TODO: zero copy
         let mut value = String::with_capacity(length as usize);
         self.take(length as u64).read_to_string(&mut value)?;
 
