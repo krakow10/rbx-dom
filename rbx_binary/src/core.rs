@@ -350,7 +350,7 @@ pub fn find_property_descriptors<'db>(
     class_name: &'static HashStr,
     property_name: &'static HashStr,
 ) -> Option<PropertyDescriptors<'db>> {
-    let mut class_descriptor = database.classes.get(class_name.as_str())?;
+    let mut class_descriptor = database.classes.get(class_name)?;
 
     // We need to find the canonical property descriptor associated with
     // the property we're working with.
@@ -362,7 +362,7 @@ pub fn find_property_descriptors<'db>(
     loop {
         // If this class descriptor knows about this property name, we're pretty
         // much done!
-        if let Some(property_descriptor) = class_descriptor.properties.get(property_name.as_str()) {
+        if let Some(property_descriptor) = class_descriptor.properties.get(property_name) {
             match &property_descriptor.kind {
                 // This property descriptor is the canonical form of this
                 // logical property. That means we've found one of the two
@@ -384,8 +384,8 @@ pub fn find_property_descriptors<'db>(
                 // descriptor might be one of the two descriptors we need to
                 // return, it's possible that both the canonical and serialized
                 // forms are different.
-                PropertyKind::Alias { alias_for } => {
-                    let canonical = class_descriptor.properties.get(alias_for.as_ref()).unwrap();
+                &PropertyKind::Alias { alias_for } => {
+                    let canonical = class_descriptor.properties.get(alias_for).unwrap();
 
                     if let PropertyKind::Canonical { serialization } = &canonical.kind {
                         let serialized = find_serialized_from_canonical(
@@ -453,8 +453,8 @@ fn find_serialized_from_canonical<'db>(
 
         // This property serializes under an alias. That property should have a
         // corresponding property descriptor within the same class descriptor.
-        PropertySerialization::SerializesAs(serialized_name) => {
-            let serialized_descriptor = class.properties.get(serialized_name.as_ref()).unwrap();
+        &PropertySerialization::SerializesAs(serialized_name) => {
+            let serialized_descriptor = class.properties.get(serialized_name).unwrap();
 
             Some(serialized_descriptor)
         }

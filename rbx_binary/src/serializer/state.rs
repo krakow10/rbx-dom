@@ -146,7 +146,7 @@ struct PropInfo<'db> {
     /// If a logical property has a migration associated with it (i.e. BrickColor ->
     /// Color, Font -> FontFace), this field contains Some(PropertyMigration). Otherwise,
     /// it is None.
-    migration: Option<&'db PropertyMigration>,
+    migration: Option<&'db PropertyMigration<'db>>,
 }
 
 /// Contains all of the `TypeInfo` objects known to the serializer so far. This
@@ -183,7 +183,7 @@ impl<'dom, 'db> TypeInfos<'dom, 'db> {
             let type_id = self.next_type_id;
             self.next_type_id += 1;
 
-            let class_descriptor = self.database.classes.get(class.as_str());
+            let class_descriptor = self.database.classes.get(class);
 
             let is_service = if let Some(descriptor) = &class_descriptor {
                 descriptor.tags.contains(&ClassTag::Service)
@@ -322,7 +322,7 @@ impl<'dom, 'db, W: Write> SerializerState<'dom, 'db, W> {
         let type_info = self.type_infos.get_or_create(instance.class);
         type_info.instances.push(instance);
 
-        for (prop_name, prop_value) in &instance.properties {
+        for (&prop_name, prop_value) in &instance.properties {
             // Discover and track any shared strings we come across.
             if let Variant::SharedString(shared_string) = prop_value {
                 if !self.shared_string_ids.contains_key(shared_string) {
@@ -340,15 +340,15 @@ impl<'dom, 'db, W: Write> SerializerState<'dom, 'db, W> {
 
             // ...but add it to the set of visited properties if we haven't seen
             // it.
-            type_info.properties_visited.insert(*prop_name);
+            type_info.properties_visited.insert(prop_name);
 
-            let canonical_name;
-            let serialized_name;
+            let canonical_name: &'static HashStr;
+            let serialized_name: &'static HashStr;
             let serialized_ty;
             let mut migration = None;
 
             let database = self.serializer.database;
-            match find_property_descriptors(database, instance.class, *prop_name) {
+            match find_property_descriptors(database, instance.class, prop_name) {
                 Some(descriptors) => {
                     // For any properties that do not serialize, we can skip
                     // adding them to the set of type_infos.
@@ -375,7 +375,7 @@ impl<'dom, 'db, W: Write> SerializerState<'dom, 'db, W> {
                                     Some(descriptor) => match descriptor.serialized {
                                         Some(serialized) => {
                                             canonical_name =
-                                                descriptor.canonical.name.as_ref().into();
+                                                descriptor.canonical.name.as_str().into();
                                             serialized
                                         }
                                         None => continue,
@@ -383,14 +383,14 @@ impl<'dom, 'db, W: Write> SerializerState<'dom, 'db, W> {
                                     None => continue,
                                 }
                             } else {
-                                canonical_name = descriptors.canonical.name.as_ref().into();
+                                canonical_name = descriptors.canonical.name.as_str().into();
                                 descriptor
                             }
                         }
                         None => continue,
                     };
 
-                    serialized_name = serialized.name.as_ref().into();
+                    serialized_name = serialized.name.as_str().into();
 
                     serialized_ty = match &serialized.data_type {
                         DataType::Value(ty) => *ty,
@@ -409,8 +409,8 @@ impl<'dom, 'db, W: Write> SerializerState<'dom, 'db, W> {
                 }
 
                 None => {
-                    canonical_name = *prop_name;
-                    serialized_name = *prop_name;
+                    canonical_name = prop_name;
+                    serialized_name = prop_name;
                     serialized_ty = prop_value.ty();
                 }
             }
@@ -420,7 +420,7 @@ impl<'dom, 'db, W: Write> SerializerState<'dom, 'db, W> {
                     .class_descriptor
                     .and_then(|class| {
                         database
-                            .find_default_property(class, &canonical_name)
+                            .find_default_property(class, canonical_name)
                             .map(Cow::Borrowed)
                     })
                     .or_else(|| Self::fallback_default_value(serialized_ty).map(Cow::Owned))
@@ -470,11 +470,11 @@ impl<'dom, 'db, W: Write> SerializerState<'dom, 'db, W> {
             // If the property we found on this instance is different than the
             // canonical name for this property, stash it into the set of known
             // aliases for this PropInfo.
-            if *prop_name != canonical_name {
+            if prop_name != canonical_name {
                 let prop_info = type_info.properties.get_mut(&canonical_name).unwrap();
 
                 if !prop_info.aliases.contains(prop_name) {
-                    prop_info.aliases.insert(*prop_name);
+                    prop_info.aliases.insert(prop_name);
                 }
 
                 prop_info.migration = migration;
