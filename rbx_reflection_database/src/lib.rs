@@ -24,6 +24,43 @@ mod test {
     }
 
     #[test]
+    fn count_strings() {
+        let database = get();
+        let mut occurences=0;
+        let mut stringus=std::collections::HashSet::new();
+        for (&name,enum_descriptor) in &database.enums{
+            occurences+=1;
+            occurences+=1;
+            stringus.insert(name.as_str());
+            for (&name,_) in &enum_descriptor.items{
+                occurences+=1;
+                stringus.insert(name.as_str());
+            }
+        }
+        for (&name,class_descriptor) in &database.classes{
+            occurences+=1;
+            occurences+=1;
+            stringus.insert(name.as_str());
+            occurences+=1;
+            stringus.insert(class_descriptor.name.as_str());
+            for (&name,property) in &class_descriptor.properties{
+                occurences+=1;
+                occurences+=1;
+                stringus.insert(name.as_str());
+                if let rbx_reflection::PropertyKind::Canonical { serialization : rbx_reflection::PropertySerialization::SerializesAs(name) } = &property.kind{
+                    occurences+=1;
+                    stringus.insert(name.as_str());
+                }
+                if let rbx_reflection::DataType::Enum(_) = &property.data_type{
+                    occurences+=1;
+                }
+            }
+        }
+        println!("occurences={}",occurences);
+        println!("unique={}",stringus.len());
+    }
+
+    #[test]
     fn superclasses_iter_test() {
         let database = get();
         let part_class_descriptor = database.classes.get(hstr!("Part"));
