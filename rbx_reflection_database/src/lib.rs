@@ -14,7 +14,7 @@ pub fn get() -> &'static ReflectionDatabase<'static> {
 
 #[cfg(test)]
 mod test {
-    use rbx_reflection::ClassDescriptor;
+    use rbx_reflection::{hstr, ClassDescriptor};
 
     use super::*;
 
@@ -26,7 +26,7 @@ mod test {
     #[test]
     fn superclasses_iter_test() {
         let database = get();
-        let part_class_descriptor = database.classes.get("Part");
+        let part_class_descriptor = database.classes.get(hstr!("Part"));
         let mut iter = database.superclasses_iter(part_class_descriptor.unwrap());
         fn class_descriptor_eq(lhs: Option<&ClassDescriptor>, rhs: Option<&ClassDescriptor>) {
             let eq = match (lhs, rhs) {
@@ -40,8 +40,8 @@ mod test {
         class_descriptor_eq(iter.next(), part_class_descriptor);
 
         let mut current_class_descriptor = part_class_descriptor.unwrap();
-        while let Some(superclass) = current_class_descriptor.superclass.as_ref() {
-            let superclass_descriptor = database.classes.get(superclass.as_ref());
+        while let Some(superclass) = current_class_descriptor.superclass {
+            let superclass_descriptor = database.classes.get(superclass);
             class_descriptor_eq(iter.next(), superclass_descriptor);
             current_class_descriptor = superclass_descriptor.unwrap();
         }
@@ -52,8 +52,8 @@ mod test {
     #[test]
     fn has_superclass_test() {
         let database = get();
-        let part_class_descriptor = database.classes.get("Part").unwrap();
-        let instance_class_descriptor = database.classes.get("Instance").unwrap();
+        let part_class_descriptor = database.classes.get(hstr!("Part")).unwrap();
+        let instance_class_descriptor = database.classes.get(hstr!("Instance")).unwrap();
         assert!(database.has_superclass(part_class_descriptor, instance_class_descriptor));
         assert!(!database.has_superclass(instance_class_descriptor, part_class_descriptor));
     }
