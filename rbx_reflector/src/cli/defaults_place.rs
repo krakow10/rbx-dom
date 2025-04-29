@@ -208,8 +208,6 @@ fn generate_place_with_all_classes(path: &PathBuf, dump: &Dump) -> anyhow::Resul
 
     writeln!(place_contents, "</roblox>").unwrap();
 
-    println!("path={path:?}");
-
     fs::write(path, place_contents)?;
 
     Ok(())

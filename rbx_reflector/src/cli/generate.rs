@@ -61,39 +61,28 @@ impl GenerateSubcommand {
         // }
         // .run()?;
 
-        println!("1");
-
         let mut database = ReflectionDatabase::new();
 
         apply_dump(&mut database, &dump)?;
 
-        println!("2");
         let patches = if let Some(patches_path) = &self.patches {
             Some(Patches::load(patches_path)?)
         } else {
             None
         };
 
-        println!("3");
         if let Some(patches) = &patches {
             patches.apply_pre_default(&mut database)?;
         }
 
-        println!("4");
         apply_defaults(&mut database, &defaults_place_path)?;
 
-        println!("5");
         if let Some(patches) = &patches {
             patches.apply_post_default(&mut database)?;
         }
 
-        println!("6");
-        database.version = [0,
-        670,
-        0,
-        6700713];
+        database.version = [0,670,0,6700713];
 
-        println!("7");
         for path in &self.output {
             let extension = path.extension().unwrap_or_default().to_str();
 
@@ -137,7 +126,6 @@ impl GenerateSubcommand {
 
             file.flush()?;
         }
-        println!("1");
 
         Ok(())
     }
