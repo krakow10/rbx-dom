@@ -1,5 +1,6 @@
 use std::io::{Read, Write};
 
+use rbx_dom_weak::HashStr;
 use rbx_reflection::{PropertyDescriptor, PropertyKind, PropertySerialization, ReflectionDatabase};
 
 use crate::{
@@ -40,8 +41,8 @@ pub trait XmlType: Sized {
 }
 
 pub fn find_canonical_property_descriptor<'db>(
-    class_name: &str,
-    property_name: &str,
+    class_name: &HashStr,
+    property_name: &HashStr,
     database: &'db ReflectionDatabase<'db>,
 ) -> Option<&'db PropertyDescriptor<'db>> {
     find_property_descriptors(class_name, property_name, database)
@@ -49,8 +50,8 @@ pub fn find_canonical_property_descriptor<'db>(
 }
 
 pub fn find_serialized_property_descriptor<'db>(
-    class_name: &str,
-    property_name: &str,
+    class_name: &HashStr,
+    property_name: &HashStr,
     database: &'db ReflectionDatabase<'db>,
 ) -> Option<&'db PropertyDescriptor<'db>> {
     find_property_descriptors(class_name, property_name, database)
@@ -60,8 +61,8 @@ pub fn find_serialized_property_descriptor<'db>(
 /// Find both the canonical and serialized property descriptors for a given
 /// class and property name pair. These might be the same descriptor!
 fn find_property_descriptors<'db>(
-    class_name: &str,
-    property_name: &str,
+    class_name: &HashStr,
+    property_name: &HashStr,
     database: &'db ReflectionDatabase<'db>,
 ) -> Option<(&'db PropertyDescriptor<'db>, &'db PropertyDescriptor<'db>)> {
     let class_descriptor = database.classes.get(class_name)?;
@@ -86,21 +87,19 @@ fn find_property_descriptors<'db>(
                         // FIXME: Is this the correct solution?
                         return None;
                     }
-                    PropertySerialization::SerializesAs(serialized_name) => {
+                    &PropertySerialization::SerializesAs(serialized_name) => {
                         let serialized_descriptor = current_class_descriptor
                             .properties
-                            .get(serialized_name.as_ref())
+                            .get(serialized_name)
                             .unwrap();
 
                         return Some((property_descriptor, serialized_descriptor));
                     }
                     _ => unimplemented!(),
                 },
-                PropertyKind::Alias { alias_for } => {
-                    let canonical_descriptor = current_class_descriptor
-                        .properties
-                        .get(alias_for.as_ref())
-                        .unwrap();
+                &PropertyKind::Alias { alias_for } => {
+                    let canonical_descriptor =
+                        current_class_descriptor.properties.get(alias_for).unwrap();
 
                     // FIXME: This code is duplicated with above.
                     match &canonical_descriptor.kind {
@@ -113,10 +112,10 @@ fn find_property_descriptors<'db>(
                                 // FIXME: Is this the correct solution?
                                 return None;
                             }
-                            PropertySerialization::SerializesAs(serialized_name) => {
+                            &PropertySerialization::SerializesAs(serialized_name) => {
                                 let serialized_descriptor = current_class_descriptor
                                     .properties
-                                    .get(serialized_name.as_ref())
+                                    .get(serialized_name)
                                     .unwrap();
 
                                 return Some((canonical_descriptor, serialized_descriptor));

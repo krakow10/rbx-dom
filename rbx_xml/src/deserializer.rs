@@ -454,15 +454,17 @@ fn deserialize_instance<R: Read>(
 
     trace!("Class {} with referent {:?}", class_name, referent);
 
+    let class_name = class_name.into();
+
     let prop_capacity = state
         .options
         .database
         .classes
-        .get(class_name.as_str())
+        .get(class_name)
         .map(|class| class.default_properties.len())
         .unwrap_or(0);
 
-    let builder = InstanceBuilder::with_property_capacity(class_name.into(), prop_capacity);
+    let builder = InstanceBuilder::with_property_capacity(class_name, prop_capacity);
     let instance_id = state.tree.insert(parent_id, builder);
 
     if let Some(referent) = referent {
@@ -586,10 +588,12 @@ fn deserialize_properties<R: Read>(
             xml_type_name
         );
 
+        let xml_property_name_interned = xml_property_name.as_str().into();
+
         let maybe_descriptor = if state.options.use_reflection() {
             find_canonical_property_descriptor(
-                &class_name,
-                &xml_property_name,
+                class_name,
+                xml_property_name_interned,
                 state.options.database,
             )
         } else {
@@ -644,10 +648,11 @@ fn deserialize_properties<R: Read>(
                 PropertyKind::Canonical {
                     serialization: PropertySerialization::Migrate(migration),
                 } => {
-                    let new_property_name = &migration.new_property_name;
-                    let old_property_name = &descriptor.name;
+                    let new_property_name: &'static HashStr =
+                        migration.new_property_name.as_str().into();
+                    let old_property_name = descriptor.name;
 
-                    if let Entry::Vacant(entry) = props.entry(new_property_name.into()) {
+                    if let Entry::Vacant(entry) = props.entry(new_property_name) {
                         log::trace!(
                             "Attempting to migrate property {old_property_name} to {new_property_name}"
                         );

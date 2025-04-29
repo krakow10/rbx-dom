@@ -3,7 +3,7 @@ use std::{borrow::Cow, collections::BTreeMap, io::Write};
 use ahash::{HashMap, HashMapExt};
 use rbx_dom_weak::{
     types::{Ref, SharedString, SharedStringHash, Variant, VariantType},
-    WeakDom,
+    HashStr, WeakDom,
 };
 use rbx_reflection::{DataType, PropertyKind, PropertySerialization, ReflectionDatabase};
 
@@ -165,7 +165,7 @@ fn serialize_instance<'dom, W: Write>(
     state: &mut EmitState,
     tree: &'dom WeakDom<'static>,
     id: Ref,
-    property_buffer: &mut Vec<(&'dom str, &'dom Variant)>,
+    property_buffer: &mut Vec<(&'dom HashStr, &'dom Variant)>,
 ) -> Result<(), NewEncodeError> {
     let instance = tree.get_by_ref(id).unwrap();
     let mapped_id = state.map_id(id);
@@ -187,8 +187,8 @@ fn serialize_instance<'dom, W: Write>(
 
     // Move references to our properties into property_buffer so we can sort
     // them and iterate them in order.
-    property_buffer.extend(instance.properties.iter().map(|(k, v)| (k.as_str(), v)));
-    property_buffer.sort_unstable_by_key(|(key, _)| *key);
+    property_buffer.extend(instance.properties.iter().map(|(&k, v)| (k, v)));
+    property_buffer.sort_unstable_by_key(|&(key, _)| key);
 
     for (property_name, value) in property_buffer.drain(..) {
         let maybe_serialized_descriptor = if state.options.use_reflection() {
