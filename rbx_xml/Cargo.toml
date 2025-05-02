@@ -11,6 +11,7 @@ authors = ["Lucien Greathouse <me@lpghatguy.com>"]
 edition = "2018"
 
 [dependencies]
+hash_str = { version = "0.2.0", features = ["global"] }
 rbx_dom_weak = { version = "3.0.0", path = "../rbx_dom_weak" }
 rbx_reflection = { version = "5.0.0", path = "../rbx_reflection" }
 rbx_reflection_database = { version = "1.0.3", path = "../rbx_reflection_database" }

@@ -3,8 +3,9 @@ use std::{collections::hash_map::Entry, io::Read};
 use ahash::{HashMap, HashMapExt, HashSet, HashSetExt};
 use log::trace;
 use rbx_dom_weak::{
+    hstr,
     types::{Ref, SharedString, Variant, VariantType},
-    InstanceBuilder, Ustr, WeakDom,
+    HashStr, InstanceBuilder, WeakDom,
 };
 use rbx_reflection::{DataType, PropertyKind, PropertySerialization, ReflectionDatabase};
 
@@ -151,13 +152,13 @@ pub struct ParseState<'dom, 'db> {
 
 struct ReferentRewrite {
     id: Ref,
-    property_name: Ustr,
+    property_name: &'static HashStr,
     referent_value: String,
 }
 
 struct SharedStringRewrite {
     id: Ref,
-    property_name: Ustr,
+    property_name: &'static HashStr,
     shared_string_hash: String,
 }
 
@@ -197,7 +198,12 @@ impl<'dom, 'db> ParseState<'dom, 'db> {
     /// have a complete view of how referents map to Ref values.
     ///
     /// This is used to deserialize non-null Ref values correctly.
-    pub fn add_referent_rewrite(&mut self, id: Ref, property_name: Ustr, referent_value: String) {
+    pub fn add_referent_rewrite(
+        &mut self,
+        id: Ref,
+        property_name: &'static HashStr,
+        referent_value: String,
+    ) {
         self.referent_rewrites.push(ReferentRewrite {
             id,
             property_name,
@@ -212,7 +218,7 @@ impl<'dom, 'db> ParseState<'dom, 'db> {
     pub fn add_shared_string_rewrite(
         &mut self,
         id: Ref,
-        property_name: Ustr,
+        property_name: &'static HashStr,
         shared_string_hash: String,
     ) {
         self.shared_string_rewrites.push(SharedStringRewrite {
@@ -460,7 +466,7 @@ fn deserialize_instance<R: Read>(
         state.referents_to_ids.insert(referent, instance_id);
     }
 
-    let mut properties: HashMap<Ustr, Variant> = HashMap::new();
+    let mut properties: HashMap<&'static HashStr, Variant> = HashMap::new();
 
     loop {
         match reader.expect_peek()? {
@@ -495,7 +501,7 @@ fn deserialize_instance<R: Read>(
 
     let instance = state.tree.get_by_ref_mut(instance_id).unwrap();
 
-    instance.name = match properties.remove(&"Name".into()) {
+    instance.name = match properties.remove(hstr!("Name")) {
         Some(value) => match value {
             Variant::String(value) => value,
             _ => return Err(reader.error(DecodeErrorKind::NameMustBeString(value.ty()))),
@@ -516,7 +522,7 @@ fn deserialize_properties<R: Read>(
     reader: &mut XmlEventReader<R>,
     state: &mut ParseState,
     instance_id: Ref,
-    props: &mut HashMap<Ustr, Variant>,
+    props: &mut HashMap<&'static HashStr, Variant>,
 ) -> Result<(), DecodeError> {
     reader.expect_start_with_name("Properties")?;
 
