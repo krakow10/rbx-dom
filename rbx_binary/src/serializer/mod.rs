@@ -75,12 +75,7 @@ impl<'db> Serializer<'db> {
 
     /// Serialize a Roblox binary model or place into the given stream using
     /// this serializer.
-    pub fn serialize<W: Write>(
-        &self,
-        writer: W,
-        dom: &WeakDom<'static>,
-        refs: &[Ref],
-    ) -> Result<(), Error> {
+    pub fn serialize<W: Write>(&self, writer: W, dom: &WeakDom, refs: &[Ref]) -> Result<(), Error> {
         profiling::scope!("rbx_binary::seserialize");
 
         let mut serializer = SerializerState::new(self, dom, writer);

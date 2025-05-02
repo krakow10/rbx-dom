@@ -24,16 +24,16 @@ use crate::{
 
 use super::{error::InnerError, header::FileHeader, Deserializer};
 
-pub(super) struct DeserializerState<'db, R> {
+pub(super) struct DeserializerState<'de, 'db, 'dom, R> {
     /// The user-provided configuration that we should use.
-    deserializer: &'db Deserializer<'db>,
+    deserializer: &'de Deserializer<'de, 'db>,
 
     /// The input data encoded as a binary model.
     input: R,
 
     /// The tree that instances should be written into. Eventually returned to
     /// the user.
-    tree: WeakDom<'static>,
+    tree: WeakDom<'dom>,
 
     /// The metadata contained in the file, which affects how some constructs
     /// are interpreted by Roblox.
@@ -44,10 +44,10 @@ pub(super) struct DeserializerState<'db, R> {
     shared_strings: Vec<SharedString>,
 
     /// All of the instance types described by the file so far.
-    type_infos: HashMap<u32, TypeInfo>,
+    type_infos: HashMap<u32, TypeInfo<'db>>,
 
     /// All of the instances known by the deserializer.
-    instances_by_ref: HashMap<i32, Instance>,
+    instances_by_ref: HashMap<i32, Instance<'dom>>,
 
     /// Referents for all of the instances with no parent, in order they appear
     /// in the file.
@@ -61,13 +61,13 @@ pub(super) struct DeserializerState<'db, R> {
 
 /// Represents a unique instance class. Binary models define all their instance
 /// types up front and give them a short u32 identifier.
-struct TypeInfo {
+struct TypeInfo<'db> {
     /// The ID given to this type by the current file we're deserializing. This
     /// ID can be different for different files.
     type_id: u32,
 
     /// The common name for this type like `Folder` or `UserInputService`.
-    type_name: &'static HashStr,
+    type_name: &'db HashStr,
 
     /// A list of the instances described by this file that are this type.
     referents: Vec<i32>,
@@ -76,9 +76,9 @@ struct TypeInfo {
 /// Contains all the information we need to gather in order to construct an
 /// instance. Incrementally built up by the deserializer as we decode different
 /// chunks.
-struct Instance {
+struct Instance<'dom> {
     /// A work-in-progress builder that will be used to construct this instance.
-    builder: InstanceBuilder<'static>,
+    builder: InstanceBuilder<'dom>,
 
     /// Document-defined IDs for the children of this instance.
     children: Vec<i32>,
@@ -90,19 +90,19 @@ struct Instance {
 /// contains a migration for some properties Roblox has replaced with
 /// others (like Font, which has been superceded by FontFace).
 #[derive(Debug)]
-struct CanonicalProperty<'db> {
-    name: &'static HashStr,
+struct CanonicalProperty<'de, 'db> {
+    name: &'db HashStr,
     ty: VariantType,
-    migration: Option<&'db PropertySerialization<'db>>,
+    migration: Option<&'de PropertySerialization<'db>>,
 }
 
-fn find_canonical_property<'de>(
-    database: &'de ReflectionDatabase,
+fn find_canonical_property<'de, 'db: 'de>(
+    database: &'de ReflectionDatabase<'db>,
     binary_type: Type,
-    class_name: &'static HashStr,
-    prop_name: &'static HashStr,
-) -> Option<CanonicalProperty<'de>> {
-    match find_property_descriptors(database, class_name, prop_name) {
+    class_name: &'db HashStr,
+    prop_name: &str,
+) -> Option<CanonicalProperty<'de, 'db>> {
+    match find_property_descriptors(database, class_name, UnhashedStr::from_ref(prop_name)) {
         Some(descriptors) => {
             // If this descriptor is known but wasn't supposed to be
             // serialized, we should skip it.
@@ -130,7 +130,7 @@ fn find_canonical_property<'de>(
             }
 
             // TODO: Do we need an additional fix here?
-            let canonical_name = &descriptors.canonical.name;
+            let canonical_name = descriptors.canonical.name;
             let canonical_type = match &descriptors.canonical.data_type {
                 DataType::Value(ty) => *ty,
                 DataType::Enum(_) => VariantType::Enum,
@@ -154,7 +154,7 @@ fn find_canonical_property<'de>(
             );
 
             Some(CanonicalProperty {
-                name: canonical_name.as_ref().into(),
+                name: canonical_name,
                 ty: canonical_type,
                 migration,
             })
@@ -168,20 +168,28 @@ fn find_canonical_property<'de>(
                 }
             };
 
-            log::trace!("Unknown prop, using type {:?}", canonical_type);
+            // TODO: allocate unknown prop_name in DeserializeState
+            log::warn!("Unknown property {class_name}.{prop_name}, skipping property");
+            return None;
 
-            Some(CanonicalProperty {
-                name: prop_name,
-                ty: canonical_type,
-                migration: None,
-            })
+            // log::trace!("Unknown prop, using type {:?}", canonical_type);
+
+            // Some(CanonicalProperty {
+            //     name: prop_name,
+            //     ty: canonical_type,
+            //     migration: None,
+            // })
         }
     }
 }
 
-fn add_property(instance: &mut Instance, canonical_property: &CanonicalProperty, value: Variant) {
+fn add_property<'de, 'dom, 'db: 'dom>(
+    instance: &mut Instance<'dom>,
+    canonical_property: &'de CanonicalProperty<'de, 'db>,
+    value: Variant,
+) {
     if let Some(PropertySerialization::Migrate(migration)) = canonical_property.migration {
-        let new_property_name = migration.new_property_name.as_str().into();
+        let new_property_name = migration.new_property_name;
         let old_property_name = canonical_property.name;
 
         if !instance.builder.has_property(new_property_name) {
@@ -207,9 +215,9 @@ fn add_property(instance: &mut Instance, canonical_property: &CanonicalProperty,
     }
 }
 
-impl<'db, R: Read> DeserializerState<'db, R> {
+impl<'de, 'dom: 'de, 'db: 'de + 'dom, R: Read> DeserializerState<'de, 'db, 'dom, R> {
     pub(super) fn new(
-        deserializer: &'db Deserializer<'db>,
+        deserializer: &'de Deserializer<'de, 'db>,
         mut input: R,
     ) -> Result<Self, InnerError> {
         let mut tree = WeakDom::new(InstanceBuilder::new(hstr!("DataModel")));
@@ -309,10 +317,7 @@ impl<'db, R: Read> DeserializerState<'db, R> {
             self.instances_by_ref.insert(
                 referent,
                 Instance {
-                    builder: InstanceBuilder::with_property_capacity(
-                        type_name.as_str().into(),
-                        prop_capacity,
-                    ),
+                    builder: InstanceBuilder::with_property_capacity(type_name, prop_capacity),
                     children: Vec::new(),
                 },
             );
@@ -322,7 +327,7 @@ impl<'db, R: Read> DeserializerState<'db, R> {
             type_id,
             TypeInfo {
                 type_id,
-                type_name: type_name.into(),
+                type_name,
                 referents,
             },
         );
@@ -410,7 +415,7 @@ This may cause unexpected or broken behavior in your final results if you rely o
             self.deserializer.database,
             binary_type,
             type_info.type_name,
-            prop_name.as_str().into(),
+            prop_name.as_str(),
         ) {
             property
         } else {
@@ -1545,7 +1550,7 @@ rbx-dom may require changes to fully support this property. Please open an issue
     /// Combines together all the decoded information to build and emplace
     /// instances in our tree.
     #[profiling::function]
-    pub(super) fn finish(mut self) -> WeakDom<'static> {
+    pub(super) fn finish(mut self) -> WeakDom<'dom> {
         log::trace!("Constructing tree from deserialized data");
 
         // Track all the instances we need to construct. Order of construction

@@ -46,11 +46,11 @@ pub use self::error::Error;
 ///
 /// [ReflectionDatabase]: rbx_reflection::ReflectionDatabase
 /// [reflection_database]: Deserializer#method.reflection_database
-pub struct Deserializer<'db> {
-    database: &'db ReflectionDatabase<'db>,
+pub struct Deserializer<'de, 'db> {
+    database: &'de ReflectionDatabase<'db>,
 }
 
-impl<'db> Deserializer<'db> {
+impl<'de, 'db> Deserializer<'de, 'db> {
     /// Create a new `Deserializer` with the default settings.
     pub fn new() -> Self {
         Self {
@@ -60,13 +60,13 @@ impl<'db> Deserializer<'db> {
 
     /// Sets what reflection database for the deserializer to use.
     #[inline]
-    pub fn reflection_database(self, database: &'db ReflectionDatabase<'db>) -> Self {
+    pub fn reflection_database(self, database: &'de ReflectionDatabase<'db>) -> Self {
         Self { database }
     }
 
     /// Deserialize a Roblox binary model or place from the given stream using
     /// this deserializer.
-    pub fn deserialize<R: Read>(&self, reader: R) -> Result<WeakDom<'static>, Error> {
+    pub fn deserialize<R: Read>(&self, reader: R) -> Result<WeakDom<'db>, Error> {
         profiling::scope!("rbx_binary::deserialize");
 
         let mut deserializer = DeserializerState::new(self, reader)?;
@@ -95,7 +95,7 @@ impl<'db> Deserializer<'db> {
     }
 }
 
-impl Default for Deserializer<'_> {
+impl Default for Deserializer<'_, '_> {
     fn default() -> Self {
         Self::new()
     }
