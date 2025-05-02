@@ -18,7 +18,7 @@ use crate::serializer_core::{XmlEventWriter, XmlWriteEvent};
 
 pub fn encode_internal<W: Write>(
     output: W,
-    tree: &WeakDom<'static>,
+    tree: &WeakDom,
     ids: &[Ref],
     options: EncodeOptions,
 ) -> Result<(), NewEncodeError> {
@@ -163,7 +163,7 @@ impl<'db> EmitState<'db> {
 fn serialize_instance<'dom, W: Write>(
     writer: &mut XmlEventWriter<W>,
     state: &mut EmitState,
-    tree: &'dom WeakDom<'static>,
+    tree: &'dom WeakDom<'dom>,
     id: Ref,
     property_buffer: &mut Vec<(&'dom HashStr, &'dom Variant)>,
 ) -> Result<(), NewEncodeError> {
