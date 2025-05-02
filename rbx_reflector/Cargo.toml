@@ -11,6 +11,7 @@ publish = false
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
+hash_str = { version = "0.2.0", features = ["cache"] }
 rbx_dom_weak = { path = "../rbx_dom_weak" }
 rbx_reflection = { path = "../rbx_reflection" }
 rbx_types = { path = "../rbx_types", features = ["serde"] }

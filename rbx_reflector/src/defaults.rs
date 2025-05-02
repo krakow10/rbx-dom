@@ -10,8 +10,8 @@ use rbx_dom_weak::Instance;
 use rbx_reflection::ReflectionDatabase;
 use rbx_types::VariantType;
 
-pub fn apply_defaults(
-    database: &mut ReflectionDatabase,
+pub fn apply_defaults<'de, 'db: 'de>(
+    database: &'de mut ReflectionDatabase<'db>,
     defaults_place: &PathBuf,
 ) -> anyhow::Result<()> {
     let file = BufReader::new(File::open(defaults_place).context("Could not find defaults place")?);
