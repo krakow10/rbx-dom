@@ -7,6 +7,7 @@ use std::{
 
 use anyhow::{bail, Context};
 use clap::Parser;
+use hash_str::{HashStrCache, HashStrHost};
 use rbx_dom_weak::HashStrMap;
 use rbx_reflection::{
     ClassDescriptor, DataType, EnumDescriptor, PropertyDescriptor, PropertyKind,
@@ -62,9 +63,12 @@ impl GenerateSubcommand {
         }
         .run()?;
 
+        let host = HashStrHost::new();
+        let mut cache = HashStrCache::new();
+
         let mut database = ReflectionDatabase::new();
 
-        apply_dump(&mut database, &dump)?;
+        apply_dump(&mut database, &dump, &mut cache, &host)?;
 
         let patches = if let Some(patches_path) = &self.patches {
             Some(Patches::load(patches_path)?)
@@ -73,19 +77,19 @@ impl GenerateSubcommand {
         };
 
         if let Some(patches) = &patches {
-            patches.apply_pre_default(&mut database)?;
+            patches.apply_pre_default(&mut database, &mut cache, &host)?;
         }
 
         apply_defaults(&mut database, &defaults_place_path)?;
 
         if let Some(patches) = &patches {
-            patches.apply_post_default(&mut database)?;
+            patches.apply_post_default(&mut database, &mut cache, &host)?;
         }
 
         database.version = studio_info.version;
 
         for path in &self.output {
-            let extension = path.extension().unwrap_or_default().to_str();
+            let extension = path.extension().and_then(std::ffi::OsStr::to_str);
 
             let mut file = BufWriter::new(File::create(path)?);
 
@@ -132,14 +136,19 @@ impl GenerateSubcommand {
     }
 }
 
-fn apply_dump(database: &mut ReflectionDatabase, dump: &Dump) -> anyhow::Result<()> {
+fn apply_dump<'db>(
+    database: &mut ReflectionDatabase<'db>,
+    dump: &Dump,
+    cache: &mut HashStrCache<'db>,
+    host: &'db HashStrHost,
+) -> anyhow::Result<()> {
     let mut ignored_properties = Vec::new();
 
     for dump_class in &dump.classes {
         let superclass = if dump_class.superclass == "<<<ROOT>>>" {
             None
         } else {
-            Some(dump_class.superclass.as_str().into())
+            Some(cache.intern_with(host, dump_class.superclass.as_str()))
         };
 
         let mut tags = HashSet::new();
@@ -201,7 +210,7 @@ fn apply_dump(database: &mut ReflectionDatabase, dump: &Dump) -> anyhow::Result<
 
                 let type_name = &dump_property.value_type.name;
                 let value_type = match dump_property.value_type.category {
-                    ValueCategory::Enum => DataType::Enum(type_name.clone().into()),
+                    ValueCategory::Enum => DataType::Enum(cache.intern_with(host, type_name)),
                     ValueCategory::Primitive | ValueCategory::DataType => {
                         // variant_type_from_str returns None when passed a
                         // type name that does not have a corresponding
@@ -259,24 +268,25 @@ fn apply_dump(database: &mut ReflectionDatabase, dump: &Dump) -> anyhow::Result<
                     ValueCategory::Class => DataType::Value(VariantType::Ref),
                 };
 
-                let mut property =
-                    PropertyDescriptor::new(dump_property.name.as_str().into(), value_type);
+                let property_name = cache.intern_with(host, dump_property.name.as_str());
+
+                let mut property = PropertyDescriptor::new(property_name, value_type);
                 property.scriptability = scriptability;
                 property.tags = tags;
                 property.kind = kind;
 
-                properties.insert(dump_property.name.as_str().into(), property);
+                properties.insert(property_name, property);
             }
         }
 
-        let mut class = ClassDescriptor::new(dump_class.name.as_str().into());
+        let class_name = cache.intern_with(host, dump_class.name.as_str());
+
+        let mut class = ClassDescriptor::new(class_name);
         class.superclass = superclass;
         class.tags = tags;
         class.properties = properties;
 
-        database
-            .classes
-            .insert(dump_class.name.as_str().into(), class);
+        database.classes.insert(class_name, class);
     }
 
     log::debug!("Skipped the following properties because their data types are not implemented, and do not need to serialize:");
@@ -286,17 +296,16 @@ fn apply_dump(database: &mut ReflectionDatabase, dump: &Dump) -> anyhow::Result<
     }
 
     for dump_enum in &dump.enums {
-        let mut descriptor = EnumDescriptor::new(dump_enum.name.as_str().into());
+        let enum_name = cache.intern_with(host, dump_enum.name.as_str());
+
+        let mut descriptor = EnumDescriptor::new(enum_name);
 
         for dump_item in &dump_enum.items {
-            descriptor
-                .items
-                .insert(dump_item.name.as_str().into(), dump_item.value);
+            let item_name = cache.intern_with(host, dump_item.name.as_str());
+            descriptor.items.insert(item_name, dump_item.value);
         }
 
-        database
-            .enums
-            .insert(dump_enum.name.as_str().into(), descriptor);
+        database.enums.insert(enum_name, descriptor);
     }
 
     Ok(())
