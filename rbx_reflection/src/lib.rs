@@ -8,3 +8,5 @@ pub use class_tag::*;
 pub use database::*;
 pub use migration::*;
 pub use property_tag::*;
+
+pub use hash_str::{hstr, HashStr, UnhashedStr};
