@@ -1,6 +1,7 @@
 use std::{borrow::Cow, collections::VecDeque, convert::TryInto, io::Read};
 
 use ahash::{HashMap, HashMapExt, HashSet, HashSetExt};
+use hash_str::UnhashedStr;
 use rbx_dom_weak::{
     hstr,
     types::{
@@ -292,15 +293,15 @@ impl<'db, R: Read> DeserializerState<'db, R> {
         let mut referents = vec![0; number_instances as usize];
         chunk.read_referent_array(&mut referents)?;
 
-        let type_name = type_name.into();
-
-        let prop_capacity = self
+        // get class name from database, otherwise error
+        let (&type_name, class) = self
             .deserializer
             .database
             .classes
-            .get(type_name)
-            .map(|class| class.default_properties.len())
-            .unwrap_or(0);
+            .get_key_value(UnhashedStr::from_ref(type_name.as_str()))
+            .ok_or(InnerError::UnknownClassName { type_name })?;
+
+        let prop_capacity = class.default_properties.len();
 
         // TODO: Check object_format and check for service markers if it's 1?
 

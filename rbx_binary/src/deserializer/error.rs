@@ -39,6 +39,9 @@ pub(crate) enum InnerError {
         version: u32,
     },
 
+    #[error("Unknown class name {type_name}")]
+    UnknownClassName { type_name: String },
+
     #[error(transparent)]
     InvalidTypeError {
         #[from]
