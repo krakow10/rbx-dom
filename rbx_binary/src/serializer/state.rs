@@ -14,7 +14,7 @@ use rbx_dom_weak::{
         PhysicalProperties, Ray, Rect, Ref, SecurityCapabilities, SharedString, Tags, UDim, UDim2,
         UniqueId, Variant, VariantType, Vector2, Vector3, Vector3int16,
     },
-    Instance, Ustr, UstrSet, WeakDom,
+    HashStr, HashStrSet, Instance, WeakDom,
 };
 
 use rbx_reflection::{
@@ -90,7 +90,7 @@ struct TypeInfo<'dom, 'db> {
     ///
     /// Stored in a sorted map to try to ensure that we write out properties in
     /// a deterministic order.
-    properties: BTreeMap<Ustr, PropInfo<'db>>,
+    properties: BTreeMap<&'static HashStr, PropInfo<'db>>,
 
     /// A reference to the type's class descriptor from rbx_reflection, if this
     /// is a known class.
@@ -99,7 +99,7 @@ struct TypeInfo<'dom, 'db> {
     /// A set containing the properties that we have seen so far in the file and
     /// processed. This helps us avoid traversing the reflection database
     /// multiple times if there are many copies of the same kind of instance.
-    properties_visited: UstrSet,
+    properties_visited: HashStrSet<'static>,
 }
 
 /// A property on a specific class that our serializer knows about.
@@ -122,14 +122,14 @@ struct PropInfo<'db> {
     /// The serialized name for this property. This is the name that is actually
     /// written as part of the PROP chunk and may not line up with the canonical
     /// name for the property.
-    serialized_name: Ustr,
+    serialized_name: &'static HashStr,
 
     /// A set containing the names of all aliases discovered while preparing to
     /// serialize this property. Ideally, this set will remain empty (and not
     /// allocate) in most cases. However, if an instance is missing a property
     /// from its canonical name, but does have another variant, we can use this
     /// set to recover and map those values.
-    aliases: UstrSet,
+    aliases: HashStrSet<'static>,
 
     /// The default value for this property that should be used if any instances
     /// are missing this property.
@@ -160,7 +160,7 @@ struct TypeInfos<'dom, 'db> {
     ///
     /// These are stored sorted so that we naturally iterate over them in order
     /// and improve our chances of being deterministic.
-    values: BTreeMap<Ustr, TypeInfo<'dom, 'db>>,
+    values: BTreeMap<&'static HashStr, TypeInfo<'dom, 'db>>,
 
     /// The next type ID that should be assigned if a type is discovered and
     /// added to the serializer.
@@ -178,7 +178,7 @@ impl<'dom, 'db> TypeInfos<'dom, 'db> {
 
     /// Finds the type info from the given ClassName if it exists, or creates
     /// one and returns a reference to it if not.
-    fn get_or_create(&mut self, class: Ustr) -> &mut TypeInfo<'dom, 'db> {
+    fn get_or_create(&mut self, class: &'static HashStr) -> &mut TypeInfo<'dom, 'db> {
         if let btree_map::Entry::Vacant(entry) = self.values.entry(class) {
             let type_id = self.next_type_id;
             self.next_type_id += 1;
@@ -206,7 +206,7 @@ impl<'dom, 'db> TypeInfos<'dom, 'db> {
                 PropInfo {
                     prop_type: Type::String,
                     serialized_name: "Name".into(),
-                    aliases: UstrSet::new(),
+                    aliases: HashStrSet::new(),
                     default_value: Cow::Owned(Variant::String(String::new())),
                     migration: None,
                 },
@@ -218,7 +218,7 @@ impl<'dom, 'db> TypeInfos<'dom, 'db> {
                 instances: Vec::new(),
                 properties,
                 class_descriptor,
-                properties_visited: UstrSet::new(),
+                properties_visited: HashStrSet::new(),
             });
         }
 
@@ -457,7 +457,7 @@ impl<'dom, 'db, W: Write> SerializerState<'dom, 'db, W> {
                     PropInfo {
                         prop_type: ser_type,
                         serialized_name,
-                        aliases: UstrSet::new(),
+                        aliases: HashStrSet::new(),
                         default_value,
                         migration,
                     },

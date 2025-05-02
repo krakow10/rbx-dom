@@ -3,7 +3,7 @@ use std::{
     mem,
 };
 
-use rbx_dom_weak::Ustr;
+use rbx_dom_weak::HashStr;
 use rbx_reflection::{
     ClassDescriptor, PropertyDescriptor, PropertyKind, PropertySerialization, ReflectionDatabase,
 };
@@ -346,8 +346,8 @@ pub struct PropertyDescriptors<'db> {
 /// class and property name pair. These might be the same descriptor!
 pub fn find_property_descriptors<'db>(
     database: &'db ReflectionDatabase<'db>,
-    class_name: Ustr,
-    property_name: Ustr,
+    class_name: &'static HashStr,
+    property_name: &'static HashStr,
 ) -> Option<PropertyDescriptors<'db>> {
     let mut class_descriptor = database.classes.get(class_name.as_str())?;
 
