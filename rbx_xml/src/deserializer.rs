@@ -682,17 +682,20 @@ fn deserialize_properties<'de, 'dom, 'db: 'dom, R: Read>(
             };
         } else {
             match state.options.property_behavior {
-                // DecodePropertyBehavior::IgnoreUnknown => {
-                //     // We don't care about this property, so we can read it and
-                //     // throw it into the void.
-                //     read_value_xml(
-                //         reader,
-                //         state,
-                //         &xml_type_name,
-                //         instance_id,
-                //         &xml_property_name,
-                //     )?;
-                // }
+                DecodePropertyBehavior::IgnoreUnknown => {
+                    // We don't care about this property, so we can read it and
+                    // throw it into the void.
+                    //
+                    // TODO: split this function into two parts
+                    // to avoid converting xml_property_name to HashStr
+                    read_value_xml(
+                        reader,
+                        state,
+                        &xml_type_name,
+                        instance_id,
+                        &xml_property_name,
+                    )?;
+                }
                 // DecodePropertyBehavior::ReadUnknown | DecodePropertyBehavior::NoReflection
                 // => {
                 //     // We'll take this value as-is with no conversions on either
@@ -709,8 +712,7 @@ fn deserialize_properties<'de, 'dom, 'db: 'dom, R: Read>(
                 //     };
                 //     props.insert(xml_property_name.into(), value);
                 // }
-                DecodePropertyBehavior::IgnoreUnknown
-                | DecodePropertyBehavior::ReadUnknown
+                DecodePropertyBehavior::ReadUnknown
                 | DecodePropertyBehavior::NoReflection
                 | DecodePropertyBehavior::ErrorOnUnknown => {
                     return Err(reader.error(DecodeErrorKind::UnknownProperty {
