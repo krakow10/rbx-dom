@@ -41,31 +41,31 @@ pub trait XmlType: Sized {
     }
 }
 
-pub fn find_canonical_property_descriptor<'db>(
+pub fn find_canonical_property_descriptor<'de, 'db>(
     class_name: &HashStr,
     property_name: &str,
-    database: &'db ReflectionDatabase<'db>,
-) -> Option<&'db PropertyDescriptor<'db>> {
+    database: &'de ReflectionDatabase<'db>,
+) -> Option<&'de PropertyDescriptor<'db>> {
     find_property_descriptors(class_name, property_name, database)
         .map(|(canonical, _serialized)| canonical)
 }
 
-pub fn find_serialized_property_descriptor<'db>(
+pub fn find_serialized_property_descriptor<'de, 'db>(
     class_name: &HashStr,
     property_name: &str,
-    database: &'db ReflectionDatabase<'db>,
-) -> Option<&'db PropertyDescriptor<'db>> {
+    database: &'de ReflectionDatabase<'db>,
+) -> Option<&'de PropertyDescriptor<'db>> {
     find_property_descriptors(class_name, property_name, database)
         .map(|(_canonical, serialized)| serialized)
 }
 
 /// Find both the canonical and serialized property descriptors for a given
 /// class and property name pair. These might be the same descriptor!
-fn find_property_descriptors<'db>(
+fn find_property_descriptors<'de, 'db>(
     class_name: &HashStr,
     property_name: &str,
-    database: &'db ReflectionDatabase<'db>,
-) -> Option<(&'db PropertyDescriptor<'db>, &'db PropertyDescriptor<'db>)> {
+    database: &'de ReflectionDatabase<'db>,
+) -> Option<(&'de PropertyDescriptor<'db>, &'de PropertyDescriptor<'db>)> {
     let class_descriptor = database.classes.get(class_name)?;
 
     let mut current_class_descriptor = class_descriptor;
