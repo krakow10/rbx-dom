@@ -16,7 +16,7 @@ use std::io::BufReader;
 // Using buffered I/O is recommended with rbx_binary
 let input = BufReader::new(File::open("MyModel.rbxm")?);
 
-let dom = rbx_binary::from_reader(input)?;
+let dom = rbx_binary::from_reader_default(input)?;
 
 // rbx_binary always returns a DOM with a DataModel at the top level.
 // To get to the instances from our file, we need to go one level deeper.
@@ -80,9 +80,18 @@ pub use crate::{
     serializer::{CompressionType, Error as EncodeError, Serializer},
 };
 
-/// Deserialize a Roblox binary model or place from a stream.
-pub fn from_reader<R: Read>(reader: R) -> Result<WeakDom<'static>, DecodeError> {
-    Deserializer::new().deserialize(reader)
+pub use crate::deserializer::DecodeOptions;
+
+/// Deserialize a Roblox binary model or place from a stream using the provided options.
+pub fn from_reader<'dom, R: Read>(
+    reader: R,
+    options: DecodeOptions<'_, 'dom>,
+) -> Result<WeakDom<'dom>, DecodeError> {
+    Deserializer::new().deserialize(reader, options)
+}
+/// Deserialize a Roblox binary model or place from a stream, throwing an error if an invalid property or class is encountered.
+pub fn from_reader_default<R: Read>(reader: R) -> Result<WeakDom<'static>, DecodeError> {
+    Deserializer::new().deserialize(reader, DecodeOptions::default())
 }
 
 /// Serializes a subset of the given DOM to a binary format model or place,

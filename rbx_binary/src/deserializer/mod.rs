@@ -12,6 +12,7 @@ use self::state::DeserializerState;
 pub(crate) use self::header::FileHeader;
 
 pub use self::error::Error;
+pub use state::DecodeOptions;
 
 /// A configurable deserializer for Roblox binary models and places.
 ///
@@ -25,7 +26,7 @@ pub use self::error::Error;
 /// let input = BufReader::new(File::open("File.rbxm")?);
 ///
 /// let deserializer = Deserializer::new();
-/// let dom = deserializer.deserialize(input)?;
+/// let dom = deserializer.deserialize(input, Default::default())?;
 ///
 /// // rbx_binary always returns a DOM with a DataModel at the top level.
 /// // To get to the instances from our file, we need to go one level deeper.
@@ -66,10 +67,17 @@ impl<'de, 'db> Deserializer<'de, 'db> {
 
     /// Deserialize a Roblox binary model or place from the given stream using
     /// this deserializer.
-    pub fn deserialize<R: Read>(&self, reader: R) -> Result<WeakDom<'db>, Error> {
+    pub fn deserialize<'dom, R: Read>(
+        &self,
+        reader: R,
+        options: DecodeOptions<'de, 'dom>,
+    ) -> Result<WeakDom<'dom>, Error>
+    where
+        'db: 'dom,
+    {
         profiling::scope!("rbx_binary::deserialize");
 
-        let mut deserializer = DeserializerState::new(self, reader)?;
+        let mut deserializer = DeserializerState::new(self, reader, options)?;
 
         loop {
             let chunk = deserializer.next_chunk()?;

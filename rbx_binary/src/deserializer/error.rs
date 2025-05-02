@@ -42,6 +42,12 @@ pub(crate) enum InnerError {
     #[error("Unknown class name {type_name}")]
     UnknownClassName { type_name: String },
 
+    #[error("Unknown property name {type_name}.{prop_name}")]
+    UnknownPropertyName {
+        type_name: String,
+        prop_name: String,
+    },
+
     #[error(transparent)]
     InvalidTypeError {
         #[from]
