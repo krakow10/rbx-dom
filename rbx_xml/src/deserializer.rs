@@ -19,9 +19,9 @@ use crate::{
 
 use crate::deserializer_core::{XmlEventReader, XmlReadEvent};
 
-pub fn decode_internal<'dom, 'db: 'dom, R: Read>(
+pub fn decode_internal<'de, 'dom, 'db: 'dom, R: Read>(
     source: R,
-    options: DecodeOptions<'db>,
+    options: DecodeOptions<'de, 'db>,
 ) -> Result<WeakDom<'dom>, DecodeError> {
     let mut tree = WeakDom::new(InstanceBuilder::new(hstr!("DataModel")));
 
@@ -72,12 +72,12 @@ pub enum DecodePropertyBehavior {
 
 /// Options available for deserializing an XML-format model or place.
 #[derive(Debug, Clone)]
-pub struct DecodeOptions<'db> {
+pub struct DecodeOptions<'de, 'db> {
     property_behavior: DecodePropertyBehavior,
-    database: &'db ReflectionDatabase<'db>,
+    database: &'de ReflectionDatabase<'db>,
 }
 
-impl<'db> DecodeOptions<'db> {
+impl<'de, 'db> DecodeOptions<'de, 'db> {
     /// Constructs a `DecodeOptions` with all values set to their defaults.
     #[inline]
     pub fn new() -> Self {
@@ -100,7 +100,7 @@ impl<'db> DecodeOptions<'db> {
     /// Determines what reflection database rbx_xml will use to deserialize
     /// properties.
     #[inline]
-    pub fn reflection_database(self, database: &'db ReflectionDatabase<'db>) -> Self {
+    pub fn reflection_database(self, database: &'de ReflectionDatabase<'db>) -> Self {
         DecodeOptions { database, ..self }
     }
 
@@ -111,8 +111,8 @@ impl<'db> DecodeOptions<'db> {
     }
 }
 
-impl<'db> Default for DecodeOptions<'db> {
-    fn default() -> DecodeOptions<'db> {
+impl<'de, 'db> Default for DecodeOptions<'de, 'db> {
+    fn default() -> DecodeOptions<'de, 'db> {
         DecodeOptions::new()
     }
 }
@@ -121,7 +121,7 @@ impl<'db> Default for DecodeOptions<'db> {
 pub struct ParseState<'de, 'dom, 'db> {
     tree: &'de mut WeakDom<'dom>,
 
-    options: DecodeOptions<'db>,
+    options: DecodeOptions<'de, 'db>,
 
     /// Metadata deserialized from 'Meta' fields in the file.
     /// Known fields are:
@@ -169,7 +169,7 @@ struct SharedStringRewrite<'a> {
 impl<'de, 'dom, 'db> ParseState<'de, 'dom, 'db> {
     fn new(
         tree: &'de mut WeakDom<'dom>,
-        options: DecodeOptions<'db>,
+        options: DecodeOptions<'de, 'db>,
     ) -> ParseState<'de, 'dom, 'db> {
         ParseState {
             tree,
