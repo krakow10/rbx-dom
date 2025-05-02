@@ -1,6 +1,7 @@
 use std::{collections::hash_map::Entry, io::Read};
 
 use ahash::{HashMap, HashMapExt, HashSet, HashSetExt};
+use hash_str::UnhashedStr;
 use log::trace;
 use rbx_dom_weak::{
     hstr,
@@ -454,15 +455,15 @@ fn deserialize_instance<R: Read>(
 
     trace!("Class {} with referent {:?}", class_name, referent);
 
-    let class_name = class_name.into();
-
-    let prop_capacity = state
+    // get class name from database, otherwise error
+    let (&class_name, class) = state
         .options
         .database
         .classes
-        .get(class_name)
-        .map(|class| class.default_properties.len())
-        .unwrap_or(0);
+        .get_key_value(UnhashedStr::from_ref(class_name.as_str()))
+        .ok_or_else(|| reader.error(DecodeErrorKind::UnknownClassName { class_name }))?;
+
+    let prop_capacity = class.default_properties.len();
 
     let builder = InstanceBuilder::with_property_capacity(class_name, prop_capacity);
     let instance_id = state.tree.insert(parent_id, builder);
