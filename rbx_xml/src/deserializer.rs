@@ -584,7 +584,7 @@ fn deserialize_instance<'de, 'dom, 'db: 'dom, R: Read>(
         None => instance.class.to_string(),
     };
 
-    instance.properties = properties.into_iter().collect();
+    instance.properties = properties;
 
     Ok(())
 }
