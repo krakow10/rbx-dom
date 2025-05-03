@@ -80,7 +80,7 @@ impl GenerateSubcommand {
             patches.apply_pre_default(&mut database, &mut cache, &host)?;
         }
 
-        apply_defaults(&mut database, &defaults_place_path)?;
+        apply_defaults(&mut database, &defaults_place_path, &mut cache, &host)?;
 
         if let Some(patches) = &patches {
             patches.apply_post_default(&mut database, &mut cache, &host)?;
