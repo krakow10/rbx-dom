@@ -1,5 +1,6 @@
 //! Basic functionality tests
 
+use hash_str::{HashStrCache, HashStrHost};
 use rbx_dom_weak::types::{
     Attributes, BinaryString, BrickColor, Color3, Color3uint8, ColorSequence,
     ColorSequenceKeypoint, Enum, EnumItem, Font, MaterialColors, NumberRange, NumberSequence,
@@ -265,13 +266,15 @@ fn read_unique_id() {
         </roblox>
     "#;
 
+    let host = HashStrHost::new();
+    let mut cache = HashStrCache::new();
+
     let tree = crate::from_str(
         document,
-        crate::DecodeOptions::new()
-            // This is necessary at the moment because we do not actually
-            // have UniqueId properties in our reflection database. This may
-            // change, but it should in general be safe.
-            .property_behavior(crate::DecodePropertyBehavior::ReadUnknown),
+        // This is necessary at the moment because we do not actually
+        // have UniqueId properties in our reflection database. This may
+        // change, but it should in general be safe.
+        crate::DecodeOptions::read_unknown(rbx_reflection_database::get(), &mut cache, &host),
     )
     .unwrap();
 

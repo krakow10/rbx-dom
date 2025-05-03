@@ -1,7 +1,7 @@
 use std::{collections::hash_map::Entry, io::Read};
 
 use ahash::{HashMap, HashMapExt, HashSet, HashSetExt};
-use hash_str::{HashStrMap, UnhashedStr};
+use hash_str::{HashStrCache, HashStrHost, HashStrMap, UnhashedStr};
 use log::trace;
 use rbx_dom_weak::{
     hstr,
@@ -21,7 +21,7 @@ use crate::deserializer_core::{XmlEventReader, XmlReadEvent};
 
 pub fn decode_internal<'de, 'dom, 'db: 'dom, R: Read>(
     source: R,
-    options: DecodeOptions<'de, 'db>,
+    options: DecodeOptions<'de, 'dom, 'db>,
 ) -> Result<WeakDom<'dom>, DecodeError> {
     let mut tree = WeakDom::new(InstanceBuilder::new(hstr!("DataModel")));
 
@@ -37,17 +37,26 @@ pub fn decode_internal<'de, 'dom, 'db: 'dom, R: Read>(
     Ok(tree)
 }
 
-/// Describes the strategy that rbx_xml should use when deserializing
-/// properties.
-#[derive(Debug, Clone, Copy, PartialEq, Eq, Hash)]
+/// Options available for deserializing an XML-format model or place.
+#[derive(Debug)]
 #[non_exhaustive]
-pub enum DecodePropertyBehavior {
+pub enum DecodeOptions<'de, 'dom, 'db> {
     /// Ignores properties that aren't known by rbx_xml.
     ///
     /// The default and safest option. With this set, properties that are newer
     /// than the reflection database rbx_xml uses won't show up when
     /// deserializing files.
-    IgnoreUnknown,
+    // TODO: remove cache from this.
+    // property_name is used by rewrites,
+    // so it must be allocated even if it's ignored.
+    IgnoreUnknown {
+        /// The reflection database to use.
+        database: &'de ReflectionDatabase<'db>,
+        /// String internment deduplication cache.
+        cache: &'de mut HashStrCache<'dom>,
+        /// String internment storage host.
+        host: &'dom HashStrHost,
+    },
 
     /// Read properties that aren't known by rbx_xml.
     ///
@@ -55,11 +64,21 @@ pub enum DecodePropertyBehavior {
     /// reflection database will show up. It may be problematic to depend on
     /// these properties, since rbx_xml may start supporting them with
     /// non-reflection specific names at a future date.
-    ReadUnknown,
+    ReadUnknown {
+        /// The reflection database to use.
+        database: &'de ReflectionDatabase<'db>,
+        /// String internment deduplication cache.
+        cache: &'de mut HashStrCache<'dom>,
+        /// String internment storage host.
+        host: &'dom HashStrHost,
+    },
 
     /// Returns an error if any properties are found that aren't known by
     /// rbx_xml.
-    ErrorOnUnknown,
+    ErrorOnUnknown {
+        /// The reflection database to use.
+        database: &'de ReflectionDatabase<'db>,
+    },
 
     /// Completely turns off rbx_xml's reflection database. Property names and
     /// types will appear exactly as they are in XML.
@@ -67,53 +86,61 @@ pub enum DecodePropertyBehavior {
     /// This setting is useful for debugging the model format. It leaves the
     /// user to deal with oddities like how `Part.FormFactor` is actually
     /// serialized as `Part.formFactorRaw`.
-    NoReflection,
+    NoReflection {
+        /// String internment deduplication cache.
+        cache: &'de mut HashStrCache<'dom>,
+        /// String internment storage host.
+        host: &'dom HashStrHost,
+    },
 }
 
-/// Options available for deserializing an XML-format model or place.
-#[derive(Debug, Clone)]
-pub struct DecodeOptions<'de, 'db> {
-    property_behavior: DecodePropertyBehavior,
-    database: &'de ReflectionDatabase<'db>,
-}
-
-impl<'de, 'db> DecodeOptions<'de, 'db> {
-    /// Constructs a `DecodeOptions` with all values set to their defaults.
+impl<'de, 'dom, 'db> DecodeOptions<'de, 'dom, 'db> {
+    /// Constructs a `DecodeOptions` which specifies to ignore unknown properties or classes.
     #[inline]
-    pub fn new() -> Self {
-        DecodeOptions {
-            property_behavior: DecodePropertyBehavior::IgnoreUnknown,
-            database: rbx_reflection_database::get(),
+    pub fn ignore_unknown(
+        database: &'de ReflectionDatabase<'db>,
+        cache: &'de mut HashStrCache<'dom>,
+        host: &'dom HashStrHost,
+    ) -> Self {
+        DecodeOptions::IgnoreUnknown {
+            database,
+            cache,
+            host,
         }
     }
-
-    /// Determines how rbx_xml will deserialize properties, especially unknown
-    /// ones.
+    /// Constructs a `DecodeOptions` which uses the specified database and string internment to manage unknown properties and classes.
     #[inline]
-    pub fn property_behavior(self, property_behavior: DecodePropertyBehavior) -> Self {
-        DecodeOptions {
-            property_behavior,
-            ..self
+    pub fn read_unknown(
+        database: &'de ReflectionDatabase<'db>,
+        cache: &'de mut HashStrCache<'dom>,
+        host: &'dom HashStrHost,
+    ) -> Self {
+        DecodeOptions::ReadUnknown {
+            database,
+            cache,
+            host,
         }
     }
-
-    /// Determines what reflection database rbx_xml will use to deserialize
-    /// properties.
+    /// Constructs a `DecodeOptions` which specifies to error upon encountering an unknown property or class.
     #[inline]
-    pub fn reflection_database(self, database: &'de ReflectionDatabase<'db>) -> Self {
-        DecodeOptions { database, ..self }
+    pub fn error_on_unknown(database: &'de ReflectionDatabase<'db>) -> Self {
+        DecodeOptions::ErrorOnUnknown { database }
     }
-
-    /// A utility function to determine whether or not we should reference the
-    /// reflection database at all.
-    pub(crate) fn use_reflection(&self) -> bool {
-        self.property_behavior != DecodePropertyBehavior::NoReflection
+    /// Constructs a `DecodeOptions` which uses no reflection whatsoever.
+    /// Property names and types will appear exactly as they are in XML.
+    ///
+    /// This setting is useful for debugging the model format. It leaves the
+    /// user to deal with oddities like how `Part.FormFactor` is actually
+    /// serialized as `Part.formFactorRaw`.
+    #[inline]
+    pub fn no_reflection(cache: &'de mut HashStrCache<'dom>, host: &'dom HashStrHost) -> Self {
+        DecodeOptions::NoReflection { cache, host }
     }
 }
 
-impl<'de, 'db> Default for DecodeOptions<'de, 'db> {
-    fn default() -> DecodeOptions<'de, 'db> {
-        DecodeOptions::new()
+impl<'de, 'dom, 'db> Default for DecodeOptions<'de, 'dom, 'db> {
+    fn default() -> DecodeOptions<'de, 'dom, 'db> {
+        DecodeOptions::error_on_unknown(rbx_reflection_database::get())
     }
 }
 
@@ -121,7 +148,7 @@ impl<'de, 'db> Default for DecodeOptions<'de, 'db> {
 pub struct ParseState<'de, 'dom, 'db> {
     tree: &'de mut WeakDom<'dom>,
 
-    options: DecodeOptions<'de, 'db>,
+    options: DecodeOptions<'de, 'dom, 'db>,
 
     /// Metadata deserialized from 'Meta' fields in the file.
     /// Known fields are:
@@ -169,7 +196,7 @@ struct SharedStringRewrite<'a> {
 impl<'de, 'dom, 'db> ParseState<'de, 'dom, 'db> {
     fn new(
         tree: &'de mut WeakDom<'dom>,
-        options: DecodeOptions<'de, 'db>,
+        options: DecodeOptions<'de, 'dom, 'db>,
     ) -> ParseState<'de, 'dom, 'db> {
         ParseState {
             tree,
@@ -460,15 +487,48 @@ fn deserialize_instance<'de, 'dom, 'db: 'dom, R: Read>(
 
     trace!("Class {} with referent {:?}", class_name, referent);
 
-    // get class name from database, otherwise error
-    let (&class_name, class) = state
-        .options
-        .database
-        .classes
-        .get_key_value(UnhashedStr::from_ref(class_name.as_str()))
-        .ok_or_else(|| reader.error(DecodeErrorKind::UnknownClassName { class_name }))?;
-
-    let prop_capacity = class.default_properties.len();
+    let (class_name, prop_capacity) = match &mut state.options {
+        DecodeOptions::IgnoreUnknown {
+            database,
+            cache,
+            host,
+        } => {
+            // TODO: actually ignore unknown classes
+            let class_from_database = database
+                .classes
+                .get_key_value(UnhashedStr::from_ref(class_name.as_str()));
+            match class_from_database {
+                Some((&type_name, class)) => (type_name, class.default_properties.len()),
+                None => (cache.intern_with(host, class_name.as_str()), 0),
+            }
+        }
+        // get class name from database, otherwise use string internment
+        DecodeOptions::ReadUnknown {
+            database,
+            cache,
+            host,
+        } => {
+            let class_from_database = database
+                .classes
+                .get_key_value(UnhashedStr::from_ref(class_name.as_str()));
+            match class_from_database {
+                Some((&type_name, class)) => (type_name, class.default_properties.len()),
+                None => (cache.intern_with(host, class_name.as_str()), 0),
+            }
+        }
+        // get class name from database, otherwise error
+        DecodeOptions::ErrorOnUnknown { database } => {
+            let (&type_name, class) = database
+                .classes
+                .get_key_value(UnhashedStr::from_ref(class_name.as_str()))
+                .ok_or_else(|| reader.error(DecodeErrorKind::UnknownClassName { class_name }))?;
+            (type_name, class.default_properties.len())
+        }
+        // use string internment
+        DecodeOptions::NoReflection { cache, host } => {
+            (cache.intern_with(host, class_name.as_str()), 0)
+        }
+    };
 
     let builder = InstanceBuilder::with_property_capacity(class_name, prop_capacity);
     let instance_id = state.tree.insert(parent_id, builder);
@@ -594,131 +654,150 @@ fn deserialize_properties<'de, 'dom, 'db: 'dom, R: Read>(
             xml_type_name
         );
 
-        let maybe_descriptor = if state.options.use_reflection() {
-            find_canonical_property_descriptor(
-                class_name,
-                xml_property_name.as_str(),
-                state.options.database,
-            )
-        } else {
-            None
+        enum DecodePropertyBehavior {
+            IgnoreUnknown,
+            ReadUnknown,
+        }
+
+        let (property_name, descriptor_result) = match &mut state.options {
+            DecodeOptions::IgnoreUnknown {
+                database,
+                cache,
+                host,
+            } => {
+                let maybe_descriptor = find_canonical_property_descriptor(
+                    class_name,
+                    xml_property_name.as_str(),
+                    database,
+                );
+                match maybe_descriptor {
+                    Some(descriptor) => (descriptor.name, Ok(descriptor)),
+                    None => {
+                        // TODO: remove cache from IgnoreUnknown
+                        let property_name = cache.intern_with(host, xml_property_name.as_str());
+                        (property_name, Err(DecodePropertyBehavior::IgnoreUnknown))
+                    }
+                }
+            }
+            DecodeOptions::ReadUnknown {
+                database,
+                cache,
+                host,
+            } => {
+                let maybe_descriptor = find_canonical_property_descriptor(
+                    class_name,
+                    xml_property_name.as_str(),
+                    database,
+                );
+                match maybe_descriptor {
+                    Some(descriptor) => (descriptor.name, Ok(descriptor)),
+                    None => {
+                        let property_name = cache.intern_with(host, xml_property_name.as_str());
+                        (property_name, Err(DecodePropertyBehavior::ReadUnknown))
+                    }
+                }
+            }
+            DecodeOptions::ErrorOnUnknown { database } => {
+                let descriptor = find_canonical_property_descriptor(
+                    class_name,
+                    xml_property_name.as_str(),
+                    database,
+                )
+                .ok_or_else(|| {
+                    reader.error(DecodeErrorKind::UnknownProperty {
+                        class_name: class_name.to_string(),
+                        property_name: xml_property_name.to_string(),
+                    })
+                })?;
+                (descriptor.name, Ok(descriptor))
+            }
+            DecodeOptions::NoReflection { cache, host } => {
+                let property_name = cache.intern_with(host, xml_property_name.as_str());
+                (property_name, Err(DecodePropertyBehavior::ReadUnknown))
+            }
         };
 
-        if let Some(descriptor) = maybe_descriptor {
-            let value = match read_value_xml(
-                reader,
-                state,
-                &xml_type_name,
-                instance_id,
-                &descriptor.name,
-            )? {
-                Some(value) => value,
-                None => continue,
-            };
+        let value = match read_value_xml(reader, state, &xml_type_name, instance_id, property_name)?
+        {
+            Some(value) => value,
+            None => continue,
+        };
 
-            let xml_ty = value.ty();
+        match descriptor_result {
+            Ok(descriptor) => {
+                let xml_ty = value.ty();
 
-            // The property descriptor might specify a different type than the
-            // one we saw in the XML.
-            //
-            // This happens when property types are upgraded or if the
-            // serialized data type is different than the canonical one.
-            //
-            // For example:
-            // - Int/Float widening from 32-bit to 64-bit
-            // - BrickColor properties turning into Color3
-            let expected_type = match &descriptor.data_type {
-                DataType::Value(data_type) => *data_type,
-                DataType::Enum(_enum_name) => VariantType::Enum,
-                _ => unimplemented!(),
-            };
-            log::trace!("property's read type: {xml_ty:?}, canonical type: {expected_type:?}");
+                // The property descriptor might specify a different type than the
+                // one we saw in the XML.
+                //
+                // This happens when property types are upgraded or if the
+                // serialized data type is different than the canonical one.
+                //
+                // For example:
+                // - Int/Float widening from 32-bit to 64-bit
+                // - BrickColor properties turning into Color3
+                let expected_type = match &descriptor.data_type {
+                    &DataType::Value(data_type) => data_type,
+                    DataType::Enum(_enum_name) => VariantType::Enum,
+                    _ => unimplemented!(),
+                };
+                log::trace!("property's read type: {xml_ty:?}, canonical type: {expected_type:?}");
 
-            let value = match value.try_convert(class_name, expected_type) {
-                Ok(value) => value,
+                let value = match value.try_convert(class_name, expected_type) {
+                    Ok(value) => value,
 
-                // The property descriptor disagreed, and there was no
-                // conversion available. This is always an error.
-                Err(message) => {
-                    return Err(
-                        reader.error(DecodeErrorKind::UnsupportedPropertyConversion {
-                            class_name: class_name.to_string(),
-                            property_name: descriptor.name.to_string(),
-                            expected_type,
-                            actual_type: xml_ty,
-                            message,
-                        }),
-                    );
-                }
-            };
-
-            match &descriptor.kind {
-                PropertyKind::Canonical {
-                    serialization: PropertySerialization::Migrate(migration),
-                } => {
-                    let new_property_name = migration.new_property_name;
-                    let old_property_name = descriptor.name;
-
-                    if let Entry::Vacant(entry) = props.entry(new_property_name) {
-                        log::trace!(
-                            "Attempting to migrate property {old_property_name} to {new_property_name}"
+                    // The property descriptor disagreed, and there was no
+                    // conversion available. This is always an error.
+                    Err(message) => {
+                        return Err(
+                            reader.error(DecodeErrorKind::UnsupportedPropertyConversion {
+                                class_name: class_name.to_string(),
+                                property_name: descriptor.name.to_string(),
+                                expected_type,
+                                actual_type: xml_ty,
+                                message,
+                            }),
                         );
-                        match migration.perform(&value) {
-                            Ok(migrated_value) => {
-                                entry.insert(migrated_value);
-                                log::trace!(
-                                    "Successfully migrated property {old_property_name} to {new_property_name}"
-                                );
-                            }
-                            Err(error) => {
-                                return Err(reader.error(DecodeErrorKind::MigrationError(error)));
+                    }
+                };
+
+                match &descriptor.kind {
+                    PropertyKind::Canonical {
+                        serialization: PropertySerialization::Migrate(migration),
+                    } => {
+                        let new_property_name = migration.new_property_name;
+                        let old_property_name = descriptor.name;
+
+                        if let Entry::Vacant(entry) = props.entry(new_property_name) {
+                            log::trace!(
+                                "Attempting to migrate property {old_property_name} to {new_property_name}"
+                            );
+                            match migration.perform(&value) {
+                                Ok(migrated_value) => {
+                                    entry.insert(migrated_value);
+                                    log::trace!(
+                                        "Successfully migrated property {old_property_name} to {new_property_name}"
+                                    );
+                                }
+                                Err(error) => {
+                                    return Err(
+                                        reader.error(DecodeErrorKind::MigrationError(error))
+                                    );
+                                }
                             }
                         }
                     }
-                }
-                _ => {
-                    props.insert(descriptor.name, value);
-                }
-            };
-        } else {
-            match state.options.property_behavior {
-                // DecodePropertyBehavior::IgnoreUnknown => {
-                //     // We don't care about this property, so we can read it and
-                //     // throw it into the void.
-                //     read_value_xml(
-                //         reader,
-                //         state,
-                //         &xml_type_name,
-                //         instance_id,
-                //         &xml_property_name,
-                //     )?;
-                // }
-                // DecodePropertyBehavior::ReadUnknown | DecodePropertyBehavior::NoReflection
-                // => {
-                //     // We'll take this value as-is with no conversions on either
-                //     // the name or value.
-                //     let value = match read_value_xml(
-                //         reader,
-                //         state,
-                //         &xml_type_name,
-                //         instance_id,
-                //         &xml_property_name,
-                //     )? {
-                //         Some(value) => value,
-                //         None => continue,
-                //     };
-                //     props.insert(xml_property_name.into(), value);
-                // }
-                DecodePropertyBehavior::IgnoreUnknown
-                | DecodePropertyBehavior::ReadUnknown
-                | DecodePropertyBehavior::NoReflection
-                | DecodePropertyBehavior::ErrorOnUnknown => {
-                    return Err(reader.error(DecodeErrorKind::UnknownProperty {
-                        class_name: class_name.to_string(),
-                        property_name: xml_property_name,
-                    }));
+                    _ => {
+                        props.insert(property_name, value);
+                    }
                 }
             }
+            Err(DecodePropertyBehavior::ReadUnknown) => {
+                props.insert(property_name, value);
+            }
+            // We don't care about this property, so we can read it and
+            // throw it into the void.
+            Err(DecodePropertyBehavior::IgnoreUnknown) => continue,
         }
     }
 }

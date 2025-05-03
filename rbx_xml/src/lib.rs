@@ -130,17 +130,17 @@ use rbx_dom_weak::{types::Ref, WeakDom};
 use crate::{deserializer::decode_internal, serializer::encode_internal};
 
 pub use crate::{
-    deserializer::{DecodeOptions, DecodePropertyBehavior},
+    deserializer::DecodeOptions,
     error::{DecodeError, EncodeError},
     serializer::{EncodeOptions, EncodePropertyBehavior},
 };
 
 /// Decodes an XML-format model or place from something that implements the
 /// `std::io::Read` trait.
-pub fn from_reader<'db, R: Read>(
+pub fn from_reader<'dom, 'db: 'dom, R: Read>(
     reader: R,
-    options: DecodeOptions<'_, 'db>,
-) -> Result<WeakDom<'db>, DecodeError> {
+    options: DecodeOptions<'_, 'dom, 'db>,
+) -> Result<WeakDom<'dom>, DecodeError> {
     decode_internal(reader, options)
 }
 
@@ -151,10 +151,10 @@ pub fn from_reader_default<R: Read>(reader: R) -> Result<WeakDom<'static>, Decod
 }
 
 /// Decodes an XML-format model or place from a string.
-pub fn from_str<'db, S: AsRef<str>>(
+pub fn from_str<'dom, 'db: 'dom, S: AsRef<str>>(
     reader: S,
-    options: DecodeOptions<'_, 'db>,
-) -> Result<WeakDom<'db>, DecodeError> {
+    options: DecodeOptions<'_, 'dom, 'db>,
+) -> Result<WeakDom<'dom>, DecodeError> {
     decode_internal(reader.as_ref().as_bytes(), options)
 }
 
