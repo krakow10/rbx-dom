@@ -6,7 +6,10 @@ mod models;
 
 use std::{fmt, fs, path::PathBuf};
 
+use hash_str::{HashStrCache, HashStrHost};
 use rbx_dom_weak::DomViewer;
+
+use crate::DecodeOptions;
 
 /// Runs several tests over the provided file.
 pub fn test_suite(path: PathBuf) -> Result<(), Error> {
@@ -21,8 +24,15 @@ pub fn test_suite(path: PathBuf) -> Result<(), Error> {
 
     let contents = fs::read(&path).map_err(|e| Error::new(e, "read"))?;
 
-    let decoded = crate::from_reader_default(contents.as_slice())
-        .map_err(|e| Error::new(e, "deserialize"))?;
+    let host = HashStrHost::new();
+    let mut cache = HashStrCache::new();
+    let database = rbx_reflection_database::get();
+
+    let decoded = crate::from_reader(
+        contents.as_slice(),
+        DecodeOptions::ignore_unknown(database, &mut cache, &host),
+    )
+    .map_err(|e| Error::new(e, "deserialize"))?;
     insta::assert_yaml_snapshot!(
         format!("{test_name}__decoded"),
         DomViewer::new().view_children(&decoded)
@@ -36,8 +46,11 @@ pub fn test_suite(path: PathBuf) -> Result<(), Error> {
     // way to validate it decoded correctly is to deserialize it again. Sad
     // but nothing we can fix right now.
 
-    let roundtrip =
-        crate::from_reader_default(encoded.as_slice()).map_err(|e| Error::new(e, "roundtrip"))?;
+    let roundtrip = crate::from_reader(
+        encoded.as_slice(),
+        DecodeOptions::read_unknown(database, &mut cache, &host),
+    )
+    .map_err(|e| Error::new(e, "roundtrip"))?;
     insta::assert_yaml_snapshot!(
         format!("{test_name}__roundtrip"),
         DomViewer::new().view_children(&roundtrip)
