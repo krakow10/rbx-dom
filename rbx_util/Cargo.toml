@@ -20,7 +20,6 @@ path = "src/main.rs"
 name = "rbx-util"
 
 [dependencies]
-hash_str = { version = "0.2.0" }
 rbx_binary = { path = "../rbx_binary", features = ["unstable_text_format"] }
 rbx_xml = { path = "../rbx_xml" }
 

@@ -11,7 +11,6 @@ authors = ["Lucien Greathouse <me@lpghatguy.com>"]
 edition = "2018"
 
 [dependencies]
-hash_str = { version = "0.2.0" }
 rbx_types = { version = "2.0.0", path = "../rbx_types", features = ["serde"] }
 
 ahash = "0.8.11"
