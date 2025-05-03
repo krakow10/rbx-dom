@@ -32,15 +32,10 @@ impl RemovePropCommand {
 
         log::debug!("Reading from {input_kind:?} file {}", self.input.display());
         let mut dom = match input_kind {
-            ModelKind::Xml => {
-                let options = rbx_xml::DecodeOptions::new()
-                    .property_behavior(rbx_xml::DecodePropertyBehavior::ReadUnknown);
+            ModelKind::Xml => rbx_xml::from_reader_default(input_file)
+                .with_context(|| format!("Failed to read {}", self.input.display()))?,
 
-                rbx_xml::from_reader(input_file, options)
-                    .with_context(|| format!("Failed to read {}", self.input.display()))?
-            }
-
-            ModelKind::Binary => rbx_binary::from_reader(input_file)
+            ModelKind::Binary => rbx_binary::from_reader_default(input_file)
                 .with_context(|| format!("Failed to read {}", self.input.display()))?,
         };
 
