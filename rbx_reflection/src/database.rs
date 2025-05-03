@@ -94,7 +94,7 @@ impl<'a> ReflectionDatabase<'a> {
                 None => {
                     class = self
                         .classes
-                        .get(class.superclass.as_ref()?)
+                        .get(class.superclass?)
                         .expect("superclass that is Some should exist in reflection database")
                 }
                 default_value => return default_value,
