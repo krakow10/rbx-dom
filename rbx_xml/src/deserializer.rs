@@ -1,7 +1,7 @@
 use std::{collections::hash_map::Entry, io::Read};
 
 use ahash::{HashMap, HashMapExt, HashSet, HashSetExt};
-use hash_str::UnhashedStr;
+use hash_str::{HashStrMap, UnhashedStr};
 use log::trace;
 use rbx_dom_weak::{
     hstr,
@@ -19,10 +19,10 @@ use crate::{
 
 use crate::deserializer_core::{XmlEventReader, XmlReadEvent};
 
-pub fn decode_internal<R: Read>(
+pub fn decode_internal<'dom, 'db: 'dom, R: Read>(
     source: R,
-    options: DecodeOptions,
-) -> Result<WeakDom<'static>, DecodeError> {
+    options: DecodeOptions<'db>,
+) -> Result<WeakDom<'dom>, DecodeError> {
     let mut tree = WeakDom::new(InstanceBuilder::new(hstr!("DataModel")));
 
     let root_id = tree.root_ref();
@@ -118,8 +118,8 @@ impl<'db> Default for DecodeOptions<'db> {
 }
 
 /// The state needed to deserialize an XML model into an `WeakDom`.
-pub struct ParseState<'dom, 'db> {
-    tree: &'dom mut WeakDom<'static>,
+pub struct ParseState<'de, 'dom, 'db> {
+    tree: &'de mut WeakDom<'dom>,
 
     options: DecodeOptions<'db>,
 
@@ -138,7 +138,7 @@ pub struct ParseState<'dom, 'db> {
     /// A list of Ref property rewrites to apply. After the first
     /// deserialization pass, we enumerate over this list and fill in the
     /// correct Ref value by using the referents map.
-    referent_rewrites: Vec<ReferentRewrite>,
+    referent_rewrites: Vec<ReferentRewrite<'dom>>,
 
     /// A map from shared string hashes (currently MD5, decided by Roblox) to
     /// the actual SharedString type.
@@ -147,27 +147,30 @@ pub struct ParseState<'dom, 'db> {
     /// A list of SharedString properties to set in the tree as a secondary
     /// pass. This works just like referent rewriting since the shared string
     /// dictionary is usually at the end of the XML file.
-    shared_string_rewrites: Vec<SharedStringRewrite>,
+    shared_string_rewrites: Vec<SharedStringRewrite<'dom>>,
 
     /// Contains all of the unknown types that have been found so far. Tracking
     /// them here helps ensure that we only output a warning once per type.
     unknown_type_names: HashSet<String>,
 }
 
-struct ReferentRewrite {
+struct ReferentRewrite<'a> {
     id: Ref,
-    property_name: &'static HashStr,
+    property_name: &'a HashStr,
     referent_value: String,
 }
 
-struct SharedStringRewrite {
+struct SharedStringRewrite<'a> {
     id: Ref,
-    property_name: &'static HashStr,
+    property_name: &'a HashStr,
     shared_string_hash: String,
 }
 
-impl<'dom, 'db> ParseState<'dom, 'db> {
-    fn new(tree: &'dom mut WeakDom<'static>, options: DecodeOptions<'db>) -> ParseState<'dom, 'db> {
+impl<'de, 'dom, 'db> ParseState<'de, 'dom, 'db> {
+    fn new(
+        tree: &'de mut WeakDom<'dom>,
+        options: DecodeOptions<'db>,
+    ) -> ParseState<'de, 'dom, 'db> {
         ParseState {
             tree,
             options,
@@ -205,7 +208,7 @@ impl<'dom, 'db> ParseState<'dom, 'db> {
     pub fn add_referent_rewrite(
         &mut self,
         id: Ref,
-        property_name: &'static HashStr,
+        property_name: &'dom HashStr,
         referent_value: String,
     ) {
         self.referent_rewrites.push(ReferentRewrite {
@@ -222,7 +225,7 @@ impl<'dom, 'db> ParseState<'dom, 'db> {
     pub fn add_shared_string_rewrite(
         &mut self,
         id: Ref,
-        property_name: &'static HashStr,
+        property_name: &'dom HashStr,
         shared_string_hash: String,
     ) {
         self.shared_string_rewrites.push(SharedStringRewrite {
@@ -233,7 +236,9 @@ impl<'dom, 'db> ParseState<'dom, 'db> {
     }
 }
 
-fn apply_referent_rewrites(state: &mut ParseState) {
+fn apply_referent_rewrites<'de, 'dom: 'de, 'db: 'dom + 'de>(
+    state: &mut ParseState<'de, 'dom, 'db>,
+) {
     for rewrite in &state.referent_rewrites {
         let new_value = match state.referents_to_ids.get(&rewrite.referent_value) {
             Some(id) => *id,
@@ -245,14 +250,15 @@ fn apply_referent_rewrites(state: &mut ParseState) {
             .get_by_ref_mut(rewrite.id)
             .expect("rbx_xml bug: had ID in referent rewrite list that didn't end up in the tree");
 
-        instance.properties.insert(
-            rewrite.property_name.as_str().into(),
-            Variant::Ref(new_value),
-        );
+        instance
+            .properties
+            .insert(rewrite.property_name, Variant::Ref(new_value));
     }
 }
 
-fn apply_shared_string_rewrites(state: &mut ParseState) {
+fn apply_shared_string_rewrites<'de, 'dom: 'de, 'db: 'dom + 'de>(
+    state: &mut ParseState<'de, 'dom, 'db>,
+) {
     for rewrite in &state.shared_string_rewrites {
         let new_value = match state.known_shared_strings.get(&rewrite.shared_string_hash) {
             Some(v) => v.clone(),
@@ -263,16 +269,15 @@ fn apply_shared_string_rewrites(state: &mut ParseState) {
             "rbx_xml bug: had ID in SharedString rewrite list that didn't end up in the tree",
         );
 
-        instance.properties.insert(
-            rewrite.property_name.as_str().into(),
-            Variant::SharedString(new_value),
-        );
+        instance
+            .properties
+            .insert(rewrite.property_name, Variant::SharedString(new_value));
     }
 }
 
-fn deserialize_root<R: Read>(
+fn deserialize_root<'de, 'dom, 'db: 'dom, R: Read>(
     reader: &mut XmlEventReader<R>,
-    state: &mut ParseState,
+    state: &mut ParseState<'de, 'dom, 'db>,
     parent_id: Ref,
 ) -> Result<(), DecodeError> {
     match reader.expect_next()? {
@@ -428,9 +433,9 @@ fn deserialize_shared_string<R: Read>(
     Ok(())
 }
 
-fn deserialize_instance<R: Read>(
+fn deserialize_instance<'de, 'dom, 'db: 'dom, R: Read>(
     reader: &mut XmlEventReader<R>,
-    state: &mut ParseState,
+    state: &mut ParseState<'de, 'dom, 'db>,
     parent_id: Ref,
 ) -> Result<(), DecodeError> {
     let (class_name, referent) = {
@@ -472,7 +477,7 @@ fn deserialize_instance<R: Read>(
         state.referents_to_ids.insert(referent, instance_id);
     }
 
-    let mut properties: HashMap<&'static HashStr, Variant> = HashMap::new();
+    let mut properties: HashStrMap<'dom, Variant> = HashStrMap::new();
 
     loop {
         match reader.expect_peek()? {
@@ -524,11 +529,11 @@ fn deserialize_instance<R: Read>(
     Ok(())
 }
 
-fn deserialize_properties<R: Read>(
+fn deserialize_properties<'de, 'dom, 'db: 'dom, R: Read>(
     reader: &mut XmlEventReader<R>,
-    state: &mut ParseState,
+    state: &mut ParseState<'de, 'dom, 'db>,
     instance_id: Ref,
-    props: &mut HashMap<&'static HashStr, Variant>,
+    props: &mut HashStrMap<'dom, Variant>,
 ) -> Result<(), DecodeError> {
     reader.expect_start_with_name("Properties")?;
 
@@ -589,12 +594,10 @@ fn deserialize_properties<R: Read>(
             xml_type_name
         );
 
-        let xml_property_name_interned = xml_property_name.as_str().into();
-
         let maybe_descriptor = if state.options.use_reflection() {
             find_canonical_property_descriptor(
                 class_name,
-                xml_property_name_interned,
+                xml_property_name.as_str(),
                 state.options.database,
             )
         } else {
@@ -602,12 +605,16 @@ fn deserialize_properties<R: Read>(
         };
 
         if let Some(descriptor) = maybe_descriptor {
-            let value =
-                match read_value_xml(reader, state, &xml_type_name, instance_id, &descriptor.name)?
-                {
-                    Some(value) => value,
-                    None => continue,
-                };
+            let value = match read_value_xml(
+                reader,
+                state,
+                &xml_type_name,
+                instance_id,
+                &descriptor.name,
+            )? {
+                Some(value) => value,
+                None => continue,
+            };
 
             let xml_ty = value.ty();
 
@@ -649,8 +656,7 @@ fn deserialize_properties<R: Read>(
                 PropertyKind::Canonical {
                     serialization: PropertySerialization::Migrate(migration),
                 } => {
-                    let new_property_name: &'static HashStr =
-                        migration.new_property_name.as_str().into();
+                    let new_property_name = migration.new_property_name;
                     let old_property_name = descriptor.name;
 
                     if let Entry::Vacant(entry) = props.entry(new_property_name) {
@@ -671,40 +677,42 @@ fn deserialize_properties<R: Read>(
                     }
                 }
                 _ => {
-                    props.insert(descriptor.name.as_ref().into(), value);
+                    props.insert(descriptor.name, value);
                 }
             };
         } else {
             match state.options.property_behavior {
-                DecodePropertyBehavior::IgnoreUnknown => {
-                    // We don't care about this property, so we can read it and
-                    // throw it into the void.
-
-                    read_value_xml(
-                        reader,
-                        state,
-                        &xml_type_name,
-                        instance_id,
-                        &xml_property_name,
-                    )?;
-                }
-                DecodePropertyBehavior::ReadUnknown | DecodePropertyBehavior::NoReflection => {
-                    // We'll take this value as-is with no conversions on either
-                    // the name or value.
-
-                    let value = match read_value_xml(
-                        reader,
-                        state,
-                        &xml_type_name,
-                        instance_id,
-                        &xml_property_name,
-                    )? {
-                        Some(value) => value,
-                        None => continue,
-                    };
-                    props.insert(xml_property_name.into(), value);
-                }
-                DecodePropertyBehavior::ErrorOnUnknown => {
+                // DecodePropertyBehavior::IgnoreUnknown => {
+                //     // We don't care about this property, so we can read it and
+                //     // throw it into the void.
+                //     read_value_xml(
+                //         reader,
+                //         state,
+                //         &xml_type_name,
+                //         instance_id,
+                //         &xml_property_name,
+                //     )?;
+                // }
+                // DecodePropertyBehavior::ReadUnknown | DecodePropertyBehavior::NoReflection
+                // => {
+                //     // We'll take this value as-is with no conversions on either
+                //     // the name or value.
+                //     let value = match read_value_xml(
+                //         reader,
+                //         state,
+                //         &xml_type_name,
+                //         instance_id,
+                //         &xml_property_name,
+                //     )? {
+                //         Some(value) => value,
+                //         None => continue,
+                //     };
+                //     props.insert(xml_property_name.into(), value);
+                // }
+                DecodePropertyBehavior::IgnoreUnknown
+                | DecodePropertyBehavior::ReadUnknown
+                | DecodePropertyBehavior::NoReflection
+                | DecodePropertyBehavior::ErrorOnUnknown => {
                     return Err(reader.error(DecodeErrorKind::UnknownProperty {
                         class_name: class_name.to_string(),
                         property_name: xml_property_name,
