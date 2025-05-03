@@ -5,9 +5,8 @@ use std::{
     io::Write,
 };
 
-use ahash::{HashMap, HashMapExt, HashSetExt};
+use ahash::{HashMap, HashMapExt, HashSet, HashSetExt};
 use rbx_dom_weak::{
-    hstr,
     types::{
         Attributes, Axes, BinaryString, BrickColor, CFrame, Color3, Color3uint8, ColorSequence,
         ColorSequenceKeypoint, Content, ContentId, ContentType, Enum, EnumItem, Faces, Font,
@@ -15,7 +14,7 @@ use rbx_dom_weak::{
         PhysicalProperties, Ray, Rect, Ref, SecurityCapabilities, SharedString, Tags, UDim, UDim2,
         UniqueId, Variant, VariantType, Vector2, Vector3, Vector3int16,
     },
-    HashStr, HashStrSet, Instance, WeakDom,
+    Instance, WeakDom,
 };
 
 use rbx_reflection::{
@@ -91,7 +90,7 @@ struct TypeInfo<'dom> {
     ///
     /// Stored in a sorted map to try to ensure that we write out properties in
     /// a deterministic order.
-    properties: BTreeMap<&'dom HashStr, PropInfo<'dom>>,
+    properties: BTreeMap<&'dom str, PropInfo<'dom>>,
 
     /// A reference to the type's class descriptor from rbx_reflection, if this
     /// is a known class.
@@ -100,7 +99,7 @@ struct TypeInfo<'dom> {
     /// A set containing the properties that we have seen so far in the file and
     /// processed. This helps us avoid traversing the reflection database
     /// multiple times if there are many copies of the same kind of instance.
-    properties_visited: HashStrSet<'dom>,
+    properties_visited: HashSet<&'dom str>,
 }
 
 /// A property on a specific class that our serializer knows about.
@@ -123,14 +122,14 @@ struct PropInfo<'db> {
     /// The serialized name for this property. This is the name that is actually
     /// written as part of the PROP chunk and may not line up with the canonical
     /// name for the property.
-    serialized_name: &'db HashStr,
+    serialized_name: &'db str,
 
     /// A set containing the names of all aliases discovered while preparing to
     /// serialize this property. Ideally, this set will remain empty (and not
     /// allocate) in most cases. However, if an instance is missing a property
     /// from its canonical name, but does have another variant, we can use this
     /// set to recover and map those values.
-    aliases: HashStrSet<'db>,
+    aliases: HashSet<&'db str>,
 
     /// The default value for this property that should be used if any instances
     /// are missing this property.
@@ -160,7 +159,7 @@ struct TypeInfos<'dom> {
     ///
     /// These are stored sorted so that we naturally iterate over them in order
     /// and improve our chances of being deterministic.
-    values: BTreeMap<&'dom HashStr, TypeInfo<'dom>>,
+    values: BTreeMap<&'dom str, TypeInfo<'dom>>,
 
     /// The next type ID that should be assigned if a type is discovered and
     /// added to the serializer.
@@ -180,7 +179,7 @@ impl<'dom, 'db: 'dom> TypeInfos<'dom> {
     fn get_or_create(
         &mut self,
         database: &'db ReflectionDatabase<'db>,
-        class: &'dom HashStr,
+        class: &'dom str,
     ) -> &mut TypeInfo<'dom> {
         // Split self into independent mutable references
         // to satisfy the closure borrow.
@@ -211,11 +210,11 @@ impl<'dom, 'db: 'dom> TypeInfos<'dom> {
             // We can use a dummy default_value here because instances from
             // rbx_dom_weak always have a name set.
             properties.insert(
-                hstr!("Name"),
+                "Name",
                 PropInfo {
                     prop_type: Type::String,
-                    serialized_name: hstr!("Name"),
-                    aliases: HashStrSet::new(),
+                    serialized_name: ("Name"),
+                    aliases: HashSet::new(),
                     default_value: Cow::Owned(Variant::String(String::new())),
                     migration: None,
                 },
@@ -227,7 +226,7 @@ impl<'dom, 'db: 'dom> TypeInfos<'dom> {
                 instances: Vec::new(),
                 properties,
                 class_descriptor,
-                properties_visited: HashStrSet::new(),
+                properties_visited: HashSet::new(),
             }
         })
     }
@@ -323,7 +322,7 @@ impl<'dom, 'db: 'dom, W: Write> SerializerState<'dom, 'db, W> {
     pub fn collect_type_info(&mut self, instance: &'dom Instance<'dom>) -> Result<(), InnerError> {
         let type_info = self
             .type_infos
-            .get_or_create(&self.serializer.database, instance.class);
+            .get_or_create(self.serializer.database, instance.class);
         type_info.instances.push(instance);
 
         for (&prop_name, prop_value) in &instance.properties {
@@ -463,7 +462,7 @@ impl<'dom, 'db: 'dom, W: Write> SerializerState<'dom, 'db, W> {
                     PropInfo {
                         prop_type: ser_type,
                         serialized_name,
-                        aliases: HashStrSet::new(),
+                        aliases: HashSet::new(),
                         default_value,
                         migration,
                     },
@@ -624,7 +623,7 @@ impl<'dom, 'db: 'dom, W: Write> SerializerState<'dom, 'db, W> {
                 let mut chunk = ChunkBuilder::new(b"PROP", self.serializer.compression);
 
                 chunk.write_le_u32(type_info.type_id)?;
-                chunk.write_string(&prop_info.serialized_name)?;
+                chunk.write_string(prop_info.serialized_name)?;
                 chunk.write_u8(prop_info.prop_type as u8)?;
 
                 let values = type_info

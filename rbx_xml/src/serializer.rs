@@ -3,7 +3,7 @@ use std::{borrow::Cow, collections::BTreeMap, io::Write};
 use ahash::{HashMap, HashMapExt};
 use rbx_dom_weak::{
     types::{Ref, SharedString, SharedStringHash, Variant, VariantType},
-    HashStr, WeakDom,
+    WeakDom,
 };
 use rbx_reflection::{DataType, PropertyKind, PropertySerialization, ReflectionDatabase};
 
@@ -165,7 +165,7 @@ fn serialize_instance<'dom, W: Write>(
     state: &mut EmitState,
     tree: &'dom WeakDom<'dom>,
     id: Ref,
-    property_buffer: &mut Vec<(&'dom HashStr, &'dom Variant)>,
+    property_buffer: &mut Vec<(&'dom str, &'dom Variant)>,
 ) -> Result<(), NewEncodeError> {
     let instance = tree.get_by_ref(id).unwrap();
     let mapped_id = state.map_id(id);
@@ -208,7 +208,7 @@ fn serialize_instance<'dom, W: Write>(
                 _ => unimplemented!(),
             };
 
-            let mut serialized_name = serialized_descriptor.name.as_ref();
+            let mut serialized_name = serialized_descriptor.name;
 
             let mut converted_value = match value.try_convert_ref(instance.class, data_type) {
                 Ok(value) => value,

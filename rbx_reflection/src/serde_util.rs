@@ -1,12 +1,13 @@
 use std::{
-    collections::{BTreeMap, BTreeSet, HashSet},
+    collections::{BTreeMap, BTreeSet},
     hash::Hash,
 };
 
-use hash_str::HashStrMap;
+use ahash::{HashMap, HashSet};
+
 use serde::{Serialize, Serializer};
 
-pub(crate) fn ordered_map<S, V>(value: &HashStrMap<'_, V>, serializer: S) -> Result<S::Ok, S::Error>
+pub(crate) fn ordered_map<S, V>(value: &HashMap<&str, V>, serializer: S) -> Result<S::Ok, S::Error>
 where
     V: Serialize,
     S: Serializer,

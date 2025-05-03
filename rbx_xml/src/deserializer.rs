@@ -1,14 +1,14 @@
 use std::{collections::hash_map::Entry, io::Read};
 
 use ahash::{HashMap, HashMapExt, HashSet, HashSetExt};
-use hash_str::{HashStrCache, HashStrHost, HashStrMap, UnhashedStr};
 use log::trace;
 use rbx_dom_weak::{
-    hstr,
     types::{Ref, SharedString, Variant, VariantType},
-    HashStr, InstanceBuilder, WeakDom,
+    InstanceBuilder, WeakDom,
 };
-use rbx_reflection::{DataType, PropertyKind, PropertySerialization, ReflectionDatabase};
+use rbx_reflection::{
+    DataType, InternFunction, PropertyKind, PropertySerialization, ReflectionDatabase, StringIntern,
+};
 
 use crate::{
     conversion::ConvertVariant,
@@ -19,11 +19,11 @@ use crate::{
 
 use crate::deserializer_core::{XmlEventReader, XmlReadEvent};
 
-pub fn decode_internal<'de, 'dom, 'db: 'dom, R: Read>(
+pub fn decode_internal<'de, 'dom, 'db: 'dom, R: Read, S: StringIntern<'dom>>(
     source: R,
-    options: DecodeOptions<'de, 'dom, 'db>,
+    options: DecodeOptions<'de, 'db, S>,
 ) -> Result<WeakDom<'dom>, DecodeError> {
-    let mut tree = WeakDom::new(InstanceBuilder::new(hstr!("DataModel")));
+    let mut tree = WeakDom::new(InstanceBuilder::new("DataModel"));
 
     let root_id = tree.root_ref();
 
@@ -40,7 +40,7 @@ pub fn decode_internal<'de, 'dom, 'db: 'dom, R: Read>(
 /// Options available for deserializing an XML-format model or place.
 #[derive(Debug)]
 #[non_exhaustive]
-pub enum DecodeOptions<'de, 'dom, 'db> {
+pub enum DecodeOptions<'de, 'db, S> {
     /// Ignores properties that aren't known by rbx_xml.
     ///
     /// The default and safest option. With this set, properties that are newer
@@ -52,10 +52,9 @@ pub enum DecodeOptions<'de, 'dom, 'db> {
     IgnoreUnknown {
         /// The reflection database to use.
         database: &'de ReflectionDatabase<'db>,
-        /// String internment deduplication cache.
-        cache: &'de mut HashStrCache<'dom>,
-        /// String internment storage host.
-        host: &'dom HashStrHost,
+        /// String interner.  Can be any closure `fn(&str) -> &str`,
+        /// as long as the provided string outlives the dom.
+        interner: S,
     },
 
     /// Read properties that aren't known by rbx_xml.
@@ -67,10 +66,9 @@ pub enum DecodeOptions<'de, 'dom, 'db> {
     ReadUnknown {
         /// The reflection database to use.
         database: &'de ReflectionDatabase<'db>,
-        /// String internment deduplication cache.
-        cache: &'de mut HashStrCache<'dom>,
-        /// String internment storage host.
-        host: &'dom HashStrHost,
+        /// String interner.  Can be any closure `fn(&str) -> &str`,
+        /// as long as the provided string outlives the dom.
+        interner: S,
     },
 
     /// Returns an error if any properties are found that aren't known by
@@ -87,39 +85,22 @@ pub enum DecodeOptions<'de, 'dom, 'db> {
     /// user to deal with oddities like how `Part.FormFactor` is actually
     /// serialized as `Part.formFactorRaw`.
     NoReflection {
-        /// String internment deduplication cache.
-        cache: &'de mut HashStrCache<'dom>,
-        /// String internment storage host.
-        host: &'dom HashStrHost,
+        /// String interner.  Can be any closure `fn(&str) -> &str`,
+        /// as long as the provided string outlives the dom.
+        interner: S,
     },
 }
 
-impl<'de, 'dom, 'db> DecodeOptions<'de, 'dom, 'db> {
+impl<'de, 'dom, 'db, S: StringIntern<'dom>> DecodeOptions<'de, 'db, S> {
     /// Constructs a `DecodeOptions` which specifies to ignore unknown properties or classes.
     #[inline]
-    pub fn ignore_unknown(
-        database: &'de ReflectionDatabase<'db>,
-        cache: &'de mut HashStrCache<'dom>,
-        host: &'dom HashStrHost,
-    ) -> Self {
-        DecodeOptions::IgnoreUnknown {
-            database,
-            cache,
-            host,
-        }
+    pub fn ignore_unknown(database: &'de ReflectionDatabase<'db>, interner: S) -> Self {
+        DecodeOptions::IgnoreUnknown { database, interner }
     }
     /// Constructs a `DecodeOptions` which uses the specified database and string internment to manage unknown properties and classes.
     #[inline]
-    pub fn read_unknown(
-        database: &'de ReflectionDatabase<'db>,
-        cache: &'de mut HashStrCache<'dom>,
-        host: &'dom HashStrHost,
-    ) -> Self {
-        DecodeOptions::ReadUnknown {
-            database,
-            cache,
-            host,
-        }
+    pub fn read_unknown(database: &'de ReflectionDatabase<'db>, interner: S) -> Self {
+        DecodeOptions::ReadUnknown { database, interner }
     }
     /// Constructs a `DecodeOptions` which specifies to error upon encountering an unknown property or class.
     #[inline]
@@ -133,22 +114,22 @@ impl<'de, 'dom, 'db> DecodeOptions<'de, 'dom, 'db> {
     /// user to deal with oddities like how `Part.FormFactor` is actually
     /// serialized as `Part.formFactorRaw`.
     #[inline]
-    pub fn no_reflection(cache: &'de mut HashStrCache<'dom>, host: &'dom HashStrHost) -> Self {
-        DecodeOptions::NoReflection { cache, host }
+    pub fn no_reflection(interner: S) -> Self {
+        DecodeOptions::NoReflection { interner }
     }
 }
 
-impl<'de, 'dom, 'db> Default for DecodeOptions<'de, 'dom, 'db> {
-    fn default() -> DecodeOptions<'de, 'dom, 'db> {
+impl<'de, 'db> Default for DecodeOptions<'de, 'db, InternFunction<'static>> {
+    fn default() -> Self {
         DecodeOptions::error_on_unknown(rbx_reflection_database::get())
     }
 }
 
 /// The state needed to deserialize an XML model into an `WeakDom`.
-pub struct ParseState<'de, 'dom, 'db> {
+pub struct ParseState<'de, 'dom, 'db, S> {
     tree: &'de mut WeakDom<'dom>,
 
-    options: DecodeOptions<'de, 'dom, 'db>,
+    options: DecodeOptions<'de, 'db, S>,
 
     /// Metadata deserialized from 'Meta' fields in the file.
     /// Known fields are:
@@ -183,21 +164,21 @@ pub struct ParseState<'de, 'dom, 'db> {
 
 struct ReferentRewrite<'a> {
     id: Ref,
-    property_name: &'a HashStr,
+    property_name: &'a str,
     referent_value: String,
 }
 
 struct SharedStringRewrite<'a> {
     id: Ref,
-    property_name: &'a HashStr,
+    property_name: &'a str,
     shared_string_hash: String,
 }
 
-impl<'de, 'dom, 'db> ParseState<'de, 'dom, 'db> {
+impl<'de, 'dom, 'db, S> ParseState<'de, 'dom, 'db, S> {
     fn new(
         tree: &'de mut WeakDom<'dom>,
-        options: DecodeOptions<'de, 'dom, 'db>,
-    ) -> ParseState<'de, 'dom, 'db> {
+        options: DecodeOptions<'de, 'db, S>,
+    ) -> ParseState<'de, 'dom, 'db, S> {
         ParseState {
             tree,
             options,
@@ -235,7 +216,7 @@ impl<'de, 'dom, 'db> ParseState<'de, 'dom, 'db> {
     pub fn add_referent_rewrite(
         &mut self,
         id: Ref,
-        property_name: &'dom HashStr,
+        property_name: &'dom str,
         referent_value: String,
     ) {
         self.referent_rewrites.push(ReferentRewrite {
@@ -252,7 +233,7 @@ impl<'de, 'dom, 'db> ParseState<'de, 'dom, 'db> {
     pub fn add_shared_string_rewrite(
         &mut self,
         id: Ref,
-        property_name: &'dom HashStr,
+        property_name: &'dom str,
         shared_string_hash: String,
     ) {
         self.shared_string_rewrites.push(SharedStringRewrite {
@@ -263,8 +244,8 @@ impl<'de, 'dom, 'db> ParseState<'de, 'dom, 'db> {
     }
 }
 
-fn apply_referent_rewrites<'de, 'dom: 'de, 'db: 'dom + 'de>(
-    state: &mut ParseState<'de, 'dom, 'db>,
+fn apply_referent_rewrites<'de, 'dom: 'de, 'db: 'dom + 'de, S>(
+    state: &mut ParseState<'de, 'dom, 'db, S>,
 ) {
     for rewrite in &state.referent_rewrites {
         let new_value = match state.referents_to_ids.get(&rewrite.referent_value) {
@@ -283,8 +264,8 @@ fn apply_referent_rewrites<'de, 'dom: 'de, 'db: 'dom + 'de>(
     }
 }
 
-fn apply_shared_string_rewrites<'de, 'dom: 'de, 'db: 'dom + 'de>(
-    state: &mut ParseState<'de, 'dom, 'db>,
+fn apply_shared_string_rewrites<'de, 'dom: 'de, 'db: 'dom + 'de, S>(
+    state: &mut ParseState<'de, 'dom, 'db, S>,
 ) {
     for rewrite in &state.shared_string_rewrites {
         let new_value = match state.known_shared_strings.get(&rewrite.shared_string_hash) {
@@ -302,9 +283,9 @@ fn apply_shared_string_rewrites<'de, 'dom: 'de, 'db: 'dom + 'de>(
     }
 }
 
-fn deserialize_root<'de, 'dom, 'db: 'dom, R: Read>(
+fn deserialize_root<'de, 'dom, 'db: 'dom, R: Read, S: StringIntern<'dom>>(
     reader: &mut XmlEventReader<R>,
-    state: &mut ParseState<'de, 'dom, 'db>,
+    state: &mut ParseState<'de, 'dom, 'db, S>,
     parent_id: Ref,
 ) -> Result<(), DecodeError> {
     match reader.expect_next()? {
@@ -373,9 +354,9 @@ fn deserialize_root<'de, 'dom, 'db: 'dom, R: Read>(
     Ok(())
 }
 
-fn deserialize_metadata<R: Read>(
+fn deserialize_metadata<R: Read, S>(
     reader: &mut XmlEventReader<R>,
-    state: &mut ParseState,
+    state: &mut ParseState<S>,
 ) -> Result<(), DecodeError> {
     let name = {
         let attributes = reader.expect_start_with_name("Meta")?;
@@ -398,9 +379,9 @@ fn deserialize_metadata<R: Read>(
     Ok(())
 }
 
-fn deserialize_shared_string_dict<R: Read>(
+fn deserialize_shared_string_dict<R: Read, S>(
     reader: &mut XmlEventReader<R>,
-    state: &mut ParseState,
+    state: &mut ParseState<S>,
 ) -> Result<(), DecodeError> {
     reader.expect_start_with_name("SharedStrings")?;
 
@@ -433,9 +414,9 @@ fn deserialize_shared_string_dict<R: Read>(
     Ok(())
 }
 
-fn deserialize_shared_string<R: Read>(
+fn deserialize_shared_string<R: Read, S>(
     reader: &mut XmlEventReader<R>,
-    state: &mut ParseState,
+    state: &mut ParseState<S>,
 ) -> Result<(), DecodeError> {
     let attributes = reader.expect_start_with_name("SharedString")?;
 
@@ -460,9 +441,9 @@ fn deserialize_shared_string<R: Read>(
     Ok(())
 }
 
-fn deserialize_instance<'de, 'dom, 'db: 'dom, R: Read>(
+fn deserialize_instance<'de, 'dom, 'db: 'dom, R: Read, S: StringIntern<'dom>>(
     reader: &mut XmlEventReader<R>,
-    state: &mut ParseState<'de, 'dom, 'db>,
+    state: &mut ParseState<'de, 'dom, 'db, S>,
     parent_id: Ref,
 ) -> Result<(), DecodeError> {
     let (class_name, referent) = {
@@ -488,46 +469,32 @@ fn deserialize_instance<'de, 'dom, 'db: 'dom, R: Read>(
     trace!("Class {} with referent {:?}", class_name, referent);
 
     let (class_name, prop_capacity) = match &mut state.options {
-        DecodeOptions::IgnoreUnknown {
-            database,
-            cache,
-            host,
-        } => {
+        DecodeOptions::IgnoreUnknown { database, interner } => {
             // TODO: actually ignore unknown classes
-            let class_from_database = database
-                .classes
-                .get_key_value(UnhashedStr::from_ref(class_name.as_str()));
+            let class_from_database = database.classes.get_key_value(class_name.as_str());
             match class_from_database {
                 Some((&type_name, class)) => (type_name, class.default_properties.len()),
-                None => (cache.intern_with(host, class_name.as_str()), 0),
+                None => (interner.intern(class_name.as_str()), 0),
             }
         }
         // get class name from database, otherwise use string internment
-        DecodeOptions::ReadUnknown {
-            database,
-            cache,
-            host,
-        } => {
-            let class_from_database = database
-                .classes
-                .get_key_value(UnhashedStr::from_ref(class_name.as_str()));
+        DecodeOptions::ReadUnknown { database, interner } => {
+            let class_from_database = database.classes.get_key_value(class_name.as_str());
             match class_from_database {
                 Some((&type_name, class)) => (type_name, class.default_properties.len()),
-                None => (cache.intern_with(host, class_name.as_str()), 0),
+                None => (interner.intern(class_name.as_str()), 0),
             }
         }
         // get class name from database, otherwise error
         DecodeOptions::ErrorOnUnknown { database } => {
             let (&type_name, class) = database
                 .classes
-                .get_key_value(UnhashedStr::from_ref(class_name.as_str()))
+                .get_key_value(class_name.as_str())
                 .ok_or_else(|| reader.error(DecodeErrorKind::UnknownClassName { class_name }))?;
             (type_name, class.default_properties.len())
         }
         // use string internment
-        DecodeOptions::NoReflection { cache, host } => {
-            (cache.intern_with(host, class_name.as_str()), 0)
-        }
+        DecodeOptions::NoReflection { interner } => (interner.intern(class_name.as_str()), 0),
     };
 
     let builder = InstanceBuilder::with_property_capacity(class_name, prop_capacity);
@@ -537,7 +504,7 @@ fn deserialize_instance<'de, 'dom, 'db: 'dom, R: Read>(
         state.referents_to_ids.insert(referent, instance_id);
     }
 
-    let mut properties: HashStrMap<'dom, Variant> = HashStrMap::new();
+    let mut properties = HashMap::new();
 
     loop {
         match reader.expect_peek()? {
@@ -572,7 +539,7 @@ fn deserialize_instance<'de, 'dom, 'db: 'dom, R: Read>(
 
     let instance = state.tree.get_by_ref_mut(instance_id).unwrap();
 
-    instance.name = match properties.remove(hstr!("Name")) {
+    instance.name = match properties.remove("Name") {
         Some(value) => match value {
             Variant::String(value) => value,
             _ => return Err(reader.error(DecodeErrorKind::NameMustBeString(value.ty()))),
@@ -589,11 +556,11 @@ fn deserialize_instance<'de, 'dom, 'db: 'dom, R: Read>(
     Ok(())
 }
 
-fn deserialize_properties<'de, 'dom, 'db: 'dom, R: Read>(
+fn deserialize_properties<'de, 'dom, 'db: 'dom, R: Read, S: StringIntern<'dom>>(
     reader: &mut XmlEventReader<R>,
-    state: &mut ParseState<'de, 'dom, 'db>,
+    state: &mut ParseState<'de, 'dom, 'db, S>,
     instance_id: Ref,
-    props: &mut HashStrMap<'dom, Variant>,
+    props: &mut HashMap<&'dom str, Variant>,
 ) -> Result<(), DecodeError> {
     reader.expect_start_with_name("Properties")?;
 
@@ -660,11 +627,7 @@ fn deserialize_properties<'de, 'dom, 'db: 'dom, R: Read>(
         }
 
         let (property_name, descriptor_result) = match &mut state.options {
-            DecodeOptions::IgnoreUnknown {
-                database,
-                cache,
-                host,
-            } => {
+            DecodeOptions::IgnoreUnknown { database, interner } => {
                 let maybe_descriptor = find_canonical_property_descriptor(
                     class_name,
                     xml_property_name.as_str(),
@@ -674,16 +637,12 @@ fn deserialize_properties<'de, 'dom, 'db: 'dom, R: Read>(
                     Some(descriptor) => (descriptor.name, Ok(descriptor)),
                     None => {
                         // TODO: remove cache from IgnoreUnknown
-                        let property_name = cache.intern_with(host, xml_property_name.as_str());
+                        let property_name = interner.intern(xml_property_name.as_str());
                         (property_name, Err(DecodePropertyBehavior::IgnoreUnknown))
                     }
                 }
             }
-            DecodeOptions::ReadUnknown {
-                database,
-                cache,
-                host,
-            } => {
+            DecodeOptions::ReadUnknown { database, interner } => {
                 let maybe_descriptor = find_canonical_property_descriptor(
                     class_name,
                     xml_property_name.as_str(),
@@ -692,7 +651,7 @@ fn deserialize_properties<'de, 'dom, 'db: 'dom, R: Read>(
                 match maybe_descriptor {
                     Some(descriptor) => (descriptor.name, Ok(descriptor)),
                     None => {
-                        let property_name = cache.intern_with(host, xml_property_name.as_str());
+                        let property_name = interner.intern(xml_property_name.as_str());
                         (property_name, Err(DecodePropertyBehavior::ReadUnknown))
                     }
                 }
@@ -711,8 +670,8 @@ fn deserialize_properties<'de, 'dom, 'db: 'dom, R: Read>(
                 })?;
                 (descriptor.name, Ok(descriptor))
             }
-            DecodeOptions::NoReflection { cache, host } => {
-                let property_name = cache.intern_with(host, xml_property_name.as_str());
+            DecodeOptions::NoReflection { interner } => {
+                let property_name = interner.intern(xml_property_name.as_str());
                 (property_name, Err(DecodePropertyBehavior::ReadUnknown))
             }
         };

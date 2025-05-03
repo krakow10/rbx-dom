@@ -1,13 +1,12 @@
 //! Basic functionality tests
 
-use hash_str::{HashStrCache, HashStrHost};
 use rbx_dom_weak::types::{
     Attributes, BinaryString, BrickColor, Color3, Color3uint8, ColorSequence,
     ColorSequenceKeypoint, Enum, EnumItem, Font, MaterialColors, NumberRange, NumberSequence,
     NumberSequenceKeypoint, Rect, Tags, TerrainMaterials, UDim, UDim2, UniqueId, Variant,
     VariantType, Vector2, Vector3,
 };
-use rbx_dom_weak::{hstr, InstanceBuilder, WeakDom};
+use rbx_dom_weak::{InstanceBuilder, WeakDom};
 
 #[test]
 fn with_bool() {
@@ -30,10 +29,7 @@ fn with_bool() {
 
     assert_eq!(child.name, "BoolValue");
     assert_eq!(child.class, "BoolValue");
-    assert_eq!(
-        child.properties.get(hstr!("Value")),
-        Some(&Variant::Bool(true))
-    );
+    assert_eq!(child.properties.get("Value"), Some(&Variant::Bool(true)));
 }
 
 #[test]
@@ -57,17 +53,14 @@ fn read_tags() {
     tags.push("Hello");
     tags.push("World");
 
-    assert_eq!(
-        folder.properties.get(hstr!("Tags")),
-        Some(&Variant::Tags(tags))
-    );
+    assert_eq!(folder.properties.get("Tags"), Some(&Variant::Tags(tags)));
 }
 
 #[test]
 fn write_empty_tags() {
     let _ = env_logger::try_init();
 
-    let part = InstanceBuilder::new(hstr!("Part")).with_property(hstr!("Tags"), Tags::new());
+    let part = InstanceBuilder::new("Part").with_property("Tags", Tags::new());
     let dom = WeakDom::new(part);
 
     let mut encoded = Vec::new();
@@ -83,7 +76,7 @@ fn write_tags() {
     tags.push("Hello");
     tags.push("World");
 
-    let part = InstanceBuilder::new(hstr!("Part")).with_property(hstr!("Tags"), tags);
+    let part = InstanceBuilder::new("Part").with_property("Tags", tags);
     let dom = WeakDom::new(part);
 
     let mut encoded = Vec::new();
@@ -116,8 +109,8 @@ fn read_attributes() {
     let dom = crate::from_str_default(document).unwrap();
     let folder = dom.get_by_ref(dom.root().children()[0]).unwrap();
 
-    assert_eq!(folder.properties.get(hstr!("AttributesSerialize")), None);
-    let folder_attributes = match folder.properties.get(hstr!("Attributes")) {
+    assert_eq!(folder.properties.get("AttributesSerialize"), None);
+    let folder_attributes = match folder.properties.get("Attributes") {
         Some(Variant::Attributes(attrs)) => attrs,
         Some(other) => panic!(
             "Attributes property was not Attributes, it was: {:?}",
@@ -201,8 +194,8 @@ fn read_attributes() {
 fn write_material_colors() {
     let _ = env_logger::try_init();
 
-    let terrain = InstanceBuilder::new(hstr!("Terrain"))
-        .with_property(hstr!("MaterialColors"), MaterialColors::new());
+    let terrain =
+        InstanceBuilder::new("Terrain").with_property("MaterialColors", MaterialColors::new());
     let dom = WeakDom::new(terrain);
 
     let mut encoded = Vec::new();
@@ -227,7 +220,7 @@ fn read_material_colors() {
     let dom = crate::from_str_default(document).unwrap();
     let terrain = dom.get_by_ref(dom.root().children()[0]).unwrap();
 
-    if let Some(Variant::MaterialColors(colors)) = terrain.properties.get(hstr!("MaterialColors")) {
+    if let Some(Variant::MaterialColors(colors)) = terrain.properties.get("MaterialColors") {
         // There are tests to ensure competency in the actual MaterialColors
         // implementation, so these are just basic "are you ok" checks.
         assert_eq!(
@@ -245,7 +238,7 @@ fn read_material_colors() {
     } else {
         panic!(
             "MaterialColors was not Some(Variant::MaterialColors(_)) and was instead {:?}",
-            terrain.properties.get(hstr!("MaterialColors"))
+            terrain.properties.get("MaterialColors")
         )
     }
 }
@@ -266,15 +259,24 @@ fn read_unique_id() {
         </roblox>
     "#;
 
-    let host = HashStrHost::new();
-    let mut cache = HashStrCache::new();
+    let host = bumpalo::Bump::new();
+    let mut cache = ahash::HashSet::default();
 
     let tree = crate::from_str(
         document,
         // This is necessary at the moment because we do not actually
         // have UniqueId properties in our reflection database. This may
         // change, but it should in general be safe.
-        crate::DecodeOptions::read_unknown(rbx_reflection_database::get(), &mut cache, &host),
+        crate::DecodeOptions::read_unknown(rbx_reflection_database::get(), |str: &str| match cache
+            .get(str)
+        {
+            Some(sint) => sint,
+            None => {
+                let interned = host.alloc_str(str) as &str;
+                cache.insert(interned);
+                interned
+            }
+        }),
     )
     .unwrap();
 
@@ -285,7 +287,7 @@ fn read_unique_id() {
     assert_eq!(child.class, "Workspace");
 
     assert_eq!(
-        child.properties.get(hstr!("UniqueId")),
+        child.properties.get("UniqueId"),
         Some(&Variant::UniqueId(UniqueId::new(
             0x0048_15fc,
             0x02e9_c68d,
@@ -316,36 +318,28 @@ fn number_widening() {
     let int_value = tree.get_by_ref(tree.root().children()[0]).unwrap();
     assert_eq!(int_value.class, "IntValue");
     assert_eq!(
-        int_value.properties.get(hstr!("Value")),
+        int_value.properties.get("Value"),
         Some(&Variant::Int64(194))
     );
     let float_value = tree.get_by_ref(tree.root().children()[1]).unwrap();
     assert_eq!(float_value.class, "NumberValue");
     assert_eq!(
-        float_value.properties.get(hstr!("Value")),
+        float_value.properties.get("Value"),
         Some(&Variant::Float64(1337.0))
     );
 }
 
 #[test]
 fn migrated_properties() {
-    let tree = WeakDom::new(
-        InstanceBuilder::new(hstr!("Folder")).with_children([
-            InstanceBuilder::new(hstr!("ScreenGui"))
-                .with_property(hstr!("ScreenInsets"), Enum::from_u32(0)),
-            InstanceBuilder::new(hstr!("ScreenGui")).with_property(hstr!("IgnoreGuiInset"), true),
-            InstanceBuilder::new(hstr!("Part"))
-                .with_property(hstr!("Color"), Color3::new(1.0, 1.0, 1.0)),
-            InstanceBuilder::new(hstr!("Part"))
-                .with_property(hstr!("BrickColor"), BrickColor::Alder),
-            InstanceBuilder::new(hstr!("Part"))
-                .with_property(hstr!("BrickColor"), BrickColor::Alder),
-            InstanceBuilder::new(hstr!("TextLabel"))
-                .with_property(hstr!("FontFace"), Font::default()),
-            InstanceBuilder::new(hstr!("TextLabel"))
-                .with_property(hstr!("Font"), Enum::from_u32(8)),
-        ]),
-    );
+    let tree = WeakDom::new(InstanceBuilder::new("Folder").with_children([
+        InstanceBuilder::new("ScreenGui").with_property("ScreenInsets", Enum::from_u32(0)),
+        InstanceBuilder::new("ScreenGui").with_property("IgnoreGuiInset", true),
+        InstanceBuilder::new("Part").with_property("Color", Color3::new(1.0, 1.0, 1.0)),
+        InstanceBuilder::new("Part").with_property("BrickColor", BrickColor::Alder),
+        InstanceBuilder::new("Part").with_property("BrickColor", BrickColor::Alder),
+        InstanceBuilder::new("TextLabel").with_property("FontFace", Font::default()),
+        InstanceBuilder::new("TextLabel").with_property("Font", Enum::from_u32(8)),
+    ]));
 
     let mut encoded = Vec::new();
     crate::to_writer_default(&mut encoded, &tree, &[tree.root_ref()]).unwrap();
@@ -354,11 +348,9 @@ fn migrated_properties() {
 
 #[test]
 fn bad_migrated_property() {
-    let tree = WeakDom::new(
-        InstanceBuilder::new(hstr!("Folder"))
-            .with_children([InstanceBuilder::new(hstr!("TextLabel"))
-                .with_property(hstr!("Font"), Enum::from_u32(u32::MAX))]),
-    );
+    let tree = WeakDom::new(InstanceBuilder::new("Folder").with_children([
+        InstanceBuilder::new("TextLabel").with_property("Font", Enum::from_u32(u32::MAX)),
+    ]));
 
     let mut encoded = Vec::new();
     crate::to_writer_default(&mut encoded, &tree, &[tree.root_ref()]).unwrap();
@@ -367,8 +359,8 @@ fn bad_migrated_property() {
 
 #[test]
 fn enum_item_to_enum() {
-    let tree = WeakDom::new(InstanceBuilder::new(hstr!("Part")).with_property(
-        hstr!("Material"),
+    let tree = WeakDom::new(InstanceBuilder::new("Part").with_property(
+        "Material",
         EnumItem {
             ty: "Material".into(),
             value: 256,
@@ -383,7 +375,7 @@ fn enum_item_to_enum() {
         .get_by_ref(*decoded.root().children().first().unwrap())
         .unwrap()
         .properties
-        .get(hstr!("Material"))
+        .get("Material")
         .unwrap()
         .ty();
 

@@ -1,7 +1,7 @@
 use std::{collections::HashMap, fs, path::Path};
 
 use anyhow::{anyhow, bail, Context};
-use hash_str::{HashStrCache, HashStrHost};
+use hash_str::{strCache, strHost};
 use rbx_dom_weak::UnhashedStr;
 use rbx_reflection::{
     MigrationOperation, PropertyKind, PropertySerialization, ReflectionDatabase, Scriptability,
@@ -32,8 +32,8 @@ impl Patches {
     pub fn apply_pre_default<'db>(
         &self,
         database: &mut ReflectionDatabase<'db>,
-        cache: &mut HashStrCache<'db>,
-        host: &'db HashStrHost,
+        cache: &mut strCache<'db>,
+        host: &'db strHost,
     ) -> anyhow::Result<()> {
         for (class_name, class_changes) in &self.change {
             let class = database
@@ -101,8 +101,8 @@ impl Patches {
     pub fn apply_post_default<'db>(
         &self,
         database: &mut ReflectionDatabase<'db>,
-        cache: &mut HashStrCache<'db>,
-        host: &'db HashStrHost,
+        cache: &mut strCache<'db>,
+        host: &'db strHost,
     ) -> anyhow::Result<()> {
         // A map of every class to all subclasses, by name. This uses `String`
         // rather than some borrowed variant to get around borrowing `database`
@@ -196,8 +196,8 @@ pub enum DataType {
 impl DataType {
     fn make_data_type<'db>(
         &self,
-        cache: &mut HashStrCache<'db>,
-        host: &'db HashStrHost,
+        cache: &mut strCache<'db>,
+        host: &'db strHost,
     ) -> rbx_reflection::DataType<'db> {
         match self {
             &DataType::Value(variant_type) => rbx_reflection::DataType::Value(variant_type),
@@ -211,8 +211,8 @@ impl DataType {
 impl PropertyChange {
     fn make_kind<'db>(
         &self,
-        cache: &mut HashStrCache<'db>,
-        host: &'db HashStrHost,
+        cache: &mut strCache<'db>,
+        host: &'db strHost,
     ) -> Option<PropertyKind<'db>> {
         match (&self.alias_for, &self.serialization) {
             (Some(alias), None) => Some(PropertyKind::Alias {
@@ -254,8 +254,8 @@ pub struct PropertyMigration {
 impl Serialization {
     fn make_property_serialization<'db>(
         &self,
-        cache: &mut HashStrCache<'db>,
-        host: &'db HashStrHost,
+        cache: &mut strCache<'db>,
+        host: &'db strHost,
     ) -> PropertySerialization<'db> {
         match self {
             Serialization::Serializes => PropertySerialization::Serializes,

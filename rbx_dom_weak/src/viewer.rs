@@ -154,14 +154,13 @@ enum ViewedValue {
 #[cfg(test)]
 mod test {
     use super::*;
-    use hash_str::hstr;
 
     use crate::types::SharedString;
     use crate::InstanceBuilder;
 
     #[test]
     fn redact_single() {
-        let dom = WeakDom::new(InstanceBuilder::new(hstr!("Folder")).with_name("Root"));
+        let dom = WeakDom::new(InstanceBuilder::new("Folder").with_name("Root"));
 
         insta::assert_yaml_snapshot!(DomViewer::new().view(&dom));
     }
@@ -169,11 +168,12 @@ mod test {
     #[test]
     fn redact_multi() {
         let dom = WeakDom::new(
-            InstanceBuilder::new(hstr!("Folder"))
+            InstanceBuilder::new("Folder")
                 .with_name("Root")
-                .with_children((0..4).map(|i| {
-                    InstanceBuilder::new(hstr!("Folder")).with_name(format!("Child {}", i))
-                })),
+                .with_children(
+                    (0..4)
+                        .map(|i| InstanceBuilder::new("Folder").with_name(format!("Child {}", i))),
+                ),
         );
 
         insta::assert_yaml_snapshot!(DomViewer::new().view(&dom));
@@ -181,9 +181,9 @@ mod test {
 
     #[test]
     fn redact_values() {
-        let root = InstanceBuilder::new(hstr!("ObjectValue")).with_name("Root");
+        let root = InstanceBuilder::new("ObjectValue").with_name("Root");
         let root_ref = root.referent;
-        let root = root.with_property(hstr!("Value"), root_ref);
+        let root = root.with_property("Value", root_ref);
 
         let dom = WeakDom::new(root);
 
@@ -194,9 +194,9 @@ mod test {
     fn abbreviate_shared_string() {
         let shared_string = SharedString::new("foo".into());
 
-        let root = InstanceBuilder::new(hstr!("UnionOperation"))
+        let root = InstanceBuilder::new("UnionOperation")
             .with_name("Root")
-            .with_property(hstr!("PhysicalConfigData"), shared_string);
+            .with_property("PhysicalConfigData", shared_string);
 
         let dom = WeakDom::new(root);
 

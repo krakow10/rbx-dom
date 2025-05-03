@@ -7,8 +7,8 @@ use std::{
 
 use anyhow::{bail, Context};
 use clap::Parser;
-use hash_str::{HashStrCache, HashStrHost};
-use rbx_dom_weak::HashStrMap;
+use hash_str::{strCache, strHost};
+use rbx_dom_weak::strMap;
 use rbx_reflection::{
     ClassDescriptor, DataType, EnumDescriptor, PropertyDescriptor, PropertyKind,
     PropertySerialization, PropertyTag, ReflectionDatabase, Scriptability,
@@ -63,8 +63,8 @@ impl GenerateSubcommand {
         }
         .run()?;
 
-        let host = HashStrHost::new();
-        let mut cache = HashStrCache::new();
+        let host = strHost::new();
+        let mut cache = strCache::new();
 
         let mut database = ReflectionDatabase::new();
 
@@ -139,8 +139,8 @@ impl GenerateSubcommand {
 fn apply_dump<'db>(
     database: &mut ReflectionDatabase<'db>,
     dump: &Dump,
-    cache: &mut HashStrCache<'db>,
-    host: &'db HashStrHost,
+    cache: &mut strCache<'db>,
+    host: &'db strHost,
 ) -> anyhow::Result<()> {
     let mut ignored_properties = Vec::new();
 
@@ -158,7 +158,7 @@ fn apply_dump<'db>(
             }
         }
 
-        let mut properties = HashStrMap::default();
+        let mut properties = strMap::default();
 
         for member in &dump_class.members {
             if let DumpClassMember::Property(dump_property) = member {

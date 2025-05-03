@@ -1,7 +1,5 @@
 use std::io::{Read, Write};
 
-use hash_str::UnhashedStr;
-use rbx_dom_weak::HashStr;
 use rbx_reflection::{PropertyDescriptor, PropertyKind, PropertySerialization, ReflectionDatabase};
 
 use crate::{
@@ -42,7 +40,7 @@ pub trait XmlType: Sized {
 }
 
 pub fn find_canonical_property_descriptor<'de, 'db>(
-    class_name: &HashStr,
+    class_name: &str,
     property_name: &str,
     database: &'de ReflectionDatabase<'db>,
 ) -> Option<&'de PropertyDescriptor<'db>> {
@@ -51,7 +49,7 @@ pub fn find_canonical_property_descriptor<'de, 'db>(
 }
 
 pub fn find_serialized_property_descriptor<'de, 'db>(
-    class_name: &HashStr,
+    class_name: &str,
     property_name: &str,
     database: &'de ReflectionDatabase<'db>,
 ) -> Option<&'de PropertyDescriptor<'db>> {
@@ -62,7 +60,7 @@ pub fn find_serialized_property_descriptor<'de, 'db>(
 /// Find both the canonical and serialized property descriptors for a given
 /// class and property name pair. These might be the same descriptor!
 fn find_property_descriptors<'de, 'db>(
-    class_name: &HashStr,
+    class_name: &str,
     property_name: &str,
     database: &'de ReflectionDatabase<'db>,
 ) -> Option<(&'de PropertyDescriptor<'db>, &'de PropertyDescriptor<'db>)> {
@@ -78,10 +76,7 @@ fn find_property_descriptors<'de, 'db>(
     loop {
         // If this class descriptor knows about this property name,
         // we're pretty much done!
-        if let Some(property_descriptor) = current_class_descriptor
-            .properties
-            .get(UnhashedStr::from_ref(property_name))
-        {
+        if let Some(property_descriptor) = current_class_descriptor.properties.get(property_name) {
             match &property_descriptor.kind {
                 PropertyKind::Canonical { serialization } => match serialization {
                     PropertySerialization::Serializes | PropertySerialization::Migrate { .. } => {

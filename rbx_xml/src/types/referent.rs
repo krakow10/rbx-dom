@@ -11,8 +11,6 @@
 
 use std::io::{Read, Write};
 
-use hash_str::HashStr;
-
 use rbx_dom_weak::types::Ref;
 
 use crate::{
@@ -44,11 +42,11 @@ pub fn write_ref<W: Write>(
     Ok(())
 }
 
-pub fn read_ref<'dom, R: Read>(
+pub fn read_ref<'dom, R: Read, S>(
     reader: &mut XmlEventReader<R>,
     id: Ref,
-    property_name: &'dom HashStr,
-    state: &mut ParseState<'_, 'dom, '_>,
+    property_name: &'dom str,
+    state: &mut ParseState<'_, 'dom, '_, S>,
 ) -> Result<Ref, DecodeError> {
     let ref_contents = reader.read_tag_contents(XML_TAG_NAME)?;
 

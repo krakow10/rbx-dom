@@ -4,28 +4,27 @@
 use std::borrow::{Borrow, Cow};
 use std::convert::TryInto;
 
-use rbx_dom_weak::types::{ContentId, ContentType, Enum};
-use rbx_dom_weak::{
-    types::{Attributes, BrickColor, Color3uint8, MaterialColors, Tags, Variant, VariantType},
-    HashStr,
+use rbx_dom_weak::types::{
+    Attributes, BrickColor, Color3uint8, MaterialColors, Tags, Variant, VariantType,
 };
+use rbx_dom_weak::types::{ContentId, ContentType, Enum};
 
 pub trait ConvertVariant: Clone + Sized {
-    fn try_convert(self, class_name: &HashStr, target_type: VariantType) -> Result<Self, String> {
+    fn try_convert(self, class_name: &str, target_type: VariantType) -> Result<Self, String> {
         Self::try_convert_cow(class_name, Cow::Owned(self), target_type)
             .map(|value| value.into_owned())
     }
 
     fn try_convert_ref(
         &self,
-        class_name: &HashStr,
+        class_name: &str,
         target_type: VariantType,
     ) -> Result<Cow<'_, Self>, String> {
         Self::try_convert_cow(class_name, Cow::Borrowed(self), target_type)
     }
 
     fn try_convert_cow<'a>(
-        class_name: &HashStr,
+        class_name: &str,
         value: Cow<'a, Self>,
         target_type: VariantType,
     ) -> Result<Cow<'a, Self>, String>;
@@ -33,7 +32,7 @@ pub trait ConvertVariant: Clone + Sized {
 
 impl ConvertVariant for Variant {
     fn try_convert_cow<'a>(
-        class_name: &HashStr,
+        class_name: &str,
         value: Cow<'a, Self>,
         target_type: VariantType,
     ) -> Result<Cow<'a, Self>, String> {

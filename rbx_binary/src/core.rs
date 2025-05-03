@@ -4,7 +4,6 @@ use std::{
     mem,
 };
 
-use rbx_dom_weak::HashStr;
 use rbx_reflection::{
     ClassDescriptor, PropertyDescriptor, PropertyKind, PropertySerialization, ReflectionDatabase,
 };
@@ -356,12 +355,12 @@ where
     // which is valid for `properties.get(property_name)`
     Q: ?Sized,
     Q: core::hash::Hash + Eq,
-    &'db HashStr: Borrow<Q>,
+    &'db str: Borrow<Q>,
     // I don't understand why K is required here,
-    // Q should be enough with K = HashStr
+    // Q should be enough with K = str
     K: ?Sized,
     K: core::hash::Hash + Eq,
-    &'db HashStr: Borrow<K>,
+    &'db str: Borrow<K>,
 {
     let mut class_descriptor = database.classes.get(class_name)?;
 

@@ -5,7 +5,7 @@ mod state;
 use std::{io::Read, str};
 
 use rbx_dom_weak::WeakDom;
-use rbx_reflection::ReflectionDatabase;
+use rbx_reflection::{ReflectionDatabase, StringIntern};
 
 use self::state::DeserializerState;
 
@@ -67,10 +67,10 @@ impl<'de, 'db> Deserializer<'de, 'db> {
 
     /// Deserialize a Roblox binary model or place from the given stream using
     /// this deserializer.
-    pub fn deserialize<'dom, R: Read>(
+    pub fn deserialize<'dom, R: Read, S: StringIntern<'dom>>(
         &self,
         reader: R,
-        options: DecodeOptions<'de, 'dom>,
+        options: DecodeOptions<S>,
     ) -> Result<WeakDom<'dom>, Error>
     where
         'db: 'dom,

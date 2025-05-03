@@ -6,7 +6,6 @@ use std::{
 use anyhow::Context as _;
 use clap::Parser;
 use fs_err::File;
-use hash_str::UnhashedStr;
 
 use crate::ModelKind;
 
@@ -44,8 +43,7 @@ impl RemovePropCommand {
             let inst = dom.get_by_ref_mut(referent).unwrap();
             if inst.class == self.class_name {
                 log::trace!("Removed property {}.{}", inst.name, self.prop_name);
-                inst.properties
-                    .remove(UnhashedStr::from_ref(self.prop_name.as_str()));
+                inst.properties.remove(self.prop_name.as_str());
             }
             queue.extend_from_slice(inst.children());
         }

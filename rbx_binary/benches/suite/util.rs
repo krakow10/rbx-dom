@@ -1,5 +1,4 @@
 use criterion::{measurement::Measurement, BatchSize, BenchmarkGroup, Throughput};
-use hash_str::{HashStrCache, HashStrHost};
 
 use rbx_binary::DecodeOptions;
 
@@ -9,10 +8,20 @@ pub(crate) fn bench<T: Measurement>(group: &mut BenchmarkGroup<T>, bench_file: &
 }
 
 fn serialize_bench<T: Measurement>(group: &mut BenchmarkGroup<T>, buffer: &[u8]) {
-    let host = HashStrHost::new();
-    let mut cache = HashStrCache::new();
-    let tree =
-        rbx_binary::from_reader(buffer, DecodeOptions::read_unknown(&mut cache, &host)).unwrap();
+    let host = bumpalo::Bump::new();
+    let mut cache = ahash::HashSet::default();
+    let tree = rbx_binary::from_reader(
+        buffer,
+        DecodeOptions::read_unknown(|str: &str| match cache.get(str) {
+            Some(sint) => sint,
+            None => {
+                let interned = host.alloc_str(str) as &str;
+                cache.insert(interned);
+                interned
+            }
+        }),
+    )
+    .unwrap();
     let root_ref = tree.root_ref();
     let mut buffer = Vec::new();
 
@@ -38,14 +47,24 @@ fn serialize_bench<T: Measurement>(group: &mut BenchmarkGroup<T>, buffer: &[u8])
 }
 
 fn deserialize_bench<T: Measurement>(group: &mut BenchmarkGroup<T>, buffer: &[u8]) {
-    let host = HashStrHost::new();
-    let mut cache = HashStrCache::new();
+    let host = bumpalo::Bump::new();
+    let mut cache = ahash::HashSet::default();
     group
         .throughput(Throughput::Bytes(buffer.len() as u64))
         .bench_function("Deserialize", |bencher| {
             bencher.iter(|| {
-                rbx_binary::from_reader(buffer, DecodeOptions::read_unknown(&mut cache, &host))
-                    .unwrap();
+                rbx_binary::from_reader(
+                    buffer,
+                    DecodeOptions::read_unknown(|str: &str| match cache.get(str) {
+                        Some(sint) => sint,
+                        None => {
+                            let interned = host.alloc_str(str) as &str;
+                            cache.insert(interned);
+                            interned
+                        }
+                    }),
+                )
+                .unwrap();
             });
         });
 }

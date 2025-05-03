@@ -1,6 +1,5 @@
 //! Test to ensure the formatting of files does not change.
 
-use hash_str::{HashStrCache, HashStrHost};
 use rbx_dom_weak::DomViewer;
 
 const INPUT: &str = r#"<roblox version="4">
@@ -151,12 +150,19 @@ const INPUT: &str = r#"<roblox version="4">
 fn formatting() {
     let _ = env_logger::try_init();
 
-    let host = HashStrHost::new();
-    let mut cache = HashStrCache::new();
+    let host = bumpalo::Bump::new();
+    let mut cache = ahash::HashSet::default();
 
     let de = crate::from_str(
         INPUT,
-        crate::DecodeOptions::no_reflection(&mut cache, &host),
+        crate::DecodeOptions::no_reflection(|str: &str| match cache.get(str) {
+            Some(sint) => sint,
+            None => {
+                let interned = host.alloc_str(str) as &str;
+                cache.insert(interned);
+                interned
+            }
+        }),
     )
     .map_err(|e| panic!("cannot deserialize: {}", e))
     .unwrap();

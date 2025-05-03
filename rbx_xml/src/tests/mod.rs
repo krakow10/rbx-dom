@@ -6,7 +6,6 @@ mod models;
 
 use std::{fmt, fs, path::PathBuf};
 
-use hash_str::{HashStrCache, HashStrHost};
 use rbx_dom_weak::DomViewer;
 
 use crate::DecodeOptions;
@@ -24,13 +23,20 @@ pub fn test_suite(path: PathBuf) -> Result<(), Error> {
 
     let contents = fs::read(&path).map_err(|e| Error::new(e, "read"))?;
 
-    let host = HashStrHost::new();
-    let mut cache = HashStrCache::new();
+    let host = bumpalo::Bump::new();
+    let mut cache = ahash::HashSet::default();
     let database = rbx_reflection_database::get();
 
     let decoded = crate::from_reader(
         contents.as_slice(),
-        DecodeOptions::ignore_unknown(database, &mut cache, &host),
+        DecodeOptions::ignore_unknown(database, |str: &str| match cache.get(str) {
+            Some(sint) => sint,
+            None => {
+                let interned = host.alloc_str(str) as &str;
+                cache.insert(interned);
+                interned
+            }
+        }),
     )
     .map_err(|e| Error::new(e, "deserialize"))?;
     insta::assert_yaml_snapshot!(
@@ -48,7 +54,14 @@ pub fn test_suite(path: PathBuf) -> Result<(), Error> {
 
     let roundtrip = crate::from_reader(
         encoded.as_slice(),
-        DecodeOptions::read_unknown(database, &mut cache, &host),
+        DecodeOptions::read_unknown(database, |str: &str| match cache.get(str) {
+            Some(sint) => sint,
+            None => {
+                let interned = host.alloc_str(str) as &str;
+                cache.insert(interned);
+                interned
+            }
+        }),
     )
     .map_err(|e| Error::new(e, "roundtrip"))?;
     insta::assert_yaml_snapshot!(

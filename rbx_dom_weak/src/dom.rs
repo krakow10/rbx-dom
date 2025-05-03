@@ -1,7 +1,6 @@
 use std::collections::VecDeque;
 
 use ahash::{AHashMap, AHashSet};
-use hash_str::hstr;
 use rbx_types::{Ref, UniqueId, Variant};
 
 use crate::instance::{Instance, InstanceBuilder};
@@ -54,7 +53,7 @@ impl<'a> WeakDom<'a> {
         );
         let mut unique_ids = AHashSet::with_capacity(instances.len());
         for inst in instances.values() {
-            match inst.properties.get(hstr!("UniqueId")) {
+            match inst.properties.get("UniqueId") {
                 Some(Variant::UniqueId(id)) => {
                     if !unique_ids.insert(*id) {
                         panic!(
@@ -122,7 +121,7 @@ impl<'a> WeakDom<'a> {
     /// exists.
     pub fn get_unique_id(&self, referent: Ref) -> Option<UniqueId> {
         let inst = self.instances.get(&referent)?;
-        match inst.properties.get(hstr!("UniqueId")) {
+        match inst.properties.get("UniqueId") {
             Some(Variant::UniqueId(id)) => Some(*id),
             _ => None,
         }
@@ -425,7 +424,7 @@ impl<'a> WeakDom<'a> {
 
         // Unwrap is safe because we just inserted this referent into the instance map
         let instance = self.instances.get_mut(&referent).unwrap();
-        if let Some(Variant::UniqueId(unique_id)) = instance.properties.get(hstr!("UniqueId")) {
+        if let Some(Variant::UniqueId(unique_id)) = instance.properties.get("UniqueId") {
             if self.unique_ids.contains(unique_id) {
                 // We found a collision! We need to replace the UniqueId property with
                 // a new value.
@@ -437,7 +436,7 @@ impl<'a> WeakDom<'a> {
                 self.unique_ids.insert(new_unique_id);
                 instance
                     .properties
-                    .insert(hstr!("UniqueId"), Variant::UniqueId(new_unique_id));
+                    .insert("UniqueId", Variant::UniqueId(new_unique_id));
             } else {
                 self.unique_ids.insert(*unique_id);
             };
@@ -450,7 +449,7 @@ impl<'a> WeakDom<'a> {
             .remove(&referent)
             .unwrap_or_else(|| panic!("cannot remove an instance that does not exist"));
 
-        if let Some(Variant::UniqueId(unique_id)) = instance.properties.get(hstr!("UniqueId")) {
+        if let Some(Variant::UniqueId(unique_id)) = instance.properties.get("UniqueId") {
             self.unique_ids.remove(unique_id);
         }
 
@@ -577,13 +576,13 @@ mod test {
 
     #[test]
     fn transfer() {
-        let target = InstanceBuilder::new(hstr!("Folder"))
+        let target = InstanceBuilder::new("Folder")
             .with_name("Target")
-            .with_child(InstanceBuilder::new(hstr!("Part")).with_name("Some Child"));
+            .with_child(InstanceBuilder::new("Part").with_name("Some Child"));
         let target_ref = target.referent;
 
-        let mut source = WeakDom::new(InstanceBuilder::new(hstr!("Folder")).with_child(target));
-        let mut dest = WeakDom::new(InstanceBuilder::new(hstr!("DataModel")));
+        let mut source = WeakDom::new(InstanceBuilder::new("Folder").with_child(target));
+        let mut dest = WeakDom::new(InstanceBuilder::new("DataModel"));
 
         let mut viewer = DomViewer::new();
 
@@ -603,20 +602,20 @@ mod test {
 
     #[test]
     fn transfer_within() {
-        let subject = InstanceBuilder::new(hstr!("Folder"))
+        let subject = InstanceBuilder::new("Folder")
             .with_name("Root")
-            .with_child(InstanceBuilder::new(hstr!("SpawnLocation")));
+            .with_child(InstanceBuilder::new("SpawnLocation"));
         let subject_ref = subject.referent;
 
-        let source_parent = InstanceBuilder::new(hstr!("Folder"))
+        let source_parent = InstanceBuilder::new("Folder")
             .with_name("Source")
             .with_child(subject);
 
-        let dest_parent = InstanceBuilder::new(hstr!("Folder")).with_name("Dest");
+        let dest_parent = InstanceBuilder::new("Folder").with_name("Dest");
         let dest_parent_ref = dest_parent.referent;
 
         let mut dom = WeakDom::new(
-            InstanceBuilder::new(hstr!("Folder"))
+            InstanceBuilder::new("Folder")
                 .with_child(source_parent)
                 .with_child(dest_parent),
         );
@@ -634,15 +633,15 @@ mod test {
 
     #[test]
     fn clone_within() {
-        let mut child1 = InstanceBuilder::new(hstr!("Part")).with_name("Child1");
+        let mut child1 = InstanceBuilder::new("Part").with_name("Child1");
         let child1_ref = child1.referent;
 
         let mut dom = {
-            let root = InstanceBuilder::new(hstr!("Folder")).with_name("Root");
-            let mut child2 = InstanceBuilder::new(hstr!("Part")).with_name("Child2");
+            let root = InstanceBuilder::new("Folder").with_name("Root");
+            let mut child2 = InstanceBuilder::new("Part").with_name("Child2");
 
-            child1 = child1.with_property(hstr!("RefProp"), root.referent);
-            child2 = child2.with_property(hstr!("RefProp"), child1.referent);
+            child1 = child1.with_property("RefProp", root.referent);
+            child2 = child2.with_property("RefProp", child1.referent);
 
             WeakDom::new(root.with_child(child1.with_child(child2)))
         };
@@ -666,22 +665,22 @@ mod test {
     #[test]
     fn clone_into_external() {
         let dom = {
-            let mut child1 = InstanceBuilder::new(hstr!("Part")).with_name("Child1");
-            let mut child2 = InstanceBuilder::new(hstr!("Part")).with_name("Child2");
-            let mut child3 = InstanceBuilder::new(hstr!("Part")).with_name("Child3");
+            let mut child1 = InstanceBuilder::new("Part").with_name("Child1");
+            let mut child2 = InstanceBuilder::new("Part").with_name("Child2");
+            let mut child3 = InstanceBuilder::new("Part").with_name("Child3");
 
-            child1 = child1.with_property(hstr!("RefProp"), child2.referent);
-            child2 = child2.with_property(hstr!("RefProp"), child1.referent);
-            child3 = child3.with_property(hstr!("RefProp"), Ref::new());
+            child1 = child1.with_property("RefProp", child2.referent);
+            child2 = child2.with_property("RefProp", child1.referent);
+            child3 = child3.with_property("RefProp", Ref::new());
 
             WeakDom::new(
-                InstanceBuilder::new(hstr!("Folder"))
+                InstanceBuilder::new("Folder")
                     .with_name("Root")
                     .with_children([child1, child2, child3]),
             )
         };
 
-        let mut other_dom = WeakDom::new(InstanceBuilder::new(hstr!("DataModel")));
+        let mut other_dom = WeakDom::new(InstanceBuilder::new("DataModel"));
         let cloned_root = dom.clone_into_external(dom.root_ref, &mut other_dom);
 
         assert!(
@@ -707,20 +706,20 @@ mod test {
     #[test]
     fn clone_multiple_into_external() {
         let dom = {
-            let mut child1 = InstanceBuilder::new(hstr!("Part")).with_name("Child1");
-            let mut child2 = InstanceBuilder::new(hstr!("Part")).with_name("Child2");
+            let mut child1 = InstanceBuilder::new("Part").with_name("Child1");
+            let mut child2 = InstanceBuilder::new("Part").with_name("Child2");
 
-            child1 = child1.with_property(hstr!("RefProp"), child2.referent);
-            child2 = child2.with_property(hstr!("RefProp"), child1.referent);
+            child1 = child1.with_property("RefProp", child2.referent);
+            child2 = child2.with_property("RefProp", child1.referent);
 
             WeakDom::new(
-                InstanceBuilder::new(hstr!("Folder"))
+                InstanceBuilder::new("Folder")
                     .with_name("Root")
                     .with_children([child1, child2]),
             )
         };
 
-        let mut other_dom = WeakDom::new(InstanceBuilder::new(hstr!("DataModel")));
+        let mut other_dom = WeakDom::new(InstanceBuilder::new("DataModel"));
         let cloned = dom.clone_multiple_into_external(dom.root().children(), &mut other_dom);
 
         assert!(
@@ -751,10 +750,10 @@ mod test {
         const N: usize = i16::MAX as usize;
 
         let mut refs = Vec::with_capacity(N + 1);
-        let mut base = InstanceBuilder::new(hstr!("Folder"));
+        let mut base = InstanceBuilder::new("Folder");
         refs.push(base.referent());
         for _ in 0..N {
-            base = InstanceBuilder::new(hstr!("Folder")).with_child(base);
+            base = InstanceBuilder::new("Folder").with_child(base);
             refs.push(base.referent());
         }
         let _ = WeakDom::new(base);
@@ -763,8 +762,8 @@ mod test {
     #[test]
     fn unique_id_collision_weakdom_new() {
         let unique_id: UniqueId = UniqueId::now().unwrap();
-        let builder = InstanceBuilder::new(hstr!("Folder"))
-            .with_property(hstr!("UniqueId"), Variant::UniqueId(unique_id));
+        let builder =
+            InstanceBuilder::new("Folder").with_property("UniqueId", Variant::UniqueId(unique_id));
 
         // Should avoid a collision even if dom was created from a builder containing a
         // UniqueId prop at the root
@@ -773,12 +772,11 @@ mod test {
         // Try to make a collision!
         let child_ref = dom.insert(
             dom.root_ref(),
-            InstanceBuilder::new(hstr!("Folder"))
-                .with_property(hstr!("UniqueId"), Variant::UniqueId(unique_id)),
+            InstanceBuilder::new("Folder").with_property("UniqueId", Variant::UniqueId(unique_id)),
         );
 
         let child = dom.get_by_ref(child_ref).unwrap();
-        if let Some(Variant::UniqueId(actual_unique_id)) = child.properties.get(hstr!("UniqueId")) {
+        if let Some(Variant::UniqueId(actual_unique_id)) = child.properties.get("UniqueId") {
             assert_ne!(
                 unique_id,
                 *actual_unique_id,
@@ -791,23 +789,21 @@ mod test {
 
     #[test]
     fn unique_id_collision() {
-        let mut dom = WeakDom::new(InstanceBuilder::new(hstr!("DataModel")));
+        let mut dom = WeakDom::new(InstanceBuilder::new("DataModel"));
         let unique_id: UniqueId = UniqueId::now().unwrap();
         let parent_ref = dom.insert(
             dom.root_ref(),
-            InstanceBuilder::new(hstr!("Folder"))
-                .with_property(hstr!("UniqueId"), Variant::UniqueId(unique_id)),
+            InstanceBuilder::new("Folder").with_property("UniqueId", Variant::UniqueId(unique_id)),
         );
 
         // Try to make a collision!
         let child_ref = dom.insert(
             parent_ref,
-            InstanceBuilder::new(hstr!("Folder"))
-                .with_property(hstr!("UniqueId"), Variant::UniqueId(unique_id)),
+            InstanceBuilder::new("Folder").with_property("UniqueId", Variant::UniqueId(unique_id)),
         );
 
         let child = dom.get_by_ref(child_ref).unwrap();
-        if let Some(Variant::UniqueId(actual_unique_id)) = child.properties.get(hstr!("UniqueId")) {
+        if let Some(Variant::UniqueId(actual_unique_id)) = child.properties.get("UniqueId") {
             assert_ne!(
                 unique_id,
                 *actual_unique_id,
@@ -821,16 +817,15 @@ mod test {
     #[test]
     fn unique_id_no_collision() {
         let unique_id = UniqueId::now().unwrap();
-        let mut dom = WeakDom::new(InstanceBuilder::new(hstr!("DataModel")));
+        let mut dom = WeakDom::new(InstanceBuilder::new("DataModel"));
 
         let child_ref = dom.insert(
             dom.root_ref(),
-            InstanceBuilder::new(hstr!("Folder"))
-                .with_property(hstr!("UniqueId"), Variant::UniqueId(unique_id)),
+            InstanceBuilder::new("Folder").with_property("UniqueId", Variant::UniqueId(unique_id)),
         );
 
         let child = dom.get_by_ref(child_ref).unwrap();
-        if let Some(Variant::UniqueId(actual_unique_id)) = child.properties.get(hstr!("UniqueId")) {
+        if let Some(Variant::UniqueId(actual_unique_id)) = child.properties.get("UniqueId") {
             assert_eq!(
                 unique_id,
                 *actual_unique_id,
@@ -844,27 +839,24 @@ mod test {
     #[test]
     fn unique_id_collision_transfer() {
         let unique_id = UniqueId::now().unwrap();
-        let mut dom = WeakDom::new(InstanceBuilder::new(hstr!("DataModel")));
-        let mut other_dom = WeakDom::new(InstanceBuilder::new(hstr!("DataModel")));
+        let mut dom = WeakDom::new(InstanceBuilder::new("DataModel"));
+        let mut other_dom = WeakDom::new(InstanceBuilder::new("DataModel"));
 
         let folder_ref = dom.insert(
             dom.root_ref(),
-            InstanceBuilder::new(hstr!("Folder"))
-                .with_property(hstr!("UniqueId"), Variant::UniqueId(unique_id)),
+            InstanceBuilder::new("Folder").with_property("UniqueId", Variant::UniqueId(unique_id)),
         );
 
         other_dom.insert(
             other_dom.root_ref(),
-            InstanceBuilder::new(hstr!("Folder"))
-                .with_property(hstr!("UniqueId"), Variant::UniqueId(unique_id)),
+            InstanceBuilder::new("Folder").with_property("UniqueId", Variant::UniqueId(unique_id)),
         );
 
         let other_root_ref = other_dom.root_ref();
         dom.transfer(folder_ref, &mut other_dom, other_root_ref);
 
         let folder = other_dom.get_by_ref(folder_ref).unwrap();
-        if let Some(Variant::UniqueId(actual_unique_id)) = folder.properties.get(hstr!("UniqueId"))
-        {
+        if let Some(Variant::UniqueId(actual_unique_id)) = folder.properties.get("UniqueId") {
             assert_ne!(
                 unique_id, *actual_unique_id,
                 "WeakDom::transfer caused a UniqueId collision."
@@ -876,12 +868,12 @@ mod test {
 
     #[test]
     fn descendants() {
-        let mut dom = WeakDom::new(InstanceBuilder::new(hstr!("ROOT")));
+        let mut dom = WeakDom::new(InstanceBuilder::new("ROOT"));
 
-        let child_1 = dom.insert(dom.root_ref(), InstanceBuilder::new(hstr!("Folder")));
-        let sibling_1 = dom.insert(child_1, InstanceBuilder::new(hstr!("Folder")));
-        let child_2 = dom.insert(dom.root_ref(), InstanceBuilder::new(hstr!("Folder")));
-        let sibling_2 = dom.insert(child_1, InstanceBuilder::new(hstr!("Folder")));
+        let child_1 = dom.insert(dom.root_ref(), InstanceBuilder::new("Folder"));
+        let sibling_1 = dom.insert(child_1, InstanceBuilder::new("Folder"));
+        let child_2 = dom.insert(dom.root_ref(), InstanceBuilder::new("Folder"));
+        let sibling_2 = dom.insert(child_1, InstanceBuilder::new("Folder"));
 
         let mut descendants = dom.descendants();
         assert_eq!(descendants.next().unwrap().referent(), dom.root_ref());
@@ -900,16 +892,16 @@ mod test {
 
     #[test]
     fn from_raw() {
-        let mut dom = WeakDom::new(InstanceBuilder::new(hstr!("ROOT")));
+        let mut dom = WeakDom::new(InstanceBuilder::new("ROOT"));
 
-        let parent = dom.insert(dom.root_ref, InstanceBuilder::new(hstr!("Folder")));
+        let parent = dom.insert(dom.root_ref, InstanceBuilder::new("Folder"));
         let child_1 = dom.insert(
             parent,
-            InstanceBuilder::new(hstr!("ObjectValue")).with_property(hstr!("Value"), parent),
+            InstanceBuilder::new("ObjectValue").with_property("Value", parent),
         );
         let child_2 = dom.insert(
             parent,
-            InstanceBuilder::new(hstr!("ObjectValue")).with_property(hstr!("Value"), child_1),
+            InstanceBuilder::new("ObjectValue").with_property("Value", child_1),
         );
 
         let (old_root, tree) = dom.into_raw();
@@ -939,7 +931,7 @@ mod test {
             .get_by_ref(child_1)
             .unwrap()
             .properties
-            .get(hstr!("Value"))
+            .get("Value")
             .unwrap()
         else {
             panic!("child_1.Value was not a Ref. How did this happen?")
@@ -948,7 +940,7 @@ mod test {
             .get_by_ref(child_2)
             .unwrap()
             .properties
-            .get(hstr!("Value"))
+            .get("Value")
             .unwrap()
         else {
             panic!("child_1.Value was not a Ref. How did this happen?")
@@ -967,10 +959,10 @@ mod test {
     #[test]
     #[should_panic = "UniqueId 123456789abcdef09abcdef012345678 is duplicated in the provided `instances` map"]
     fn from_raw_duplicate_unique_id() {
-        let mut dom = WeakDom::new(InstanceBuilder::new(hstr!("ROOT")));
+        let mut dom = WeakDom::new(InstanceBuilder::new("ROOT"));
 
-        let inst_ref_1 = dom.insert(dom.root_ref(), InstanceBuilder::new(hstr!("Folder")));
-        let inst_ref_2 = dom.insert(dom.root_ref(), InstanceBuilder::new(hstr!("Folder")));
+        let inst_ref_1 = dom.insert(dom.root_ref(), InstanceBuilder::new("Folder"));
+        let inst_ref_2 = dom.insert(dom.root_ref(), InstanceBuilder::new("Folder"));
         let (root, mut tree) = dom.into_raw();
 
         // Deterministic for the panic above
@@ -978,31 +970,31 @@ mod test {
         tree.get_mut(&inst_ref_1)
             .unwrap()
             .properties
-            .insert(hstr!("UniqueId"), id.into());
+            .insert("UniqueId", id.into());
         tree.get_mut(&inst_ref_2)
             .unwrap()
             .properties
-            .insert(hstr!("UniqueId"), id.into());
+            .insert("UniqueId", id.into());
 
         let _ = WeakDom::from_raw(root, tree);
     }
 
     #[test]
     fn from_raw_normal_unique_id() {
-        let mut dom = WeakDom::new(InstanceBuilder::new(hstr!("ROOT")));
+        let mut dom = WeakDom::new(InstanceBuilder::new("ROOT"));
 
-        let inst_ref_1 = dom.insert(dom.root_ref(), InstanceBuilder::new(hstr!("Folder")));
-        let inst_ref_2 = dom.insert(dom.root_ref(), InstanceBuilder::new(hstr!("Folder")));
+        let inst_ref_1 = dom.insert(dom.root_ref(), InstanceBuilder::new("Folder"));
+        let inst_ref_2 = dom.insert(dom.root_ref(), InstanceBuilder::new("Folder"));
         let (root, mut tree) = dom.into_raw();
 
         tree.get_mut(&inst_ref_1)
             .unwrap()
             .properties
-            .insert(hstr!("UniqueId"), UniqueId::now().unwrap().into());
+            .insert("UniqueId", UniqueId::now().unwrap().into());
         tree.get_mut(&inst_ref_2)
             .unwrap()
             .properties
-            .insert(hstr!("UniqueId"), UniqueId::now().unwrap().into());
+            .insert("UniqueId", UniqueId::now().unwrap().into());
 
         let _ = WeakDom::from_raw(root, tree);
     }

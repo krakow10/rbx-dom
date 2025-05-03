@@ -39,9 +39,9 @@ To write a model or place file using rbx_binary's default settings, use
 use std::fs::File;
 use std::io::BufWriter;
 
-use rbx_dom_weak::{hstr, InstanceBuilder, WeakDom};
+use rbx_dom_weak::{InstanceBuilder, WeakDom};
 
-let dom = WeakDom::new(InstanceBuilder::new(hstr!("Folder")));
+let dom = WeakDom::new(InstanceBuilder::new("Folder"));
 
 // Using buffered I/O is recommended with rbx_binary
 let output = BufWriter::new(File::create("PlainFolder.rbxm")?);
@@ -68,6 +68,7 @@ mod tests;
 use std::io::{Read, Write};
 
 use rbx_dom_weak::{types::Ref, WeakDom};
+use rbx_reflection::StringIntern;
 
 /// An unstable textual format that can be used to debug binary models.
 #[cfg(feature = "unstable_text_format")]
@@ -83,9 +84,9 @@ pub use crate::{
 pub use crate::deserializer::DecodeOptions;
 
 /// Deserialize a Roblox binary model or place from a stream using the provided options.
-pub fn from_reader<'dom, R: Read>(
+pub fn from_reader<'dom, R: Read, S: StringIntern<'dom>>(
     reader: R,
-    options: DecodeOptions<'_, 'dom>,
+    options: DecodeOptions<S>,
 ) -> Result<WeakDom<'dom>, DecodeError> {
     Deserializer::new().deserialize(reader, options)
 }

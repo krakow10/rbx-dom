@@ -6,7 +6,7 @@ use std::{
 };
 
 use anyhow::Context;
-use hash_str::{HashStrCache, HashStrHost};
+use hash_str::{strCache, strHost};
 use rbx_dom_weak::Instance;
 use rbx_reflection::ReflectionDatabase;
 use rbx_types::VariantType;
@@ -14,8 +14,8 @@ use rbx_types::VariantType;
 pub fn apply_defaults<'de, 'db: 'de>(
     database: &'de mut ReflectionDatabase<'db>,
     defaults_place: &PathBuf,
-    cache: &mut HashStrCache<'db>,
-    host: &'db HashStrHost,
+    cache: &mut strCache<'db>,
+    host: &'db strHost,
 ) -> anyhow::Result<()> {
     let file = BufReader::new(File::open(defaults_place).context("Could not find defaults place")?);
 

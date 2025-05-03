@@ -2,9 +2,8 @@
 // for most cases.
 #![allow(clippy::new_without_default)]
 
-use std::collections::HashSet;
+use ahash::{HashMap, HashSet};
 
-use hash_str::{HashStr, HashStrMap};
 use rbx_types::{Variant, VariantType};
 use serde::{Deserialize, Serialize};
 
@@ -22,12 +21,12 @@ pub struct ReflectionDatabase<'a> {
     /// All of the the known classes in the database.
     #[serde(borrow)]
     #[serde(serialize_with = "crate::serde_util::ordered_map")]
-    pub classes: HashStrMap<'a, ClassDescriptor<'a>>,
+    pub classes: HashMap<&'a str, ClassDescriptor<'a>>,
 
     /// All of the known enums in the database.
     #[serde(borrow)]
     #[serde(default, serialize_with = "crate::serde_util::ordered_map")]
-    pub enums: HashStrMap<'a, EnumDescriptor<'a>>,
+    pub enums: HashMap<&'a str, EnumDescriptor<'a>>,
 }
 
 impl<'a> ReflectionDatabase<'a> {
@@ -35,8 +34,8 @@ impl<'a> ReflectionDatabase<'a> {
     pub fn new() -> Self {
         Self {
             version: [0, 0, 0, 0],
-            classes: HashStrMap::default(),
-            enums: HashStrMap::default(),
+            classes: HashMap::default(),
+            enums: HashMap::default(),
         }
     }
 
@@ -87,7 +86,7 @@ impl<'a> ReflectionDatabase<'a> {
     pub fn find_default_property(
         &'a self,
         mut class: &'a ClassDescriptor<'a>,
-        property_name: &'a HashStr,
+        property_name: &'a str,
     ) -> Option<&'a Variant> {
         loop {
             match class.default_properties.get(property_name) {
@@ -111,7 +110,7 @@ impl<'a> ReflectionDatabase<'a> {
 pub struct ClassDescriptor<'a> {
     /// The name of the class, like "Folder" or "FlagStand".
     #[serde(borrow)]
-    pub name: &'a HashStr,
+    pub name: &'a str,
 
     /// A set of all of the tags attached to this class.
     #[serde(serialize_with = "crate::serde_util::ordered_set")]
@@ -121,29 +120,29 @@ pub struct ClassDescriptor<'a> {
     /// class.
     #[serde(default)]
     #[serde(borrow)]
-    pub superclass: Option<&'a HashStr>,
+    pub superclass: Option<&'a str>,
 
     /// A map of all of the properties available on this class.
     #[serde(borrow)]
     #[serde(serialize_with = "crate::serde_util::ordered_map")]
-    pub properties: HashStrMap<'a, PropertyDescriptor<'a>>,
+    pub properties: HashMap<&'a str, PropertyDescriptor<'a>>,
 
     /// A map of the default properties for this instance if a value is not
     /// defined in serialization or freshly inserted with `Instance.new`.
     #[serde(borrow)]
     #[serde(serialize_with = "crate::serde_util::ordered_map")]
-    pub default_properties: HashStrMap<'a, Variant>,
+    pub default_properties: HashMap<&'a str, Variant>,
 }
 
 impl<'a> ClassDescriptor<'a> {
     /// Creates a new `ClassDescriptor` with the given name.
-    pub fn new(name: &'a HashStr) -> Self {
+    pub fn new(name: &'a str) -> Self {
         Self {
             name,
-            tags: HashSet::new(),
+            tags: HashSet::default(),
             superclass: None,
-            properties: HashStrMap::default(),
-            default_properties: HashStrMap::default(),
+            properties: HashMap::default(),
+            default_properties: HashMap::default(),
         }
     }
 }
@@ -155,7 +154,7 @@ impl<'a> ClassDescriptor<'a> {
 pub struct PropertyDescriptor<'a> {
     /// The name of the property, like "Position" or "heat_xml".
     #[serde(borrow)]
-    pub name: &'a HashStr,
+    pub name: &'a str,
 
     /// The maximum access to this property available to Lua.
     pub scriptability: Scriptability,
@@ -175,12 +174,12 @@ pub struct PropertyDescriptor<'a> {
 
 impl<'a> PropertyDescriptor<'a> {
     /// Creates a new `PropertyDescriptor` with the given name and type.
-    pub fn new(name: &'a HashStr, data_type: DataType<'a>) -> Self {
+    pub fn new(name: &'a str, data_type: DataType<'a>) -> Self {
         Self {
             name,
             scriptability: Scriptability::None,
             data_type,
-            tags: HashSet::new(),
+            tags: HashSet::default(),
             kind: PropertyKind::Canonical {
                 serialization: PropertySerialization::Serializes,
             },
@@ -202,7 +201,7 @@ pub enum PropertyKind<'a> {
     #[serde(rename_all = "PascalCase")]
     Alias {
         #[serde(borrow)]
-        alias_for: &'a HashStr,
+        alias_for: &'a str,
     },
 }
 
@@ -217,7 +216,7 @@ pub enum PropertySerialization<'a> {
 
     /// The property aliases a property with the given name and should serialize
     /// from that property descriptor instead.
-    SerializesAs(#[serde(borrow)] &'a HashStr),
+    SerializesAs(#[serde(borrow)] &'a str),
 
     /// The property was originally serialized as itself, but should be migrated
     /// to a new property on deserialization. If the new property already
@@ -232,7 +231,7 @@ pub enum DataType<'a> {
     Value(VariantType),
 
     /// The property is an enum with the given name.
-    Enum(#[serde(borrow)] &'a HashStr),
+    Enum(#[serde(borrow)] &'a str),
 }
 
 /// Defines how Lua can access a property, if at all.
@@ -264,20 +263,20 @@ pub enum Scriptability {
 pub struct EnumDescriptor<'a> {
     /// The name of the enum, like "FormFactor" or "Material".
     #[serde(borrow)]
-    pub name: &'a HashStr,
+    pub name: &'a str,
 
     /// All of the members of this enum, stored as a map from names to values.
     #[serde(borrow)]
     #[serde(serialize_with = "crate::serde_util::ordered_map")]
-    pub items: HashStrMap<'a, u32>,
+    pub items: HashMap<&'a str, u32>,
 }
 
 impl<'a> EnumDescriptor<'a> {
     /// Create a new `EnumDescriptor` with the given name and no items.
-    pub fn new(name: &'a HashStr) -> Self {
+    pub fn new(name: &'a str) -> Self {
         Self {
             name,
-            items: HashStrMap::default(),
+            items: HashMap::default(),
         }
     }
 }

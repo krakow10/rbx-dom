@@ -7,9 +7,9 @@
 //! wrapping it with an [`WeakDom`]:
 //!
 //! ```
-//! use rbx_dom_weak::{hstr, InstanceBuilder, WeakDom};
+//! use rbx_dom_weak::{InstanceBuilder, WeakDom};
 //!
-//! let dm = InstanceBuilder::new(hstr!("DataModel"));
+//! let dm = InstanceBuilder::new("DataModel");
 //!
 //! let mut dom = WeakDom::new(dm);
 //!
@@ -20,14 +20,14 @@
 //! [`WeakDom::get_by_ref`] to add instances to the tree and retrieve them.
 //!
 //! ```
-//! use rbx_dom_weak::{hstr, InstanceBuilder, WeakDom};
+//! use rbx_dom_weak::{InstanceBuilder, WeakDom};
 //!
-//! let mut dom = WeakDom::new(InstanceBuilder::new(hstr!("DataModel")));
+//! let mut dom = WeakDom::new(InstanceBuilder::new("DataModel"));
 //!
 //! // We can define properties using any type that can be converted to an
 //! // rbx_dom_weak::types::Variant.
-//! let http_service = InstanceBuilder::new(hstr!("HttpService"))
-//!     .with_property(hstr!("HttpEnabled"), true);
+//! let http_service = InstanceBuilder::new("HttpService")
+//!     .with_property("HttpEnabled", true);
 //!
 //! let http_service_id = dom.insert(dom.root_ref(), http_service);
 //!
@@ -48,7 +48,6 @@ mod viewer;
 pub use rbx_types as types;
 
 pub use ahash::AHashMap;
-pub use hash_str::{hstr, HashStr, HashStrMap, HashStrSet, UnhashedStr};
 
 pub use crate::{
     dom::WeakDom,
@@ -56,26 +55,13 @@ pub use crate::{
     viewer::{DomViewer, ViewedInstance},
 };
 
-/// Helper trait that provides convenience methods for `AHashMap` and `HashStrMap`.
+/// Helper trait that provides convenience methods for `AHashMap` and `strMap`.
 pub trait HashMapExt {
     /// Constructs an empty map.
     fn new() -> Self;
 
     /// Constructs an empty map with at least the specified capacity.
     fn with_capacity(capacity: usize) -> Self;
-}
-
-impl<'a, V> HashMapExt for HashStrMap<'a, V> {
-    /// Creates an empty `HashStrMap` using the default value for its hasher.
-    fn new() -> Self {
-        HashStrMap::default()
-    }
-
-    /// Creates an empty `HashStrMap` with at least the specified capacity using
-    /// the default value for its hasher.
-    fn with_capacity(capacity: usize) -> Self {
-        HashStrMap::with_capacity_and_hasher(capacity, Default::default())
-    }
 }
 
 impl<K, V> HashMapExt for AHashMap<K, V> {

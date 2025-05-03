@@ -2,7 +2,6 @@
 
 use std::io::{Read, Write};
 
-use hash_str::HashStr;
 use rbx_dom_weak::types::{BinaryString, Ref, SharedString, Variant};
 
 use crate::{
@@ -35,11 +34,11 @@ pub fn write_shared_string<W: Write>(
     Ok(())
 }
 
-pub fn read_shared_string<'dom, R: Read>(
+pub fn read_shared_string<'dom, R: Read, S>(
     reader: &mut XmlEventReader<R>,
     referent: Ref,
-    property_name: &'dom HashStr,
-    state: &mut ParseState<'_, 'dom, '_>,
+    property_name: &'dom str,
+    state: &mut ParseState<'_, 'dom, '_, S>,
 ) -> Result<Variant, DecodeError> {
     let contents = reader.read_tag_contents(XML_TAG_NAME)?;
 

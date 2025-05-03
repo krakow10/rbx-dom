@@ -1,4 +1,4 @@
-use hash_str::{hstr, HashStr, HashStrMap};
+use ahash::HashMap;
 use rbx_types::{Ref, Variant};
 
 /**
@@ -9,23 +9,23 @@ Represents an instance that can be turned into a new
 Instances have the given ClassName and Name and no properties by default.
 
 ```
-use rbx_dom_weak::{hstr, InstanceBuilder, WeakDom};
+use rbx_dom_weak::{InstanceBuilder, WeakDom};
 
-let data_model = InstanceBuilder::new(hstr!("DataModel"));
+let data_model = InstanceBuilder::new("DataModel");
 let dom = WeakDom::new(data_model);
 ```
 
 Properties and children can be added to the builder.
 
 ```
-use rbx_dom_weak::{hstr, InstanceBuilder, WeakDom};
+use rbx_dom_weak::{InstanceBuilder, WeakDom};
 use rbx_dom_weak::types::Color3;
 
-let data_model = InstanceBuilder::new(hstr!("DataModel"))
-    .with_child(InstanceBuilder::new(hstr!("Workspace"))
-        .with_property(hstr!("FilteringEnabled"), true))
-    .with_child(InstanceBuilder::new(hstr!("Lighting"))
-        .with_property(hstr!("Ambient"), Color3::new(1.0, 0.0, 0.0)));
+let data_model = InstanceBuilder::new("DataModel")
+    .with_child(InstanceBuilder::new("Workspace")
+        .with_property("FilteringEnabled", true))
+    .with_child(InstanceBuilder::new("Lighting")
+        .with_property("Ambient", Color3::new(1.0, 0.0, 0.0)));
 
 let dom = WeakDom::new(data_model);
 ```
@@ -34,15 +34,15 @@ let dom = WeakDom::new(data_model);
 pub struct InstanceBuilder<'a> {
     pub(crate) referent: Ref,
     pub(crate) name: String,
-    pub(crate) class: &'a HashStr,
-    pub(crate) properties: Vec<(&'a HashStr, Variant)>,
+    pub(crate) class: &'a str,
+    pub(crate) properties: Vec<(&'a str, Variant)>,
     pub(crate) children: Vec<InstanceBuilder<'a>>,
 }
 
 impl<'a> InstanceBuilder<'a> {
     /// Create a new `InstanceBuilder` with the given ClassName. This is also
     /// used as the instance's Name, unless overwritten later.
-    pub fn new(class: &'a HashStr) -> Self {
+    pub fn new(class: &'a str) -> Self {
         let name = class.to_string();
 
         InstanceBuilder {
@@ -56,7 +56,7 @@ impl<'a> InstanceBuilder<'a> {
 
     /// Create a new `InstanceBuilder` with the given ClassName and with a
     /// property table with at least enough space for the given capacity.
-    pub fn with_property_capacity(class: &'a HashStr, capacity: usize) -> Self {
+    pub fn with_property_capacity(class: &'a str, capacity: usize) -> Self {
         let name = class.to_string();
 
         InstanceBuilder {
@@ -73,7 +73,7 @@ impl<'a> InstanceBuilder<'a> {
         InstanceBuilder {
             referent: Ref::new(),
             name: String::new(),
-            class: hstr!(""),
+            class: "",
             properties: Vec::new(),
             children: Vec::new(),
         }
@@ -106,28 +106,28 @@ impl<'a> InstanceBuilder<'a> {
     }
 
     /// Change the class of the `InstanceBuilder`.
-    pub fn with_class(self, class: &'a HashStr) -> Self {
+    pub fn with_class(self, class: &'a str) -> Self {
         Self { class, ..self }
     }
 
     /// Change the class of the `InstanceBuilder`.
-    pub fn set_class(&mut self, class: &'a HashStr) {
+    pub fn set_class(&mut self, class: &'a str) {
         self.class = class;
     }
 
     /// Add a new property to the `InstanceBuilder`.
-    pub fn with_property<V: Into<Variant>>(mut self, key: &'a HashStr, value: V) -> Self {
+    pub fn with_property<V: Into<Variant>>(mut self, key: &'a str, value: V) -> Self {
         self.properties.push((key, value.into()));
         self
     }
 
     /// Add a new property to the `InstanceBuilder`.
-    pub fn add_property<V: Into<Variant>>(&mut self, key: &'a HashStr, value: V) {
+    pub fn add_property<V: Into<Variant>>(&mut self, key: &'a str, value: V) {
         self.properties.push((key.into(), value.into()));
     }
 
     /// Check if the `InstanceBuilder` already has a property with the given key.
-    pub fn has_property(&self, key: &'a HashStr) -> bool {
+    pub fn has_property(&self, key: &'a str) -> bool {
         self.properties.iter().any(|(k, _)| *k == key)
     }
 
@@ -135,7 +135,7 @@ impl<'a> InstanceBuilder<'a> {
     pub fn with_properties<V, I>(mut self, props: I) -> Self
     where
         V: Into<Variant>,
-        I: IntoIterator<Item = (&'a HashStr, V)>,
+        I: IntoIterator<Item = (&'a str, V)>,
     {
         let props = props.into_iter().map(|(k, v)| (k.into(), v.into()));
         self.properties.extend(props);
@@ -147,7 +147,7 @@ impl<'a> InstanceBuilder<'a> {
     pub fn add_properties<V, I>(&mut self, props: I)
     where
         V: Into<Variant>,
-        I: IntoIterator<Item = (&'a HashStr, V)>,
+        I: IntoIterator<Item = (&'a str, V)>,
     {
         let props = props.into_iter().map(|(k, v)| (k.into(), v.into()));
         self.properties.extend(props);
@@ -200,10 +200,10 @@ pub struct Instance<'a> {
     pub name: String,
 
     /// The instance's class, corresponding to the `ClassName` property.
-    pub class: &'a HashStr,
+    pub class: &'a str,
 
     /// Any properties stored on the object that are not `Name` or `ClassName`.
-    pub properties: HashStrMap<'a, Variant>,
+    pub properties: HashMap<&'a str, Variant>,
 }
 
 impl Instance<'_> {

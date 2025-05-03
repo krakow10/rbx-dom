@@ -1,4 +1,3 @@
-use hash_str::HashStr;
 use rbx_types::{Content, Enum, Font, FontStyle, FontWeight, Variant};
 use serde::{Deserialize, Serialize};
 use thiserror::Error;
@@ -26,7 +25,7 @@ pub enum MigrationError {
 pub struct PropertyMigration<'a> {
     #[serde(borrow)]
     #[serde(rename = "To")]
-    pub new_property_name: &'a HashStr,
+    pub new_property_name: &'a str,
     pub migration: MigrationOperation,
 }
 

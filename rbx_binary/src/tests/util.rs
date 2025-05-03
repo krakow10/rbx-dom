@@ -1,6 +1,5 @@
 use std::{fs, path::Path};
 
-use hash_str::{HashStrCache, HashStrHost};
 use rbx_dom_weak::DomViewer;
 
 use crate::{deserializer::DecodeOptions, from_reader, text_deserializer::DecodedModel, to_writer};
@@ -29,11 +28,18 @@ pub fn run_model_base_suite(model_path: impl AsRef<Path>) {
 
     // Decode the test file and snapshot a stable version of the resulting tree.
     // This should properly test the deserializer.
-    let host = HashStrHost::new();
-    let mut cache = HashStrCache::new();
+    let host = bumpalo::Bump::new();
+    let mut cache = ahash::HashSet::default();
     let decoded = from_reader(
         contents.as_slice(),
-        DecodeOptions::read_unknown(&mut cache, &host),
+        DecodeOptions::read_unknown(|str: &str| match cache.get(str) {
+            Some(sint) => sint,
+            None => {
+                let interned = host.alloc_str(str) as &str;
+                cache.insert(interned);
+                interned
+            }
+        }),
     )
     .unwrap();
     let decoded_viewed = DomViewer::new().view_children(&decoded);
@@ -60,7 +66,14 @@ pub fn run_model_base_suite(model_path: impl AsRef<Path>) {
     // the same as the original decoding of the test file.
     from_reader(
         encoded.as_slice(),
-        DecodeOptions::read_unknown(&mut cache, &host),
+        DecodeOptions::read_unknown(|str: &str| match cache.get(str) {
+            Some(sint) => sint,
+            None => {
+                let interned = host.alloc_str(str) as &str;
+                cache.insert(interned);
+                interned
+            }
+        }),
     )
     .unwrap();
 }

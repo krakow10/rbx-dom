@@ -1,9 +1,7 @@
 use std::{borrow::Cow, collections::VecDeque, convert::TryInto, io::Read};
 
 use ahash::{HashMap, HashMapExt, HashSet, HashSetExt};
-use hash_str::{HashStrCache, HashStrHost, UnhashedStr};
 use rbx_dom_weak::{
-    hstr,
     types::{
         Attributes, Axes, BinaryString, BrickColor, CFrame, Color3, Color3uint8, ColorSequence,
         ColorSequenceKeypoint, Content, ContentId, CustomPhysicalProperties, Enum, Faces, Font,
@@ -12,9 +10,11 @@ use rbx_dom_weak::{
         SharedString, Tags, UDim, UDim2, UniqueId, Variant, VariantType, Vector2, Vector3,
         Vector3int16,
     },
-    HashStr, InstanceBuilder, WeakDom,
+    InstanceBuilder, WeakDom,
 };
-use rbx_reflection::{DataType, PropertyKind, PropertySerialization, ReflectionDatabase};
+use rbx_reflection::{
+    DataType, InternFunction, PropertyKind, PropertySerialization, ReflectionDatabase, StringIntern,
+};
 
 use crate::{
     chunk::Chunk,
@@ -25,25 +25,24 @@ use crate::{
 use super::{error::InnerError, header::FileHeader, Deserializer};
 
 /// Options available for deserializing a binary-format model or place.
-#[derive(Debug, Default)]
+#[derive(Debug)]
 #[non_exhaustive]
-pub enum DecodeOptions<'de, 'dom> {
+pub enum DecodeOptions<S> {
     /// Returns an error if any properties are found that aren't known by
     /// rbx_binary.
-    #[default]
     ErrorOnUnknown,
     /// Ignores properties not known by rbx_binary.
     IgnoreUnknown,
     /// Allows properties not known by rbx_binary to be represented in
     /// the dom.
     ReadUnknown {
-        /// String internment deduplication cache.
-        cache: &'de mut HashStrCache<'dom>,
-        /// String internment storage host.
-        host: &'dom HashStrHost,
+        /// String interner.  Can be any closure `fn(&str) -> &str`,
+        /// as long as the provided string outlives the dom.
+        interner: S,
     },
 }
-impl<'de, 'dom> DecodeOptions<'de, 'dom> {
+
+impl DecodeOptions<InternFunction<'static>> {
     /// Constructs a `DecodeOptions` which specifies to error upon encountering an unknown property or class.
     #[inline]
     pub fn error_on_unknown() -> Self {
@@ -54,19 +53,26 @@ impl<'de, 'dom> DecodeOptions<'de, 'dom> {
     pub fn ignore_unknown() -> Self {
         DecodeOptions::IgnoreUnknown
     }
+}
+impl<'dom, S: StringIntern<'dom>> DecodeOptions<S> {
     /// Constructs a `DecodeOptions` which uses the specified database and string internment to manage unknown properties and classes.
     #[inline]
-    pub fn read_unknown(cache: &'de mut HashStrCache<'dom>, host: &'dom HashStrHost) -> Self {
-        DecodeOptions::ReadUnknown { cache, host }
+    pub fn read_unknown(interner: S) -> Self {
+        DecodeOptions::ReadUnknown { interner }
+    }
+}
+impl Default for DecodeOptions<InternFunction<'static>> {
+    fn default() -> Self {
+        Self::ignore_unknown()
     }
 }
 
-pub(super) struct DeserializerState<'de, 'db, 'dom, R> {
+pub(super) struct DeserializerState<'de, 'db, 'dom, R, S> {
     /// The user-provided configuration that we should use.
     deserializer: &'de Deserializer<'de, 'db>,
 
     /// The user-provided configuration that we should use.
-    options: DecodeOptions<'de, 'dom>,
+    options: DecodeOptions<S>,
 
     /// The input data encoded as a binary model.
     input: R,
@@ -107,7 +113,7 @@ struct TypeInfo<'dom> {
     type_id: u32,
 
     /// The common name for this type like `Folder` or `UserInputService`.
-    type_name: &'dom HashStr,
+    type_name: &'dom str,
 
     /// A list of the instances described by this file that are this type.
     referents: Vec<i32>,
@@ -131,19 +137,19 @@ struct Instance<'dom> {
 /// others (like Font, which has been superceded by FontFace).
 #[derive(Debug)]
 struct CanonicalProperty<'de, 'dom, 'db> {
-    name: &'dom HashStr,
+    name: &'dom str,
     ty: VariantType,
     migration: Option<&'de PropertySerialization<'db>>,
 }
 
-fn find_canonical_property<'de, 'dom: 'de, 'db: 'de + 'dom>(
+fn find_canonical_property<'de, 'dom: 'de, 'db: 'de + 'dom, S: StringIntern<'dom>>(
     database: &'de ReflectionDatabase<'db>,
     binary_type: Type,
-    class_name: &'dom HashStr,
+    class_name: &'dom str,
     prop_name: &str,
-    options: &mut DecodeOptions<'de, 'dom>,
+    options: &mut DecodeOptions<S>,
 ) -> Result<Option<CanonicalProperty<'de, 'dom, 'db>>, InnerError> {
-    match find_property_descriptors(database, class_name, UnhashedStr::from_ref(prop_name)) {
+    match find_property_descriptors(database, class_name, prop_name) {
         Some(descriptors) => {
             // If this descriptor is known but wasn't supposed to be
             // serialized, we should skip it.
@@ -202,14 +208,14 @@ fn find_canonical_property<'de, 'dom: 'de, 'db: 'de + 'dom>(
         }
         None => match options {
             DecodeOptions::ErrorOnUnknown => Err(InnerError::UnknownPropertyName {
-                type_name: class_name.as_str().to_owned(),
+                type_name: class_name.to_owned(),
                 prop_name: prop_name.to_owned(),
             }),
             DecodeOptions::IgnoreUnknown => {
                 log::warn!("Unknown property {class_name}.{prop_name}, skipping property");
                 Ok(None)
             }
-            DecodeOptions::ReadUnknown { cache, host } => {
+            DecodeOptions::ReadUnknown { interner } => {
                 let canonical_type = match binary_type.to_default_rbx_type() {
                     Some(rbx_type) => rbx_type,
                     None => {
@@ -221,7 +227,7 @@ fn find_canonical_property<'de, 'dom: 'de, 'db: 'de + 'dom>(
                 log::trace!("Unknown prop, using type {:?}", canonical_type);
 
                 Ok(Some(CanonicalProperty {
-                    name: cache.intern_with(host, prop_name),
+                    name: interner.intern(prop_name),
                     ty: canonical_type,
                     migration: None,
                 }))
@@ -262,13 +268,15 @@ fn add_property<'de, 'dom, 'db: 'dom>(
     }
 }
 
-impl<'de, 'dom: 'de, 'db: 'de + 'dom, R: Read> DeserializerState<'de, 'db, 'dom, R> {
+impl<'de, 'dom: 'de, 'db: 'de + 'dom, R: Read, S: StringIntern<'dom>>
+    DeserializerState<'de, 'db, 'dom, R, S>
+{
     pub(super) fn new(
         deserializer: &'de Deserializer<'de, 'db>,
         mut input: R,
-        options: DecodeOptions<'de, 'dom>,
+        options: DecodeOptions<S>,
     ) -> Result<Self, InnerError> {
-        let mut tree = WeakDom::new(InstanceBuilder::new(hstr!("DataModel")));
+        let mut tree = WeakDom::new(InstanceBuilder::new("DataModel"));
 
         let header = FileHeader::decode(&mut input)?;
 
@@ -355,15 +363,15 @@ impl<'de, 'dom: 'de, 'db: 'de + 'dom, R: Read> DeserializerState<'de, 'db, 'dom,
             .deserializer
             .database
             .classes
-            .get_key_value(UnhashedStr::from_ref(type_name.as_str()));
+            .get_key_value(type_name.as_str());
 
         // if the database class does not exist, intern it into the string cache
         let (type_name, prop_capacity) = match class_database {
             Some((&type_name, class)) => (type_name, class.default_properties.len()),
             None => match &mut self.options {
-                DecodeOptions::ReadUnknown { cache, host } => {
+                DecodeOptions::ReadUnknown { interner } => {
                     // we do not know default properties length, return 0
-                    (cache.intern_with(host, type_name.as_str()), 0)
+                    (interner.intern(type_name.as_str()), 0)
                 }
                 DecodeOptions::ErrorOnUnknown => {
                     return Err(InnerError::UnknownClassName { type_name })
