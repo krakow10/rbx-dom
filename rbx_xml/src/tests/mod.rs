@@ -30,7 +30,7 @@ pub fn test_suite(path: PathBuf) -> Result<(), Error> {
     let decoded = crate::from_reader(
         contents.as_slice(),
         DecodeOptions::ignore_unknown(database, |str: &str| match cache.get(str) {
-            Some(sint) => sint,
+            Some(interned) => interned,
             None => {
                 let interned = host.alloc_str(str) as &str;
                 cache.insert(interned);
@@ -55,7 +55,7 @@ pub fn test_suite(path: PathBuf) -> Result<(), Error> {
     let roundtrip = crate::from_reader(
         encoded.as_slice(),
         DecodeOptions::read_unknown(database, |str: &str| match cache.get(str) {
-            Some(sint) => sint,
+            Some(interned) => interned,
             None => {
                 let interned = host.alloc_str(str) as &str;
                 cache.insert(interned);

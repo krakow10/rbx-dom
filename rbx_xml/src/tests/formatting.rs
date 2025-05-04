@@ -156,7 +156,7 @@ fn formatting() {
     let de = crate::from_str(
         INPUT,
         crate::DecodeOptions::no_reflection(|str: &str| match cache.get(str) {
-            Some(sint) => sint,
+            Some(interned) => interned,
             None => {
                 let interned = host.alloc_str(str) as &str;
                 cache.insert(interned);

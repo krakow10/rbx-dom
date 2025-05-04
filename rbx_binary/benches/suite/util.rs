@@ -13,7 +13,7 @@ fn serialize_bench<T: Measurement>(group: &mut BenchmarkGroup<T>, buffer: &[u8])
     let tree = rbx_binary::from_reader(
         buffer,
         DecodeOptions::read_unknown(|str: &str| match cache.get(str) {
-            Some(sint) => sint,
+            Some(interned) => interned,
             None => {
                 let interned = host.alloc_str(str) as &str;
                 cache.insert(interned);
@@ -56,7 +56,7 @@ fn deserialize_bench<T: Measurement>(group: &mut BenchmarkGroup<T>, buffer: &[u8
                 rbx_binary::from_reader(
                     buffer,
                     DecodeOptions::read_unknown(|str: &str| match cache.get(str) {
-                        Some(sint) => sint,
+                        Some(interned) => interned,
                         None => {
                             let interned = host.alloc_str(str) as &str;
                             cache.insert(interned);

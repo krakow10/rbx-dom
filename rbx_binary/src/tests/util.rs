@@ -33,7 +33,7 @@ pub fn run_model_base_suite(model_path: impl AsRef<Path>) {
     let decoded = from_reader(
         contents.as_slice(),
         DecodeOptions::read_unknown(|str: &str| match cache.get(str) {
-            Some(sint) => sint,
+            Some(interned) => interned,
             None => {
                 let interned = host.alloc_str(str) as &str;
                 cache.insert(interned);
@@ -67,7 +67,7 @@ pub fn run_model_base_suite(model_path: impl AsRef<Path>) {
     from_reader(
         encoded.as_slice(),
         DecodeOptions::read_unknown(|str: &str| match cache.get(str) {
-            Some(sint) => sint,
+            Some(interned) => interned,
             None => {
                 let interned = host.alloc_str(str) as &str;
                 cache.insert(interned);
