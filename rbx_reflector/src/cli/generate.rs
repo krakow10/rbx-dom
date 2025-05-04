@@ -1,17 +1,15 @@
 use std::{
-    collections::HashSet,
     fs::{self, File},
     io::{BufWriter, Write},
     path::PathBuf,
 };
 
+use ahash::{HashMap, HashSet};
 use anyhow::{bail, Context};
 use clap::Parser;
-use hash_str::{strCache, strHost};
-use rbx_dom_weak::strMap;
 use rbx_reflection::{
     ClassDescriptor, DataType, EnumDescriptor, PropertyDescriptor, PropertyKind,
-    PropertySerialization, PropertyTag, ReflectionDatabase, Scriptability,
+    PropertySerialization, PropertyTag, ReflectionDatabase, Scriptability, StringIntern,
 };
 use rbx_types::VariantType;
 use rmp_serde::Serializer;
@@ -63,12 +61,21 @@ impl GenerateSubcommand {
         }
         .run()?;
 
-        let host = strHost::new();
-        let mut cache = strCache::new();
+        let host = bumpalo::Bump::new();
+        let mut cache = ahash::HashSet::default();
 
         let mut database = ReflectionDatabase::new();
 
-        apply_dump(&mut database, &dump, &mut cache, &host)?;
+        let mut interner = |str: &str| match cache.get(str) {
+            Some(sint) => sint,
+            None => {
+                let interned = host.alloc_str(str) as &str;
+                cache.insert(interned);
+                interned
+            }
+        };
+
+        apply_dump(&mut database, &dump, &mut interner)?;
 
         let patches = if let Some(patches_path) = &self.patches {
             Some(Patches::load(patches_path)?)
@@ -77,13 +84,13 @@ impl GenerateSubcommand {
         };
 
         if let Some(patches) = &patches {
-            patches.apply_pre_default(&mut database, &mut cache, &host)?;
+            patches.apply_pre_default(&mut database, &mut interner)?;
         }
 
-        apply_defaults(&mut database, &defaults_place_path, &mut cache, &host)?;
+        apply_defaults(&mut database, &defaults_place_path, &mut interner)?;
 
         if let Some(patches) = &patches {
-            patches.apply_post_default(&mut database, &mut cache, &host)?;
+            patches.apply_post_default(&mut database, &mut interner)?;
         }
 
         database.version = studio_info.version;
@@ -136,11 +143,10 @@ impl GenerateSubcommand {
     }
 }
 
-fn apply_dump<'db>(
+fn apply_dump<'db, S: StringIntern<'db>>(
     database: &mut ReflectionDatabase<'db>,
     dump: &Dump,
-    cache: &mut strCache<'db>,
-    host: &'db strHost,
+    interner: &mut S,
 ) -> anyhow::Result<()> {
     let mut ignored_properties = Vec::new();
 
@@ -148,21 +154,21 @@ fn apply_dump<'db>(
         let superclass = if dump_class.superclass == "<<<ROOT>>>" {
             None
         } else {
-            Some(cache.intern_with(host, dump_class.superclass.as_str()))
+            Some(interner.intern(dump_class.superclass.as_str()))
         };
 
-        let mut tags = HashSet::new();
+        let mut tags = HashSet::default();
         for dump_tag in &dump_class.tags {
             if let Tag::Regular(tag) = dump_tag {
                 tags.insert(tag.parse().unwrap());
             }
         }
 
-        let mut properties = strMap::default();
+        let mut properties = HashMap::default();
 
         for member in &dump_class.members {
             if let DumpClassMember::Property(dump_property) = member {
-                let mut tags = HashSet::new();
+                let mut tags = HashSet::default();
                 for dump_tag in &dump_property.tags {
                     if let Tag::Regular(tag) = dump_tag {
                         tags.insert(tag.parse().unwrap());
@@ -210,7 +216,7 @@ fn apply_dump<'db>(
 
                 let type_name = &dump_property.value_type.name;
                 let value_type = match dump_property.value_type.category {
-                    ValueCategory::Enum => DataType::Enum(cache.intern_with(host, type_name)),
+                    ValueCategory::Enum => DataType::Enum(interner.intern(type_name)),
                     ValueCategory::Primitive | ValueCategory::DataType => {
                         // variant_type_from_str returns None when passed a
                         // type name that does not have a corresponding
@@ -268,7 +274,7 @@ fn apply_dump<'db>(
                     ValueCategory::Class => DataType::Value(VariantType::Ref),
                 };
 
-                let property_name = cache.intern_with(host, dump_property.name.as_str());
+                let property_name = interner.intern(dump_property.name.as_str());
 
                 let mut property = PropertyDescriptor::new(property_name, value_type);
                 property.scriptability = scriptability;
@@ -279,7 +285,7 @@ fn apply_dump<'db>(
             }
         }
 
-        let class_name = cache.intern_with(host, dump_class.name.as_str());
+        let class_name = interner.intern(dump_class.name.as_str());
 
         let mut class = ClassDescriptor::new(class_name);
         class.superclass = superclass;
@@ -296,12 +302,12 @@ fn apply_dump<'db>(
     }
 
     for dump_enum in &dump.enums {
-        let enum_name = cache.intern_with(host, dump_enum.name.as_str());
+        let enum_name = interner.intern(dump_enum.name.as_str());
 
         let mut descriptor = EnumDescriptor::new(enum_name);
 
         for dump_item in &dump_enum.items {
-            let item_name = cache.intern_with(host, dump_item.name.as_str());
+            let item_name = interner.intern(dump_item.name.as_str());
             descriptor.items.insert(item_name, dump_item.value);
         }
 

@@ -6,20 +6,18 @@ use std::{
 };
 
 use anyhow::Context;
-use hash_str::{strCache, strHost};
 use rbx_dom_weak::Instance;
-use rbx_reflection::ReflectionDatabase;
+use rbx_reflection::{ReflectionDatabase, StringIntern};
 use rbx_types::VariantType;
 
-pub fn apply_defaults<'de, 'db: 'de>(
+pub fn apply_defaults<'de, 'db: 'de, S: StringIntern<'db>>(
     database: &'de mut ReflectionDatabase<'db>,
     defaults_place: &PathBuf,
-    cache: &mut strCache<'db>,
-    host: &'db strHost,
+    interner: S,
 ) -> anyhow::Result<()> {
     let file = BufReader::new(File::open(defaults_place).context("Could not find defaults place")?);
 
-    let decode_options = rbx_xml::DecodeOptions::ignore_unknown(database, cache, host);
+    let decode_options = rbx_xml::DecodeOptions::ignore_unknown(database, interner);
 
     let tree =
         rbx_xml::from_reader(file, decode_options).context("Could not decode defaults place")?;

@@ -1,10 +1,9 @@
 use std::{collections::HashMap, fs, path::Path};
 
 use anyhow::{anyhow, bail, Context};
-use hash_str::{strCache, strHost};
-use rbx_dom_weak::UnhashedStr;
 use rbx_reflection::{
     MigrationOperation, PropertyKind, PropertySerialization, ReflectionDatabase, Scriptability,
+    StringIntern,
 };
 use rbx_types::{Variant, VariantType};
 use serde::Deserialize;
@@ -29,16 +28,15 @@ impl Patches {
         Ok(Self { change })
     }
 
-    pub fn apply_pre_default<'db>(
+    pub fn apply_pre_default<'db, S: StringIntern<'db>>(
         &self,
         database: &mut ReflectionDatabase<'db>,
-        cache: &mut strCache<'db>,
-        host: &'db strHost,
+        interner: &mut S,
     ) -> anyhow::Result<()> {
         for (class_name, class_changes) in &self.change {
             let class = database
                 .classes
-                .get_mut(UnhashedStr::from_ref(class_name))
+                .get_mut(class_name.as_str())
                 .ok_or_else(|| {
                     anyhow!(
                         "Class {} modified in patch file does not exist in database",
@@ -49,7 +47,7 @@ impl Patches {
             for (property_name, property_change) in class_changes {
                 let existing_property = class
                     .properties
-                    .get_mut(UnhashedStr::from_ref(property_name))
+                    .get_mut(property_name.as_str())
                     .ok_or_else(|| {
                         anyhow!(
                             "Property {}.{} modified in patch file does not exist in database",
@@ -59,10 +57,10 @@ impl Patches {
                     })?;
 
                 if let Some(data_type) = &property_change.data_type {
-                    existing_property.data_type = data_type.make_data_type(cache, host);
+                    existing_property.data_type = data_type.make_data_type(interner);
                 }
 
-                if let Some(kind) = property_change.make_kind(cache, host) {
+                if let Some(kind) = property_change.make_kind(interner) {
                     if let (
                         PropertyKind::Canonical { serialization },
                         PropertyKind::Canonical {
@@ -98,11 +96,10 @@ impl Patches {
         Ok(())
     }
 
-    pub fn apply_post_default<'db>(
+    pub fn apply_post_default<'db, S: StringIntern<'db>>(
         &self,
         database: &mut ReflectionDatabase<'db>,
-        cache: &mut strCache<'db>,
-        host: &'db strHost,
+        mut interner: S,
     ) -> anyhow::Result<()> {
         // A map of every class to all subclasses, by name. This uses `String`
         // rather than some borrowed variant to get around borrowing `database`
@@ -126,11 +123,11 @@ impl Patches {
                     None => continue,
                 };
 
-                let prop_name = cache.intern_with(&host, prop_name);
+                let prop_name = interner.intern(prop_name);
 
                 let prop_data = database
                     .classes
-                    .get(UnhashedStr::from_ref(class_name))
+                    .get(class_name.as_str())
                     // This is already validated pre-default application, so unwrap is fine
                     .unwrap()
                     .properties
@@ -154,7 +151,7 @@ impl Patches {
                 for descendant in subclass_list {
                     let class = database
                         .classes
-                        .get_mut(UnhashedStr::from_ref(descendant))
+                        .get_mut(descendant.as_str())
                         .expect("class listed in subclass map should exist");
                     class
                         .default_properties
@@ -194,33 +191,26 @@ pub enum DataType {
     Enum(String),
 }
 impl DataType {
-    fn make_data_type<'db>(
+    fn make_data_type<'db, S: StringIntern<'db>>(
         &self,
-        cache: &mut strCache<'db>,
-        host: &'db strHost,
+        interner: &mut S,
     ) -> rbx_reflection::DataType<'db> {
         match self {
             &DataType::Value(variant_type) => rbx_reflection::DataType::Value(variant_type),
-            DataType::Enum(enum_name) => {
-                rbx_reflection::DataType::Enum(cache.intern_with(host, enum_name))
-            }
+            DataType::Enum(enum_name) => rbx_reflection::DataType::Enum(interner.intern(enum_name)),
         }
     }
 }
 
 impl PropertyChange {
-    fn make_kind<'db>(
-        &self,
-        cache: &mut strCache<'db>,
-        host: &'db strHost,
-    ) -> Option<PropertyKind<'db>> {
+    fn make_kind<'db, S: StringIntern<'db>>(&self, interner: &mut S) -> Option<PropertyKind<'db>> {
         match (&self.alias_for, &self.serialization) {
             (Some(alias), None) => Some(PropertyKind::Alias {
-                alias_for: cache.intern_with(host, alias),
+                alias_for: interner.intern(alias),
             }),
 
             (None, Some(serialization)) => Some(PropertyKind::Canonical {
-                serialization: serialization.make_property_serialization(cache, host),
+                serialization: serialization.make_property_serialization(interner),
             }),
 
             (None, None) => None,
@@ -252,22 +242,21 @@ pub struct PropertyMigration {
 }
 
 impl Serialization {
-    fn make_property_serialization<'db>(
+    fn make_property_serialization<'db, S: StringIntern<'db>>(
         &self,
-        cache: &mut strCache<'db>,
-        host: &'db strHost,
+        interner: &mut S,
     ) -> PropertySerialization<'db> {
         match self {
             Serialization::Serializes => PropertySerialization::Serializes,
             Serialization::DoesNotSerialize => PropertySerialization::DoesNotSerialize,
             Serialization::SerializesAs { serializes_as } => {
-                PropertySerialization::SerializesAs(cache.intern_with(host, serializes_as))
+                PropertySerialization::SerializesAs(interner.intern(serializes_as))
             }
             &Serialization::Migrate(PropertyMigration {
                 ref new_property_name,
                 migration,
             }) => PropertySerialization::Migrate(rbx_reflection::PropertyMigration {
-                new_property_name: cache.intern_with(host, new_property_name),
+                new_property_name: interner.intern(new_property_name),
                 migration,
             }),
         }
