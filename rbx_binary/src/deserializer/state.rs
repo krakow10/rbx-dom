@@ -18,7 +18,7 @@ use rbx_reflection::{
 
 use crate::{
     chunk::Chunk,
-    core::{find_property_descriptors, RbxReadExt},
+    core::{find_property_descriptors, read_string_slice, RbxReadExt},
     types::Type,
 };
 
@@ -343,7 +343,7 @@ impl<'de, 'dom: 'de, 'db: 'de + 'dom, 'file, S: StringIntern<'dom>>
     #[profiling::function]
     pub(super) fn decode_inst_chunk(&mut self, mut chunk: &[u8]) -> Result<(), InnerError> {
         let type_id = chunk.read_le_u32()?;
-        let type_name = chunk.read_string()?;
+        let type_name = read_string_slice(&mut chunk)?;
         let object_format = chunk.read_u8()?;
         let number_instances = chunk.read_le_u32()?;
 
@@ -363,7 +363,7 @@ impl<'de, 'dom: 'de, 'db: 'de + 'dom, 'file, S: StringIntern<'dom>>
             .deserializer
             .database
             .classes
-            .get_key_value(type_name.as_str());
+            .get_key_value(type_name);
 
         // if the database class does not exist, intern it into the string cache
         let (type_name, prop_capacity) = match class_database {
@@ -371,10 +371,10 @@ impl<'de, 'dom: 'de, 'db: 'de + 'dom, 'file, S: StringIntern<'dom>>
             None => match &mut self.options {
                 DecodeOptions::ReadUnknown { interner } => {
                     // we do not know default properties length, return 0
-                    (interner.intern(type_name.as_str()), 0)
+                    (interner.intern(type_name), 0)
                 }
                 DecodeOptions::ErrorOnUnknown => {
-                    return Err(InnerError::UnknownClassName { type_name })
+                    return Err(InnerError::UnknownClassName { type_name: type_name.to_owned() })
                 }
                 DecodeOptions::IgnoreUnknown => return Ok(()),
             },
