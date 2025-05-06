@@ -10,7 +10,6 @@ use crate::{
 };
 
 const ZSTD_MAGIC_NUMBER: &[u8] = &[0x28, 0xb5, 0x2f, 0xfd];
-const LZ4_MAGIC_NUMBER: &[u8] = &[0x04, 0x22, 0x4d, 0x18];
 
 /// Represents one chunk from a binary model file.
 #[derive(Debug)]
@@ -40,7 +39,7 @@ impl<'file> Chunk<'file> {
                     debug_assert_eq!(bytes_written, buffer.len());
                     buffer
                 }
-                Some(LZ4_MAGIC_NUMBER) => {
+                Some(_) => {
                     log::trace!("LZ4 compression");
                     let buffer = host.alloc_buffer(header.len as usize);
                     let bytes_written = lz4::block::decompress_to_buffer(
@@ -51,8 +50,8 @@ impl<'file> Chunk<'file> {
                     debug_assert_eq!(bytes_written, buffer.len());
                     buffer
                 }
-                _ => {
-                    panic!("unknown compression format");
+                other => {
+                    panic!("unknown compression format {:?}",other);
                 }
             }
         };
