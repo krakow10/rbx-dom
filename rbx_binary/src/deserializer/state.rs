@@ -49,14 +49,21 @@ impl DecodeOptions<InternFunction<'_, 'static>> {
     pub fn error_on_unknown() -> Self {
         DecodeOptions::ErrorOnUnknown
     }
-    /// Constructs a `DecodeOptions` which specifies to error upon encountering an unknown property or class.
+    /// Constructs a `DecodeOptions` which specifies to ignore unknown properties and classes.
     #[inline]
     pub fn ignore_unknown() -> Self {
         DecodeOptions::IgnoreUnknown
     }
 }
 impl<'file, 'dom, S: StringIntern<'file, 'dom>> DecodeOptions<S> {
-    /// Constructs a `DecodeOptions` which uses the specified database and string internment to manage unknown properties and classes.
+    /// Constructs a `DecodeOptions` which uses the specified string internment
+    /// to manage unknown properties and classes. This is useful if you want
+    /// to drop the decompressed file data to save memory.  Storing
+    /// a deduplicated list of only unknown properties and classes
+    /// has a smaller memory footprint that holding references
+    /// to the full decompressed data.  Alternatively use error_on_unknown
+    /// to reject unknown classes and properties entirely, using only
+    /// static references to known classes and properties from the database.
     #[inline]
     pub fn read_unknown_with(interner: S) -> Self {
         DecodeOptions::ReadUnknown { interner }
