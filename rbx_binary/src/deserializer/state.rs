@@ -58,8 +58,19 @@ impl DecodeOptions<InternFunction<'_, 'static>> {
 impl<'file, 'dom, S: StringIntern<'file, 'dom>> DecodeOptions<S> {
     /// Constructs a `DecodeOptions` which uses the specified database and string internment to manage unknown properties and classes.
     #[inline]
-    pub fn read_unknown(interner: S) -> Self {
+    pub fn read_unknown_with(interner: S) -> Self {
         DecodeOptions::ReadUnknown { interner }
+    }
+}
+impl<'file> DecodeOptions<InternFunction<'file, 'file>> {
+    /// Constructs a `DecodeOptions` which uses references to the input slice
+    /// for unknown properties and classes.  This has a larger memory footprint than
+    /// using `DecodeOptions::read_unknown_with` with a string interner.
+    #[inline]
+    pub fn read_unknown() -> Self {
+        DecodeOptions::ReadUnknown {
+            interner: std::convert::identity,
+        }
     }
 }
 impl Default for DecodeOptions<InternFunction<'_, 'static>> {

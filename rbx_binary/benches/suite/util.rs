@@ -9,12 +9,7 @@ pub(crate) fn bench<T: Measurement>(group: &mut BenchmarkGroup<T>, bench_file: &
 
 fn serialize_bench<T: Measurement>(group: &mut BenchmarkGroup<T>, buffer: &[u8]) {
     let host = DecompressionHost::new();
-    let tree = rbx_binary::from_slice_with(
-        &host,
-        buffer,
-        DecodeOptions::read_unknown(std::convert::identity),
-    )
-    .unwrap();
+    let tree = rbx_binary::from_slice_with(&host, buffer, DecodeOptions::read_unknown()).unwrap();
     let root_ref = tree.root_ref();
     let mut buffer = Vec::new();
 
@@ -48,12 +43,7 @@ fn deserialize_bench<T: Measurement>(group: &mut BenchmarkGroup<T>, buffer: &[u8
                 unsafe {
                     host.clear();
                 }
-                rbx_binary::from_slice_with(
-                    &host,
-                    buffer,
-                    DecodeOptions::read_unknown(std::convert::identity),
-                )
-                .unwrap();
+                rbx_binary::from_slice_with(&host, buffer, DecodeOptions::read_unknown()).unwrap();
             });
         });
 }

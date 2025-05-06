@@ -5,7 +5,8 @@ use std::{
 };
 
 use crate::{
-    core::RbxReadExt, core::RbxWriteExt, decompression_host::DecompressionHost, serializer::CompressionType,
+    core::RbxReadExt, core::RbxWriteExt, decompression_host::DecompressionHost,
+    serializer::CompressionType,
 };
 
 const ZSTD_MAGIC_NUMBER: &[u8] = &[0x28, 0xb5, 0x2f, 0xfd];

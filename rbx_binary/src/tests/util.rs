@@ -32,12 +32,8 @@ pub fn run_model_base_suite(model_path: impl AsRef<Path>) {
 
     // Decode the test file and snapshot a stable version of the resulting tree.
     // This should properly test the deserializer.
-    let decoded = from_slice_with(
-        &host,
-        contents.as_slice(),
-        DecodeOptions::read_unknown(std::convert::identity),
-    )
-    .unwrap();
+    let decoded =
+        from_slice_with(&host, contents.as_slice(), DecodeOptions::read_unknown()).unwrap();
     let decoded_viewed = DomViewer::new().view_children(&decoded);
     insta::assert_yaml_snapshot!(format!("{}__decoded", model_stem), decoded_viewed);
 
@@ -60,10 +56,5 @@ pub fn run_model_base_suite(model_path: impl AsRef<Path>) {
     // We don't make any assertions about the result right now, as our format
     // support is still lacking. In the future, we should assert that this is
     // the same as the original decoding of the test file.
-    from_slice_with(
-        &host,
-        encoded.as_slice(),
-        DecodeOptions::read_unknown(std::convert::identity),
-    )
-    .unwrap();
+    from_slice_with(&host, encoded.as_slice(), DecodeOptions::read_unknown()).unwrap();
 }
