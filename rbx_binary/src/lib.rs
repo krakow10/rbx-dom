@@ -14,9 +14,9 @@ use std::fs::File;
 use std::io::BufReader;
 
 // Using buffered I/O is recommended with rbx_binary
-let input = BufReader::new(File::open("MyModel.rbxm")?);
+let input = std::fs::read("MyModel.rbxm")?;
 
-let dom = rbx_binary::from_reader_default(input)?;
+let dom = rbx_binary::from_slice_default(input.as_slice())?;
 
 // rbx_binary always returns a DOM with a DataModel at the top level.
 // To get to the instances from our file, we need to go one level deeper.
@@ -65,7 +65,7 @@ mod text_deserializer;
 #[cfg(test)]
 mod tests;
 
-use std::io::{Read, Write};
+use std::io::Write;
 
 use rbx_dom_weak::{types::Ref, WeakDom};
 use rbx_reflection::StringIntern;
@@ -84,15 +84,15 @@ pub use crate::{
 pub use crate::deserializer::DecodeOptions;
 
 /// Deserialize a Roblox binary model or place from a stream using the provided options.
-pub fn from_reader<'dom, R: Read, S: StringIntern<'dom>>(
-    reader: R,
+pub fn from_slice<'dom, S: StringIntern<'dom>>(
+    slice: &[u8],
     options: DecodeOptions<S>,
 ) -> Result<WeakDom<'dom>, DecodeError> {
-    Deserializer::new().deserialize(reader, options)
+    Deserializer::new().deserialize(slice, options)
 }
 /// Deserialize a Roblox binary model or place from a stream, throwing an error if an invalid property or class is encountered.
-pub fn from_reader_default<R: Read>(reader: R) -> Result<WeakDom<'static>, DecodeError> {
-    Deserializer::new().deserialize(reader, DecodeOptions::default())
+pub fn from_slice_default(slice: &[u8]) -> Result<WeakDom<'static>, DecodeError> {
+    Deserializer::new().deserialize(slice, DecodeOptions::default())
 }
 
 /// Serializes a subset of the given DOM to a binary format model or place,

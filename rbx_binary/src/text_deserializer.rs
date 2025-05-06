@@ -29,7 +29,7 @@ pub struct DecodedModel {
 }
 
 impl DecodedModel {
-    pub fn from_reader<R: Read>(mut reader: R) -> Self {
+    pub fn from_slice(mut reader: &[u8]) -> Self {
         let header = FileHeader::decode(&mut reader).expect("invalid file header");
         let mut chunks = Vec::new();
 

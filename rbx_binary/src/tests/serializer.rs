@@ -13,7 +13,7 @@ fn just_folder() {
 
     to_writer(&mut buffer, &tree, &[tree.root_ref()]).expect("failed to encode model");
 
-    let decoded = DecodedModel::from_reader(buffer.as_slice());
+    let decoded = DecodedModel::from_slice(buffer.as_slice());
     insta::assert_yaml_snapshot!(decoded);
 }
 
@@ -33,7 +33,7 @@ fn partially_present() {
     let mut buffer = Vec::new();
     to_writer(&mut buffer, &tree, root_refs).expect("failed to encode model");
 
-    let decoded = DecodedModel::from_reader(buffer.as_slice());
+    let decoded = DecodedModel::from_slice(buffer.as_slice());
     insta::assert_yaml_snapshot!(decoded);
 }
 
@@ -46,7 +46,7 @@ fn unknown_property() {
     let mut buffer = Vec::new();
     to_writer(&mut buffer, &tree, &[tree.root_ref()]).expect("failed to encode model");
 
-    let decoded = DecodedModel::from_reader(buffer.as_slice());
+    let decoded = DecodedModel::from_slice(buffer.as_slice());
     insta::assert_yaml_snapshot!(decoded);
 }
 
@@ -115,7 +115,7 @@ fn migrated_properties() {
 
     to_writer(&mut buffer, &tree, &[tree.root_ref()]).expect("failed to encode model");
 
-    let decoded = DecodedModel::from_reader(buffer.as_slice());
+    let decoded = DecodedModel::from_slice(buffer.as_slice());
     insta::assert_yaml_snapshot!(decoded);
 }
 
@@ -141,7 +141,7 @@ fn logical_properties_basepart_size() {
     let mut buffer = Vec::new();
     to_writer(&mut buffer, &tree, tree.root().children()).expect("failed to encode model");
 
-    let decoded = DecodedModel::from_reader(buffer.as_slice());
+    let decoded = DecodedModel::from_slice(buffer.as_slice());
     insta::assert_yaml_snapshot!(decoded);
 }
 
@@ -170,7 +170,7 @@ fn part_color() {
     let mut buf = Vec::new();
     let _ = to_writer(&mut buf, &tree, tree.root().children());
 
-    let decoded = DecodedModel::from_reader(buf.as_slice());
+    let decoded = DecodedModel::from_slice(buf.as_slice());
     insta::assert_yaml_snapshot!(decoded);
 }
 
@@ -190,6 +190,6 @@ fn default_shared_string() {
     let mut buf = Vec::new();
     let _ = to_writer(&mut buf, &tree, &[ref_1, ref_2]);
 
-    let decoded = DecodedModel::from_reader(buf.as_slice());
+    let decoded = DecodedModel::from_slice(buf.as_slice());
     insta::assert_yaml_snapshot!(decoded);
 }

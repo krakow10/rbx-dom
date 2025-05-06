@@ -17,7 +17,7 @@ pub(crate) struct FileHeader {
 }
 
 impl FileHeader {
-    pub(crate) fn decode<R: Read>(mut source: R) -> Result<Self, InnerError> {
+    pub(crate) fn decode(source: &mut &[u8]) -> Result<Self, InnerError> {
         let mut magic_header = [0; 8];
         source.read_exact(&mut magic_header)?;
 

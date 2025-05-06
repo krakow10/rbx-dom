@@ -10,7 +10,7 @@ pub(crate) fn bench<T: Measurement>(group: &mut BenchmarkGroup<T>, bench_file: &
 fn serialize_bench<T: Measurement>(group: &mut BenchmarkGroup<T>, buffer: &[u8]) {
     let host = bumpalo::Bump::new();
     let mut cache = ahash::HashSet::default();
-    let tree = rbx_binary::from_reader(
+    let tree = rbx_binary::from_slice(
         buffer,
         DecodeOptions::read_unknown(|str: &str| match cache.get(str) {
             Some(interned) => interned,
@@ -53,7 +53,7 @@ fn deserialize_bench<T: Measurement>(group: &mut BenchmarkGroup<T>, buffer: &[u8
         .throughput(Throughput::Bytes(buffer.len() as u64))
         .bench_function("Deserialize", |bencher| {
             bencher.iter(|| {
-                rbx_binary::from_reader(
+                rbx_binary::from_slice(
                     buffer,
                     DecodeOptions::read_unknown(|str: &str| match cache.get(str) {
                         Some(interned) => interned,

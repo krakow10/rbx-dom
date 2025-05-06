@@ -67,7 +67,7 @@ impl Default for DecodeOptions<InternFunction<'static>> {
     }
 }
 
-pub(super) struct DeserializerState<'de, 'db, 'dom, R, S> {
+pub(super) struct DeserializerState<'de, 'db, 'dom, 'file, S> {
     /// The user-provided configuration that we should use.
     deserializer: &'de Deserializer<'de, 'db>,
 
@@ -75,7 +75,7 @@ pub(super) struct DeserializerState<'de, 'db, 'dom, R, S> {
     options: DecodeOptions<S>,
 
     /// The input data encoded as a binary model.
-    input: R,
+    input: &'file [u8],
 
     /// The tree that instances should be written into. Eventually returned to
     /// the user.
@@ -268,12 +268,12 @@ fn add_property<'de, 'dom, 'db: 'dom>(
     }
 }
 
-impl<'de, 'dom: 'de, 'db: 'de + 'dom, R: Read, S: StringIntern<'dom>>
-    DeserializerState<'de, 'db, 'dom, R, S>
+impl<'de, 'dom: 'de, 'db: 'de + 'dom, 'file, S: StringIntern<'dom>>
+    DeserializerState<'de, 'db, 'dom, 'file, S>
 {
     pub(super) fn new(
         deserializer: &'de Deserializer<'de, 'db>,
-        mut input: R,
+        mut input: &'file [u8],
         options: DecodeOptions<S>,
     ) -> Result<Self, InnerError> {
         let mut tree = WeakDom::new(InstanceBuilder::new("DataModel"));
