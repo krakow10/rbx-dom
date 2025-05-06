@@ -67,7 +67,7 @@ impl<'de, 'db> Deserializer<'de, 'db> {
 
     /// Deserialize a Roblox binary model or place from the given stream using
     /// this deserializer.
-    pub fn deserialize<'dom, 'file, S: StringIntern<'dom>>(
+    pub fn deserialize<'dom, 'file, S: StringIntern<'file, 'dom>>(
         &self,
         slice: &'file [u8],
         options: DecodeOptions<S>,

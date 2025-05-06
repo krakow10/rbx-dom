@@ -42,7 +42,7 @@ pub enum DecodeOptions<S> {
     },
 }
 
-impl DecodeOptions<InternFunction<'static>> {
+impl DecodeOptions<InternFunction<'_, 'static>> {
     /// Constructs a `DecodeOptions` which specifies to error upon encountering an unknown property or class.
     #[inline]
     pub fn error_on_unknown() -> Self {
@@ -54,14 +54,14 @@ impl DecodeOptions<InternFunction<'static>> {
         DecodeOptions::IgnoreUnknown
     }
 }
-impl<'dom, S: StringIntern<'dom>> DecodeOptions<S> {
+impl<'file, 'dom, S: StringIntern<'file, 'dom>> DecodeOptions<S> {
     /// Constructs a `DecodeOptions` which uses the specified database and string internment to manage unknown properties and classes.
     #[inline]
     pub fn read_unknown(interner: S) -> Self {
         DecodeOptions::ReadUnknown { interner }
     }
 }
-impl Default for DecodeOptions<InternFunction<'static>> {
+impl Default for DecodeOptions<InternFunction<'_, 'static>> {
     fn default() -> Self {
         Self::ignore_unknown()
     }
@@ -142,11 +142,11 @@ struct CanonicalProperty<'de, 'dom, 'db> {
     migration: Option<&'de PropertySerialization<'db>>,
 }
 
-fn find_canonical_property<'de, 'dom: 'de, 'db: 'de + 'dom, S: StringIntern<'dom>>(
+fn find_canonical_property<'de, 'dom: 'de, 'db: 'de + 'dom, 'file, S: StringIntern<'file, 'dom>>(
     database: &'de ReflectionDatabase<'db>,
     binary_type: Type,
     class_name: &'dom str,
-    prop_name: &str,
+    prop_name: &'file str,
     options: &mut DecodeOptions<S>,
 ) -> Result<Option<CanonicalProperty<'de, 'dom, 'db>>, InnerError> {
     match find_property_descriptors(database, class_name, prop_name) {
@@ -268,7 +268,7 @@ fn add_property<'de, 'dom, 'db: 'dom>(
     }
 }
 
-impl<'de, 'dom: 'de, 'db: 'de + 'dom, 'file, S: StringIntern<'dom>>
+impl<'de, 'dom: 'de, 'db: 'dom, 'file, S: StringIntern<'file, 'dom>>
     DeserializerState<'de, 'db, 'dom, 'file, S>
 {
     pub(super) fn new(
@@ -341,7 +341,7 @@ impl<'de, 'dom: 'de, 'db: 'de + 'dom, 'file, S: StringIntern<'dom>>
     }
 
     #[profiling::function]
-    pub(super) fn decode_inst_chunk(&mut self, mut chunk: &[u8]) -> Result<(), InnerError> {
+    pub(super) fn decode_inst_chunk(&mut self, mut chunk: &'file [u8]) -> Result<(), InnerError> {
         let type_id = chunk.read_le_u32()?;
         let type_name = read_string_slice(&mut chunk)?;
         let object_format = chunk.read_u8()?;
@@ -405,7 +405,7 @@ impl<'de, 'dom: 'de, 'db: 'de + 'dom, 'file, S: StringIntern<'dom>>
     }
 
     #[profiling::function]
-    pub(super) fn decode_prop_chunk(&mut self, mut chunk: &[u8]) -> Result<(), InnerError> {
+    pub(super) fn decode_prop_chunk(&mut self, mut chunk: &'file [u8]) -> Result<(), InnerError> {
         let type_id = chunk.read_le_u32()?;
         let prop_name = read_string_slice(&mut chunk)?;
 
