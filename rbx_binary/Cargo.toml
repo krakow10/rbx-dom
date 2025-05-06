@@ -25,7 +25,6 @@ thiserror = "1.0.31"
 serde = { version = "1.0.137", features = ["derive"], optional = true }
 profiling = "1.0.6"
 zstd = "0.13.2"
-zerocopy = { version = "0.8.25", features = ["derive"] }
 bumpalo = "3.17.0"
 
 [dev-dependencies]

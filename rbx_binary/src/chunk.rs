@@ -1,13 +1,11 @@
 use std::{
     fmt,
-    io::{self, Write},
+    io::{self, Read, Write},
     str,
 };
 
-use zerocopy::FromBytes;
-
 use crate::{
-    core::RbxWriteExt, decompression_host::DecompressionHost, serializer::CompressionType,
+    core::RbxReadExt, core::RbxWriteExt, decompression_host::DecompressionHost, serializer::CompressionType,
 };
 
 const ZSTD_MAGIC_NUMBER: &[u8] = &[0x28, 0xb5, 0x2f, 0xfd];
@@ -136,7 +134,7 @@ impl Write for ChunkBuilder {
     }
 }
 
-#[derive(Debug, zerocopy::FromBytes, zerocopy::Immutable, zerocopy::KnownLayout)]
+#[derive(Debug)]
 struct ChunkHeader {
     /// 4-byte short name for the chunk, like "INST" or "PRNT"
     name: [u8; 4],
@@ -169,18 +167,25 @@ impl fmt::Display for ChunkHeader {
     }
 }
 
-fn decode_chunk_header<'file>(source: &mut &'file [u8]) -> io::Result<&'file ChunkHeader> {
-    let bytes;
-    (bytes, *source) = source.split_at(core::mem::size_of::<ChunkHeader>());
-    // TODO: remove unwrap
-    let chunk_header = ChunkHeader::ref_from_bytes(bytes).unwrap();
+fn decode_chunk_header(source: &mut &[u8]) -> io::Result<ChunkHeader> {
+    let mut name = [0; 4];
+    source.read_exact(&mut name)?;
 
-    if chunk_header.reserved != 0 {
+    let compressed_len = source.read_le_u32()?;
+    let len = source.read_le_u32()?;
+    let reserved = source.read_le_u32()?;
+
+    if reserved != 0 {
         panic!(
             "Chunk reserved space was not zero, it was {}. This chunk may be malformed.",
-            chunk_header.reserved
+            reserved
         );
     }
 
-    Ok(chunk_header)
+    Ok(ChunkHeader {
+        name,
+        compressed_len,
+        len,
+        reserved,
+    })
 }
