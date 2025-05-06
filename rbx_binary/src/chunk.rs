@@ -1,47 +1,58 @@
 use std::{
     fmt,
-    io::{self, Read, Write},
+    io::{self, Write},
     str,
 };
 
+use zerocopy::FromBytes;
+
 use crate::{
-    core::{RbxReadExt, RbxWriteExt},
-    serializer::CompressionType,
+    core::RbxWriteExt, decompression_host::DecompressionHost, serializer::CompressionType,
 };
 
 const ZSTD_MAGIC_NUMBER: &[u8] = &[0x28, 0xb5, 0x2f, 0xfd];
+const LZ4_MAGIC_NUMBER: &[u8] = &[0x04, 0x22, 0x4d, 0x18];
 
 /// Represents one chunk from a binary model file.
 #[derive(Debug)]
-pub struct Chunk {
+pub struct Chunk<'file> {
     pub name: [u8; 4],
-    pub data: Vec<u8>,
+    pub data: &'file [u8],
 }
 
-impl Chunk {
+impl<'file> Chunk<'file> {
     /// Reads and decodes a `Chunk` from the given reader.
-    pub fn decode<R: Read>(mut reader: R) -> io::Result<Chunk> {
-        let header = decode_chunk_header(&mut reader)?;
+    pub fn decode_with(host: &'file DecompressionHost, slice: &mut &'file [u8]) -> io::Result<Self> {
+        let header = decode_chunk_header(slice)?;
 
         log::trace!("{}", header);
 
         let data = if header.compressed_len == 0 {
             log::trace!("No compression");
-            let mut data = Vec::with_capacity(header.len as usize);
-            reader.take(header.len as u64).read_to_end(&mut data)?;
-            data
+            &slice[..header.len as usize]
         } else {
-            let mut compressed_data = Vec::with_capacity(header.compressed_len as usize);
-            reader
-                .take(header.compressed_len as u64)
-                .read_to_end(&mut compressed_data)?;
+            let compressed_data = &slice[..header.compressed_len as usize];
 
-            if &compressed_data[0..4] == ZSTD_MAGIC_NUMBER {
-                log::trace!("ZSTD compression");
-                zstd::bulk::decompress(&compressed_data, header.len as usize)?
-            } else {
-                log::trace!("LZ4 compression");
-                lz4::block::decompress(&compressed_data, Some(header.len as i32))?
+            match compressed_data.get(0..4) {
+                Some(ZSTD_MAGIC_NUMBER) => {
+                    log::trace!("ZSTD compression");
+                    let buffer = host.alloc_buffer(header.len as usize);
+                    zstd::bulk::decompress_to_buffer(&compressed_data, buffer)?;
+                    buffer
+                }
+                Some(LZ4_MAGIC_NUMBER) => {
+                    log::trace!("LZ4 compression");
+                    let buffer = host.alloc_buffer(header.len as usize);
+                    lz4::block::decompress_to_buffer(
+                        &compressed_data,
+                        Some(header.len as i32),
+                        buffer,
+                    )?;
+                    buffer
+                }
+                _ => {
+                    panic!("unknown compression format");
+                }
             }
         };
 
@@ -125,7 +136,7 @@ impl Write for ChunkBuilder {
     }
 }
 
-#[derive(Debug)]
+#[derive(Debug, zerocopy::FromBytes, zerocopy::Immutable, zerocopy::KnownLayout)]
 struct ChunkHeader {
     /// 4-byte short name for the chunk, like "INST" or "PRNT"
     name: [u8; 4],
@@ -158,25 +169,18 @@ impl fmt::Display for ChunkHeader {
     }
 }
 
-fn decode_chunk_header<R: Read>(source: &mut R) -> io::Result<ChunkHeader> {
-    let mut name = [0; 4];
-    source.read_exact(&mut name)?;
+fn decode_chunk_header<'file>(source: &mut &'file [u8]) -> io::Result<&'file ChunkHeader> {
+    let bytes;
+    (bytes, *source) = source.split_at(core::mem::size_of::<ChunkHeader>());
+    // TODO: remove unwrap
+    let chunk_header = ChunkHeader::ref_from_bytes(bytes).unwrap();
 
-    let compressed_len = source.read_le_u32()?;
-    let len = source.read_le_u32()?;
-    let reserved = source.read_le_u32()?;
-
-    if reserved != 0 {
+    if chunk_header.reserved != 0 {
         panic!(
             "Chunk reserved space was not zero, it was {}. This chunk may be malformed.",
-            reserved
+            chunk_header.reserved
         );
     }
 
-    Ok(ChunkHeader {
-        name,
-        compressed_len,
-        len,
-        reserved,
-    })
+    Ok(chunk_header)
 }

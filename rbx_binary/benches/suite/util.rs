@@ -1,6 +1,6 @@
 use criterion::{measurement::Measurement, BatchSize, BenchmarkGroup, Throughput};
 
-use rbx_binary::DecodeOptions;
+use rbx_binary::{DecodeOptions, DecompressionHost};
 
 pub(crate) fn bench<T: Measurement>(group: &mut BenchmarkGroup<T>, bench_file: &'static [u8]) {
     serialize_bench(group, bench_file);
@@ -8,18 +8,11 @@ pub(crate) fn bench<T: Measurement>(group: &mut BenchmarkGroup<T>, bench_file: &
 }
 
 fn serialize_bench<T: Measurement>(group: &mut BenchmarkGroup<T>, buffer: &[u8]) {
-    let host = bumpalo::Bump::new();
-    let mut cache = ahash::HashSet::default();
-    let tree = rbx_binary::from_slice(
+    let host = DecompressionHost::new();
+    let tree = rbx_binary::from_slice_with(
+        &host,
         buffer,
-        DecodeOptions::read_unknown(|str: &str| match cache.get(str) {
-            Some(interned) => interned,
-            None => {
-                let interned = host.alloc_str(str) as &str;
-                cache.insert(interned);
-                interned
-            }
-        }),
+        DecodeOptions::read_unknown(std::convert::identity),
     )
     .unwrap();
     let root_ref = tree.root_ref();
@@ -47,22 +40,18 @@ fn serialize_bench<T: Measurement>(group: &mut BenchmarkGroup<T>, buffer: &[u8])
 }
 
 fn deserialize_bench<T: Measurement>(group: &mut BenchmarkGroup<T>, buffer: &[u8]) {
-    let host = bumpalo::Bump::new();
-    let mut cache = ahash::HashSet::default();
+    let mut host = DecompressionHost::new();
     group
         .throughput(Throughput::Bytes(buffer.len() as u64))
         .bench_function("Deserialize", |bencher| {
             bencher.iter(|| {
-                rbx_binary::from_slice(
+                unsafe {
+                    host.clear();
+                }
+                rbx_binary::from_slice_with(
+                    &host,
                     buffer,
-                    DecodeOptions::read_unknown(|str: &str| match cache.get(str) {
-                        Some(interned) => interned,
-                        None => {
-                            let interned = host.alloc_str(str) as &str;
-                            cache.insert(interned);
-                            interned
-                        }
-                    }),
+                    DecodeOptions::read_unknown(std::convert::identity),
                 )
                 .unwrap();
             });

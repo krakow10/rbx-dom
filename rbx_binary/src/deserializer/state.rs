@@ -19,6 +19,7 @@ use rbx_reflection::{
 use crate::{
     chunk::Chunk,
     core::{find_property_descriptors, read_binary_string_slice, read_string_slice, RbxReadExt},
+    decompression_host::DecompressionHost,
     types::Type,
 };
 
@@ -299,8 +300,11 @@ impl<'de, 'dom: 'de, 'db: 'dom, 'file, S: StringIntern<'file, 'dom>>
         })
     }
 
-    pub(super) fn next_chunk(&mut self) -> Result<Chunk, InnerError> {
-        Ok(Chunk::decode(&mut self.input)?)
+    pub(super) fn next_chunk(
+        &mut self,
+        host: &'file DecompressionHost,
+    ) -> Result<Chunk<'file>, InnerError> {
+        Ok(Chunk::decode_with(host, &mut self.input)?)
     }
 
     #[profiling::function]
@@ -359,11 +363,7 @@ impl<'de, 'dom: 'de, 'db: 'dom, 'file, S: StringIntern<'file, 'dom>>
         chunk.read_referent_array(&mut referents)?;
 
         // get class name from database
-        let class_database = self
-            .deserializer
-            .database
-            .classes
-            .get_key_value(type_name);
+        let class_database = self.deserializer.database.classes.get_key_value(type_name);
 
         // if the database class does not exist, intern it into the string cache
         let (type_name, prop_capacity) = match class_database {
@@ -374,7 +374,9 @@ impl<'de, 'dom: 'de, 'db: 'dom, 'file, S: StringIntern<'file, 'dom>>
                     (interner.intern(type_name), 0)
                 }
                 DecodeOptions::ErrorOnUnknown => {
-                    return Err(InnerError::UnknownClassName { type_name: type_name.to_owned() })
+                    return Err(InnerError::UnknownClassName {
+                        type_name: type_name.to_owned(),
+                    })
                 }
                 DecodeOptions::IgnoreUnknown => return Ok(()),
             },

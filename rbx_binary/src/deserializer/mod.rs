@@ -7,6 +7,8 @@ use std::str;
 use rbx_dom_weak::WeakDom;
 use rbx_reflection::{ReflectionDatabase, StringIntern};
 
+use crate::decompression_host::DecompressionHost;
+
 use self::state::DeserializerState;
 
 pub(crate) use self::header::FileHeader;
@@ -67,8 +69,9 @@ impl<'de, 'db> Deserializer<'de, 'db> {
 
     /// Deserialize a Roblox binary model or place from the given stream using
     /// this deserializer.
-    pub fn deserialize<'dom, 'file, S: StringIntern<'file, 'dom>>(
+    pub fn deserialize_with<'dom, 'file, S: StringIntern<'file, 'dom>>(
         &self,
+        host: &'file DecompressionHost,
         slice: &'file [u8],
         options: DecodeOptions<S>,
     ) -> Result<WeakDom<'dom>, Error>
@@ -80,16 +83,16 @@ impl<'de, 'db> Deserializer<'de, 'db> {
         let mut deserializer = DeserializerState::new(self, slice, options)?;
 
         loop {
-            let chunk = deserializer.next_chunk()?;
+            let chunk = deserializer.next_chunk(host)?;
 
             match &chunk.name {
-                b"META" => deserializer.decode_meta_chunk(&chunk.data)?,
-                b"SSTR" => deserializer.decode_sstr_chunk(&chunk.data)?,
-                b"INST" => deserializer.decode_inst_chunk(&chunk.data)?,
-                b"PROP" => deserializer.decode_prop_chunk(&chunk.data)?,
-                b"PRNT" => deserializer.decode_prnt_chunk(&chunk.data)?,
+                b"META" => deserializer.decode_meta_chunk(chunk.data)?,
+                b"SSTR" => deserializer.decode_sstr_chunk(chunk.data)?,
+                b"INST" => deserializer.decode_inst_chunk(chunk.data)?,
+                b"PROP" => deserializer.decode_prop_chunk(chunk.data)?,
+                b"PRNT" => deserializer.decode_prnt_chunk(chunk.data)?,
                 b"END\0" => {
-                    deserializer.decode_end_chunk(&chunk.data)?;
+                    deserializer.decode_end_chunk(chunk.data)?;
                     break;
                 }
                 _ => match str::from_utf8(&chunk.name) {

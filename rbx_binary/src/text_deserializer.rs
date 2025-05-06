@@ -19,7 +19,10 @@ use rbx_dom_weak::types::{
 };
 use serde::{ser::SerializeSeq, Serialize, Serializer};
 
-use crate::{chunk::Chunk, core::RbxReadExt, deserializer::FileHeader, types::Type};
+use crate::{
+    chunk::Chunk, core::RbxReadExt, decompression_host::DecompressionHost,
+    deserializer::FileHeader, types::Type,
+};
 
 #[derive(Debug, Serialize)]
 pub struct DecodedModel {
@@ -29,7 +32,7 @@ pub struct DecodedModel {
 }
 
 impl DecodedModel {
-    pub fn from_slice(mut reader: &[u8]) -> Self {
+    pub fn from_slice_with<'file>(host: &'file DecompressionHost, mut reader: &'file [u8]) -> Self {
         let header = FileHeader::decode(&mut reader).expect("invalid file header");
         let mut chunks = Vec::new();
 
@@ -38,20 +41,14 @@ impl DecodedModel {
         let mut count_by_type_id = HashMap::new();
 
         loop {
-            let chunk = Chunk::decode(&mut reader).expect("invalid chunk");
+            let chunk = Chunk::decode_with(host, &mut reader).expect("invalid chunk");
 
             match &chunk.name {
-                b"META" => chunks.push(decode_meta_chunk(chunk.data.as_slice())),
-                b"SSTR" => chunks.push(decode_sstr_chunk(chunk.data.as_slice())),
-                b"INST" => chunks.push(decode_inst_chunk(
-                    chunk.data.as_slice(),
-                    &mut count_by_type_id,
-                )),
-                b"PROP" => chunks.push(decode_prop_chunk(
-                    chunk.data.as_slice(),
-                    &mut count_by_type_id,
-                )),
-                b"PRNT" => chunks.push(decode_prnt_chunk(chunk.data.as_slice())),
+                b"META" => chunks.push(decode_meta_chunk(chunk.data)),
+                b"SSTR" => chunks.push(decode_sstr_chunk(chunk.data)),
+                b"INST" => chunks.push(decode_inst_chunk(chunk.data, &mut count_by_type_id)),
+                b"PROP" => chunks.push(decode_prop_chunk(chunk.data, &mut count_by_type_id)),
+                b"PRNT" => chunks.push(decode_prnt_chunk(chunk.data)),
                 b"END\0" => {
                     chunks.push(DecodedChunk::End);
                     break;
@@ -59,7 +56,7 @@ impl DecodedModel {
                 _ => {
                     chunks.push(DecodedChunk::Unknown {
                         name: String::from_utf8_lossy(&chunk.name[..]).to_string(),
-                        contents: chunk.data,
+                        contents: chunk.data.to_owned(),
                     });
                 }
             }

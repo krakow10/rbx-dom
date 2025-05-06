@@ -55,6 +55,7 @@ rbx_binary::to_writer(output, &dom, &[dom.root_ref()])?;
 
 mod chunk;
 mod core;
+mod decompression_host;
 mod deserializer;
 mod serializer;
 mod types;
@@ -67,8 +68,9 @@ mod tests;
 
 use std::io::Write;
 
+pub use decompression_host::DecompressionHost;
 use rbx_dom_weak::{types::Ref, WeakDom};
-use rbx_reflection::{InternFunction, StringIntern};
+use rbx_reflection::StringIntern;
 
 /// An unstable textual format that can be used to debug binary models.
 #[cfg(feature = "unstable_text_format")]
@@ -84,18 +86,17 @@ pub use crate::{
 pub use crate::deserializer::DecodeOptions;
 
 /// Deserialize a Roblox binary model or place from a stream using the provided options.
-pub fn from_slice<'file, 'dom, S: StringIntern<'file, 'dom>>(
+pub fn from_slice_with<'file, 'dom, S: StringIntern<'file, 'dom>>(
+    host: &'file DecompressionHost,
     slice: &'file [u8],
     options: DecodeOptions<S>,
 ) -> Result<WeakDom<'dom>, DecodeError> {
-    Deserializer::new().deserialize(slice, options)
-}
-fn identity<'dom,'file:'dom>(str:&'file str)->&'dom str{
-    str
+    Deserializer::new().deserialize_with(host, slice, options)
 }
 /// Deserialize a Roblox binary model or place from a stream, throwing an error if an invalid property or class is encountered.
-pub fn from_slice_default<'file>(slice: &'file [u8]) -> Result<WeakDom<'file>, DecodeError> {
-    Deserializer::new().deserialize(slice, DecodeOptions::<InternFunction<'file, 'file>>::read_unknown(identity))
+pub fn from_slice_default<'file>(slice: &'file [u8]) -> Result<WeakDom<'static>, DecodeError> {
+    let host = DecompressionHost::new();
+    Deserializer::new().deserialize_with(&host, slice, DecodeOptions::default())
 }
 
 /// Serializes a subset of the given DOM to a binary format model or place,
