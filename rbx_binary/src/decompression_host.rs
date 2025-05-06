@@ -1,4 +1,5 @@
-/// TODO: doc
+/// Host storage for decompressed data.  The WeakDom may
+/// contain references to this data depending on the DecodeOptions.
 pub struct DecompressionHost {
     alloc: bumpalo::Bump,
 }
@@ -16,7 +17,9 @@ impl DecompressionHost {
             alloc: bumpalo::Bump::with_capacity(capacity),
         }
     }
-    /// TODO: doc
+    /// Allocate a buffer of a specific size.  Used internally
+    /// to create a buffer to decompress into. The buffer
+    /// contains uninitialized memory and should not be read from.
     pub fn alloc_buffer(&self, size: usize) -> &mut [u8] {
         let layout = core::alloc::Layout::array::<u8>(size).unwrap();
         let ptr = self.alloc.alloc_layout(layout).as_ptr();
