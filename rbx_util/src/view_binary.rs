@@ -1,10 +1,9 @@
 use std::{
-    io::{self, BufReader, BufWriter},
+    io::{self, BufWriter},
     path::PathBuf,
 };
 
 use clap::Parser;
-use fs_err::File;
 
 use crate::ModelKind;
 
@@ -22,10 +21,10 @@ impl ViewBinaryCommand {
             anyhow::bail!("not a binary model or place file: {}", self.input.display());
         }
 
-        let input_file = BufReader::new(File::open(&self.input)?);
+        let input_file = fs_err::read(&self.input)?;
 
         log::debug!("Decoding file into text format");
-        let model = rbx_binary::text_format::DecodedModel::from_reader(input_file);
+        let model = rbx_binary::text_format::DecodedModel::from_slice(input_file.as_slice());
 
         log::debug!("Writing to stdout");
         let stdout = io::stdout();

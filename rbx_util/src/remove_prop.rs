@@ -1,5 +1,5 @@
 use std::{
-    io::{BufReader, BufWriter},
+    io::BufWriter,
     path::PathBuf,
 };
 
@@ -27,14 +27,14 @@ impl RemovePropCommand {
         let input_kind = ModelKind::from_path(&self.input)?;
         let output_kind = ModelKind::from_path(&self.output)?;
 
-        let input_file = BufReader::new(File::open(&self.input)?);
+        let input_file = fs_err::read(&self.input)?;
 
         log::debug!("Reading from {input_kind:?} file {}", self.input.display());
         let mut dom = match input_kind {
-            ModelKind::Xml => rbx_xml::from_reader_default(input_file)
+            ModelKind::Xml => rbx_xml::from_reader_default(input_file.as_slice())
                 .with_context(|| format!("Failed to read {}", self.input.display()))?,
 
-            ModelKind::Binary => rbx_binary::from_reader_default(input_file)
+            ModelKind::Binary => rbx_binary::from_slice_default(input_file.as_slice())
                 .with_context(|| format!("Failed to read {}", self.input.display()))?,
         };
 

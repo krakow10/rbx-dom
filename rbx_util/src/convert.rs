@@ -1,5 +1,5 @@
 use std::{
-    io::{BufReader, BufWriter},
+    io::BufWriter,
     path::PathBuf,
 };
 
@@ -23,14 +23,14 @@ impl ConvertCommand {
         let input_kind = ModelKind::from_path(&self.input_path)?;
         let output_kind = ModelKind::from_path(&self.output_path)?;
 
-        let input_file = BufReader::new(File::open(&self.input_path)?);
+        let input_file = fs_err::read(&self.input_path)?;
 
         log::debug!("Reading file into WeakDom");
         let dom = match input_kind {
-            ModelKind::Xml => rbx_xml::from_reader_default(input_file)
+            ModelKind::Xml => rbx_xml::from_reader_default(input_file.as_slice())
                 .with_context(|| format!("Failed to read {}", self.input_path.display()))?,
 
-            ModelKind::Binary => rbx_binary::from_reader_default(input_file)
+            ModelKind::Binary => rbx_binary::from_slice_default(input_file.as_slice())
                 .with_context(|| format!("Failed to read {}", self.input_path.display()))?,
         };
 
