@@ -1,4 +1,4 @@
-use ahash::HashMap;
+use ahash::AHashMap;
 use rbx_types::{Ref, Variant};
 
 /**
@@ -203,7 +203,7 @@ pub struct Instance<'a> {
     pub class: &'a str,
 
     /// Any properties stored on the object that are not `Name` or `ClassName`.
-    pub properties: HashMap<&'a str, Variant>,
+    pub properties: AHashMap<&'a str, Variant>,
 }
 
 impl Instance<'_> {
