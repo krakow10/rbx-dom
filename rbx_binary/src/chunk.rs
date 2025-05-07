@@ -31,9 +31,13 @@ impl<'file> Chunk<'file> {
 
         let data = if header.compressed_len == 0 {
             log::trace!("No compression");
-            &slice[..header.len as usize]
+
+            let data;
+            (data, *slice) = slice.split_at(header.len as usize);
+            data
         } else {
-            let compressed_data = &slice[..header.compressed_len as usize];
+            let compressed_data;
+            (compressed_data, *slice) = slice.split_at(header.compressed_len as usize);
 
             match compressed_data.get(0..4) {
                 Some(ZSTD_MAGIC_NUMBER) => {
