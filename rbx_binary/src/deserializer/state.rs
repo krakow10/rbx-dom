@@ -72,7 +72,8 @@ impl<'file, 'dom, S: StringIntern<'file, 'dom>> DecodeOptions<S> {
 impl<'file> DecodeOptions<InternFunction<'file, 'file>> {
     /// Constructs a `DecodeOptions` which uses references to the input slice
     /// for unknown properties and classes.  This has a larger memory footprint than
-    /// using `DecodeOptions::read_unknown_with` with a string interner.
+    /// using `DecodeOptions::read_unknown_with` with a string interner
+    /// because you cannot drop the input slice or the decompressed input contents.
     #[inline]
     pub fn read_unknown() -> Self {
         DecodeOptions::ReadUnknown {
