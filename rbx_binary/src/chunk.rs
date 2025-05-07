@@ -5,7 +5,8 @@ use std::{
 };
 
 use crate::{
-    core::RbxReadExt, core::RbxWriteExt, decompression_host::DecompressionHost,
+    core::{RbxReadExt, RbxWriteExt},
+    decompression_host::DecompressionHost,
     serializer::CompressionType,
 };
 
@@ -20,7 +21,10 @@ pub struct Chunk<'file> {
 
 impl<'file> Chunk<'file> {
     /// Reads and decodes a `Chunk` from the given reader.
-    pub fn decode_with(host: &'file DecompressionHost, slice: &mut &'file [u8]) -> io::Result<Self> {
+    pub fn decode_with(
+        host: &'file DecompressionHost,
+        slice: &mut &'file [u8],
+    ) -> io::Result<Self> {
         let header = decode_chunk_header(slice)?;
 
         log::trace!("{}", header);
@@ -51,7 +55,7 @@ impl<'file> Chunk<'file> {
                     buffer
                 }
                 other => {
-                    panic!("unknown compression format {:?}",other);
+                    panic!("unknown compression format {:?}", other);
                 }
             }
         };
