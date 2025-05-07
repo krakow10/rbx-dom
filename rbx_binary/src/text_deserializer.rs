@@ -32,8 +32,8 @@ pub struct DecodedModel {
 }
 
 impl DecodedModel {
-    pub fn from_slice_with<'file>(host: &'file DecompressionHost, mut reader: &'file [u8]) -> Self {
-        let header = FileHeader::decode(&mut reader).expect("invalid file header");
+    pub fn from_slice_with<'file>(host: &'file DecompressionHost, mut slice: &'file [u8]) -> Self {
+        let header = FileHeader::decode(&mut slice).expect("invalid file header");
         let mut chunks = Vec::new();
 
         // The number of instance with a given type ID. Used to correctly decode
@@ -41,7 +41,7 @@ impl DecodedModel {
         let mut count_by_type_id = HashMap::new();
 
         loop {
-            let chunk = Chunk::decode_with(host, &mut reader).expect("invalid chunk");
+            let chunk = Chunk::decode_with(host, &mut slice).expect("invalid chunk");
 
             match &chunk.name {
                 b"META" => chunks.push(decode_meta_chunk(chunk.data)),
