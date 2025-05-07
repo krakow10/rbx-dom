@@ -25,7 +25,7 @@ impl ViewBinaryCommand {
         let input_file = BufReader::new(File::open(&self.input)?);
 
         log::debug!("Decoding file into text format");
-        let model = rbx_binary::text_format::DecodedModel::from_reader(input_file);
+        let model = rbx_binary::text_format::DecodedModel::from_slice(input_file);
 
         log::debug!("Writing to stdout");
         let stdout = io::stdout();

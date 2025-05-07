@@ -6,7 +6,7 @@ pub(crate) fn bench<T: Measurement>(group: &mut BenchmarkGroup<T>, bench_file: &
 }
 
 fn serialize_bench<T: Measurement>(group: &mut BenchmarkGroup<T>, buffer: &[u8]) {
-    let tree = rbx_binary::from_reader(buffer).unwrap();
+    let tree = rbx_binary::from_slice(buffer).unwrap();
     let root_ref = tree.root_ref();
     let mut buffer = Vec::new();
 
@@ -36,7 +36,7 @@ fn deserialize_bench<T: Measurement>(group: &mut BenchmarkGroup<T>, buffer: &[u8
         .throughput(Throughput::Bytes(buffer.len() as u64))
         .bench_function("Deserialize", |bencher| {
             bencher.iter(|| {
-                rbx_binary::from_reader(buffer).unwrap();
+                rbx_binary::from_slice(buffer).unwrap();
             });
         });
 }

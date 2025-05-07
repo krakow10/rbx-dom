@@ -14,9 +14,9 @@ use std::fs::File;
 use std::io::BufReader;
 
 // Using buffered I/O is recommended with rbx_binary
-let input = BufReader::new(File::open("MyModel.rbxm")?);
+let input = std::fs::read("MyModel.rbxm")?;
 
-let dom = rbx_binary::from_reader(input)?;
+let dom = rbx_binary::from_slice(input.as_slice())?;
 
 // rbx_binary always returns a DOM with a DataModel at the top level.
 // To get to the instances from our file, we need to go one level deeper.
@@ -65,7 +65,7 @@ mod text_deserializer;
 #[cfg(test)]
 mod tests;
 
-use std::io::{Read, Write};
+use std::io::Write;
 
 use rbx_dom_weak::{types::Ref, WeakDom};
 
@@ -81,8 +81,8 @@ pub use crate::{
 };
 
 /// Deserialize a Roblox binary model or place from a stream.
-pub fn from_reader<R: Read>(reader: R) -> Result<WeakDom, DecodeError> {
-    Deserializer::new().deserialize(reader)
+pub fn from_slice(slice: &[u8]) -> Result<WeakDom, DecodeError> {
+    Deserializer::new().deserialize(slice)
 }
 
 /// Serializes a subset of the given DOM to a binary format model or place,

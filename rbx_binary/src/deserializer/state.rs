@@ -22,12 +22,12 @@ use crate::{
 
 use super::{error::InnerError, header::FileHeader, Deserializer};
 
-pub(super) struct DeserializerState<'db, R> {
+pub(super) struct DeserializerState<'db, 'input> {
     /// The user-provided configuration that we should use.
     deserializer: &'db Deserializer<'db>,
 
     /// The input data encoded as a binary model.
-    input: R,
+    input: &'input [u8],
 
     /// The tree that instances should be written into. Eventually returned to
     /// the user.
@@ -205,10 +205,10 @@ fn add_property(instance: &mut Instance, canonical_property: &CanonicalProperty,
     }
 }
 
-impl<'db, R: Read> DeserializerState<'db, R> {
+impl<'db, 'input> DeserializerState<'db, 'input> {
     pub(super) fn new(
         deserializer: &'db Deserializer<'db>,
-        mut input: R,
+        mut input: &'input [u8],
     ) -> Result<Self, InnerError> {
         let mut tree = WeakDom::new(InstanceBuilder::new("DataModel"));
 
@@ -232,7 +232,7 @@ impl<'db, R: Read> DeserializerState<'db, R> {
         })
     }
 
-    pub(super) fn next_chunk(&mut self) -> Result<Chunk, InnerError> {
+    pub(super) fn next_chunk(&mut self) -> Result<Chunk<'input>, InnerError> {
         Ok(Chunk::decode(&mut self.input)?)
     }
 

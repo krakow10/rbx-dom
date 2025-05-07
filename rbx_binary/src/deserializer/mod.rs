@@ -2,7 +2,7 @@ mod error;
 mod header;
 mod state;
 
-use std::{io::Read, str};
+use std::str;
 
 use rbx_dom_weak::WeakDom;
 use rbx_reflection::ReflectionDatabase;
@@ -22,10 +22,10 @@ pub use self::error::Error;
 ///
 /// use rbx_binary::Deserializer;
 ///
-/// let input = BufReader::new(File::open("File.rbxm")?);
+/// let input = std::fs::read("File.rbxm")?;
 ///
 /// let deserializer = Deserializer::new();
-/// let dom = deserializer.deserialize(input)?;
+/// let dom = deserializer.deserialize(input.as_slice())?;
 ///
 /// // rbx_binary always returns a DOM with a DataModel at the top level.
 /// // To get to the instances from our file, we need to go one level deeper.
@@ -66,10 +66,10 @@ impl<'db> Deserializer<'db> {
 
     /// Deserialize a Roblox binary model or place from the given stream using
     /// this deserializer.
-    pub fn deserialize<R: Read>(&self, reader: R) -> Result<WeakDom, Error> {
+    pub fn deserialize(&self, slice: &[u8]) -> Result<WeakDom, Error> {
         profiling::scope!("rbx_binary::deserialize");
 
-        let mut deserializer = DeserializerState::new(self, reader)?;
+        let mut deserializer = DeserializerState::new(self, slice)?;
 
         loop {
             let chunk = deserializer.next_chunk()?;

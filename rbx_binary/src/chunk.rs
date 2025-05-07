@@ -1,4 +1,5 @@
 use std::{
+    borrow::Cow,
     fmt,
     io::{self, Read, Write},
     str,
@@ -13,36 +14,36 @@ const ZSTD_MAGIC_NUMBER: &[u8] = &[0x28, 0xb5, 0x2f, 0xfd];
 
 /// Represents one chunk from a binary model file.
 #[derive(Debug)]
-pub struct Chunk {
+pub struct Chunk<'input> {
     pub name: [u8; 4],
-    pub data: Vec<u8>,
+    pub data: Cow<'input, [u8]>,
 }
 
-impl Chunk {
+impl<'input> Chunk<'input> {
     /// Reads and decodes a `Chunk` from the given reader.
-    pub fn decode<R: Read>(mut reader: R) -> io::Result<Chunk> {
-        let header = decode_chunk_header(&mut reader)?;
+    pub fn decode(slice: &mut &'input [u8]) -> io::Result<Self> {
+        let header = decode_chunk_header(slice)?;
 
         log::trace!("{}", header);
 
         let data = if header.compressed_len == 0 {
             log::trace!("No compression");
-            let mut data = Vec::with_capacity(header.len as usize);
-            reader.take(header.len as u64).read_to_end(&mut data)?;
-            data
-        } else {
-            let mut compressed_data = Vec::with_capacity(header.compressed_len as usize);
-            reader
-                .take(header.compressed_len as u64)
-                .read_to_end(&mut compressed_data)?;
 
-            if &compressed_data[0..4] == ZSTD_MAGIC_NUMBER {
+            let data;
+            (data, *slice) = slice.split_at(header.len as usize);
+            Cow::Borrowed(data)
+        } else {
+            let compressed_data;
+            (compressed_data, *slice) = slice.split_at(header.compressed_len as usize);
+
+            let data = if &compressed_data[0..4] == ZSTD_MAGIC_NUMBER {
                 log::trace!("ZSTD compression");
                 zstd::bulk::decompress(&compressed_data, header.len as usize)?
             } else {
                 log::trace!("LZ4 compression");
                 lz4::block::decompress(&compressed_data, Some(header.len as i32))?
-            }
+            };
+            Cow::Owned(data)
         };
 
         assert_eq!(data.len(), header.len as usize);
@@ -158,7 +159,7 @@ impl fmt::Display for ChunkHeader {
     }
 }
 
-fn decode_chunk_header<R: Read>(source: &mut R) -> io::Result<ChunkHeader> {
+fn decode_chunk_header(source: &mut &[u8]) -> io::Result<ChunkHeader> {
     let mut name = [0; 4];
     source.read_exact(&mut name)?;
 

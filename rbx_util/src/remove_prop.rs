@@ -39,7 +39,7 @@ impl RemovePropCommand {
                     .with_context(|| format!("Failed to read {}", self.input.display()))?
             }
 
-            ModelKind::Binary => rbx_binary::from_reader(input_file)
+            ModelKind::Binary => rbx_binary::from_slice(input_file)
                 .with_context(|| format!("Failed to read {}", self.input.display()))?,
         };
 
