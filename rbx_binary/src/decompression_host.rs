@@ -20,6 +20,8 @@ impl DecompressionHost {
     /// Allocate a buffer of a specific size.  Used internally
     /// to create a buffer to decompress into. The buffer
     /// contains uninitialized memory and should not be read from.
+    // I promise this is ok clippy :3
+    #[allow(clippy::mut_from_ref)]
     pub fn alloc_buffer(&self, size: usize) -> &mut [u8] {
         let layout = core::alloc::Layout::array::<u8>(size).unwrap();
         let ptr = self.alloc.alloc_layout(layout).as_ptr();

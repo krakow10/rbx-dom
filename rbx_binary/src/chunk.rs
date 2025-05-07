@@ -43,7 +43,7 @@ impl<'file> Chunk<'file> {
                 Some(ZSTD_MAGIC_NUMBER) => {
                     log::trace!("ZSTD compression");
                     let buffer = host.alloc_buffer(header.len as usize);
-                    let bytes_written = zstd::bulk::decompress_to_buffer(&compressed_data, buffer)?;
+                    let bytes_written = zstd::bulk::decompress_to_buffer(compressed_data, buffer)?;
                     debug_assert_eq!(bytes_written, buffer.len());
                     buffer
                 }
@@ -51,7 +51,7 @@ impl<'file> Chunk<'file> {
                     log::trace!("LZ4 compression");
                     let buffer = host.alloc_buffer(header.len as usize);
                     let bytes_written = lz4::block::decompress_to_buffer(
-                        &compressed_data,
+                        compressed_data,
                         Some(header.len as i32),
                         buffer,
                     )?;
