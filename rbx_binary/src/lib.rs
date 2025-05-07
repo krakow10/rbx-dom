@@ -94,7 +94,7 @@ pub fn from_slice_with<'file, 'dom, S: StringIntern<'file, 'dom>>(
     Deserializer::new().deserialize_with(host, slice, options)
 }
 /// Deserialize a Roblox binary model or place from a stream, throwing an error if an invalid property or class is encountered.
-pub fn from_slice_default<'file>(slice: &'file [u8]) -> Result<WeakDom<'static>, DecodeError> {
+pub fn from_slice_default(slice: &[u8]) -> Result<WeakDom<'static>, DecodeError> {
     let host = DecompressionHost::new();
     Deserializer::new().deserialize_with(&host, slice, DecodeOptions::default())
 }
