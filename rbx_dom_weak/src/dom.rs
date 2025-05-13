@@ -328,7 +328,8 @@ impl WeakDom {
     /// keyword and consistency with `transfer` is valuable.
     ///
     /// ## Panics
-    /// Panics if `referent` does not refer to an instance in `self`.
+    /// Panics if `referent` or `dest_parent_ref` do not refer to instances in
+    /// `self`.
     ///
     /// Will also panic if `referent` refers to the root instance in this
     /// `WeakDom`.
