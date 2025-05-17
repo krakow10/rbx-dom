@@ -56,6 +56,8 @@ rbx_binary::to_writer(output, &dom, &[dom.root_ref()])?;
 mod chunk;
 mod core;
 mod deserializer;
+mod file;
+mod header;
 mod serializer;
 mod types;
 
@@ -67,6 +69,7 @@ mod tests;
 
 use std::io::{Read, Write};
 
+use file::DecompressedFile;
 use rbx_dom_weak::{types::Ref, WeakDom};
 
 /// An unstable textual format that can be used to debug binary models.
@@ -82,7 +85,8 @@ pub use crate::{
 
 /// Deserialize a Roblox binary model or place from a stream.
 pub fn from_reader<R: Read>(reader: R) -> Result<WeakDom, DecodeError> {
-    Deserializer::new().deserialize(reader)
+    let file = DecompressedFile::from_reader(reader)?;
+    Deserializer::new().deserialize(&file)
 }
 
 /// Serializes a subset of the given DOM to a binary format model or place,

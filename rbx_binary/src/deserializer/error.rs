@@ -2,6 +2,8 @@ use std::io;
 
 use thiserror::Error;
 
+use crate::header::HeaderError;
+
 use crate::types::InvalidTypeError;
 
 /// Represents an error that occurred during deserialization.
@@ -13,6 +15,20 @@ pub struct Error {
 
 impl From<InnerError> for Error {
     fn from(inner: InnerError) -> Self {
+        Self {
+            source: Box::new(inner),
+        }
+    }
+}
+impl From<HeaderError> for Error {
+    fn from(error: HeaderError) -> Self {
+        let inner = match error {
+            HeaderError::Io { source } => InnerError::Io { source },
+            HeaderError::BadHeader => InnerError::BadHeader,
+            HeaderError::UnknownFileVersion { version } => {
+                InnerError::UnknownFileVersion { version }
+            }
+        };
         Self {
             source: Box::new(inner),
         }

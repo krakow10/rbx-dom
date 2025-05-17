@@ -1,8 +1,23 @@
+use thiserror::Error;
+
 use std::io::Read;
 
 use crate::core::{RbxReadExt, FILE_MAGIC_HEADER, FILE_SIGNATURE, FILE_VERSION};
 
-use super::error::InnerError;
+#[derive(Debug, Error)]
+pub enum HeaderError {
+    #[error(transparent)]
+    Io {
+        #[from]
+        source: std::io::Error,
+    },
+
+    #[error("Invalid file header")]
+    BadHeader,
+
+    #[error("Unknown file version {version}. Known versions are: 0")]
+    UnknownFileVersion { version: u16 },
+}
 
 /// All the information contained in the header before any chunks are read from
 /// the file.
@@ -17,25 +32,25 @@ pub(crate) struct FileHeader {
 }
 
 impl FileHeader {
-    pub(crate) fn decode<R: Read>(mut source: R) -> Result<Self, InnerError> {
+    pub(crate) fn decode<R: Read>(mut source: R) -> Result<Self, HeaderError> {
         let mut magic_header = [0; 8];
         source.read_exact(&mut magic_header)?;
 
         if magic_header != FILE_MAGIC_HEADER {
-            return Err(InnerError::BadHeader);
+            return Err(HeaderError::BadHeader);
         }
 
         let mut signature = [0; 6];
         source.read_exact(&mut signature)?;
 
         if signature != FILE_SIGNATURE {
-            return Err(InnerError::BadHeader);
+            return Err(HeaderError::BadHeader);
         }
 
         let version = source.read_le_u16()?;
 
         if version != FILE_VERSION {
-            return Err(InnerError::UnknownFileVersion { version });
+            return Err(HeaderError::UnknownFileVersion { version });
         }
 
         let num_types = source.read_le_u32()?;
@@ -45,7 +60,7 @@ impl FileHeader {
         source.read_exact(&mut reserved)?;
 
         if reserved != [0; 8] {
-            return Err(InnerError::BadHeader);
+            return Err(HeaderError::BadHeader);
         }
 
         Ok(Self {
