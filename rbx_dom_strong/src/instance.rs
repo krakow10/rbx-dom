@@ -71,3 +71,43 @@ pub enum StrongInstance {
     Part(Box<Part>),
     WedgePart(Box<WedgePart>),
 }
+
+#[cfg(test)]
+mod test {
+    use super::*;
+    use rbx_types::{CFrame, Matrix3, Vector3};
+
+    fn default_cframe() -> CFrame {
+        CFrame::new(Vector3::new(0.0, 0.0, 0.0), Matrix3::identity())
+    }
+    fn default_part() -> Part {
+        Part {
+            superclass: FormFactorPart {
+                superclass: BasePart {
+                    superclass: PVInstance {
+                        superclass: Instance {
+                            Archivable: true,
+                            referent: Ref::none(),
+                            children: Vec::new(),
+                            parent: Ref::none(),
+                            name: "".to_owned(),
+                        },
+                        Origin: default_cframe(),
+                    },
+                    CFrame: default_cframe(),
+                },
+                FormFactor: Enum::from_u32(0),
+            },
+            Shape: Enum::from_u32(0),
+        }
+    }
+    #[test]
+    fn part_inherits_instance() {
+        // Part::default() would be nice
+        let mut part: Part = default_part();
+
+        // look ma, inheritance in rust!
+        part.name = "Part".to_owned();
+        part.CFrame = default_cframe();
+    }
+}
