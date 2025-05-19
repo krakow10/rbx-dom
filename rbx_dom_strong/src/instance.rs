@@ -71,6 +71,17 @@ pub enum StrongInstance {
     Part(Box<Part>),
     WedgePart(Box<WedgePart>),
 }
+macro_rules! impl_strong_instance_from {
+    ($class:ident) => {
+        impl From<$class> for StrongInstance {
+            fn from(value: $class) -> Self {
+                Self::$class(Box::new(value))
+            }
+        }
+    };
+}
+impl_strong_instance_from!(Part);
+impl_strong_instance_from!(WedgePart);
 
 #[cfg(test)]
 mod test {
