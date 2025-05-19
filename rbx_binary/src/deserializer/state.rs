@@ -74,7 +74,17 @@ impl<'file> DecodeOptions<InternFunction<'file, 'file>> {
     /// Constructs a `DecodeOptions` which uses references to the decompressed chunks
     /// for unknown properties and classes.  This has a larger memory footprint than
     /// using `DecodeOptions::read_unknown_with` with a string interner
-    /// because you cannot drop the decompressed chunks.
+    /// because you cannot drop the decompressed chunks immediately.
+    ///
+    /// Note that you cannot use this with `rbx_binary::from_reader`,
+    /// instead you must use a DecompressedFile with a let binding:
+    /// ```no_run
+    /// use rbx_binary::{DecompressedFile, DecodeOptions};
+    /// let bytes = std::fs::read("file.rbxl")?;
+    /// let file = DecompressedFile::from_reader(bytes.as_slice())?;
+    /// let dom = file.deserialize(DecodeOptions::read_unknown())?;
+    /// # Ok::<(), Box<dyn std::error::Error>>(())
+    /// ```
     #[inline]
     pub fn read_unknown() -> Self {
         DecodeOptions::ReadUnknown {
