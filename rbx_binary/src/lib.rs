@@ -68,7 +68,6 @@ mod tests;
 use std::io::{Read, Write};
 
 pub use deserializer::DecompressedFile;
-use deserializer::InternFunction;
 use rbx_dom_weak::{types::Ref, WeakDom};
 
 /// An unstable textual format that can be used to debug binary models.
@@ -83,12 +82,25 @@ pub use crate::{
 };
 
 /// Deserialize a Roblox binary model or place from a stream.
-pub fn from_reader<'dom, R: Read>(
+pub fn from_reader<'dom, 'file, R: Read, S: StringIntern<'file, 'dom>>(
     reader: R,
-    options: DecodeOptions<InternFunction<'_, 'dom>>,
+    options: DecodeOptions<S>,
 ) -> Result<WeakDom<'dom>, DecodeError> {
     let file = DecompressedFile::from_reader(reader)?;
-    Deserializer::new().deserialize(&file, options)
+    // SAFETY: The string internment signature gurantees that
+    // the output string slice lives for 'dom, so the input
+    // 'file lifetime is irrelevant, and yet the rust compiler
+    // forces the input lifetime to match an unspecifiable value
+    // ('file only exists inside this scope).
+    //
+    // Note that there may be a way to do this without unsafe,
+    // but I don't know how to do it.
+    unsafe fn set_lifetime<'a, T>(value: &T) -> &'a T {
+        let ptr = value as *const T;
+        unsafe { &*ptr }
+    }
+    // Force the lifetime to be 'file.
+    Deserializer::new().deserialize(unsafe { set_lifetime(&file) }, options)
 }
 
 /// Serializes a subset of the given DOM to a binary format model or place,
