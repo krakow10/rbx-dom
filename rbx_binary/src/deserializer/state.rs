@@ -10,7 +10,7 @@ use rbx_dom_weak::{
         SharedString, Tags, UDim, UDim2, UniqueId, Variant, VariantType, Vector2, Vector3,
         Vector3int16,
     },
-    InstanceBuilder, Ustr, WeakDom,
+    InstanceBuilder, WeakDom,
 };
 use rbx_reflection::{DataType, PropertyKind, PropertySerialization, ReflectionDatabase};
 
@@ -19,15 +19,86 @@ use crate::{
     types::Type,
 };
 
-use super::{error::InnerError, header::FileHeader, Deserializer};
+use super::{
+    error::InnerError,
+    header::FileHeader,
+    intern::{InternFunction, StringIntern},
+    Deserializer,
+};
 
-pub(super) struct DeserializerState<'db> {
+/// Options available for deserializing a binary-format model or place.
+#[derive(Debug)]
+#[non_exhaustive]
+pub enum DecodeOptions<S> {
+    /// Returns an error if any properties are found that aren't known by
+    /// rbx_binary.
+    ErrorOnUnknown,
+    /// Ignores properties not known by rbx_binary.
+    IgnoreUnknown,
+    /// Allows properties not known by rbx_binary to be represented in
+    /// the dom.
+    ReadUnknown {
+        /// String interner.  Can be any closure `fn(&str) -> &str`,
+        /// as long as the identical returned string outlives the dom.
+        interner: S,
+    },
+}
+
+impl DecodeOptions<InternFunction<'_, 'static>> {
+    /// Constructs a `DecodeOptions` which specifies to error upon encountering an unknown property or class.
+    #[inline]
+    pub fn error_on_unknown() -> Self {
+        DecodeOptions::ErrorOnUnknown
+    }
+    /// Constructs a `DecodeOptions` which specifies to ignore unknown properties and classes.
+    #[inline]
+    pub fn ignore_unknown() -> Self {
+        DecodeOptions::IgnoreUnknown
+    }
+}
+impl<'file, 'dom, S: StringIntern<'file, 'dom>> DecodeOptions<S> {
+    /// Constructs a `DecodeOptions` which uses the specified string internment
+    /// to manage unknown properties and classes. This is useful if you want
+    /// to drop the decompressed file data to save memory.  Storing
+    /// a deduplicated list of only unknown properties and classes
+    /// has a smaller memory footprint than holding references
+    /// to the full decompressed data.  Alternatively use error_on_unknown
+    /// to reject unknown classes and properties entirely, using only
+    /// static references to known classes and properties from the database.
+    #[inline]
+    pub fn read_unknown_with(interner: S) -> Self {
+        DecodeOptions::ReadUnknown { interner }
+    }
+}
+impl<'file> DecodeOptions<InternFunction<'file, 'file>> {
+    /// Constructs a `DecodeOptions` which uses references to the decompressed chunks
+    /// for unknown properties and classes.  This has a larger memory footprint than
+    /// using `DecodeOptions::read_unknown_with` with a string interner
+    /// because you cannot drop the decompressed chunks.
+    #[inline]
+    pub fn read_unknown() -> Self {
+        DecodeOptions::ReadUnknown {
+            interner: std::convert::identity,
+        }
+    }
+}
+impl<'file> Default for DecodeOptions<InternFunction<'file, 'file>> {
+    #[inline]
+    fn default() -> Self {
+        Self::read_unknown()
+    }
+}
+
+pub(super) struct DeserializerState<'de, 'db, 'dom, S> {
     /// The user-provided configuration that we should use.
-    deserializer: &'db Deserializer<'db>,
+    deserializer: &'de Deserializer<'de, 'db>,
+
+    /// The user-provided configuration that we should use.
+    options: DecodeOptions<S>,
 
     /// The tree that instances should be written into. Eventually returned to
     /// the user.
-    tree: WeakDom,
+    tree: WeakDom<'dom>,
 
     /// The metadata contained in the file, which affects how some constructs
     /// are interpreted by Roblox.
@@ -38,10 +109,10 @@ pub(super) struct DeserializerState<'db> {
     shared_strings: Vec<SharedString>,
 
     /// All of the instance types described by the file so far.
-    type_infos: HashMap<u32, TypeInfo>,
+    type_infos: HashMap<u32, TypeInfo<'dom>>,
 
     /// All of the instances known by the deserializer.
-    instances_by_ref: HashMap<i32, Instance>,
+    instances_by_ref: HashMap<i32, Instance<'dom>>,
 
     /// Referents for all of the instances with no parent, in order they appear
     /// in the file.
@@ -55,13 +126,13 @@ pub(super) struct DeserializerState<'db> {
 
 /// Represents a unique instance class. Binary models define all their instance
 /// types up front and give them a short u32 identifier.
-struct TypeInfo {
+struct TypeInfo<'dom> {
     /// The ID given to this type by the current file we're deserializing. This
     /// ID can be different for different files.
     type_id: u32,
 
     /// The common name for this type like `Folder` or `UserInputService`.
-    type_name: Ustr,
+    type_name: &'dom str,
 
     /// A list of the instances described by this file that are this type.
     referents: Vec<i32>,
@@ -70,9 +141,9 @@ struct TypeInfo {
 /// Contains all the information we need to gather in order to construct an
 /// instance. Incrementally built up by the deserializer as we decode different
 /// chunks.
-struct Instance {
+struct Instance<'dom> {
     /// A work-in-progress builder that will be used to construct this instance.
-    builder: InstanceBuilder,
+    builder: InstanceBuilder<'dom>,
 
     /// Document-defined IDs for the children of this instance.
     children: Vec<i32>,
@@ -84,18 +155,19 @@ struct Instance {
 /// contains a migration for some properties Roblox has replaced with
 /// others (like Font, which has been superceded by FontFace).
 #[derive(Debug)]
-struct CanonicalProperty<'db> {
-    name: Ustr,
+struct CanonicalProperty<'de, 'dom, 'db> {
+    name: &'dom str,
     ty: VariantType,
-    migration: Option<&'db PropertySerialization<'db>>,
+    migration: Option<&'de PropertySerialization<'db>>,
 }
 
-fn find_canonical_property<'de>(
-    database: &'de ReflectionDatabase,
+fn find_canonical_property<'de, 'dom: 'de, 'db: 'dom, 'file, S: StringIntern<'file, 'dom>>(
+    database: &'de ReflectionDatabase<'db>,
     binary_type: Type,
-    class_name: Ustr,
-    prop_name: Ustr,
-) -> Option<CanonicalProperty<'de>> {
+    class_name: &'dom str,
+    prop_name: &'file str,
+    options: &mut DecodeOptions<S>,
+) -> Result<Option<CanonicalProperty<'de, 'dom, 'db>>, InnerError> {
     match find_property_descriptors(database, class_name, prop_name) {
         Some(descriptors) => {
             // If this descriptor is known but wasn't supposed to be
@@ -119,7 +191,7 @@ fn find_canonical_property<'de>(
                         "Skipping property {} as it is canonical and should not serialize.",
                         descriptors.canonical.name
                     );
-                    return None;
+                    return Ok(None);
                 }
             }
 
@@ -130,7 +202,7 @@ fn find_canonical_property<'de>(
                 DataType::Enum(_) => VariantType::Enum,
                 _ => {
                     // TODO: Configurable handling of unknown types?
-                    return None;
+                    return Ok(None);
                 }
             };
             let migration = match &descriptors.canonical.kind {
@@ -147,33 +219,47 @@ fn find_canonical_property<'de>(
                 migration,
             );
 
-            Some(CanonicalProperty {
-                name: canonical_name.into(),
+            Ok(Some(CanonicalProperty {
+                name: canonical_name,
                 ty: canonical_type,
                 migration,
-            })
+            }))
         }
-        None => {
-            let canonical_type = match binary_type.to_default_rbx_type() {
-                Some(rbx_type) => rbx_type,
-                None => {
-                    log::warn!("Unsupported prop type {:?}, skipping property", binary_type);
-                    return None;
-                }
-            };
+        None => match options {
+            DecodeOptions::ErrorOnUnknown => Err(InnerError::UnknownPropertyName {
+                type_name: class_name.to_owned(),
+                prop_name: prop_name.to_owned(),
+            }),
+            DecodeOptions::IgnoreUnknown => {
+                log::warn!("Unknown property {class_name}.{prop_name}, skipping property");
+                Ok(None)
+            }
+            DecodeOptions::ReadUnknown { interner } => {
+                let canonical_type = match binary_type.to_default_rbx_type() {
+                    Some(rbx_type) => rbx_type,
+                    None => {
+                        log::warn!("Unsupported prop type {:?}, skipping property", binary_type);
+                        return Ok(None);
+                    }
+                };
 
-            log::trace!("Unknown prop, using type {:?}", canonical_type);
+                log::trace!("Unknown prop, using type {:?}", canonical_type);
 
-            Some(CanonicalProperty {
-                name: prop_name,
-                ty: canonical_type,
-                migration: None,
-            })
-        }
+                Ok(Some(CanonicalProperty {
+                    name: interner.intern(prop_name),
+                    ty: canonical_type,
+                    migration: None,
+                }))
+            }
+        },
     }
 }
 
-fn add_property(instance: &mut Instance, canonical_property: &CanonicalProperty, value: Variant) {
+fn add_property<'de, 'dom, 'db: 'dom>(
+    instance: &mut Instance<'dom>,
+    canonical_property: &'de CanonicalProperty<'de, 'dom, 'db>,
+    value: Variant,
+) {
     if let Some(PropertySerialization::Migrate(migration)) = canonical_property.migration {
         let new_property_name = migration.new_property_name;
         let old_property_name = canonical_property.name;
@@ -201,10 +287,13 @@ fn add_property(instance: &mut Instance, canonical_property: &CanonicalProperty,
     }
 }
 
-impl<'db> DeserializerState<'db> {
+impl<'de, 'dom: 'de, 'db: 'dom, 'file, S: StringIntern<'file, 'dom>>
+    DeserializerState<'de, 'db, 'dom, S>
+{
     pub(super) fn new(
-        deserializer: &'db Deserializer<'db>,
+        deserializer: &'de Deserializer<'de, 'db>,
         header: &FileHeader,
+        options: DecodeOptions<S>,
     ) -> Result<Self, InnerError> {
         let mut tree = WeakDom::new(InstanceBuilder::new("DataModel"));
 
@@ -215,6 +304,7 @@ impl<'db> DeserializerState<'db> {
 
         Ok(DeserializerState {
             deserializer,
+            options,
             tree,
             metadata: HashMap::new(),
             shared_strings: Vec::new(),
@@ -263,7 +353,7 @@ impl<'db> DeserializerState<'db> {
     }
 
     #[profiling::function]
-    pub(super) fn decode_inst_chunk(&mut self, mut chunk: &[u8]) -> Result<(), InnerError> {
+    pub(super) fn decode_inst_chunk(&mut self, mut chunk: &'file [u8]) -> Result<(), InnerError> {
         let type_id = chunk.read_le_u32()?;
         let type_name = read_string_slice(&mut chunk)?;
         let object_format = chunk.read_u8()?;
@@ -280,13 +370,25 @@ impl<'db> DeserializerState<'db> {
         let mut referents = vec![0; number_instances as usize];
         chunk.read_referent_array(&mut referents)?;
 
-        let prop_capacity = self
-            .deserializer
-            .database
-            .classes
-            .get(type_name)
-            .map(|class| class.default_properties.len())
-            .unwrap_or(0);
+        // get class name from database
+        let class_key_value = self.deserializer.database.classes.get_key_value(type_name);
+
+        // if the database class does not exist, intern it into the string cache
+        let (type_name, prop_capacity) = match class_key_value {
+            Some((&type_name, class)) => (type_name, class.default_properties.len()),
+            None => match &mut self.options {
+                DecodeOptions::ReadUnknown { interner } => {
+                    // we do not know default properties length, return 0
+                    (interner.intern(type_name), 0)
+                }
+                DecodeOptions::ErrorOnUnknown => {
+                    return Err(InnerError::UnknownClassName {
+                        type_name: type_name.to_owned(),
+                    })
+                }
+                DecodeOptions::IgnoreUnknown => return Ok(()),
+            },
+        };
 
         // TODO: Check object_format and check for service markers if it's 1?
 
@@ -304,7 +406,7 @@ impl<'db> DeserializerState<'db> {
             type_id,
             TypeInfo {
                 type_id,
-                type_name: type_name.into(),
+                type_name,
                 referents,
             },
         );
@@ -313,7 +415,7 @@ impl<'db> DeserializerState<'db> {
     }
 
     #[profiling::function]
-    pub(super) fn decode_prop_chunk(&mut self, mut chunk: &[u8]) -> Result<(), InnerError> {
+    pub(super) fn decode_prop_chunk(&mut self, mut chunk: &'file [u8]) -> Result<(), InnerError> {
         let type_id = chunk.read_le_u32()?;
         let prop_name = read_string_slice(&mut chunk)?;
 
@@ -388,14 +490,15 @@ This may cause unexpected or broken behavior in your final results if you rely o
             return Ok(());
         }
 
-        let property = if let Some(property) = find_canonical_property(
+        let Some(property) = find_canonical_property(
             self.deserializer.database,
             binary_type,
             type_info.type_name,
-            prop_name.into(),
-        ) {
-            property
-        } else {
+            prop_name,
+            &mut self.options,
+        )?
+        else {
+            // options said unknown properties are ignored
             return Ok(());
         };
 
@@ -1526,7 +1629,7 @@ rbx-dom may require changes to fully support this property. Please open an issue
     /// Combines together all the decoded information to build and emplace
     /// instances in our tree.
     #[profiling::function]
-    pub(super) fn finish(mut self) -> WeakDom {
+    pub(super) fn finish(mut self) -> WeakDom<'dom> {
         log::trace!("Constructing tree from deserialized data");
 
         // Track all the instances we need to construct. Order of construction
