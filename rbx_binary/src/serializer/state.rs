@@ -5,7 +5,7 @@ use std::{
     io::Write,
 };
 
-use ahash::{HashMap, HashMapExt, HashSet};
+use ahash::{HashMap, HashMapExt, HashSet, HashSetExt};
 use rbx_dom_weak::{
     types::{
         Attributes, Axes, BinaryString, BrickColor, CFrame, Color3, Color3uint8, ColorSequence,
@@ -206,7 +206,7 @@ impl<'dom, 'db: 'dom> TypeInfos<'dom, 'db> {
                 PropInfo {
                     prop_type: Type::String,
                     serialized_name: "Name",
-                    aliases: HashSet::default(),
+                    aliases: HashSet::new(),
                     default_value: Cow::Owned(Variant::String(String::new())),
                     migration: None,
                 },
@@ -218,7 +218,7 @@ impl<'dom, 'db: 'dom> TypeInfos<'dom, 'db> {
                 instances: Vec::new(),
                 properties,
                 class_descriptor,
-                properties_visited: HashSet::default(),
+                properties_visited: HashSet::new(),
             });
         }
 
@@ -456,7 +456,7 @@ impl<'dom, 'db: 'dom, W: Write> SerializerState<'dom, 'db, W> {
                     PropInfo {
                         prop_type: ser_type,
                         serialized_name,
-                        aliases: HashSet::default(),
+                        aliases: HashSet::new(),
                         default_value,
                         migration,
                     },
