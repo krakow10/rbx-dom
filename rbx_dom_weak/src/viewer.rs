@@ -117,7 +117,7 @@ impl DomViewer {
         ViewedInstance {
             referent: self.referent_to_id.get(&referent).unwrap().clone(),
             name: instance.name.clone(),
-            class: instance.class.to_string(),
+            class: instance.class.to_owned(),
             properties,
             children,
         }
