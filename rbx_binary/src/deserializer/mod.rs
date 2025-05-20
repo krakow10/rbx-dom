@@ -26,13 +26,13 @@ pub use self::state::DecodeOptions;
 /// use std::fs::File;
 /// use std::io::BufReader;
 ///
-/// use rbx_binary::{DecompressedFile, Deserializer};
+/// use rbx_binary::{DecodeOptions, DecompressedFile, Deserializer};
 ///
 /// let input = BufReader::new(File::open("File.rbxm")?);
 ///
 /// let file = DecompressedFile::from_reader(input)?;
 /// let deserializer = Deserializer::new();
-/// let dom = deserializer.deserialize(&file)?;
+/// let dom = deserializer.deserialize(&file, DecodeOptions::read_unknown())?;
 ///
 /// // rbx_binary always returns a DOM with a DataModel at the top level.
 /// // To get to the instances from our file, we need to go one level deeper.

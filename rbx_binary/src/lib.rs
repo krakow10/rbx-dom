@@ -12,11 +12,13 @@ options.
 ```no_run
 use std::fs::File;
 use std::io::BufReader;
+use rbx_binary::{DecompressedFile, DecodeOptions};
 
 // Using buffered I/O is recommended with rbx_binary
 let input = BufReader::new(File::open("MyModel.rbxm")?);
 
-let dom = rbx_binary::from_reader(input)?;
+let file = DecompressedFile::from_reader(input)?;
+let dom = file.deserialize(DecodeOptions::read_unknown())?;
 
 // rbx_binary always returns a DOM with a DataModel at the top level.
 // To get to the instances from our file, we need to go one level deeper.
