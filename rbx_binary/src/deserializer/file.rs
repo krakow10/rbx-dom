@@ -2,11 +2,9 @@ use std::io::Read;
 
 use rbx_dom_weak::WeakDom;
 
-use super::{
-    error::InnerError, header::FileHeader, intern::StringIntern, state::DecodeOptions,
-    Deserializer, Error,
-};
+use super::{error::InnerError, header::FileHeader, intern::StringIntern, state::DecodeOptions};
 use crate::chunk::Chunks;
+use crate::deserializer::{Deserializer, Error};
 
 /// File header and decompressed chunks.  Call deserialize to
 /// deserialize the file.
