@@ -1,3 +1,4 @@
+mod codegen_strong;
 mod defaults_place;
 mod dump;
 mod generate;
@@ -6,8 +7,8 @@ mod values;
 use clap::Parser;
 
 use self::{
-    defaults_place::DefaultsPlaceSubcommand, dump::DumpSubcommand, generate::GenerateSubcommand,
-    values::ValuesSubcommand,
+    codegen_strong::CodegenStrongSubcommand, defaults_place::DefaultsPlaceSubcommand,
+    dump::DumpSubcommand, generate::GenerateSubcommand, values::ValuesSubcommand,
 };
 
 #[derive(Debug, Parser)]
@@ -23,6 +24,7 @@ pub enum Subcommand {
     DefaultsPlace(DefaultsPlaceSubcommand),
     Generate(GenerateSubcommand),
     Values(ValuesSubcommand),
+    CodegenStrong(CodegenStrongSubcommand),
 }
 
 impl Args {
@@ -32,6 +34,7 @@ impl Args {
             Subcommand::DefaultsPlace(sub) => sub.run().map(|_| ()),
             Subcommand::Generate(sub) => sub.run(),
             Subcommand::Values(sub) => sub.run(),
+            Subcommand::CodegenStrong(sub) => sub.run(),
         }
     }
 }
