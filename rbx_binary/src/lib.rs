@@ -88,8 +88,7 @@ pub fn from_reader<'dom, R: Read, S: for<'file> StringIntern<'file, 'dom>>(
     reader: R,
     options: DecodeOptions<S>,
 ) -> Result<WeakDom<'dom>, DecodeError> {
-    let file = DecompressedFile::from_reader(reader)?;
-    Deserializer::new().deserialize(&file, options)
+    DecompressedFile::from_reader(reader)?.deserialize(options)
 }
 
 /// Serializes a subset of the given DOM to a binary format model or place,
