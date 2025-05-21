@@ -26,34 +26,55 @@ use super::{
     Deserializer,
 };
 
-/// Options available for deserializing a binary-format model or place.
+/// Describes the strategy that rbx_binary should use when deserializing
+/// properties.
 #[derive(Debug)]
 #[non_exhaustive]
-pub enum DecodeOptions<S> {
-    /// Returns an error if any properties are found that aren't known by
-    /// rbx_binary.
-    ErrorOnUnknown,
-    /// Ignores properties not known by rbx_binary.
+pub enum DecodePropertyBehavior<S> {
+    /// Ignores properties that aren't known by rbx_binary.
+    ///
+    /// The default and safest option. With this set, properties that are newer
+    /// than the reflection database rbx_binary uses won't show up when
+    /// deserializing files.
     IgnoreUnknown,
-    /// Allows properties not known by rbx_binary to be represented in
-    /// the dom.
+
+    /// Read properties that aren't known by rbx_binary.
+    ///
+    /// With this option set, properties that are newer than rbx_binary's
+    /// reflection database will show up. It may be problematic to depend on
+    /// these properties, since rbx_binary may start supporting them with
+    /// non-reflection specific names at a future date.
     ReadUnknown {
         /// String interner.  Can be any closure `fn(&str) -> &str`,
         /// as long as the identical returned string outlives the dom.
         interner: S,
     },
+
+    /// Returns an error if any properties are found that aren't known by
+    /// rbx_binary.
+    ErrorOnUnknown,
+}
+
+/// Options available for deserializing a binary-format model or place.
+#[derive(Debug)]
+pub struct DecodeOptions<S> {
+    property_behavior: DecodePropertyBehavior<S>,
 }
 
 impl DecodeOptions<InternFunction<'_, 'static>> {
     /// Constructs a `DecodeOptions` which specifies to error upon encountering an unknown property or class.
     #[inline]
     pub fn error_on_unknown() -> Self {
-        DecodeOptions::ErrorOnUnknown
+        DecodeOptions {
+            property_behavior: DecodePropertyBehavior::ErrorOnUnknown,
+        }
     }
     /// Constructs a `DecodeOptions` which specifies to ignore unknown properties and classes.
     #[inline]
     pub fn ignore_unknown() -> Self {
-        DecodeOptions::IgnoreUnknown
+        DecodeOptions {
+            property_behavior: DecodePropertyBehavior::IgnoreUnknown,
+        }
     }
 }
 impl<'file, 'dom, S: StringIntern<'file, 'dom>> DecodeOptions<S> {
@@ -67,7 +88,9 @@ impl<'file, 'dom, S: StringIntern<'file, 'dom>> DecodeOptions<S> {
     /// static references to known classes and properties from the database.
     #[inline]
     pub fn read_unknown_with(interner: S) -> Self {
-        DecodeOptions::ReadUnknown { interner }
+        DecodeOptions {
+            property_behavior: DecodePropertyBehavior::ReadUnknown { interner },
+        }
     }
 }
 impl<'file> DecodeOptions<InternFunction<'file, 'file>> {
@@ -87,15 +110,17 @@ impl<'file> DecodeOptions<InternFunction<'file, 'file>> {
     /// ```
     #[inline]
     pub fn read_unknown() -> Self {
-        DecodeOptions::ReadUnknown {
-            interner: std::convert::identity,
+        DecodeOptions {
+            property_behavior: DecodePropertyBehavior::ReadUnknown {
+                interner: std::convert::identity,
+            },
         }
     }
 }
-impl<'file> Default for DecodeOptions<InternFunction<'file, 'file>> {
+impl Default for DecodeOptions<InternFunction<'_, 'static>> {
     #[inline]
     fn default() -> Self {
-        Self::read_unknown()
+        Self::ignore_unknown()
     }
 }
 
@@ -235,16 +260,16 @@ fn find_canonical_property<'de, 'dom: 'de, 'db: 'dom, 'file, S: StringIntern<'fi
                 migration,
             }))
         }
-        None => match options {
-            DecodeOptions::ErrorOnUnknown => Err(InnerError::UnknownPropertyName {
+        None => match &mut options.property_behavior {
+            DecodePropertyBehavior::ErrorOnUnknown => Err(InnerError::UnknownPropertyName {
                 type_name: class_name.to_owned(),
                 prop_name: prop_name.to_owned(),
             }),
-            DecodeOptions::IgnoreUnknown => {
+            DecodePropertyBehavior::IgnoreUnknown => {
                 log::warn!("Unknown property {class_name}.{prop_name}, skipping property");
                 Ok(None)
             }
-            DecodeOptions::ReadUnknown { interner } => {
+            DecodePropertyBehavior::ReadUnknown { interner } => {
                 let canonical_type = match binary_type.to_default_rbx_type() {
                     Some(rbx_type) => rbx_type,
                     None => {
@@ -386,17 +411,17 @@ impl<'de, 'dom: 'de, 'db: 'dom, 'file, S: StringIntern<'file, 'dom>>
         // if the database class does not exist, intern it into the string cache
         let (type_name, prop_capacity) = match class_key_value {
             Some((&type_name, class)) => (type_name, class.default_properties.len()),
-            None => match &mut self.options {
-                DecodeOptions::ReadUnknown { interner } => {
+            None => match &mut self.options.property_behavior {
+                DecodePropertyBehavior::ReadUnknown { interner } => {
                     // we do not know default properties length, return 0
                     (interner.intern(type_name), 0)
                 }
-                DecodeOptions::ErrorOnUnknown => {
+                DecodePropertyBehavior::ErrorOnUnknown => {
                     return Err(InnerError::UnknownClassName {
                         type_name: type_name.to_owned(),
                     })
                 }
-                DecodeOptions::IgnoreUnknown => return Ok(()),
+                DecodePropertyBehavior::IgnoreUnknown => return Ok(()),
             },
         };
 
