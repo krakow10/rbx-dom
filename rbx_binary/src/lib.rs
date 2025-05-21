@@ -91,6 +91,11 @@ pub fn from_reader<'dom, R: Read, S: for<'file> StringIntern<'file, 'dom>>(
     DecompressedFile::from_reader(reader)?.deserialize(options)
 }
 
+/// Deserialize a Roblox binary model or place from a stream using the default decoder options.
+pub fn from_reader_default<R: Read>(reader: R) -> Result<WeakDom<'static>, DecodeError> {
+    DecompressedFile::from_reader(reader)?.deserialize(DecodeOptions::default())
+}
+
 /// Serializes a subset of the given DOM to a binary format model or place,
 /// writing to something that implements the `std::io::Write` trait.
 pub fn to_writer<W: Write>(writer: W, dom: &WeakDom, refs: &[Ref]) -> Result<(), EncodeError> {
