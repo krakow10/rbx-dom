@@ -1,2 +1,2 @@
-mod enums;
-mod instances;
+pub mod enums;
+pub mod instances;
