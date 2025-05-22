@@ -167,25 +167,8 @@ impl StrongInstancesCollector {
 
         // create complete file including use statements
         let mut complete_file: syn::File = syn::parse_quote! {
-            use core::ops::{Deref, DerefMut};
             use super::r#enum::*;
             use rbx_types::*;
-
-            macro_rules! impl_inherits {
-                ($class:ident,$inherits:ident) => {
-                    impl Deref for $class {
-                        type Target = $inherits;
-                        fn deref(&self) -> &$inherits {
-                            &self.superclass
-                        }
-                    }
-                    impl DerefMut for $class {
-                        fn deref_mut(&mut self) -> &mut $inherits {
-                            &mut self.superclass
-                        }
-                    }
-                };
-            }
         };
         complete_file
             .items
