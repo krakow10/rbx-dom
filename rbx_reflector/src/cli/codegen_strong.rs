@@ -9,7 +9,7 @@ use rbx_reflection::{ClassDescriptor, DataType, EnumDescriptor};
 /// Generate strong types for all classes and enums.
 #[derive(Debug, Parser)]
 pub struct CodegenStrongSubcommand {
-    /// Where to output the files.  This should be rbx_dom_strong/src/generated/
+    /// Where to output the files.  This should be rbx_types_strong/src/
     pub output: PathBuf,
 }
 
