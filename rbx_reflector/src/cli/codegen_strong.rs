@@ -85,7 +85,10 @@ impl StrongInstancesCollector {
         // generate fields
         let mut fields = Vec::new();
         for prop in descriptor.properties.values() {
-            let ident = syn::Ident::new(&prop.name, proc_macro2::Span::call_site());
+            let ident = syn::Ident::new(
+                &heck::ToUpperCamelCase::to_upper_camel_case(prop.name.as_ref()),
+                proc_macro2::Span::call_site(),
+            );
             let ty = generate_data_type(&prop.data_type);
             let field = syn::Field {
                 attrs: Vec::new(),
