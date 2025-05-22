@@ -208,7 +208,65 @@ impl EnumCollector {
         }
     }
     fn push(&mut self, descriptor: &EnumDescriptor) {
-        // TODO
+        // generate fields
+        let mut variants = Vec::new();
+        for (name, value) in &descriptor.items {
+            let ident = syn::Ident::new(name, proc_macro2::Span::call_site());
+            let discriminant = syn::parse_str(&value.to_string()).unwrap();
+            variants.push(syn::Variant {
+                attrs: Vec::new(),
+                ident,
+                fields: syn::Fields::Unit,
+                discriminant: Some((syn::token::Eq::default(), discriminant)),
+            });
+        }
+        // sort props for consistency
+        variants.sort_by(|a, b| a.ident.cmp(&b.ident));
+
+        // enum ident
+        let ident = syn::Ident::new(&descriptor.name, proc_macro2::Span::call_site());
+
+        // generate the enum
+        self.enums.push(syn::ItemEnum {
+            attrs: vec![syn::parse_quote!(#[derive(Debug, Clone, Serialize, Deserialize)])],
+            vis: syn::Visibility::Public(syn::token::Pub::default()),
+            enum_token: syn::token::Enum::default(),
+            ident: ident.clone(),
+            generics: syn::Generics::default(),
+            variants: variants.into_iter().collect(),
+            brace_token: syn::token::Brace::default(),
+        });
+
+        // generate the StrongInstances variant
+        self.variants.push(syn::Variant {
+            attrs: Vec::new(),
+            ident: ident.clone(),
+            fields: syn::Fields::Unnamed(syn::FieldsUnnamed {
+                paren_token: syn::token::Paren::default(),
+                unnamed: [syn::Field {
+                    attrs: vec![],
+                    vis: syn::Visibility::Inherited,
+                    mutability: syn::FieldMutability::None,
+                    ident: None,
+                    colon_token: None,
+                    ty: syn::Type::Path(syn::TypePath {
+                        qself: None,
+                        path: syn::Path {
+                            leading_colon: None,
+                            segments: [syn::PathSegment {
+                                ident,
+                                arguments: syn::PathArguments::None,
+                            }]
+                            .into_iter()
+                            .collect(),
+                        },
+                    }),
+                }]
+                .into_iter()
+                .collect(),
+            }),
+            discriminant: None,
+        });
     }
     fn codegen(mut self) -> syn::File {
         // sort for consistency
