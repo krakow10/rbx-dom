@@ -132,18 +132,7 @@ impl StrongInstancesCollector {
                     mutability: syn::FieldMutability::None,
                     ident: None,
                     colon_token: None,
-                    ty: syn::Type::Path(syn::TypePath {
-                        qself: None,
-                        path: syn::Path {
-                            leading_colon: None,
-                            segments: [syn::PathSegment {
-                                ident,
-                                arguments: syn::PathArguments::None,
-                            }]
-                            .into_iter()
-                            .collect(),
-                        },
-                    }),
+                    ty: syn::parse_quote!(Box<#ident>),
                 }]
                 .into_iter()
                 .collect(),
