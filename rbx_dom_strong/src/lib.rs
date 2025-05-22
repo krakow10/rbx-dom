@@ -1,2 +1,2 @@
 mod dom;
-mod instance;
+mod test;
