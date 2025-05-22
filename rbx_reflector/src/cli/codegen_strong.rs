@@ -132,8 +132,12 @@ impl StrongInstancesCollector {
         let ident = syn::Ident::new(&descriptor.name, proc_macro2::Span::call_site());
 
         // generate the class struct
+
         self.structs.push(syn::ItemStruct {
-            attrs: vec![syn::parse_quote!(#[derive(Debug, Clone)])],
+            attrs: syn::parse_quote!(
+                #[derive(Debug, Clone)]
+                #[allow(nonstandard_style)]
+            ),
             vis: syn::Visibility::Public(syn::token::Pub::default()),
             struct_token: syn::token::Struct::default(),
             ident: ident.clone(),
@@ -242,7 +246,10 @@ impl EnumCollector {
 
         // generate the enum
         self.enums.push(syn::ItemEnum {
-            attrs: vec![syn::parse_quote!(#[derive(Debug, Clone)])],
+            attrs: syn::parse_quote! {
+                #[derive(Debug, Clone)]
+                #[allow(nonstandard_style)]
+            },
             vis: syn::Visibility::Public(syn::token::Pub::default()),
             enum_token: syn::token::Enum::default(),
             ident: ident.clone(),

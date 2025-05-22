@@ -808,10 +808,12 @@ pub enum StrongInstance {
     WrapTarget(Box<WrapTarget>),
 }
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct Accessory {
     pub AccessoryType: enums::AccessoryType,
 }
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct AccessoryDescription {
     pub AccessoryType: enums::AccessoryType,
     pub AssetId: i64,
@@ -824,30 +826,40 @@ pub struct AccessoryDescription {
     pub Scale: Vector3,
 }
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct AccountService {}
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct Accoutrement {
     pub AttachmentPoint: CFrame,
 }
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct AchievementService {}
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct ActivityHistoryEventService {}
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct Actor {}
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct AdGui {
     pub AdShape: enums::AdShape,
     pub EnableVideoAds: bool,
     pub FallbackImage: ContentId,
 }
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct AdPortal {}
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct AdService {}
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct AdvancedDragger {}
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct AirController {
     pub BalanceMaxTorque: f32,
     pub BalanceSpeed: f32,
@@ -858,6 +870,7 @@ pub struct AirController {
     pub TurnSpeedFactor: f32,
 }
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct AlignOrientation {
     pub AlignType: enums::AlignType,
     pub CFrame: CFrame,
@@ -870,6 +883,7 @@ pub struct AlignOrientation {
     pub RigidityEnabled: bool,
 }
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct AlignPosition {
     pub ApplyAtCenterOfMass: bool,
     pub ForceLimitMode: enums::ForceLimitMode,
@@ -884,12 +898,15 @@ pub struct AlignPosition {
     pub RigidityEnabled: bool,
 }
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct AnalysticsSettings {}
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct AnalyticsService {
     pub ApiKey: String,
 }
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct AngularVelocity {
     pub AngularVelocity: Vector3,
     pub MaxTorque: f32,
@@ -897,18 +914,22 @@ pub struct AngularVelocity {
     pub RelativeTo: enums::ActuatorRelativeTo,
 }
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct Animation {
     pub AnimationId: ContentId,
 }
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct AnimationClip {
     pub GuidBinaryString: BinaryString,
     pub Loop: bool,
     pub Priority: enums::AnimationPriority,
 }
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct AnimationClipProvider {}
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct AnimationConstraint {
     pub IsKinematic: bool,
     pub MaxForce: f32,
@@ -916,14 +937,19 @@ pub struct AnimationConstraint {
     pub Transform: CFrame,
 }
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct AnimationController {}
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct AnimationFromVideoCreatorService {}
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct AnimationFromVideoCreatorStudioService {}
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct AnimationImportData {}
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct AnimationRigData {
     pub Label: BinaryString,
     pub Name: BinaryString,
@@ -933,54 +959,72 @@ pub struct AnimationRigData {
     pub Transform: BinaryString,
 }
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct AnimationStreamTrack {}
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct AnimationTrack {
     pub Priority: enums::AnimationPriority,
 }
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct Animator {
     pub PreferLodEnabled: bool,
 }
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct Annotation {}
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct AnnotationsService {}
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct AppLifecycleObserverService {}
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct AppStorageService {}
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct AppUpdateService {}
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct ArcHandles {
     pub Axes: Axes,
 }
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct AssetCounterService {}
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct AssetDeliveryProxy {
     pub Interface: String,
     pub Port: i32,
     pub StartServer: bool,
 }
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct AssetImportService {}
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct AssetImportSession {}
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct AssetManagerService {}
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct AssetPatchSettings {
     pub ContentId: String,
     pub OutputPath: String,
     pub PatchId: String,
 }
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct AssetService {}
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct AssetSoundEffect {}
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct Atmosphere {
     pub Color: Color3,
     pub Decay: Color3,
@@ -990,26 +1034,32 @@ pub struct Atmosphere {
     pub Offset: f32,
 }
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct AtmosphereSensor {}
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct Attachment {
     pub CFrame: CFrame,
     pub Visible: bool,
 }
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct AudioAnalyzer {
     pub SpectrumEnabled: bool,
     pub WindowSize: enums::AudioWindowSize,
 }
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct AudioChannelMixer {
     pub Layout: enums::AudioChannelLayout,
 }
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct AudioChannelSplitter {
     pub Layout: enums::AudioChannelLayout,
 }
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct AudioChorus {
     pub Bypass: bool,
     pub Depth: f32,
@@ -1017,6 +1067,7 @@ pub struct AudioChorus {
     pub Rate: f32,
 }
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct AudioCompressor {
     pub Attack: f32,
     pub Bypass: bool,
@@ -1026,6 +1077,7 @@ pub struct AudioCompressor {
     pub Threshold: f32,
 }
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct AudioDeviceInput {
     pub AccessType: enums::AccessModifierType,
     pub Active: bool,
@@ -1034,15 +1086,18 @@ pub struct AudioDeviceInput {
     pub Volume: f32,
 }
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct AudioDeviceOutput {
     pub Player: Ref,
 }
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct AudioDistortion {
     pub Bypass: bool,
     pub Level: f32,
 }
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct AudioEcho {
     pub Bypass: bool,
     pub DelayTime: f32,
@@ -1052,6 +1107,7 @@ pub struct AudioEcho {
     pub WetLevel: f32,
 }
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct AudioEmitter {
     pub AngleAttenuation: BinaryString,
     pub AudioInteractionGroup: String,
@@ -1059,6 +1115,7 @@ pub struct AudioEmitter {
     pub SimulationFidelity: enums::AudioSimulationFidelity,
 }
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct AudioEqualizer {
     pub Bypass: bool,
     pub HighGain: f32,
@@ -1067,11 +1124,13 @@ pub struct AudioEqualizer {
     pub MidRange: NumberRange,
 }
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct AudioFader {
     pub Bypass: bool,
     pub Volume: f32,
 }
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct AudioFilter {
     pub Bypass: bool,
     pub FilterType: enums::AudioFilterType,
@@ -1080,6 +1139,7 @@ pub struct AudioFilter {
     pub Q: f32,
 }
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct AudioFlanger {
     pub Bypass: bool,
     pub Depth: f32,
@@ -1087,14 +1147,17 @@ pub struct AudioFlanger {
     pub Rate: f32,
 }
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct AudioFocusService {}
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct AudioLimiter {
     pub Bypass: bool,
     pub MaxLevel: f32,
     pub Release: f32,
 }
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct AudioListener {
     pub AngleAttenuation: BinaryString,
     pub AudioInteractionGroup: String,
@@ -1102,14 +1165,17 @@ pub struct AudioListener {
     pub SimulationFidelity: enums::AudioSimulationFidelity,
 }
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct AudioPages {}
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct AudioPitchShifter {
     pub Bypass: bool,
     pub Pitch: f32,
     pub WindowSize: enums::AudioWindowSize,
 }
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct AudioPlayer {
     pub Asset: ContentId,
     pub AutoLoad: bool,
@@ -1121,6 +1187,7 @@ pub struct AudioPlayer {
     pub Volume: f32,
 }
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct AudioReverb {
     pub Bypass: bool,
     pub DecayRatio: f32,
@@ -1137,6 +1204,7 @@ pub struct AudioReverb {
     pub WetLevel: f32,
 }
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct AudioSearchParams {
     pub Album: String,
     pub Artist: String,
@@ -1148,6 +1216,7 @@ pub struct AudioSearchParams {
     pub Title: String,
 }
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct AudioTextToSpeech {
     pub Looping: bool,
     pub Pitch: f32,
@@ -1159,6 +1228,7 @@ pub struct AudioTextToSpeech {
     pub Volume: f32,
 }
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct AuroraScript {
     pub EnableCulling: bool,
     pub EnableLod: bool,
@@ -1168,30 +1238,41 @@ pub struct AuroraScript {
     pub Tag: String,
 }
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct AuroraScriptService {
     pub BufferSize: i32,
 }
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct AuroraService {}
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct AvatarChatService {}
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct AvatarCreationService {}
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct AvatarEditorService {}
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct AvatarImportService {}
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct AvatarPreloader {}
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct Backpack {}
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct BackpackItem {
     pub TextureId: ContentId,
 }
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct BadgeService {}
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct BallSocketConstraint {
     pub LimitsEnabled: bool,
     pub MaxFrictionTorqueXml: f32,
@@ -1203,13 +1284,16 @@ pub struct BallSocketConstraint {
     pub UpperAngle: f32,
 }
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct BanHistoryPages {}
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct BaseImportData {
     pub ImportName: String,
     pub ShouldImport: bool,
 }
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct BasePart {
     pub Anchored: bool,
     pub AudioCanCollide: bool,
@@ -1257,16 +1341,20 @@ pub struct BasePart {
     pub Velocity: Vector3,
 }
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct BasePlayerGui {}
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct BaseRemoteEvent {}
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct BaseScript {
     pub Disabled: bool,
     pub LinkedSource: ContentId,
     pub RunContext: enums::RunContext,
 }
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct BaseWrap {
     pub CageMeshContent: Content,
     pub CageOrigin: CFrame,
@@ -1277,6 +1365,7 @@ pub struct BaseWrap {
     pub TemporaryCageMeshId: ContentId,
 }
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct Beam {
     pub Attachment0: Ref,
     pub Attachment1: Ref,
@@ -1299,12 +1388,14 @@ pub struct Beam {
     pub ZOffset: f32,
 }
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct BevelMesh {
     pub Bevel: f32,
     pub BevelRoundness: f32,
     pub Bulge: f32,
 }
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct BillboardGui {
     pub Active: bool,
     pub Adornee: Ref,
@@ -1325,32 +1416,40 @@ pub struct BillboardGui {
     pub StudsOffsetWorldSpace: Vector3,
 }
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct BinaryStringValue {
     pub Value: BinaryString,
 }
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct BindableEvent {}
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct BindableFunction {}
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct BlockMesh {}
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct BloomEffect {
     pub Intensity: f32,
     pub Size: f32,
     pub Threshold: f32,
 }
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct BlurEffect {
     pub Size: f32,
 }
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct BodyAngularVelocity {
     pub AngularVelocity: Vector3,
     pub MaxTorque: Vector3,
     pub P: f32,
 }
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct BodyColors {
     pub HeadColor3: Color3,
     pub LeftArmColor3: Color3,
@@ -1360,10 +1459,12 @@ pub struct BodyColors {
     pub TorsoColor3: Color3,
 }
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct BodyForce {
     pub Force: Vector3,
 }
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct BodyGyro {
     pub CFrame: CFrame,
     pub D: f32,
@@ -1371,8 +1472,10 @@ pub struct BodyGyro {
     pub P: f32,
 }
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct BodyMover {}
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct BodyPartDescription {
     pub AssetId: i64,
     pub BodyPart: enums::BodyPart,
@@ -1380,6 +1483,7 @@ pub struct BodyPartDescription {
     pub Instance: Ref,
 }
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct BodyPosition {
     pub D: f32,
     pub MaxForce: Vector3,
@@ -1387,35 +1491,44 @@ pub struct BodyPosition {
     pub Position: Vector3,
 }
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct BodyThrust {
     pub Force: Vector3,
     pub Location: Vector3,
 }
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct BodyVelocity {
     pub MaxForce: Vector3,
     pub P: f32,
     pub Velocity: Vector3,
 }
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct Bone {}
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct BoolValue {
     pub Value: bool,
 }
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct BoxHandleAdornment {
     pub Size: Vector3,
 }
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct Breakpoint {}
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct BrickColorValue {
     pub Value: BrickColor,
 }
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct BrowserService {}
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct BubbleChatConfiguration {
     pub AdorneeName: String,
     pub BackgroundColor3: Color3,
@@ -1435,27 +1548,36 @@ pub struct BubbleChatConfiguration {
     pub VerticalStudsOffset: f32,
 }
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct BubbleChatMessageProperties {}
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct BugReporterService {}
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct BulkImportService {}
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct BuoyancySensor {
     pub FullySubmerged: bool,
     pub TouchingSurface: bool,
 }
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct CFrameValue {
     pub Value: CFrame,
 }
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct CSGDictionaryService {}
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct CacheableContentProvider {}
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct CalloutService {}
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct Camera {
     pub CFrame: CFrame,
     pub CameraSubject: Ref,
@@ -1468,23 +1590,30 @@ pub struct Camera {
     pub VrTiltAndRollEnabled: bool,
 }
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct CanvasGroup {
     pub GroupColor3: Color3,
     pub GroupTransparency: f32,
 }
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct Capture {}
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct CaptureService {}
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct CatalogPages {}
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct ChangeHistoryService {}
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct ChannelSelectorSoundEffect {
     pub Channel: i32,
 }
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct ChannelTabsConfiguration {
     pub BackgroundColor3: Color3,
     pub BackgroundTransparency: f64,
@@ -1498,8 +1627,10 @@ pub struct ChannelTabsConfiguration {
     pub TextStrokeTransparency: f64,
 }
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct CharacterAppearance {}
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct CharacterMesh {
     pub BaseTextureId: i64,
     pub BodyPart: enums::BodyPart,
@@ -1507,12 +1638,14 @@ pub struct CharacterMesh {
     pub OverlayTextureId: i64,
 }
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct Chat {
     pub BubbleChatEnabled: bool,
     pub IsAutoMigrated: bool,
     pub LoadDefaultChat: bool,
 }
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct ChatInputBarConfiguration {
     pub AutocompleteEnabled: bool,
     pub BackgroundColor3: Color3,
@@ -1528,6 +1661,7 @@ pub struct ChatInputBarConfiguration {
     pub TextStrokeTransparency: f64,
 }
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct ChatWindowConfiguration {
     pub BackgroundColor3: Color3,
     pub BackgroundTransparency: f64,
@@ -1543,23 +1677,29 @@ pub struct ChatWindowConfiguration {
     pub WidthScale: f32,
 }
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct ChatWindowMessageProperties {}
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct ChatbotUIService {}
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct ChorusSoundEffect {
     pub Depth: f32,
     pub Mix: f32,
     pub Rate: f32,
 }
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct ClickDetector {
     pub CursorIcon: ContentId,
     pub MaxActivationDistance: f32,
 }
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct ClientReplicator {}
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct ClimbController {
     pub AccelerationTime: f32,
     pub BalanceMaxTorque: f32,
@@ -1567,14 +1707,18 @@ pub struct ClimbController {
     pub MoveMaxForce: f32,
 }
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct Clothing {
     pub Color3: Color3,
 }
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct CloudCRUDService {}
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct CloudLocalizationTable {}
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct Clouds {
     pub Color: Color3,
     pub Cover: f32,
@@ -1582,18 +1726,24 @@ pub struct Clouds {
     pub Enabled: bool,
 }
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct ClusterPacketCache {}
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct Collaborator {}
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct CollaboratorsService {}
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct CollectionService {}
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct Color3Value {
     pub Value: Color3,
 }
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct ColorCorrectionEffect {
     pub Brightness: f32,
     pub Contrast: f32,
@@ -1601,16 +1751,21 @@ pub struct ColorCorrectionEffect {
     pub TintColor: Color3,
 }
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct ColorGradingEffect {
     pub TonemapperPreset: enums::TonemapperPreset,
 }
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct CommandInstance {}
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct CommandService {}
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct CommerceService {}
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct CompressorSoundEffect {
     pub Attack: f32,
     pub GainMakeup: f32,
@@ -1620,21 +1775,28 @@ pub struct CompressorSoundEffect {
     pub Threshold: f32,
 }
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct ConeHandleAdornment {
     pub Height: f32,
     pub Radius: f32,
 }
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct ConfigService {}
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct ConfigSnapshot {}
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct Configuration {}
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct ConfigureServerService {}
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct ConnectivityService {}
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct Constraint {
     pub Attachment0: Ref,
     pub Attachment1: Ref,
@@ -1643,17 +1805,22 @@ pub struct Constraint {
     pub Visible: bool,
 }
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct ContentProvider {}
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct ContextActionService {}
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct Controller {}
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct ControllerBase {
     pub BalanceRigidityEnabled: bool,
     pub MoveSpeedFactor: f32,
 }
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct ControllerManager {
     pub ActiveController: Ref,
     pub BaseMoveSpeed: f32,
@@ -1666,6 +1833,7 @@ pub struct ControllerManager {
     pub UpDirection: Vector3,
 }
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct ControllerPartSensor {
     pub HitFrame: CFrame,
     pub HitNormal: Vector3,
@@ -1674,48 +1842,67 @@ pub struct ControllerPartSensor {
     pub SensorMode: enums::SensorMode,
 }
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct ControllerSensor {}
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct ControllerService {}
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct ConversationalAIAcceptanceService {}
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct CookiesService {}
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct CoreGui {
     pub SelectionImageObject: Ref,
 }
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct CorePackages {}
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct CoreScript {}
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct CoreScriptDebuggingManagerHelper {}
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct CoreScriptSyncService {}
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct CornerWedgePart {}
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct CreationDBService {}
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct CreatorStoreService {}
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct CrossDMScriptChangeListener {}
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct CurveAnimation {}
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct CustomEvent {
     pub PersistedCurrentValue: f32,
 }
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct CustomEventReceiver {
     pub Source: Ref,
 }
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct CustomLog {}
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct CustomSoundEffect {}
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct CylinderHandleAdornment {
     pub Angle: f32,
     pub Height: f32,
@@ -1723,8 +1910,10 @@ pub struct CylinderHandleAdornment {
     pub Radius: f32,
 }
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct CylinderMesh {}
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct CylindricalConstraint {
     pub AngularActuatorType: enums::ActuatorType,
     pub AngularLimitsEnabled: bool,
@@ -1743,65 +1932,87 @@ pub struct CylindricalConstraint {
     pub UpperAngle: f32,
 }
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct DataModel {}
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct DataModelMesh {
     pub Offset: Vector3,
     pub Scale: Vector3,
     pub VertexColor: Vector3,
 }
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct DataModelPatchService {}
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct DataModelSession {}
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct DataStore {}
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct DataStoreGetOptions {
     pub UseCache: bool,
 }
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct DataStoreIncrementOptions {}
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct DataStoreInfo {}
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct DataStoreKey {}
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct DataStoreKeyInfo {}
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct DataStoreKeyPages {}
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct DataStoreListingPages {}
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct DataStoreObjectVersionInfo {}
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct DataStoreOptions {
     pub AllScopes: bool,
 }
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct DataStorePages {}
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct DataStoreService {
     pub AutomaticRetry: bool,
     pub LegacyNamingScheme: bool,
 }
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct DataStoreSetOptions {}
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct DataStoreVersionPages {}
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct Debris {
     pub MaxItems: i32,
 }
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct DebugSettings {
     pub IsScriptStackTracingEnabled: bool,
     pub ReportSoundWarnings: bool,
     pub TickCountPreciseOverride: enums::TickCountSampleMethod,
 }
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct DebuggablePluginWatcher {}
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct DebuggerBreakpoint {
     pub Condition: String,
     pub ContinueExecution: bool,
@@ -1811,24 +2022,32 @@ pub struct DebuggerBreakpoint {
     pub LogExpression: String,
 }
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct DebuggerConnection {}
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct DebuggerConnectionManager {
     pub Timeout: f64,
 }
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct DebuggerLuaResponse {}
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct DebuggerManager {}
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct DebuggerUIService {}
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct DebuggerVariable {}
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct DebuggerWatch {
     pub Expression: String,
 }
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct Decal {
     pub Color3: Color3,
     pub TextureContent: Content,
@@ -1836,6 +2055,7 @@ pub struct Decal {
     pub ZIndex: i32,
 }
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct DepthOfFieldEffect {
     pub FarIntensity: f32,
     pub FocusDistance: f32,
@@ -1843,8 +2063,10 @@ pub struct DepthOfFieldEffect {
     pub NearIntensity: f32,
 }
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct DeviceIdService {}
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct Dialog {
     pub BehaviorType: enums::DialogBehaviorType,
     pub ConversationDistance: f32,
@@ -1857,6 +2079,7 @@ pub struct Dialog {
     pub TriggerOffset: Vector3,
 }
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct DialogChoice {
     pub GoodbyeChoiceActive: bool,
     pub GoodbyeDialog: String,
@@ -1864,20 +2087,25 @@ pub struct DialogChoice {
     pub UserDialog: String,
 }
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct DistortionSoundEffect {
     pub Level: f32,
 }
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct DockWidgetPluginGui {}
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct DoubleConstrainedValue {
     pub MaxValue: f64,
     pub MinValue: f64,
     pub Value: f64,
 }
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct DraftsService {}
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct DragDetector {
     pub ActivatedCursorIcon: ContentId,
     pub ApplyAtCenterOfMass: bool,
@@ -1903,14 +2131,18 @@ pub struct DragDetector {
     pub VrSwitchKeyCode: enums::KeyCode,
 }
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct Dragger {}
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct DraggerService {}
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct DynamicRotate {
     pub BaseAngle: f32,
 }
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct EchoSoundEffect {
     pub Delay: f32,
     pub DryLevel: f32,
@@ -1918,35 +2150,45 @@ pub struct EchoSoundEffect {
     pub WetLevel: f32,
 }
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct EditableImage {
     pub ImageData: BinaryString,
 }
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct EditableMesh {
     pub MeshData: SharedString,
     pub SkinningEnabled: bool,
 }
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct EditableService {}
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct EmotesPages {}
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct EqualizerSoundEffect {
     pub HighGain: f32,
     pub LowGain: f32,
     pub MidGain: f32,
 }
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct EulerRotationCurve {
     pub RotationOrder: enums::RotationOrder,
 }
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct EventIngestService {}
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct ExampleService {}
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct ExperienceAuthService {}
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct ExperienceInviteOptions {
     pub InviteMessageId: String,
     pub InviteUser: i64,
@@ -1954,18 +2196,25 @@ pub struct ExperienceInviteOptions {
     pub PromptMessage: String,
 }
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct ExperienceNotificationService {}
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct ExperienceService {}
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct ExperienceStateCaptureService {}
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct ExplorerFilter {}
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct ExplorerFilterAutocompleter {}
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct ExplorerServiceVisibilityService {}
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct Explosion {
     pub BlastPressure: f32,
     pub BlastRadius: f32,
@@ -1976,28 +2225,38 @@ pub struct Explosion {
     pub Visible: bool,
 }
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct FaceAnimatorService {}
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct FaceControls {}
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct FaceInstance {
     pub Face: enums::NormalId,
 }
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct FacialAgeEstimationService {}
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct FacialAnimationRecordingService {}
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct FacialAnimationStreamingServiceStats {}
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct FacialAnimationStreamingServiceV2 {
     pub ServiceState: i32,
 }
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct FacialAnimationStreamingSubsessionStats {}
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct FacsImportData {}
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct Feature {
     pub FaceId: enums::NormalId,
     pub InOut: enums::InOut,
@@ -2005,19 +2264,25 @@ pub struct Feature {
     pub TopBottom: enums::TopBottom,
 }
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct FeatureRestrictionManager {}
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct FeedPages {}
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct FeedService {}
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct File {}
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct FileMesh {
     pub MeshId: ContentId,
     pub TextureId: ContentId,
 }
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct Fire {
     pub Color: Color3,
     pub Enabled: bool,
@@ -2025,26 +2290,32 @@ pub struct Fire {
     pub TimeScale: f32,
 }
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct Flag {
     pub TeamColor: BrickColor,
 }
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct FlagStand {
     pub TeamColor: BrickColor,
 }
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct FlagStandService {}
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct FlangeSoundEffect {
     pub Depth: f32,
     pub Mix: f32,
     pub Rate: f32,
 }
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct FloatCurve {
     pub ValuesAndTimes: BinaryString,
 }
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct FloorWire {
     pub CycleOffset: f32,
     pub From: Ref,
@@ -2056,51 +2327,69 @@ pub struct FloorWire {
     pub WireRadius: f32,
 }
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct FluidForceSensor {}
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct FlyweightService {}
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct Folder {}
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct ForceField {
     pub Visible: bool,
 }
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct FormFactorPart {}
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct Frame {
     pub Style: enums::FrameStyle,
 }
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct FriendPages {}
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct FriendService {}
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct FunctionalTest {
     pub Description: String,
     pub HasMigratedSettingsToTestService: bool,
 }
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct GamePassService {}
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct GameSettings {
     pub VideoCaptureEnabled: bool,
 }
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct GamepadService {
     pub GamepadCursorEnabled: bool,
 }
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct GenerationService {}
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct GenericChallengeService {}
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct GenericSettings {}
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct Geometry {}
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct GeometryService {}
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct GetTextBoundsParams {
     pub Font: Font,
     pub RichText: bool,
@@ -2109,10 +2398,13 @@ pub struct GetTextBoundsParams {
     pub Width: f32,
 }
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct GlobalDataStore {}
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct GlobalSettings {}
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct Glue {
     pub F0: Vector3,
     pub F1: Vector3,
@@ -2120,10 +2412,12 @@ pub struct Glue {
     pub F3: Vector3,
 }
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct GoogleAnalyticsConfiguration {
     pub GaId: String,
 }
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct GroundController {
     pub AccelerationLean: f32,
     pub AccelerationTime: f32,
@@ -2138,16 +2432,20 @@ pub struct GroundController {
     pub TurnSpeedFactor: f32,
 }
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct GroupImportData {
     pub Anchored: bool,
     pub ImportAsModelAsset: bool,
     pub InsertInWorkspace: bool,
 }
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct GroupService {}
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct GuiBase {}
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct GuiBase2d {
     pub AutoLocalize: bool,
     pub RootLocalizationTable: Ref,
@@ -2158,12 +2456,14 @@ pub struct GuiBase2d {
     pub SelectionGroup: bool,
 }
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct GuiBase3d {
     pub Color3: Color3,
     pub Transparency: f32,
     pub Visible: bool,
 }
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct GuiButton {
     pub AutoButtonColor: bool,
     pub HoverHapticEffect: Ref,
@@ -2173,10 +2473,13 @@ pub struct GuiButton {
     pub Style: enums::ButtonStyle,
 }
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct GuiLabel {}
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct GuiMain {}
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct GuiObject {
     pub Active: bool,
     pub AnchorPoint: Vector2,
@@ -2205,16 +2508,20 @@ pub struct GuiObject {
     pub ZIndex: i32,
 }
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct GuiService {
     pub AutoSelectGuiEnabled: bool,
     pub GuiNavigationEnabled: bool,
     pub SelectedObject: Ref,
 }
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct GuidRegistryService {}
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct HSRDataContentProvider {}
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct HandleAdornment {
     pub AdornCullingMode: enums::AdornCullingMode,
     pub AlwaysOnTop: bool,
@@ -2223,13 +2530,16 @@ pub struct HandleAdornment {
     pub ZIndex: i32,
 }
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct Handles {
     pub Faces: Faces,
     pub Style: enums::HandlesStyle,
 }
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct HandlesBase {}
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct HapticEffect {
     pub Looped: bool,
     pub Position: Vector3,
@@ -2238,21 +2548,28 @@ pub struct HapticEffect {
     pub Waveform: Ref,
 }
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct HapticService {}
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct Hat {}
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct HeapProfilerService {}
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct HeatmapService {}
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct HeightmapImporterService {}
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct HiddenSurfaceRemovalAsset {
     pub HsrData: BinaryString,
     pub HsrMeshIdData: BinaryString,
 }
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct Highlight {
     pub Adornee: Ref,
     pub DepthMode: enums::HighlightDepthMode,
@@ -2263,6 +2580,7 @@ pub struct Highlight {
     pub OutlineTransparency: f32,
 }
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct HingeConstraint {
     pub ActuatorType: enums::ActuatorType,
     pub AngularResponsiveness: f32,
@@ -2280,25 +2598,33 @@ pub struct HingeConstraint {
     pub UpperAngle: f32,
 }
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct Hint {}
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct Hole {}
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct Hopper {}
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct HopperBin {
     pub Active: bool,
     pub BinType: enums::BinType,
 }
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct HttpRbxApiService {}
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct HttpRequest {}
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct HttpService {
     pub HttpEnabled: bool,
 }
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct Humanoid {
     pub AutoJumpEnabled: bool,
     pub AutoRotate: bool,
@@ -2326,8 +2652,10 @@ pub struct Humanoid {
     pub WalkSpeed: f32,
 }
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct HumanoidController {}
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct HumanoidDescription {
     pub BodyTypeScale: f32,
     pub ClimbAnimation: i64,
@@ -2351,6 +2679,7 @@ pub struct HumanoidDescription {
     pub WidthScale: f32,
 }
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct HumanoidRigDescription {
     pub Chest: Ref,
     pub ChestRangeMax: Vector3,
@@ -2464,6 +2793,7 @@ pub struct HumanoidRigDescription {
     pub WaistTposeAdjustment: CFrame,
 }
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct IKControl {
     pub ChainRoot: Ref,
     pub Enabled: bool,
@@ -2478,10 +2808,13 @@ pub struct IKControl {
     pub Weight: f32,
 }
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct ILegacyStudioBridge {}
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct IXPService {}
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct ImageButton {
     pub HoverImageContent: Content,
     pub ImageColor3: Color3,
@@ -2497,11 +2830,13 @@ pub struct ImageButton {
     pub TileSize: UDim2,
 }
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct ImageHandleAdornment {
     pub Image: ContentId,
     pub Size: Vector2,
 }
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct ImageLabel {
     pub ImageColor3: Color3,
     pub ImageContent: Content,
@@ -2515,8 +2850,10 @@ pub struct ImageLabel {
     pub TileSize: UDim2,
 }
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct ImportSession {}
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct IncrementalPatchBuilder {
     pub AddPathsToBundle: bool,
     pub BuildDebouncePeriod: f64,
@@ -2525,11 +2862,13 @@ pub struct IncrementalPatchBuilder {
     pub ZstdCompression: bool,
 }
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct InputAction {
     pub Enabled: bool,
     pub Type: enums::InputActionType,
 }
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct InputBinding {
     pub Down: enums::KeyCode,
     pub KeyCode: enums::KeyCode,
@@ -2543,19 +2882,23 @@ pub struct InputBinding {
     pub Vector2Scale: Vector2,
 }
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct InputContext {
     pub Enabled: bool,
     pub Priority: i32,
     pub Sink: bool,
 }
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct InputObject {}
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct InsertService {
     pub AllowClientInsertModels: bool,
     pub AllowInsertFreeModels: bool,
 }
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct Instance {
     pub Capabilities: SecurityCapabilities,
     pub HistoryId: UniqueId,
@@ -2565,34 +2908,43 @@ pub struct Instance {
     pub UniqueId: UniqueId,
 }
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct InstanceAdornment {
     pub Adornee: Ref,
 }
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct IntConstrainedValue {
     pub MaxValue: i64,
     pub MinValue: i64,
     pub Value: i64,
 }
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct IntValue {
     pub Value: i64,
 }
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct InternalSyncItem {
     pub AutoSync: bool,
     pub Enabled: bool,
     pub Path: String,
 }
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct InternalSyncService {}
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct IntersectOperation {}
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct InventoryPages {}
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct JointImportData {}
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct JointInstance {
     pub C0: CFrame,
     pub C1: CFrame,
@@ -2601,36 +2953,47 @@ pub struct JointInstance {
     pub Part1: Ref,
 }
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct JointsService {}
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct KeyboardService {}
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct Keyframe {
     pub Time: f32,
 }
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct KeyframeMarker {
     pub Value: String,
 }
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct KeyframeSequence {
     pub AuthoredHipHeight: f32,
 }
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct KeyframeSequenceProvider {}
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct LSPFileSyncService {}
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct LanguageService {}
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct LayerCollector {
     pub Enabled: bool,
     pub ResetOnSpawn: bool,
     pub ZIndexBehavior: enums::ZIndexBehavior,
 }
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct LegacyStudioBridge {}
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct Light {
     pub Brightness: f32,
     pub Color: Color3,
@@ -2638,6 +3001,7 @@ pub struct Light {
     pub Shadows: bool,
 }
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct Lighting {
     pub Ambient: Color3,
     pub Brightness: f32,
@@ -2661,6 +3025,7 @@ pub struct Lighting {
     pub TimeOfDay: String,
 }
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct LineForce {
     pub ApplyAtCenterOfMass: bool,
     pub InverseSquareLaw: bool,
@@ -2669,11 +3034,13 @@ pub struct LineForce {
     pub ReactionForceEnabled: bool,
 }
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct LineHandleAdornment {
     pub Length: f32,
     pub Thickness: f32,
 }
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct LinearVelocity {
     pub ForceLimitMode: enums::ForceLimitMode,
     pub ForceLimitsEnabled: bool,
@@ -2690,65 +3057,92 @@ pub struct LinearVelocity {
     pub VelocityConstraintMode: enums::VelocityConstraintMode,
 }
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct LinkingService {}
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct LiveScriptingService {}
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct LiveSyncService {}
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct LocalDebuggerConnection {}
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct LocalScript {}
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct LocalStorageService {}
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct LocalizationService {}
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct LocalizationTable {
     pub Contents: String,
     pub SourceLocaleId: String,
 }
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct LodDataEntity {}
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct LodDataService {}
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct LogReporterService {}
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct LogService {}
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct LoginService {}
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct LuaSettings {}
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct LuaSourceContainer {
     pub ScriptGuid: String,
 }
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct LuaWebService {}
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct LuauScriptAnalyzerService {}
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct MLModelDeliveryService {}
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct ManualGlue {}
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct ManualSurfaceJointInstance {}
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct ManualWeld {}
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct MarkerCurve {
     pub ValuesAndTimes: BinaryString,
 }
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct MarketplaceService {}
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct MatchmakingService {}
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct MaterialGenerationService {}
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct MaterialGenerationSession {}
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct MaterialImportData {
     pub DiffuseFilePath: String,
     pub MetalnessFilePath: String,
@@ -2756,6 +3150,7 @@ pub struct MaterialImportData {
     pub RoughnessFilePath: String,
 }
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct MaterialService {
     pub AsphaltName: String,
     pub BasaltName: String,
@@ -2800,6 +3195,7 @@ pub struct MaterialService {
     pub WoodPlanksName: String,
 }
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct MaterialVariant {
     pub BaseMaterial: enums::Material,
     pub ColorMap: ContentId,
@@ -2812,22 +3208,31 @@ pub struct MaterialVariant {
     pub TexturePack: ContentId,
 }
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct MemStorageConnection {}
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct MemStorageService {}
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct MemoryStoreHashMap {}
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct MemoryStoreHashMapPages {}
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct MemoryStoreQueue {}
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct MemoryStoreService {}
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct MemoryStoreSortedMap {}
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct MeshContentProvider {}
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct MeshImportData {
     pub Anchored: bool,
     pub CageMeshIntersectedPreview: bool,
@@ -2842,6 +3247,7 @@ pub struct MeshImportData {
     pub UseImportedPivot: bool,
 }
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct MeshPart {
     pub DoubleSided: bool,
     pub HasJointOffset: bool,
@@ -2855,16 +3261,21 @@ pub struct MeshPart {
     pub VertexCount: i32,
 }
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct Message {
     pub Text: String,
 }
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct MessageBusConnection {}
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct MessageBusService {}
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct MessagingService {}
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct MetaBreakpoint {
     pub Condition: String,
     pub ContinueExecution: bool,
@@ -2875,12 +3286,15 @@ pub struct MetaBreakpoint {
     pub Script: String,
 }
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct MetaBreakpointContext {
     pub ContextDataInternal: String,
 }
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct MetaBreakpointManager {}
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct Model {
     pub LevelOfDetail: enums::ModelLevelOfDetail,
     pub ModelMeshCFrame: CFrame,
@@ -2892,41 +3306,55 @@ pub struct Model {
     pub WorldPivotData: Option<CFrame>,
 }
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct ModuleScript {
     pub LinkedSource: ContentId,
     pub Source: String,
 }
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct Motor {
     pub DesiredAngle: f32,
     pub MaxVelocity: f32,
 }
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct Motor6D {}
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct MotorFeature {}
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct Mouse {
     pub Icon: ContentId,
     pub TargetFilter: Ref,
 }
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct MouseService {}
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct MultipleDocumentInterfaceInstance {}
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct NegateOperation {}
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct NetworkClient {}
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct NetworkMarker {}
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct NetworkPeer {}
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct NetworkReplicator {}
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct NetworkServer {}
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct NetworkSettings {
     pub HttpProxyEnabled: bool,
     pub HttpProxyUrl: String,
@@ -2939,53 +3367,70 @@ pub struct NetworkSettings {
     pub ShowActiveAnimationAsset: bool,
 }
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct NoCollisionConstraint {
     pub Enabled: bool,
     pub Part0: Ref,
     pub Part1: Ref,
 }
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct Noise {
     pub NoiseType: enums::NoiseType,
     pub Seed: i32,
 }
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct NonReplicatedCSGDictionaryService {}
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct NotificationService {}
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct NumberPose {
     pub Value: f64,
 }
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct NumberValue {
     pub Value: f64,
 }
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct Object {}
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct ObjectValue {
     pub Value: Ref,
 }
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct OmniRecommendationsService {}
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct OpenCloudApiV1 {}
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct OpenCloudService {}
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct OperationGraph {}
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct OrderedDataStore {}
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct OutfitPages {}
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct PVAdornment {
     pub Adornee: Ref,
 }
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct PVInstance {}
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct PackageLink {
     pub AutoUpdate: bool,
     pub DefaultName: String,
@@ -2994,24 +3439,32 @@ pub struct PackageLink {
     pub VersionIdSerialize: i64,
 }
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct PackageService {}
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct PackageUIService {}
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct Pages {}
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct Pants {
     pub PantsTemplate: ContentId,
 }
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct ParabolaAdornment {}
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct Part {}
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct PartAdornment {
     pub Adornee: Ref,
 }
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct PartOperation {
     pub AssetId: ContentId,
     pub ChildData: BinaryString,
@@ -3026,11 +3479,13 @@ pub struct PartOperation {
     pub UsePartColor: bool,
 }
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct PartOperationAsset {
     pub ChildData: BinaryString,
     pub MeshData: BinaryString,
 }
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct ParticleEmitter {
     pub Acceleration: Vector3,
     pub Brightness: f32,
@@ -3067,16 +3522,20 @@ pub struct ParticleEmitter {
     pub ZOffset: f32,
 }
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct PatchBundlerFileWatch {}
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct PatchMapping {
     pub FlattenTree: bool,
     pub PatchId: String,
     pub TargetPath: String,
 }
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct Path {}
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct Path2D {
     pub Closed: bool,
     pub Color3: Color3,
@@ -3087,6 +3546,7 @@ pub struct Path2D {
     pub ZIndex: i32,
 }
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct PathfindingLink {
     pub Attachment0: Ref,
     pub Attachment1: Ref,
@@ -3094,25 +3554,34 @@ pub struct PathfindingLink {
     pub Label: String,
 }
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct PathfindingModifier {
     pub Label: String,
     pub PassThrough: bool,
 }
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct PathfindingService {}
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct PausedState {}
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct PausedStateBreakpoint {}
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct PausedStateException {}
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct PerformanceControlService {}
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct PermissionsService {}
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct PhysicsService {}
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct PhysicsSettings {
     pub AllowSleep: bool,
     pub AreAnchorsShown: bool,
@@ -3164,26 +3633,36 @@ pub struct PhysicsSettings {
     pub UseCsGv2: bool,
 }
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct PitchShiftSoundEffect {
     pub Octave: f32,
 }
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct PlaceAssetIdsService {}
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct PlaceStatsService {}
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct PlacesService {}
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct Plane {}
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct PlaneConstraint {}
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct Platform {}
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct PlatformCloudStorageService {}
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct PlatformFriendsService {}
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct Player {
     pub AutoJumpEnabled: bool,
     pub CameraMaxZoomDistance: f32,
@@ -3211,16 +3690,21 @@ pub struct Player {
     pub TeleportedIn: bool,
 }
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct PlayerData {}
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct PlayerDataRecord {}
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct PlayerDataRecordConfig {}
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct PlayerDataService {
     pub LoadFailureBehavior: enums::PlayerDataLoadFailureBehavior,
 }
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct PlayerEmulatorService {
     pub CustomPoliciesEnabled: bool,
     pub EmulatedCountryCode: String,
@@ -3231,19 +3715,25 @@ pub struct PlayerEmulatorService {
     pub TextElongationFactor: i32,
 }
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct PlayerGui {
     pub ScreenOrientation: enums::ScreenOrientation,
     pub SelectionImageObject: Ref,
 }
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct PlayerHydrationService {}
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct PlayerMouse {}
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct PlayerScripts {}
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct PlayerViewService {}
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct Players {
     pub BanningEnabled: bool,
     pub CharacterAutoLoads: bool,
@@ -3251,72 +3741,96 @@ pub struct Players {
     pub UseStrafingAnimations: bool,
 }
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct Plugin {
     pub DisableUiDragDetectorDrags: bool,
     pub IsDebuggable: bool,
 }
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct PluginAction {}
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct PluginCapabilities {
     pub Manifest: String,
 }
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct PluginDebugService {}
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct PluginDragEvent {}
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct PluginGui {
     pub Title: String,
 }
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct PluginGuiService {}
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct PluginManagementService {}
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct PluginManager {}
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct PluginManagerInterface {}
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct PluginMenu {}
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct PluginMouse {}
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct PluginPolicyService {}
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct PluginToolbar {}
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct PluginToolbarButton {}
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct PointLight {
     pub Range: f32,
 }
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct PointsService {}
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct PolicyService {
     pub IsLuobuServer: enums::TriStateBoolean,
     pub LuobuWhitelisted: enums::TriStateBoolean,
 }
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct Pose {
     pub CFrame: CFrame,
 }
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct PoseBase {
     pub EasingDirection: enums::PoseEasingDirection,
     pub EasingStyle: enums::PoseEasingStyle,
     pub Weight: f32,
 }
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct PostEffect {
     pub Enabled: bool,
 }
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct PrismaticConstraint {}
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct ProcessInstancePhysicsService {}
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct ProximityPrompt {
     pub ActionText: String,
     pub AutoLocalize: bool,
@@ -3334,27 +3848,36 @@ pub struct ProximityPrompt {
     pub UiOffset: Vector2,
 }
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct ProximityPromptService {
     pub Enabled: bool,
     pub MaxPromptsVisible: i32,
 }
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct PublishService {}
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct QWidgetPluginGui {}
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct RTAnimationTracker {}
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct RayValue {
     pub Value: Ray,
 }
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct RbxAnalyticsService {}
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct ReflectionMetadata {}
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct ReflectionMetadataCallbacks {}
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct ReflectionMetadataClass {
     pub ExplorerImageIndex: i32,
     pub ExplorerOrder: i32,
@@ -3363,18 +3886,25 @@ pub struct ReflectionMetadataClass {
     pub ServiceVisibility: enums::ServiceVisibility,
 }
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct ReflectionMetadataClasses {}
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct ReflectionMetadataEnum {}
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct ReflectionMetadataEnumItem {}
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct ReflectionMetadataEnums {}
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct ReflectionMetadataEvents {}
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct ReflectionMetadataFunctions {}
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct ReflectionMetadataItem {
     pub Browsable: bool,
     pub ClassCategory: String,
@@ -3394,24 +3924,34 @@ pub struct ReflectionMetadataItem {
     pub UiNumTicks: f64,
 }
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct ReflectionMetadataMember {}
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct ReflectionMetadataProperties {}
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct ReflectionMetadataYieldFunctions {}
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct ReflectionService {}
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct RelativeGui {}
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct RemoteCursorService {}
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct RemoteDebuggerServer {}
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct RemoteEvent {}
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct RemoteFunction {}
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct RenderSettings {
     pub AutoFrmLevel: i32,
     pub EagerBulkExecution: bool,
@@ -3429,6 +3969,7 @@ pub struct RenderSettings {
     pub ViewMode: enums::ViewMode,
 }
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct RenderingTest {
     pub CFrame: CFrame,
     pub ComparisonDiffThreshold: i32,
@@ -3445,10 +3986,13 @@ pub struct RenderingTest {
     pub Timeout: i32,
 }
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct ReplicatedFirst {}
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct ReplicatedStorage {}
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct ReverbSoundEffect {
     pub DecayTime: f32,
     pub Density: f32,
@@ -3457,20 +4001,27 @@ pub struct ReverbSoundEffect {
     pub WetLevel: f32,
 }
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct RibbonNotificationService {}
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct RigidConstraint {}
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct RobloxPluginGuiService {}
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct RobloxReplicatedStorage {}
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct RobloxSerializableInstance {
     pub Data: BinaryString,
 }
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct RobloxServerStorage {}
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct RocketPropulsion {
     pub CartoonFactor: f32,
     pub MaxSpeed: f32,
@@ -3485,6 +4036,7 @@ pub struct RocketPropulsion {
     pub TurnP: f32,
 }
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct RodConstraint {
     pub Length: f32,
     pub LimitAngle0: f32,
@@ -3493,10 +4045,13 @@ pub struct RodConstraint {
     pub Thickness: f32,
 }
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct RomarkRbxAnalyticsService {}
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct RomarkService {}
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct RootImportData {
     pub AddModelToInventory: bool,
     pub Anchored: bool,
@@ -3522,6 +4077,7 @@ pub struct RootImportData {
     pub WorldUp: enums::NormalId,
 }
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct RopeConstraint {
     pub Length: f32,
     pub Restitution: f32,
@@ -3533,32 +4089,44 @@ pub struct RopeConstraint {
     pub WinchTarget: f32,
 }
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct Rotate {}
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct RotateP {}
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct RotateV {}
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct RotationCurve {
     pub ValuesAndTimes: BinaryString,
 }
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct RtMessagingService {}
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct RunService {}
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct RunningAverageItemDouble {}
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct RunningAverageItemInt {}
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct RunningAverageTimeIntervalItem {}
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct RuntimeScriptService {}
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct SafetyService {
     pub IsCaptureModeForReport: bool,
 }
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct ScreenGui {
     pub ClipToDeviceSafeArea: bool,
     pub DisplayOrder: i32,
@@ -3566,8 +4134,10 @@ pub struct ScreenGui {
     pub ScreenInsets: enums::ScreenInsets,
 }
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct ScreenshotCapture {}
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct ScreenshotHud {
     pub CameraButtonIcon: ContentId,
     pub CameraButtonPosition: UDim2,
@@ -3581,39 +4151,54 @@ pub struct ScreenshotHud {
     pub Visible: bool,
 }
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct Script {
     pub Source: String,
 }
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct ScriptBuilder {}
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct ScriptChangeService {}
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct ScriptCloneWatcher {}
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct ScriptCloneWatcherHelper {}
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct ScriptCommitService {}
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct ScriptContext {}
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct ScriptDebugger {
     pub CoreScriptIdentifier: String,
     pub ScriptGuid: String,
 }
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct ScriptDocument {}
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct ScriptEditorService {}
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct ScriptProfilerService {}
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct ScriptRegistrationService {}
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct ScriptRuntime {}
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct ScriptService {}
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct ScrollingFrame {
     pub AutomaticCanvasSize: enums::AutomaticSize,
     pub BottomImage: ContentId,
@@ -3632,12 +4217,15 @@ pub struct ScrollingFrame {
     pub VerticalScrollBarPosition: enums::VerticalScrollBarPosition,
 }
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct Seat {
     pub Disabled: bool,
 }
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct Selection {}
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct SelectionBox {
     pub LineThickness: f32,
     pub StudioSelectionBox: bool,
@@ -3645,71 +4233,91 @@ pub struct SelectionBox {
     pub SurfaceTransparency: f32,
 }
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct SelectionHighlightManager {}
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct SelectionLasso {
     pub Humanoid: Ref,
 }
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct SelectionPartLasso {
     pub Part: Ref,
 }
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct SelectionPointLasso {
     pub Point: Vector3,
 }
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct SelectionSphere {
     pub SurfaceColor3: Color3,
     pub SurfaceTransparency: f32,
 }
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct SensorBase {
     pub UpdateType: enums::SensorUpdateType,
 }
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct SerializationService {}
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct ServerReplicator {}
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct ServerScriptService {
     pub LoadStringEnabled: bool,
 }
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct ServerStorage {}
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct ServiceProvider {}
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct ServiceVisibilityService {
     pub HiddenServices: BinaryString,
     pub VisibleServices: BinaryString,
 }
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct SessionService {}
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct SharedTableRegistry {}
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct Shirt {
     pub ShirtTemplate: ContentId,
 }
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct ShirtGraphic {
     pub Color3: Color3,
     pub Graphic: ContentId,
 }
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct SkateboardController {}
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct SkateboardPlatform {
     pub Steer: i32,
     pub StickyWheels: bool,
     pub Throttle: i32,
 }
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct Skin {
     pub SkinColor: BrickColor,
 }
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct Sky {
     pub CelestialBodiesShown: bool,
     pub MoonAngularSize: f32,
@@ -3725,6 +4333,7 @@ pub struct Sky {
     pub SunTextureId: ContentId,
 }
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct SlidingBallConstraint {
     pub ActuatorType: enums::ActuatorType,
     pub LimitsEnabled: bool,
@@ -3742,22 +4351,29 @@ pub struct SlidingBallConstraint {
     pub Velocity: f32,
 }
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct Smoke {
     pub Color: Color3,
     pub Enabled: bool,
     pub TimeScale: f32,
 }
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct SmoothVoxelsUpgraderService {}
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct Snap {}
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct SnippetService {}
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct SocialService {}
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct SolidModelContentProvider {}
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct Sound {
     pub LoopRegion: NumberRange,
     pub Looped: bool,
@@ -3773,15 +4389,18 @@ pub struct Sound {
     pub Volume: f32,
 }
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct SoundEffect {
     pub Enabled: bool,
     pub Priority: i32,
 }
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct SoundGroup {
     pub Volume: f32,
 }
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct SoundService {
     pub AmbientReverb: enums::ReverbType,
     pub AudioApiByDefault: enums::RolloutState,
@@ -3795,12 +4414,14 @@ pub struct SoundService {
     pub VolumetricAudio: enums::VolumetricAudio,
 }
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct Sparkles {
     pub Enabled: bool,
     pub SparkleColor: Color3,
     pub TimeScale: f32,
 }
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct SpawnLocation {
     pub AllowTeamChangeOnTouch: bool,
     pub Duration: i32,
@@ -3809,22 +4430,27 @@ pub struct SpawnLocation {
     pub TeamColor: BrickColor,
 }
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct SpawnerService {}
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct SpecialMesh {
     pub MeshType: enums::MeshType,
 }
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct SphereHandleAdornment {
     pub Radius: f32,
 }
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct SpotLight {
     pub Angle: f32,
     pub Face: enums::NormalId,
     pub Range: f32,
 }
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct SpringConstraint {
     pub Coils: f32,
     pub Damping: f32,
@@ -3838,18 +4464,25 @@ pub struct SpringConstraint {
     pub Thickness: f32,
 }
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct StackFrame {}
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct StandalonePluginScripts {}
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct StandardPages {}
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct StartPageService {}
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct StarterCharacterScripts {}
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct StarterGear {}
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct StarterGui {
     pub ResetPlayerGuiOnSpawn: bool,
     pub RtlTextSupport: enums::RtlTextSupport,
@@ -3860,8 +4493,10 @@ pub struct StarterGui {
     pub VirtualCursorMode: enums::VirtualCursorMode,
 }
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct StarterPack {}
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct StarterPlayer {
     pub AllowCustomAnimations: bool,
     pub AutoJumpEnabled: bool,
@@ -3907,24 +4542,33 @@ pub struct StarterPlayer {
     pub UserEmotesEnabled: bool,
 }
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct StarterPlayerScripts {}
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct StartupMessageService {}
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct Stats {}
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct StatsItem {}
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct Status {}
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct StopWatchReporter {}
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct StreamingService {}
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct StringValue {
     pub Value: String,
 }
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct Studio {
     pub ActionOnAutoResumeSync: enums::ActionOnAutoResumeSync,
     pub ActionOnStopSync: enums::ActionOnStopSync,
@@ -4044,8 +4688,10 @@ pub struct Studio {
     pub UseBoundingBoxMoveHandles: bool,
 }
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct StudioAssetService {}
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct StudioAttachment {
     pub AutoHideParent: bool,
     pub IsArrowVisible: bool,
@@ -4054,66 +4700,87 @@ pub struct StudioAttachment {
     pub TargetAnchorPoint: Vector2,
 }
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct StudioCallout {}
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct StudioCameraService {
     pub LockCameraSpeed: bool,
 }
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct StudioData {
     pub EnableScriptCollabByDefaultOnLoad: bool,
 }
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct StudioDeviceEmulatorService {}
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct StudioObjectBase {}
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct StudioPublishService {
     pub PublishLocked: bool,
 }
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct StudioScriptDebugEventListener {}
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct StudioSdkService {}
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct StudioService {
     pub Secrets: String,
 }
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct StudioTheme {}
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct StudioUserService {}
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct StudioWidget {}
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct StudioWidgetsService {}
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct StyleBase {}
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct StyleDerive {
     pub Index: i32,
     pub StyleSheet: Ref,
 }
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct StyleLink {
     pub StyleSheet: Ref,
 }
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct StyleRule {
     pub Priority: i32,
     pub PropertiesSerialize: BinaryString,
     pub Selector: String,
 }
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct StyleSheet {}
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct StylingService {}
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct SunRaysEffect {
     pub Intensity: f32,
     pub Spread: f32,
 }
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct SurfaceAppearance {
     pub AlphaMode: enums::AlphaMode,
     pub Color: Color3,
@@ -4124,6 +4791,7 @@ pub struct SurfaceAppearance {
     pub TexturePack: ContentId,
 }
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct SurfaceGui {
     pub AlwaysOnTop: bool,
     pub Brightness: f32,
@@ -4137,22 +4805,26 @@ pub struct SurfaceGui {
     pub ZOffset: f32,
 }
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct SurfaceGuiBase {
     pub Active: bool,
     pub Adornee: Ref,
     pub Face: enums::NormalId,
 }
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct SurfaceLight {
     pub Angle: f32,
     pub Face: enums::NormalId,
     pub Range: f32,
 }
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct SurfaceSelection {
     pub TargetSurface: enums::NormalId,
 }
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct SwimController {
     pub AccelerationTime: f32,
     pub PitchMaxTorque: f32,
@@ -4161,6 +4833,7 @@ pub struct SwimController {
     pub RollSpeedFactor: f32,
 }
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct SyncScriptBuilder {
     pub CompileTarget: enums::CompileTarget,
     pub CoverageInfo: bool,
@@ -4169,41 +4842,55 @@ pub struct SyncScriptBuilder {
     pub RawBytecode: bool,
 }
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct SystemThemeService {}
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct TaskScheduler {
     pub ThreadPoolConfig: enums::ThreadPoolConfig,
 }
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct Team {
     pub AutoAssignable: bool,
     pub TeamColor: BrickColor,
 }
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct TeamCreateData {}
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct TeamCreatePublishService {}
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct TeamCreateService {}
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct Teams {}
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct TelemetryService {}
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct TeleportAsyncResult {}
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct TeleportOptions {
     pub ReservedServerAccessCode: String,
     pub ServerInstanceId: String,
     pub ShouldReserveServer: bool,
 }
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct TeleportService {}
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct TemporaryCageMeshProvider {}
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct TemporaryScriptService {}
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct Terrain {
     pub AcquisitionMethod: enums::TerrainAcquisitionMethod,
     pub Decoration: bool,
@@ -4220,6 +4907,7 @@ pub struct Terrain {
     pub WaterWaveSpeed: f32,
 }
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct TerrainDetail {
     pub ColorMap: ContentId,
     pub Face: enums::TerrainFace,
@@ -4231,12 +4919,14 @@ pub struct TerrainDetail {
     pub TexturePack: ContentId,
 }
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct TerrainRegion {
     pub ExtentsMax: Vector3int16,
     pub ExtentsMin: Vector3int16,
     pub SmoothGrid: BinaryString,
 }
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct TestService {
     pub AutoRuns: bool,
     pub Description: String,
@@ -4249,6 +4939,7 @@ pub struct TestService {
     pub Timeout: f64,
 }
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct TextBox {
     pub ClearTextOnFocus: bool,
     pub FontFace: Font,
@@ -4277,8 +4968,10 @@ pub struct TextBox {
     pub TextYAlignment: enums::TextYAlignment,
 }
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct TextBoxService {}
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct TextButton {
     pub FontFace: Font,
     pub LineHeight: f32,
@@ -4301,8 +4994,10 @@ pub struct TextButton {
     pub TextYAlignment: enums::TextYAlignment,
 }
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct TextChannel {}
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct TextChatCommand {
     pub AutocompleteVisible: bool,
     pub Enabled: bool,
@@ -4310,8 +5005,10 @@ pub struct TextChatCommand {
     pub SecondaryAlias: String,
 }
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct TextChatConfigurations {}
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct TextChatMessage {
     pub BubbleChatMessageProperties: Ref,
     pub ChatWindowMessageProperties: Ref,
@@ -4319,8 +5016,10 @@ pub struct TextChatMessage {
     pub TextSource: Ref,
 }
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct TextChatMessageProperties {}
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct TextChatService {
     pub ChatTranslationFtuxShown: bool,
     pub ChatTranslationToggleEnabled: bool,
@@ -4330,10 +5029,13 @@ pub struct TextChatService {
     pub HasSeenDeprecationDialog: bool,
 }
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct TextFilterResult {}
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct TextFilterTranslatedResult {}
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct TextLabel {
     pub FontFace: Font,
     pub LineHeight: f32,
@@ -4356,12 +5058,15 @@ pub struct TextLabel {
     pub TextYAlignment: enums::TextYAlignment,
 }
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct TextService {}
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct TextSource {
     pub CanSend: bool,
 }
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct Texture {
     pub OffsetStudsU: f32,
     pub OffsetStudsV: f32,
@@ -4369,20 +5074,28 @@ pub struct Texture {
     pub StudsPerTileV: f32,
 }
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct TextureGenerationPartGroup {}
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct TextureGenerationService {}
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct TextureGenerationUnwrappingRequest {}
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct ThirdPartyUserService {}
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct ThreadState {}
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct TimerService {}
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct ToastNotificationService {}
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct Tool {
     pub CanBeDropped: bool,
     pub Enabled: bool,
@@ -4392,11 +5105,13 @@ pub struct Tool {
     pub ToolTip: String,
 }
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct Torque {
     pub RelativeTo: enums::ActuatorRelativeTo,
     pub Torque: Vector3,
 }
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct TorsionSpringConstraint {
     pub Coils: f32,
     pub Damping: f32,
@@ -4409,14 +5124,19 @@ pub struct TorsionSpringConstraint {
     pub Stiffness: f32,
 }
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct TotalCountTimeIntervalItem {}
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct TouchInputService {}
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct TouchTransmitter {}
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct TracerService {}
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct TrackerLodController {
     pub AudioMode: enums::TrackerLodFlagMode,
     pub VideoExtrapolationMode: enums::TrackerExtrapolationFlagMode,
@@ -4424,8 +5144,10 @@ pub struct TrackerLodController {
     pub VideoMode: enums::TrackerLodFlagMode,
 }
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct TrackerStreamAnimation {}
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct Trail {
     pub Attachment0: Ref,
     pub Attachment1: Ref,
@@ -4445,14 +5167,17 @@ pub struct Trail {
     pub WidthScale: NumberSequence,
 }
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct Translator {}
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct TremoloSoundEffect {
     pub Depth: f32,
     pub Duty: f32,
     pub Frequency: f32,
 }
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct TriangleMeshPart {
     pub AeroMeshData: SharedString,
     pub FluidFidelityInternal: enums::FluidFidelity,
@@ -4463,38 +5188,51 @@ pub struct TriangleMeshPart {
     pub UnscaledVolume: f32,
 }
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct TrussPart {
     pub Style: enums::Style,
 }
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct TutorialService {}
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct Tween {}
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct TweenBase {}
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct TweenService {}
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct UGCAvatarService {}
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct UGCValidationService {}
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct UIAspectRatioConstraint {
     pub AspectRatio: f32,
     pub AspectType: enums::AspectType,
     pub DominantAxis: enums::DominantAxis,
 }
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct UIBase {}
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct UIComponent {}
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct UIConstraint {}
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct UICorner {
     pub CornerRadius: UDim,
 }
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct UIDragDetector {
     pub ActivatedCursorIcon: ContentId,
     pub BoundingBehavior: enums::UIDragDetectorBoundingBehavior,
@@ -4518,8 +5256,10 @@ pub struct UIDragDetector {
     pub UiDragSpeedAxisMapping: enums::UIDragSpeedAxisMapping,
 }
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct UIDragDetectorService {}
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct UIFlexItem {
     pub FlexMode: enums::UIFlexMode,
     pub GrowRatio: f32,
@@ -4527,6 +5267,7 @@ pub struct UIFlexItem {
     pub ShrinkRatio: f32,
 }
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct UIGradient {
     pub Color: ColorSequence,
     pub Enabled: bool,
@@ -4535,6 +5276,7 @@ pub struct UIGradient {
     pub Transparency: NumberSequence,
 }
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct UIGridLayout {
     pub CellPadding: UDim2,
     pub CellSize: UDim2,
@@ -4542,6 +5284,7 @@ pub struct UIGridLayout {
     pub StartCorner: enums::StartCorner,
 }
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct UIGridStyleLayout {
     pub FillDirection: enums::FillDirection,
     pub HorizontalAlignment: enums::HorizontalAlignment,
@@ -4549,8 +5292,10 @@ pub struct UIGridStyleLayout {
     pub VerticalAlignment: enums::VerticalAlignment,
 }
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct UILayout {}
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct UIListLayout {
     pub HorizontalFlex: enums::UIFlexAlignment,
     pub ItemLineAlignment: enums::ItemLineAlignment,
@@ -4559,6 +5304,7 @@ pub struct UIListLayout {
     pub Wraps: bool,
 }
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct UIPadding {
     pub PaddingBottom: UDim,
     pub PaddingLeft: UDim,
@@ -4566,6 +5312,7 @@ pub struct UIPadding {
     pub PaddingTop: UDim,
 }
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct UIPageLayout {
     pub Animated: bool,
     pub Circular: bool,
@@ -4578,15 +5325,18 @@ pub struct UIPageLayout {
     pub TweenTime: f32,
 }
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct UIScale {
     pub Scale: f32,
 }
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct UISizeConstraint {
     pub MaxSize: Vector2,
     pub MinSize: Vector2,
 }
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct UIStroke {
     pub ApplyStrokeMode: enums::ApplyStrokeMode,
     pub Color: Color3,
@@ -4596,6 +5346,7 @@ pub struct UIStroke {
     pub Transparency: f32,
 }
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct UITableLayout {
     pub FillEmptySpaceColumns: bool,
     pub FillEmptySpaceRows: bool,
@@ -4603,15 +5354,19 @@ pub struct UITableLayout {
     pub Padding: UDim2,
 }
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct UITextSizeConstraint {
     pub MaxTextSize: i32,
     pub MinTextSize: i32,
 }
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct UnionOperation {}
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct UniqueIdLookupService {}
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct UniversalConstraint {
     pub LimitsEnabled: bool,
     pub MaxAngle: f32,
@@ -4619,12 +5374,15 @@ pub struct UniversalConstraint {
     pub Restitution: f32,
 }
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct UnreliableRemoteEvent {}
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct UnvalidatedAssetService {
     pub CachedData: String,
 }
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct UserGameSettings {
     pub AllTutorialsDisabled: bool,
     pub CameraMode: enums::CustomCameraMode,
@@ -4690,6 +5448,7 @@ pub struct UserGameSettings {
     pub VrThirdPersonFollowCamEnabledCustomOption: bool,
 }
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct UserInputService {
     pub LegacyInputEventsEnabled: bool,
     pub MouseBehavior: enums::MouseBehavior,
@@ -4697,12 +5456,16 @@ pub struct UserInputService {
     pub MouseIconEnabled: bool,
 }
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct UserService {}
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct UserSettings {}
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct UserStorageService {}
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct VRService {
     pub AutomaticScaling: enums::VRScaling,
     pub AvatarGestures: bool,
@@ -4711,24 +5474,31 @@ pub struct VRService {
     pub LaserPointer: enums::VRLaserPointerMode,
 }
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct VRStatusService {}
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct ValueBase {}
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct Vector3Curve {}
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct Vector3Value {
     pub Value: Vector3,
 }
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct VectorForce {
     pub ApplyAtCenterOfMass: bool,
     pub Force: Vector3,
     pub RelativeTo: enums::ActuatorRelativeTo,
 }
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct VehicleController {}
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct VehicleSeat {
     pub Disabled: bool,
     pub HeadsUpDisplay: bool,
@@ -4741,6 +5511,7 @@ pub struct VehicleSeat {
     pub TurnSpeed: f32,
 }
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct VelocityMotor {
     pub CurrentAngle: f32,
     pub DesiredAngle: f32,
@@ -4748,16 +5519,20 @@ pub struct VelocityMotor {
     pub MaxVelocity: f32,
 }
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct VersionControlService {}
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct VideoCaptureService {}
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct VideoDeviceInput {
     pub Active: bool,
     pub CameraId: String,
     pub CaptureQuality: enums::VideoDeviceCaptureQuality,
 }
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct VideoDisplay {
     pub ResampleMode: enums::ResamplerMode,
     pub ScaleType: enums::ScaleType,
@@ -4768,6 +5543,7 @@ pub struct VideoDisplay {
     pub VideoTransparency: f32,
 }
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct VideoFrame {
     pub Looped: bool,
     pub Playing: bool,
@@ -4776,6 +5552,7 @@ pub struct VideoFrame {
     pub Volume: f32,
 }
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct VideoPlayer {
     pub Asset: ContentId,
     pub Looping: bool,
@@ -4784,8 +5561,10 @@ pub struct VideoPlayer {
     pub Volume: f32,
 }
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct VideoService {}
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct ViewportFrame {
     pub Ambient: Color3,
     pub CameraCFrame: CFrame,
@@ -4796,50 +5575,66 @@ pub struct ViewportFrame {
     pub LightDirection: Vector3,
 }
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct VirtualInputManager {}
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct VirtualUser {}
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct VisibilityCheckDispatcher {}
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct Visit {}
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct VisualizationMode {
     pub Enabled: bool,
     pub Title: String,
     pub ToolTip: String,
 }
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct VisualizationModeCategory {
     pub Enabled: bool,
     pub Title: String,
 }
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct VisualizationModeService {}
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct VoiceChatInternal {}
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct VoiceChatService {
     pub DefaultDistanceAttenuation: enums::VoiceChatDistanceAttenuationType,
     pub EnableDefaultVoice: bool,
     pub UseAudioApi: enums::AudioApiRollout,
 }
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct WebSocketClient {}
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct WebSocketService {}
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct WebViewService {}
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct WedgePart {}
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct Weld {}
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct WeldConstraint {
     pub CFrame0: CFrame,
     pub State: i32,
 }
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct Wire {
     pub SourceInstance: Ref,
     pub SourceName: String,
@@ -4847,11 +5642,13 @@ pub struct Wire {
     pub TargetName: String,
 }
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct WireframeHandleAdornment {
     pub Scale: Vector3,
     pub Thickness: f32,
 }
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct Workspace {
     pub AirDensity: f32,
     pub AllowThirdPartySales: bool,
@@ -4891,14 +5688,19 @@ pub struct Workspace {
     pub TouchesUseCollisionGroups: bool,
 }
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct WorkspaceAnnotation {}
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct WorldModel {}
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct WorldRoot {}
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct WrapDeformer {}
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct WrapLayer {
     pub AutoSkin: enums::WrapLayerAutoSkin,
     pub BindOffset: CFrame,
@@ -4911,6 +5713,7 @@ pub struct WrapLayer {
     pub TemporaryReferenceId: ContentId,
 }
 #[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct WrapTarget {
     pub Stiffness: f32,
 }
