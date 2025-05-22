@@ -633,6 +633,7 @@ impl<'dom, 'db, W: Write> SerializerState<'dom, 'db, W> {
 
                         // Most properties will be stored on instances using the
                         // property's canonical name, so we'll try that first.
+                        // I think this is the bug. hashing properties like crazy in a double loop.
                         if let Some(property) = instance.properties.get(prop_name) {
                             return Cow::Borrowed(property);
                         }
