@@ -211,20 +211,27 @@ impl EnumCollector {
         }
     }
     fn push(&mut self, descriptor: &EnumDescriptor) {
+        // collect enum items
+        let mut items: Vec<_> = descriptor
+            .items
+            .iter()
+            .map(|(name, &value)| (name.as_ref(), value))
+            .collect();
+
+        // sort variants by discriminant for consistency
+        items.sort_by_key(|&(_, value)| value);
+
         // generate fields
-        let mut variants = Vec::new();
-        for (name, value) in &descriptor.items {
+        let variants = items.into_iter().map(|(name, value)| {
             let ident = syn::Ident::new(name, proc_macro2::Span::call_site());
             let discriminant = syn::parse_str(&value.to_string()).unwrap();
-            variants.push(syn::Variant {
+            syn::Variant {
                 attrs: Vec::new(),
                 ident,
                 fields: syn::Fields::Unit,
                 discriminant: Some((syn::token::Eq::default(), discriminant)),
-            });
-        }
-        // sort props for consistency
-        variants.sort_by(|a, b| a.ident.cmp(&b.ident));
+            }
+        });
 
         // enum ident
         let ident = syn::Ident::new(&descriptor.name, proc_macro2::Span::call_site());
@@ -236,7 +243,7 @@ impl EnumCollector {
             enum_token: syn::token::Enum::default(),
             ident: ident.clone(),
             generics: syn::Generics::default(),
-            variants: variants.into_iter().collect(),
+            variants: variants.collect(),
             brace_token: syn::token::Brace::default(),
         });
 
