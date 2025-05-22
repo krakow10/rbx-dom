@@ -197,6 +197,14 @@ impl StrongInstancesCollector {
     }
 }
 
+fn fix_enum_ident(ident: &str) -> &str {
+    match ident {
+        // StudioScriptEditorColorCategories has this variant
+        "Self" => "FIXME",
+        other => other,
+    }
+}
+
 struct EnumCollector {
     enums: Vec<syn::ItemEnum>,
     variants: Vec<syn::Variant>,
@@ -213,7 +221,7 @@ impl EnumCollector {
         let mut items: Vec<_> = descriptor
             .items
             .iter()
-            .map(|(name, &value)| (name.as_ref(), value))
+            .map(|(name, &value)| (fix_enum_ident(name), value))
             .collect();
 
         // sort variants by discriminant for consistency
