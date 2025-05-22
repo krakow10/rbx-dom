@@ -108,7 +108,7 @@ impl StrongInstancesCollector {
 
         // generate the class struct
         self.structs.push(syn::ItemStruct {
-            attrs: vec![syn::parse_quote!(#[derive(Debug, Clone, Serialize, Deserialize)])],
+            attrs: vec![syn::parse_quote!(#[derive(Debug, Clone)])],
             vis: syn::Visibility::Public(syn::token::Pub::default()),
             struct_token: syn::token::Struct::default(),
             ident: ident.clone(),
@@ -168,8 +168,6 @@ impl StrongInstancesCollector {
         // create complete file including use statements
         let mut complete_file: syn::File = syn::parse_quote! {
             use core::ops::{Deref, DerefMut};
-
-            use serde::{Serialize, Deserialize};
             use rbx_types::{CFrame, Enum, Ref};
 
             macro_rules! impl_inherits {
@@ -238,7 +236,7 @@ impl EnumCollector {
 
         // generate the enum
         self.enums.push(syn::ItemEnum {
-            attrs: vec![syn::parse_quote!(#[derive(Debug, Clone, Serialize, Deserialize)])],
+            attrs: vec![syn::parse_quote!(#[derive(Debug, Clone)])],
             vis: syn::Visibility::Public(syn::token::Pub::default()),
             enum_token: syn::token::Enum::default(),
             ident: ident.clone(),
