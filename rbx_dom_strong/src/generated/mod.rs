@@ -1,2 +1,2 @@
-mod r#enum;
-mod instance;
+mod enums;
+mod instances;

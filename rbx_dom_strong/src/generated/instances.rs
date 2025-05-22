@@ -1,4 +1,4 @@
-use super::r#enum::*;
+use super::enums;
 use rbx_types::*;
 #[derive(Debug, Clone)]
 #[non_exhaustive]
@@ -809,11 +809,11 @@ pub enum StrongInstance {
 }
 #[derive(Debug, Clone)]
 pub struct Accessory {
-    pub AccessoryType: AccessoryType,
+    pub AccessoryType: enums::AccessoryType,
 }
 #[derive(Debug, Clone)]
 pub struct AccessoryDescription {
-    pub AccessoryType: AccessoryType,
+    pub AccessoryType: enums::AccessoryType,
     pub AssetId: i64,
     pub Instance: Ref,
     pub IsLayered: bool,
@@ -837,7 +837,7 @@ pub struct ActivityHistoryEventService {}
 pub struct Actor {}
 #[derive(Debug, Clone)]
 pub struct AdGui {
-    pub AdShape: AdShape,
+    pub AdShape: enums::AdShape,
     pub EnableVideoAds: bool,
     pub FallbackImage: ContentId,
 }
@@ -859,11 +859,11 @@ pub struct AirController {
 }
 #[derive(Debug, Clone)]
 pub struct AlignOrientation {
-    pub AlignType: AlignType,
+    pub AlignType: enums::AlignType,
     pub CFrame: CFrame,
     pub MaxAngularVelocity: f32,
     pub MaxTorque: f32,
-    pub Mode: OrientationAlignmentMode,
+    pub Mode: enums::OrientationAlignmentMode,
     pub PrimaryAxisOnly: bool,
     pub ReactionTorqueEnabled: bool,
     pub Responsiveness: f32,
@@ -872,12 +872,12 @@ pub struct AlignOrientation {
 #[derive(Debug, Clone)]
 pub struct AlignPosition {
     pub ApplyAtCenterOfMass: bool,
-    pub ForceLimitMode: ForceLimitMode,
-    pub ForceRelativeTo: ActuatorRelativeTo,
+    pub ForceLimitMode: enums::ForceLimitMode,
+    pub ForceRelativeTo: enums::ActuatorRelativeTo,
     pub MaxAxesForce: Vector3,
     pub MaxForce: f32,
     pub MaxVelocity: f32,
-    pub Mode: PositionAlignmentMode,
+    pub Mode: enums::PositionAlignmentMode,
     pub Position: Vector3,
     pub ReactionForceEnabled: bool,
     pub Responsiveness: f32,
@@ -894,7 +894,7 @@ pub struct AngularVelocity {
     pub AngularVelocity: Vector3,
     pub MaxTorque: f32,
     pub ReactionTorqueEnabled: bool,
-    pub RelativeTo: ActuatorRelativeTo,
+    pub RelativeTo: enums::ActuatorRelativeTo,
 }
 #[derive(Debug, Clone)]
 pub struct Animation {
@@ -904,7 +904,7 @@ pub struct Animation {
 pub struct AnimationClip {
     pub GuidBinaryString: BinaryString,
     pub Loop: bool,
-    pub Priority: AnimationPriority,
+    pub Priority: enums::AnimationPriority,
 }
 #[derive(Debug, Clone)]
 pub struct AnimationClipProvider {}
@@ -936,7 +936,7 @@ pub struct AnimationRigData {
 pub struct AnimationStreamTrack {}
 #[derive(Debug, Clone)]
 pub struct AnimationTrack {
-    pub Priority: AnimationPriority,
+    pub Priority: enums::AnimationPriority,
 }
 #[derive(Debug, Clone)]
 pub struct Animator {
@@ -999,15 +999,15 @@ pub struct Attachment {
 #[derive(Debug, Clone)]
 pub struct AudioAnalyzer {
     pub SpectrumEnabled: bool,
-    pub WindowSize: AudioWindowSize,
+    pub WindowSize: enums::AudioWindowSize,
 }
 #[derive(Debug, Clone)]
 pub struct AudioChannelMixer {
-    pub Layout: AudioChannelLayout,
+    pub Layout: enums::AudioChannelLayout,
 }
 #[derive(Debug, Clone)]
 pub struct AudioChannelSplitter {
-    pub Layout: AudioChannelLayout,
+    pub Layout: enums::AudioChannelLayout,
 }
 #[derive(Debug, Clone)]
 pub struct AudioChorus {
@@ -1027,7 +1027,7 @@ pub struct AudioCompressor {
 }
 #[derive(Debug, Clone)]
 pub struct AudioDeviceInput {
-    pub AccessType: AccessModifierType,
+    pub AccessType: enums::AccessModifierType,
     pub Active: bool,
     pub Muted: bool,
     pub Player: Ref,
@@ -1056,7 +1056,7 @@ pub struct AudioEmitter {
     pub AngleAttenuation: BinaryString,
     pub AudioInteractionGroup: String,
     pub DistanceAttenuation: BinaryString,
-    pub SimulationFidelity: AudioSimulationFidelity,
+    pub SimulationFidelity: enums::AudioSimulationFidelity,
 }
 #[derive(Debug, Clone)]
 pub struct AudioEqualizer {
@@ -1074,7 +1074,7 @@ pub struct AudioFader {
 #[derive(Debug, Clone)]
 pub struct AudioFilter {
     pub Bypass: bool,
-    pub FilterType: AudioFilterType,
+    pub FilterType: enums::AudioFilterType,
     pub Frequency: f32,
     pub Gain: f32,
     pub Q: f32,
@@ -1099,7 +1099,7 @@ pub struct AudioListener {
     pub AngleAttenuation: BinaryString,
     pub AudioInteractionGroup: String,
     pub DistanceAttenuation: BinaryString,
-    pub SimulationFidelity: AudioSimulationFidelity,
+    pub SimulationFidelity: enums::AudioSimulationFidelity,
 }
 #[derive(Debug, Clone)]
 pub struct AudioPages {}
@@ -1107,7 +1107,7 @@ pub struct AudioPages {}
 pub struct AudioPitchShifter {
     pub Bypass: bool,
     pub Pitch: f32,
-    pub WindowSize: AudioWindowSize,
+    pub WindowSize: enums::AudioWindowSize,
 }
 #[derive(Debug, Clone)]
 pub struct AudioPlayer {
@@ -1140,7 +1140,7 @@ pub struct AudioReverb {
 pub struct AudioSearchParams {
     pub Album: String,
     pub Artist: String,
-    pub AudioSubType: AudioSubType,
+    pub AudioSubType: enums::AudioSubType,
     pub MaxDuration: i32,
     pub MinDuration: i32,
     pub SearchKeyword: String,
@@ -1215,12 +1215,12 @@ pub struct BasePart {
     pub AudioCanCollide: bool,
     pub BackParamA: f32,
     pub BackParamB: f32,
-    pub BackSurface: SurfaceType,
-    pub BackSurfaceInput: InputType,
+    pub BackSurface: enums::SurfaceType,
+    pub BackSurfaceInput: enums::InputType,
     pub BottomParamA: f32,
     pub BottomParamB: f32,
-    pub BottomSurface: SurfaceType,
-    pub BottomSurfaceInput: InputType,
+    pub BottomSurface: enums::SurfaceType,
+    pub BottomSurfaceInput: enums::InputType,
     pub CFrame: CFrame,
     pub CanCollide: bool,
     pub CanQuery: bool,
@@ -1232,27 +1232,27 @@ pub struct BasePart {
     pub EnableFluidForces: bool,
     pub FrontParamA: f32,
     pub FrontParamB: f32,
-    pub FrontSurface: SurfaceType,
-    pub FrontSurfaceInput: InputType,
+    pub FrontSurface: enums::SurfaceType,
+    pub FrontSurfaceInput: enums::InputType,
     pub LeftParamA: f32,
     pub LeftParamB: f32,
-    pub LeftSurface: SurfaceType,
-    pub LeftSurfaceInput: InputType,
+    pub LeftSurface: enums::SurfaceType,
+    pub LeftSurfaceInput: enums::InputType,
     pub Locked: bool,
     pub Massless: bool,
-    pub Material: Material,
+    pub Material: enums::Material,
     pub PivotOffset: CFrame,
     pub Reflectance: f32,
     pub RightParamA: f32,
     pub RightParamB: f32,
-    pub RightSurface: SurfaceType,
-    pub RightSurfaceInput: InputType,
+    pub RightSurface: enums::SurfaceType,
+    pub RightSurfaceInput: enums::InputType,
     pub RootPriority: i32,
     pub RotVelocity: Vector3,
     pub TopParamA: f32,
     pub TopParamB: f32,
-    pub TopSurface: SurfaceType,
-    pub TopSurfaceInput: InputType,
+    pub TopSurface: enums::SurfaceType,
+    pub TopSurfaceInput: enums::InputType,
     pub Transparency: f32,
     pub Velocity: Vector3,
 }
@@ -1264,7 +1264,7 @@ pub struct BaseRemoteEvent {}
 pub struct BaseScript {
     pub Disabled: bool,
     pub LinkedSource: ContentId,
-    pub RunContext: RunContext,
+    pub RunContext: enums::RunContext,
 }
 #[derive(Debug, Clone)]
 pub struct BaseWrap {
@@ -1291,7 +1291,7 @@ pub struct Beam {
     pub Segments: i32,
     pub Texture: ContentId,
     pub TextureLength: f32,
-    pub TextureMode: TextureMode,
+    pub TextureMode: enums::TextureMode,
     pub TextureSpeed: f32,
     pub Transparency: NumberSequence,
     pub Width0: f32,
@@ -1375,7 +1375,7 @@ pub struct BodyMover {}
 #[derive(Debug, Clone)]
 pub struct BodyPartDescription {
     pub AssetId: i64,
-    pub BodyPart: BodyPart,
+    pub BodyPart: enums::BodyPart,
     pub Color: Color3,
     pub Instance: Ref,
 }
@@ -1423,7 +1423,7 @@ pub struct BubbleChatConfiguration {
     pub BubbleDuration: f32,
     pub BubblesSpacing: f32,
     pub Enabled: bool,
-    pub Font: Font,
+    pub Font: enums::Font,
     pub FontFace: Font,
     pub LocalPlayerStudsOffset: Vector3,
     pub MaxBubbles: f32,
@@ -1459,9 +1459,9 @@ pub struct CalloutService {}
 pub struct Camera {
     pub CFrame: CFrame,
     pub CameraSubject: Ref,
-    pub CameraType: CameraType,
+    pub CameraType: enums::CameraType,
     pub FieldOfView: f32,
-    pub FieldOfViewMode: FieldOfViewMode,
+    pub FieldOfViewMode: enums::FieldOfViewMode,
     pub Focus: CFrame,
     pub HeadLocked: bool,
     pub HeadScale: f32,
@@ -1502,7 +1502,7 @@ pub struct CharacterAppearance {}
 #[derive(Debug, Clone)]
 pub struct CharacterMesh {
     pub BaseTextureId: i64,
-    pub BodyPart: BodyPart,
+    pub BodyPart: enums::BodyPart,
     pub MeshId: i64,
     pub OverlayTextureId: i64,
 }
@@ -1519,7 +1519,7 @@ pub struct ChatInputBarConfiguration {
     pub BackgroundTransparency: f64,
     pub Enabled: bool,
     pub FontFace: Font,
-    pub KeyboardKeyCode: KeyCode,
+    pub KeyboardKeyCode: enums::KeyCode,
     pub PlaceholderColor3: Color3,
     pub TargetTextChannel: Ref,
     pub TextColor3: Color3,
@@ -1534,12 +1534,12 @@ pub struct ChatWindowConfiguration {
     pub Enabled: bool,
     pub FontFace: Font,
     pub HeightScale: f32,
-    pub HorizontalAlignment: HorizontalAlignment,
+    pub HorizontalAlignment: enums::HorizontalAlignment,
     pub TextColor3: Color3,
     pub TextSize: i64,
     pub TextStrokeColor3: Color3,
     pub TextStrokeTransparency: f64,
-    pub VerticalAlignment: VerticalAlignment,
+    pub VerticalAlignment: enums::VerticalAlignment,
     pub WidthScale: f32,
 }
 #[derive(Debug, Clone)]
@@ -1602,7 +1602,7 @@ pub struct ColorCorrectionEffect {
 }
 #[derive(Debug, Clone)]
 pub struct ColorGradingEffect {
-    pub TonemapperPreset: TonemapperPreset,
+    pub TonemapperPreset: enums::TonemapperPreset,
 }
 #[derive(Debug, Clone)]
 pub struct CommandInstance {}
@@ -1671,7 +1671,7 @@ pub struct ControllerPartSensor {
     pub HitNormal: Vector3,
     pub SearchDistance: f32,
     pub SensedPart: Ref,
-    pub SensorMode: SensorMode,
+    pub SensorMode: enums::SensorMode,
 }
 #[derive(Debug, Clone)]
 pub struct ControllerSensor {}
@@ -1726,7 +1726,7 @@ pub struct CylinderHandleAdornment {
 pub struct CylinderMesh {}
 #[derive(Debug, Clone)]
 pub struct CylindricalConstraint {
-    pub AngularActuatorType: ActuatorType,
+    pub AngularActuatorType: enums::ActuatorType,
     pub AngularLimitsEnabled: bool,
     pub AngularResponsiveness: f32,
     pub AngularRestitution: f32,
@@ -1797,7 +1797,7 @@ pub struct Debris {
 pub struct DebugSettings {
     pub IsScriptStackTracingEnabled: bool,
     pub ReportSoundWarnings: bool,
-    pub TickCountPreciseOverride: TickCountSampleMethod,
+    pub TickCountPreciseOverride: enums::TickCountSampleMethod,
 }
 #[derive(Debug, Clone)]
 pub struct DebuggablePluginWatcher {}
@@ -1846,13 +1846,13 @@ pub struct DepthOfFieldEffect {
 pub struct DeviceIdService {}
 #[derive(Debug, Clone)]
 pub struct Dialog {
-    pub BehaviorType: DialogBehaviorType,
+    pub BehaviorType: enums::DialogBehaviorType,
     pub ConversationDistance: f32,
     pub GoodbyeChoiceActive: bool,
     pub GoodbyeDialog: String,
     pub InitialPrompt: String,
-    pub Purpose: DialogPurpose,
-    pub Tone: DialogTone,
+    pub Purpose: enums::DialogPurpose,
+    pub Tone: enums::DialogTone,
     pub TriggerDistance: f32,
     pub TriggerOffset: Vector3,
 }
@@ -1882,10 +1882,10 @@ pub struct DragDetector {
     pub ActivatedCursorIcon: ContentId,
     pub ApplyAtCenterOfMass: bool,
     pub DragFrame: CFrame,
-    pub DragStyle: DragDetectorDragStyle,
+    pub DragStyle: enums::DragDetectorDragStyle,
     pub Enabled: bool,
-    pub GamepadModeSwitchKeyCode: KeyCode,
-    pub KeyboardModeSwitchKeyCode: KeyCode,
+    pub GamepadModeSwitchKeyCode: enums::KeyCode,
+    pub KeyboardModeSwitchKeyCode: enums::KeyCode,
     pub MaxDragAngle: f32,
     pub MaxDragTranslation: Vector3,
     pub MaxForce: f32,
@@ -1893,14 +1893,14 @@ pub struct DragDetector {
     pub MinDragAngle: f32,
     pub MinDragTranslation: Vector3,
     pub Orientation: Vector3,
-    pub PermissionPolicy: DragDetectorPermissionPolicy,
+    pub PermissionPolicy: enums::DragDetectorPermissionPolicy,
     pub ReferenceInstance: Ref,
-    pub ResponseStyle: DragDetectorResponseStyle,
+    pub ResponseStyle: enums::DragDetectorResponseStyle,
     pub Responsiveness: f32,
     pub RunLocally: bool,
     pub TrackballRadialPullFactor: f32,
     pub TrackballRollFactor: f32,
-    pub VrSwitchKeyCode: KeyCode,
+    pub VrSwitchKeyCode: enums::KeyCode,
 }
 #[derive(Debug, Clone)]
 pub struct Dragger {}
@@ -1938,7 +1938,7 @@ pub struct EqualizerSoundEffect {
 }
 #[derive(Debug, Clone)]
 pub struct EulerRotationCurve {
-    pub RotationOrder: RotationOrder,
+    pub RotationOrder: enums::RotationOrder,
 }
 #[derive(Debug, Clone)]
 pub struct EventIngestService {}
@@ -1970,7 +1970,7 @@ pub struct Explosion {
     pub BlastPressure: f32,
     pub BlastRadius: f32,
     pub DestroyJointRadiusPercent: f32,
-    pub ExplosionType: ExplosionType,
+    pub ExplosionType: enums::ExplosionType,
     pub Position: Vector3,
     pub TimeScale: f32,
     pub Visible: bool,
@@ -1981,7 +1981,7 @@ pub struct FaceAnimatorService {}
 pub struct FaceControls {}
 #[derive(Debug, Clone)]
 pub struct FaceInstance {
-    pub Face: NormalId,
+    pub Face: enums::NormalId,
 }
 #[derive(Debug, Clone)]
 pub struct FacialAgeEstimationService {}
@@ -1999,10 +1999,10 @@ pub struct FacialAnimationStreamingSubsessionStats {}
 pub struct FacsImportData {}
 #[derive(Debug, Clone)]
 pub struct Feature {
-    pub FaceId: NormalId,
-    pub InOut: InOut,
-    pub LeftRight: LeftRight,
-    pub TopBottom: TopBottom,
+    pub FaceId: enums::NormalId,
+    pub InOut: enums::InOut,
+    pub LeftRight: enums::LeftRight,
+    pub TopBottom: enums::TopBottom,
 }
 #[derive(Debug, Clone)]
 pub struct FeatureRestrictionManager {}
@@ -2069,7 +2069,7 @@ pub struct ForceField {
 pub struct FormFactorPart {}
 #[derive(Debug, Clone)]
 pub struct Frame {
-    pub Style: FrameStyle,
+    pub Style: enums::FrameStyle,
 }
 #[derive(Debug, Clone)]
 pub struct FriendPages {}
@@ -2151,10 +2151,10 @@ pub struct GuiBase {}
 pub struct GuiBase2d {
     pub AutoLocalize: bool,
     pub RootLocalizationTable: Ref,
-    pub SelectionBehaviorDown: SelectionBehavior,
-    pub SelectionBehaviorLeft: SelectionBehavior,
-    pub SelectionBehaviorRight: SelectionBehavior,
-    pub SelectionBehaviorUp: SelectionBehavior,
+    pub SelectionBehaviorDown: enums::SelectionBehavior,
+    pub SelectionBehaviorLeft: enums::SelectionBehavior,
+    pub SelectionBehaviorRight: enums::SelectionBehavior,
+    pub SelectionBehaviorUp: enums::SelectionBehavior,
     pub SelectionGroup: bool,
 }
 #[derive(Debug, Clone)]
@@ -2170,7 +2170,7 @@ pub struct GuiButton {
     pub Modal: bool,
     pub PressHapticEffect: Ref,
     pub Selected: bool,
-    pub Style: ButtonStyle,
+    pub Style: enums::ButtonStyle,
 }
 #[derive(Debug, Clone)]
 pub struct GuiLabel {}
@@ -2180,11 +2180,11 @@ pub struct GuiMain {}
 pub struct GuiObject {
     pub Active: bool,
     pub AnchorPoint: Vector2,
-    pub AutomaticSize: AutomaticSize,
+    pub AutomaticSize: enums::AutomaticSize,
     pub BackgroundColor3: Color3,
     pub BackgroundTransparency: f32,
     pub BorderColor3: Color3,
-    pub BorderMode: BorderMode,
+    pub BorderMode: enums::BorderMode,
     pub BorderSizePixel: i32,
     pub ClipsDescendants: bool,
     pub Draggable: bool,
@@ -2200,7 +2200,7 @@ pub struct GuiObject {
     pub SelectionImageObject: Ref,
     pub SelectionOrder: i32,
     pub Size: UDim2,
-    pub SizeConstraint: SizeConstraint,
+    pub SizeConstraint: enums::SizeConstraint,
     pub Visible: bool,
     pub ZIndex: i32,
 }
@@ -2216,7 +2216,7 @@ pub struct GuidRegistryService {}
 pub struct HSRDataContentProvider {}
 #[derive(Debug, Clone)]
 pub struct HandleAdornment {
-    pub AdornCullingMode: AdornCullingMode,
+    pub AdornCullingMode: enums::AdornCullingMode,
     pub AlwaysOnTop: bool,
     pub CFrame: CFrame,
     pub SizeRelativeOffset: Vector3,
@@ -2225,7 +2225,7 @@ pub struct HandleAdornment {
 #[derive(Debug, Clone)]
 pub struct Handles {
     pub Faces: Faces,
-    pub Style: HandlesStyle,
+    pub Style: enums::HandlesStyle,
 }
 #[derive(Debug, Clone)]
 pub struct HandlesBase {}
@@ -2234,7 +2234,7 @@ pub struct HapticEffect {
     pub Looped: bool,
     pub Position: Vector3,
     pub Radius: f32,
-    pub Type: HapticEffectType,
+    pub Type: enums::HapticEffectType,
     pub Waveform: Ref,
 }
 #[derive(Debug, Clone)]
@@ -2255,7 +2255,7 @@ pub struct HiddenSurfaceRemovalAsset {
 #[derive(Debug, Clone)]
 pub struct Highlight {
     pub Adornee: Ref,
-    pub DepthMode: HighlightDepthMode,
+    pub DepthMode: enums::HighlightDepthMode,
     pub Enabled: bool,
     pub FillColor: Color3,
     pub FillTransparency: f32,
@@ -2264,7 +2264,7 @@ pub struct Highlight {
 }
 #[derive(Debug, Clone)]
 pub struct HingeConstraint {
-    pub ActuatorType: ActuatorType,
+    pub ActuatorType: enums::ActuatorType,
     pub AngularResponsiveness: f32,
     pub AngularSpeed: f32,
     pub AngularVelocity: f32,
@@ -2288,7 +2288,7 @@ pub struct Hopper {}
 #[derive(Debug, Clone)]
 pub struct HopperBin {
     pub Active: bool,
-    pub BinType: BinType,
+    pub BinType: enums::BinType,
 }
 #[derive(Debug, Clone)]
 pub struct HttpRbxApiService {}
@@ -2304,12 +2304,12 @@ pub struct Humanoid {
     pub AutoRotate: bool,
     pub AutomaticScalingEnabled: bool,
     pub BreakJointsOnDeath: bool,
-    pub CollisionType: HumanoidCollisionType,
-    pub DisplayDistanceType: HumanoidDisplayDistanceType,
+    pub CollisionType: enums::HumanoidCollisionType,
+    pub DisplayDistanceType: enums::HumanoidDisplayDistanceType,
     pub DisplayName: String,
     pub EvaluateStateMachine: bool,
     pub HealthDisplayDistance: f32,
-    pub HealthDisplayType: HumanoidHealthDisplayType,
+    pub HealthDisplayType: enums::HumanoidHealthDisplayType,
     pub HealthXml: f32,
     pub HipHeight: f32,
     pub InternalBodyScale: Vector3,
@@ -2319,9 +2319,9 @@ pub struct Humanoid {
     pub MaxHealth: f32,
     pub MaxSlopeAngle: f32,
     pub NameDisplayDistance: f32,
-    pub NameOcclusion: NameOcclusion,
+    pub NameOcclusion: enums::NameOcclusion,
     pub RequiresNeck: bool,
-    pub RigType: HumanoidRigType,
+    pub RigType: enums::HumanoidRigType,
     pub UseJumpPower: bool,
     pub WalkSpeed: f32,
 }
@@ -2474,7 +2474,7 @@ pub struct IKControl {
     pub Priority: i32,
     pub SmoothTime: f32,
     pub Target: Ref,
-    pub Type: IKControlType,
+    pub Type: enums::IKControlType,
     pub Weight: f32,
 }
 #[derive(Debug, Clone)]
@@ -2490,8 +2490,8 @@ pub struct ImageButton {
     pub ImageRectSize: Vector2,
     pub ImageTransparency: f32,
     pub PressedImageContent: Content,
-    pub ResampleMode: ResamplerMode,
-    pub ScaleType: ScaleType,
+    pub ResampleMode: enums::ResamplerMode,
+    pub ScaleType: enums::ScaleType,
     pub SliceCenter: Rect,
     pub SliceScale: f32,
     pub TileSize: UDim2,
@@ -2508,8 +2508,8 @@ pub struct ImageLabel {
     pub ImageRectOffset: Vector2,
     pub ImageRectSize: Vector2,
     pub ImageTransparency: f32,
-    pub ResampleMode: ResamplerMode,
-    pub ScaleType: ScaleType,
+    pub ResampleMode: enums::ResamplerMode,
+    pub ScaleType: enums::ScaleType,
     pub SliceCenter: Rect,
     pub SliceScale: f32,
     pub TileSize: UDim2,
@@ -2527,19 +2527,19 @@ pub struct IncrementalPatchBuilder {
 #[derive(Debug, Clone)]
 pub struct InputAction {
     pub Enabled: bool,
-    pub Type: InputActionType,
+    pub Type: enums::InputActionType,
 }
 #[derive(Debug, Clone)]
 pub struct InputBinding {
-    pub Down: KeyCode,
-    pub KeyCode: KeyCode,
-    pub Left: KeyCode,
+    pub Down: enums::KeyCode,
+    pub KeyCode: enums::KeyCode,
+    pub Left: enums::KeyCode,
     pub PressedThreshold: f32,
     pub ReleasedThreshold: f32,
-    pub Right: KeyCode,
+    pub Right: enums::KeyCode,
     pub Scale: f32,
     pub UiButton: Ref,
-    pub Up: KeyCode,
+    pub Up: enums::KeyCode,
     pub Vector2Scale: Vector2,
 }
 #[derive(Debug, Clone)]
@@ -2626,7 +2626,7 @@ pub struct LanguageService {}
 pub struct LayerCollector {
     pub Enabled: bool,
     pub ResetOnSpawn: bool,
-    pub ZIndexBehavior: ZIndexBehavior,
+    pub ZIndexBehavior: enums::ZIndexBehavior,
 }
 #[derive(Debug, Clone)]
 pub struct LegacyStudioBridge {}
@@ -2652,12 +2652,12 @@ pub struct Lighting {
     pub FogStart: f32,
     pub GeographicLatitude: f32,
     pub GlobalShadows: bool,
-    pub LightingStyle: LightingStyle,
+    pub LightingStyle: enums::LightingStyle,
     pub OutdoorAmbient: Color3,
     pub Outlines: bool,
     pub PrioritizeLightingQuality: bool,
     pub ShadowSoftness: f32,
-    pub Technology: Technology,
+    pub Technology: enums::Technology,
     pub TimeOfDay: String,
 }
 #[derive(Debug, Clone)]
@@ -2675,7 +2675,7 @@ pub struct LineHandleAdornment {
 }
 #[derive(Debug, Clone)]
 pub struct LinearVelocity {
-    pub ForceLimitMode: ForceLimitMode,
+    pub ForceLimitMode: enums::ForceLimitMode,
     pub ForceLimitsEnabled: bool,
     pub LineDirection: Vector3,
     pub LineVelocity: f32,
@@ -2684,10 +2684,10 @@ pub struct LinearVelocity {
     pub MaxPlanarAxesForce: Vector2,
     pub PlaneVelocity: Vector2,
     pub PrimaryTangentAxis: Vector3,
-    pub RelativeTo: ActuatorRelativeTo,
+    pub RelativeTo: enums::ActuatorRelativeTo,
     pub SecondaryTangentAxis: Vector3,
     pub VectorVelocity: Vector3,
-    pub VelocityConstraintMode: VelocityConstraintMode,
+    pub VelocityConstraintMode: enums::VelocityConstraintMode,
 }
 #[derive(Debug, Clone)]
 pub struct LinkingService {}
@@ -2801,10 +2801,10 @@ pub struct MaterialService {
 }
 #[derive(Debug, Clone)]
 pub struct MaterialVariant {
-    pub BaseMaterial: Material,
+    pub BaseMaterial: enums::Material,
     pub ColorMap: ContentId,
     pub CustomPhysicalProperties: PhysicalProperties,
-    pub MaterialPattern: MaterialPattern,
+    pub MaterialPattern: enums::MaterialPattern,
     pub MetalnessMap: ContentId,
     pub NormalMap: ContentId,
     pub RoughnessMap: ContentId,
@@ -2850,7 +2850,7 @@ pub struct MeshPart {
     pub JointOffset: Vector3,
     pub MeshContent: Content,
     pub PhysicsData: BinaryString,
-    pub RenderFidelity: RenderFidelity,
+    pub RenderFidelity: enums::RenderFidelity,
     pub TextureContent: Content,
     pub VertexCount: i32,
 }
@@ -2882,11 +2882,11 @@ pub struct MetaBreakpointContext {
 pub struct MetaBreakpointManager {}
 #[derive(Debug, Clone)]
 pub struct Model {
-    pub LevelOfDetail: ModelLevelOfDetail,
+    pub LevelOfDetail: enums::ModelLevelOfDetail,
     pub ModelMeshCFrame: CFrame,
     pub ModelMeshData: SharedString,
     pub ModelMeshSize: Vector3,
-    pub ModelStreamingMode: ModelStreamingMode,
+    pub ModelStreamingMode: enums::ModelStreamingMode,
     pub NeedsPivotMigration: bool,
     pub PrimaryPart: Ref,
     pub WorldPivotData: Option<CFrame>,
@@ -2946,7 +2946,7 @@ pub struct NoCollisionConstraint {
 }
 #[derive(Debug, Clone)]
 pub struct Noise {
-    pub NoiseType: NoiseType,
+    pub NoiseType: enums::NoiseType,
     pub Seed: i32,
 }
 #[derive(Debug, Clone)]
@@ -3016,12 +3016,12 @@ pub struct PartOperation {
     pub AssetId: ContentId,
     pub ChildData: BinaryString,
     pub ChildData2: SharedString,
-    pub FormFactor: FormFactor,
+    pub FormFactor: enums::FormFactor,
     pub InitialSize: Vector3,
     pub MeshData: BinaryString,
     pub MeshData2: SharedString,
     pub PhysicsData: BinaryString,
-    pub RenderFidelity: RenderFidelity,
+    pub RenderFidelity: enums::RenderFidelity,
     pub SmoothingAngle: f32,
     pub UsePartColor: bool,
 }
@@ -3036,25 +3036,25 @@ pub struct ParticleEmitter {
     pub Brightness: f32,
     pub Color: ColorSequence,
     pub Drag: f32,
-    pub EmissionDirection: NormalId,
+    pub EmissionDirection: enums::NormalId,
     pub Enabled: bool,
     pub FlipbookFramerate: NumberRange,
     pub FlipbookIncompatible: String,
-    pub FlipbookLayout: ParticleFlipbookLayout,
-    pub FlipbookMode: ParticleFlipbookMode,
+    pub FlipbookLayout: enums::ParticleFlipbookLayout,
+    pub FlipbookMode: enums::ParticleFlipbookMode,
     pub FlipbookStartRandom: bool,
     pub Lifetime: NumberRange,
     pub LightEmission: f32,
     pub LightInfluence: f32,
     pub LockedToPart: bool,
-    pub Orientation: ParticleOrientation,
+    pub Orientation: enums::ParticleOrientation,
     pub Rate: f32,
     pub RotSpeed: NumberRange,
     pub Rotation: NumberRange,
-    pub Shape: ParticleEmitterShape,
-    pub ShapeInOut: ParticleEmitterShapeInOut,
+    pub Shape: enums::ParticleEmitterShape,
+    pub ShapeInOut: enums::ParticleEmitterShapeInOut,
     pub ShapePartial: f32,
-    pub ShapeStyle: ParticleEmitterShapeStyle,
+    pub ShapeStyle: enums::ParticleEmitterShapeStyle,
     pub Size: NumberSequence,
     pub Speed: NumberRange,
     pub SpreadAngle: Vector2,
@@ -3153,12 +3153,12 @@ pub struct PhysicsSettings {
     pub IsInterpolationThrottleShown: bool,
     pub IsReceiveAgeShown: bool,
     pub IsTreeShown: bool,
-    pub PhysicsEnvironmentalThrottle: EnviromentalPhysicsThrottle,
+    pub PhysicsEnvironmentalThrottle: enums::EnviromentalPhysicsThrottle,
     pub ShowDecompositionGeometry: bool,
     pub ShowFluidForcesForSelectedOrHoveredMechanisms: bool,
     pub ShowInstanceNamesForDrawnForcesAndTorques: bool,
-    pub SolverConvergenceMetricType: SolverConvergenceMetricType,
-    pub SolverConvergenceVisualizationMode: SolverConvergenceVisualizationMode,
+    pub SolverConvergenceMetricType: enums::SolverConvergenceMetricType,
+    pub SolverConvergenceVisualizationMode: enums::SolverConvergenceVisualizationMode,
     pub ThrottleAdjustTime: f64,
     pub TorqueDrawScale: f32,
     pub UseCsGv2: bool,
@@ -3188,16 +3188,16 @@ pub struct Player {
     pub AutoJumpEnabled: bool,
     pub CameraMaxZoomDistance: f32,
     pub CameraMinZoomDistance: f32,
-    pub CameraMode: CameraMode,
+    pub CameraMode: enums::CameraMode,
     pub Character: Ref,
     pub CharacterAppearance: String,
     pub CharacterAppearanceId: i64,
-    pub DevCameraOcclusionMode: DevCameraOcclusionMode,
-    pub DevComputerCameraMode: DevComputerCameraMovementMode,
-    pub DevComputerMovementMode: DevComputerMovementMode,
+    pub DevCameraOcclusionMode: enums::DevCameraOcclusionMode,
+    pub DevComputerCameraMode: enums::DevComputerCameraMovementMode,
+    pub DevComputerMovementMode: enums::DevComputerMovementMode,
     pub DevEnableMouseLock: bool,
-    pub DevTouchCameraMode: DevTouchCameraMovementMode,
-    pub DevTouchMovementMode: DevTouchMovementMode,
+    pub DevTouchCameraMode: enums::DevTouchCameraMovementMode,
+    pub DevTouchMovementMode: enums::DevTouchMovementMode,
     pub GameplayPaused: bool,
     pub HealthDisplayDistance: f32,
     pub NameDisplayDistance: f32,
@@ -3218,7 +3218,7 @@ pub struct PlayerDataRecord {}
 pub struct PlayerDataRecordConfig {}
 #[derive(Debug, Clone)]
 pub struct PlayerDataService {
-    pub LoadFailureBehavior: PlayerDataLoadFailureBehavior,
+    pub LoadFailureBehavior: enums::PlayerDataLoadFailureBehavior,
 }
 #[derive(Debug, Clone)]
 pub struct PlayerEmulatorService {
@@ -3232,7 +3232,7 @@ pub struct PlayerEmulatorService {
 }
 #[derive(Debug, Clone)]
 pub struct PlayerGui {
-    pub ScreenOrientation: ScreenOrientation,
+    pub ScreenOrientation: enums::ScreenOrientation,
     pub SelectionImageObject: Ref,
 }
 #[derive(Debug, Clone)]
@@ -3295,8 +3295,8 @@ pub struct PointLight {
 pub struct PointsService {}
 #[derive(Debug, Clone)]
 pub struct PolicyService {
-    pub IsLuobuServer: TriStateBoolean,
-    pub LuobuWhitelisted: TriStateBoolean,
+    pub IsLuobuServer: enums::TriStateBoolean,
+    pub LuobuWhitelisted: enums::TriStateBoolean,
 }
 #[derive(Debug, Clone)]
 pub struct Pose {
@@ -3304,8 +3304,8 @@ pub struct Pose {
 }
 #[derive(Debug, Clone)]
 pub struct PoseBase {
-    pub EasingDirection: PoseEasingDirection,
-    pub EasingStyle: PoseEasingStyle,
+    pub EasingDirection: enums::PoseEasingDirection,
+    pub EasingStyle: enums::PoseEasingStyle,
     pub Weight: f32,
 }
 #[derive(Debug, Clone)]
@@ -3322,15 +3322,15 @@ pub struct ProximityPrompt {
     pub AutoLocalize: bool,
     pub ClickablePrompt: bool,
     pub Enabled: bool,
-    pub Exclusivity: ProximityPromptExclusivity,
-    pub GamepadKeyCode: KeyCode,
+    pub Exclusivity: enums::ProximityPromptExclusivity,
+    pub GamepadKeyCode: enums::KeyCode,
     pub HoldDuration: f32,
-    pub KeyboardKeyCode: KeyCode,
+    pub KeyboardKeyCode: enums::KeyCode,
     pub MaxActivationDistance: f32,
     pub ObjectText: String,
     pub RequiresLineOfSight: bool,
     pub RootLocalizationTable: Ref,
-    pub Style: ProximityPromptStyle,
+    pub Style: enums::ProximityPromptStyle,
     pub UiOffset: Vector2,
 }
 #[derive(Debug, Clone)]
@@ -3360,7 +3360,7 @@ pub struct ReflectionMetadataClass {
     pub ExplorerOrder: i32,
     pub Insertable: bool,
     pub PreferredParent: String,
-    pub ServiceVisibility: ServiceVisibility,
+    pub ServiceVisibility: enums::ServiceVisibility,
 }
 #[derive(Debug, Clone)]
 pub struct ReflectionMetadataClasses {}
@@ -3415,24 +3415,24 @@ pub struct RemoteFunction {}
 pub struct RenderSettings {
     pub AutoFrmLevel: i32,
     pub EagerBulkExecution: bool,
-    pub EditQualityLevel: QualityLevel,
+    pub EditQualityLevel: enums::QualityLevel,
     pub EnableVrMode: bool,
     pub ExportMergeByMaterial: bool,
-    pub FrameRateManager: FramerateManagerMode,
-    pub GraphicsMode: GraphicsMode,
+    pub FrameRateManager: enums::FramerateManagerMode,
+    pub GraphicsMode: enums::GraphicsMode,
     pub MeshCacheSize: i32,
-    pub MeshPartDetailLevel: MeshPartDetailLevel,
-    pub QualityLevel: QualityLevel,
+    pub MeshPartDetailLevel: enums::MeshPartDetailLevel,
+    pub QualityLevel: enums::QualityLevel,
     pub ReloadAssets: bool,
     pub RenderCsgTrianglesDebug: bool,
     pub ShowBoundingBoxes: bool,
-    pub ViewMode: ViewMode,
+    pub ViewMode: enums::ViewMode,
 }
 #[derive(Debug, Clone)]
 pub struct RenderingTest {
     pub CFrame: CFrame,
     pub ComparisonDiffThreshold: i32,
-    pub ComparisonMethod: RenderingTestComparisonMethod,
+    pub ComparisonMethod: enums::RenderingTestComparisonMethod,
     pub ComparisonPsnrThreshold: f32,
     pub Description: String,
     pub FieldOfView: f32,
@@ -3510,16 +3510,16 @@ pub struct RootImportData {
     pub KeepZeroInfluenceBones: bool,
     pub MergeMeshes: bool,
     pub PreferredUploadId: i64,
-    pub RestPose: RestPose,
-    pub RigScale: RigScale,
-    pub RigType: RigType,
+    pub RestPose: enums::RestPose,
+    pub RigScale: enums::RigScale,
+    pub RigType: enums::RigType,
     pub RigVisualization: bool,
-    pub ScaleUnit: MeshScaleUnit,
+    pub ScaleUnit: enums::MeshScaleUnit,
     pub UseSceneOriginAsPivot: bool,
     pub UsesCages: bool,
     pub ValidateUgcBody: bool,
-    pub WorldForward: NormalId,
-    pub WorldUp: NormalId,
+    pub WorldForward: enums::NormalId,
+    pub WorldUp: enums::NormalId,
 }
 #[derive(Debug, Clone)]
 pub struct RopeConstraint {
@@ -3562,8 +3562,8 @@ pub struct SafetyService {
 pub struct ScreenGui {
     pub ClipToDeviceSafeArea: bool,
     pub DisplayOrder: i32,
-    pub SafeAreaCompatibility: SafeAreaCompatibility,
-    pub ScreenInsets: ScreenInsets,
+    pub SafeAreaCompatibility: enums::SafeAreaCompatibility,
+    pub ScreenInsets: enums::ScreenInsets,
 }
 #[derive(Debug, Clone)]
 pub struct ScreenshotCapture {}
@@ -3576,7 +3576,7 @@ pub struct ScreenshotHud {
     pub ExperienceNameOverlayEnabled: bool,
     pub HideCoreGuiForCaptures: bool,
     pub HidePlayerGuiForCaptures: bool,
-    pub OverlayFont: Font,
+    pub OverlayFont: enums::Font,
     pub UsernameOverlayEnabled: bool,
     pub Visible: bool,
 }
@@ -3615,21 +3615,21 @@ pub struct ScriptRuntime {}
 pub struct ScriptService {}
 #[derive(Debug, Clone)]
 pub struct ScrollingFrame {
-    pub AutomaticCanvasSize: AutomaticSize,
+    pub AutomaticCanvasSize: enums::AutomaticSize,
     pub BottomImage: ContentId,
     pub CanvasPosition: Vector2,
     pub CanvasSize: UDim2,
-    pub ElasticBehavior: ElasticBehavior,
-    pub HorizontalScrollBarInset: ScrollBarInset,
+    pub ElasticBehavior: enums::ElasticBehavior,
+    pub HorizontalScrollBarInset: enums::ScrollBarInset,
     pub MidImage: ContentId,
     pub ScrollBarImageColor3: Color3,
     pub ScrollBarImageTransparency: f32,
     pub ScrollBarThickness: i32,
-    pub ScrollingDirection: ScrollingDirection,
+    pub ScrollingDirection: enums::ScrollingDirection,
     pub ScrollingEnabled: bool,
     pub TopImage: ContentId,
-    pub VerticalScrollBarInset: ScrollBarInset,
-    pub VerticalScrollBarPosition: VerticalScrollBarPosition,
+    pub VerticalScrollBarInset: enums::ScrollBarInset,
+    pub VerticalScrollBarPosition: enums::VerticalScrollBarPosition,
 }
 #[derive(Debug, Clone)]
 pub struct Seat {
@@ -3665,7 +3665,7 @@ pub struct SelectionSphere {
 }
 #[derive(Debug, Clone)]
 pub struct SensorBase {
-    pub UpdateType: SensorUpdateType,
+    pub UpdateType: enums::SensorUpdateType,
 }
 #[derive(Debug, Clone)]
 pub struct SerializationService {}
@@ -3726,7 +3726,7 @@ pub struct Sky {
 }
 #[derive(Debug, Clone)]
 pub struct SlidingBallConstraint {
-    pub ActuatorType: ActuatorType,
+    pub ActuatorType: enums::ActuatorType,
     pub LimitsEnabled: bool,
     pub LinearResponsiveness: f32,
     pub LowerLimit: f32,
@@ -3766,7 +3766,7 @@ pub struct Sound {
     pub PlaybackRegionsEnabled: bool,
     pub PlaybackSpeed: f32,
     pub Playing: bool,
-    pub RollOffMode: RollOffMode,
+    pub RollOffMode: enums::RollOffMode,
     pub SoundGroup: Ref,
     pub SoundId: ContentId,
     pub TimePosition: f64,
@@ -3783,16 +3783,16 @@ pub struct SoundGroup {
 }
 #[derive(Debug, Clone)]
 pub struct SoundService {
-    pub AmbientReverb: ReverbType,
-    pub AudioApiByDefault: RolloutState,
-    pub CharacterSoundsUseNewApi: RolloutState,
-    pub DefaultListenerLocation: ListenerLocation,
+    pub AmbientReverb: enums::ReverbType,
+    pub AudioApiByDefault: enums::RolloutState,
+    pub CharacterSoundsUseNewApi: enums::RolloutState,
+    pub DefaultListenerLocation: enums::ListenerLocation,
     pub DistanceFactor: f32,
     pub DopplerScale: f32,
     pub IsNewExpForAudioApiByDefault: bool,
     pub RespectFilteringEnabled: bool,
     pub RolloffScale: f32,
-    pub VolumetricAudio: VolumetricAudio,
+    pub VolumetricAudio: enums::VolumetricAudio,
 }
 #[derive(Debug, Clone)]
 pub struct Sparkles {
@@ -3812,7 +3812,7 @@ pub struct SpawnLocation {
 pub struct SpawnerService {}
 #[derive(Debug, Clone)]
 pub struct SpecialMesh {
-    pub MeshType: MeshType,
+    pub MeshType: enums::MeshType,
 }
 #[derive(Debug, Clone)]
 pub struct SphereHandleAdornment {
@@ -3821,7 +3821,7 @@ pub struct SphereHandleAdornment {
 #[derive(Debug, Clone)]
 pub struct SpotLight {
     pub Angle: f32,
-    pub Face: NormalId,
+    pub Face: enums::NormalId,
     pub Range: f32,
 }
 #[derive(Debug, Clone)]
@@ -3852,12 +3852,12 @@ pub struct StarterGear {}
 #[derive(Debug, Clone)]
 pub struct StarterGui {
     pub ResetPlayerGuiOnSpawn: bool,
-    pub RtlTextSupport: RtlTextSupport,
-    pub ScreenOrientation: ScreenOrientation,
+    pub RtlTextSupport: enums::RtlTextSupport,
+    pub ScreenOrientation: enums::ScreenOrientation,
     pub ShowDevelopmentGui: bool,
     pub StudioDefaultStyleSheet: Ref,
     pub StudioInsertWidgetLayerCollectorAutoLinkStyleSheet: Ref,
-    pub VirtualCursorMode: VirtualCursorMode,
+    pub VirtualCursorMode: enums::VirtualCursorMode,
 }
 #[derive(Debug, Clone)]
 pub struct StarterPack {}
@@ -3865,21 +3865,21 @@ pub struct StarterPack {}
 pub struct StarterPlayer {
     pub AllowCustomAnimations: bool,
     pub AutoJumpEnabled: bool,
-    pub AvatarJointUpgradeSerializedRollout: RolloutState,
+    pub AvatarJointUpgradeSerializedRollout: enums::RolloutState,
     pub CameraMaxZoomDistance: f32,
     pub CameraMinZoomDistance: f32,
-    pub CameraMode: CameraMode,
+    pub CameraMode: enums::CameraMode,
     pub CharacterJumpHeight: f32,
     pub CharacterJumpPower: f32,
     pub CharacterMaxSlopeAngle: f32,
     pub CharacterUseJumpPower: bool,
     pub CharacterWalkSpeed: f32,
-    pub DevCameraOcclusionMode: DevCameraOcclusionMode,
-    pub DevComputerCameraMovementMode: DevComputerCameraMovementMode,
-    pub DevComputerMovementMode: DevComputerMovementMode,
-    pub DevTouchCameraMovementMode: DevTouchCameraMovementMode,
-    pub DevTouchMovementMode: DevTouchMovementMode,
-    pub EnableDynamicHeads: LoadDynamicHeads,
+    pub DevCameraOcclusionMode: enums::DevCameraOcclusionMode,
+    pub DevComputerCameraMovementMode: enums::DevComputerCameraMovementMode,
+    pub DevComputerMovementMode: enums::DevComputerMovementMode,
+    pub DevTouchCameraMovementMode: enums::DevTouchCameraMovementMode,
+    pub DevTouchMovementMode: enums::DevTouchMovementMode,
+    pub EnableDynamicHeads: enums::LoadDynamicHeads,
     pub EnableMouseLockOption: bool,
     pub GameSettingsAssetIdFace: i64,
     pub GameSettingsAssetIdHead: i64,
@@ -3891,8 +3891,8 @@ pub struct StarterPlayer {
     pub GameSettingsAssetIdShirt: i64,
     pub GameSettingsAssetIdTeeShirt: i64,
     pub GameSettingsAssetIdTorso: i64,
-    pub GameSettingsAvatar: GameAvatarType,
-    pub GameSettingsR15Collision: R15CollisionType,
+    pub GameSettingsAvatar: enums::GameAvatarType,
+    pub GameSettingsR15Collision: enums::R15CollisionType,
     pub GameSettingsScaleRangeBodyType: NumberRange,
     pub GameSettingsScaleRangeHead: NumberRange,
     pub GameSettingsScaleRangeHeight: NumberRange,
@@ -3900,8 +3900,8 @@ pub struct StarterPlayer {
     pub GameSettingsScaleRangeWidth: NumberRange,
     pub HealthDisplayDistance: f32,
     pub LoadCharacterAppearance: bool,
-    pub LoadCharacterLayeredClothing: LoadCharacterLayeredClothing,
-    pub LuaCharacterController: CharacterControlMode,
+    pub LoadCharacterLayeredClothing: enums::LoadCharacterLayeredClothing,
+    pub LuaCharacterController: enums::CharacterControlMode,
     pub NameDisplayDistance: f32,
     pub RagdollDeath: bool,
     pub UserEmotesEnabled: bool,
@@ -3926,8 +3926,8 @@ pub struct StringValue {
 }
 #[derive(Debug, Clone)]
 pub struct Studio {
-    pub ActionOnAutoResumeSync: ActionOnAutoResumeSync,
-    pub ActionOnStopSync: ActionOnStopSync,
+    pub ActionOnAutoResumeSync: enums::ActionOnAutoResumeSync,
+    pub ActionOnStopSync: enums::ActionOnStopSync,
     pub ActiveColor: Color3,
     pub ActiveHoverOverColor: Color3,
     pub AlwaysSaveScriptChanges: bool,
@@ -3936,13 +3936,13 @@ pub struct Studio {
     pub AutoClosingBrackets: bool,
     pub AutoClosingQuotes: bool,
     pub AutoDeleteClosingBracketsAndQuotes: bool,
-    pub AutoIndentRule: AutoIndentRule,
+    pub AutoIndentRule: enums::AutoIndentRule,
     pub AutoRecoveryEnabled: bool,
     pub AutoRecoveryIntervalMinutes: i32,
     pub AutoResumeSyncOnPlaceOpen: bool,
-    pub AutocompleteAcceptanceBehavior: CompletionAcceptanceBehavior,
+    pub AutocompleteAcceptanceBehavior: enums::CompletionAcceptanceBehavior,
     pub AutomaticallyTriggerAiCodeCompletion: bool,
-    pub BasicObjectsDisplayMode: ListDisplayMode,
+    pub BasicObjectsDisplayMode: enums::ListDisplayMode,
     pub CameraAdaptiveSpeed: bool,
     pub CameraMouseWheelSpeed: f32,
     pub CameraOrbitSensitivity: f32,
@@ -3951,7 +3951,7 @@ pub struct Studio {
     pub CameraShiftFactor: f32,
     pub CameraShiftSpeed: f32,
     pub CameraSpeed: f32,
-    pub CameraSpeedAdjustBinding: CameraSpeedAdjustBinding,
+    pub CameraSpeedAdjustBinding: enums::CameraSpeedAdjustBinding,
     pub CameraTweenFocus: bool,
     pub CameraZoomSpeed: f32,
     pub CameraZoomToMousePosition: bool,
@@ -3991,7 +3991,7 @@ pub struct Studio {
     pub FreeCameraSpeedScroll: bool,
     pub HighlightCurrentLine: bool,
     pub HighlightOccurances: bool,
-    pub HoverAnimateSpeed: HoverAnimateSpeed,
+    pub HoverAnimateSpeed: enums::HoverAnimateSpeed,
     pub HoverBoxThickness: f32,
     pub HoverLineThickness: i32,
     pub HoverOverColor: Color3,
@@ -4005,8 +4005,8 @@ pub struct Studio {
     pub MainVolume: f32,
     pub MaximumOutputLines: i32,
     pub OnlyPlayAudioFromWindowInFocus: bool,
-    pub OutputLayoutMode: OutputLayoutMode,
-    pub PermissionLevelShown: PermissionLevelShown,
+    pub OutputLayoutMode: enums::OutputLayoutMode,
+    pub PermissionLevelShown: enums::PermissionLevelShown,
     pub PhysicalDraggersSelectScopeByDefault: bool,
     pub PivotSnapToGeometryColor: Color3,
     pub PluginDebuggingEnabled: bool,
@@ -4014,8 +4014,8 @@ pub struct Studio {
     pub ReloadLocalPluginsOnChange: bool,
     pub RespectStudioShortcutsWhenGameHasFocus: bool,
     pub Rulers: String,
-    pub RuntimeUndoBehavior: RuntimeUndoBehavior,
-    pub ScriptEditorColorPreset: StudioScriptEditorColorPresets,
+    pub RuntimeUndoBehavior: enums::RuntimeUndoBehavior,
+    pub ScriptEditorColorPreset: enums::StudioScriptEditorColorPresets,
     pub ScriptEditorShouldShowPluginMethods: bool,
     pub ScriptTimeoutLength: i32,
     pub ScrollPastLastLine: bool,
@@ -4115,7 +4115,7 @@ pub struct SunRaysEffect {
 }
 #[derive(Debug, Clone)]
 pub struct SurfaceAppearance {
-    pub AlphaMode: AlphaMode,
+    pub AlphaMode: enums::AlphaMode,
     pub Color: Color3,
     pub ColorMapContent: Content,
     pub MetalnessMapContent: Content,
@@ -4132,7 +4132,7 @@ pub struct SurfaceGui {
     pub LightInfluence: f32,
     pub MaxDistance: f32,
     pub PixelsPerStud: f32,
-    pub SizingMode: SurfaceGuiSizingMode,
+    pub SizingMode: enums::SurfaceGuiSizingMode,
     pub ToolPunchThroughDistance: f32,
     pub ZOffset: f32,
 }
@@ -4140,17 +4140,17 @@ pub struct SurfaceGui {
 pub struct SurfaceGuiBase {
     pub Active: bool,
     pub Adornee: Ref,
-    pub Face: NormalId,
+    pub Face: enums::NormalId,
 }
 #[derive(Debug, Clone)]
 pub struct SurfaceLight {
     pub Angle: f32,
-    pub Face: NormalId,
+    pub Face: enums::NormalId,
     pub Range: f32,
 }
 #[derive(Debug, Clone)]
 pub struct SurfaceSelection {
-    pub TargetSurface: NormalId,
+    pub TargetSurface: enums::NormalId,
 }
 #[derive(Debug, Clone)]
 pub struct SwimController {
@@ -4162,7 +4162,7 @@ pub struct SwimController {
 }
 #[derive(Debug, Clone)]
 pub struct SyncScriptBuilder {
-    pub CompileTarget: CompileTarget,
+    pub CompileTarget: enums::CompileTarget,
     pub CoverageInfo: bool,
     pub DebugInfo: bool,
     pub PackAsSource: bool,
@@ -4172,7 +4172,7 @@ pub struct SyncScriptBuilder {
 pub struct SystemThemeService {}
 #[derive(Debug, Clone)]
 pub struct TaskScheduler {
-    pub ThreadPoolConfig: ThreadPoolConfig,
+    pub ThreadPoolConfig: enums::ThreadPoolConfig,
 }
 #[derive(Debug, Clone)]
 pub struct Team {
@@ -4205,7 +4205,7 @@ pub struct TemporaryCageMeshProvider {}
 pub struct TemporaryScriptService {}
 #[derive(Debug, Clone)]
 pub struct Terrain {
-    pub AcquisitionMethod: TerrainAcquisitionMethod,
+    pub AcquisitionMethod: enums::TerrainAcquisitionMethod,
     pub Decoration: bool,
     pub GrassLength: f32,
     pub MaterialColors: MaterialColors,
@@ -4222,8 +4222,8 @@ pub struct Terrain {
 #[derive(Debug, Clone)]
 pub struct TerrainDetail {
     pub ColorMap: ContentId,
-    pub Face: TerrainFace,
-    pub MaterialPattern: MaterialPattern,
+    pub Face: enums::TerrainFace,
+    pub MaterialPattern: enums::MaterialPattern,
     pub MetalnessMap: ContentId,
     pub NormalMap: ContentId,
     pub RoughnessMap: ContentId,
@@ -4264,17 +4264,17 @@ pub struct TextBox {
     pub ShowNativeInput: bool,
     pub Text: String,
     pub TextColor3: Color3,
-    pub TextDirection: TextDirection,
+    pub TextDirection: enums::TextDirection,
     pub TextEditable: bool,
     pub TextScaled: bool,
     pub TextSize: f32,
     pub TextStrokeColor3: Color3,
     pub TextStrokeTransparency: f32,
     pub TextTransparency: f32,
-    pub TextTruncate: TextTruncate,
+    pub TextTruncate: enums::TextTruncate,
     pub TextWrapped: bool,
-    pub TextXAlignment: TextXAlignment,
-    pub TextYAlignment: TextYAlignment,
+    pub TextXAlignment: enums::TextXAlignment,
+    pub TextYAlignment: enums::TextYAlignment,
 }
 #[derive(Debug, Clone)]
 pub struct TextBoxService {}
@@ -4289,16 +4289,16 @@ pub struct TextButton {
     pub RichText: bool,
     pub Text: String,
     pub TextColor3: Color3,
-    pub TextDirection: TextDirection,
+    pub TextDirection: enums::TextDirection,
     pub TextScaled: bool,
     pub TextSize: f32,
     pub TextStrokeColor3: Color3,
     pub TextStrokeTransparency: f32,
     pub TextTransparency: f32,
-    pub TextTruncate: TextTruncate,
+    pub TextTruncate: enums::TextTruncate,
     pub TextWrapped: bool,
-    pub TextXAlignment: TextXAlignment,
-    pub TextYAlignment: TextYAlignment,
+    pub TextXAlignment: enums::TextXAlignment,
+    pub TextYAlignment: enums::TextYAlignment,
 }
 #[derive(Debug, Clone)]
 pub struct TextChannel {}
@@ -4324,7 +4324,7 @@ pub struct TextChatMessageProperties {}
 pub struct TextChatService {
     pub ChatTranslationFtuxShown: bool,
     pub ChatTranslationToggleEnabled: bool,
-    pub ChatVersion: ChatVersion,
+    pub ChatVersion: enums::ChatVersion,
     pub CreateDefaultCommands: bool,
     pub CreateDefaultTextChannels: bool,
     pub HasSeenDeprecationDialog: bool,
@@ -4344,16 +4344,16 @@ pub struct TextLabel {
     pub RichText: bool,
     pub Text: String,
     pub TextColor3: Color3,
-    pub TextDirection: TextDirection,
+    pub TextDirection: enums::TextDirection,
     pub TextScaled: bool,
     pub TextSize: f32,
     pub TextStrokeColor3: Color3,
     pub TextStrokeTransparency: f32,
     pub TextTransparency: f32,
-    pub TextTruncate: TextTruncate,
+    pub TextTruncate: enums::TextTruncate,
     pub TextWrapped: bool,
-    pub TextXAlignment: TextXAlignment,
-    pub TextYAlignment: TextYAlignment,
+    pub TextXAlignment: enums::TextXAlignment,
+    pub TextYAlignment: enums::TextYAlignment,
 }
 #[derive(Debug, Clone)]
 pub struct TextService {}
@@ -4393,7 +4393,7 @@ pub struct Tool {
 }
 #[derive(Debug, Clone)]
 pub struct Torque {
-    pub RelativeTo: ActuatorRelativeTo,
+    pub RelativeTo: enums::ActuatorRelativeTo,
     pub Torque: Vector3,
 }
 #[derive(Debug, Clone)]
@@ -4418,10 +4418,10 @@ pub struct TouchTransmitter {}
 pub struct TracerService {}
 #[derive(Debug, Clone)]
 pub struct TrackerLodController {
-    pub AudioMode: TrackerLodFlagMode,
-    pub VideoExtrapolationMode: TrackerExtrapolationFlagMode,
-    pub VideoLodMode: TrackerLodValueMode,
-    pub VideoMode: TrackerLodFlagMode,
+    pub AudioMode: enums::TrackerLodFlagMode,
+    pub VideoExtrapolationMode: enums::TrackerExtrapolationFlagMode,
+    pub VideoLodMode: enums::TrackerLodValueMode,
+    pub VideoMode: enums::TrackerLodFlagMode,
 }
 #[derive(Debug, Clone)]
 pub struct TrackerStreamAnimation {}
@@ -4440,7 +4440,7 @@ pub struct Trail {
     pub MinLength: f32,
     pub Texture: ContentId,
     pub TextureLength: f32,
-    pub TextureMode: TextureMode,
+    pub TextureMode: enums::TextureMode,
     pub Transparency: NumberSequence,
     pub WidthScale: NumberSequence,
 }
@@ -4455,7 +4455,7 @@ pub struct TremoloSoundEffect {
 #[derive(Debug, Clone)]
 pub struct TriangleMeshPart {
     pub AeroMeshData: SharedString,
-    pub FluidFidelityInternal: FluidFidelity,
+    pub FluidFidelityInternal: enums::FluidFidelity,
     pub PhysicalConfigData: SharedString,
     pub UnscaledCofm: Vector3,
     pub UnscaledVolInertiaDiags: Vector3,
@@ -4464,7 +4464,7 @@ pub struct TriangleMeshPart {
 }
 #[derive(Debug, Clone)]
 pub struct TrussPart {
-    pub Style: Style,
+    pub Style: enums::Style,
 }
 #[derive(Debug, Clone)]
 pub struct TutorialService {}
@@ -4481,8 +4481,8 @@ pub struct UGCValidationService {}
 #[derive(Debug, Clone)]
 pub struct UIAspectRatioConstraint {
     pub AspectRatio: f32,
-    pub AspectType: AspectType,
-    pub DominantAxis: DominantAxis,
+    pub AspectType: enums::AspectType,
+    pub DominantAxis: enums::DominantAxis,
 }
 #[derive(Debug, Clone)]
 pub struct UIBase {}
@@ -4497,14 +4497,14 @@ pub struct UICorner {
 #[derive(Debug, Clone)]
 pub struct UIDragDetector {
     pub ActivatedCursorIcon: ContentId,
-    pub BoundingBehavior: UIDragDetectorBoundingBehavior,
+    pub BoundingBehavior: enums::UIDragDetectorBoundingBehavior,
     pub BoundingUi: Ref,
     pub CursorIcon: ContentId,
     pub DragAxis: Vector2,
-    pub DragRelativity: UIDragDetectorDragRelativity,
+    pub DragRelativity: enums::UIDragDetectorDragRelativity,
     pub DragRotation: f32,
-    pub DragSpace: UIDragDetectorDragSpace,
-    pub DragStyle: UIDragDetectorDragStyle,
+    pub DragSpace: enums::UIDragDetectorDragSpace,
+    pub DragStyle: enums::UIDragDetectorDragStyle,
     pub DragUDim2: UDim2,
     pub Enabled: bool,
     pub MaxDragAngle: f32,
@@ -4512,18 +4512,18 @@ pub struct UIDragDetector {
     pub MinDragAngle: f32,
     pub MinDragTranslation: UDim2,
     pub ReferenceUiInstance: Ref,
-    pub ResponseStyle: UIDragDetectorResponseStyle,
+    pub ResponseStyle: enums::UIDragDetectorResponseStyle,
     pub SelectionModeDragSpeed: UDim2,
     pub SelectionModeRotateSpeed: f32,
-    pub UiDragSpeedAxisMapping: UIDragSpeedAxisMapping,
+    pub UiDragSpeedAxisMapping: enums::UIDragSpeedAxisMapping,
 }
 #[derive(Debug, Clone)]
 pub struct UIDragDetectorService {}
 #[derive(Debug, Clone)]
 pub struct UIFlexItem {
-    pub FlexMode: UIFlexMode,
+    pub FlexMode: enums::UIFlexMode,
     pub GrowRatio: f32,
-    pub ItemLineAlignment: ItemLineAlignment,
+    pub ItemLineAlignment: enums::ItemLineAlignment,
     pub ShrinkRatio: f32,
 }
 #[derive(Debug, Clone)]
@@ -4539,23 +4539,23 @@ pub struct UIGridLayout {
     pub CellPadding: UDim2,
     pub CellSize: UDim2,
     pub FillDirectionMaxCells: i32,
-    pub StartCorner: StartCorner,
+    pub StartCorner: enums::StartCorner,
 }
 #[derive(Debug, Clone)]
 pub struct UIGridStyleLayout {
-    pub FillDirection: FillDirection,
-    pub HorizontalAlignment: HorizontalAlignment,
-    pub SortOrder: SortOrder,
-    pub VerticalAlignment: VerticalAlignment,
+    pub FillDirection: enums::FillDirection,
+    pub HorizontalAlignment: enums::HorizontalAlignment,
+    pub SortOrder: enums::SortOrder,
+    pub VerticalAlignment: enums::VerticalAlignment,
 }
 #[derive(Debug, Clone)]
 pub struct UILayout {}
 #[derive(Debug, Clone)]
 pub struct UIListLayout {
-    pub HorizontalFlex: UIFlexAlignment,
-    pub ItemLineAlignment: ItemLineAlignment,
+    pub HorizontalFlex: enums::UIFlexAlignment,
+    pub ItemLineAlignment: enums::ItemLineAlignment,
     pub Padding: UDim,
-    pub VerticalFlex: UIFlexAlignment,
+    pub VerticalFlex: enums::UIFlexAlignment,
     pub Wraps: bool,
 }
 #[derive(Debug, Clone)]
@@ -4569,8 +4569,8 @@ pub struct UIPadding {
 pub struct UIPageLayout {
     pub Animated: bool,
     pub Circular: bool,
-    pub EasingDirection: EasingDirection,
-    pub EasingStyle: EasingStyle,
+    pub EasingDirection: enums::EasingDirection,
+    pub EasingStyle: enums::EasingStyle,
     pub GamepadInputEnabled: bool,
     pub Padding: UDim,
     pub ScrollWheelInputEnabled: bool,
@@ -4588,10 +4588,10 @@ pub struct UISizeConstraint {
 }
 #[derive(Debug, Clone)]
 pub struct UIStroke {
-    pub ApplyStrokeMode: ApplyStrokeMode,
+    pub ApplyStrokeMode: enums::ApplyStrokeMode,
     pub Color: Color3,
     pub Enabled: bool,
-    pub LineJoinMode: LineJoinMode,
+    pub LineJoinMode: enums::LineJoinMode,
     pub Thickness: f32,
     pub Transparency: f32,
 }
@@ -4599,7 +4599,7 @@ pub struct UIStroke {
 pub struct UITableLayout {
     pub FillEmptySpaceColumns: bool,
     pub FillEmptySpaceRows: bool,
-    pub MajorAxis: TableMajorAxis,
+    pub MajorAxis: enums::TableMajorAxis,
     pub Padding: UDim2,
 }
 #[derive(Debug, Clone)]
@@ -4627,7 +4627,7 @@ pub struct UnvalidatedAssetService {
 #[derive(Debug, Clone)]
 pub struct UserGameSettings {
     pub AllTutorialsDisabled: bool,
-    pub CameraMode: CustomCameraMode,
+    pub CameraMode: enums::CustomCameraMode,
     pub CameraYInverted: bool,
     pub ChatTranslationEnabled: bool,
     pub ChatTranslationFtuxShown: bool,
@@ -4636,16 +4636,16 @@ pub struct UserGameSettings {
     pub ChatVisible: bool,
     pub CompletedTutorials: String,
     pub ComputerCameraMovementChanged: bool,
-    pub ComputerCameraMovementMode: ComputerCameraMovementMode,
+    pub ComputerCameraMovementMode: enums::ComputerCameraMovementMode,
     pub ComputerMovementChanged: bool,
-    pub ComputerMovementMode: ComputerMovementMode,
-    pub ControlMode: ControlMode,
+    pub ComputerMovementMode: enums::ComputerMovementMode,
+    pub ControlMode: enums::ControlMode,
     pub DefaultCameraId: String,
     pub FramerateCap: i32,
     pub Fullscreen: bool,
     pub GaId: String,
     pub GamepadCameraSensitivity: f32,
-    pub GraphicsOptimizationMode: GraphicsOptimizationMode,
+    pub GraphicsOptimizationMode: enums::GraphicsOptimizationMode,
     pub GraphicsQualityLevel: i32,
     pub HapticStrength: f32,
     pub HasEverUsedVr: bool,
@@ -4660,30 +4660,30 @@ pub struct UserGameSettings {
     pub PartyVoiceVolume: f32,
     pub PerformanceStatsVisible: bool,
     pub PlayerHeight: f32,
-    pub PreferredTextSize: PreferredTextSize,
+    pub PreferredTextSize: enums::PreferredTextSize,
     pub PreferredTransparency: f32,
     pub QualityResetLevel: i32,
     pub RccProfilerRecordFrameRate: i32,
     pub RccProfilerRecordTimeFrame: i32,
     pub ReducedMotion: bool,
-    pub SavedQualityLevel: SavedQualitySetting,
+    pub SavedQualityLevel: enums::SavedQualitySetting,
     pub StartMaximized: bool,
     pub StartScreenPosition: Vector2,
     pub StartScreenSize: Vector2,
     pub TouchCameraMovementChanged: bool,
-    pub TouchCameraMovementMode: TouchCameraMovementMode,
+    pub TouchCameraMovementMode: enums::TouchCameraMovementMode,
     pub TouchMovementChanged: bool,
-    pub TouchMovementMode: TouchMovementMode,
+    pub TouchMovementMode: enums::TouchMovementMode,
     pub UiNavigationKeyBindEnabled: bool,
     pub UsedCoreGuiIsVisibleToggle: bool,
     pub UsedCustomGuiIsVisibleToggle: bool,
     pub UsedHideHudShortcut: bool,
     pub VignetteEnabled: bool,
     pub VignetteEnabledCustomOption: bool,
-    pub VrComfortSetting: VRComfortSetting,
+    pub VrComfortSetting: enums::VRComfortSetting,
     pub VrEnabled: bool,
     pub VrRotationIntensity: i32,
-    pub VrSafetyBubbleMode: VRSafetyBubbleMode,
+    pub VrSafetyBubbleMode: enums::VRSafetyBubbleMode,
     pub VrSmoothRotationEnabled: bool,
     pub VrSmoothRotationEnabledCustomOption: bool,
     pub VrThirdPersonFollowCamEnabled: bool,
@@ -4692,7 +4692,7 @@ pub struct UserGameSettings {
 #[derive(Debug, Clone)]
 pub struct UserInputService {
     pub LegacyInputEventsEnabled: bool,
-    pub MouseBehavior: MouseBehavior,
+    pub MouseBehavior: enums::MouseBehavior,
     pub MouseIcon: ContentId,
     pub MouseIconEnabled: bool,
 }
@@ -4704,11 +4704,11 @@ pub struct UserSettings {}
 pub struct UserStorageService {}
 #[derive(Debug, Clone)]
 pub struct VRService {
-    pub AutomaticScaling: VRScaling,
+    pub AutomaticScaling: enums::VRScaling,
     pub AvatarGestures: bool,
-    pub ControllerModels: VRControllerModelMode,
+    pub ControllerModels: enums::VRControllerModelMode,
     pub FadeOutViewOnCollision: bool,
-    pub LaserPointer: VRLaserPointerMode,
+    pub LaserPointer: enums::VRLaserPointerMode,
 }
 #[derive(Debug, Clone)]
 pub struct VRStatusService {}
@@ -4724,7 +4724,7 @@ pub struct Vector3Value {
 pub struct VectorForce {
     pub ApplyAtCenterOfMass: bool,
     pub Force: Vector3,
-    pub RelativeTo: ActuatorRelativeTo,
+    pub RelativeTo: enums::ActuatorRelativeTo,
 }
 #[derive(Debug, Clone)]
 pub struct VehicleController {}
@@ -4755,12 +4755,12 @@ pub struct VideoCaptureService {}
 pub struct VideoDeviceInput {
     pub Active: bool,
     pub CameraId: String,
-    pub CaptureQuality: VideoDeviceCaptureQuality,
+    pub CaptureQuality: enums::VideoDeviceCaptureQuality,
 }
 #[derive(Debug, Clone)]
 pub struct VideoDisplay {
-    pub ResampleMode: ResamplerMode,
-    pub ScaleType: ScaleType,
+    pub ResampleMode: enums::ResamplerMode,
+    pub ScaleType: enums::ScaleType,
     pub TileSize: UDim2,
     pub VideoColor3: Color3,
     pub VideoRectOffset: Vector2,
@@ -4820,9 +4820,9 @@ pub struct VisualizationModeService {}
 pub struct VoiceChatInternal {}
 #[derive(Debug, Clone)]
 pub struct VoiceChatService {
-    pub DefaultDistanceAttenuation: VoiceChatDistanceAttenuationType,
+    pub DefaultDistanceAttenuation: enums::VoiceChatDistanceAttenuationType,
     pub EnableDefaultVoice: bool,
-    pub UseAudioApi: AudioApiRollout,
+    pub UseAudioApi: enums::AudioApiRollout,
 }
 #[derive(Debug, Clone)]
 pub struct WebSocketClient {}
@@ -4855,8 +4855,8 @@ pub struct WireframeHandleAdornment {
 pub struct Workspace {
     pub AirDensity: f32,
     pub AllowThirdPartySales: bool,
-    pub AvatarUnificationMode: AvatarUnificationMode,
-    pub ClientAnimatorThrottling: ClientAnimatorThrottlingMode,
+    pub AvatarUnificationMode: enums::AvatarUnificationMode,
+    pub ClientAnimatorThrottling: enums::ClientAnimatorThrottlingMode,
     pub CollisionGroupData: BinaryString,
     pub CollisionGroups: String,
     pub CurrentCamera: Ref,
@@ -4864,30 +4864,30 @@ pub struct Workspace {
     pub ExplicitAutoJoints: bool,
     pub FallHeightEnabled: bool,
     pub FallenPartsDestroyHeight: f32,
-    pub FluidForces: FluidForces,
+    pub FluidForces: enums::FluidForces,
     pub GlobalWind: Vector3,
     pub Gravity: f32,
-    pub IkControlConstraintSupport: IKControlConstraintSupport,
-    pub MeshPartHeadsAndAccessories: MeshPartHeadsAndAccessories,
-    pub ModelStreamingBehavior: ModelStreamingBehavior,
-    pub MoverConstraintRootBehavior: MoverConstraintRootBehaviorMode,
-    pub PathfindingUseImprovedSearch: PathfindingUseImprovedSearch,
-    pub PhysicsImprovedSleep: RolloutState,
-    pub PhysicsSteppingMethod: PhysicsSteppingMethod,
-    pub PlayerCharacterDestroyBehavior: PlayerCharacterDestroyBehavior,
-    pub PrimalPhysicsSolver: PrimalPhysicsSolver,
-    pub RejectCharacterDeletions: RejectCharacterDeletions,
-    pub RenderingCacheOptimizations: RenderingCacheOptimizationMode,
-    pub ReplicateInstanceDestroySetting: ReplicateInstanceDestroySetting,
-    pub Retargeting: AnimatorRetargetingMode,
-    pub SandboxedInstanceMode: SandboxedInstanceMode,
-    pub StreamOutBehavior: StreamOutBehavior,
+    pub IkControlConstraintSupport: enums::IKControlConstraintSupport,
+    pub MeshPartHeadsAndAccessories: enums::MeshPartHeadsAndAccessories,
+    pub ModelStreamingBehavior: enums::ModelStreamingBehavior,
+    pub MoverConstraintRootBehavior: enums::MoverConstraintRootBehaviorMode,
+    pub PathfindingUseImprovedSearch: enums::PathfindingUseImprovedSearch,
+    pub PhysicsImprovedSleep: enums::RolloutState,
+    pub PhysicsSteppingMethod: enums::PhysicsSteppingMethod,
+    pub PlayerCharacterDestroyBehavior: enums::PlayerCharacterDestroyBehavior,
+    pub PrimalPhysicsSolver: enums::PrimalPhysicsSolver,
+    pub RejectCharacterDeletions: enums::RejectCharacterDeletions,
+    pub RenderingCacheOptimizations: enums::RenderingCacheOptimizationMode,
+    pub ReplicateInstanceDestroySetting: enums::ReplicateInstanceDestroySetting,
+    pub Retargeting: enums::AnimatorRetargetingMode,
+    pub SandboxedInstanceMode: enums::SandboxedInstanceMode,
+    pub StreamOutBehavior: enums::StreamOutBehavior,
     pub StreamingEnabled: bool,
-    pub StreamingIntegrityMode: StreamingIntegrityMode,
+    pub StreamingIntegrityMode: enums::StreamingIntegrityMode,
     pub StreamingMinRadius: i32,
     pub StreamingTargetRadius: i32,
     pub TerrainWeldsFixed: bool,
-    pub TouchEventsUseCollisionGroups: RolloutState,
+    pub TouchEventsUseCollisionGroups: enums::RolloutState,
     pub TouchesUseCollisionGroups: bool,
 }
 #[derive(Debug, Clone)]
@@ -4900,7 +4900,7 @@ pub struct WorldRoot {}
 pub struct WrapDeformer {}
 #[derive(Debug, Clone)]
 pub struct WrapLayer {
-    pub AutoSkin: WrapLayerAutoSkin,
+    pub AutoSkin: enums::WrapLayerAutoSkin,
     pub BindOffset: CFrame,
     pub Enabled: bool,
     pub Order: i32,
