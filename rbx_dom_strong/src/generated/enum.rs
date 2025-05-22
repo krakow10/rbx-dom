@@ -3807,7 +3807,7 @@ pub enum StudioScriptEditorColorCategories {
     Bool = 10,
     Function = 11,
     Local = 12,
-    FIXME = 13,
+    Self_ = 13,
     LuauKeyword = 14,
     FunctionName = 15,
     TODO = 16,

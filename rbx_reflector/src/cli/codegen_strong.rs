@@ -173,7 +173,7 @@ impl StrongInstancesCollector {
 fn fix_enum_ident(ident: &str) -> &str {
     match ident {
         // StudioScriptEditorColorCategories has this variant
-        "Self" => "FIXME",
+        "Self" => "Self_",
         other => other,
     }
 }
