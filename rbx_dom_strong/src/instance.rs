@@ -1,22 +1,8 @@
+use crate::impl_inherits;
+
 use core::ops::{Deref, DerefMut};
 
 use rbx_types::{CFrame, Enum, Ref};
-
-macro_rules! impl_inherits {
-    ($class:ident,$inherits:ident) => {
-        impl Deref for $class {
-            type Target = $inherits;
-            fn deref(&self) -> &$inherits {
-                &self.superclass
-            }
-        }
-        impl DerefMut for $class {
-            fn deref_mut(&mut self) -> &mut $inherits {
-                &mut self.superclass
-            }
-        }
-    };
-}
 
 /// The base class for all other classes
 #[derive(Debug)]
