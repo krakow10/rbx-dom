@@ -85,6 +85,13 @@ impl StrongInstancesCollector {
         // generate fields
         let mut fields = Vec::new();
         for prop in descriptor.properties.values() {
+            match &prop.kind {
+                rbx_reflection::PropertyKind::Canonical {
+                    serialization: rbx_reflection::PropertySerialization::Serializes,
+                } => (),
+                // skip properties which are migrated or serialize as something else
+                _ => continue,
+            }
             let ident = syn::Ident::new(
                 &heck::ToUpperCamelCase::to_upper_camel_case(prop.name.as_ref()),
                 proc_macro2::Span::call_site(),
