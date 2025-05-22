@@ -1,5 +1,5 @@
 use super::enums;
-use crate::impl_inherits;
+use crate::{impl_inherits, impl_strong_instance_from};
 use core::ops::{Deref, DerefMut};
 use rbx_types::*;
 #[derive(Debug, Clone)]
@@ -816,6 +816,7 @@ pub struct Accessory {
     pub AccessoryType: enums::AccessoryType,
 }
 impl_inherits!(Accessory, Accoutrement);
+impl_strong_instance_from!(Accessory);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct AccessoryDescription {
@@ -831,12 +832,14 @@ pub struct AccessoryDescription {
     pub Scale: Vector3,
 }
 impl_inherits!(AccessoryDescription, Instance);
+impl_strong_instance_from!(AccessoryDescription);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct AccountService {
     superclass: Instance,
 }
 impl_inherits!(AccountService, Instance);
+impl_strong_instance_from!(AccountService);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct Accoutrement {
@@ -844,24 +847,28 @@ pub struct Accoutrement {
     pub AttachmentPoint: CFrame,
 }
 impl_inherits!(Accoutrement, Instance);
+impl_strong_instance_from!(Accoutrement);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct AchievementService {
     superclass: Instance,
 }
 impl_inherits!(AchievementService, Instance);
+impl_strong_instance_from!(AchievementService);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct ActivityHistoryEventService {
     superclass: Instance,
 }
 impl_inherits!(ActivityHistoryEventService, Instance);
+impl_strong_instance_from!(ActivityHistoryEventService);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct Actor {
     superclass: Model,
 }
 impl_inherits!(Actor, Model);
+impl_strong_instance_from!(Actor);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct AdGui {
@@ -871,24 +878,28 @@ pub struct AdGui {
     pub FallbackImage: ContentId,
 }
 impl_inherits!(AdGui, SurfaceGuiBase);
+impl_strong_instance_from!(AdGui);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct AdPortal {
     superclass: Instance,
 }
 impl_inherits!(AdPortal, Instance);
+impl_strong_instance_from!(AdPortal);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct AdService {
     superclass: Instance,
 }
 impl_inherits!(AdService, Instance);
+impl_strong_instance_from!(AdService);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct AdvancedDragger {
     superclass: Instance,
 }
 impl_inherits!(AdvancedDragger, Instance);
+impl_strong_instance_from!(AdvancedDragger);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct AirController {
@@ -902,6 +913,7 @@ pub struct AirController {
     pub TurnSpeedFactor: f32,
 }
 impl_inherits!(AirController, ControllerBase);
+impl_strong_instance_from!(AirController);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct AlignOrientation {
@@ -917,6 +929,7 @@ pub struct AlignOrientation {
     pub RigidityEnabled: bool,
 }
 impl_inherits!(AlignOrientation, Constraint);
+impl_strong_instance_from!(AlignOrientation);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct AlignPosition {
@@ -934,12 +947,14 @@ pub struct AlignPosition {
     pub RigidityEnabled: bool,
 }
 impl_inherits!(AlignPosition, Constraint);
+impl_strong_instance_from!(AlignPosition);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct AnalysticsSettings {
     superclass: GenericSettings,
 }
 impl_inherits!(AnalysticsSettings, GenericSettings);
+impl_strong_instance_from!(AnalysticsSettings);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct AnalyticsService {
@@ -947,6 +962,7 @@ pub struct AnalyticsService {
     pub ApiKey: String,
 }
 impl_inherits!(AnalyticsService, Instance);
+impl_strong_instance_from!(AnalyticsService);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct AngularVelocity {
@@ -957,6 +973,7 @@ pub struct AngularVelocity {
     pub RelativeTo: enums::ActuatorRelativeTo,
 }
 impl_inherits!(AngularVelocity, Constraint);
+impl_strong_instance_from!(AngularVelocity);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct Animation {
@@ -964,6 +981,7 @@ pub struct Animation {
     pub AnimationId: ContentId,
 }
 impl_inherits!(Animation, Instance);
+impl_strong_instance_from!(Animation);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct AnimationClip {
@@ -973,12 +991,14 @@ pub struct AnimationClip {
     pub Priority: enums::AnimationPriority,
 }
 impl_inherits!(AnimationClip, Instance);
+impl_strong_instance_from!(AnimationClip);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct AnimationClipProvider {
     superclass: Instance,
 }
 impl_inherits!(AnimationClipProvider, Instance);
+impl_strong_instance_from!(AnimationClipProvider);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct AnimationConstraint {
@@ -989,30 +1009,35 @@ pub struct AnimationConstraint {
     pub Transform: CFrame,
 }
 impl_inherits!(AnimationConstraint, Constraint);
+impl_strong_instance_from!(AnimationConstraint);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct AnimationController {
     superclass: Instance,
 }
 impl_inherits!(AnimationController, Instance);
+impl_strong_instance_from!(AnimationController);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct AnimationFromVideoCreatorService {
     superclass: Instance,
 }
 impl_inherits!(AnimationFromVideoCreatorService, Instance);
+impl_strong_instance_from!(AnimationFromVideoCreatorService);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct AnimationFromVideoCreatorStudioService {
     superclass: Instance,
 }
 impl_inherits!(AnimationFromVideoCreatorStudioService, Instance);
+impl_strong_instance_from!(AnimationFromVideoCreatorStudioService);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct AnimationImportData {
     superclass: BaseImportData,
 }
 impl_inherits!(AnimationImportData, BaseImportData);
+impl_strong_instance_from!(AnimationImportData);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct AnimationRigData {
@@ -1025,12 +1050,14 @@ pub struct AnimationRigData {
     pub Transform: BinaryString,
 }
 impl_inherits!(AnimationRigData, Instance);
+impl_strong_instance_from!(AnimationRigData);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct AnimationStreamTrack {
     superclass: Instance,
 }
 impl_inherits!(AnimationStreamTrack, Instance);
+impl_strong_instance_from!(AnimationStreamTrack);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct AnimationTrack {
@@ -1038,6 +1065,7 @@ pub struct AnimationTrack {
     pub Priority: enums::AnimationPriority,
 }
 impl_inherits!(AnimationTrack, Instance);
+impl_strong_instance_from!(AnimationTrack);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct Animator {
@@ -1045,36 +1073,42 @@ pub struct Animator {
     pub PreferLodEnabled: bool,
 }
 impl_inherits!(Animator, Instance);
+impl_strong_instance_from!(Animator);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct Annotation {
     superclass: Instance,
 }
 impl_inherits!(Annotation, Instance);
+impl_strong_instance_from!(Annotation);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct AnnotationsService {
     superclass: Instance,
 }
 impl_inherits!(AnnotationsService, Instance);
+impl_strong_instance_from!(AnnotationsService);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct AppLifecycleObserverService {
     superclass: Instance,
 }
 impl_inherits!(AppLifecycleObserverService, Instance);
+impl_strong_instance_from!(AppLifecycleObserverService);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct AppStorageService {
     superclass: LocalStorageService,
 }
 impl_inherits!(AppStorageService, LocalStorageService);
+impl_strong_instance_from!(AppStorageService);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct AppUpdateService {
     superclass: Instance,
 }
 impl_inherits!(AppUpdateService, Instance);
+impl_strong_instance_from!(AppUpdateService);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct ArcHandles {
@@ -1082,12 +1116,14 @@ pub struct ArcHandles {
     pub Axes: Axes,
 }
 impl_inherits!(ArcHandles, HandlesBase);
+impl_strong_instance_from!(ArcHandles);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct AssetCounterService {
     superclass: Instance,
 }
 impl_inherits!(AssetCounterService, Instance);
+impl_strong_instance_from!(AssetCounterService);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct AssetDeliveryProxy {
@@ -1097,24 +1133,28 @@ pub struct AssetDeliveryProxy {
     pub StartServer: bool,
 }
 impl_inherits!(AssetDeliveryProxy, Instance);
+impl_strong_instance_from!(AssetDeliveryProxy);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct AssetImportService {
     superclass: Instance,
 }
 impl_inherits!(AssetImportService, Instance);
+impl_strong_instance_from!(AssetImportService);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct AssetImportSession {
     superclass: ImportSession,
 }
 impl_inherits!(AssetImportSession, ImportSession);
+impl_strong_instance_from!(AssetImportSession);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct AssetManagerService {
     superclass: Instance,
 }
 impl_inherits!(AssetManagerService, Instance);
+impl_strong_instance_from!(AssetManagerService);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct AssetPatchSettings {
@@ -1124,18 +1164,21 @@ pub struct AssetPatchSettings {
     pub PatchId: String,
 }
 impl_inherits!(AssetPatchSettings, Instance);
+impl_strong_instance_from!(AssetPatchSettings);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct AssetService {
     superclass: Instance,
 }
 impl_inherits!(AssetService, Instance);
+impl_strong_instance_from!(AssetService);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct AssetSoundEffect {
     superclass: CustomSoundEffect,
 }
 impl_inherits!(AssetSoundEffect, CustomSoundEffect);
+impl_strong_instance_from!(AssetSoundEffect);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct Atmosphere {
@@ -1148,12 +1191,14 @@ pub struct Atmosphere {
     pub Offset: f32,
 }
 impl_inherits!(Atmosphere, Instance);
+impl_strong_instance_from!(Atmosphere);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct AtmosphereSensor {
     superclass: SensorBase,
 }
 impl_inherits!(AtmosphereSensor, SensorBase);
+impl_strong_instance_from!(AtmosphereSensor);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct Attachment {
@@ -1162,6 +1207,7 @@ pub struct Attachment {
     pub Visible: bool,
 }
 impl_inherits!(Attachment, Instance);
+impl_strong_instance_from!(Attachment);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct AudioAnalyzer {
@@ -1170,6 +1216,7 @@ pub struct AudioAnalyzer {
     pub WindowSize: enums::AudioWindowSize,
 }
 impl_inherits!(AudioAnalyzer, Instance);
+impl_strong_instance_from!(AudioAnalyzer);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct AudioChannelMixer {
@@ -1177,6 +1224,7 @@ pub struct AudioChannelMixer {
     pub Layout: enums::AudioChannelLayout,
 }
 impl_inherits!(AudioChannelMixer, Instance);
+impl_strong_instance_from!(AudioChannelMixer);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct AudioChannelSplitter {
@@ -1184,6 +1232,7 @@ pub struct AudioChannelSplitter {
     pub Layout: enums::AudioChannelLayout,
 }
 impl_inherits!(AudioChannelSplitter, Instance);
+impl_strong_instance_from!(AudioChannelSplitter);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct AudioChorus {
@@ -1194,6 +1243,7 @@ pub struct AudioChorus {
     pub Rate: f32,
 }
 impl_inherits!(AudioChorus, Instance);
+impl_strong_instance_from!(AudioChorus);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct AudioCompressor {
@@ -1206,6 +1256,7 @@ pub struct AudioCompressor {
     pub Threshold: f32,
 }
 impl_inherits!(AudioCompressor, Instance);
+impl_strong_instance_from!(AudioCompressor);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct AudioDeviceInput {
@@ -1217,6 +1268,7 @@ pub struct AudioDeviceInput {
     pub Volume: f32,
 }
 impl_inherits!(AudioDeviceInput, Instance);
+impl_strong_instance_from!(AudioDeviceInput);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct AudioDeviceOutput {
@@ -1224,6 +1276,7 @@ pub struct AudioDeviceOutput {
     pub Player: Ref,
 }
 impl_inherits!(AudioDeviceOutput, Instance);
+impl_strong_instance_from!(AudioDeviceOutput);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct AudioDistortion {
@@ -1232,6 +1285,7 @@ pub struct AudioDistortion {
     pub Level: f32,
 }
 impl_inherits!(AudioDistortion, Instance);
+impl_strong_instance_from!(AudioDistortion);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct AudioEcho {
@@ -1244,6 +1298,7 @@ pub struct AudioEcho {
     pub WetLevel: f32,
 }
 impl_inherits!(AudioEcho, Instance);
+impl_strong_instance_from!(AudioEcho);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct AudioEmitter {
@@ -1254,6 +1309,7 @@ pub struct AudioEmitter {
     pub SimulationFidelity: enums::AudioSimulationFidelity,
 }
 impl_inherits!(AudioEmitter, Instance);
+impl_strong_instance_from!(AudioEmitter);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct AudioEqualizer {
@@ -1265,6 +1321,7 @@ pub struct AudioEqualizer {
     pub MidRange: NumberRange,
 }
 impl_inherits!(AudioEqualizer, Instance);
+impl_strong_instance_from!(AudioEqualizer);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct AudioFader {
@@ -1273,6 +1330,7 @@ pub struct AudioFader {
     pub Volume: f32,
 }
 impl_inherits!(AudioFader, Instance);
+impl_strong_instance_from!(AudioFader);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct AudioFilter {
@@ -1284,6 +1342,7 @@ pub struct AudioFilter {
     pub Q: f32,
 }
 impl_inherits!(AudioFilter, Instance);
+impl_strong_instance_from!(AudioFilter);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct AudioFlanger {
@@ -1294,12 +1353,14 @@ pub struct AudioFlanger {
     pub Rate: f32,
 }
 impl_inherits!(AudioFlanger, Instance);
+impl_strong_instance_from!(AudioFlanger);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct AudioFocusService {
     superclass: Instance,
 }
 impl_inherits!(AudioFocusService, Instance);
+impl_strong_instance_from!(AudioFocusService);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct AudioLimiter {
@@ -1309,6 +1370,7 @@ pub struct AudioLimiter {
     pub Release: f32,
 }
 impl_inherits!(AudioLimiter, Instance);
+impl_strong_instance_from!(AudioLimiter);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct AudioListener {
@@ -1319,12 +1381,14 @@ pub struct AudioListener {
     pub SimulationFidelity: enums::AudioSimulationFidelity,
 }
 impl_inherits!(AudioListener, Instance);
+impl_strong_instance_from!(AudioListener);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct AudioPages {
     superclass: Pages,
 }
 impl_inherits!(AudioPages, Pages);
+impl_strong_instance_from!(AudioPages);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct AudioPitchShifter {
@@ -1334,6 +1398,7 @@ pub struct AudioPitchShifter {
     pub WindowSize: enums::AudioWindowSize,
 }
 impl_inherits!(AudioPitchShifter, Instance);
+impl_strong_instance_from!(AudioPitchShifter);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct AudioPlayer {
@@ -1348,6 +1413,7 @@ pub struct AudioPlayer {
     pub Volume: f32,
 }
 impl_inherits!(AudioPlayer, Instance);
+impl_strong_instance_from!(AudioPlayer);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct AudioReverb {
@@ -1367,6 +1433,7 @@ pub struct AudioReverb {
     pub WetLevel: f32,
 }
 impl_inherits!(AudioReverb, Instance);
+impl_strong_instance_from!(AudioReverb);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct AudioSearchParams {
@@ -1381,6 +1448,7 @@ pub struct AudioSearchParams {
     pub Title: String,
 }
 impl_inherits!(AudioSearchParams, Instance);
+impl_strong_instance_from!(AudioSearchParams);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct AudioTextToSpeech {
@@ -1395,6 +1463,7 @@ pub struct AudioTextToSpeech {
     pub Volume: f32,
 }
 impl_inherits!(AudioTextToSpeech, Instance);
+impl_strong_instance_from!(AudioTextToSpeech);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct AuroraScript {
@@ -1407,6 +1476,7 @@ pub struct AuroraScript {
     pub Tag: String,
 }
 impl_inherits!(AuroraScript, LuaSourceContainer);
+impl_strong_instance_from!(AuroraScript);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct AuroraScriptService {
@@ -1414,48 +1484,56 @@ pub struct AuroraScriptService {
     pub BufferSize: i32,
 }
 impl_inherits!(AuroraScriptService, Instance);
+impl_strong_instance_from!(AuroraScriptService);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct AuroraService {
     superclass: Instance,
 }
 impl_inherits!(AuroraService, Instance);
+impl_strong_instance_from!(AuroraService);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct AvatarChatService {
     superclass: Instance,
 }
 impl_inherits!(AvatarChatService, Instance);
+impl_strong_instance_from!(AvatarChatService);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct AvatarCreationService {
     superclass: Instance,
 }
 impl_inherits!(AvatarCreationService, Instance);
+impl_strong_instance_from!(AvatarCreationService);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct AvatarEditorService {
     superclass: Instance,
 }
 impl_inherits!(AvatarEditorService, Instance);
+impl_strong_instance_from!(AvatarEditorService);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct AvatarImportService {
     superclass: Instance,
 }
 impl_inherits!(AvatarImportService, Instance);
+impl_strong_instance_from!(AvatarImportService);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct AvatarPreloader {
     superclass: Instance,
 }
 impl_inherits!(AvatarPreloader, Instance);
+impl_strong_instance_from!(AvatarPreloader);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct Backpack {
     superclass: Instance,
 }
 impl_inherits!(Backpack, Instance);
+impl_strong_instance_from!(Backpack);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct BackpackItem {
@@ -1463,12 +1541,14 @@ pub struct BackpackItem {
     pub TextureId: ContentId,
 }
 impl_inherits!(BackpackItem, Model);
+impl_strong_instance_from!(BackpackItem);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct BadgeService {
     superclass: Instance,
 }
 impl_inherits!(BadgeService, Instance);
+impl_strong_instance_from!(BadgeService);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct BallSocketConstraint {
@@ -1483,12 +1563,14 @@ pub struct BallSocketConstraint {
     pub UpperAngle: f32,
 }
 impl_inherits!(BallSocketConstraint, Constraint);
+impl_strong_instance_from!(BallSocketConstraint);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct BanHistoryPages {
     superclass: Pages,
 }
 impl_inherits!(BanHistoryPages, Pages);
+impl_strong_instance_from!(BanHistoryPages);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct BaseImportData {
@@ -1497,6 +1579,7 @@ pub struct BaseImportData {
     pub ShouldImport: bool,
 }
 impl_inherits!(BaseImportData, Instance);
+impl_strong_instance_from!(BaseImportData);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct BasePart {
@@ -1547,18 +1630,21 @@ pub struct BasePart {
     pub Velocity: Vector3,
 }
 impl_inherits!(BasePart, PVInstance);
+impl_strong_instance_from!(BasePart);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct BasePlayerGui {
     superclass: Instance,
 }
 impl_inherits!(BasePlayerGui, Instance);
+impl_strong_instance_from!(BasePlayerGui);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct BaseRemoteEvent {
     superclass: Instance,
 }
 impl_inherits!(BaseRemoteEvent, Instance);
+impl_strong_instance_from!(BaseRemoteEvent);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct BaseScript {
@@ -1568,6 +1654,7 @@ pub struct BaseScript {
     pub RunContext: enums::RunContext,
 }
 impl_inherits!(BaseScript, LuaSourceContainer);
+impl_strong_instance_from!(BaseScript);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct BaseWrap {
@@ -1581,6 +1668,7 @@ pub struct BaseWrap {
     pub TemporaryCageMeshId: ContentId,
 }
 impl_inherits!(BaseWrap, Instance);
+impl_strong_instance_from!(BaseWrap);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct Beam {
@@ -1606,6 +1694,7 @@ pub struct Beam {
     pub ZOffset: f32,
 }
 impl_inherits!(Beam, Instance);
+impl_strong_instance_from!(Beam);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct BevelMesh {
@@ -1615,6 +1704,7 @@ pub struct BevelMesh {
     pub Bulge: f32,
 }
 impl_inherits!(BevelMesh, DataModelMesh);
+impl_strong_instance_from!(BevelMesh);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct BillboardGui {
@@ -1638,6 +1728,7 @@ pub struct BillboardGui {
     pub StudsOffsetWorldSpace: Vector3,
 }
 impl_inherits!(BillboardGui, LayerCollector);
+impl_strong_instance_from!(BillboardGui);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct BinaryStringValue {
@@ -1645,24 +1736,28 @@ pub struct BinaryStringValue {
     pub Value: BinaryString,
 }
 impl_inherits!(BinaryStringValue, ValueBase);
+impl_strong_instance_from!(BinaryStringValue);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct BindableEvent {
     superclass: Instance,
 }
 impl_inherits!(BindableEvent, Instance);
+impl_strong_instance_from!(BindableEvent);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct BindableFunction {
     superclass: Instance,
 }
 impl_inherits!(BindableFunction, Instance);
+impl_strong_instance_from!(BindableFunction);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct BlockMesh {
     superclass: BevelMesh,
 }
 impl_inherits!(BlockMesh, BevelMesh);
+impl_strong_instance_from!(BlockMesh);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct BloomEffect {
@@ -1672,6 +1767,7 @@ pub struct BloomEffect {
     pub Threshold: f32,
 }
 impl_inherits!(BloomEffect, PostEffect);
+impl_strong_instance_from!(BloomEffect);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct BlurEffect {
@@ -1679,6 +1775,7 @@ pub struct BlurEffect {
     pub Size: f32,
 }
 impl_inherits!(BlurEffect, PostEffect);
+impl_strong_instance_from!(BlurEffect);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct BodyAngularVelocity {
@@ -1688,6 +1785,7 @@ pub struct BodyAngularVelocity {
     pub P: f32,
 }
 impl_inherits!(BodyAngularVelocity, BodyMover);
+impl_strong_instance_from!(BodyAngularVelocity);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct BodyColors {
@@ -1700,6 +1798,7 @@ pub struct BodyColors {
     pub TorsoColor3: Color3,
 }
 impl_inherits!(BodyColors, CharacterAppearance);
+impl_strong_instance_from!(BodyColors);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct BodyForce {
@@ -1707,6 +1806,7 @@ pub struct BodyForce {
     pub Force: Vector3,
 }
 impl_inherits!(BodyForce, BodyMover);
+impl_strong_instance_from!(BodyForce);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct BodyGyro {
@@ -1717,12 +1817,14 @@ pub struct BodyGyro {
     pub P: f32,
 }
 impl_inherits!(BodyGyro, BodyMover);
+impl_strong_instance_from!(BodyGyro);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct BodyMover {
     superclass: Instance,
 }
 impl_inherits!(BodyMover, Instance);
+impl_strong_instance_from!(BodyMover);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct BodyPartDescription {
@@ -1733,6 +1835,7 @@ pub struct BodyPartDescription {
     pub Instance: Ref,
 }
 impl_inherits!(BodyPartDescription, Instance);
+impl_strong_instance_from!(BodyPartDescription);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct BodyPosition {
@@ -1743,6 +1846,7 @@ pub struct BodyPosition {
     pub Position: Vector3,
 }
 impl_inherits!(BodyPosition, BodyMover);
+impl_strong_instance_from!(BodyPosition);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct BodyThrust {
@@ -1751,6 +1855,7 @@ pub struct BodyThrust {
     pub Location: Vector3,
 }
 impl_inherits!(BodyThrust, BodyMover);
+impl_strong_instance_from!(BodyThrust);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct BodyVelocity {
@@ -1760,12 +1865,14 @@ pub struct BodyVelocity {
     pub Velocity: Vector3,
 }
 impl_inherits!(BodyVelocity, BodyMover);
+impl_strong_instance_from!(BodyVelocity);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct Bone {
     superclass: Attachment,
 }
 impl_inherits!(Bone, Attachment);
+impl_strong_instance_from!(Bone);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct BoolValue {
@@ -1773,6 +1880,7 @@ pub struct BoolValue {
     pub Value: bool,
 }
 impl_inherits!(BoolValue, ValueBase);
+impl_strong_instance_from!(BoolValue);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct BoxHandleAdornment {
@@ -1780,12 +1888,14 @@ pub struct BoxHandleAdornment {
     pub Size: Vector3,
 }
 impl_inherits!(BoxHandleAdornment, HandleAdornment);
+impl_strong_instance_from!(BoxHandleAdornment);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct Breakpoint {
     superclass: Instance,
 }
 impl_inherits!(Breakpoint, Instance);
+impl_strong_instance_from!(Breakpoint);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct BrickColorValue {
@@ -1793,12 +1903,14 @@ pub struct BrickColorValue {
     pub Value: BrickColor,
 }
 impl_inherits!(BrickColorValue, ValueBase);
+impl_strong_instance_from!(BrickColorValue);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct BrowserService {
     superclass: Instance,
 }
 impl_inherits!(BrowserService, Instance);
+impl_strong_instance_from!(BrowserService);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct BubbleChatConfiguration {
@@ -1821,24 +1933,28 @@ pub struct BubbleChatConfiguration {
     pub VerticalStudsOffset: f32,
 }
 impl_inherits!(BubbleChatConfiguration, TextChatConfigurations);
+impl_strong_instance_from!(BubbleChatConfiguration);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct BubbleChatMessageProperties {
     superclass: TextChatMessageProperties,
 }
 impl_inherits!(BubbleChatMessageProperties, TextChatMessageProperties);
+impl_strong_instance_from!(BubbleChatMessageProperties);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct BugReporterService {
     superclass: Instance,
 }
 impl_inherits!(BugReporterService, Instance);
+impl_strong_instance_from!(BugReporterService);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct BulkImportService {
     superclass: Instance,
 }
 impl_inherits!(BulkImportService, Instance);
+impl_strong_instance_from!(BulkImportService);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct BuoyancySensor {
@@ -1847,6 +1963,7 @@ pub struct BuoyancySensor {
     pub TouchingSurface: bool,
 }
 impl_inherits!(BuoyancySensor, SensorBase);
+impl_strong_instance_from!(BuoyancySensor);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct CFrameValue {
@@ -1854,24 +1971,28 @@ pub struct CFrameValue {
     pub Value: CFrame,
 }
 impl_inherits!(CFrameValue, ValueBase);
+impl_strong_instance_from!(CFrameValue);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct CSGDictionaryService {
     superclass: FlyweightService,
 }
 impl_inherits!(CSGDictionaryService, FlyweightService);
+impl_strong_instance_from!(CSGDictionaryService);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct CacheableContentProvider {
     superclass: Instance,
 }
 impl_inherits!(CacheableContentProvider, Instance);
+impl_strong_instance_from!(CacheableContentProvider);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct CalloutService {
     superclass: Instance,
 }
 impl_inherits!(CalloutService, Instance);
+impl_strong_instance_from!(CalloutService);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct Camera {
@@ -1887,6 +2008,7 @@ pub struct Camera {
     pub VrTiltAndRollEnabled: bool,
 }
 impl_inherits!(Camera, PVInstance);
+impl_strong_instance_from!(Camera);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct CanvasGroup {
@@ -1895,30 +2017,35 @@ pub struct CanvasGroup {
     pub GroupTransparency: f32,
 }
 impl_inherits!(CanvasGroup, GuiObject);
+impl_strong_instance_from!(CanvasGroup);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct Capture {
     superclass: Object,
 }
 impl_inherits!(Capture, Object);
+impl_strong_instance_from!(Capture);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct CaptureService {
     superclass: Instance,
 }
 impl_inherits!(CaptureService, Instance);
+impl_strong_instance_from!(CaptureService);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct CatalogPages {
     superclass: Pages,
 }
 impl_inherits!(CatalogPages, Pages);
+impl_strong_instance_from!(CatalogPages);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct ChangeHistoryService {
     superclass: Instance,
 }
 impl_inherits!(ChangeHistoryService, Instance);
+impl_strong_instance_from!(ChangeHistoryService);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct ChannelSelectorSoundEffect {
@@ -1926,6 +2053,7 @@ pub struct ChannelSelectorSoundEffect {
     pub Channel: i32,
 }
 impl_inherits!(ChannelSelectorSoundEffect, CustomSoundEffect);
+impl_strong_instance_from!(ChannelSelectorSoundEffect);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct ChannelTabsConfiguration {
@@ -1942,12 +2070,14 @@ pub struct ChannelTabsConfiguration {
     pub TextStrokeTransparency: f64,
 }
 impl_inherits!(ChannelTabsConfiguration, TextChatConfigurations);
+impl_strong_instance_from!(ChannelTabsConfiguration);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct CharacterAppearance {
     superclass: Instance,
 }
 impl_inherits!(CharacterAppearance, Instance);
+impl_strong_instance_from!(CharacterAppearance);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct CharacterMesh {
@@ -1958,6 +2088,7 @@ pub struct CharacterMesh {
     pub OverlayTextureId: i64,
 }
 impl_inherits!(CharacterMesh, CharacterAppearance);
+impl_strong_instance_from!(CharacterMesh);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct Chat {
@@ -1967,6 +2098,7 @@ pub struct Chat {
     pub LoadDefaultChat: bool,
 }
 impl_inherits!(Chat, Instance);
+impl_strong_instance_from!(Chat);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct ChatInputBarConfiguration {
@@ -1985,6 +2117,7 @@ pub struct ChatInputBarConfiguration {
     pub TextStrokeTransparency: f64,
 }
 impl_inherits!(ChatInputBarConfiguration, TextChatConfigurations);
+impl_strong_instance_from!(ChatInputBarConfiguration);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct ChatWindowConfiguration {
@@ -2003,18 +2136,21 @@ pub struct ChatWindowConfiguration {
     pub WidthScale: f32,
 }
 impl_inherits!(ChatWindowConfiguration, TextChatConfigurations);
+impl_strong_instance_from!(ChatWindowConfiguration);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct ChatWindowMessageProperties {
     superclass: TextChatMessageProperties,
 }
 impl_inherits!(ChatWindowMessageProperties, TextChatMessageProperties);
+impl_strong_instance_from!(ChatWindowMessageProperties);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct ChatbotUIService {
     superclass: Instance,
 }
 impl_inherits!(ChatbotUIService, Instance);
+impl_strong_instance_from!(ChatbotUIService);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct ChorusSoundEffect {
@@ -2024,6 +2160,7 @@ pub struct ChorusSoundEffect {
     pub Rate: f32,
 }
 impl_inherits!(ChorusSoundEffect, SoundEffect);
+impl_strong_instance_from!(ChorusSoundEffect);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct ClickDetector {
@@ -2032,12 +2169,14 @@ pub struct ClickDetector {
     pub MaxActivationDistance: f32,
 }
 impl_inherits!(ClickDetector, Instance);
+impl_strong_instance_from!(ClickDetector);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct ClientReplicator {
     superclass: NetworkReplicator,
 }
 impl_inherits!(ClientReplicator, NetworkReplicator);
+impl_strong_instance_from!(ClientReplicator);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct ClimbController {
@@ -2048,6 +2187,7 @@ pub struct ClimbController {
     pub MoveMaxForce: f32,
 }
 impl_inherits!(ClimbController, ControllerBase);
+impl_strong_instance_from!(ClimbController);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct Clothing {
@@ -2055,18 +2195,21 @@ pub struct Clothing {
     pub Color3: Color3,
 }
 impl_inherits!(Clothing, CharacterAppearance);
+impl_strong_instance_from!(Clothing);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct CloudCRUDService {
     superclass: Instance,
 }
 impl_inherits!(CloudCRUDService, Instance);
+impl_strong_instance_from!(CloudCRUDService);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct CloudLocalizationTable {
     superclass: LocalizationTable,
 }
 impl_inherits!(CloudLocalizationTable, LocalizationTable);
+impl_strong_instance_from!(CloudLocalizationTable);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct Clouds {
@@ -2077,30 +2220,35 @@ pub struct Clouds {
     pub Enabled: bool,
 }
 impl_inherits!(Clouds, Instance);
+impl_strong_instance_from!(Clouds);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct ClusterPacketCache {
     superclass: Instance,
 }
 impl_inherits!(ClusterPacketCache, Instance);
+impl_strong_instance_from!(ClusterPacketCache);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct Collaborator {
     superclass: Instance,
 }
 impl_inherits!(Collaborator, Instance);
+impl_strong_instance_from!(Collaborator);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct CollaboratorsService {
     superclass: Instance,
 }
 impl_inherits!(CollaboratorsService, Instance);
+impl_strong_instance_from!(CollaboratorsService);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct CollectionService {
     superclass: Instance,
 }
 impl_inherits!(CollectionService, Instance);
+impl_strong_instance_from!(CollectionService);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct Color3Value {
@@ -2108,6 +2256,7 @@ pub struct Color3Value {
     pub Value: Color3,
 }
 impl_inherits!(Color3Value, ValueBase);
+impl_strong_instance_from!(Color3Value);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct ColorCorrectionEffect {
@@ -2118,6 +2267,7 @@ pub struct ColorCorrectionEffect {
     pub TintColor: Color3,
 }
 impl_inherits!(ColorCorrectionEffect, PostEffect);
+impl_strong_instance_from!(ColorCorrectionEffect);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct ColorGradingEffect {
@@ -2125,24 +2275,28 @@ pub struct ColorGradingEffect {
     pub TonemapperPreset: enums::TonemapperPreset,
 }
 impl_inherits!(ColorGradingEffect, PostEffect);
+impl_strong_instance_from!(ColorGradingEffect);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct CommandInstance {
     superclass: Instance,
 }
 impl_inherits!(CommandInstance, Instance);
+impl_strong_instance_from!(CommandInstance);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct CommandService {
     superclass: Instance,
 }
 impl_inherits!(CommandService, Instance);
+impl_strong_instance_from!(CommandService);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct CommerceService {
     superclass: Instance,
 }
 impl_inherits!(CommerceService, Instance);
+impl_strong_instance_from!(CommerceService);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct CompressorSoundEffect {
@@ -2155,6 +2309,7 @@ pub struct CompressorSoundEffect {
     pub Threshold: f32,
 }
 impl_inherits!(CompressorSoundEffect, SoundEffect);
+impl_strong_instance_from!(CompressorSoundEffect);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct ConeHandleAdornment {
@@ -2163,36 +2318,42 @@ pub struct ConeHandleAdornment {
     pub Radius: f32,
 }
 impl_inherits!(ConeHandleAdornment, HandleAdornment);
+impl_strong_instance_from!(ConeHandleAdornment);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct ConfigService {
     superclass: Instance,
 }
 impl_inherits!(ConfigService, Instance);
+impl_strong_instance_from!(ConfigService);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct ConfigSnapshot {
     superclass: Object,
 }
 impl_inherits!(ConfigSnapshot, Object);
+impl_strong_instance_from!(ConfigSnapshot);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct Configuration {
     superclass: Instance,
 }
 impl_inherits!(Configuration, Instance);
+impl_strong_instance_from!(Configuration);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct ConfigureServerService {
     superclass: Instance,
 }
 impl_inherits!(ConfigureServerService, Instance);
+impl_strong_instance_from!(ConfigureServerService);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct ConnectivityService {
     superclass: Instance,
 }
 impl_inherits!(ConnectivityService, Instance);
+impl_strong_instance_from!(ConnectivityService);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct Constraint {
@@ -2204,24 +2365,28 @@ pub struct Constraint {
     pub Visible: bool,
 }
 impl_inherits!(Constraint, Instance);
+impl_strong_instance_from!(Constraint);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct ContentProvider {
     superclass: Instance,
 }
 impl_inherits!(ContentProvider, Instance);
+impl_strong_instance_from!(ContentProvider);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct ContextActionService {
     superclass: Instance,
 }
 impl_inherits!(ContextActionService, Instance);
+impl_strong_instance_from!(ContextActionService);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct Controller {
     superclass: Instance,
 }
 impl_inherits!(Controller, Instance);
+impl_strong_instance_from!(Controller);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct ControllerBase {
@@ -2230,6 +2395,7 @@ pub struct ControllerBase {
     pub MoveSpeedFactor: f32,
 }
 impl_inherits!(ControllerBase, Instance);
+impl_strong_instance_from!(ControllerBase);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct ControllerManager {
@@ -2245,6 +2411,7 @@ pub struct ControllerManager {
     pub UpDirection: Vector3,
 }
 impl_inherits!(ControllerManager, Instance);
+impl_strong_instance_from!(ControllerManager);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct ControllerPartSensor {
@@ -2256,30 +2423,35 @@ pub struct ControllerPartSensor {
     pub SensorMode: enums::SensorMode,
 }
 impl_inherits!(ControllerPartSensor, ControllerSensor);
+impl_strong_instance_from!(ControllerPartSensor);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct ControllerSensor {
     superclass: SensorBase,
 }
 impl_inherits!(ControllerSensor, SensorBase);
+impl_strong_instance_from!(ControllerSensor);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct ControllerService {
     superclass: Instance,
 }
 impl_inherits!(ControllerService, Instance);
+impl_strong_instance_from!(ControllerService);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct ConversationalAIAcceptanceService {
     superclass: Instance,
 }
 impl_inherits!(ConversationalAIAcceptanceService, Instance);
+impl_strong_instance_from!(ConversationalAIAcceptanceService);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct CookiesService {
     superclass: Instance,
 }
 impl_inherits!(CookiesService, Instance);
+impl_strong_instance_from!(CookiesService);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct CoreGui {
@@ -2287,60 +2459,70 @@ pub struct CoreGui {
     pub SelectionImageObject: Ref,
 }
 impl_inherits!(CoreGui, BasePlayerGui);
+impl_strong_instance_from!(CoreGui);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct CorePackages {
     superclass: Instance,
 }
 impl_inherits!(CorePackages, Instance);
+impl_strong_instance_from!(CorePackages);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct CoreScript {
     superclass: BaseScript,
 }
 impl_inherits!(CoreScript, BaseScript);
+impl_strong_instance_from!(CoreScript);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct CoreScriptDebuggingManagerHelper {
     superclass: Instance,
 }
 impl_inherits!(CoreScriptDebuggingManagerHelper, Instance);
+impl_strong_instance_from!(CoreScriptDebuggingManagerHelper);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct CoreScriptSyncService {
     superclass: Instance,
 }
 impl_inherits!(CoreScriptSyncService, Instance);
+impl_strong_instance_from!(CoreScriptSyncService);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct CornerWedgePart {
     superclass: BasePart,
 }
 impl_inherits!(CornerWedgePart, BasePart);
+impl_strong_instance_from!(CornerWedgePart);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct CreationDBService {
     superclass: Instance,
 }
 impl_inherits!(CreationDBService, Instance);
+impl_strong_instance_from!(CreationDBService);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct CreatorStoreService {
     superclass: Instance,
 }
 impl_inherits!(CreatorStoreService, Instance);
+impl_strong_instance_from!(CreatorStoreService);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct CrossDMScriptChangeListener {
     superclass: Instance,
 }
 impl_inherits!(CrossDMScriptChangeListener, Instance);
+impl_strong_instance_from!(CrossDMScriptChangeListener);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct CurveAnimation {
     superclass: AnimationClip,
 }
 impl_inherits!(CurveAnimation, AnimationClip);
+impl_strong_instance_from!(CurveAnimation);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct CustomEvent {
@@ -2348,6 +2530,7 @@ pub struct CustomEvent {
     pub PersistedCurrentValue: f32,
 }
 impl_inherits!(CustomEvent, Instance);
+impl_strong_instance_from!(CustomEvent);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct CustomEventReceiver {
@@ -2355,18 +2538,21 @@ pub struct CustomEventReceiver {
     pub Source: Ref,
 }
 impl_inherits!(CustomEventReceiver, Instance);
+impl_strong_instance_from!(CustomEventReceiver);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct CustomLog {
     superclass: Instance,
 }
 impl_inherits!(CustomLog, Instance);
+impl_strong_instance_from!(CustomLog);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct CustomSoundEffect {
     superclass: SoundEffect,
 }
 impl_inherits!(CustomSoundEffect, SoundEffect);
+impl_strong_instance_from!(CustomSoundEffect);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct CylinderHandleAdornment {
@@ -2377,12 +2563,14 @@ pub struct CylinderHandleAdornment {
     pub Radius: f32,
 }
 impl_inherits!(CylinderHandleAdornment, HandleAdornment);
+impl_strong_instance_from!(CylinderHandleAdornment);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct CylinderMesh {
     superclass: BevelMesh,
 }
 impl_inherits!(CylinderMesh, BevelMesh);
+impl_strong_instance_from!(CylinderMesh);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct CylindricalConstraint {
@@ -2404,12 +2592,14 @@ pub struct CylindricalConstraint {
     pub UpperAngle: f32,
 }
 impl_inherits!(CylindricalConstraint, SlidingBallConstraint);
+impl_strong_instance_from!(CylindricalConstraint);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct DataModel {
     superclass: ServiceProvider,
 }
 impl_inherits!(DataModel, ServiceProvider);
+impl_strong_instance_from!(DataModel);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct DataModelMesh {
@@ -2419,24 +2609,28 @@ pub struct DataModelMesh {
     pub VertexColor: Vector3,
 }
 impl_inherits!(DataModelMesh, Instance);
+impl_strong_instance_from!(DataModelMesh);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct DataModelPatchService {
     superclass: Instance,
 }
 impl_inherits!(DataModelPatchService, Instance);
+impl_strong_instance_from!(DataModelPatchService);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct DataModelSession {
     superclass: Instance,
 }
 impl_inherits!(DataModelSession, Instance);
+impl_strong_instance_from!(DataModelSession);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct DataStore {
     superclass: GlobalDataStore,
 }
 impl_inherits!(DataStore, GlobalDataStore);
+impl_strong_instance_from!(DataStore);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct DataStoreGetOptions {
@@ -2444,48 +2638,56 @@ pub struct DataStoreGetOptions {
     pub UseCache: bool,
 }
 impl_inherits!(DataStoreGetOptions, Instance);
+impl_strong_instance_from!(DataStoreGetOptions);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct DataStoreIncrementOptions {
     superclass: Instance,
 }
 impl_inherits!(DataStoreIncrementOptions, Instance);
+impl_strong_instance_from!(DataStoreIncrementOptions);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct DataStoreInfo {
     superclass: Instance,
 }
 impl_inherits!(DataStoreInfo, Instance);
+impl_strong_instance_from!(DataStoreInfo);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct DataStoreKey {
     superclass: Instance,
 }
 impl_inherits!(DataStoreKey, Instance);
+impl_strong_instance_from!(DataStoreKey);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct DataStoreKeyInfo {
     superclass: Instance,
 }
 impl_inherits!(DataStoreKeyInfo, Instance);
+impl_strong_instance_from!(DataStoreKeyInfo);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct DataStoreKeyPages {
     superclass: Pages,
 }
 impl_inherits!(DataStoreKeyPages, Pages);
+impl_strong_instance_from!(DataStoreKeyPages);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct DataStoreListingPages {
     superclass: Pages,
 }
 impl_inherits!(DataStoreListingPages, Pages);
+impl_strong_instance_from!(DataStoreListingPages);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct DataStoreObjectVersionInfo {
     superclass: Instance,
 }
 impl_inherits!(DataStoreObjectVersionInfo, Instance);
+impl_strong_instance_from!(DataStoreObjectVersionInfo);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct DataStoreOptions {
@@ -2493,12 +2695,14 @@ pub struct DataStoreOptions {
     pub AllScopes: bool,
 }
 impl_inherits!(DataStoreOptions, Instance);
+impl_strong_instance_from!(DataStoreOptions);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct DataStorePages {
     superclass: Pages,
 }
 impl_inherits!(DataStorePages, Pages);
+impl_strong_instance_from!(DataStorePages);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct DataStoreService {
@@ -2507,18 +2711,21 @@ pub struct DataStoreService {
     pub LegacyNamingScheme: bool,
 }
 impl_inherits!(DataStoreService, Instance);
+impl_strong_instance_from!(DataStoreService);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct DataStoreSetOptions {
     superclass: Instance,
 }
 impl_inherits!(DataStoreSetOptions, Instance);
+impl_strong_instance_from!(DataStoreSetOptions);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct DataStoreVersionPages {
     superclass: Pages,
 }
 impl_inherits!(DataStoreVersionPages, Pages);
+impl_strong_instance_from!(DataStoreVersionPages);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct Debris {
@@ -2526,6 +2733,7 @@ pub struct Debris {
     pub MaxItems: i32,
 }
 impl_inherits!(Debris, Instance);
+impl_strong_instance_from!(Debris);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct DebugSettings {
@@ -2535,12 +2743,14 @@ pub struct DebugSettings {
     pub TickCountPreciseOverride: enums::TickCountSampleMethod,
 }
 impl_inherits!(DebugSettings, Instance);
+impl_strong_instance_from!(DebugSettings);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct DebuggablePluginWatcher {
     superclass: Instance,
 }
 impl_inherits!(DebuggablePluginWatcher, Instance);
+impl_strong_instance_from!(DebuggablePluginWatcher);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct DebuggerBreakpoint {
@@ -2553,12 +2763,14 @@ pub struct DebuggerBreakpoint {
     pub LogExpression: String,
 }
 impl_inherits!(DebuggerBreakpoint, Instance);
+impl_strong_instance_from!(DebuggerBreakpoint);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct DebuggerConnection {
     superclass: Instance,
 }
 impl_inherits!(DebuggerConnection, Instance);
+impl_strong_instance_from!(DebuggerConnection);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct DebuggerConnectionManager {
@@ -2566,30 +2778,35 @@ pub struct DebuggerConnectionManager {
     pub Timeout: f64,
 }
 impl_inherits!(DebuggerConnectionManager, Instance);
+impl_strong_instance_from!(DebuggerConnectionManager);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct DebuggerLuaResponse {
     superclass: Instance,
 }
 impl_inherits!(DebuggerLuaResponse, Instance);
+impl_strong_instance_from!(DebuggerLuaResponse);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct DebuggerManager {
     superclass: Instance,
 }
 impl_inherits!(DebuggerManager, Instance);
+impl_strong_instance_from!(DebuggerManager);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct DebuggerUIService {
     superclass: Instance,
 }
 impl_inherits!(DebuggerUIService, Instance);
+impl_strong_instance_from!(DebuggerUIService);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct DebuggerVariable {
     superclass: Instance,
 }
 impl_inherits!(DebuggerVariable, Instance);
+impl_strong_instance_from!(DebuggerVariable);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct DebuggerWatch {
@@ -2597,6 +2814,7 @@ pub struct DebuggerWatch {
     pub Expression: String,
 }
 impl_inherits!(DebuggerWatch, Instance);
+impl_strong_instance_from!(DebuggerWatch);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct Decal {
@@ -2607,6 +2825,7 @@ pub struct Decal {
     pub ZIndex: i32,
 }
 impl_inherits!(Decal, FaceInstance);
+impl_strong_instance_from!(Decal);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct DepthOfFieldEffect {
@@ -2617,12 +2836,14 @@ pub struct DepthOfFieldEffect {
     pub NearIntensity: f32,
 }
 impl_inherits!(DepthOfFieldEffect, PostEffect);
+impl_strong_instance_from!(DepthOfFieldEffect);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct DeviceIdService {
     superclass: Instance,
 }
 impl_inherits!(DeviceIdService, Instance);
+impl_strong_instance_from!(DeviceIdService);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct Dialog {
@@ -2638,6 +2859,7 @@ pub struct Dialog {
     pub TriggerOffset: Vector3,
 }
 impl_inherits!(Dialog, Instance);
+impl_strong_instance_from!(Dialog);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct DialogChoice {
@@ -2648,6 +2870,7 @@ pub struct DialogChoice {
     pub UserDialog: String,
 }
 impl_inherits!(DialogChoice, Instance);
+impl_strong_instance_from!(DialogChoice);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct DistortionSoundEffect {
@@ -2655,12 +2878,14 @@ pub struct DistortionSoundEffect {
     pub Level: f32,
 }
 impl_inherits!(DistortionSoundEffect, SoundEffect);
+impl_strong_instance_from!(DistortionSoundEffect);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct DockWidgetPluginGui {
     superclass: PluginGui,
 }
 impl_inherits!(DockWidgetPluginGui, PluginGui);
+impl_strong_instance_from!(DockWidgetPluginGui);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct DoubleConstrainedValue {
@@ -2670,12 +2895,14 @@ pub struct DoubleConstrainedValue {
     pub Value: f64,
 }
 impl_inherits!(DoubleConstrainedValue, ValueBase);
+impl_strong_instance_from!(DoubleConstrainedValue);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct DraftsService {
     superclass: Instance,
 }
 impl_inherits!(DraftsService, Instance);
+impl_strong_instance_from!(DraftsService);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct DragDetector {
@@ -2704,18 +2931,21 @@ pub struct DragDetector {
     pub VrSwitchKeyCode: enums::KeyCode,
 }
 impl_inherits!(DragDetector, ClickDetector);
+impl_strong_instance_from!(DragDetector);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct Dragger {
     superclass: Instance,
 }
 impl_inherits!(Dragger, Instance);
+impl_strong_instance_from!(Dragger);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct DraggerService {
     superclass: Instance,
 }
 impl_inherits!(DraggerService, Instance);
+impl_strong_instance_from!(DraggerService);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct DynamicRotate {
@@ -2723,6 +2953,7 @@ pub struct DynamicRotate {
     pub BaseAngle: f32,
 }
 impl_inherits!(DynamicRotate, JointInstance);
+impl_strong_instance_from!(DynamicRotate);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct EchoSoundEffect {
@@ -2733,6 +2964,7 @@ pub struct EchoSoundEffect {
     pub WetLevel: f32,
 }
 impl_inherits!(EchoSoundEffect, SoundEffect);
+impl_strong_instance_from!(EchoSoundEffect);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct EditableImage {
@@ -2740,6 +2972,7 @@ pub struct EditableImage {
     pub ImageData: BinaryString,
 }
 impl_inherits!(EditableImage, Object);
+impl_strong_instance_from!(EditableImage);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct EditableMesh {
@@ -2748,18 +2981,21 @@ pub struct EditableMesh {
     pub SkinningEnabled: bool,
 }
 impl_inherits!(EditableMesh, Object);
+impl_strong_instance_from!(EditableMesh);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct EditableService {
     superclass: Instance,
 }
 impl_inherits!(EditableService, Instance);
+impl_strong_instance_from!(EditableService);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct EmotesPages {
     superclass: InventoryPages,
 }
 impl_inherits!(EmotesPages, InventoryPages);
+impl_strong_instance_from!(EmotesPages);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct EqualizerSoundEffect {
@@ -2769,6 +3005,7 @@ pub struct EqualizerSoundEffect {
     pub MidGain: f32,
 }
 impl_inherits!(EqualizerSoundEffect, SoundEffect);
+impl_strong_instance_from!(EqualizerSoundEffect);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct EulerRotationCurve {
@@ -2776,24 +3013,28 @@ pub struct EulerRotationCurve {
     pub RotationOrder: enums::RotationOrder,
 }
 impl_inherits!(EulerRotationCurve, Instance);
+impl_strong_instance_from!(EulerRotationCurve);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct EventIngestService {
     superclass: Instance,
 }
 impl_inherits!(EventIngestService, Instance);
+impl_strong_instance_from!(EventIngestService);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct ExampleService {
     superclass: Instance,
 }
 impl_inherits!(ExampleService, Instance);
+impl_strong_instance_from!(ExampleService);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct ExperienceAuthService {
     superclass: Instance,
 }
 impl_inherits!(ExperienceAuthService, Instance);
+impl_strong_instance_from!(ExperienceAuthService);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct ExperienceInviteOptions {
@@ -2804,42 +3045,49 @@ pub struct ExperienceInviteOptions {
     pub PromptMessage: String,
 }
 impl_inherits!(ExperienceInviteOptions, Instance);
+impl_strong_instance_from!(ExperienceInviteOptions);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct ExperienceNotificationService {
     superclass: Instance,
 }
 impl_inherits!(ExperienceNotificationService, Instance);
+impl_strong_instance_from!(ExperienceNotificationService);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct ExperienceService {
     superclass: Instance,
 }
 impl_inherits!(ExperienceService, Instance);
+impl_strong_instance_from!(ExperienceService);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct ExperienceStateCaptureService {
     superclass: Instance,
 }
 impl_inherits!(ExperienceStateCaptureService, Instance);
+impl_strong_instance_from!(ExperienceStateCaptureService);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct ExplorerFilter {
     superclass: Instance,
 }
 impl_inherits!(ExplorerFilter, Instance);
+impl_strong_instance_from!(ExplorerFilter);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct ExplorerFilterAutocompleter {
     superclass: Instance,
 }
 impl_inherits!(ExplorerFilterAutocompleter, Instance);
+impl_strong_instance_from!(ExplorerFilterAutocompleter);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct ExplorerServiceVisibilityService {
     superclass: Instance,
 }
 impl_inherits!(ExplorerServiceVisibilityService, Instance);
+impl_strong_instance_from!(ExplorerServiceVisibilityService);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct Explosion {
@@ -2853,18 +3101,21 @@ pub struct Explosion {
     pub Visible: bool,
 }
 impl_inherits!(Explosion, Instance);
+impl_strong_instance_from!(Explosion);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct FaceAnimatorService {
     superclass: Instance,
 }
 impl_inherits!(FaceAnimatorService, Instance);
+impl_strong_instance_from!(FaceAnimatorService);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct FaceControls {
     superclass: Instance,
 }
 impl_inherits!(FaceControls, Instance);
+impl_strong_instance_from!(FaceControls);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct FaceInstance {
@@ -2872,24 +3123,28 @@ pub struct FaceInstance {
     pub Face: enums::NormalId,
 }
 impl_inherits!(FaceInstance, Instance);
+impl_strong_instance_from!(FaceInstance);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct FacialAgeEstimationService {
     superclass: Instance,
 }
 impl_inherits!(FacialAgeEstimationService, Instance);
+impl_strong_instance_from!(FacialAgeEstimationService);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct FacialAnimationRecordingService {
     superclass: Instance,
 }
 impl_inherits!(FacialAnimationRecordingService, Instance);
+impl_strong_instance_from!(FacialAnimationRecordingService);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct FacialAnimationStreamingServiceStats {
     superclass: Instance,
 }
 impl_inherits!(FacialAnimationStreamingServiceStats, Instance);
+impl_strong_instance_from!(FacialAnimationStreamingServiceStats);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct FacialAnimationStreamingServiceV2 {
@@ -2897,18 +3152,21 @@ pub struct FacialAnimationStreamingServiceV2 {
     pub ServiceState: i32,
 }
 impl_inherits!(FacialAnimationStreamingServiceV2, Instance);
+impl_strong_instance_from!(FacialAnimationStreamingServiceV2);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct FacialAnimationStreamingSubsessionStats {
     superclass: Instance,
 }
 impl_inherits!(FacialAnimationStreamingSubsessionStats, Instance);
+impl_strong_instance_from!(FacialAnimationStreamingSubsessionStats);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct FacsImportData {
     superclass: BaseImportData,
 }
 impl_inherits!(FacsImportData, BaseImportData);
+impl_strong_instance_from!(FacsImportData);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct Feature {
@@ -2919,30 +3177,35 @@ pub struct Feature {
     pub TopBottom: enums::TopBottom,
 }
 impl_inherits!(Feature, Instance);
+impl_strong_instance_from!(Feature);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct FeatureRestrictionManager {
     superclass: Instance,
 }
 impl_inherits!(FeatureRestrictionManager, Instance);
+impl_strong_instance_from!(FeatureRestrictionManager);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct FeedPages {
     superclass: Pages,
 }
 impl_inherits!(FeedPages, Pages);
+impl_strong_instance_from!(FeedPages);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct FeedService {
     superclass: Instance,
 }
 impl_inherits!(FeedService, Instance);
+impl_strong_instance_from!(FeedService);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct File {
     superclass: Instance,
 }
 impl_inherits!(File, Instance);
+impl_strong_instance_from!(File);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct FileMesh {
@@ -2951,6 +3214,7 @@ pub struct FileMesh {
     pub TextureId: ContentId,
 }
 impl_inherits!(FileMesh, DataModelMesh);
+impl_strong_instance_from!(FileMesh);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct Fire {
@@ -2961,6 +3225,7 @@ pub struct Fire {
     pub TimeScale: f32,
 }
 impl_inherits!(Fire, Instance);
+impl_strong_instance_from!(Fire);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct Flag {
@@ -2968,6 +3233,7 @@ pub struct Flag {
     pub TeamColor: BrickColor,
 }
 impl_inherits!(Flag, Tool);
+impl_strong_instance_from!(Flag);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct FlagStand {
@@ -2975,12 +3241,14 @@ pub struct FlagStand {
     pub TeamColor: BrickColor,
 }
 impl_inherits!(FlagStand, Part);
+impl_strong_instance_from!(FlagStand);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct FlagStandService {
     superclass: Instance,
 }
 impl_inherits!(FlagStandService, Instance);
+impl_strong_instance_from!(FlagStandService);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct FlangeSoundEffect {
@@ -2990,6 +3258,7 @@ pub struct FlangeSoundEffect {
     pub Rate: f32,
 }
 impl_inherits!(FlangeSoundEffect, SoundEffect);
+impl_strong_instance_from!(FlangeSoundEffect);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct FloatCurve {
@@ -2997,6 +3266,7 @@ pub struct FloatCurve {
     pub ValuesAndTimes: BinaryString,
 }
 impl_inherits!(FloatCurve, Instance);
+impl_strong_instance_from!(FloatCurve);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct FloorWire {
@@ -3011,24 +3281,28 @@ pub struct FloorWire {
     pub WireRadius: f32,
 }
 impl_inherits!(FloorWire, GuiBase3d);
+impl_strong_instance_from!(FloorWire);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct FluidForceSensor {
     superclass: SensorBase,
 }
 impl_inherits!(FluidForceSensor, SensorBase);
+impl_strong_instance_from!(FluidForceSensor);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct FlyweightService {
     superclass: Instance,
 }
 impl_inherits!(FlyweightService, Instance);
+impl_strong_instance_from!(FlyweightService);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct Folder {
     superclass: Instance,
 }
 impl_inherits!(Folder, Instance);
+impl_strong_instance_from!(Folder);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct ForceField {
@@ -3036,12 +3310,14 @@ pub struct ForceField {
     pub Visible: bool,
 }
 impl_inherits!(ForceField, Instance);
+impl_strong_instance_from!(ForceField);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct FormFactorPart {
     superclass: BasePart,
 }
 impl_inherits!(FormFactorPart, BasePart);
+impl_strong_instance_from!(FormFactorPart);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct Frame {
@@ -3049,18 +3325,21 @@ pub struct Frame {
     pub Style: enums::FrameStyle,
 }
 impl_inherits!(Frame, GuiObject);
+impl_strong_instance_from!(Frame);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct FriendPages {
     superclass: Pages,
 }
 impl_inherits!(FriendPages, Pages);
+impl_strong_instance_from!(FriendPages);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct FriendService {
     superclass: Instance,
 }
 impl_inherits!(FriendService, Instance);
+impl_strong_instance_from!(FriendService);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct FunctionalTest {
@@ -3069,12 +3348,14 @@ pub struct FunctionalTest {
     pub HasMigratedSettingsToTestService: bool,
 }
 impl_inherits!(FunctionalTest, Instance);
+impl_strong_instance_from!(FunctionalTest);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct GamePassService {
     superclass: Instance,
 }
 impl_inherits!(GamePassService, Instance);
+impl_strong_instance_from!(GamePassService);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct GameSettings {
@@ -3082,6 +3363,7 @@ pub struct GameSettings {
     pub VideoCaptureEnabled: bool,
 }
 impl_inherits!(GameSettings, Instance);
+impl_strong_instance_from!(GameSettings);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct GamepadService {
@@ -3089,36 +3371,42 @@ pub struct GamepadService {
     pub GamepadCursorEnabled: bool,
 }
 impl_inherits!(GamepadService, Instance);
+impl_strong_instance_from!(GamepadService);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct GenerationService {
     superclass: Instance,
 }
 impl_inherits!(GenerationService, Instance);
+impl_strong_instance_from!(GenerationService);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct GenericChallengeService {
     superclass: Instance,
 }
 impl_inherits!(GenericChallengeService, Instance);
+impl_strong_instance_from!(GenericChallengeService);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct GenericSettings {
     superclass: ServiceProvider,
 }
 impl_inherits!(GenericSettings, ServiceProvider);
+impl_strong_instance_from!(GenericSettings);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct Geometry {
     superclass: Instance,
 }
 impl_inherits!(Geometry, Instance);
+impl_strong_instance_from!(Geometry);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct GeometryService {
     superclass: Instance,
 }
 impl_inherits!(GeometryService, Instance);
+impl_strong_instance_from!(GeometryService);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct GetTextBoundsParams {
@@ -3130,18 +3418,21 @@ pub struct GetTextBoundsParams {
     pub Width: f32,
 }
 impl_inherits!(GetTextBoundsParams, Instance);
+impl_strong_instance_from!(GetTextBoundsParams);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct GlobalDataStore {
     superclass: Instance,
 }
 impl_inherits!(GlobalDataStore, Instance);
+impl_strong_instance_from!(GlobalDataStore);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct GlobalSettings {
     superclass: GenericSettings,
 }
 impl_inherits!(GlobalSettings, GenericSettings);
+impl_strong_instance_from!(GlobalSettings);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct Glue {
@@ -3152,6 +3443,7 @@ pub struct Glue {
     pub F3: Vector3,
 }
 impl_inherits!(Glue, JointInstance);
+impl_strong_instance_from!(Glue);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct GoogleAnalyticsConfiguration {
@@ -3159,6 +3451,7 @@ pub struct GoogleAnalyticsConfiguration {
     pub GaId: String,
 }
 impl_inherits!(GoogleAnalyticsConfiguration, Instance);
+impl_strong_instance_from!(GoogleAnalyticsConfiguration);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct GroundController {
@@ -3176,6 +3469,7 @@ pub struct GroundController {
     pub TurnSpeedFactor: f32,
 }
 impl_inherits!(GroundController, ControllerBase);
+impl_strong_instance_from!(GroundController);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct GroupImportData {
@@ -3185,18 +3479,21 @@ pub struct GroupImportData {
     pub InsertInWorkspace: bool,
 }
 impl_inherits!(GroupImportData, BaseImportData);
+impl_strong_instance_from!(GroupImportData);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct GroupService {
     superclass: Instance,
 }
 impl_inherits!(GroupService, Instance);
+impl_strong_instance_from!(GroupService);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct GuiBase {
     superclass: Instance,
 }
 impl_inherits!(GuiBase, Instance);
+impl_strong_instance_from!(GuiBase);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct GuiBase2d {
@@ -3210,6 +3507,7 @@ pub struct GuiBase2d {
     pub SelectionGroup: bool,
 }
 impl_inherits!(GuiBase2d, GuiBase);
+impl_strong_instance_from!(GuiBase2d);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct GuiBase3d {
@@ -3219,6 +3517,7 @@ pub struct GuiBase3d {
     pub Visible: bool,
 }
 impl_inherits!(GuiBase3d, GuiBase);
+impl_strong_instance_from!(GuiBase3d);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct GuiButton {
@@ -3231,18 +3530,21 @@ pub struct GuiButton {
     pub Style: enums::ButtonStyle,
 }
 impl_inherits!(GuiButton, GuiObject);
+impl_strong_instance_from!(GuiButton);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct GuiLabel {
     superclass: GuiObject,
 }
 impl_inherits!(GuiLabel, GuiObject);
+impl_strong_instance_from!(GuiLabel);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct GuiMain {
     superclass: ScreenGui,
 }
 impl_inherits!(GuiMain, ScreenGui);
+impl_strong_instance_from!(GuiMain);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct GuiObject {
@@ -3274,6 +3576,7 @@ pub struct GuiObject {
     pub ZIndex: i32,
 }
 impl_inherits!(GuiObject, GuiBase2d);
+impl_strong_instance_from!(GuiObject);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct GuiService {
@@ -3283,18 +3586,21 @@ pub struct GuiService {
     pub SelectedObject: Ref,
 }
 impl_inherits!(GuiService, Instance);
+impl_strong_instance_from!(GuiService);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct GuidRegistryService {
     superclass: Instance,
 }
 impl_inherits!(GuidRegistryService, Instance);
+impl_strong_instance_from!(GuidRegistryService);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct HSRDataContentProvider {
     superclass: CacheableContentProvider,
 }
 impl_inherits!(HSRDataContentProvider, CacheableContentProvider);
+impl_strong_instance_from!(HSRDataContentProvider);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct HandleAdornment {
@@ -3306,6 +3612,7 @@ pub struct HandleAdornment {
     pub ZIndex: i32,
 }
 impl_inherits!(HandleAdornment, PVAdornment);
+impl_strong_instance_from!(HandleAdornment);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct Handles {
@@ -3314,12 +3621,14 @@ pub struct Handles {
     pub Style: enums::HandlesStyle,
 }
 impl_inherits!(Handles, HandlesBase);
+impl_strong_instance_from!(Handles);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct HandlesBase {
     superclass: PartAdornment,
 }
 impl_inherits!(HandlesBase, PartAdornment);
+impl_strong_instance_from!(HandlesBase);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct HapticEffect {
@@ -3331,36 +3640,42 @@ pub struct HapticEffect {
     pub Waveform: Ref,
 }
 impl_inherits!(HapticEffect, Instance);
+impl_strong_instance_from!(HapticEffect);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct HapticService {
     superclass: Instance,
 }
 impl_inherits!(HapticService, Instance);
+impl_strong_instance_from!(HapticService);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct Hat {
     superclass: Accoutrement,
 }
 impl_inherits!(Hat, Accoutrement);
+impl_strong_instance_from!(Hat);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct HeapProfilerService {
     superclass: Instance,
 }
 impl_inherits!(HeapProfilerService, Instance);
+impl_strong_instance_from!(HeapProfilerService);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct HeatmapService {
     superclass: Instance,
 }
 impl_inherits!(HeatmapService, Instance);
+impl_strong_instance_from!(HeatmapService);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct HeightmapImporterService {
     superclass: Instance,
 }
 impl_inherits!(HeightmapImporterService, Instance);
+impl_strong_instance_from!(HeightmapImporterService);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct HiddenSurfaceRemovalAsset {
@@ -3369,6 +3684,7 @@ pub struct HiddenSurfaceRemovalAsset {
     pub HsrMeshIdData: BinaryString,
 }
 impl_inherits!(HiddenSurfaceRemovalAsset, Instance);
+impl_strong_instance_from!(HiddenSurfaceRemovalAsset);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct Highlight {
@@ -3382,6 +3698,7 @@ pub struct Highlight {
     pub OutlineTransparency: f32,
 }
 impl_inherits!(Highlight, Instance);
+impl_strong_instance_from!(Highlight);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct HingeConstraint {
@@ -3402,24 +3719,28 @@ pub struct HingeConstraint {
     pub UpperAngle: f32,
 }
 impl_inherits!(HingeConstraint, Constraint);
+impl_strong_instance_from!(HingeConstraint);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct Hint {
     superclass: Message,
 }
 impl_inherits!(Hint, Message);
+impl_strong_instance_from!(Hint);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct Hole {
     superclass: Feature,
 }
 impl_inherits!(Hole, Feature);
+impl_strong_instance_from!(Hole);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct Hopper {
     superclass: Instance,
 }
 impl_inherits!(Hopper, Instance);
+impl_strong_instance_from!(Hopper);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct HopperBin {
@@ -3428,18 +3749,21 @@ pub struct HopperBin {
     pub BinType: enums::BinType,
 }
 impl_inherits!(HopperBin, BackpackItem);
+impl_strong_instance_from!(HopperBin);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct HttpRbxApiService {
     superclass: Instance,
 }
 impl_inherits!(HttpRbxApiService, Instance);
+impl_strong_instance_from!(HttpRbxApiService);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct HttpRequest {
     superclass: Instance,
 }
 impl_inherits!(HttpRequest, Instance);
+impl_strong_instance_from!(HttpRequest);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct HttpService {
@@ -3447,6 +3771,7 @@ pub struct HttpService {
     pub HttpEnabled: bool,
 }
 impl_inherits!(HttpService, Instance);
+impl_strong_instance_from!(HttpService);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct Humanoid {
@@ -3477,12 +3802,14 @@ pub struct Humanoid {
     pub WalkSpeed: f32,
 }
 impl_inherits!(Humanoid, Instance);
+impl_strong_instance_from!(Humanoid);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct HumanoidController {
     superclass: Controller,
 }
 impl_inherits!(HumanoidController, Controller);
+impl_strong_instance_from!(HumanoidController);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct HumanoidDescription {
@@ -3509,6 +3836,7 @@ pub struct HumanoidDescription {
     pub WidthScale: f32,
 }
 impl_inherits!(HumanoidDescription, Instance);
+impl_strong_instance_from!(HumanoidDescription);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct HumanoidRigDescription {
@@ -3625,6 +3953,7 @@ pub struct HumanoidRigDescription {
     pub WaistTposeAdjustment: CFrame,
 }
 impl_inherits!(HumanoidRigDescription, Instance);
+impl_strong_instance_from!(HumanoidRigDescription);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct IKControl {
@@ -3642,18 +3971,21 @@ pub struct IKControl {
     pub Weight: f32,
 }
 impl_inherits!(IKControl, Instance);
+impl_strong_instance_from!(IKControl);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct ILegacyStudioBridge {
     superclass: Instance,
 }
 impl_inherits!(ILegacyStudioBridge, Instance);
+impl_strong_instance_from!(ILegacyStudioBridge);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct IXPService {
     superclass: Instance,
 }
 impl_inherits!(IXPService, Instance);
+impl_strong_instance_from!(IXPService);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct ImageButton {
@@ -3672,6 +4004,7 @@ pub struct ImageButton {
     pub TileSize: UDim2,
 }
 impl_inherits!(ImageButton, GuiButton);
+impl_strong_instance_from!(ImageButton);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct ImageHandleAdornment {
@@ -3680,6 +4013,7 @@ pub struct ImageHandleAdornment {
     pub Size: Vector2,
 }
 impl_inherits!(ImageHandleAdornment, HandleAdornment);
+impl_strong_instance_from!(ImageHandleAdornment);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct ImageLabel {
@@ -3696,12 +4030,14 @@ pub struct ImageLabel {
     pub TileSize: UDim2,
 }
 impl_inherits!(ImageLabel, GuiLabel);
+impl_strong_instance_from!(ImageLabel);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct ImportSession {
     superclass: Instance,
 }
 impl_inherits!(ImportSession, Instance);
+impl_strong_instance_from!(ImportSession);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct IncrementalPatchBuilder {
@@ -3713,6 +4049,7 @@ pub struct IncrementalPatchBuilder {
     pub ZstdCompression: bool,
 }
 impl_inherits!(IncrementalPatchBuilder, Instance);
+impl_strong_instance_from!(IncrementalPatchBuilder);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct InputAction {
@@ -3721,6 +4058,7 @@ pub struct InputAction {
     pub Type: enums::InputActionType,
 }
 impl_inherits!(InputAction, Instance);
+impl_strong_instance_from!(InputAction);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct InputBinding {
@@ -3737,6 +4075,7 @@ pub struct InputBinding {
     pub Vector2Scale: Vector2,
 }
 impl_inherits!(InputBinding, Instance);
+impl_strong_instance_from!(InputBinding);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct InputContext {
@@ -3746,12 +4085,14 @@ pub struct InputContext {
     pub Sink: bool,
 }
 impl_inherits!(InputContext, Instance);
+impl_strong_instance_from!(InputContext);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct InputObject {
     superclass: Instance,
 }
 impl_inherits!(InputObject, Instance);
+impl_strong_instance_from!(InputObject);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct InsertService {
@@ -3760,6 +4101,7 @@ pub struct InsertService {
     pub AllowInsertFreeModels: bool,
 }
 impl_inherits!(InsertService, Instance);
+impl_strong_instance_from!(InsertService);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct Instance {
@@ -3772,6 +4114,7 @@ pub struct Instance {
     pub UniqueId: UniqueId,
 }
 impl_inherits!(Instance, Object);
+impl_strong_instance_from!(Instance);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct InstanceAdornment {
@@ -3779,6 +4122,7 @@ pub struct InstanceAdornment {
     pub Adornee: Ref,
 }
 impl_inherits!(InstanceAdornment, GuiBase3d);
+impl_strong_instance_from!(InstanceAdornment);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct IntConstrainedValue {
@@ -3788,6 +4132,7 @@ pub struct IntConstrainedValue {
     pub Value: i64,
 }
 impl_inherits!(IntConstrainedValue, ValueBase);
+impl_strong_instance_from!(IntConstrainedValue);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct IntValue {
@@ -3795,6 +4140,7 @@ pub struct IntValue {
     pub Value: i64,
 }
 impl_inherits!(IntValue, ValueBase);
+impl_strong_instance_from!(IntValue);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct InternalSyncItem {
@@ -3804,30 +4150,35 @@ pub struct InternalSyncItem {
     pub Path: String,
 }
 impl_inherits!(InternalSyncItem, Instance);
+impl_strong_instance_from!(InternalSyncItem);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct InternalSyncService {
     superclass: Instance,
 }
 impl_inherits!(InternalSyncService, Instance);
+impl_strong_instance_from!(InternalSyncService);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct IntersectOperation {
     superclass: PartOperation,
 }
 impl_inherits!(IntersectOperation, PartOperation);
+impl_strong_instance_from!(IntersectOperation);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct InventoryPages {
     superclass: Pages,
 }
 impl_inherits!(InventoryPages, Pages);
+impl_strong_instance_from!(InventoryPages);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct JointImportData {
     superclass: BaseImportData,
 }
 impl_inherits!(JointImportData, BaseImportData);
+impl_strong_instance_from!(JointImportData);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct JointInstance {
@@ -3839,18 +4190,21 @@ pub struct JointInstance {
     pub Part1: Ref,
 }
 impl_inherits!(JointInstance, Instance);
+impl_strong_instance_from!(JointInstance);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct JointsService {
     superclass: Instance,
 }
 impl_inherits!(JointsService, Instance);
+impl_strong_instance_from!(JointsService);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct KeyboardService {
     superclass: Instance,
 }
 impl_inherits!(KeyboardService, Instance);
+impl_strong_instance_from!(KeyboardService);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct Keyframe {
@@ -3858,6 +4212,7 @@ pub struct Keyframe {
     pub Time: f32,
 }
 impl_inherits!(Keyframe, Instance);
+impl_strong_instance_from!(Keyframe);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct KeyframeMarker {
@@ -3865,6 +4220,7 @@ pub struct KeyframeMarker {
     pub Value: String,
 }
 impl_inherits!(KeyframeMarker, Instance);
+impl_strong_instance_from!(KeyframeMarker);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct KeyframeSequence {
@@ -3872,24 +4228,28 @@ pub struct KeyframeSequence {
     pub AuthoredHipHeight: f32,
 }
 impl_inherits!(KeyframeSequence, AnimationClip);
+impl_strong_instance_from!(KeyframeSequence);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct KeyframeSequenceProvider {
     superclass: Instance,
 }
 impl_inherits!(KeyframeSequenceProvider, Instance);
+impl_strong_instance_from!(KeyframeSequenceProvider);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct LSPFileSyncService {
     superclass: Instance,
 }
 impl_inherits!(LSPFileSyncService, Instance);
+impl_strong_instance_from!(LSPFileSyncService);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct LanguageService {
     superclass: Instance,
 }
 impl_inherits!(LanguageService, Instance);
+impl_strong_instance_from!(LanguageService);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct LayerCollector {
@@ -3899,12 +4259,14 @@ pub struct LayerCollector {
     pub ZIndexBehavior: enums::ZIndexBehavior,
 }
 impl_inherits!(LayerCollector, GuiBase2d);
+impl_strong_instance_from!(LayerCollector);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct LegacyStudioBridge {
     superclass: ILegacyStudioBridge,
 }
 impl_inherits!(LegacyStudioBridge, ILegacyStudioBridge);
+impl_strong_instance_from!(LegacyStudioBridge);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct Light {
@@ -3915,6 +4277,7 @@ pub struct Light {
     pub Shadows: bool,
 }
 impl_inherits!(Light, Instance);
+impl_strong_instance_from!(Light);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct Lighting {
@@ -3941,6 +4304,7 @@ pub struct Lighting {
     pub TimeOfDay: String,
 }
 impl_inherits!(Lighting, Instance);
+impl_strong_instance_from!(Lighting);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct LineForce {
@@ -3952,6 +4316,7 @@ pub struct LineForce {
     pub ReactionForceEnabled: bool,
 }
 impl_inherits!(LineForce, Constraint);
+impl_strong_instance_from!(LineForce);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct LineHandleAdornment {
@@ -3960,6 +4325,7 @@ pub struct LineHandleAdornment {
     pub Thickness: f32,
 }
 impl_inherits!(LineHandleAdornment, HandleAdornment);
+impl_strong_instance_from!(LineHandleAdornment);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct LinearVelocity {
@@ -3979,48 +4345,56 @@ pub struct LinearVelocity {
     pub VelocityConstraintMode: enums::VelocityConstraintMode,
 }
 impl_inherits!(LinearVelocity, Constraint);
+impl_strong_instance_from!(LinearVelocity);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct LinkingService {
     superclass: Instance,
 }
 impl_inherits!(LinkingService, Instance);
+impl_strong_instance_from!(LinkingService);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct LiveScriptingService {
     superclass: Instance,
 }
 impl_inherits!(LiveScriptingService, Instance);
+impl_strong_instance_from!(LiveScriptingService);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct LiveSyncService {
     superclass: Instance,
 }
 impl_inherits!(LiveSyncService, Instance);
+impl_strong_instance_from!(LiveSyncService);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct LocalDebuggerConnection {
     superclass: DebuggerConnection,
 }
 impl_inherits!(LocalDebuggerConnection, DebuggerConnection);
+impl_strong_instance_from!(LocalDebuggerConnection);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct LocalScript {
     superclass: Script,
 }
 impl_inherits!(LocalScript, Script);
+impl_strong_instance_from!(LocalScript);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct LocalStorageService {
     superclass: Instance,
 }
 impl_inherits!(LocalStorageService, Instance);
+impl_strong_instance_from!(LocalStorageService);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct LocalizationService {
     superclass: Instance,
 }
 impl_inherits!(LocalizationService, Instance);
+impl_strong_instance_from!(LocalizationService);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct LocalizationTable {
@@ -4029,42 +4403,49 @@ pub struct LocalizationTable {
     pub SourceLocaleId: String,
 }
 impl_inherits!(LocalizationTable, Instance);
+impl_strong_instance_from!(LocalizationTable);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct LodDataEntity {
     superclass: Instance,
 }
 impl_inherits!(LodDataEntity, Instance);
+impl_strong_instance_from!(LodDataEntity);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct LodDataService {
     superclass: Instance,
 }
 impl_inherits!(LodDataService, Instance);
+impl_strong_instance_from!(LodDataService);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct LogReporterService {
     superclass: Instance,
 }
 impl_inherits!(LogReporterService, Instance);
+impl_strong_instance_from!(LogReporterService);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct LogService {
     superclass: Instance,
 }
 impl_inherits!(LogService, Instance);
+impl_strong_instance_from!(LogService);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct LoginService {
     superclass: Instance,
 }
 impl_inherits!(LoginService, Instance);
+impl_strong_instance_from!(LoginService);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct LuaSettings {
     superclass: Instance,
 }
 impl_inherits!(LuaSettings, Instance);
+impl_strong_instance_from!(LuaSettings);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct LuaSourceContainer {
@@ -4072,42 +4453,49 @@ pub struct LuaSourceContainer {
     pub ScriptGuid: String,
 }
 impl_inherits!(LuaSourceContainer, Instance);
+impl_strong_instance_from!(LuaSourceContainer);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct LuaWebService {
     superclass: Instance,
 }
 impl_inherits!(LuaWebService, Instance);
+impl_strong_instance_from!(LuaWebService);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct LuauScriptAnalyzerService {
     superclass: Instance,
 }
 impl_inherits!(LuauScriptAnalyzerService, Instance);
+impl_strong_instance_from!(LuauScriptAnalyzerService);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct MLModelDeliveryService {
     superclass: Instance,
 }
 impl_inherits!(MLModelDeliveryService, Instance);
+impl_strong_instance_from!(MLModelDeliveryService);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct ManualGlue {
     superclass: ManualSurfaceJointInstance,
 }
 impl_inherits!(ManualGlue, ManualSurfaceJointInstance);
+impl_strong_instance_from!(ManualGlue);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct ManualSurfaceJointInstance {
     superclass: JointInstance,
 }
 impl_inherits!(ManualSurfaceJointInstance, JointInstance);
+impl_strong_instance_from!(ManualSurfaceJointInstance);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct ManualWeld {
     superclass: ManualSurfaceJointInstance,
 }
 impl_inherits!(ManualWeld, ManualSurfaceJointInstance);
+impl_strong_instance_from!(ManualWeld);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct MarkerCurve {
@@ -4115,30 +4503,35 @@ pub struct MarkerCurve {
     pub ValuesAndTimes: BinaryString,
 }
 impl_inherits!(MarkerCurve, Instance);
+impl_strong_instance_from!(MarkerCurve);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct MarketplaceService {
     superclass: Instance,
 }
 impl_inherits!(MarketplaceService, Instance);
+impl_strong_instance_from!(MarketplaceService);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct MatchmakingService {
     superclass: Instance,
 }
 impl_inherits!(MatchmakingService, Instance);
+impl_strong_instance_from!(MatchmakingService);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct MaterialGenerationService {
     superclass: Instance,
 }
 impl_inherits!(MaterialGenerationService, Instance);
+impl_strong_instance_from!(MaterialGenerationService);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct MaterialGenerationSession {
     superclass: Instance,
 }
 impl_inherits!(MaterialGenerationSession, Instance);
+impl_strong_instance_from!(MaterialGenerationSession);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct MaterialImportData {
@@ -4149,6 +4542,7 @@ pub struct MaterialImportData {
     pub RoughnessFilePath: String,
 }
 impl_inherits!(MaterialImportData, BaseImportData);
+impl_strong_instance_from!(MaterialImportData);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct MaterialService {
@@ -4196,6 +4590,7 @@ pub struct MaterialService {
     pub WoodPlanksName: String,
 }
 impl_inherits!(MaterialService, Instance);
+impl_strong_instance_from!(MaterialService);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct MaterialVariant {
@@ -4211,54 +4606,63 @@ pub struct MaterialVariant {
     pub TexturePack: ContentId,
 }
 impl_inherits!(MaterialVariant, Instance);
+impl_strong_instance_from!(MaterialVariant);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct MemStorageConnection {
     superclass: Instance,
 }
 impl_inherits!(MemStorageConnection, Instance);
+impl_strong_instance_from!(MemStorageConnection);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct MemStorageService {
     superclass: Instance,
 }
 impl_inherits!(MemStorageService, Instance);
+impl_strong_instance_from!(MemStorageService);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct MemoryStoreHashMap {
     superclass: Instance,
 }
 impl_inherits!(MemoryStoreHashMap, Instance);
+impl_strong_instance_from!(MemoryStoreHashMap);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct MemoryStoreHashMapPages {
     superclass: Pages,
 }
 impl_inherits!(MemoryStoreHashMapPages, Pages);
+impl_strong_instance_from!(MemoryStoreHashMapPages);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct MemoryStoreQueue {
     superclass: Instance,
 }
 impl_inherits!(MemoryStoreQueue, Instance);
+impl_strong_instance_from!(MemoryStoreQueue);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct MemoryStoreService {
     superclass: Instance,
 }
 impl_inherits!(MemoryStoreService, Instance);
+impl_strong_instance_from!(MemoryStoreService);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct MemoryStoreSortedMap {
     superclass: Instance,
 }
 impl_inherits!(MemoryStoreSortedMap, Instance);
+impl_strong_instance_from!(MemoryStoreSortedMap);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct MeshContentProvider {
     superclass: CacheableContentProvider,
 }
 impl_inherits!(MeshContentProvider, CacheableContentProvider);
+impl_strong_instance_from!(MeshContentProvider);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct MeshImportData {
@@ -4276,6 +4680,7 @@ pub struct MeshImportData {
     pub UseImportedPivot: bool,
 }
 impl_inherits!(MeshImportData, BaseImportData);
+impl_strong_instance_from!(MeshImportData);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct MeshPart {
@@ -4292,6 +4697,7 @@ pub struct MeshPart {
     pub VertexCount: i32,
 }
 impl_inherits!(MeshPart, TriangleMeshPart);
+impl_strong_instance_from!(MeshPart);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct Message {
@@ -4299,24 +4705,28 @@ pub struct Message {
     pub Text: String,
 }
 impl_inherits!(Message, Instance);
+impl_strong_instance_from!(Message);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct MessageBusConnection {
     superclass: Instance,
 }
 impl_inherits!(MessageBusConnection, Instance);
+impl_strong_instance_from!(MessageBusConnection);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct MessageBusService {
     superclass: Instance,
 }
 impl_inherits!(MessageBusService, Instance);
+impl_strong_instance_from!(MessageBusService);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct MessagingService {
     superclass: Instance,
 }
 impl_inherits!(MessagingService, Instance);
+impl_strong_instance_from!(MessagingService);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct MetaBreakpoint {
@@ -4330,6 +4740,7 @@ pub struct MetaBreakpoint {
     pub Script: String,
 }
 impl_inherits!(MetaBreakpoint, Instance);
+impl_strong_instance_from!(MetaBreakpoint);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct MetaBreakpointContext {
@@ -4337,12 +4748,14 @@ pub struct MetaBreakpointContext {
     pub ContextDataInternal: String,
 }
 impl_inherits!(MetaBreakpointContext, Instance);
+impl_strong_instance_from!(MetaBreakpointContext);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct MetaBreakpointManager {
     superclass: Instance,
 }
 impl_inherits!(MetaBreakpointManager, Instance);
+impl_strong_instance_from!(MetaBreakpointManager);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct Model {
@@ -4357,6 +4770,7 @@ pub struct Model {
     pub WorldPivotData: Option<CFrame>,
 }
 impl_inherits!(Model, PVInstance);
+impl_strong_instance_from!(Model);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct ModuleScript {
@@ -4365,6 +4779,7 @@ pub struct ModuleScript {
     pub Source: String,
 }
 impl_inherits!(ModuleScript, LuaSourceContainer);
+impl_strong_instance_from!(ModuleScript);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct Motor {
@@ -4373,18 +4788,21 @@ pub struct Motor {
     pub MaxVelocity: f32,
 }
 impl_inherits!(Motor, JointInstance);
+impl_strong_instance_from!(Motor);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct Motor6D {
     superclass: Motor,
 }
 impl_inherits!(Motor6D, Motor);
+impl_strong_instance_from!(Motor6D);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct MotorFeature {
     superclass: Feature,
 }
 impl_inherits!(MotorFeature, Feature);
+impl_strong_instance_from!(MotorFeature);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct Mouse {
@@ -4393,54 +4811,63 @@ pub struct Mouse {
     pub TargetFilter: Ref,
 }
 impl_inherits!(Mouse, Instance);
+impl_strong_instance_from!(Mouse);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct MouseService {
     superclass: Instance,
 }
 impl_inherits!(MouseService, Instance);
+impl_strong_instance_from!(MouseService);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct MultipleDocumentInterfaceInstance {
     superclass: Instance,
 }
 impl_inherits!(MultipleDocumentInterfaceInstance, Instance);
+impl_strong_instance_from!(MultipleDocumentInterfaceInstance);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct NegateOperation {
     superclass: PartOperation,
 }
 impl_inherits!(NegateOperation, PartOperation);
+impl_strong_instance_from!(NegateOperation);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct NetworkClient {
     superclass: NetworkPeer,
 }
 impl_inherits!(NetworkClient, NetworkPeer);
+impl_strong_instance_from!(NetworkClient);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct NetworkMarker {
     superclass: Instance,
 }
 impl_inherits!(NetworkMarker, Instance);
+impl_strong_instance_from!(NetworkMarker);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct NetworkPeer {
     superclass: Instance,
 }
 impl_inherits!(NetworkPeer, Instance);
+impl_strong_instance_from!(NetworkPeer);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct NetworkReplicator {
     superclass: Instance,
 }
 impl_inherits!(NetworkReplicator, Instance);
+impl_strong_instance_from!(NetworkReplicator);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct NetworkServer {
     superclass: NetworkPeer,
 }
 impl_inherits!(NetworkServer, NetworkPeer);
+impl_strong_instance_from!(NetworkServer);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct NetworkSettings {
@@ -4456,6 +4883,7 @@ pub struct NetworkSettings {
     pub ShowActiveAnimationAsset: bool,
 }
 impl_inherits!(NetworkSettings, Instance);
+impl_strong_instance_from!(NetworkSettings);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct NoCollisionConstraint {
@@ -4465,6 +4893,7 @@ pub struct NoCollisionConstraint {
     pub Part1: Ref,
 }
 impl_inherits!(NoCollisionConstraint, Instance);
+impl_strong_instance_from!(NoCollisionConstraint);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct Noise {
@@ -4473,18 +4902,21 @@ pub struct Noise {
     pub Seed: i32,
 }
 impl_inherits!(Noise, Instance);
+impl_strong_instance_from!(Noise);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct NonReplicatedCSGDictionaryService {
     superclass: FlyweightService,
 }
 impl_inherits!(NonReplicatedCSGDictionaryService, FlyweightService);
+impl_strong_instance_from!(NonReplicatedCSGDictionaryService);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct NotificationService {
     superclass: Instance,
 }
 impl_inherits!(NotificationService, Instance);
+impl_strong_instance_from!(NotificationService);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct NumberPose {
@@ -4492,6 +4924,7 @@ pub struct NumberPose {
     pub Value: f64,
 }
 impl_inherits!(NumberPose, PoseBase);
+impl_strong_instance_from!(NumberPose);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct NumberValue {
@@ -4499,9 +4932,11 @@ pub struct NumberValue {
     pub Value: f64,
 }
 impl_inherits!(NumberValue, ValueBase);
+impl_strong_instance_from!(NumberValue);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct Object {}
+impl_strong_instance_from!(Object);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct ObjectValue {
@@ -4509,42 +4944,49 @@ pub struct ObjectValue {
     pub Value: Ref,
 }
 impl_inherits!(ObjectValue, ValueBase);
+impl_strong_instance_from!(ObjectValue);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct OmniRecommendationsService {
     superclass: Instance,
 }
 impl_inherits!(OmniRecommendationsService, Instance);
+impl_strong_instance_from!(OmniRecommendationsService);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct OpenCloudApiV1 {
     superclass: Instance,
 }
 impl_inherits!(OpenCloudApiV1, Instance);
+impl_strong_instance_from!(OpenCloudApiV1);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct OpenCloudService {
     superclass: Instance,
 }
 impl_inherits!(OpenCloudService, Instance);
+impl_strong_instance_from!(OpenCloudService);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct OperationGraph {
     superclass: Instance,
 }
 impl_inherits!(OperationGraph, Instance);
+impl_strong_instance_from!(OperationGraph);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct OrderedDataStore {
     superclass: GlobalDataStore,
 }
 impl_inherits!(OrderedDataStore, GlobalDataStore);
+impl_strong_instance_from!(OrderedDataStore);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct OutfitPages {
     superclass: Pages,
 }
 impl_inherits!(OutfitPages, Pages);
+impl_strong_instance_from!(OutfitPages);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct PVAdornment {
@@ -4552,12 +4994,14 @@ pub struct PVAdornment {
     pub Adornee: Ref,
 }
 impl_inherits!(PVAdornment, GuiBase3d);
+impl_strong_instance_from!(PVAdornment);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct PVInstance {
     superclass: Instance,
 }
 impl_inherits!(PVInstance, Instance);
+impl_strong_instance_from!(PVInstance);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct PackageLink {
@@ -4569,24 +5013,28 @@ pub struct PackageLink {
     pub VersionIdSerialize: i64,
 }
 impl_inherits!(PackageLink, Instance);
+impl_strong_instance_from!(PackageLink);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct PackageService {
     superclass: Instance,
 }
 impl_inherits!(PackageService, Instance);
+impl_strong_instance_from!(PackageService);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct PackageUIService {
     superclass: Instance,
 }
 impl_inherits!(PackageUIService, Instance);
+impl_strong_instance_from!(PackageUIService);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct Pages {
     superclass: Instance,
 }
 impl_inherits!(Pages, Instance);
+impl_strong_instance_from!(Pages);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct Pants {
@@ -4594,18 +5042,21 @@ pub struct Pants {
     pub PantsTemplate: ContentId,
 }
 impl_inherits!(Pants, Clothing);
+impl_strong_instance_from!(Pants);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct ParabolaAdornment {
     superclass: PVAdornment,
 }
 impl_inherits!(ParabolaAdornment, PVAdornment);
+impl_strong_instance_from!(ParabolaAdornment);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct Part {
     superclass: FormFactorPart,
 }
 impl_inherits!(Part, FormFactorPart);
+impl_strong_instance_from!(Part);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct PartAdornment {
@@ -4613,6 +5064,7 @@ pub struct PartAdornment {
     pub Adornee: Ref,
 }
 impl_inherits!(PartAdornment, GuiBase3d);
+impl_strong_instance_from!(PartAdornment);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct PartOperation {
@@ -4630,6 +5082,7 @@ pub struct PartOperation {
     pub UsePartColor: bool,
 }
 impl_inherits!(PartOperation, TriangleMeshPart);
+impl_strong_instance_from!(PartOperation);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct PartOperationAsset {
@@ -4638,6 +5091,7 @@ pub struct PartOperationAsset {
     pub MeshData: BinaryString,
 }
 impl_inherits!(PartOperationAsset, Instance);
+impl_strong_instance_from!(PartOperationAsset);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct ParticleEmitter {
@@ -4677,12 +5131,14 @@ pub struct ParticleEmitter {
     pub ZOffset: f32,
 }
 impl_inherits!(ParticleEmitter, Instance);
+impl_strong_instance_from!(ParticleEmitter);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct PatchBundlerFileWatch {
     superclass: Instance,
 }
 impl_inherits!(PatchBundlerFileWatch, Instance);
+impl_strong_instance_from!(PatchBundlerFileWatch);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct PatchMapping {
@@ -4692,12 +5148,14 @@ pub struct PatchMapping {
     pub TargetPath: String,
 }
 impl_inherits!(PatchMapping, Instance);
+impl_strong_instance_from!(PatchMapping);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct Path {
     superclass: Instance,
 }
 impl_inherits!(Path, Instance);
+impl_strong_instance_from!(Path);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct Path2D {
@@ -4711,6 +5169,7 @@ pub struct Path2D {
     pub ZIndex: i32,
 }
 impl_inherits!(Path2D, GuiBase);
+impl_strong_instance_from!(Path2D);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct PathfindingLink {
@@ -4721,6 +5180,7 @@ pub struct PathfindingLink {
     pub Label: String,
 }
 impl_inherits!(PathfindingLink, Instance);
+impl_strong_instance_from!(PathfindingLink);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct PathfindingModifier {
@@ -4729,48 +5189,56 @@ pub struct PathfindingModifier {
     pub PassThrough: bool,
 }
 impl_inherits!(PathfindingModifier, Instance);
+impl_strong_instance_from!(PathfindingModifier);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct PathfindingService {
     superclass: Instance,
 }
 impl_inherits!(PathfindingService, Instance);
+impl_strong_instance_from!(PathfindingService);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct PausedState {
     superclass: Instance,
 }
 impl_inherits!(PausedState, Instance);
+impl_strong_instance_from!(PausedState);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct PausedStateBreakpoint {
     superclass: PausedState,
 }
 impl_inherits!(PausedStateBreakpoint, PausedState);
+impl_strong_instance_from!(PausedStateBreakpoint);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct PausedStateException {
     superclass: PausedState,
 }
 impl_inherits!(PausedStateException, PausedState);
+impl_strong_instance_from!(PausedStateException);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct PerformanceControlService {
     superclass: Instance,
 }
 impl_inherits!(PerformanceControlService, Instance);
+impl_strong_instance_from!(PerformanceControlService);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct PermissionsService {
     superclass: Instance,
 }
 impl_inherits!(PermissionsService, Instance);
+impl_strong_instance_from!(PermissionsService);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct PhysicsService {
     superclass: Instance,
 }
 impl_inherits!(PhysicsService, Instance);
+impl_strong_instance_from!(PhysicsService);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct PhysicsSettings {
@@ -4825,6 +5293,7 @@ pub struct PhysicsSettings {
     pub UseCsGv2: bool,
 }
 impl_inherits!(PhysicsSettings, Instance);
+impl_strong_instance_from!(PhysicsSettings);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct PitchShiftSoundEffect {
@@ -4832,54 +5301,63 @@ pub struct PitchShiftSoundEffect {
     pub Octave: f32,
 }
 impl_inherits!(PitchShiftSoundEffect, SoundEffect);
+impl_strong_instance_from!(PitchShiftSoundEffect);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct PlaceAssetIdsService {
     superclass: Instance,
 }
 impl_inherits!(PlaceAssetIdsService, Instance);
+impl_strong_instance_from!(PlaceAssetIdsService);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct PlaceStatsService {
     superclass: Instance,
 }
 impl_inherits!(PlaceStatsService, Instance);
+impl_strong_instance_from!(PlaceStatsService);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct PlacesService {
     superclass: Instance,
 }
 impl_inherits!(PlacesService, Instance);
+impl_strong_instance_from!(PlacesService);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct Plane {
     superclass: PlaneConstraint,
 }
 impl_inherits!(Plane, PlaneConstraint);
+impl_strong_instance_from!(Plane);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct PlaneConstraint {
     superclass: Constraint,
 }
 impl_inherits!(PlaneConstraint, Constraint);
+impl_strong_instance_from!(PlaneConstraint);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct Platform {
     superclass: Part,
 }
 impl_inherits!(Platform, Part);
+impl_strong_instance_from!(Platform);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct PlatformCloudStorageService {
     superclass: Instance,
 }
 impl_inherits!(PlatformCloudStorageService, Instance);
+impl_strong_instance_from!(PlatformCloudStorageService);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct PlatformFriendsService {
     superclass: Instance,
 }
 impl_inherits!(PlatformFriendsService, Instance);
+impl_strong_instance_from!(PlatformFriendsService);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct Player {
@@ -4910,24 +5388,28 @@ pub struct Player {
     pub TeleportedIn: bool,
 }
 impl_inherits!(Player, Instance);
+impl_strong_instance_from!(Player);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct PlayerData {
     superclass: Instance,
 }
 impl_inherits!(PlayerData, Instance);
+impl_strong_instance_from!(PlayerData);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct PlayerDataRecord {
     superclass: Instance,
 }
 impl_inherits!(PlayerDataRecord, Instance);
+impl_strong_instance_from!(PlayerDataRecord);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct PlayerDataRecordConfig {
     superclass: Instance,
 }
 impl_inherits!(PlayerDataRecordConfig, Instance);
+impl_strong_instance_from!(PlayerDataRecordConfig);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct PlayerDataService {
@@ -4935,6 +5417,7 @@ pub struct PlayerDataService {
     pub LoadFailureBehavior: enums::PlayerDataLoadFailureBehavior,
 }
 impl_inherits!(PlayerDataService, Instance);
+impl_strong_instance_from!(PlayerDataService);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct PlayerEmulatorService {
@@ -4948,6 +5431,7 @@ pub struct PlayerEmulatorService {
     pub TextElongationFactor: i32,
 }
 impl_inherits!(PlayerEmulatorService, Instance);
+impl_strong_instance_from!(PlayerEmulatorService);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct PlayerGui {
@@ -4956,30 +5440,35 @@ pub struct PlayerGui {
     pub SelectionImageObject: Ref,
 }
 impl_inherits!(PlayerGui, BasePlayerGui);
+impl_strong_instance_from!(PlayerGui);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct PlayerHydrationService {
     superclass: Instance,
 }
 impl_inherits!(PlayerHydrationService, Instance);
+impl_strong_instance_from!(PlayerHydrationService);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct PlayerMouse {
     superclass: Mouse,
 }
 impl_inherits!(PlayerMouse, Mouse);
+impl_strong_instance_from!(PlayerMouse);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct PlayerScripts {
     superclass: Instance,
 }
 impl_inherits!(PlayerScripts, Instance);
+impl_strong_instance_from!(PlayerScripts);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct PlayerViewService {
     superclass: Instance,
 }
 impl_inherits!(PlayerViewService, Instance);
+impl_strong_instance_from!(PlayerViewService);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct Players {
@@ -4990,6 +5479,7 @@ pub struct Players {
     pub UseStrafingAnimations: bool,
 }
 impl_inherits!(Players, Instance);
+impl_strong_instance_from!(Players);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct Plugin {
@@ -4998,12 +5488,14 @@ pub struct Plugin {
     pub IsDebuggable: bool,
 }
 impl_inherits!(Plugin, Instance);
+impl_strong_instance_from!(Plugin);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct PluginAction {
     superclass: Instance,
 }
 impl_inherits!(PluginAction, Instance);
+impl_strong_instance_from!(PluginAction);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct PluginCapabilities {
@@ -5011,18 +5503,21 @@ pub struct PluginCapabilities {
     pub Manifest: String,
 }
 impl_inherits!(PluginCapabilities, Instance);
+impl_strong_instance_from!(PluginCapabilities);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct PluginDebugService {
     superclass: Instance,
 }
 impl_inherits!(PluginDebugService, Instance);
+impl_strong_instance_from!(PluginDebugService);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct PluginDragEvent {
     superclass: Instance,
 }
 impl_inherits!(PluginDragEvent, Instance);
+impl_strong_instance_from!(PluginDragEvent);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct PluginGui {
@@ -5030,60 +5525,70 @@ pub struct PluginGui {
     pub Title: String,
 }
 impl_inherits!(PluginGui, LayerCollector);
+impl_strong_instance_from!(PluginGui);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct PluginGuiService {
     superclass: Instance,
 }
 impl_inherits!(PluginGuiService, Instance);
+impl_strong_instance_from!(PluginGuiService);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct PluginManagementService {
     superclass: Instance,
 }
 impl_inherits!(PluginManagementService, Instance);
+impl_strong_instance_from!(PluginManagementService);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct PluginManager {
     superclass: Instance,
 }
 impl_inherits!(PluginManager, Instance);
+impl_strong_instance_from!(PluginManager);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct PluginManagerInterface {
     superclass: Instance,
 }
 impl_inherits!(PluginManagerInterface, Instance);
+impl_strong_instance_from!(PluginManagerInterface);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct PluginMenu {
     superclass: Instance,
 }
 impl_inherits!(PluginMenu, Instance);
+impl_strong_instance_from!(PluginMenu);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct PluginMouse {
     superclass: Mouse,
 }
 impl_inherits!(PluginMouse, Mouse);
+impl_strong_instance_from!(PluginMouse);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct PluginPolicyService {
     superclass: Instance,
 }
 impl_inherits!(PluginPolicyService, Instance);
+impl_strong_instance_from!(PluginPolicyService);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct PluginToolbar {
     superclass: Instance,
 }
 impl_inherits!(PluginToolbar, Instance);
+impl_strong_instance_from!(PluginToolbar);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct PluginToolbarButton {
     superclass: Instance,
 }
 impl_inherits!(PluginToolbarButton, Instance);
+impl_strong_instance_from!(PluginToolbarButton);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct PointLight {
@@ -5091,12 +5596,14 @@ pub struct PointLight {
     pub Range: f32,
 }
 impl_inherits!(PointLight, Light);
+impl_strong_instance_from!(PointLight);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct PointsService {
     superclass: Instance,
 }
 impl_inherits!(PointsService, Instance);
+impl_strong_instance_from!(PointsService);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct PolicyService {
@@ -5105,6 +5612,7 @@ pub struct PolicyService {
     pub LuobuWhitelisted: enums::TriStateBoolean,
 }
 impl_inherits!(PolicyService, Instance);
+impl_strong_instance_from!(PolicyService);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct Pose {
@@ -5112,6 +5620,7 @@ pub struct Pose {
     pub CFrame: CFrame,
 }
 impl_inherits!(Pose, PoseBase);
+impl_strong_instance_from!(Pose);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct PoseBase {
@@ -5121,6 +5630,7 @@ pub struct PoseBase {
     pub Weight: f32,
 }
 impl_inherits!(PoseBase, Instance);
+impl_strong_instance_from!(PoseBase);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct PostEffect {
@@ -5128,18 +5638,21 @@ pub struct PostEffect {
     pub Enabled: bool,
 }
 impl_inherits!(PostEffect, Instance);
+impl_strong_instance_from!(PostEffect);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct PrismaticConstraint {
     superclass: SlidingBallConstraint,
 }
 impl_inherits!(PrismaticConstraint, SlidingBallConstraint);
+impl_strong_instance_from!(PrismaticConstraint);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct ProcessInstancePhysicsService {
     superclass: Instance,
 }
 impl_inherits!(ProcessInstancePhysicsService, Instance);
+impl_strong_instance_from!(ProcessInstancePhysicsService);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct ProximityPrompt {
@@ -5160,6 +5673,7 @@ pub struct ProximityPrompt {
     pub UiOffset: Vector2,
 }
 impl_inherits!(ProximityPrompt, Instance);
+impl_strong_instance_from!(ProximityPrompt);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct ProximityPromptService {
@@ -5168,24 +5682,28 @@ pub struct ProximityPromptService {
     pub MaxPromptsVisible: i32,
 }
 impl_inherits!(ProximityPromptService, Instance);
+impl_strong_instance_from!(ProximityPromptService);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct PublishService {
     superclass: Instance,
 }
 impl_inherits!(PublishService, Instance);
+impl_strong_instance_from!(PublishService);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct QWidgetPluginGui {
     superclass: PluginGui,
 }
 impl_inherits!(QWidgetPluginGui, PluginGui);
+impl_strong_instance_from!(QWidgetPluginGui);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct RTAnimationTracker {
     superclass: Instance,
 }
 impl_inherits!(RTAnimationTracker, Instance);
+impl_strong_instance_from!(RTAnimationTracker);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct RayValue {
@@ -5193,24 +5711,28 @@ pub struct RayValue {
     pub Value: Ray,
 }
 impl_inherits!(RayValue, ValueBase);
+impl_strong_instance_from!(RayValue);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct RbxAnalyticsService {
     superclass: Instance,
 }
 impl_inherits!(RbxAnalyticsService, Instance);
+impl_strong_instance_from!(RbxAnalyticsService);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct ReflectionMetadata {
     superclass: Instance,
 }
 impl_inherits!(ReflectionMetadata, Instance);
+impl_strong_instance_from!(ReflectionMetadata);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct ReflectionMetadataCallbacks {
     superclass: Instance,
 }
 impl_inherits!(ReflectionMetadataCallbacks, Instance);
+impl_strong_instance_from!(ReflectionMetadataCallbacks);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct ReflectionMetadataClass {
@@ -5222,42 +5744,49 @@ pub struct ReflectionMetadataClass {
     pub ServiceVisibility: enums::ServiceVisibility,
 }
 impl_inherits!(ReflectionMetadataClass, ReflectionMetadataItem);
+impl_strong_instance_from!(ReflectionMetadataClass);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct ReflectionMetadataClasses {
     superclass: Instance,
 }
 impl_inherits!(ReflectionMetadataClasses, Instance);
+impl_strong_instance_from!(ReflectionMetadataClasses);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct ReflectionMetadataEnum {
     superclass: ReflectionMetadataItem,
 }
 impl_inherits!(ReflectionMetadataEnum, ReflectionMetadataItem);
+impl_strong_instance_from!(ReflectionMetadataEnum);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct ReflectionMetadataEnumItem {
     superclass: ReflectionMetadataItem,
 }
 impl_inherits!(ReflectionMetadataEnumItem, ReflectionMetadataItem);
+impl_strong_instance_from!(ReflectionMetadataEnumItem);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct ReflectionMetadataEnums {
     superclass: Instance,
 }
 impl_inherits!(ReflectionMetadataEnums, Instance);
+impl_strong_instance_from!(ReflectionMetadataEnums);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct ReflectionMetadataEvents {
     superclass: Instance,
 }
 impl_inherits!(ReflectionMetadataEvents, Instance);
+impl_strong_instance_from!(ReflectionMetadataEvents);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct ReflectionMetadataFunctions {
     superclass: Instance,
 }
 impl_inherits!(ReflectionMetadataFunctions, Instance);
+impl_strong_instance_from!(ReflectionMetadataFunctions);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct ReflectionMetadataItem {
@@ -5280,60 +5809,70 @@ pub struct ReflectionMetadataItem {
     pub UiNumTicks: f64,
 }
 impl_inherits!(ReflectionMetadataItem, Instance);
+impl_strong_instance_from!(ReflectionMetadataItem);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct ReflectionMetadataMember {
     superclass: ReflectionMetadataItem,
 }
 impl_inherits!(ReflectionMetadataMember, ReflectionMetadataItem);
+impl_strong_instance_from!(ReflectionMetadataMember);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct ReflectionMetadataProperties {
     superclass: Instance,
 }
 impl_inherits!(ReflectionMetadataProperties, Instance);
+impl_strong_instance_from!(ReflectionMetadataProperties);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct ReflectionMetadataYieldFunctions {
     superclass: Instance,
 }
 impl_inherits!(ReflectionMetadataYieldFunctions, Instance);
+impl_strong_instance_from!(ReflectionMetadataYieldFunctions);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct ReflectionService {
     superclass: Instance,
 }
 impl_inherits!(ReflectionService, Instance);
+impl_strong_instance_from!(ReflectionService);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct RelativeGui {
     superclass: GuiObject,
 }
 impl_inherits!(RelativeGui, GuiObject);
+impl_strong_instance_from!(RelativeGui);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct RemoteCursorService {
     superclass: Instance,
 }
 impl_inherits!(RemoteCursorService, Instance);
+impl_strong_instance_from!(RemoteCursorService);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct RemoteDebuggerServer {
     superclass: Instance,
 }
 impl_inherits!(RemoteDebuggerServer, Instance);
+impl_strong_instance_from!(RemoteDebuggerServer);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct RemoteEvent {
     superclass: BaseRemoteEvent,
 }
 impl_inherits!(RemoteEvent, BaseRemoteEvent);
+impl_strong_instance_from!(RemoteEvent);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct RemoteFunction {
     superclass: Instance,
 }
 impl_inherits!(RemoteFunction, Instance);
+impl_strong_instance_from!(RemoteFunction);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct RenderSettings {
@@ -5354,6 +5893,7 @@ pub struct RenderSettings {
     pub ViewMode: enums::ViewMode,
 }
 impl_inherits!(RenderSettings, Instance);
+impl_strong_instance_from!(RenderSettings);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct RenderingTest {
@@ -5373,18 +5913,21 @@ pub struct RenderingTest {
     pub Timeout: i32,
 }
 impl_inherits!(RenderingTest, Instance);
+impl_strong_instance_from!(RenderingTest);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct ReplicatedFirst {
     superclass: Instance,
 }
 impl_inherits!(ReplicatedFirst, Instance);
+impl_strong_instance_from!(ReplicatedFirst);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct ReplicatedStorage {
     superclass: Instance,
 }
 impl_inherits!(ReplicatedStorage, Instance);
+impl_strong_instance_from!(ReplicatedStorage);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct ReverbSoundEffect {
@@ -5396,30 +5939,35 @@ pub struct ReverbSoundEffect {
     pub WetLevel: f32,
 }
 impl_inherits!(ReverbSoundEffect, SoundEffect);
+impl_strong_instance_from!(ReverbSoundEffect);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct RibbonNotificationService {
     superclass: Instance,
 }
 impl_inherits!(RibbonNotificationService, Instance);
+impl_strong_instance_from!(RibbonNotificationService);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct RigidConstraint {
     superclass: Constraint,
 }
 impl_inherits!(RigidConstraint, Constraint);
+impl_strong_instance_from!(RigidConstraint);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct RobloxPluginGuiService {
     superclass: Instance,
 }
 impl_inherits!(RobloxPluginGuiService, Instance);
+impl_strong_instance_from!(RobloxPluginGuiService);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct RobloxReplicatedStorage {
     superclass: Instance,
 }
 impl_inherits!(RobloxReplicatedStorage, Instance);
+impl_strong_instance_from!(RobloxReplicatedStorage);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct RobloxSerializableInstance {
@@ -5427,12 +5975,14 @@ pub struct RobloxSerializableInstance {
     pub Data: BinaryString,
 }
 impl_inherits!(RobloxSerializableInstance, Instance);
+impl_strong_instance_from!(RobloxSerializableInstance);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct RobloxServerStorage {
     superclass: Instance,
 }
 impl_inherits!(RobloxServerStorage, Instance);
+impl_strong_instance_from!(RobloxServerStorage);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct RocketPropulsion {
@@ -5450,6 +6000,7 @@ pub struct RocketPropulsion {
     pub TurnP: f32,
 }
 impl_inherits!(RocketPropulsion, BodyMover);
+impl_strong_instance_from!(RocketPropulsion);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct RodConstraint {
@@ -5461,18 +6012,21 @@ pub struct RodConstraint {
     pub Thickness: f32,
 }
 impl_inherits!(RodConstraint, Constraint);
+impl_strong_instance_from!(RodConstraint);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct RomarkRbxAnalyticsService {
     superclass: Instance,
 }
 impl_inherits!(RomarkRbxAnalyticsService, Instance);
+impl_strong_instance_from!(RomarkRbxAnalyticsService);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct RomarkService {
     superclass: Instance,
 }
 impl_inherits!(RomarkService, Instance);
+impl_strong_instance_from!(RomarkService);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct RootImportData {
@@ -5501,6 +6055,7 @@ pub struct RootImportData {
     pub WorldUp: enums::NormalId,
 }
 impl_inherits!(RootImportData, BaseImportData);
+impl_strong_instance_from!(RootImportData);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct RopeConstraint {
@@ -5515,24 +6070,28 @@ pub struct RopeConstraint {
     pub WinchTarget: f32,
 }
 impl_inherits!(RopeConstraint, Constraint);
+impl_strong_instance_from!(RopeConstraint);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct Rotate {
     superclass: JointInstance,
 }
 impl_inherits!(Rotate, JointInstance);
+impl_strong_instance_from!(Rotate);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct RotateP {
     superclass: DynamicRotate,
 }
 impl_inherits!(RotateP, DynamicRotate);
+impl_strong_instance_from!(RotateP);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct RotateV {
     superclass: DynamicRotate,
 }
 impl_inherits!(RotateV, DynamicRotate);
+impl_strong_instance_from!(RotateV);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct RotationCurve {
@@ -5540,42 +6099,49 @@ pub struct RotationCurve {
     pub ValuesAndTimes: BinaryString,
 }
 impl_inherits!(RotationCurve, Instance);
+impl_strong_instance_from!(RotationCurve);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct RtMessagingService {
     superclass: Instance,
 }
 impl_inherits!(RtMessagingService, Instance);
+impl_strong_instance_from!(RtMessagingService);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct RunService {
     superclass: Instance,
 }
 impl_inherits!(RunService, Instance);
+impl_strong_instance_from!(RunService);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct RunningAverageItemDouble {
     superclass: StatsItem,
 }
 impl_inherits!(RunningAverageItemDouble, StatsItem);
+impl_strong_instance_from!(RunningAverageItemDouble);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct RunningAverageItemInt {
     superclass: StatsItem,
 }
 impl_inherits!(RunningAverageItemInt, StatsItem);
+impl_strong_instance_from!(RunningAverageItemInt);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct RunningAverageTimeIntervalItem {
     superclass: StatsItem,
 }
 impl_inherits!(RunningAverageTimeIntervalItem, StatsItem);
+impl_strong_instance_from!(RunningAverageTimeIntervalItem);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct RuntimeScriptService {
     superclass: Instance,
 }
 impl_inherits!(RuntimeScriptService, Instance);
+impl_strong_instance_from!(RuntimeScriptService);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct SafetyService {
@@ -5583,6 +6149,7 @@ pub struct SafetyService {
     pub IsCaptureModeForReport: bool,
 }
 impl_inherits!(SafetyService, Instance);
+impl_strong_instance_from!(SafetyService);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct ScreenGui {
@@ -5593,12 +6160,14 @@ pub struct ScreenGui {
     pub ScreenInsets: enums::ScreenInsets,
 }
 impl_inherits!(ScreenGui, LayerCollector);
+impl_strong_instance_from!(ScreenGui);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct ScreenshotCapture {
     superclass: Capture,
 }
 impl_inherits!(ScreenshotCapture, Capture);
+impl_strong_instance_from!(ScreenshotCapture);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct ScreenshotHud {
@@ -5615,6 +6184,7 @@ pub struct ScreenshotHud {
     pub Visible: bool,
 }
 impl_inherits!(ScreenshotHud, Instance);
+impl_strong_instance_from!(ScreenshotHud);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct Script {
@@ -5622,42 +6192,49 @@ pub struct Script {
     pub Source: String,
 }
 impl_inherits!(Script, BaseScript);
+impl_strong_instance_from!(Script);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct ScriptBuilder {
     superclass: Instance,
 }
 impl_inherits!(ScriptBuilder, Instance);
+impl_strong_instance_from!(ScriptBuilder);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct ScriptChangeService {
     superclass: Instance,
 }
 impl_inherits!(ScriptChangeService, Instance);
+impl_strong_instance_from!(ScriptChangeService);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct ScriptCloneWatcher {
     superclass: Instance,
 }
 impl_inherits!(ScriptCloneWatcher, Instance);
+impl_strong_instance_from!(ScriptCloneWatcher);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct ScriptCloneWatcherHelper {
     superclass: Instance,
 }
 impl_inherits!(ScriptCloneWatcherHelper, Instance);
+impl_strong_instance_from!(ScriptCloneWatcherHelper);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct ScriptCommitService {
     superclass: Instance,
 }
 impl_inherits!(ScriptCommitService, Instance);
+impl_strong_instance_from!(ScriptCommitService);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct ScriptContext {
     superclass: Instance,
 }
 impl_inherits!(ScriptContext, Instance);
+impl_strong_instance_from!(ScriptContext);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct ScriptDebugger {
@@ -5666,42 +6243,49 @@ pub struct ScriptDebugger {
     pub ScriptGuid: String,
 }
 impl_inherits!(ScriptDebugger, Instance);
+impl_strong_instance_from!(ScriptDebugger);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct ScriptDocument {
     superclass: Instance,
 }
 impl_inherits!(ScriptDocument, Instance);
+impl_strong_instance_from!(ScriptDocument);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct ScriptEditorService {
     superclass: Instance,
 }
 impl_inherits!(ScriptEditorService, Instance);
+impl_strong_instance_from!(ScriptEditorService);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct ScriptProfilerService {
     superclass: Instance,
 }
 impl_inherits!(ScriptProfilerService, Instance);
+impl_strong_instance_from!(ScriptProfilerService);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct ScriptRegistrationService {
     superclass: Instance,
 }
 impl_inherits!(ScriptRegistrationService, Instance);
+impl_strong_instance_from!(ScriptRegistrationService);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct ScriptRuntime {
     superclass: Instance,
 }
 impl_inherits!(ScriptRuntime, Instance);
+impl_strong_instance_from!(ScriptRuntime);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct ScriptService {
     superclass: Instance,
 }
 impl_inherits!(ScriptService, Instance);
+impl_strong_instance_from!(ScriptService);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct ScrollingFrame {
@@ -5723,6 +6307,7 @@ pub struct ScrollingFrame {
     pub VerticalScrollBarPosition: enums::VerticalScrollBarPosition,
 }
 impl_inherits!(ScrollingFrame, GuiObject);
+impl_strong_instance_from!(ScrollingFrame);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct Seat {
@@ -5730,12 +6315,14 @@ pub struct Seat {
     pub Disabled: bool,
 }
 impl_inherits!(Seat, Part);
+impl_strong_instance_from!(Seat);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct Selection {
     superclass: Instance,
 }
 impl_inherits!(Selection, Instance);
+impl_strong_instance_from!(Selection);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct SelectionBox {
@@ -5746,12 +6333,14 @@ pub struct SelectionBox {
     pub SurfaceTransparency: f32,
 }
 impl_inherits!(SelectionBox, InstanceAdornment);
+impl_strong_instance_from!(SelectionBox);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct SelectionHighlightManager {
     superclass: Instance,
 }
 impl_inherits!(SelectionHighlightManager, Instance);
+impl_strong_instance_from!(SelectionHighlightManager);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct SelectionLasso {
@@ -5759,6 +6348,7 @@ pub struct SelectionLasso {
     pub Humanoid: Ref,
 }
 impl_inherits!(SelectionLasso, GuiBase3d);
+impl_strong_instance_from!(SelectionLasso);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct SelectionPartLasso {
@@ -5766,6 +6356,7 @@ pub struct SelectionPartLasso {
     pub Part: Ref,
 }
 impl_inherits!(SelectionPartLasso, SelectionLasso);
+impl_strong_instance_from!(SelectionPartLasso);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct SelectionPointLasso {
@@ -5773,6 +6364,7 @@ pub struct SelectionPointLasso {
     pub Point: Vector3,
 }
 impl_inherits!(SelectionPointLasso, SelectionLasso);
+impl_strong_instance_from!(SelectionPointLasso);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct SelectionSphere {
@@ -5781,6 +6373,7 @@ pub struct SelectionSphere {
     pub SurfaceTransparency: f32,
 }
 impl_inherits!(SelectionSphere, PVAdornment);
+impl_strong_instance_from!(SelectionSphere);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct SensorBase {
@@ -5788,18 +6381,21 @@ pub struct SensorBase {
     pub UpdateType: enums::SensorUpdateType,
 }
 impl_inherits!(SensorBase, Instance);
+impl_strong_instance_from!(SensorBase);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct SerializationService {
     superclass: Instance,
 }
 impl_inherits!(SerializationService, Instance);
+impl_strong_instance_from!(SerializationService);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct ServerReplicator {
     superclass: NetworkReplicator,
 }
 impl_inherits!(ServerReplicator, NetworkReplicator);
+impl_strong_instance_from!(ServerReplicator);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct ServerScriptService {
@@ -5807,18 +6403,21 @@ pub struct ServerScriptService {
     pub LoadStringEnabled: bool,
 }
 impl_inherits!(ServerScriptService, Instance);
+impl_strong_instance_from!(ServerScriptService);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct ServerStorage {
     superclass: Instance,
 }
 impl_inherits!(ServerStorage, Instance);
+impl_strong_instance_from!(ServerStorage);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct ServiceProvider {
     superclass: Instance,
 }
 impl_inherits!(ServiceProvider, Instance);
+impl_strong_instance_from!(ServiceProvider);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct ServiceVisibilityService {
@@ -5827,18 +6426,21 @@ pub struct ServiceVisibilityService {
     pub VisibleServices: BinaryString,
 }
 impl_inherits!(ServiceVisibilityService, Instance);
+impl_strong_instance_from!(ServiceVisibilityService);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct SessionService {
     superclass: Instance,
 }
 impl_inherits!(SessionService, Instance);
+impl_strong_instance_from!(SessionService);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct SharedTableRegistry {
     superclass: Instance,
 }
 impl_inherits!(SharedTableRegistry, Instance);
+impl_strong_instance_from!(SharedTableRegistry);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct Shirt {
@@ -5846,6 +6448,7 @@ pub struct Shirt {
     pub ShirtTemplate: ContentId,
 }
 impl_inherits!(Shirt, Clothing);
+impl_strong_instance_from!(Shirt);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct ShirtGraphic {
@@ -5854,12 +6457,14 @@ pub struct ShirtGraphic {
     pub Graphic: ContentId,
 }
 impl_inherits!(ShirtGraphic, CharacterAppearance);
+impl_strong_instance_from!(ShirtGraphic);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct SkateboardController {
     superclass: Controller,
 }
 impl_inherits!(SkateboardController, Controller);
+impl_strong_instance_from!(SkateboardController);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct SkateboardPlatform {
@@ -5869,6 +6474,7 @@ pub struct SkateboardPlatform {
     pub Throttle: i32,
 }
 impl_inherits!(SkateboardPlatform, Part);
+impl_strong_instance_from!(SkateboardPlatform);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct Skin {
@@ -5876,6 +6482,7 @@ pub struct Skin {
     pub SkinColor: BrickColor,
 }
 impl_inherits!(Skin, CharacterAppearance);
+impl_strong_instance_from!(Skin);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct Sky {
@@ -5894,6 +6501,7 @@ pub struct Sky {
     pub SunTextureId: ContentId,
 }
 impl_inherits!(Sky, Instance);
+impl_strong_instance_from!(Sky);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct SlidingBallConstraint {
@@ -5914,6 +6522,7 @@ pub struct SlidingBallConstraint {
     pub Velocity: f32,
 }
 impl_inherits!(SlidingBallConstraint, Constraint);
+impl_strong_instance_from!(SlidingBallConstraint);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct Smoke {
@@ -5923,36 +6532,42 @@ pub struct Smoke {
     pub TimeScale: f32,
 }
 impl_inherits!(Smoke, Instance);
+impl_strong_instance_from!(Smoke);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct SmoothVoxelsUpgraderService {
     superclass: Instance,
 }
 impl_inherits!(SmoothVoxelsUpgraderService, Instance);
+impl_strong_instance_from!(SmoothVoxelsUpgraderService);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct Snap {
     superclass: JointInstance,
 }
 impl_inherits!(Snap, JointInstance);
+impl_strong_instance_from!(Snap);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct SnippetService {
     superclass: Instance,
 }
 impl_inherits!(SnippetService, Instance);
+impl_strong_instance_from!(SnippetService);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct SocialService {
     superclass: Instance,
 }
 impl_inherits!(SocialService, Instance);
+impl_strong_instance_from!(SocialService);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct SolidModelContentProvider {
     superclass: CacheableContentProvider,
 }
 impl_inherits!(SolidModelContentProvider, CacheableContentProvider);
+impl_strong_instance_from!(SolidModelContentProvider);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct Sound {
@@ -5971,6 +6586,7 @@ pub struct Sound {
     pub Volume: f32,
 }
 impl_inherits!(Sound, Instance);
+impl_strong_instance_from!(Sound);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct SoundEffect {
@@ -5979,6 +6595,7 @@ pub struct SoundEffect {
     pub Priority: i32,
 }
 impl_inherits!(SoundEffect, Instance);
+impl_strong_instance_from!(SoundEffect);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct SoundGroup {
@@ -5986,6 +6603,7 @@ pub struct SoundGroup {
     pub Volume: f32,
 }
 impl_inherits!(SoundGroup, Instance);
+impl_strong_instance_from!(SoundGroup);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct SoundService {
@@ -6002,6 +6620,7 @@ pub struct SoundService {
     pub VolumetricAudio: enums::VolumetricAudio,
 }
 impl_inherits!(SoundService, Instance);
+impl_strong_instance_from!(SoundService);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct Sparkles {
@@ -6011,6 +6630,7 @@ pub struct Sparkles {
     pub TimeScale: f32,
 }
 impl_inherits!(Sparkles, Instance);
+impl_strong_instance_from!(Sparkles);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct SpawnLocation {
@@ -6022,12 +6642,14 @@ pub struct SpawnLocation {
     pub TeamColor: BrickColor,
 }
 impl_inherits!(SpawnLocation, Part);
+impl_strong_instance_from!(SpawnLocation);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct SpawnerService {
     superclass: Instance,
 }
 impl_inherits!(SpawnerService, Instance);
+impl_strong_instance_from!(SpawnerService);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct SpecialMesh {
@@ -6035,6 +6657,7 @@ pub struct SpecialMesh {
     pub MeshType: enums::MeshType,
 }
 impl_inherits!(SpecialMesh, FileMesh);
+impl_strong_instance_from!(SpecialMesh);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct SphereHandleAdornment {
@@ -6042,6 +6665,7 @@ pub struct SphereHandleAdornment {
     pub Radius: f32,
 }
 impl_inherits!(SphereHandleAdornment, HandleAdornment);
+impl_strong_instance_from!(SphereHandleAdornment);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct SpotLight {
@@ -6051,6 +6675,7 @@ pub struct SpotLight {
     pub Range: f32,
 }
 impl_inherits!(SpotLight, Light);
+impl_strong_instance_from!(SpotLight);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct SpringConstraint {
@@ -6067,42 +6692,49 @@ pub struct SpringConstraint {
     pub Thickness: f32,
 }
 impl_inherits!(SpringConstraint, Constraint);
+impl_strong_instance_from!(SpringConstraint);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct StackFrame {
     superclass: Instance,
 }
 impl_inherits!(StackFrame, Instance);
+impl_strong_instance_from!(StackFrame);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct StandalonePluginScripts {
     superclass: Instance,
 }
 impl_inherits!(StandalonePluginScripts, Instance);
+impl_strong_instance_from!(StandalonePluginScripts);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct StandardPages {
     superclass: Pages,
 }
 impl_inherits!(StandardPages, Pages);
+impl_strong_instance_from!(StandardPages);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct StartPageService {
     superclass: Instance,
 }
 impl_inherits!(StartPageService, Instance);
+impl_strong_instance_from!(StartPageService);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct StarterCharacterScripts {
     superclass: StarterPlayerScripts,
 }
 impl_inherits!(StarterCharacterScripts, StarterPlayerScripts);
+impl_strong_instance_from!(StarterCharacterScripts);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct StarterGear {
     superclass: Instance,
 }
 impl_inherits!(StarterGear, Instance);
+impl_strong_instance_from!(StarterGear);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct StarterGui {
@@ -6116,12 +6748,14 @@ pub struct StarterGui {
     pub VirtualCursorMode: enums::VirtualCursorMode,
 }
 impl_inherits!(StarterGui, BasePlayerGui);
+impl_strong_instance_from!(StarterGui);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct StarterPack {
     superclass: Instance,
 }
 impl_inherits!(StarterPack, Instance);
+impl_strong_instance_from!(StarterPack);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct StarterPlayer {
@@ -6170,48 +6804,56 @@ pub struct StarterPlayer {
     pub UserEmotesEnabled: bool,
 }
 impl_inherits!(StarterPlayer, Instance);
+impl_strong_instance_from!(StarterPlayer);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct StarterPlayerScripts {
     superclass: Instance,
 }
 impl_inherits!(StarterPlayerScripts, Instance);
+impl_strong_instance_from!(StarterPlayerScripts);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct StartupMessageService {
     superclass: Instance,
 }
 impl_inherits!(StartupMessageService, Instance);
+impl_strong_instance_from!(StartupMessageService);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct Stats {
     superclass: Instance,
 }
 impl_inherits!(Stats, Instance);
+impl_strong_instance_from!(Stats);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct StatsItem {
     superclass: Instance,
 }
 impl_inherits!(StatsItem, Instance);
+impl_strong_instance_from!(StatsItem);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct Status {
     superclass: Model,
 }
 impl_inherits!(Status, Model);
+impl_strong_instance_from!(Status);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct StopWatchReporter {
     superclass: Instance,
 }
 impl_inherits!(StopWatchReporter, Instance);
+impl_strong_instance_from!(StopWatchReporter);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct StreamingService {
     superclass: Instance,
 }
 impl_inherits!(StreamingService, Instance);
+impl_strong_instance_from!(StreamingService);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct StringValue {
@@ -6219,6 +6861,7 @@ pub struct StringValue {
     pub Value: String,
 }
 impl_inherits!(StringValue, ValueBase);
+impl_strong_instance_from!(StringValue);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct Studio {
@@ -6341,12 +6984,14 @@ pub struct Studio {
     pub UseBoundingBoxMoveHandles: bool,
 }
 impl_inherits!(Studio, Instance);
+impl_strong_instance_from!(Studio);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct StudioAssetService {
     superclass: Instance,
 }
 impl_inherits!(StudioAssetService, Instance);
+impl_strong_instance_from!(StudioAssetService);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct StudioAttachment {
@@ -6358,12 +7003,14 @@ pub struct StudioAttachment {
     pub TargetAnchorPoint: Vector2,
 }
 impl_inherits!(StudioAttachment, Instance);
+impl_strong_instance_from!(StudioAttachment);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct StudioCallout {
     superclass: Instance,
 }
 impl_inherits!(StudioCallout, Instance);
+impl_strong_instance_from!(StudioCallout);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct StudioCameraService {
@@ -6371,6 +7018,7 @@ pub struct StudioCameraService {
     pub LockCameraSpeed: bool,
 }
 impl_inherits!(StudioCameraService, Instance);
+impl_strong_instance_from!(StudioCameraService);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct StudioData {
@@ -6378,18 +7026,21 @@ pub struct StudioData {
     pub EnableScriptCollabByDefaultOnLoad: bool,
 }
 impl_inherits!(StudioData, Instance);
+impl_strong_instance_from!(StudioData);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct StudioDeviceEmulatorService {
     superclass: Instance,
 }
 impl_inherits!(StudioDeviceEmulatorService, Instance);
+impl_strong_instance_from!(StudioDeviceEmulatorService);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct StudioObjectBase {
     superclass: Instance,
 }
 impl_inherits!(StudioObjectBase, Instance);
+impl_strong_instance_from!(StudioObjectBase);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct StudioPublishService {
@@ -6397,18 +7048,21 @@ pub struct StudioPublishService {
     pub PublishLocked: bool,
 }
 impl_inherits!(StudioPublishService, Instance);
+impl_strong_instance_from!(StudioPublishService);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct StudioScriptDebugEventListener {
     superclass: Instance,
 }
 impl_inherits!(StudioScriptDebugEventListener, Instance);
+impl_strong_instance_from!(StudioScriptDebugEventListener);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct StudioSdkService {
     superclass: Instance,
 }
 impl_inherits!(StudioSdkService, Instance);
+impl_strong_instance_from!(StudioSdkService);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct StudioService {
@@ -6416,36 +7070,42 @@ pub struct StudioService {
     pub Secrets: String,
 }
 impl_inherits!(StudioService, Instance);
+impl_strong_instance_from!(StudioService);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct StudioTheme {
     superclass: Instance,
 }
 impl_inherits!(StudioTheme, Instance);
+impl_strong_instance_from!(StudioTheme);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct StudioUserService {
     superclass: Instance,
 }
 impl_inherits!(StudioUserService, Instance);
+impl_strong_instance_from!(StudioUserService);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct StudioWidget {
     superclass: StudioObjectBase,
 }
 impl_inherits!(StudioWidget, StudioObjectBase);
+impl_strong_instance_from!(StudioWidget);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct StudioWidgetsService {
     superclass: Instance,
 }
 impl_inherits!(StudioWidgetsService, Instance);
+impl_strong_instance_from!(StudioWidgetsService);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct StyleBase {
     superclass: Instance,
 }
 impl_inherits!(StyleBase, Instance);
+impl_strong_instance_from!(StyleBase);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct StyleDerive {
@@ -6454,6 +7114,7 @@ pub struct StyleDerive {
     pub StyleSheet: Ref,
 }
 impl_inherits!(StyleDerive, Instance);
+impl_strong_instance_from!(StyleDerive);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct StyleLink {
@@ -6461,6 +7122,7 @@ pub struct StyleLink {
     pub StyleSheet: Ref,
 }
 impl_inherits!(StyleLink, Instance);
+impl_strong_instance_from!(StyleLink);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct StyleRule {
@@ -6470,18 +7132,21 @@ pub struct StyleRule {
     pub Selector: String,
 }
 impl_inherits!(StyleRule, StyleBase);
+impl_strong_instance_from!(StyleRule);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct StyleSheet {
     superclass: StyleBase,
 }
 impl_inherits!(StyleSheet, StyleBase);
+impl_strong_instance_from!(StyleSheet);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct StylingService {
     superclass: Instance,
 }
 impl_inherits!(StylingService, Instance);
+impl_strong_instance_from!(StylingService);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct SunRaysEffect {
@@ -6490,6 +7155,7 @@ pub struct SunRaysEffect {
     pub Spread: f32,
 }
 impl_inherits!(SunRaysEffect, PostEffect);
+impl_strong_instance_from!(SunRaysEffect);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct SurfaceAppearance {
@@ -6503,6 +7169,7 @@ pub struct SurfaceAppearance {
     pub TexturePack: ContentId,
 }
 impl_inherits!(SurfaceAppearance, Instance);
+impl_strong_instance_from!(SurfaceAppearance);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct SurfaceGui {
@@ -6519,6 +7186,7 @@ pub struct SurfaceGui {
     pub ZOffset: f32,
 }
 impl_inherits!(SurfaceGui, SurfaceGuiBase);
+impl_strong_instance_from!(SurfaceGui);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct SurfaceGuiBase {
@@ -6528,6 +7196,7 @@ pub struct SurfaceGuiBase {
     pub Face: enums::NormalId,
 }
 impl_inherits!(SurfaceGuiBase, LayerCollector);
+impl_strong_instance_from!(SurfaceGuiBase);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct SurfaceLight {
@@ -6537,6 +7206,7 @@ pub struct SurfaceLight {
     pub Range: f32,
 }
 impl_inherits!(SurfaceLight, Light);
+impl_strong_instance_from!(SurfaceLight);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct SurfaceSelection {
@@ -6544,6 +7214,7 @@ pub struct SurfaceSelection {
     pub TargetSurface: enums::NormalId,
 }
 impl_inherits!(SurfaceSelection, PartAdornment);
+impl_strong_instance_from!(SurfaceSelection);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct SwimController {
@@ -6555,6 +7226,7 @@ pub struct SwimController {
     pub RollSpeedFactor: f32,
 }
 impl_inherits!(SwimController, ControllerBase);
+impl_strong_instance_from!(SwimController);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct SyncScriptBuilder {
@@ -6566,12 +7238,14 @@ pub struct SyncScriptBuilder {
     pub RawBytecode: bool,
 }
 impl_inherits!(SyncScriptBuilder, ScriptBuilder);
+impl_strong_instance_from!(SyncScriptBuilder);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct SystemThemeService {
     superclass: Instance,
 }
 impl_inherits!(SystemThemeService, Instance);
+impl_strong_instance_from!(SystemThemeService);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct TaskScheduler {
@@ -6579,6 +7253,7 @@ pub struct TaskScheduler {
     pub ThreadPoolConfig: enums::ThreadPoolConfig,
 }
 impl_inherits!(TaskScheduler, Instance);
+impl_strong_instance_from!(TaskScheduler);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct Team {
@@ -6587,42 +7262,49 @@ pub struct Team {
     pub TeamColor: BrickColor,
 }
 impl_inherits!(Team, Instance);
+impl_strong_instance_from!(Team);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct TeamCreateData {
     superclass: Instance,
 }
 impl_inherits!(TeamCreateData, Instance);
+impl_strong_instance_from!(TeamCreateData);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct TeamCreatePublishService {
     superclass: Instance,
 }
 impl_inherits!(TeamCreatePublishService, Instance);
+impl_strong_instance_from!(TeamCreatePublishService);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct TeamCreateService {
     superclass: Instance,
 }
 impl_inherits!(TeamCreateService, Instance);
+impl_strong_instance_from!(TeamCreateService);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct Teams {
     superclass: Instance,
 }
 impl_inherits!(Teams, Instance);
+impl_strong_instance_from!(Teams);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct TelemetryService {
     superclass: Instance,
 }
 impl_inherits!(TelemetryService, Instance);
+impl_strong_instance_from!(TelemetryService);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct TeleportAsyncResult {
     superclass: Instance,
 }
 impl_inherits!(TeleportAsyncResult, Instance);
+impl_strong_instance_from!(TeleportAsyncResult);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct TeleportOptions {
@@ -6632,24 +7314,28 @@ pub struct TeleportOptions {
     pub ShouldReserveServer: bool,
 }
 impl_inherits!(TeleportOptions, Instance);
+impl_strong_instance_from!(TeleportOptions);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct TeleportService {
     superclass: Instance,
 }
 impl_inherits!(TeleportService, Instance);
+impl_strong_instance_from!(TeleportService);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct TemporaryCageMeshProvider {
     superclass: Instance,
 }
 impl_inherits!(TemporaryCageMeshProvider, Instance);
+impl_strong_instance_from!(TemporaryCageMeshProvider);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct TemporaryScriptService {
     superclass: Instance,
 }
 impl_inherits!(TemporaryScriptService, Instance);
+impl_strong_instance_from!(TemporaryScriptService);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct Terrain {
@@ -6669,6 +7355,7 @@ pub struct Terrain {
     pub WaterWaveSpeed: f32,
 }
 impl_inherits!(Terrain, BasePart);
+impl_strong_instance_from!(Terrain);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct TerrainDetail {
@@ -6683,6 +7370,7 @@ pub struct TerrainDetail {
     pub TexturePack: ContentId,
 }
 impl_inherits!(TerrainDetail, Instance);
+impl_strong_instance_from!(TerrainDetail);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct TerrainRegion {
@@ -6692,6 +7380,7 @@ pub struct TerrainRegion {
     pub SmoothGrid: BinaryString,
 }
 impl_inherits!(TerrainRegion, Instance);
+impl_strong_instance_from!(TerrainRegion);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct TestService {
@@ -6707,6 +7396,7 @@ pub struct TestService {
     pub Timeout: f64,
 }
 impl_inherits!(TestService, Instance);
+impl_strong_instance_from!(TestService);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct TextBox {
@@ -6738,12 +7428,14 @@ pub struct TextBox {
     pub TextYAlignment: enums::TextYAlignment,
 }
 impl_inherits!(TextBox, GuiObject);
+impl_strong_instance_from!(TextBox);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct TextBoxService {
     superclass: Instance,
 }
 impl_inherits!(TextBoxService, Instance);
+impl_strong_instance_from!(TextBoxService);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct TextButton {
@@ -6769,12 +7461,14 @@ pub struct TextButton {
     pub TextYAlignment: enums::TextYAlignment,
 }
 impl_inherits!(TextButton, GuiButton);
+impl_strong_instance_from!(TextButton);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct TextChannel {
     superclass: Instance,
 }
 impl_inherits!(TextChannel, Instance);
+impl_strong_instance_from!(TextChannel);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct TextChatCommand {
@@ -6785,12 +7479,14 @@ pub struct TextChatCommand {
     pub SecondaryAlias: String,
 }
 impl_inherits!(TextChatCommand, Instance);
+impl_strong_instance_from!(TextChatCommand);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct TextChatConfigurations {
     superclass: Instance,
 }
 impl_inherits!(TextChatConfigurations, Instance);
+impl_strong_instance_from!(TextChatConfigurations);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct TextChatMessage {
@@ -6801,12 +7497,14 @@ pub struct TextChatMessage {
     pub TextSource: Ref,
 }
 impl_inherits!(TextChatMessage, Instance);
+impl_strong_instance_from!(TextChatMessage);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct TextChatMessageProperties {
     superclass: Instance,
 }
 impl_inherits!(TextChatMessageProperties, Instance);
+impl_strong_instance_from!(TextChatMessageProperties);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct TextChatService {
@@ -6819,18 +7517,21 @@ pub struct TextChatService {
     pub HasSeenDeprecationDialog: bool,
 }
 impl_inherits!(TextChatService, Instance);
+impl_strong_instance_from!(TextChatService);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct TextFilterResult {
     superclass: Instance,
 }
 impl_inherits!(TextFilterResult, Instance);
+impl_strong_instance_from!(TextFilterResult);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct TextFilterTranslatedResult {
     superclass: Instance,
 }
 impl_inherits!(TextFilterTranslatedResult, Instance);
+impl_strong_instance_from!(TextFilterTranslatedResult);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct TextLabel {
@@ -6856,12 +7557,14 @@ pub struct TextLabel {
     pub TextYAlignment: enums::TextYAlignment,
 }
 impl_inherits!(TextLabel, GuiLabel);
+impl_strong_instance_from!(TextLabel);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct TextService {
     superclass: Instance,
 }
 impl_inherits!(TextService, Instance);
+impl_strong_instance_from!(TextService);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct TextSource {
@@ -6869,6 +7572,7 @@ pub struct TextSource {
     pub CanSend: bool,
 }
 impl_inherits!(TextSource, Instance);
+impl_strong_instance_from!(TextSource);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct Texture {
@@ -6879,48 +7583,56 @@ pub struct Texture {
     pub StudsPerTileV: f32,
 }
 impl_inherits!(Texture, Decal);
+impl_strong_instance_from!(Texture);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct TextureGenerationPartGroup {
     superclass: Instance,
 }
 impl_inherits!(TextureGenerationPartGroup, Instance);
+impl_strong_instance_from!(TextureGenerationPartGroup);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct TextureGenerationService {
     superclass: Instance,
 }
 impl_inherits!(TextureGenerationService, Instance);
+impl_strong_instance_from!(TextureGenerationService);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct TextureGenerationUnwrappingRequest {
     superclass: Instance,
 }
 impl_inherits!(TextureGenerationUnwrappingRequest, Instance);
+impl_strong_instance_from!(TextureGenerationUnwrappingRequest);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct ThirdPartyUserService {
     superclass: Instance,
 }
 impl_inherits!(ThirdPartyUserService, Instance);
+impl_strong_instance_from!(ThirdPartyUserService);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct ThreadState {
     superclass: Instance,
 }
 impl_inherits!(ThreadState, Instance);
+impl_strong_instance_from!(ThreadState);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct TimerService {
     superclass: Instance,
 }
 impl_inherits!(TimerService, Instance);
+impl_strong_instance_from!(TimerService);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct ToastNotificationService {
     superclass: Instance,
 }
 impl_inherits!(ToastNotificationService, Instance);
+impl_strong_instance_from!(ToastNotificationService);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct Tool {
@@ -6933,6 +7645,7 @@ pub struct Tool {
     pub ToolTip: String,
 }
 impl_inherits!(Tool, BackpackItem);
+impl_strong_instance_from!(Tool);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct Torque {
@@ -6941,6 +7654,7 @@ pub struct Torque {
     pub Torque: Vector3,
 }
 impl_inherits!(Torque, Constraint);
+impl_strong_instance_from!(Torque);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct TorsionSpringConstraint {
@@ -6956,30 +7670,35 @@ pub struct TorsionSpringConstraint {
     pub Stiffness: f32,
 }
 impl_inherits!(TorsionSpringConstraint, Constraint);
+impl_strong_instance_from!(TorsionSpringConstraint);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct TotalCountTimeIntervalItem {
     superclass: StatsItem,
 }
 impl_inherits!(TotalCountTimeIntervalItem, StatsItem);
+impl_strong_instance_from!(TotalCountTimeIntervalItem);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct TouchInputService {
     superclass: Instance,
 }
 impl_inherits!(TouchInputService, Instance);
+impl_strong_instance_from!(TouchInputService);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct TouchTransmitter {
     superclass: Instance,
 }
 impl_inherits!(TouchTransmitter, Instance);
+impl_strong_instance_from!(TouchTransmitter);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct TracerService {
     superclass: Instance,
 }
 impl_inherits!(TracerService, Instance);
+impl_strong_instance_from!(TracerService);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct TrackerLodController {
@@ -6990,12 +7709,14 @@ pub struct TrackerLodController {
     pub VideoMode: enums::TrackerLodFlagMode,
 }
 impl_inherits!(TrackerLodController, Instance);
+impl_strong_instance_from!(TrackerLodController);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct TrackerStreamAnimation {
     superclass: Instance,
 }
 impl_inherits!(TrackerStreamAnimation, Instance);
+impl_strong_instance_from!(TrackerStreamAnimation);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct Trail {
@@ -7018,12 +7739,14 @@ pub struct Trail {
     pub WidthScale: NumberSequence,
 }
 impl_inherits!(Trail, Instance);
+impl_strong_instance_from!(Trail);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct Translator {
     superclass: Instance,
 }
 impl_inherits!(Translator, Instance);
+impl_strong_instance_from!(Translator);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct TremoloSoundEffect {
@@ -7033,6 +7756,7 @@ pub struct TremoloSoundEffect {
     pub Frequency: f32,
 }
 impl_inherits!(TremoloSoundEffect, SoundEffect);
+impl_strong_instance_from!(TremoloSoundEffect);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct TriangleMeshPart {
@@ -7046,6 +7770,7 @@ pub struct TriangleMeshPart {
     pub UnscaledVolume: f32,
 }
 impl_inherits!(TriangleMeshPart, BasePart);
+impl_strong_instance_from!(TriangleMeshPart);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct TrussPart {
@@ -7053,42 +7778,49 @@ pub struct TrussPart {
     pub Style: enums::Style,
 }
 impl_inherits!(TrussPart, BasePart);
+impl_strong_instance_from!(TrussPart);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct TutorialService {
     superclass: Instance,
 }
 impl_inherits!(TutorialService, Instance);
+impl_strong_instance_from!(TutorialService);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct Tween {
     superclass: TweenBase,
 }
 impl_inherits!(Tween, TweenBase);
+impl_strong_instance_from!(Tween);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct TweenBase {
     superclass: Instance,
 }
 impl_inherits!(TweenBase, Instance);
+impl_strong_instance_from!(TweenBase);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct TweenService {
     superclass: Instance,
 }
 impl_inherits!(TweenService, Instance);
+impl_strong_instance_from!(TweenService);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct UGCAvatarService {
     superclass: Instance,
 }
 impl_inherits!(UGCAvatarService, Instance);
+impl_strong_instance_from!(UGCAvatarService);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct UGCValidationService {
     superclass: Instance,
 }
 impl_inherits!(UGCValidationService, Instance);
+impl_strong_instance_from!(UGCValidationService);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct UIAspectRatioConstraint {
@@ -7098,24 +7830,28 @@ pub struct UIAspectRatioConstraint {
     pub DominantAxis: enums::DominantAxis,
 }
 impl_inherits!(UIAspectRatioConstraint, UIConstraint);
+impl_strong_instance_from!(UIAspectRatioConstraint);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct UIBase {
     superclass: Instance,
 }
 impl_inherits!(UIBase, Instance);
+impl_strong_instance_from!(UIBase);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct UIComponent {
     superclass: UIBase,
 }
 impl_inherits!(UIComponent, UIBase);
+impl_strong_instance_from!(UIComponent);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct UIConstraint {
     superclass: UIComponent,
 }
 impl_inherits!(UIConstraint, UIComponent);
+impl_strong_instance_from!(UIConstraint);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct UICorner {
@@ -7123,6 +7859,7 @@ pub struct UICorner {
     pub CornerRadius: UDim,
 }
 impl_inherits!(UICorner, UIComponent);
+impl_strong_instance_from!(UICorner);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct UIDragDetector {
@@ -7149,12 +7886,14 @@ pub struct UIDragDetector {
     pub UiDragSpeedAxisMapping: enums::UIDragSpeedAxisMapping,
 }
 impl_inherits!(UIDragDetector, UIComponent);
+impl_strong_instance_from!(UIDragDetector);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct UIDragDetectorService {
     superclass: Instance,
 }
 impl_inherits!(UIDragDetectorService, Instance);
+impl_strong_instance_from!(UIDragDetectorService);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct UIFlexItem {
@@ -7165,6 +7904,7 @@ pub struct UIFlexItem {
     pub ShrinkRatio: f32,
 }
 impl_inherits!(UIFlexItem, UIComponent);
+impl_strong_instance_from!(UIFlexItem);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct UIGradient {
@@ -7176,6 +7916,7 @@ pub struct UIGradient {
     pub Transparency: NumberSequence,
 }
 impl_inherits!(UIGradient, UIComponent);
+impl_strong_instance_from!(UIGradient);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct UIGridLayout {
@@ -7186,6 +7927,7 @@ pub struct UIGridLayout {
     pub StartCorner: enums::StartCorner,
 }
 impl_inherits!(UIGridLayout, UIGridStyleLayout);
+impl_strong_instance_from!(UIGridLayout);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct UIGridStyleLayout {
@@ -7196,12 +7938,14 @@ pub struct UIGridStyleLayout {
     pub VerticalAlignment: enums::VerticalAlignment,
 }
 impl_inherits!(UIGridStyleLayout, UILayout);
+impl_strong_instance_from!(UIGridStyleLayout);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct UILayout {
     superclass: UIComponent,
 }
 impl_inherits!(UILayout, UIComponent);
+impl_strong_instance_from!(UILayout);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct UIListLayout {
@@ -7213,6 +7957,7 @@ pub struct UIListLayout {
     pub Wraps: bool,
 }
 impl_inherits!(UIListLayout, UIGridStyleLayout);
+impl_strong_instance_from!(UIListLayout);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct UIPadding {
@@ -7223,6 +7968,7 @@ pub struct UIPadding {
     pub PaddingTop: UDim,
 }
 impl_inherits!(UIPadding, UIComponent);
+impl_strong_instance_from!(UIPadding);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct UIPageLayout {
@@ -7238,6 +7984,7 @@ pub struct UIPageLayout {
     pub TweenTime: f32,
 }
 impl_inherits!(UIPageLayout, UIGridStyleLayout);
+impl_strong_instance_from!(UIPageLayout);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct UIScale {
@@ -7245,6 +7992,7 @@ pub struct UIScale {
     pub Scale: f32,
 }
 impl_inherits!(UIScale, UIComponent);
+impl_strong_instance_from!(UIScale);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct UISizeConstraint {
@@ -7253,6 +8001,7 @@ pub struct UISizeConstraint {
     pub MinSize: Vector2,
 }
 impl_inherits!(UISizeConstraint, UIConstraint);
+impl_strong_instance_from!(UISizeConstraint);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct UIStroke {
@@ -7265,6 +8014,7 @@ pub struct UIStroke {
     pub Transparency: f32,
 }
 impl_inherits!(UIStroke, UIComponent);
+impl_strong_instance_from!(UIStroke);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct UITableLayout {
@@ -7275,6 +8025,7 @@ pub struct UITableLayout {
     pub Padding: UDim2,
 }
 impl_inherits!(UITableLayout, UIGridStyleLayout);
+impl_strong_instance_from!(UITableLayout);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct UITextSizeConstraint {
@@ -7283,18 +8034,21 @@ pub struct UITextSizeConstraint {
     pub MinTextSize: i32,
 }
 impl_inherits!(UITextSizeConstraint, UIConstraint);
+impl_strong_instance_from!(UITextSizeConstraint);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct UnionOperation {
     superclass: PartOperation,
 }
 impl_inherits!(UnionOperation, PartOperation);
+impl_strong_instance_from!(UnionOperation);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct UniqueIdLookupService {
     superclass: Instance,
 }
 impl_inherits!(UniqueIdLookupService, Instance);
+impl_strong_instance_from!(UniqueIdLookupService);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct UniversalConstraint {
@@ -7305,12 +8059,14 @@ pub struct UniversalConstraint {
     pub Restitution: f32,
 }
 impl_inherits!(UniversalConstraint, Constraint);
+impl_strong_instance_from!(UniversalConstraint);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct UnreliableRemoteEvent {
     superclass: BaseRemoteEvent,
 }
 impl_inherits!(UnreliableRemoteEvent, BaseRemoteEvent);
+impl_strong_instance_from!(UnreliableRemoteEvent);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct UnvalidatedAssetService {
@@ -7318,6 +8074,7 @@ pub struct UnvalidatedAssetService {
     pub CachedData: String,
 }
 impl_inherits!(UnvalidatedAssetService, Instance);
+impl_strong_instance_from!(UnvalidatedAssetService);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct UserGameSettings {
@@ -7386,6 +8143,7 @@ pub struct UserGameSettings {
     pub VrThirdPersonFollowCamEnabledCustomOption: bool,
 }
 impl_inherits!(UserGameSettings, Instance);
+impl_strong_instance_from!(UserGameSettings);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct UserInputService {
@@ -7396,24 +8154,28 @@ pub struct UserInputService {
     pub MouseIconEnabled: bool,
 }
 impl_inherits!(UserInputService, Instance);
+impl_strong_instance_from!(UserInputService);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct UserService {
     superclass: Instance,
 }
 impl_inherits!(UserService, Instance);
+impl_strong_instance_from!(UserService);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct UserSettings {
     superclass: GenericSettings,
 }
 impl_inherits!(UserSettings, GenericSettings);
+impl_strong_instance_from!(UserSettings);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct UserStorageService {
     superclass: LocalStorageService,
 }
 impl_inherits!(UserStorageService, LocalStorageService);
+impl_strong_instance_from!(UserStorageService);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct VRService {
@@ -7425,24 +8187,28 @@ pub struct VRService {
     pub LaserPointer: enums::VRLaserPointerMode,
 }
 impl_inherits!(VRService, Instance);
+impl_strong_instance_from!(VRService);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct VRStatusService {
     superclass: Instance,
 }
 impl_inherits!(VRStatusService, Instance);
+impl_strong_instance_from!(VRStatusService);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct ValueBase {
     superclass: Instance,
 }
 impl_inherits!(ValueBase, Instance);
+impl_strong_instance_from!(ValueBase);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct Vector3Curve {
     superclass: Instance,
 }
 impl_inherits!(Vector3Curve, Instance);
+impl_strong_instance_from!(Vector3Curve);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct Vector3Value {
@@ -7450,6 +8216,7 @@ pub struct Vector3Value {
     pub Value: Vector3,
 }
 impl_inherits!(Vector3Value, ValueBase);
+impl_strong_instance_from!(Vector3Value);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct VectorForce {
@@ -7459,12 +8226,14 @@ pub struct VectorForce {
     pub RelativeTo: enums::ActuatorRelativeTo,
 }
 impl_inherits!(VectorForce, Constraint);
+impl_strong_instance_from!(VectorForce);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct VehicleController {
     superclass: Controller,
 }
 impl_inherits!(VehicleController, Controller);
+impl_strong_instance_from!(VehicleController);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct VehicleSeat {
@@ -7480,6 +8249,7 @@ pub struct VehicleSeat {
     pub TurnSpeed: f32,
 }
 impl_inherits!(VehicleSeat, BasePart);
+impl_strong_instance_from!(VehicleSeat);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct VelocityMotor {
@@ -7490,18 +8260,21 @@ pub struct VelocityMotor {
     pub MaxVelocity: f32,
 }
 impl_inherits!(VelocityMotor, JointInstance);
+impl_strong_instance_from!(VelocityMotor);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct VersionControlService {
     superclass: Instance,
 }
 impl_inherits!(VersionControlService, Instance);
+impl_strong_instance_from!(VersionControlService);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct VideoCaptureService {
     superclass: Instance,
 }
 impl_inherits!(VideoCaptureService, Instance);
+impl_strong_instance_from!(VideoCaptureService);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct VideoDeviceInput {
@@ -7511,6 +8284,7 @@ pub struct VideoDeviceInput {
     pub CaptureQuality: enums::VideoDeviceCaptureQuality,
 }
 impl_inherits!(VideoDeviceInput, Instance);
+impl_strong_instance_from!(VideoDeviceInput);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct VideoDisplay {
@@ -7524,6 +8298,7 @@ pub struct VideoDisplay {
     pub VideoTransparency: f32,
 }
 impl_inherits!(VideoDisplay, GuiObject);
+impl_strong_instance_from!(VideoDisplay);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct VideoFrame {
@@ -7535,6 +8310,7 @@ pub struct VideoFrame {
     pub Volume: f32,
 }
 impl_inherits!(VideoFrame, GuiObject);
+impl_strong_instance_from!(VideoFrame);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct VideoPlayer {
@@ -7546,12 +8322,14 @@ pub struct VideoPlayer {
     pub Volume: f32,
 }
 impl_inherits!(VideoPlayer, Instance);
+impl_strong_instance_from!(VideoPlayer);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct VideoService {
     superclass: Instance,
 }
 impl_inherits!(VideoService, Instance);
+impl_strong_instance_from!(VideoService);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct ViewportFrame {
@@ -7565,30 +8343,35 @@ pub struct ViewportFrame {
     pub LightDirection: Vector3,
 }
 impl_inherits!(ViewportFrame, GuiObject);
+impl_strong_instance_from!(ViewportFrame);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct VirtualInputManager {
     superclass: Instance,
 }
 impl_inherits!(VirtualInputManager, Instance);
+impl_strong_instance_from!(VirtualInputManager);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct VirtualUser {
     superclass: Instance,
 }
 impl_inherits!(VirtualUser, Instance);
+impl_strong_instance_from!(VirtualUser);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct VisibilityCheckDispatcher {
     superclass: Instance,
 }
 impl_inherits!(VisibilityCheckDispatcher, Instance);
+impl_strong_instance_from!(VisibilityCheckDispatcher);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct Visit {
     superclass: Instance,
 }
 impl_inherits!(Visit, Instance);
+impl_strong_instance_from!(Visit);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct VisualizationMode {
@@ -7598,6 +8381,7 @@ pub struct VisualizationMode {
     pub ToolTip: String,
 }
 impl_inherits!(VisualizationMode, Instance);
+impl_strong_instance_from!(VisualizationMode);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct VisualizationModeCategory {
@@ -7606,18 +8390,21 @@ pub struct VisualizationModeCategory {
     pub Title: String,
 }
 impl_inherits!(VisualizationModeCategory, Instance);
+impl_strong_instance_from!(VisualizationModeCategory);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct VisualizationModeService {
     superclass: Instance,
 }
 impl_inherits!(VisualizationModeService, Instance);
+impl_strong_instance_from!(VisualizationModeService);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct VoiceChatInternal {
     superclass: Instance,
 }
 impl_inherits!(VoiceChatInternal, Instance);
+impl_strong_instance_from!(VoiceChatInternal);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct VoiceChatService {
@@ -7627,36 +8414,42 @@ pub struct VoiceChatService {
     pub UseAudioApi: enums::AudioApiRollout,
 }
 impl_inherits!(VoiceChatService, Instance);
+impl_strong_instance_from!(VoiceChatService);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct WebSocketClient {
     superclass: Instance,
 }
 impl_inherits!(WebSocketClient, Instance);
+impl_strong_instance_from!(WebSocketClient);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct WebSocketService {
     superclass: Instance,
 }
 impl_inherits!(WebSocketService, Instance);
+impl_strong_instance_from!(WebSocketService);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct WebViewService {
     superclass: Instance,
 }
 impl_inherits!(WebViewService, Instance);
+impl_strong_instance_from!(WebViewService);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct WedgePart {
     superclass: FormFactorPart,
 }
 impl_inherits!(WedgePart, FormFactorPart);
+impl_strong_instance_from!(WedgePart);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct Weld {
     superclass: JointInstance,
 }
 impl_inherits!(Weld, JointInstance);
+impl_strong_instance_from!(Weld);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct WeldConstraint {
@@ -7665,6 +8458,7 @@ pub struct WeldConstraint {
     pub State: i32,
 }
 impl_inherits!(WeldConstraint, Instance);
+impl_strong_instance_from!(WeldConstraint);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct Wire {
@@ -7675,6 +8469,7 @@ pub struct Wire {
     pub TargetName: String,
 }
 impl_inherits!(Wire, Instance);
+impl_strong_instance_from!(Wire);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct WireframeHandleAdornment {
@@ -7683,6 +8478,7 @@ pub struct WireframeHandleAdornment {
     pub Thickness: f32,
 }
 impl_inherits!(WireframeHandleAdornment, HandleAdornment);
+impl_strong_instance_from!(WireframeHandleAdornment);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct Workspace {
@@ -7725,30 +8521,35 @@ pub struct Workspace {
     pub TouchesUseCollisionGroups: bool,
 }
 impl_inherits!(Workspace, WorldRoot);
+impl_strong_instance_from!(Workspace);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct WorkspaceAnnotation {
     superclass: Annotation,
 }
 impl_inherits!(WorkspaceAnnotation, Annotation);
+impl_strong_instance_from!(WorkspaceAnnotation);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct WorldModel {
     superclass: WorldRoot,
 }
 impl_inherits!(WorldModel, WorldRoot);
+impl_strong_instance_from!(WorldModel);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct WorldRoot {
     superclass: Model,
 }
 impl_inherits!(WorldRoot, Model);
+impl_strong_instance_from!(WorldRoot);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct WrapDeformer {
     superclass: BaseWrap,
 }
 impl_inherits!(WrapDeformer, BaseWrap);
+impl_strong_instance_from!(WrapDeformer);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct WrapLayer {
@@ -7764,6 +8565,7 @@ pub struct WrapLayer {
     pub TemporaryReferenceId: ContentId,
 }
 impl_inherits!(WrapLayer, BaseWrap);
+impl_strong_instance_from!(WrapLayer);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct WrapTarget {
@@ -7771,3 +8573,4 @@ pub struct WrapTarget {
     pub Stiffness: f32,
 }
 impl_inherits!(WrapTarget, BaseWrap);
+impl_strong_instance_from!(WrapTarget);
