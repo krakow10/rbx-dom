@@ -89,7 +89,7 @@ fn generate_data_type(data_type: &DataType) -> syn::Type {
 }
 
 struct StrongInstancesCollector {
-    structs: Vec<syn::ItemStruct>,
+    structs: Vec<(syn::ItemStruct, Vec<syn::Item>)>,
     variants: Vec<syn::Variant>,
 }
 impl StrongInstancesCollector {
@@ -131,23 +131,53 @@ impl StrongInstancesCollector {
         // struct ident
         let ident = syn::Ident::new(&descriptor.name, proc_macro2::Span::call_site());
 
-        // generate the class struct
+        // add a superclass field if this instance has a superclass
+        let superclass_ident: Option<syn::Ident> = descriptor
+            .superclass
+            .as_ref()
+            .map(|superclass| syn::parse_str(superclass).unwrap());
 
-        self.structs.push(syn::ItemStruct {
-            attrs: syn::parse_quote!(
-                #[derive(Debug, Clone)]
-                #[allow(nonstandard_style)]
-            ),
-            vis: syn::Visibility::Public(syn::token::Pub::default()),
-            struct_token: syn::token::Struct::default(),
-            ident: ident.clone(),
-            generics: syn::Generics::default(),
-            fields: syn::Fields::Named(syn::FieldsNamed {
-                brace_token: syn::token::Brace::default(),
-                named: fields.into_iter().collect(),
-            }),
-            semi_token: None,
+        // a Vec of impls for this particular instance
+        // this way the impls always stay with the struct
+        // even after the structs are sorted
+        let impls = superclass_ident
+            .iter()
+            .map(|superclass_ident| {
+                syn::parse_quote! {
+                    impl_inherits!(#ident, #superclass_ident);
+                }
+            })
+            .collect();
+
+        // superclass field is added to the top
+        let superclass_field = superclass_ident.map(|superclass_ident| syn::Field {
+            attrs: Vec::new(),
+            vis: syn::Visibility::Inherited,
+            mutability: syn::FieldMutability::None,
+            ident: Some(syn::parse_quote!(superclass)),
+            colon_token: Some(syn::token::Colon::default()),
+            ty: syn::parse_quote!(#superclass_ident),
         });
+
+        // generate the class struct
+        self.structs.push((
+            syn::ItemStruct {
+                attrs: syn::parse_quote!(
+                    #[derive(Debug, Clone)]
+                    #[allow(nonstandard_style)]
+                ),
+                vis: syn::Visibility::Public(syn::token::Pub::default()),
+                struct_token: syn::token::Struct::default(),
+                ident: ident.clone(),
+                generics: syn::Generics::default(),
+                fields: syn::Fields::Named(syn::FieldsNamed {
+                    brace_token: syn::token::Brace::default(),
+                    named: superclass_field.into_iter().chain(fields).collect(),
+                }),
+                semi_token: None,
+            },
+            impls,
+        ));
 
         // generate the StrongInstances variant
         self.variants.push(syn::Variant {
@@ -171,7 +201,7 @@ impl StrongInstancesCollector {
     }
     fn codegen(mut self) -> syn::File {
         // sort for consistency
-        self.structs.sort_by(|a, b| a.ident.cmp(&b.ident));
+        self.structs.sort_by(|(a, _), (b, _)| a.ident.cmp(&b.ident));
         self.variants.sort_by(|a, b| a.ident.cmp(&b.ident));
 
         // generate StrongInstance enum
@@ -185,6 +215,8 @@ impl StrongInstancesCollector {
 
         // create complete file including use statements
         let mut complete_file: syn::File = syn::parse_quote! {
+            use core::ops::{Deref, DerefMut};
+            use crate::impl_inherits;
             use super::enums;
             use rbx_types::*;
         };
@@ -193,7 +225,13 @@ impl StrongInstancesCollector {
             .push(syn::Item::Enum(strong_instances_enum));
         complete_file
             .items
-            .extend(self.structs.into_iter().map(syn::Item::Struct));
+            .extend(
+                self.structs
+                    .into_iter()
+                    .flat_map(|(strong_instance, impls)| {
+                        std::iter::once(syn::Item::Struct(strong_instance)).chain(impls)
+                    }),
+            );
 
         complete_file
     }
