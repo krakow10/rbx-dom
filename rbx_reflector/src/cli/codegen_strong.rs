@@ -137,17 +137,18 @@ impl StrongInstancesCollector {
             .as_ref()
             .map(|superclass| syn::parse_str(superclass).unwrap());
 
-        // a Vec of impls for this particular instance
+        // A Vec of impls for this particular instance.
         // this way the impls always stay with the struct
         // even after the structs are sorted
-        let impls = superclass_ident
-            .iter()
-            .map(|superclass_ident| {
-                syn::parse_quote! {
-                    impl_inherits!(#ident, #superclass_ident);
-                }
-            })
-            .collect();
+        let mut impls = Vec::new();
+        if let Some(superclass_ident) = &superclass_ident {
+            impls.push(syn::parse_quote! {
+                impl_inherits!(#ident, #superclass_ident);
+            });
+        }
+        impls.push(syn::parse_quote! {
+            impl_strong_instance_from!(#ident);
+        });
 
         // superclass field is added to the top
         let superclass_field = superclass_ident.map(|superclass_ident| syn::Field {
@@ -216,7 +217,7 @@ impl StrongInstancesCollector {
         // create complete file including use statements
         let mut complete_file: syn::File = syn::parse_quote! {
             use core::ops::{Deref, DerefMut};
-            use crate::impl_inherits;
+            use crate::{impl_inherits, impl_strong_instance_from};
             use super::enums;
             use rbx_types::*;
         };

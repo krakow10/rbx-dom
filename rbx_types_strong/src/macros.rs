@@ -14,3 +14,13 @@ macro_rules! impl_inherits {
         }
     };
 }
+#[macro_export]
+macro_rules! impl_strong_instance_from {
+    ($class:ident) => {
+        impl From<$class> for StrongInstance {
+            fn from(value: $class) -> Self {
+                Self::$class(Box::new(value))
+            }
+        }
+    };
+}
