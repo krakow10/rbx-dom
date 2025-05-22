@@ -66,24 +66,10 @@ fn generate_data_type(data_type: &DataType) -> syn::Type {
         DataType::Value(rbx_types::VariantType::EnumItem) => syn::parse_quote!(EnumItem),
         DataType::Value(rbx_types::VariantType::Content) => syn::parse_quote!(Content),
         // enums::name
-        DataType::Enum(name) => syn::Type::Path(syn::TypePath {
-            qself: None,
-            path: syn::Path {
-                leading_colon: None,
-                segments: [
-                    syn::PathSegment {
-                        ident: syn::parse_quote!(enums),
-                        arguments: syn::PathArguments::None,
-                    },
-                    syn::PathSegment {
-                        ident: syn::Ident::new(name, proc_macro2::Span::call_site()),
-                        arguments: syn::PathArguments::None,
-                    },
-                ]
-                .into_iter()
-                .collect(),
-            },
-        }),
+        DataType::Enum(name) => {
+            let ident = syn::Ident::new(name, proc_macro2::Span::call_site());
+            syn::parse_quote!(enums::#ident)
+        }
         _ => unimplemented!(),
     }
 }
@@ -181,24 +167,7 @@ impl StrongInstancesCollector {
         ));
 
         // generate the StrongInstances variant
-        self.variants.push(syn::Variant {
-            attrs: Vec::new(),
-            ident: ident.clone(),
-            fields: syn::Fields::Unnamed(syn::FieldsUnnamed {
-                paren_token: syn::token::Paren::default(),
-                unnamed: [syn::Field {
-                    attrs: vec![],
-                    vis: syn::Visibility::Inherited,
-                    mutability: syn::FieldMutability::None,
-                    ident: None,
-                    colon_token: None,
-                    ty: syn::parse_quote!(Box<#ident>),
-                }]
-                .into_iter()
-                .collect(),
-            }),
-            discriminant: None,
-        });
+        self.variants.push(syn::parse_quote!(#ident(Box<#ident>)));
     }
     fn codegen(mut self) -> syn::File {
         // sort for consistency
@@ -297,36 +266,8 @@ impl EnumCollector {
             brace_token: syn::token::Brace::default(),
         });
 
-        // generate the StrongInstances variant
-        self.variants.push(syn::Variant {
-            attrs: Vec::new(),
-            ident: ident.clone(),
-            fields: syn::Fields::Unnamed(syn::FieldsUnnamed {
-                paren_token: syn::token::Paren::default(),
-                unnamed: [syn::Field {
-                    attrs: vec![],
-                    vis: syn::Visibility::Inherited,
-                    mutability: syn::FieldMutability::None,
-                    ident: None,
-                    colon_token: None,
-                    ty: syn::Type::Path(syn::TypePath {
-                        qself: None,
-                        path: syn::Path {
-                            leading_colon: None,
-                            segments: [syn::PathSegment {
-                                ident,
-                                arguments: syn::PathArguments::None,
-                            }]
-                            .into_iter()
-                            .collect(),
-                        },
-                    }),
-                }]
-                .into_iter()
-                .collect(),
-            }),
-            discriminant: None,
-        });
+        // generate the StrongEnum variant
+        self.variants.push(syn::parse_quote!(#ident(#ident)));
     }
     fn codegen(mut self) -> syn::File {
         // sort for consistency
