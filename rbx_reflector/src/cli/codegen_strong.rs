@@ -168,7 +168,8 @@ impl StrongInstancesCollector {
         // create complete file including use statements
         let mut complete_file: syn::File = syn::parse_quote! {
             use core::ops::{Deref, DerefMut};
-            use rbx_types::{CFrame, Enum, Ref};
+            use super::r#enum::*;
+            use rbx_types::*;
 
             macro_rules! impl_inherits {
                 ($class:ident,$inherits:ident) => {
