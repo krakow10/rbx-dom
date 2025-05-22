@@ -65,7 +65,25 @@ fn generate_data_type(data_type: &DataType) -> syn::Type {
         }
         DataType::Value(rbx_types::VariantType::EnumItem) => syn::parse_quote!(EnumItem),
         DataType::Value(rbx_types::VariantType::Content) => syn::parse_quote!(Content),
-        DataType::Enum(cow) => syn::parse_str(cow).unwrap(),
+        // enums::name
+        DataType::Enum(name) => syn::Type::Path(syn::TypePath {
+            qself: None,
+            path: syn::Path {
+                leading_colon: None,
+                segments: [
+                    syn::PathSegment {
+                        ident: syn::parse_quote!(enums),
+                        arguments: syn::PathArguments::None,
+                    },
+                    syn::PathSegment {
+                        ident: syn::Ident::new(name, proc_macro2::Span::call_site()),
+                        arguments: syn::PathArguments::None,
+                    },
+                ]
+                .into_iter()
+                .collect(),
+            },
+        }),
         _ => unimplemented!(),
     }
 }
@@ -163,7 +181,7 @@ impl StrongInstancesCollector {
 
         // create complete file including use statements
         let mut complete_file: syn::File = syn::parse_quote! {
-            use super::r#enum::*;
+            use super::enums;
             use rbx_types::*;
         };
         complete_file
@@ -293,8 +311,8 @@ impl CodegenStrongSubcommand {
     pub fn run(&self) -> anyhow::Result<()> {
         let db = rbx_reflection_database::get();
 
-        let dest_instance = self.output.join("instance.rs");
-        let dest_enum = self.output.join("enum.rs");
+        let dest_instance = self.output.join("instances.rs");
+        let dest_enum = self.output.join("enums.rs");
 
         // ==== generate instances.rs ====
         let instance_code = {
