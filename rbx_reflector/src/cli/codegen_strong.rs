@@ -74,8 +74,14 @@ fn generate_data_type(data_type: &DataType) -> syn::Type {
     }
 }
 
+// A struct with impls trailing under it.
+// Sorted together so the impls stay postfixed to the struct.
+struct StructWithImpls {
+    item: syn::ItemStruct,
+    impls: Vec<syn::Item>,
+}
 struct StrongInstancesCollector {
-    structs: Vec<(syn::ItemStruct, Vec<syn::Item>)>,
+    structs: Vec<StructWithImpls>,
     variants: Vec<syn::Variant>,
 }
 impl StrongInstancesCollector {
@@ -147,8 +153,8 @@ impl StrongInstancesCollector {
         });
 
         // generate the class struct
-        self.structs.push((
-            syn::ItemStruct {
+        self.structs.push(StructWithImpls {
+            item: syn::ItemStruct {
                 attrs: syn::parse_quote!(
                     #[derive(Debug, Clone)]
                     #[allow(nonstandard_style)]
@@ -164,14 +170,14 @@ impl StrongInstancesCollector {
                 semi_token: None,
             },
             impls,
-        ));
+        });
 
         // generate the StrongInstances variant
         self.variants.push(syn::parse_quote!(#ident(Box<#ident>)));
     }
     fn codegen(mut self) -> syn::File {
         // sort for consistency
-        self.structs.sort_by(|(a, _), (b, _)| a.ident.cmp(&b.ident));
+        self.structs.sort_by(|a, b| a.item.ident.cmp(&b.item.ident));
         self.variants.sort_by(|a, b| a.ident.cmp(&b.ident));
 
         // generate StrongInstance enum
@@ -198,8 +204,8 @@ impl StrongInstancesCollector {
             .extend(
                 self.structs
                     .into_iter()
-                    .flat_map(|(strong_instance, impls)| {
-                        std::iter::once(syn::Item::Struct(strong_instance)).chain(impls)
+                    .flat_map(|StructWithImpls { item, impls }| {
+                        std::iter::once(syn::Item::Struct(item)).chain(impls)
                     }),
             );
 
