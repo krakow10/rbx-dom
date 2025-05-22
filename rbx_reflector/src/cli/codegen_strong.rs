@@ -323,8 +323,8 @@ impl CodegenStrongSubcommand {
         };
 
         // save to destination file
-        write_dest(&instance_code, dest_instance)?;
-        write_dest(&enum_code, dest_enum)?;
+        std::fs::write(dest_instance, instance_code)?;
+        std::fs::write(dest_enum, enum_code)?;
         Ok(())
     }
 }
@@ -359,9 +359,4 @@ fn rustfmt(code: &[u8]) -> Result<Vec<u8>, FormatError> {
     }
 
     Ok(output.stdout)
-}
-fn write_dest(code: &[u8], dest: PathBuf) -> Result<(), std::io::Error> {
-    let mut file = std::fs::File::create(dest)?;
-    file.write_all(code)?;
-    Ok(())
 }
