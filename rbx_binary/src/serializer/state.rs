@@ -82,8 +82,8 @@ struct TypeInfo<'dom, 'db> {
     /// ServiceProvider in most projects.
     is_service: bool,
 
-    /// All of the instances referenced by this type.
-    instances: Vec<&'dom Instance>,
+    /// All of the instance referents referenced by this type.
+    referents: Vec<Ref>,
 
     /// All of the defined properties for this type found on any instance of
     /// this type. Properties are keyed by their canonical name, and only one
@@ -231,7 +231,7 @@ impl<'dom, 'db> TypeInfos<'dom, 'db> {
             TypeInfo {
                 type_id,
                 is_service,
-                instances: Vec::new(),
+                referents: Vec::new(),
                 properties,
                 class_descriptor,
                 properties_visited: UstrSet::new(),
@@ -331,7 +331,7 @@ impl<'dom, 'db, W: Write> SerializerState<'dom, 'db, W> {
         let type_info = self
             .type_infos
             .get_or_create(self.serializer.database, instance.class);
-        type_info.instances.push(instance);
+        type_info.referents.push(instance.referent());
 
         for (prop_name, prop_value) in &instance.properties {
             // Discover and track any shared strings we come across.
@@ -563,7 +563,7 @@ impl<'dom, 'db, W: Write> SerializerState<'dom, 'db, W> {
             log::trace!(
                 "Writing chunk for {} ({} instances)",
                 type_name,
-                type_info.instances.len()
+                type_info.referents.len()
             );
 
             let mut chunk = ChunkBuilder::new(b"INST", self.serializer.compression);
@@ -579,13 +579,13 @@ impl<'dom, 'db, W: Write> SerializerState<'dom, 'db, W> {
             // instead of a bool.
             chunk.write_bool(type_info.is_service)?;
 
-            chunk.write_le_u32(type_info.instances.len() as u32)?;
+            chunk.write_le_u32(type_info.referents.len() as u32)?;
 
             chunk.write_referent_array(
                 type_info
-                    .instances
+                    .referents
                     .iter()
-                    .map(|instance| self.id_to_referent[&instance.referent()]),
+                    .map(|referent|self.id_to_referent[referent]),
             )?;
 
             if type_info.is_service {
@@ -596,7 +596,7 @@ impl<'dom, 'db, W: Write> SerializerState<'dom, 'db, W> {
                 // In 99.9% of cases, there's only going to be one copy of a
                 // given service, so we're not worried about doing this super
                 // efficiently.
-                for _ in 0..type_info.instances.len() {
+                for _ in 0..type_info.referents.len() {
                     chunk.write_u8(1)?;
                 }
             }
@@ -630,50 +630,6 @@ impl<'dom, 'db, W: Write> SerializerState<'dom, 'db, W> {
                 chunk.write_string(&prop_info.serialized_name)?;
                 chunk.write_u8(prop_info.prop_type as u8)?;
 
-                let values = type_info
-                    .instances
-                    .iter()
-                    .map(|instance| {
-                        // We store the Name property in a different field for
-                        // convenience, but when serializing to the binary model
-                        // format we need to handle it just like other properties.
-                        if *prop_name == "Name" {
-                            return Cow::Owned(Variant::String(instance.name.clone()));
-                        }
-
-                        // Most properties will be stored on instances using the
-                        // property's canonical name, so we'll try that first.
-                        // I think this is the bug. hashing properties like crazy in a double loop.
-                        if let Some(property) = instance.properties.get(prop_name) {
-                            return Cow::Borrowed(property);
-                        }
-
-                        // If there were any known aliases for this property
-                        // used as part of this file, we can check those next.
-                        for alias in &prop_info.aliases {
-                            if let Some(property) = instance.properties.get(alias) {
-                                return Cow::Borrowed(property);
-                            }
-                        }
-
-                        // Finally, we can fall back to the default value we
-                        // computed for this PropInfo. This is sourced from the
-                        // reflection database if available, or falls back to a
-                        // reasonable default.
-                        Cow::Borrowed(prop_info.default_value)
-                    })
-                    .map(|value| {
-                        if let Some(migration) = prop_info.migration {
-                            match migration.perform(&value) {
-                                Ok(new_value) => Cow::Owned(new_value),
-                                Err(_) => value,
-                            }
-                        } else {
-                            value
-                        }
-                    })
-                    .enumerate();
-
                 // Helper to generate a type mismatch error with context from
                 // this chunk.
                 let type_mismatch =
@@ -684,12 +640,12 @@ impl<'dom, 'db, W: Write> SerializerState<'dom, 'db, W> {
                             valid_type_names,
                             actual_type_name: format!("{:?}", bad_value.ty()),
                             instance_full_name: self
-                                .full_name_for(type_info.instances[i].referent()),
+                                .full_name_for(type_info.referents[i]),
                         })
                     };
 
                 let invalid_value = |i: usize, bad_value: &Variant| InnerError::InvalidPropValue {
-                    instance_full_name: self.full_name_for(type_info.instances[i].referent()),
+                    instance_full_name: self.full_name_for(type_info.referents[i]),
                     type_name: type_name.to_string(),
                     prop_name: prop_name.to_string(),
                     prop_type: format!("{:?}", bad_value.ty()),
