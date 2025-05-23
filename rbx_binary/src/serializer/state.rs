@@ -346,6 +346,7 @@ impl<'dom, 'db, W: Write> SerializerState<'dom, 'db, W> {
 
             // Skip this property if we've already seen it.
             if type_info.properties_visited.contains(prop_name) {
+                // this throws a wrench into everything I've written so far...
                 continue;
             }
 
@@ -464,6 +465,8 @@ impl<'dom, 'db, W: Write> SerializerState<'dom, 'db, W> {
                         }
                     })?;
 
+                    // TODO: insert type_info.instances.len() references to the default value into values
+
                     entry.insert(PropInfo {
                         prop_type: ser_type,
                         serialized_name,
@@ -474,6 +477,18 @@ impl<'dom, 'db, W: Write> SerializerState<'dom, 'db, W> {
                     })
                 }
             };
+
+            // Append value to prop_info values.  This avoids
+            // iterating over the instances and properties twice.
+            prop_info.values.push(
+                if let Some(migration) = prop_info.migration {
+                    match migration.perform(&prop_value) {
+                        Ok(new_value) => new_value,
+                        Err(_) => prop_value,
+                    }
+                } else {
+                    prop_value
+                });
 
             // If the property we found on this instance is different than the
             // canonical name for this property, stash it into the set of known
@@ -486,6 +501,8 @@ impl<'dom, 'db, W: Write> SerializerState<'dom, 'db, W> {
                 prop_info.migration = migration;
             }
         }
+
+        // Note that default values must be filled for properties that were not visited.
 
         Ok(())
     }
@@ -651,7 +668,7 @@ impl<'dom, 'db, W: Write> SerializerState<'dom, 'db, W> {
                     prop_type: format!("{:?}", bad_value.ty()),
                 };
 
-                match prop_info.prop_type {
+                match prop_info.values {
                     Type::String => {
                         for (i, rbx_value) in values {
                             match rbx_value.as_ref() {
