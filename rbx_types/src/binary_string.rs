@@ -64,6 +64,13 @@ impl AsMut<Vec<u8>> for BinaryString {
     }
 }
 
+impl core::ops::Deref for BinaryString {
+    type Target = [u8];
+    fn deref(&self) -> &Self::Target {
+        &self.buffer
+    }
+}
+
 #[cfg(feature = "serde")]
 mod serde_impl {
     use super::*;

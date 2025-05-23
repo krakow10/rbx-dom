@@ -26,18 +26,6 @@ pub(super) enum InnerError {
         source: io::Error,
     },
 
-    #[error(
-        "Property type mismatch: Expected {type_name}.{prop_name} to be of type {valid_type_names}, \
-        but it was of type {actual_type_name} on instance {instance_full_name}",
-    )]
-    PropTypeMismatch {
-        type_name: String,
-        prop_name: String,
-        valid_type_names: &'static str,
-        actual_type_name: String,
-        instance_full_name: String,
-    },
-
     #[error("Unsupported property type: {type_name}.{prop_name} is of type {prop_type}")]
     UnsupportedPropType {
         type_name: String,
