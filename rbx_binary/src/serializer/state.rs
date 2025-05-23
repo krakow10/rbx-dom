@@ -31,6 +31,7 @@ use crate::{
     Serializer,
 };
 
+use super::borrowed_variant_vec::BorrowedVariantVec;
 use super::error::InnerError;
 use super::CompressionType;
 
@@ -90,7 +91,7 @@ struct TypeInfo<'dom, 'db> {
     ///
     /// Stored in a sorted map to try to ensure that we write out properties in
     /// a deterministic order.
-    properties: BTreeMap<Ustr, PropInfo<'db>>,
+    properties: BTreeMap<Ustr, PropInfo<'dom, 'db>>,
 
     /// A reference to the type's class descriptor from rbx_reflection, if this
     /// is a known class.
@@ -109,7 +110,7 @@ struct TypeInfo<'dom, 'db> {
 /// `BasePart.size` are present in the same document, they should share a
 /// `PropInfo` as they are the same logical property.
 #[derive(Debug)]
-struct PropInfo<'db> {
+struct PropInfo<'dom, 'db> {
     /// The binary format type ID that will be use to serialize this property.
     /// This type is related to the type of the serialized form of the logical
     /// property, but is not 1:1.
@@ -118,6 +119,13 @@ struct PropInfo<'db> {
     /// `VariantType::BinaryString` will serialize as `Type::String`, the same
     /// as the `Content` and `String` variants do.
     prop_type: Type,
+
+    /// An array of references to the values of this type.
+    /// BorrowedVariantVec is a serialization gadget that also contains the Variant type.
+    ///
+    /// Contains the same type information as prop_type, duplicating its purpose.
+    /// TODO: deduplicate the purpose
+    values: BorrowedVariantVec<'dom>,
 
     /// The serialized name for this property. This is the name that is actually
     /// written as part of the PROP chunk and may not line up with the canonical
@@ -214,6 +222,7 @@ impl<'dom, 'db> TypeInfos<'dom, 'db> {
                     prop_type: Type::String,
                     serialized_name: "Name".into(),
                     aliases: UstrSet::new(),
+                    values: BorrowedVariantVec::String(Vec::new()),
                     default_value: &DEFAULT_STRING,
                     migration: None,
                 },
@@ -459,6 +468,7 @@ impl<'dom, 'db, W: Write> SerializerState<'dom, 'db, W> {
                         prop_type: ser_type,
                         serialized_name,
                         aliases: UstrSet::new(),
+                        values: BorrowedVariantVec::new(serialized_ty),
                         default_value,
                         migration,
                     })
