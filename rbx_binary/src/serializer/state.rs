@@ -108,13 +108,22 @@ impl<'dom, 'db> TypeInfo<'dom, 'db> {
         &mut self,
         class_descriptor: Option<&'db ClassDescriptor<'db>>,
         prop_name: Ustr,
-    ) -> &mut TypeInfo<'dom, 'db> {
-        // Split self into independent mutable references.
-        let TypeInfo {
-            values,
-            next_type_id,
-        } = self;
-        values.entry(canonical_name).or_insert_with(|| {})
+    ) -> &mut PropInfo<'dom, 'db> {
+        match self.properties.entry(prop_name) {
+            btree_map::Entry::Occupied(entry) => entry.into_mut(),
+            btree_map::Entry::Vacant(entry) => {
+                if let Some(class_descriptor) = class_descriptor {
+                    let prop_descriptor = class_descriptor.properties.get(prop_name.as_str());
+                }
+                entry.insert(PropInfo {
+                    prop_type: todo!(),
+                    values: todo!(),
+                    serialized_name: todo!(),
+                    default_value: todo!(),
+                    descriptor: todo!(),
+                })
+            }
+        }
     }
 }
 
@@ -476,10 +485,9 @@ impl<'dom, 'db, W: Write> SerializerState<'dom, 'db, W> {
                     entry.insert(PropInfo {
                         prop_type: ser_type,
                         serialized_name,
-                        aliases: UstrSet::new(),
                         values: BorrowedVariantVec::new(serialized_ty),
                         default_value,
-                        migration,
+                        descriptor,
                     })
                 }
             };
