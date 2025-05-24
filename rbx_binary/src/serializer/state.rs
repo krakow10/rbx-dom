@@ -682,7 +682,7 @@ impl<'dom, 'db, W: Write> SerializerState<'dom, 'db, W> {
                     }
                     BorrowedVariantVec::BinaryString(values) => {
                         for value in values {
-                            chunk.write_binary_string(value.as_ref())?;
+                            chunk.write_binary_string(value)?;
                         }
                     }
                     BorrowedVariantVec::Tags(values) => {
