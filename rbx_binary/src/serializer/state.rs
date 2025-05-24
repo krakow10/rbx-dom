@@ -669,30 +669,30 @@ impl<'dom, 'db, W: Write> SerializerState<'dom, 'db, W> {
                     prop_type: format!("{:?}", bad_value.ty()),
                 };
 
-                match prop_info.values {
+                match &prop_info.values {
                     BorrowedVariantVec::String(values) => {
-                        for value in values {
+                        for &value in values {
                             chunk.write_string(value)?;
                         }
                     }
                     BorrowedVariantVec::ContentId(values) => {
-                        for value in values {
+                        for &value in values {
                             chunk.write_string(value.as_ref())?;
                         }
                     }
                     BorrowedVariantVec::BinaryString(values) => {
-                        for value in values {
+                        for &value in values {
                             chunk.write_binary_string(value)?;
                         }
                     }
                     BorrowedVariantVec::Tags(values) => {
-                        for value in values {
+                        for &value in values {
                             let buf = value.encode();
                             chunk.write_binary_string(&buf)?;
                         }
                     }
                     BorrowedVariantVec::Attributes(values) => {
-                        for (i, value) in values.into_iter().enumerate() {
+                        for (i, &value) in values.into_iter().enumerate() {
                             let mut buf = Vec::new();
 
                             value.to_writer(&mut buf).map_err(|_| {
@@ -703,30 +703,30 @@ impl<'dom, 'db, W: Write> SerializerState<'dom, 'db, W> {
                         }
                     }
                     BorrowedVariantVec::MaterialColors(values) => {
-                        for value in values {
+                        for &value in values {
                             chunk.write_binary_string(&value.encode())?;
                         }
                     }
                     BorrowedVariantVec::Bool(values) => {
-                        for value in values {
+                        for &value in values {
                             chunk.write_bool(*value)?;
                         }
                     }
                     BorrowedVariantVec::Int32(values) => {
-                        chunk.write_interleaved_i32_array(values.into_iter().copied())?;
+                        chunk.write_interleaved_i32_array(values.into_iter().copied().copied())?;
                     }
                     BorrowedVariantVec::Float32(values) => {
-                        chunk.write_interleaved_f32_array(values.into_iter().copied())?;
+                        chunk.write_interleaved_f32_array(values.into_iter().copied().copied())?;
                     }
                     BorrowedVariantVec::Float64(values) => {
-                        for value in values {
+                        for &value in values {
                             chunk.write_le_f64(*value)?;
                         }
                     }
                     BorrowedVariantVec::UDim(values) => {
                         let mut scale = Vec::with_capacity(values.len());
                         let mut offset = Vec::with_capacity(values.len());
-                        for value in values {
+                        for &value in values {
                             scale.push(value.scale);
                             offset.push(value.offset);
                         }
@@ -739,7 +739,7 @@ impl<'dom, 'db, W: Write> SerializerState<'dom, 'db, W> {
                         let mut offset_x = Vec::with_capacity(values.len());
                         let mut offset_y = Vec::with_capacity(values.len());
 
-                        for value in values {
+                        for &value in values {
                             scale_x.push(value.x.scale);
                             scale_y.push(value.y.scale);
                             offset_x.push(value.x.offset);
@@ -752,7 +752,7 @@ impl<'dom, 'db, W: Write> SerializerState<'dom, 'db, W> {
                         chunk.write_interleaved_i32_array(offset_y)?;
                     }
                     BorrowedVariantVec::Font(values) => {
-                        for value in values {
+                        for &value in values {
                             chunk.write_string(&value.family)?;
                             chunk.write_le_u16(value.weight.as_u16())?;
                             chunk.write_u8(value.style.as_u8())?;
@@ -762,7 +762,7 @@ impl<'dom, 'db, W: Write> SerializerState<'dom, 'db, W> {
                         }
                     }
                     BorrowedVariantVec::Ray(values) => {
-                        for value in values {
+                        for &value in values {
                             chunk.write_le_f32(value.origin.x)?;
                             chunk.write_le_f32(value.origin.y)?;
                             chunk.write_le_f32(value.origin.z)?;
@@ -772,25 +772,25 @@ impl<'dom, 'db, W: Write> SerializerState<'dom, 'db, W> {
                         }
                     }
                     BorrowedVariantVec::Faces(values) => {
-                        for value in values {
+                        for &value in values {
                             chunk.write_u8(value.bits())?;
                         }
                     }
                     BorrowedVariantVec::Axes(values) => {
-                        for value in values {
+                        for &value in values {
                             chunk.write_u8(value.bits())?;
                         }
                     }
                     BorrowedVariantVec::BrickColor(values) => {
                         chunk.write_interleaved_u32_array(
-                            values.into_iter().map(|value| *value as u32),
+                            values.into_iter().map(|&value| *value as u32),
                         )?;
                     }
                     BorrowedVariantVec::Color3(values) => {
                         let mut r = Vec::with_capacity(values.len());
                         let mut g = Vec::with_capacity(values.len());
                         let mut b = Vec::with_capacity(values.len());
-                        for value in values {
+                        for &value in values {
                             r.push(value.r);
                             g.push(value.g);
                             b.push(value.b);
@@ -802,7 +802,7 @@ impl<'dom, 'db, W: Write> SerializerState<'dom, 'db, W> {
                     BorrowedVariantVec::Vector2(values) => {
                         let mut x = Vec::with_capacity(values.len());
                         let mut y = Vec::with_capacity(values.len());
-                        for value in values {
+                        for &value in values {
                             x.push(value.x);
                             y.push(value.y);
                         }
@@ -813,7 +813,7 @@ impl<'dom, 'db, W: Write> SerializerState<'dom, 'db, W> {
                         let mut x = Vec::with_capacity(values.len());
                         let mut y = Vec::with_capacity(values.len());
                         let mut z = Vec::with_capacity(values.len());
-                        for value in values {
+                        for &value in values {
                             x.push(value.x);
                             y.push(value.y);
                             z.push(value.z);
@@ -826,7 +826,7 @@ impl<'dom, 'db, W: Write> SerializerState<'dom, 'db, W> {
                         let mut x = Vec::with_capacity(values.len());
                         let mut y = Vec::with_capacity(values.len());
                         let mut z = Vec::with_capacity(values.len());
-                        for value in values {
+                        for &value in values {
                             let matrix = &value.orientation;
                             if let Some(id) = matrix.to_basic_rotation_id() {
                                 chunk.write_u8(id)?;
@@ -856,11 +856,11 @@ impl<'dom, 'db, W: Write> SerializerState<'dom, 'db, W> {
                     }
                     BorrowedVariantVec::Enum(values) => {
                         chunk.write_interleaved_u32_array(
-                            values.into_iter().map(|value| value.to_u32()),
+                            values.into_iter().map(|&value| value.to_u32()),
                         )?;
                     }
                     BorrowedVariantVec::Ref(values) => {
-                        let it = values.into_iter().map(|value| {
+                        let it = values.into_iter().map(|&value| {
                             if let Some(id) = self.id_to_referent.get(value) {
                                 *id
                             } else {
@@ -871,14 +871,14 @@ impl<'dom, 'db, W: Write> SerializerState<'dom, 'db, W> {
                         chunk.write_referent_array(it)?;
                     }
                     BorrowedVariantVec::Vector3int16(values) => {
-                        for value in values {
+                        for &value in values {
                             chunk.write_le_i16(value.x)?;
                             chunk.write_le_i16(value.y)?;
                             chunk.write_le_i16(value.z)?;
                         }
                     }
                     BorrowedVariantVec::NumberSequence(values) => {
-                        for value in values {
+                        for &value in values {
                             chunk.write_le_u32(value.keypoints.len() as u32)?;
 
                             for keypoint in &value.keypoints {
@@ -889,7 +889,7 @@ impl<'dom, 'db, W: Write> SerializerState<'dom, 'db, W> {
                         }
                     }
                     BorrowedVariantVec::ColorSequence(values) => {
-                        for value in values {
+                        for &value in values {
                             chunk.write_le_u32(value.keypoints.len() as u32)?;
 
                             for keypoint in &value.keypoints {
@@ -904,7 +904,7 @@ impl<'dom, 'db, W: Write> SerializerState<'dom, 'db, W> {
                         }
                     }
                     BorrowedVariantVec::NumberRange(values) => {
-                        for value in values {
+                        for &value in values {
                             chunk.write_le_f32(value.min)?;
                             chunk.write_le_f32(value.max)?;
                         }
@@ -914,7 +914,7 @@ impl<'dom, 'db, W: Write> SerializerState<'dom, 'db, W> {
                         let mut y_min = Vec::with_capacity(values.len());
                         let mut x_max = Vec::with_capacity(values.len());
                         let mut y_max = Vec::with_capacity(values.len());
-                        for value in values {
+                        for &value in values {
                             x_min.push(value.min.x);
                             y_min.push(value.min.y);
                             x_max.push(value.max.x);
@@ -926,7 +926,7 @@ impl<'dom, 'db, W: Write> SerializerState<'dom, 'db, W> {
                         chunk.write_interleaved_f32_array(y_max)?;
                     }
                     BorrowedVariantVec::PhysicalProperties(values) => {
-                        for value in values {
+                        for &value in values {
                             if let PhysicalProperties::Custom(props) = value {
                                 chunk.write_u8(1)?;
                                 chunk.write_le_f32(props.density)?;
@@ -943,7 +943,7 @@ impl<'dom, 'db, W: Write> SerializerState<'dom, 'db, W> {
                         let mut r = Vec::with_capacity(values.len());
                         let mut g = Vec::with_capacity(values.len());
                         let mut b = Vec::with_capacity(values.len());
-                        for value in values {
+                        for &value in values {
                             r.push(value.r);
                             g.push(value.g);
                             b.push(value.b);
@@ -953,10 +953,10 @@ impl<'dom, 'db, W: Write> SerializerState<'dom, 'db, W> {
                         chunk.write_all(b.as_slice())?;
                     }
                     BorrowedVariantVec::Int64(values) => {
-                        chunk.write_interleaved_i64_array(values.into_iter().copied())?;
+                        chunk.write_interleaved_i64_array(values.into_iter().copied().copied())?;
                     }
                     BorrowedVariantVec::SharedString(values) => {
-                        let it = values.into_iter().map(|value| {
+                        let it = values.into_iter().map(|&value| {
                             if let Some(id) = self.shared_string_ids.get(value) {
                                 *id
                             } else {
@@ -975,7 +975,7 @@ impl<'dom, 'db, W: Write> SerializerState<'dom, 'db, W> {
                         let mut z = Vec::with_capacity(values.len());
 
                         chunk.write_u8(Type::CFrame as u8)?;
-                        for value in values {
+                        for &value in values {
                             let matrix;
                             if let Some(value) = value {
                                 matrix = value.orientation;
@@ -1020,7 +1020,7 @@ impl<'dom, 'db, W: Write> SerializerState<'dom, 'db, W> {
                     }
                     BorrowedVariantVec::UniqueId(values) => {
                         let mut blobs = Vec::with_capacity(values.len());
-                        for value in values {
+                        for &value in values {
                             let mut blob = [0; 16];
                             // This is maybe not the best solution to this
                             // but we can always change it.
@@ -1034,14 +1034,14 @@ impl<'dom, 'db, W: Write> SerializerState<'dom, 'db, W> {
                     }
                     BorrowedVariantVec::SecurityCapabilities(values) => {
                         chunk.write_interleaved_i64_array(
-                            values.into_iter().map(|value| value.bits() as i64),
+                            values.into_iter().map(|&value| value.bits() as i64),
                         )?;
                     }
                     BorrowedVariantVec::Content(values) => {
                         let mut source_types = Vec::with_capacity(values.len());
                         let mut uris = Vec::with_capacity(values.len());
                         let mut objects = Vec::new();
-                        for (i, value) in values.into_iter().enumerate() {
+                        for (i, &value) in values.into_iter().enumerate() {
                             source_types.push(match value.value() {
                                 ContentType::None => 0,
                                 ContentType::Uri(uri) => {
