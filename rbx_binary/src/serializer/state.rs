@@ -104,15 +104,11 @@ struct TypeInfo<'dom, 'db> {
 }
 
 impl<'dom, 'db> TypeInfo<'dom, 'db> {
-    fn get_or_create_prop_info(
-        &mut self,
-        class_descriptor: Option<&'db ClassDescriptor<'db>>,
-        prop_name: Ustr,
-    ) -> &mut PropInfo<'dom, 'db> {
+    fn get_or_create_prop_info(&mut self, prop_name: Ustr) -> &mut PropInfo<'dom, 'db> {
         match self.properties.entry(prop_name) {
             btree_map::Entry::Occupied(entry) => entry.into_mut(),
             btree_map::Entry::Vacant(entry) => {
-                if let Some(class_descriptor) = class_descriptor {
+                if let Some(class_descriptor) = self.class_descriptor {
                     let prop_descriptor = class_descriptor.properties.get(prop_name.as_str());
                 }
                 entry.insert(PropInfo {
@@ -120,7 +116,7 @@ impl<'dom, 'db> TypeInfo<'dom, 'db> {
                     values: todo!(),
                     serialized_name: todo!(),
                     default_value: todo!(),
-                    descriptor: todo!(),
+                    property_descriptor: todo!(),
                 })
             }
         }
@@ -169,7 +165,7 @@ struct PropInfo<'dom, 'db> {
     default_value: &'db Variant,
 
     // TODO: doc
-    descriptor: Option<&'db PropertyDescriptor<'db>>,
+    property_descriptor: Option<&'db PropertyDescriptor<'db>>,
 }
 
 /// Contains all of the `TypeInfo` objects known to the serializer so far. This
@@ -196,7 +192,7 @@ impl<'dom, 'db> TypeInfos<'dom, 'db> {
             next_type_id: 0,
         }
     }
-    // propinfo holds reference to PropertyDescriptor and is looked up every time.
+
     /// Finds the type info from the given ClassName if it exists, or creates
     /// one and returns a reference to it if not.
     fn get_or_create(
@@ -236,10 +232,10 @@ impl<'dom, 'db> TypeInfos<'dom, 'db> {
                 PropInfo {
                     prop_type: Type::String,
                     serialized_name: "Name".into(),
-                    aliases: UstrSet::new(),
                     values: BorrowedVariantVec::String(Vec::new()),
                     default_value: &DEFAULT_STRING,
-                    migration: None,
+                    property_descriptor: class_descriptor
+                        .and_then(|descriptor| descriptor.properties.get("Name")),
                 },
             );
 
@@ -358,6 +354,8 @@ impl<'dom, 'db, W: Write> SerializerState<'dom, 'db, W> {
                     self.shared_strings.push(shared_string.clone())
                 }
             }
+
+            let prop_info = type_info.get_or_create_prop_info(*prop_name);
 
             // Skip this property if we've already seen it.
             if type_info.properties_visited.contains(prop_name) {
@@ -487,7 +485,9 @@ impl<'dom, 'db, W: Write> SerializerState<'dom, 'db, W> {
                         serialized_name,
                         values: BorrowedVariantVec::new(serialized_ty),
                         default_value,
-                        descriptor,
+                        property_descriptor: type_info
+                            .class_descriptor
+                            .and_then(|class| class.properties.get(canonical_name.as_str())),
                     })
                 }
             };
