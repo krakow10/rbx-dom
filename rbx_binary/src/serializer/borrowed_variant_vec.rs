@@ -1,8 +1,8 @@
 use rbx_dom_weak::types::{
     Attributes, Axes, BinaryString, BrickColor, CFrame, Color3, Color3uint8, ColorSequence,
-    Content, ContentId, Enum, EnumItem, Faces, Font, MaterialColors, NumberRange, NumberSequence,
-    PhysicalProperties, Ray, Rect, Ref, Region3, Region3int16, SecurityCapabilities, SharedString,
-    Tags, UDim, UDim2, UniqueId, Vector2, Vector2int16, Vector3, Vector3int16,
+    Content, ContentId, Enum, Faces, Font, MaterialColors, NumberRange, NumberSequence,
+    PhysicalProperties, Ray, Rect, Ref, SecurityCapabilities, SharedString, Tags, UDim, UDim2,
+    UniqueId, Vector2, Vector3, Vector3int16,
 };
 use rbx_dom_weak::types::{Variant, VariantType};
 macro_rules! impl_borrowed_variant_vec {
@@ -57,14 +57,14 @@ impl_borrowed_variant_vec! {
     Ray(Ray),
     Rect(Rect),
     Ref(Ref),
-    Region3(Region3),
-    Region3int16(Region3int16),
+    // Region3(Region3),
+    // Region3int16(Region3int16),
     SharedString(SharedString),
     String(String),
     UDim(UDim),
     UDim2(UDim2),
     Vector2(Vector2),
-    Vector2int16(Vector2int16),
+    // Vector2int16(Vector2int16),
     Vector3(Vector3),
     Vector3int16(Vector3int16),
     OptionalCFrame(Option<CFrame>),
@@ -74,6 +74,6 @@ impl_borrowed_variant_vec! {
     UniqueId(UniqueId),
     MaterialColors(MaterialColors),
     SecurityCapabilities(SecurityCapabilities),
-    EnumItem(EnumItem),
+    // EnumItem(EnumItem),
     Content(Content),
 }
