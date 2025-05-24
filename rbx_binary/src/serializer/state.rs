@@ -111,6 +111,137 @@ impl<'dom, 'db> TypeInfo<'dom, 'db> {
                 if let Some(class_descriptor) = self.class_descriptor {
                     let prop_descriptor = class_descriptor.properties.get(prop_name.as_str());
                 }
+
+                // ...but add it to the set of visited properties if we haven't seen
+                // it.
+                type_info.properties_visited.insert(*prop_name);
+
+                let canonical_name;
+                let serialized_name;
+                let serialized_ty;
+                let mut migration = None;
+
+                let database = self.serializer.database;
+                match find_property_descriptors(database, instance.class, *prop_name) {
+                    Some(descriptors) => {
+                        // For any properties that do not serialize, we can skip
+                        // adding them to the set of type_infos.
+                        let serialized = match descriptors.serialized {
+                            Some(descriptor) => {
+                                if let PropertyKind::Canonical {
+                                    serialization: PropertySerialization::Migrate(prop_migration),
+                                } = &descriptor.kind
+                                {
+                                    // If the property migrates, we need to look up the
+                                    // property it should migrate to and use the reflection
+                                    // information of the new property instead of the old
+                                    // property, because migrated properties should not
+                                    // serialize
+                                    let new_descriptors = find_property_descriptors(
+                                        database,
+                                        instance.class,
+                                        prop_migration.new_property_name.as_str().into(),
+                                    );
+
+                                    migration = Some(prop_migration);
+
+                                    match new_descriptors {
+                                        Some(descriptor) => match descriptor.serialized {
+                                            Some(serialized) => {
+                                                canonical_name =
+                                                    descriptor.canonical.name.as_ref().into();
+                                                serialized
+                                            }
+                                            None => continue,
+                                        },
+                                        None => continue,
+                                    }
+                                } else {
+                                    canonical_name = descriptors.canonical.name.as_ref().into();
+                                    descriptor
+                                }
+                            }
+                            None => continue,
+                        };
+
+                        serialized_name = serialized.name.as_ref().into();
+
+                        serialized_ty = match &serialized.data_type {
+                            DataType::Value(ty) => *ty,
+                            DataType::Enum(_) => VariantType::Enum,
+
+                            unknown_ty => {
+                                // rbx_binary is not new enough to handle this kind
+                                // of property, whatever it is.
+                                return Err(InnerError::UnsupportedPropType {
+                                    type_name: instance.class.to_string(),
+                                    prop_name: prop_name.to_string(),
+                                    prop_type: format!("{:?}", unknown_ty),
+                                });
+                            }
+                        };
+                    }
+
+                    None => {
+                        canonical_name = *prop_name;
+                        serialized_name = *prop_name;
+                        serialized_ty = prop_value.ty();
+                    }
+                }
+
+                let prop_info = match type_info.properties.entry(canonical_name) {
+                    btree_map::Entry::Occupied(entry) => entry.into_mut(),
+                    btree_map::Entry::Vacant(entry) => {
+                        let default_value = type_info
+                            .class_descriptor
+                            .and_then(|class| {
+                                database.find_default_property(class, &canonical_name)
+                            })
+                            .or_else(|| fallback_default_value(serialized_ty))
+                            .ok_or_else(|| {
+                                // Since we don't know how to generate the default value
+                                // for this property, we consider it unsupported.
+                                InnerError::UnsupportedPropType {
+                                    type_name: instance.class.to_string(),
+                                    prop_name: canonical_name.to_string(),
+                                    prop_type: format!("{:?}", serialized_ty),
+                                }
+                            })?;
+
+                        // There's no assurance that the default SharedString value
+                        // will actually get serialized inside of the SSTR chunk, so we
+                        // check here just to make sure.
+                        if let Variant::SharedString(sstr) = default_value {
+                            if !self.shared_string_ids.contains_key(sstr) {
+                                self.shared_string_ids.insert(sstr.clone(), 0);
+                                self.shared_strings.push(sstr.clone());
+                            }
+                        }
+
+                        let ser_type = Type::from_rbx_type(serialized_ty).ok_or_else(|| {
+                            // This is a known value type, but rbx_binary doesn't have a
+                            // binary type value for it. rbx_binary might be out of
+                            // date?
+                            InnerError::UnsupportedPropType {
+                                type_name: instance.class.to_string(),
+                                prop_name: serialized_name.to_string(),
+                                prop_type: format!("{:?}", serialized_ty),
+                            }
+                        })?;
+
+                        // TODO: insert type_info.instances.len() references to the default value into values
+
+                        entry.insert(PropInfo {
+                            prop_type: ser_type,
+                            serialized_name,
+                            values: BorrowedVariantVec::new(serialized_ty),
+                            default_value,
+                            property_descriptor: type_info
+                                .class_descriptor
+                                .and_then(|class| class.properties.get(canonical_name.as_str())),
+                        })
+                    }
+                };
                 entry.insert(PropInfo {
                     prop_type: todo!(),
                     values: todo!(),
@@ -357,141 +488,6 @@ impl<'dom, 'db, W: Write> SerializerState<'dom, 'db, W> {
 
             let prop_info = type_info.get_or_create_prop_info(*prop_name);
 
-            // Skip this property if we've already seen it.
-            if type_info.properties_visited.contains(prop_name) {
-                // this throws a wrench into everything I've written so far...
-                continue;
-            }
-
-            // ...but add it to the set of visited properties if we haven't seen
-            // it.
-            type_info.properties_visited.insert(*prop_name);
-
-            let canonical_name;
-            let serialized_name;
-            let serialized_ty;
-            let mut migration = None;
-
-            let database = self.serializer.database;
-            match find_property_descriptors(database, instance.class, *prop_name) {
-                Some(descriptors) => {
-                    // For any properties that do not serialize, we can skip
-                    // adding them to the set of type_infos.
-                    let serialized = match descriptors.serialized {
-                        Some(descriptor) => {
-                            if let PropertyKind::Canonical {
-                                serialization: PropertySerialization::Migrate(prop_migration),
-                            } = &descriptor.kind
-                            {
-                                // If the property migrates, we need to look up the
-                                // property it should migrate to and use the reflection
-                                // information of the new property instead of the old
-                                // property, because migrated properties should not
-                                // serialize
-                                let new_descriptors = find_property_descriptors(
-                                    database,
-                                    instance.class,
-                                    prop_migration.new_property_name.as_str().into(),
-                                );
-
-                                migration = Some(prop_migration);
-
-                                match new_descriptors {
-                                    Some(descriptor) => match descriptor.serialized {
-                                        Some(serialized) => {
-                                            canonical_name =
-                                                descriptor.canonical.name.as_ref().into();
-                                            serialized
-                                        }
-                                        None => continue,
-                                    },
-                                    None => continue,
-                                }
-                            } else {
-                                canonical_name = descriptors.canonical.name.as_ref().into();
-                                descriptor
-                            }
-                        }
-                        None => continue,
-                    };
-
-                    serialized_name = serialized.name.as_ref().into();
-
-                    serialized_ty = match &serialized.data_type {
-                        DataType::Value(ty) => *ty,
-                        DataType::Enum(_) => VariantType::Enum,
-
-                        unknown_ty => {
-                            // rbx_binary is not new enough to handle this kind
-                            // of property, whatever it is.
-                            return Err(InnerError::UnsupportedPropType {
-                                type_name: instance.class.to_string(),
-                                prop_name: prop_name.to_string(),
-                                prop_type: format!("{:?}", unknown_ty),
-                            });
-                        }
-                    };
-                }
-
-                None => {
-                    canonical_name = *prop_name;
-                    serialized_name = *prop_name;
-                    serialized_ty = prop_value.ty();
-                }
-            }
-
-            let prop_info = match type_info.properties.entry(canonical_name) {
-                btree_map::Entry::Occupied(entry) => entry.into_mut(),
-                btree_map::Entry::Vacant(entry) => {
-                    let default_value = type_info
-                        .class_descriptor
-                        .and_then(|class| database.find_default_property(class, &canonical_name))
-                        .or_else(|| fallback_default_value(serialized_ty))
-                        .ok_or_else(|| {
-                            // Since we don't know how to generate the default value
-                            // for this property, we consider it unsupported.
-                            InnerError::UnsupportedPropType {
-                                type_name: instance.class.to_string(),
-                                prop_name: canonical_name.to_string(),
-                                prop_type: format!("{:?}", serialized_ty),
-                            }
-                        })?;
-
-                    // There's no assurance that the default SharedString value
-                    // will actually get serialized inside of the SSTR chunk, so we
-                    // check here just to make sure.
-                    if let Variant::SharedString(sstr) = default_value {
-                        if !self.shared_string_ids.contains_key(sstr) {
-                            self.shared_string_ids.insert(sstr.clone(), 0);
-                            self.shared_strings.push(sstr.clone());
-                        }
-                    }
-
-                    let ser_type = Type::from_rbx_type(serialized_ty).ok_or_else(|| {
-                        // This is a known value type, but rbx_binary doesn't have a
-                        // binary type value for it. rbx_binary might be out of
-                        // date?
-                        InnerError::UnsupportedPropType {
-                            type_name: instance.class.to_string(),
-                            prop_name: serialized_name.to_string(),
-                            prop_type: format!("{:?}", serialized_ty),
-                        }
-                    })?;
-
-                    // TODO: insert type_info.instances.len() references to the default value into values
-
-                    entry.insert(PropInfo {
-                        prop_type: ser_type,
-                        serialized_name,
-                        values: BorrowedVariantVec::new(serialized_ty),
-                        default_value,
-                        property_descriptor: type_info
-                            .class_descriptor
-                            .and_then(|class| class.properties.get(canonical_name.as_str())),
-                    })
-                }
-            };
-
             // Append value to prop_info values.  This avoids
             // iterating over the instances and properties twice.
             prop_info
@@ -504,17 +500,6 @@ impl<'dom, 'db, W: Write> SerializerState<'dom, 'db, W> {
                 } else {
                     prop_value
                 });
-
-            // If the property we found on this instance is different than the
-            // canonical name for this property, stash it into the set of known
-            // aliases for this PropInfo.
-            if *prop_name != canonical_name {
-                if !prop_info.aliases.contains(prop_name) {
-                    prop_info.aliases.insert(*prop_name);
-                }
-
-                prop_info.migration = migration;
-            }
         }
 
         // Note that default values must be filled for properties that were not visited.
