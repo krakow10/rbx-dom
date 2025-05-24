@@ -662,19 +662,6 @@ impl<'dom, 'db, W: Write> SerializerState<'dom, 'db, W> {
                 chunk.write_string(&prop_info.serialized_name)?;
                 chunk.write_u8(prop_info.prop_type as u8)?;
 
-                // Helper to generate a type mismatch error with context from
-                // this chunk.
-                let type_mismatch =
-                    |i: usize, bad_value: &Variant, valid_type_names: &'static str| {
-                        Err(InnerError::PropTypeMismatch {
-                            type_name: type_name.to_string(),
-                            prop_name: prop_name.to_string(),
-                            valid_type_names,
-                            actual_type_name: format!("{:?}", bad_value.ty()),
-                            instance_full_name: self.full_name_for(type_info.referents[i]),
-                        })
-                    };
-
                 let invalid_value = |i: usize, bad_value: &Variant| InnerError::InvalidPropValue {
                     instance_full_name: self.full_name_for(type_info.referents[i]),
                     type_name: type_name.to_string(),
@@ -683,123 +670,80 @@ impl<'dom, 'db, W: Write> SerializerState<'dom, 'db, W> {
                 };
 
                 match prop_info.values {
-                    Type::String => {
-                        for (i, rbx_value) in values {
-                            match rbx_value.as_ref() {
-                                Variant::String(value) => {
-                                    chunk.write_string(value)?;
-                                }
-                                Variant::ContentId(value) => {
-                                    chunk.write_string(value.as_ref())?;
-                                }
-                                Variant::BinaryString(value) => {
-                                    chunk.write_binary_string(value.as_ref())?;
-                                }
-                                Variant::Tags(value) => {
-                                    let buf = value.encode();
-                                    chunk.write_binary_string(&buf)?;
-                                }
-                                Variant::Attributes(value) => {
-                                    let mut buf = Vec::new();
-
-                                    value
-                                        .to_writer(&mut buf)
-                                        .map_err(|_| invalid_value(i, &rbx_value))?;
-
-                                    chunk.write_binary_string(&buf)?;
-                                }
-                                Variant::MaterialColors(value) => {
-                                    chunk.write_binary_string(&value.encode())?;
-                                }
-                                _ => {
-                                    return type_mismatch(
-                                        i,
-                                        &rbx_value,
-                                        "String, ContentId, Tags, Attributes, MaterialColors, or BinaryString",
-                                    );
-                                }
-                            }
+                    BorrowedVariantVec::String(values) => {
+                        for value in values {
+                            chunk.write_string(value)?;
                         }
                     }
-                    Type::Bool => {
-                        for (i, rbx_value) in values {
-                            if let Variant::Bool(value) = rbx_value.as_ref() {
-                                chunk.write_bool(*value)?;
-                            } else {
-                                return type_mismatch(i, &rbx_value, "Bool");
-                            }
+                    BorrowedVariantVec::ContentId(values) => {
+                        for value in values {
+                            chunk.write_string(value.as_ref())?;
                         }
                     }
-                    Type::Int32 => {
-                        let mut buf = Vec::with_capacity(values.len());
-
-                        for (i, rbx_value) in values {
-                            if let Variant::Int32(value) = rbx_value.as_ref() {
-                                buf.push(*value);
-                            } else {
-                                return type_mismatch(i, &rbx_value, "Int32");
-                            }
-                        }
-
-                        chunk.write_interleaved_i32_array(buf)?;
-                    }
-                    Type::Float32 => {
-                        let mut buf = Vec::with_capacity(values.len());
-
-                        for (i, rbx_value) in values {
-                            if let Variant::Float32(value) = rbx_value.as_ref() {
-                                buf.push(*value);
-                            } else {
-                                return type_mismatch(i, &rbx_value, "Float32");
-                            }
-                        }
-
-                        chunk.write_interleaved_f32_array(buf)?;
-                    }
-                    Type::Float64 => {
-                        for (i, rbx_value) in values {
-                            match rbx_value.as_ref() {
-                                Variant::Float64(value) => {
-                                    chunk.write_le_f64(*value)?;
-                                }
-                                Variant::Float32(value) => {
-                                    chunk.write_le_f64(*value as f64)?;
-                                }
-                                _ => return type_mismatch(i, &rbx_value, "Float64"),
-                            }
+                    BorrowedVariantVec::BinaryString(values) => {
+                        for value in values {
+                            chunk.write_binary_string(value.as_ref())?;
                         }
                     }
-                    Type::UDim => {
+                    BorrowedVariantVec::Tags(values) => {
+                        for value in values {
+                            let buf = value.encode();
+                            chunk.write_binary_string(&buf)?;
+                        }
+                    }
+                    BorrowedVariantVec::Attributes(values) => {
+                        for (i, value) in values.into_iter().enumerate() {
+                            let mut buf = Vec::new();
+
+                            value.to_writer(&mut buf).map_err(|_| {
+                                invalid_value(i, &Variant::Attributes(value.clone()))
+                            })?;
+
+                            chunk.write_binary_string(&buf)?;
+                        }
+                    }
+                    BorrowedVariantVec::MaterialColors(values) => {
+                        for value in values {
+                            chunk.write_binary_string(&value.encode())?;
+                        }
+                    }
+                    BorrowedVariantVec::Bool(values) => {
+                        for value in values {
+                            chunk.write_bool(*value)?;
+                        }
+                    }
+                    BorrowedVariantVec::Int32(values) => {
+                        chunk.write_interleaved_i32_array(values.into_iter().copied())?;
+                    }
+                    BorrowedVariantVec::Float32(values) => {
+                        chunk.write_interleaved_f32_array(values.into_iter().copied())?;
+                    }
+                    BorrowedVariantVec::Float64(values) => {
+                        for value in values {
+                            chunk.write_le_f64(*value)?;
+                        }
+                    }
+                    BorrowedVariantVec::UDim(values) => {
                         let mut scale = Vec::with_capacity(values.len());
                         let mut offset = Vec::with_capacity(values.len());
-
-                        for (i, rbx_value) in values {
-                            if let Variant::UDim(value) = rbx_value.as_ref() {
-                                scale.push(value.scale);
-                                offset.push(value.offset);
-                            } else {
-                                return type_mismatch(i, &rbx_value, "UDim");
-                            }
+                        for value in values {
+                            scale.push(value.scale);
+                            offset.push(value.offset);
                         }
-
                         chunk.write_interleaved_f32_array(scale)?;
                         chunk.write_interleaved_i32_array(offset)?;
                     }
-                    Type::UDim2 => {
+                    BorrowedVariantVec::UDim2(values) => {
                         let mut scale_x = Vec::with_capacity(values.len());
                         let mut scale_y = Vec::with_capacity(values.len());
                         let mut offset_x = Vec::with_capacity(values.len());
                         let mut offset_y = Vec::with_capacity(values.len());
 
-                        for (i, rbx_value) in values {
-                            if let Variant::UDim2(value) = rbx_value.as_ref() {
-                                scale_x.push(value.x.scale);
-                                scale_y.push(value.y.scale);
-                                offset_x.push(value.x.offset);
-                                offset_y.push(value.y.offset);
-                            } else {
-                                return type_mismatch(i, &rbx_value, "UDim2");
-                            }
+                        for value in values {
+                            scale_x.push(value.x.scale);
+                            scale_y.push(value.y.scale);
+                            offset_x.push(value.x.offset);
+                            offset_y.push(value.y.offset);
                         }
 
                         chunk.write_interleaved_f32_array(scale_x)?;
@@ -807,139 +751,83 @@ impl<'dom, 'db, W: Write> SerializerState<'dom, 'db, W> {
                         chunk.write_interleaved_i32_array(offset_x)?;
                         chunk.write_interleaved_i32_array(offset_y)?;
                     }
-                    Type::Font => {
-                        for (i, rbx_value) in values {
-                            if let Variant::Font(value) = rbx_value.as_ref() {
-                                chunk.write_string(&value.family)?;
-                                chunk.write_le_u16(value.weight.as_u16())?;
-                                chunk.write_u8(value.style.as_u8())?;
-                                chunk.write_string(
-                                    value.cached_face_id.as_deref().unwrap_or_default(),
-                                )?;
-                            } else {
-                                return type_mismatch(i, &rbx_value, "Font");
-                            }
+                    BorrowedVariantVec::Font(values) => {
+                        for value in values {
+                            chunk.write_string(&value.family)?;
+                            chunk.write_le_u16(value.weight.as_u16())?;
+                            chunk.write_u8(value.style.as_u8())?;
+                            chunk.write_string(
+                                value.cached_face_id.as_deref().unwrap_or_default(),
+                            )?;
                         }
                     }
-                    Type::Ray => {
-                        for (i, rbx_value) in values {
-                            if let Variant::Ray(value) = rbx_value.as_ref() {
-                                chunk.write_le_f32(value.origin.x)?;
-                                chunk.write_le_f32(value.origin.y)?;
-                                chunk.write_le_f32(value.origin.z)?;
-                                chunk.write_le_f32(value.direction.x)?;
-                                chunk.write_le_f32(value.direction.y)?;
-                                chunk.write_le_f32(value.direction.x)?;
-                            } else {
-                                return type_mismatch(i, &rbx_value, "Ray");
-                            }
+                    BorrowedVariantVec::Ray(values) => {
+                        for value in values {
+                            chunk.write_le_f32(value.origin.x)?;
+                            chunk.write_le_f32(value.origin.y)?;
+                            chunk.write_le_f32(value.origin.z)?;
+                            chunk.write_le_f32(value.direction.x)?;
+                            chunk.write_le_f32(value.direction.y)?;
+                            chunk.write_le_f32(value.direction.x)?;
                         }
                     }
-                    Type::Faces => {
-                        for (i, rbx_value) in values {
-                            if let Variant::Faces(value) = rbx_value.as_ref() {
-                                chunk.write_u8(value.bits())?;
-                            } else {
-                                return type_mismatch(i, &rbx_value, "Faces");
-                            }
+                    BorrowedVariantVec::Faces(values) => {
+                        for value in values {
+                            chunk.write_u8(value.bits())?;
                         }
                     }
-                    Type::Axes => {
-                        for (i, rbx_value) in values {
-                            if let Variant::Axes(value) = rbx_value.as_ref() {
-                                chunk.write_u8(value.bits())?;
-                            } else {
-                                return type_mismatch(i, &rbx_value, "Axes");
-                            }
+                    BorrowedVariantVec::Axes(values) => {
+                        for value in values {
+                            chunk.write_u8(value.bits())?;
                         }
                     }
-                    Type::BrickColor => {
-                        let mut numbers = Vec::with_capacity(values.len());
-
-                        for (i, rbx_value) in values {
-                            if let Variant::BrickColor(value) = rbx_value.as_ref() {
-                                numbers.push(*value as u32);
-                            } else if let Variant::Int32(value) = rbx_value.as_ref() {
-                                numbers.push(*value as u32);
-                            } else {
-                                return type_mismatch(i, &rbx_value, "BrickColor");
-                            }
-                        }
-
-                        chunk.write_interleaved_u32_array(numbers)?;
+                    BorrowedVariantVec::BrickColor(values) => {
+                        chunk.write_interleaved_u32_array(
+                            values.into_iter().map(|value| *value as u32),
+                        )?;
                     }
-                    Type::Color3 => {
+                    BorrowedVariantVec::Color3(values) => {
                         let mut r = Vec::with_capacity(values.len());
                         let mut g = Vec::with_capacity(values.len());
                         let mut b = Vec::with_capacity(values.len());
-
-                        for (i, rbx_value) in values {
-                            if let Variant::Color3(value) = rbx_value.as_ref() {
-                                r.push(value.r);
-                                g.push(value.g);
-                                b.push(value.b);
-                            } else {
-                                return type_mismatch(i, &rbx_value, "Color3");
-                            }
+                        for value in values {
+                            r.push(value.r);
+                            g.push(value.g);
+                            b.push(value.b);
                         }
-
                         chunk.write_interleaved_f32_array(r)?;
                         chunk.write_interleaved_f32_array(g)?;
                         chunk.write_interleaved_f32_array(b)?;
                     }
-                    Type::Vector2 => {
+                    BorrowedVariantVec::Vector2(values) => {
                         let mut x = Vec::with_capacity(values.len());
                         let mut y = Vec::with_capacity(values.len());
-
-                        for (i, rbx_value) in values {
-                            if let Variant::Vector2(value) = rbx_value.as_ref() {
-                                x.push(value.x);
-                                y.push(value.y)
-                            } else {
-                                return type_mismatch(i, &rbx_value, "Vector2");
-                            }
+                        for value in values {
+                            x.push(value.x);
+                            y.push(value.y);
                         }
-
                         chunk.write_interleaved_f32_array(x)?;
                         chunk.write_interleaved_f32_array(y)?;
                     }
-                    Type::Vector3 => {
+                    BorrowedVariantVec::Vector3(values) => {
                         let mut x = Vec::with_capacity(values.len());
                         let mut y = Vec::with_capacity(values.len());
                         let mut z = Vec::with_capacity(values.len());
-
-                        for (i, rbx_value) in values {
-                            if let Variant::Vector3(value) = rbx_value.as_ref() {
-                                x.push(value.x);
-                                y.push(value.y);
-                                z.push(value.z)
-                            } else {
-                                return type_mismatch(i, &rbx_value, "Vector3");
-                            }
+                        for value in values {
+                            x.push(value.x);
+                            y.push(value.y);
+                            z.push(value.z);
                         }
-
                         chunk.write_interleaved_f32_array(x)?;
                         chunk.write_interleaved_f32_array(y)?;
                         chunk.write_interleaved_f32_array(z)?;
                     }
-                    Type::CFrame => {
-                        let mut rotations = Vec::with_capacity(values.len());
+                    BorrowedVariantVec::CFrame(values) => {
                         let mut x = Vec::with_capacity(values.len());
                         let mut y = Vec::with_capacity(values.len());
                         let mut z = Vec::with_capacity(values.len());
-
-                        for (i, rbx_value) in values {
-                            if let Variant::CFrame(value) = rbx_value.as_ref() {
-                                rotations.push(value.orientation);
-                                x.push(value.position.x);
-                                y.push(value.position.y);
-                                z.push(value.position.z);
-                            } else {
-                                return type_mismatch(i, &rbx_value, "CFrame");
-                            }
-                        }
-
-                        for matrix in rotations {
+                        for value in values {
+                            let matrix = &value.orientation;
                             if let Some(id) = matrix.to_basic_rotation_id() {
                                 chunk.write_u8(id)?;
                             } else {
@@ -957,231 +845,153 @@ impl<'dom, 'db, W: Write> SerializerState<'dom, 'db, W> {
                                 chunk.write_le_f32(matrix.z.y)?;
                                 chunk.write_le_f32(matrix.z.z)?;
                             }
+                            x.push(value.position.x);
+                            y.push(value.position.y);
+                            z.push(value.position.z);
                         }
 
                         chunk.write_interleaved_f32_array(x)?;
                         chunk.write_interleaved_f32_array(y)?;
                         chunk.write_interleaved_f32_array(z)?;
                     }
-                    Type::Enum => {
-                        let mut buf = Vec::with_capacity(values.len());
-
-                        for (i, rbx_value) in values {
-                            match rbx_value.as_ref() {
-                                Variant::Enum(value) => buf.push(value.to_u32()),
-                                Variant::EnumItem(EnumItem { value, .. }) => buf.push(*value),
-                                _ => return type_mismatch(i, &rbx_value, "Enum or EnumItem"),
-                            }
-                        }
-
-                        chunk.write_interleaved_u32_array(buf)?;
+                    BorrowedVariantVec::Enum(values) => {
+                        chunk.write_interleaved_u32_array(
+                            values.into_iter().map(|value| value.to_u32()),
+                        )?;
                     }
-                    Type::Ref => {
-                        let mut buf = Vec::with_capacity(values.len());
-
-                        for (i, rbx_value) in values {
-                            if let Variant::Ref(value) = rbx_value.as_ref() {
-                                if let Some(id) = self.id_to_referent.get(value) {
-                                    buf.push(*id);
-                                } else {
-                                    buf.push(-1);
-                                }
+                    BorrowedVariantVec::Ref(values) => {
+                        let it = values.into_iter().map(|value| {
+                            if let Some(id) = self.id_to_referent.get(value) {
+                                *id
                             } else {
-                                return type_mismatch(i, &rbx_value, "Ref");
+                                -1
                             }
-                        }
+                        });
 
-                        chunk.write_referent_array(buf)?;
+                        chunk.write_referent_array(it)?;
                     }
-                    Type::Vector3int16 => {
-                        for (i, rbx_value) in values {
-                            if let Variant::Vector3int16(value) = rbx_value.as_ref() {
-                                chunk.write_le_i16(value.x)?;
-                                chunk.write_le_i16(value.y)?;
-                                chunk.write_le_i16(value.z)?;
-                            } else {
-                                return type_mismatch(i, &rbx_value, "Vector3int16");
-                            }
+                    BorrowedVariantVec::Vector3int16(values) => {
+                        for value in values {
+                            chunk.write_le_i16(value.x)?;
+                            chunk.write_le_i16(value.y)?;
+                            chunk.write_le_i16(value.z)?;
                         }
                     }
-                    Type::NumberSequence => {
-                        for (i, rbx_value) in values {
-                            if let Variant::NumberSequence(value) = rbx_value.as_ref() {
-                                chunk.write_le_u32(value.keypoints.len() as u32)?;
+                    BorrowedVariantVec::NumberSequence(values) => {
+                        for value in values {
+                            chunk.write_le_u32(value.keypoints.len() as u32)?;
 
-                                for keypoint in &value.keypoints {
-                                    chunk.write_le_f32(keypoint.time)?;
-                                    chunk.write_le_f32(keypoint.value)?;
-                                    chunk.write_le_f32(keypoint.envelope)?;
-                                }
-                            } else {
-                                return type_mismatch(i, &rbx_value, "NumberSequence");
+                            for keypoint in &value.keypoints {
+                                chunk.write_le_f32(keypoint.time)?;
+                                chunk.write_le_f32(keypoint.value)?;
+                                chunk.write_le_f32(keypoint.envelope)?;
                             }
                         }
                     }
-                    Type::ColorSequence => {
-                        for (i, rbx_value) in values {
-                            if let Variant::ColorSequence(value) = rbx_value.as_ref() {
-                                chunk.write_le_u32(value.keypoints.len() as u32)?;
+                    BorrowedVariantVec::ColorSequence(values) => {
+                        for value in values {
+                            chunk.write_le_u32(value.keypoints.len() as u32)?;
 
-                                for keypoint in &value.keypoints {
-                                    chunk.write_le_f32(keypoint.time)?;
-                                    chunk.write_le_f32(keypoint.color.r)?;
-                                    chunk.write_le_f32(keypoint.color.g)?;
-                                    chunk.write_le_f32(keypoint.color.b)?;
+                            for keypoint in &value.keypoints {
+                                chunk.write_le_f32(keypoint.time)?;
+                                chunk.write_le_f32(keypoint.color.r)?;
+                                chunk.write_le_f32(keypoint.color.g)?;
+                                chunk.write_le_f32(keypoint.color.b)?;
 
-                                    // write out a dummy value for envelope, which is serialized but doesn't do anything
-                                    chunk.write_le_f32(0.0)?;
-                                }
-                            } else {
-                                return type_mismatch(i, &rbx_value, "ColorSequence");
+                                // write out a dummy value for envelope, which is serialized but doesn't do anything
+                                chunk.write_le_f32(0.0)?;
                             }
                         }
                     }
-                    Type::NumberRange => {
-                        for (i, rbx_value) in values {
-                            if let Variant::NumberRange(value) = rbx_value.as_ref() {
-                                chunk.write_le_f32(value.min)?;
-                                chunk.write_le_f32(value.max)?;
-                            } else {
-                                return type_mismatch(i, &rbx_value, "NumberRange");
-                            }
+                    BorrowedVariantVec::NumberRange(values) => {
+                        for value in values {
+                            chunk.write_le_f32(value.min)?;
+                            chunk.write_le_f32(value.max)?;
                         }
                     }
-                    Type::Rect => {
+                    BorrowedVariantVec::Rect(values) => {
                         let mut x_min = Vec::with_capacity(values.len());
                         let mut y_min = Vec::with_capacity(values.len());
                         let mut x_max = Vec::with_capacity(values.len());
                         let mut y_max = Vec::with_capacity(values.len());
-
-                        for (i, rbx_value) in values {
-                            if let Variant::Rect(value) = rbx_value.as_ref() {
-                                x_min.push(value.min.x);
-                                y_min.push(value.min.y);
-                                x_max.push(value.max.x);
-                                y_max.push(value.max.y);
-                            } else {
-                                return type_mismatch(i, &rbx_value, "Rect");
-                            }
+                        for value in values {
+                            x_min.push(value.min.x);
+                            y_min.push(value.min.y);
+                            x_max.push(value.max.x);
+                            y_max.push(value.max.y);
                         }
-
                         chunk.write_interleaved_f32_array(x_min)?;
                         chunk.write_interleaved_f32_array(y_min)?;
                         chunk.write_interleaved_f32_array(x_max)?;
                         chunk.write_interleaved_f32_array(y_max)?;
                     }
-                    Type::PhysicalProperties => {
-                        for (i, rbx_value) in values {
-                            if let Variant::PhysicalProperties(value) = rbx_value.as_ref() {
-                                if let PhysicalProperties::Custom(props) = value {
-                                    chunk.write_u8(1)?;
-                                    chunk.write_le_f32(props.density)?;
-                                    chunk.write_le_f32(props.friction)?;
-                                    chunk.write_le_f32(props.elasticity)?;
-                                    chunk.write_le_f32(props.friction_weight)?;
-                                    chunk.write_le_f32(props.elasticity_weight)?;
-                                } else {
-                                    chunk.write_u8(0)?;
-                                }
+                    BorrowedVariantVec::PhysicalProperties(values) => {
+                        for value in values {
+                            if let PhysicalProperties::Custom(props) = value {
+                                chunk.write_u8(1)?;
+                                chunk.write_le_f32(props.density)?;
+                                chunk.write_le_f32(props.friction)?;
+                                chunk.write_le_f32(props.elasticity)?;
+                                chunk.write_le_f32(props.friction_weight)?;
+                                chunk.write_le_f32(props.elasticity_weight)?;
                             } else {
-                                return type_mismatch(i, &rbx_value, "PhysicalProperties");
+                                chunk.write_u8(0)?;
                             }
                         }
                     }
-                    Type::Color3uint8 => {
+                    BorrowedVariantVec::Color3uint8(values) => {
                         let mut r = Vec::with_capacity(values.len());
                         let mut g = Vec::with_capacity(values.len());
                         let mut b = Vec::with_capacity(values.len());
-
-                        for (i, rbx_value) in values {
-                            match rbx_value.as_ref() {
-                                Variant::Color3uint8(value) => {
-                                    r.push(value.r);
-                                    g.push(value.g);
-                                    b.push(value.b);
-                                }
-                                Variant::Color3(value) => {
-                                    let color: Color3uint8 = (*value).into();
-
-                                    r.push(color.r);
-                                    g.push(color.g);
-                                    b.push(color.b);
-                                }
-                                _ => return type_mismatch(i, &rbx_value, "Color3uint8 or Color3"),
-                            }
+                        for value in values {
+                            r.push(value.r);
+                            g.push(value.g);
+                            b.push(value.b);
                         }
-
                         chunk.write_all(r.as_slice())?;
                         chunk.write_all(g.as_slice())?;
                         chunk.write_all(b.as_slice())?;
                     }
-                    Type::Int64 => {
-                        let mut buf = Vec::with_capacity(values.len());
-
-                        for (i, rbx_value) in values {
-                            match rbx_value.as_ref() {
-                                Variant::Int64(value) => {
-                                    buf.push(*value);
-                                }
-                                Variant::Int32(value) => {
-                                    buf.push(*value as i64);
-                                }
-                                _ => return type_mismatch(i, &rbx_value, "Int64"),
-                            }
-                        }
-
-                        chunk.write_interleaved_i64_array(buf)?;
+                    BorrowedVariantVec::Int64(values) => {
+                        chunk.write_interleaved_i64_array(values.into_iter().copied())?;
                     }
-                    Type::SharedString => {
-                        let mut entries = Vec::with_capacity(values.len());
-
-                        for (i, rbx_value) in values {
-                            if let Variant::SharedString(value) = rbx_value.as_ref() {
-                                if let Some(id) = self.shared_string_ids.get(value) {
-                                    entries.push(*id);
-                                } else {
-                                    panic!(
-                                        "SharedString {} was not found during type collection",
-                                        value.hash()
-                                    )
-                                }
+                    BorrowedVariantVec::SharedString(values) => {
+                        let it = values.into_iter().map(|value| {
+                            if let Some(id) = self.shared_string_ids.get(value) {
+                                *id
                             } else {
-                                return type_mismatch(i, &rbx_value, "SharedString");
+                                panic!(
+                                    "SharedString {} was not found during type collection",
+                                    value.hash()
+                                )
                             }
-                        }
-
-                        chunk.write_interleaved_u32_array(entries)?;
+                        });
+                        chunk.write_interleaved_u32_array(it)?;
                     }
-                    Type::OptionalCFrame => {
-                        let mut rotations = Vec::with_capacity(values.len());
+                    BorrowedVariantVec::OptionalCFrame(values) => {
                         let mut bools = Vec::with_capacity(values.len());
                         let mut x = Vec::with_capacity(values.len());
                         let mut y = Vec::with_capacity(values.len());
                         let mut z = Vec::with_capacity(values.len());
 
                         chunk.write_u8(Type::CFrame as u8)?;
-
-                        for (i, rbx_value) in values {
-                            if let Variant::OptionalCFrame(value) = rbx_value.as_ref() {
-                                if let Some(value) = value {
-                                    rotations.push(value.orientation);
-                                    x.push(value.position.x);
-                                    y.push(value.position.y);
-                                    z.push(value.position.z);
-                                    bools.push(0x01);
-                                } else {
-                                    rotations.push(Matrix3::identity());
-                                    x.push(0.0);
-                                    y.push(0.0);
-                                    z.push(0.0);
-                                    bools.push(0x00);
-                                }
+                        for value in values {
+                            let matrix;
+                            if let Some(value) = value {
+                                matrix = value.orientation;
+                                x.push(value.position.x);
+                                y.push(value.position.y);
+                                z.push(value.position.z);
+                                bools.push(0x01);
                             } else {
-                                return type_mismatch(i, &rbx_value, "OptionalCFrame");
-                            }
-                        }
+                                matrix = Matrix3::identity();
+                                x.push(0.0);
+                                y.push(0.0);
+                                z.push(0.0);
+                                bools.push(0x00);
+                            };
 
-                        for matrix in rotations {
+                            // write matrix
                             if let Some(id) = matrix.to_basic_rotation_id() {
                                 chunk.write_u8(id)?;
                             } else {
@@ -1208,63 +1018,48 @@ impl<'dom, 'db, W: Write> SerializerState<'dom, 'db, W> {
                         chunk.write_u8(Type::Bool as u8)?;
                         chunk.write_all(bools.as_slice())?;
                     }
-                    Type::UniqueId => {
+                    BorrowedVariantVec::UniqueId(values) => {
                         let mut blobs = Vec::with_capacity(values.len());
-                        for (i, rbx_value) in values {
-                            if let Variant::UniqueId(value) = rbx_value.as_ref() {
-                                let mut blob = [0; 16];
-                                // This is maybe not the best solution to this
-                                // but we can always change it.
-                                blob[0..4].copy_from_slice(&value.index().to_be_bytes());
-                                blob[4..8].copy_from_slice(&value.time().to_be_bytes());
-                                blob[8..]
-                                    .copy_from_slice(&value.random().rotate_left(1).to_be_bytes());
-                                blobs.push(blob);
-                            } else {
-                                return type_mismatch(i, &rbx_value, "UniqueId");
-                            }
+                        for value in values {
+                            let mut blob = [0; 16];
+                            // This is maybe not the best solution to this
+                            // but we can always change it.
+                            blob[0..4].copy_from_slice(&value.index().to_be_bytes());
+                            blob[4..8].copy_from_slice(&value.time().to_be_bytes());
+                            blob[8..].copy_from_slice(&value.random().rotate_left(1).to_be_bytes());
+                            blobs.push(blob);
                         }
 
                         chunk.write_interleaved_bytes::<16>(&blobs)?;
                     }
-                    Type::SecurityCapabilities => {
-                        let mut capabilities = Vec::with_capacity(values.len());
-
-                        for (i, rbx_value) in values {
-                            if let Variant::SecurityCapabilities(value) = rbx_value.as_ref() {
-                                capabilities.push(value.bits() as i64)
-                            } else {
-                                return type_mismatch(i, &rbx_value, "SecurityCapabilities");
-                            }
-                        }
-
-                        chunk.write_interleaved_i64_array(capabilities)?;
+                    BorrowedVariantVec::SecurityCapabilities(values) => {
+                        chunk.write_interleaved_i64_array(
+                            values.into_iter().map(|value| value.bits() as i64),
+                        )?;
                     }
-                    Type::Content => {
+                    BorrowedVariantVec::Content(values) => {
                         let mut source_types = Vec::with_capacity(values.len());
                         let mut uris = Vec::with_capacity(values.len());
                         let mut objects = Vec::new();
-                        for (i, rbx_value) in values {
-                            if let Variant::Content(content) = rbx_value.as_ref() {
-                                source_types.push(match content.value() {
-                                    ContentType::None => 0,
-                                    ContentType::Uri(uri) => {
-                                        uris.push(uri.clone());
-                                        1
+                        for (i, value) in values.into_iter().enumerate() {
+                            source_types.push(match value.value() {
+                                ContentType::None => 0,
+                                ContentType::Uri(uri) => {
+                                    uris.push(uri.clone());
+                                    1
+                                }
+                                ContentType::Object(referent) => {
+                                    if let Some(id) = self.id_to_referent.get(referent) {
+                                        objects.push(*id);
+                                    } else {
+                                        objects.push(-1);
                                     }
-                                    ContentType::Object(referent) => {
-                                        if let Some(id) = self.id_to_referent.get(referent) {
-                                            objects.push(*id);
-                                        } else {
-                                            objects.push(-1);
-                                        }
-                                        2
-                                    }
-                                    _ => return Err(invalid_value(i, &rbx_value)),
-                                });
-                            } else {
-                                return type_mismatch(i, &rbx_value, "Content");
-                            }
+                                    2
+                                }
+                                _ => {
+                                    return Err(invalid_value(i, &Variant::Content(value.clone())))
+                                }
+                            });
                         }
                         chunk.write_interleaved_i32_array(source_types)?;
 
