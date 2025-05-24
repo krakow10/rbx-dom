@@ -137,11 +137,16 @@ pub trait RbxReadExt: Read {
 
     /// Fills `output` with big-endian `u32` values read from the buffer.
     fn read_interleaved_u32_array(&mut self, output: &mut [u32]) -> io::Result<()> {
-        let mut read = vec![[0; mem::size_of::<u32>()]; output.len()];
-        self.read_interleaved_bytes(&mut read)?;
+        // SAFETY: reinterpret output slice as &mut [[u8; N]]
+        self.read_interleaved_bytes(unsafe {
+            core::slice::from_raw_parts_mut(
+                output.as_mut_ptr() as *mut [u8; mem::size_of::<u32>()],
+                output.len(),
+            )
+        })?;
 
-        for (chunk, out) in read.into_iter().zip(output) {
-            *out = u32::from_be_bytes(chunk);
+        for out in output {
+            *out = u32::from_be_bytes(out.to_ne_bytes());
         }
 
         Ok(())
@@ -150,11 +155,16 @@ pub trait RbxReadExt: Read {
     /// Fills `output` with big-endian `f32` values read from the buffer.
     /// These values are properly unrotated while being read.
     fn read_interleaved_f32_array(&mut self, output: &mut [f32]) -> io::Result<()> {
-        let mut read = vec![[0; mem::size_of::<u32>()]; output.len()];
-        self.read_interleaved_bytes(&mut read)?;
+        // SAFETY: reinterpret output slice as &mut [[u8; N]]
+        self.read_interleaved_bytes(unsafe {
+            core::slice::from_raw_parts_mut(
+                output.as_mut_ptr() as *mut [u8; mem::size_of::<f32>()],
+                output.len(),
+            )
+        })?;
 
-        for (chunk, out) in read.into_iter().zip(output) {
-            *out = f32::from_bits(u32::from_be_bytes(chunk).rotate_right(1));
+        for out in output {
+            *out = f32::from_bits(u32::from_be_bytes(out.to_ne_bytes()).rotate_right(1));
         }
 
         Ok(())
@@ -179,11 +189,16 @@ pub trait RbxReadExt: Read {
     /// Fills `output` with big-endian `64` values read from the buffer.
     /// These values are untransformed while being read.
     fn read_interleaved_i64_array(&mut self, output: &mut [i64]) -> io::Result<()> {
-        let mut read = vec![[0; mem::size_of::<i64>()]; output.len()];
-        self.read_interleaved_bytes(&mut read)?;
+        // SAFETY: reinterpret output slice as &mut [[u8; N]]
+        self.read_interleaved_bytes(unsafe {
+            core::slice::from_raw_parts_mut(
+                output.as_mut_ptr() as *mut [u8; mem::size_of::<i64>()],
+                output.len(),
+            )
+        })?;
 
-        for (chunk, out) in read.into_iter().zip(output) {
-            *out = untransform_i64(i64::from_be_bytes(chunk));
+        for out in output {
+            *out = untransform_i64(i64::from_be_bytes(out.to_ne_bytes()));
         }
 
         Ok(())
