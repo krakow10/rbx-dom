@@ -120,11 +120,16 @@ pub trait RbxReadExt: Read {
     /// Fills `output` with big-endian `i32` values read from the buffer.
     /// These values are untransformed while being read.
     fn read_interleaved_i32_array(&mut self, output: &mut [i32]) -> io::Result<()> {
-        let mut read = vec![[0; mem::size_of::<i32>()]; output.len()];
-        self.read_interleaved_bytes(&mut read)?;
+        // SAFETY: reinterpret output slice as &mut [[u8; N]]
+        self.read_interleaved_bytes(unsafe {
+            core::slice::from_raw_parts_mut(
+                output.as_mut_ptr() as *mut [u8; mem::size_of::<i32>()],
+                output.len(),
+            )
+        })?;
 
-        for (chunk, out) in read.into_iter().zip(output) {
-            *out = untransform_i32(i32::from_be_bytes(chunk));
+        for out in output {
+            *out = untransform_i32(i32::from_be_bytes(out.to_ne_bytes()));
         }
 
         Ok(())
