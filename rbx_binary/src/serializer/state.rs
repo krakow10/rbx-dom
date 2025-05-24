@@ -18,7 +18,7 @@ use rbx_dom_weak::{
 };
 
 use rbx_reflection::{
-    ClassDescriptor, ClassTag, DataType, PropertyKind, PropertyMigration, PropertySerialization,
+    ClassDescriptor, ClassTag, DataType, PropertyDescriptor, PropertyKind, PropertySerialization,
     ReflectionDatabase,
 };
 
@@ -103,6 +103,21 @@ struct TypeInfo<'dom, 'db> {
     properties_visited: UstrSet,
 }
 
+impl<'dom, 'db> TypeInfo<'dom, 'db> {
+    fn get_or_create_prop_info(
+        &mut self,
+        class_descriptor: Option<&'db ClassDescriptor<'db>>,
+        prop_name: Ustr,
+    ) -> &mut TypeInfo<'dom, 'db> {
+        // Split self into independent mutable references.
+        let TypeInfo {
+            values,
+            next_type_id,
+        } = self;
+        values.entry(canonical_name).or_insert_with(|| {})
+    }
+}
+
 /// A property on a specific class that our serializer knows about.
 ///
 /// We should have one `PropInfo` per logical property per class that is used in
@@ -124,20 +139,13 @@ struct PropInfo<'dom, 'db> {
     /// BorrowedVariantVec is a serialization gadget that also contains the Variant type.
     ///
     /// Contains the same type information as prop_type, duplicating its purpose.
-    /// TODO: deduplicate the purpose
+    // TODO: deduplicate the purpose
     values: BorrowedVariantVec<'dom>,
 
     /// The serialized name for this property. This is the name that is actually
     /// written as part of the PROP chunk and may not line up with the canonical
     /// name for the property.
     serialized_name: Ustr,
-
-    /// A set containing the names of all aliases discovered while preparing to
-    /// serialize this property. Ideally, this set will remain empty (and not
-    /// allocate) in most cases. However, if an instance is missing a property
-    /// from its canonical name, but does have another variant, we can use this
-    /// set to recover and map those values.
-    aliases: UstrSet,
 
     /// The default value for this property that should be used if any instances
     /// are missing this property.
@@ -151,10 +159,8 @@ struct PropInfo<'dom, 'db> {
     /// present, followed by an educated guess based on the type of the value.
     default_value: &'db Variant,
 
-    /// If a logical property has a migration associated with it (i.e. BrickColor ->
-    /// Color, Font -> FontFace), this field contains Some(PropertyMigration). Otherwise,
-    /// it is None.
-    migration: Option<&'db PropertyMigration>,
+    // TODO: doc
+    descriptor: Option<&'db PropertyDescriptor<'db>>,
 }
 
 /// Contains all of the `TypeInfo` objects known to the serializer so far. This
@@ -181,7 +187,7 @@ impl<'dom, 'db> TypeInfos<'dom, 'db> {
             next_type_id: 0,
         }
     }
-
+    // propinfo holds reference to PropertyDescriptor and is looked up every time.
     /// Finds the type info from the given ClassName if it exists, or creates
     /// one and returns a reference to it if not.
     fn get_or_create(
@@ -480,8 +486,9 @@ impl<'dom, 'db, W: Write> SerializerState<'dom, 'db, W> {
 
             // Append value to prop_info values.  This avoids
             // iterating over the instances and properties twice.
-            prop_info.values.push(
-                if let Some(migration) = prop_info.migration {
+            prop_info
+                .values
+                .push(if let Some(migration) = prop_info.migration {
                     match migration.perform(&prop_value) {
                         Ok(new_value) => new_value,
                         Err(_) => prop_value,
@@ -602,7 +609,7 @@ impl<'dom, 'db, W: Write> SerializerState<'dom, 'db, W> {
                 type_info
                     .referents
                     .iter()
-                    .map(|referent|self.id_to_referent[referent]),
+                    .map(|referent| self.id_to_referent[referent]),
             )?;
 
             if type_info.is_service {
@@ -656,8 +663,7 @@ impl<'dom, 'db, W: Write> SerializerState<'dom, 'db, W> {
                             prop_name: prop_name.to_string(),
                             valid_type_names,
                             actual_type_name: format!("{:?}", bad_value.ty()),
-                            instance_full_name: self
-                                .full_name_for(type_info.referents[i]),
+                            instance_full_name: self.full_name_for(type_info.referents[i]),
                         })
                     };
 

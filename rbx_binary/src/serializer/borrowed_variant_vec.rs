@@ -1,10 +1,10 @@
-use rbx_dom_weak::types::{Variant, VariantType};
 use rbx_dom_weak::types::{
     Attributes, Axes, BinaryString, BrickColor, CFrame, Color3, Color3uint8, ColorSequence,
     Content, ContentId, Enum, EnumItem, Faces, Font, MaterialColors, NumberRange, NumberSequence,
     PhysicalProperties, Ray, Rect, Ref, Region3, Region3int16, SecurityCapabilities, SharedString,
     Tags, UDim, UDim2, UniqueId, Vector2, Vector2int16, Vector3, Vector3int16,
 };
+use rbx_dom_weak::types::{Variant, VariantType};
 macro_rules! impl_borrowed_variant_vec {
     ($($variant:ident($type:ty),)*) => {
         // use rbx_dom_weak::types::$type;
