@@ -490,16 +490,7 @@ impl<'dom, 'db, W: Write> SerializerState<'dom, 'db, W> {
 
             // Append value to prop_info values.  This avoids
             // iterating over the instances and properties twice.
-            prop_info
-                .values
-                .push(if let Some(migration) = prop_info.migration {
-                    match migration.perform(&prop_value) {
-                        Ok(new_value) => new_value,
-                        Err(_) => prop_value,
-                    }
-                } else {
-                    prop_value
-                });
+            prop_info.values.push(prop_value);
         }
 
         // Note that default values must be filled for properties that were not visited.
@@ -653,6 +644,17 @@ impl<'dom, 'db, W: Write> SerializerState<'dom, 'db, W> {
                     prop_name: prop_name.to_string(),
                     prop_type: format!("{:?}", bad_value.ty()),
                 };
+
+                // do migrations in here somehow
+                // try to avoid cow
+                if let Some(migration) = prop_info.migration {
+                    match migration.perform(&prop_value) {
+                        Ok(new_value) => new_value,
+                        Err(_) => prop_value,
+                    }
+                } else {
+                    prop_value
+                }
 
                 match &prop_info.values {
                     BorrowedVariantVec::String(values) => {
