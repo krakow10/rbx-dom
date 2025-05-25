@@ -107,10 +107,6 @@ impl<'dom, 'db> TypeInfo<'dom, 'db> {
                     let prop_descriptor = class_descriptor.properties.get(prop_name.as_str());
                 }
 
-                // ...but add it to the set of visited properties if we haven't seen
-                // it.
-                type_info.properties_visited.insert(*prop_name);
-
                 let canonical_name;
                 let serialized_name;
                 let serialized_ty;
@@ -184,10 +180,10 @@ impl<'dom, 'db> TypeInfo<'dom, 'db> {
                     }
                 }
 
-                let prop_info = match type_info.properties.entry(canonical_name) {
+                let prop_info = match self.properties.entry(prop_name) {
                     btree_map::Entry::Occupied(entry) => entry.into_mut(),
                     btree_map::Entry::Vacant(entry) => {
-                        let default_value = type_info
+                        let default_value = self
                             .class_descriptor
                             .and_then(|class| {
                                 database.find_default_property(class, &canonical_name)
