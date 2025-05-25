@@ -626,10 +626,58 @@ impl<'dom, 'db, W: Write> SerializerState<'dom, 'db, W> {
                     prop_info.prop_type
                 );
 
+                // Do migration
+                let mut migrated_properties = Vec::new();
+                let migrated_values;
+                let (serialized_name, property_values) =
+                    if let Some(prop_descriptor) = prop_info.property_descriptor {
+                        match &prop_descriptor.kind {
+                            PropertyKind::Canonical { serialization } => match serialization {
+                                PropertySerialization::Serializes => {
+                                    (prop_name.as_str(), &prop_info.values)
+                                }
+                                // Skip serializing this property chunk entirely
+                                PropertySerialization::DoesNotSerialize => continue,
+                                PropertySerialization::SerializesAs(serialized_name) => {
+                                    (serialized_name.as_ref(), &prop_info.values)
+                                }
+                                PropertySerialization::Migrate(property_migration) => {
+                                    // This is hard to fit into the migration api and ends up being slow and wasteful
+                                    let cloned_variants = prop_info.values.cloned_variant_vec();
+                                    migrated_properties = cloned_variants
+                                        .iter()
+                                        .map(|value| property_migration.perform(value).unwrap())
+                                        .collect();
+                                    // Assume there is at least one value.
+                                    // The prop_info would not have been created otherwise.
+                                    let mut values = BorrowedVariantVec::new(
+                                        migrated_properties.first().unwrap().ty(),
+                                    );
+                                    // Assume all migrations end up with the same type.
+                                    for value in &migrated_properties {
+                                        values.push(value);
+                                    }
+                                    migrated_values = values;
+                                    (
+                                        property_migration.new_property_name.as_str(),
+                                        &migrated_values,
+                                    )
+                                }
+                                _ => panic!("Unknown PropertySerialization"),
+                            },
+                            PropertyKind::Alias { alias_for } => {
+                                (alias_for.as_ref(), &prop_info.values)
+                            }
+                            _ => panic!("Unknown PropertyKind"),
+                        }
+                    } else {
+                        (prop_name.as_str(), &prop_info.values)
+                    };
+
                 let mut chunk = ChunkBuilder::new(b"PROP", self.serializer.compression);
 
                 chunk.write_le_u32(type_info.type_id)?;
-                chunk.write_string(&prop_info.serialized_name)?;
+                chunk.write_string(serialized_name)?;
                 chunk.write_u8(prop_info.prop_type as u8)?;
 
                 let invalid_value = |i: usize, bad_value: &Variant| InnerError::InvalidPropValue {
@@ -639,18 +687,7 @@ impl<'dom, 'db, W: Write> SerializerState<'dom, 'db, W> {
                     prop_type: format!("{:?}", bad_value.ty()),
                 };
 
-                // do migrations in here somehow
-                // try to avoid cow
-                if let Some(migration) = prop_info.migration {
-                    match migration.perform(&prop_value) {
-                        Ok(new_value) => new_value,
-                        Err(_) => prop_value,
-                    }
-                } else {
-                    prop_value
-                }
-
-                match &prop_info.values {
+                match property_values {
                     BorrowedVariantVec::String(values) => {
                         for &value in values {
                             chunk.write_string(value)?;
