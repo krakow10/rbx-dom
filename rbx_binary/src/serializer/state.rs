@@ -86,8 +86,9 @@ struct TypeInfo<'dom, 'db> {
     referents: Vec<Ref>,
 
     /// All of the defined properties for this type found on any instance of
-    /// this type. Properties are keyed by their canonical name, and only one
-    /// entry should be present for each logical property.
+    /// this type. Properties are keyed by their serialized name, multiple
+    /// entries may be present for each logical property.  This is to avoid
+    /// multiple database lookups.
     ///
     /// Stored in a sorted map to try to ensure that we write out properties in
     /// a deterministic order.
@@ -96,11 +97,6 @@ struct TypeInfo<'dom, 'db> {
     /// A reference to the type's class descriptor from rbx_reflection, if this
     /// is a known class.
     class_descriptor: Option<&'db ClassDescriptor<'db>>,
-
-    /// A set containing the properties that we have seen so far in the file and
-    /// processed. This helps us avoid traversing the reflection database
-    /// multiple times if there are many copies of the same kind of instance.
-    properties_visited: UstrSet,
 }
 
 impl<'dom, 'db> TypeInfo<'dom, 'db> {
@@ -376,7 +372,6 @@ impl<'dom, 'db> TypeInfos<'dom, 'db> {
                 referents: Vec::new(),
                 properties,
                 class_descriptor,
-                properties_visited: UstrSet::new(),
             }
         })
     }
