@@ -1,8 +1,8 @@
 use rbx_dom_weak::types::{
-    Attributes, Axes, BrickColor, CFrame, Color3, Color3uint8, ColorSequence, Content, ContentId,
-    Enum, Faces, Font, MaterialColors, NumberRange, NumberSequence, PhysicalProperties, Ray, Rect,
-    Ref, SecurityCapabilities, SharedString, Tags, UDim, UDim2, UniqueId, Vector2, Vector3,
-    Vector3int16,
+    Attributes, Axes, BinaryString, BrickColor, CFrame, Color3, Color3uint8, ColorSequence,
+    Content, ContentId, Enum, Faces, Font, MaterialColors, NumberRange, NumberSequence,
+    PhysicalProperties, Ray, Rect, Ref, SecurityCapabilities, SharedString, Tags, UDim, UDim2,
+    UniqueId, Vector2, Vector3, Vector3int16,
 };
 use rbx_dom_weak::types::{Variant, VariantType};
 macro_rules! impl_borrowed_variant_vec {
@@ -31,13 +31,20 @@ macro_rules! impl_borrowed_variant_vec {
                     _=>panic!("Variant does not match {:?}", variant.ty()),
                 }
             }
+            pub fn cloned_variant_vec(&self) -> Vec<Variant> {
+                match self{
+                    $(
+                        BorrowedVariantVec::$variant(values) => values.iter().copied().cloned().map(Variant::$variant).collect(),
+                    )*
+                }
+            }
         }
     };
 }
 
 impl_borrowed_variant_vec! {
     Axes(Axes),
-    BinaryString([u8]),
+    BinaryString(BinaryString),
     Bool(bool),
     BrickColor(BrickColor),
     CFrame(CFrame),
@@ -60,7 +67,7 @@ impl_borrowed_variant_vec! {
     // Region3(Region3),
     // Region3int16(Region3int16),
     SharedString(SharedString),
-    String(str),
+    String(String),
     UDim(UDim),
     UDim2(UDim2),
     Vector2(Vector2),
