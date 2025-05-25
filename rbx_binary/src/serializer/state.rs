@@ -1,5 +1,4 @@
 use std::{
-    borrow::Cow,
     collections::{btree_map, BTreeMap},
     convert::TryInto,
     io::Write,
