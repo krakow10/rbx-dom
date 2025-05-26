@@ -113,6 +113,11 @@ impl<'dom, 'db> TypeInfo<'dom, 'db> {
                         .find_map(|class| class.properties.get(prop_name.as_str()));
                 }
 
+                // idea:
+                // TypeInfo.properties is BTreeMap<Ustr, PropInfo>
+                // PropInfo contains usize pointing to TypeInfo.values: Vec<BorrowedVariantVec<'dom>>
+                // so they may be shared among multiple properties and use the same prop chunk.
+                // indexmap?
 
                 let prop_info = match self.properties.entry(prop_name) {
                     btree_map::Entry::Occupied(entry) => entry.into_mut(),
