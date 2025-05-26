@@ -99,86 +99,20 @@ struct TypeInfo<'dom, 'db> {
 }
 
 impl<'dom, 'db> TypeInfo<'dom, 'db> {
-    fn get_or_create_prop_info(&mut self, prop_name: Ustr) -> &mut PropInfo<'dom, 'db> {
+    fn get_or_create_prop_info(
+        &mut self,
+        database: &'db ReflectionDatabase<'db>,
+        prop_name: Ustr,
+    ) -> &mut PropInfo<'dom, 'db> {
         match self.properties.entry(prop_name) {
             btree_map::Entry::Occupied(entry) => entry.into_mut(),
             btree_map::Entry::Vacant(entry) => {
                 if let Some(class_descriptor) = self.class_descriptor {
-                    let prop_descriptor = class_descriptor.properties.get(prop_name.as_str());
+                    let property_descriptor = database
+                        .superclasses_iter(class_descriptor)
+                        .find_map(|class| class.properties.get(prop_name.as_str()));
                 }
 
-                let canonical_name;
-                let serialized_name;
-                let serialized_ty;
-                let mut migration = None;
-
-                let database = self.serializer.database;
-                match find_property_descriptors(database, instance.class, *prop_name) {
-                    Some(descriptors) => {
-                        // For any properties that do not serialize, we can skip
-                        // adding them to the set of type_infos.
-                        let serialized = match descriptors.serialized {
-                            Some(descriptor) => {
-                                if let PropertyKind::Canonical {
-                                    serialization: PropertySerialization::Migrate(prop_migration),
-                                } = &descriptor.kind
-                                {
-                                    // If the property migrates, we need to look up the
-                                    // property it should migrate to and use the reflection
-                                    // information of the new property instead of the old
-                                    // property, because migrated properties should not
-                                    // serialize
-                                    let new_descriptors = find_property_descriptors(
-                                        database,
-                                        instance.class,
-                                        prop_migration.new_property_name.as_str().into(),
-                                    );
-
-                                    migration = Some(prop_migration);
-
-                                    match new_descriptors {
-                                        Some(descriptor) => match descriptor.serialized {
-                                            Some(serialized) => {
-                                                canonical_name =
-                                                    descriptor.canonical.name.as_ref().into();
-                                                serialized
-                                            }
-                                            None => continue,
-                                        },
-                                        None => continue,
-                                    }
-                                } else {
-                                    canonical_name = descriptors.canonical.name.as_ref().into();
-                                    descriptor
-                                }
-                            }
-                            None => continue,
-                        };
-
-                        serialized_name = serialized.name.as_ref().into();
-
-                        serialized_ty = match &serialized.data_type {
-                            DataType::Value(ty) => *ty,
-                            DataType::Enum(_) => VariantType::Enum,
-
-                            unknown_ty => {
-                                // rbx_binary is not new enough to handle this kind
-                                // of property, whatever it is.
-                                return Err(InnerError::UnsupportedPropType {
-                                    type_name: instance.class.to_string(),
-                                    prop_name: prop_name.to_string(),
-                                    prop_type: format!("{:?}", unknown_ty),
-                                });
-                            }
-                        };
-                    }
-
-                    None => {
-                        canonical_name = *prop_name;
-                        serialized_name = *prop_name;
-                        serialized_ty = prop_value.ty();
-                    }
-                }
 
                 let prop_info = match self.properties.entry(prop_name) {
                     btree_map::Entry::Occupied(entry) => entry.into_mut(),
@@ -234,11 +168,11 @@ impl<'dom, 'db> TypeInfo<'dom, 'db> {
                     }
                 };
                 entry.insert(PropInfo {
-                    prop_type: todo!(),
-                    values: todo!(),
-                    serialized_name: todo!(),
-                    default_value: todo!(),
-                    property_descriptor: todo!(),
+                    prop_type,
+                    values,
+                    serialized_name,
+                    default_value,
+                    property_descriptor,
                 })
             }
         }
