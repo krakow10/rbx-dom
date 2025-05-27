@@ -24,7 +24,7 @@ use rbx_reflection::{
 use crate::{
     chunk::ChunkBuilder,
     core::{
-        get_property_descriptors, RbxWriteExt, FILE_MAGIC_HEADER, FILE_SIGNATURE, FILE_VERSION,
+        PropertyDescriptors, RbxWriteExt, FILE_MAGIC_HEADER, FILE_SIGNATURE, FILE_VERSION,
     },
     types::Type,
     Serializer,
@@ -128,7 +128,7 @@ impl<'dom, 'db> TypeInfo<'dom, 'db> {
                     });
 
                     if let Some(descriptors) =
-                        class_prop.and_then(|(class, prop)| get_property_descriptors(class, prop))
+                        class_prop.and_then(|(class, prop)| PropertyDescriptors::new(class, prop))
                     {
                         canonical_name = descriptors.canonical.name.as_ref().into();
                         if let Some(serialized) = descriptors.serialized {
