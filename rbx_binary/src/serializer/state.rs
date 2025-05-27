@@ -415,7 +415,7 @@ impl<'dom, 'db, W: Write> SerializerState<'dom, 'db, W> {
                 }
             }
 
-            let prop_info = type_info.get_or_create_prop_info(*prop_name);
+            let prop_info = type_info.get_or_create_prop_info(self.serializer.database,*prop_name);
 
             // Append value to prop_info values.  This avoids
             // iterating over the instances and properties twice.
