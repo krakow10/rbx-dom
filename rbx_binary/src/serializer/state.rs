@@ -23,9 +23,7 @@ use rbx_reflection::{
 
 use crate::{
     chunk::ChunkBuilder,
-    core::{
-        find_property_descriptors, RbxWriteExt, FILE_MAGIC_HEADER, FILE_SIGNATURE, FILE_VERSION,
-    },
+    core::{RbxWriteExt, FILE_MAGIC_HEADER, FILE_SIGNATURE, FILE_VERSION},
     types::Type,
     Serializer,
 };
@@ -102,7 +100,9 @@ impl<'dom, 'db> TypeInfo<'dom, 'db> {
     fn get_or_create_prop_info(
         &mut self,
         database: &'db ReflectionDatabase<'db>,
+        type_name: &'dom str,
         prop_name: Ustr,
+        sample_value: &'dom Variant,
     ) -> Result<&mut PropInfo<'dom, 'db>, InnerError> {
         // idea:
         // TypeInfo.properties is BTreeMap<Ustr, PropInfo>
@@ -112,21 +112,59 @@ impl<'dom, 'db> TypeInfo<'dom, 'db> {
         Ok(match self.properties.entry(prop_name) {
             btree_map::Entry::Occupied(entry) => entry.into_mut(),
             btree_map::Entry::Vacant(entry) => {
-                if let Some(class_descriptor) = self.class_descriptor {
+                let (
+                    property_descriptor,
+                    default_value,
+                    canonical_name,
+                    serialized_name,
+                    serialized_ty,
+                ) = if let Some(class) = self.class_descriptor {
                     let property_descriptor = database
-                        .superclasses_iter(class_descriptor)
+                        .superclasses_iter(class)
                         .find_map(|class| class.properties.get(prop_name.as_str()));
-                }
 
-                let default_value = self
-                    .class_descriptor
-                    .and_then(|class| database.find_default_property(class, &canonical_name))
+                    let (canonical_name, serialized_name, serialized_ty) =
+                        if let Some(property_descriptor) = property_descriptor {
+                            match &property_descriptor.kind {
+                                PropertyKind::Canonical { serialization } => todo!(),
+                                PropertyKind::Alias { alias_for } => todo!(),
+                                _ => todo!(),
+                            }
+                        } else {
+                            (prop_name, prop_name, sample_value.ty())
+                        };
+
+                    let default_value = database.find_default_property(class, &canonical_name);
+
+                    (
+                        Some(property_descriptor),
+                        default_value,
+                        canonical_name,
+                        serialized_name,
+                        serialized_ty,
+                    )
+                } else {
+                    let property_descriptor = None;
+                    let default_value = None;
+                    let canonical_name = prop_name;
+                    let serialized_name = prop_name;
+                    let serialized_ty = sample_value.ty();
+                    (
+                        property_descriptor,
+                        default_value,
+                        canonical_name,
+                        serialized_name,
+                        serialized_ty,
+                    )
+                };
+
+                let default_value = default_value
                     .or_else(|| fallback_default_value(serialized_ty))
                     .ok_or_else(|| {
                         // Since we don't know how to generate the default value
                         // for this property, we consider it unsupported.
                         InnerError::UnsupportedPropType {
-                            type_name: instance.class.to_string(),
+                            type_name: type_name.to_string(),
                             prop_name: canonical_name.to_string(),
                             prop_type: format!("{:?}", serialized_ty),
                         }
@@ -147,7 +185,7 @@ impl<'dom, 'db> TypeInfo<'dom, 'db> {
                     // binary type value for it. rbx_binary might be out of
                     // date?
                     InnerError::UnsupportedPropType {
-                        type_name: instance.class.to_string(),
+                        type_name: type_name.to_string(),
                         prop_name: serialized_name.to_string(),
                         prop_type: format!("{:?}", serialized_ty),
                     }
@@ -388,6 +426,7 @@ impl<'dom, 'db, W: Write> SerializerState<'dom, 'db, W> {
         type_info.referents.push(instance.referent());
 
         for (prop_name, prop_value) in &instance.properties {
+            // NOTE: this is duplicate code that is also in get_or_create_prop_info
             // Discover and track any shared strings we come across.
             if let Variant::SharedString(shared_string) = prop_value {
                 if !self.shared_string_ids.contains_key(shared_string) {
@@ -398,7 +437,12 @@ impl<'dom, 'db, W: Write> SerializerState<'dom, 'db, W> {
                 }
             }
 
-            let prop_info = type_info.get_or_create_prop_info(self.serializer.database, *prop_name)?;
+            let prop_info = type_info.get_or_create_prop_info(
+                self.serializer.database,
+                instance.class.as_str(),
+                *prop_name,
+                prop_value,
+            )?;
 
             // Append value to prop_info values.  This avoids
             // iterating over the instances and properties twice.
