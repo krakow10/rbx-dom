@@ -23,7 +23,9 @@ use rbx_reflection::{
 
 use crate::{
     chunk::ChunkBuilder,
-    core::{RbxWriteExt, FILE_MAGIC_HEADER, FILE_SIGNATURE, FILE_VERSION},
+    core::{
+        get_property_descriptors, RbxWriteExt, FILE_MAGIC_HEADER, FILE_SIGNATURE, FILE_VERSION,
+    },
     types::Type,
     Serializer,
 };
@@ -119,17 +121,34 @@ impl<'dom, 'db> TypeInfo<'dom, 'db> {
                     serialized_name,
                     serialized_ty,
                 ) = if let Some(class) = self.class_descriptor {
-                    let property_descriptor = database
-                        .superclasses_iter(class)
-                        .find_map(|class| class.properties.get(prop_name.as_str()));
+                    let class_prop = database.superclasses_iter(class).find_map(|class| {
+                        class
+                            .properties
+                            .get(prop_name.as_str())
+                            .map(|prop| (class, prop))
+                    });
 
                     let (canonical_name, serialized_name, serialized_ty) =
-                        if let Some(property_descriptor) = property_descriptor {
-                            match &property_descriptor.kind {
-                                PropertyKind::Canonical { serialization } => todo!(),
-                                PropertyKind::Alias { alias_for } => todo!(),
-                                _ => todo!(),
-                            }
+                        if let Some(descriptors) = class_prop
+                            .and_then(|(class, prop)| get_property_descriptors(class, prop))
+                        {
+                            (
+                                descriptors.canonical.name.as_ref().into(),
+                                descriptors.serialized.unwrap().name.as_ref().into(),
+                                match &descriptors.serialized.unwrap().data_type {
+                                    DataType::Value(variant_type) => *variant_type,
+                                    DataType::Enum(cow) => VariantType::Enum,
+                                    unknown_ty => {
+                                        // rbx_binary is not new enough to handle this kind
+                                        // of property, whatever it is.
+                                        return Err(InnerError::UnsupportedPropType {
+                                            type_name: type_name.to_string(),
+                                            prop_name: prop_name.to_string(),
+                                            prop_type: format!("{:?}", unknown_ty),
+                                        });
+                                    }
+                                },
+                            )
                         } else {
                             (prop_name, prop_name, sample_value.ty())
                         };
@@ -137,7 +156,7 @@ impl<'dom, 'db> TypeInfo<'dom, 'db> {
                     let default_value = database.find_default_property(class, &canonical_name);
 
                     (
-                        Some(property_descriptor),
+                        class_prop.map(|(_, prop)| prop),
                         default_value,
                         canonical_name,
                         serialized_name,
