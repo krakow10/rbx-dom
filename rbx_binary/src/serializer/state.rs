@@ -114,13 +114,12 @@ impl<'dom, 'db> TypeInfo<'dom, 'db> {
         Ok(match self.properties.entry(prop_name) {
             btree_map::Entry::Occupied(entry) => entry.into_mut(),
             btree_map::Entry::Vacant(entry) => {
-                let (
-                    property_descriptor,
-                    default_value,
-                    canonical_name,
-                    serialized_name,
-                    serialized_ty,
-                ) = if let Some(class) = self.class_descriptor {
+                let property_descriptor;
+                let default_value;
+                let canonical_name;
+                let serialized_name;
+                let serialized_ty;
+                if let Some(class) = self.class_descriptor {
                     let class_prop = database.superclasses_iter(class).find_map(|class| {
                         class
                             .properties
@@ -128,53 +127,38 @@ impl<'dom, 'db> TypeInfo<'dom, 'db> {
                             .map(|prop| (class, prop))
                     });
 
-                    let (canonical_name, serialized_name, serialized_ty) =
-                        if let Some(descriptors) = class_prop
-                            .and_then(|(class, prop)| get_property_descriptors(class, prop))
-                        {
-                            (
-                                descriptors.canonical.name.as_ref().into(),
-                                descriptors.serialized.unwrap().name.as_ref().into(),
-                                match &descriptors.serialized.unwrap().data_type {
-                                    DataType::Value(variant_type) => *variant_type,
-                                    DataType::Enum(cow) => VariantType::Enum,
-                                    unknown_ty => {
-                                        // rbx_binary is not new enough to handle this kind
-                                        // of property, whatever it is.
-                                        return Err(InnerError::UnsupportedPropType {
-                                            type_name: type_name.to_string(),
-                                            prop_name: prop_name.to_string(),
-                                            prop_type: format!("{:?}", unknown_ty),
-                                        });
-                                    }
-                                },
-                            )
-                        } else {
-                            (prop_name, prop_name, sample_value.ty())
+                    if let Some(descriptors) =
+                        class_prop.and_then(|(class, prop)| get_property_descriptors(class, prop))
+                    {
+                        canonical_name = descriptors.canonical.name.as_ref().into();
+                        serialized_name = descriptors.serialized.unwrap().name.as_ref().into();
+                        serialized_ty = match &descriptors.serialized.unwrap().data_type {
+                            DataType::Value(variant_type) => *variant_type,
+                            DataType::Enum(cow) => VariantType::Enum,
+                            unknown_ty => {
+                                // rbx_binary is not new enough to handle this kind
+                                // of property, whatever it is.
+                                return Err(InnerError::UnsupportedPropType {
+                                    type_name: type_name.to_string(),
+                                    prop_name: prop_name.to_string(),
+                                    prop_type: format!("{:?}", unknown_ty),
+                                });
+                            }
                         };
+                    } else {
+                        canonical_name = prop_name;
+                        serialized_name = prop_name;
+                        serialized_ty = sample_value.ty();
+                    };
 
-                    let default_value = database.find_default_property(class, &canonical_name);
-
-                    (
-                        class_prop.map(|(_, prop)| prop),
-                        default_value,
-                        canonical_name,
-                        serialized_name,
-                        serialized_ty,
-                    )
+                    property_descriptor = class_prop.map(|(_, prop)| prop);
+                    default_value = database.find_default_property(class, &canonical_name);
                 } else {
-                    let property_descriptor = None;
-                    let default_value = None;
-                    let canonical_name = prop_name;
-                    let serialized_name = prop_name;
-                    let serialized_ty = sample_value.ty();
-                    (
-                        property_descriptor,
-                        default_value,
-                        canonical_name,
-                        serialized_name,
-                        serialized_ty,
-                    )
+                    property_descriptor = None;
+                    default_value = None;
+                    canonical_name = prop_name;
+                    serialized_name = prop_name;
+                    serialized_ty = sample_value.ty();
                 };
 
                 let default_value = default_value
