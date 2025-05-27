@@ -103,8 +103,13 @@ impl<'dom, 'db> TypeInfo<'dom, 'db> {
         &mut self,
         database: &'db ReflectionDatabase<'db>,
         prop_name: Ustr,
-    ) -> &mut PropInfo<'dom, 'db> {
-        match self.properties.entry(prop_name) {
+    ) -> Result<&mut PropInfo<'dom, 'db>, InnerError> {
+        // idea:
+        // TypeInfo.properties is BTreeMap<Ustr, PropInfo>
+        // PropInfo contains usize pointing to TypeInfo.values: Vec<BorrowedVariantVec<'dom>>
+        // so they may be shared among multiple properties and use the same prop chunk.
+        // indexmap?
+        Ok(match self.properties.entry(prop_name) {
             btree_map::Entry::Occupied(entry) => entry.into_mut(),
             btree_map::Entry::Vacant(entry) => {
                 if let Some(class_descriptor) = self.class_descriptor {
@@ -113,74 +118,52 @@ impl<'dom, 'db> TypeInfo<'dom, 'db> {
                         .find_map(|class| class.properties.get(prop_name.as_str()));
                 }
 
-                // idea:
-                // TypeInfo.properties is BTreeMap<Ustr, PropInfo>
-                // PropInfo contains usize pointing to TypeInfo.values: Vec<BorrowedVariantVec<'dom>>
-                // so they may be shared among multiple properties and use the same prop chunk.
-                // indexmap?
-
-                let prop_info = match self.properties.entry(prop_name) {
-                    btree_map::Entry::Occupied(entry) => entry.into_mut(),
-                    btree_map::Entry::Vacant(entry) => {
-                        let default_value = self
-                            .class_descriptor
-                            .and_then(|class| {
-                                database.find_default_property(class, &canonical_name)
-                            })
-                            .or_else(|| fallback_default_value(serialized_ty))
-                            .ok_or_else(|| {
-                                // Since we don't know how to generate the default value
-                                // for this property, we consider it unsupported.
-                                InnerError::UnsupportedPropType {
-                                    type_name: instance.class.to_string(),
-                                    prop_name: canonical_name.to_string(),
-                                    prop_type: format!("{:?}", serialized_ty),
-                                }
-                            })?;
-
-                        // There's no assurance that the default SharedString value
-                        // will actually get serialized inside of the SSTR chunk, so we
-                        // check here just to make sure.
-                        if let Variant::SharedString(sstr) = default_value {
-                            if !self.shared_string_ids.contains_key(sstr) {
-                                self.shared_string_ids.insert(sstr.clone(), 0);
-                                self.shared_strings.push(sstr.clone());
-                            }
+                let default_value = self
+                    .class_descriptor
+                    .and_then(|class| database.find_default_property(class, &canonical_name))
+                    .or_else(|| fallback_default_value(serialized_ty))
+                    .ok_or_else(|| {
+                        // Since we don't know how to generate the default value
+                        // for this property, we consider it unsupported.
+                        InnerError::UnsupportedPropType {
+                            type_name: instance.class.to_string(),
+                            prop_name: canonical_name.to_string(),
+                            prop_type: format!("{:?}", serialized_ty),
                         }
+                    })?;
 
-                        let ser_type = Type::from_rbx_type(serialized_ty).ok_or_else(|| {
-                            // This is a known value type, but rbx_binary doesn't have a
-                            // binary type value for it. rbx_binary might be out of
-                            // date?
-                            InnerError::UnsupportedPropType {
-                                type_name: instance.class.to_string(),
-                                prop_name: serialized_name.to_string(),
-                                prop_type: format!("{:?}", serialized_ty),
-                            }
-                        })?;
-
-                        // TODO: insert type_info.instances.len() references to the default value into values
-
-                        entry.insert(PropInfo {
-                            prop_type: ser_type,
-                            serialized_name,
-                            values: BorrowedVariantVec::new(serialized_ty),
-                            default_value,
-                            property_descriptor: type_info
-                                .class_descriptor
-                                .and_then(|class| class.properties.get(canonical_name.as_str())),
-                        })
+                // There's no assurance that the default SharedString value
+                // will actually get serialized inside of the SSTR chunk, so we
+                // check here just to make sure.
+                if let Variant::SharedString(sstr) = default_value {
+                    if !self.shared_string_ids.contains_key(sstr) {
+                        self.shared_string_ids.insert(sstr.clone(), 0);
+                        self.shared_strings.push(sstr.clone());
                     }
-                };
+                }
+
+                let ser_type = Type::from_rbx_type(serialized_ty).ok_or_else(|| {
+                    // This is a known value type, but rbx_binary doesn't have a
+                    // binary type value for it. rbx_binary might be out of
+                    // date?
+                    InnerError::UnsupportedPropType {
+                        type_name: instance.class.to_string(),
+                        prop_name: serialized_name.to_string(),
+                        prop_type: format!("{:?}", serialized_ty),
+                    }
+                })?;
+
+                // TODO: insert type_info.instances.len() references to the default value into values
+
                 entry.insert(PropInfo {
-                    prop_type,
-                    values,
+                    prop_type: ser_type,
                     serialized_name,
+                    values: BorrowedVariantVec::new(serialized_ty),
                     default_value,
                     property_descriptor,
                 })
             }
-        }
+        })
     }
 }
 
@@ -415,7 +398,7 @@ impl<'dom, 'db, W: Write> SerializerState<'dom, 'db, W> {
                 }
             }
 
-            let prop_info = type_info.get_or_create_prop_info(self.serializer.database,*prop_name);
+            let prop_info = type_info.get_or_create_prop_info(self.serializer.database, *prop_name)?;
 
             // Append value to prop_info values.  This avoids
             // iterating over the instances and properties twice.
