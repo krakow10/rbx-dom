@@ -437,10 +437,6 @@ impl<'dom, 'db, W: Write> SerializerState<'dom, 'db, W> {
         type_info.referents.push(instance.referent());
 
         for (prop_name, prop_value) in &instance.properties {
-            // NOTE: this is duplicate code that is also in get_or_create_prop_info
-            // NOTE2: it's actually not duplicated. They are different cases.
-            // Case1: create prop info with default value
-            // Case2: add prop value
             // Discover and track any shared strings we come across.
             if let Variant::SharedString(shared_string) = prop_value {
                 if !self.shared_string_ids.contains_key(shared_string) {
