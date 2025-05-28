@@ -102,6 +102,8 @@ struct TypeInfo<'dom, 'db> {
 impl<'dom, 'db> TypeInfo<'dom, 'db> {
     fn get_or_create_prop_info(
         &mut self,
+        shared_strings: &mut Vec<SharedString>,
+        shared_string_ids: &mut HashMap<SharedString, u32>,
         database: &'db ReflectionDatabase<'db>,
         type_name: &'dom str,
         prop_name: Ustr,
@@ -183,9 +185,9 @@ impl<'dom, 'db> TypeInfo<'dom, 'db> {
                 // will actually get serialized inside of the SSTR chunk, so we
                 // check here just to make sure.
                 if let Variant::SharedString(sstr) = default_value {
-                    if !self.shared_string_ids.contains_key(sstr) {
-                        self.shared_string_ids.insert(sstr.clone(), 0);
-                        self.shared_strings.push(sstr.clone());
+                    if !shared_string_ids.contains_key(sstr) {
+                        shared_string_ids.insert(sstr.clone(), 0);
+                        shared_strings.push(sstr.clone());
                     }
                 }
 
@@ -450,6 +452,8 @@ impl<'dom, 'db, W: Write> SerializerState<'dom, 'db, W> {
             }
 
             let prop_info = type_info.get_or_create_prop_info(
+                &mut self.shared_strings,
+                &mut self.shared_string_ids,
                 self.serializer.database,
                 instance.class.as_str(),
                 *prop_name,
