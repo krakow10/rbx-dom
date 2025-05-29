@@ -121,7 +121,7 @@ struct PropInfo<'dom> {
 
     /// The canonical name for this property. This is used to sort the
     /// logical property list just before serialization.
-    canonical_name: Ustr,
+    cannonical_name: Ustr,
 
     /// The serialized name for this property. This is the name that is actually
     /// written as part of the PROP chunk and may not line up with the canonical
@@ -153,58 +153,13 @@ impl<'dom, 'db: 'dom> PropInfo<'dom> {
     fn new(
         shared_strings: &mut Vec<SharedString>,
         shared_string_ids: &mut HashMap<SharedString, u32>,
-        database: &'db ReflectionDatabase<'db>,
-        class_descriptor: Option<&'db ClassDescriptor<'db>>,
         type_name: &str,
-        prop_name: Ustr,
-        sample_value: &Variant,
+        default_value: Option<&'dom Variant>,
+        serialized_ty: VariantType,
+        cannonical_name: Ustr,
+        serialized_name: Ustr,
+        migration: Option<&'db PropertyMigration>,
     ) -> Result<Self, InnerError> {
-        let mut migration = None;
-        let mut default_value = None;
-        let mut canonical_name = prop_name;
-        let mut serialized_name = prop_name;
-        let mut serialized_ty = sample_value.ty();
-        if let Some(class) = class_descriptor {
-            let class_name = class.name.as_ref().into();
-            if let Some(descriptors) = find_property_descriptors(database, class_name, prop_name) {
-                canonical_name = descriptors.canonical.name.as_ref().into();
-                if let Some(mut serialized) = descriptors.serialized {
-                    if let PropertyKind::Canonical {
-                        serialization: PropertySerialization::Migrate(prop_migration),
-                    } = &serialized.kind
-                    {
-                        migration = Some(prop_migration);
-
-                        // If the property migrates, we need to look up the
-                        // property it should migrate to and use the reflection
-                        // information of the new property instead of the old
-                        // property, because migrated properties should not
-                        // serialize
-                        let new_descriptors = find_property_descriptors(
-                            database,
-                            class_name,
-                            prop_migration.new_property_name.as_str().into(),
-                        );
-
-                        if let Some(new_descriptor) = new_descriptors {
-                            if let Some(new_serialized) = new_descriptor.serialized {
-                                canonical_name = new_descriptor.canonical.name.as_ref().into();
-                                serialized = new_serialized;
-                            }
-                        }
-                    }
-                    serialized_name = serialized.name.as_ref().into();
-                    serialized_ty = match &serialized.data_type {
-                        rbx_reflection::DataType::Value(variant_type) => *variant_type,
-                        rbx_reflection::DataType::Enum(_) => VariantType::Enum,
-                        _ => unimplemented!(),
-                    };
-                }
-            };
-
-            default_value = database.find_default_property(class, &canonical_name);
-        };
-
         let default_value = default_value
             .or_else(|| fallback_default_value(serialized_ty))
             .ok_or_else(|| {
@@ -212,7 +167,7 @@ impl<'dom, 'db: 'dom> PropInfo<'dom> {
                 // for this property, we consider it unsupported.
                 InnerError::UnsupportedPropType {
                     type_name: type_name.to_string(),
-                    prop_name: canonical_name.to_string(),
+                    prop_name: cannonical_name.to_string(),
                     prop_type: format!("{:?}", serialized_ty),
                 }
             })?;
@@ -240,7 +195,7 @@ impl<'dom, 'db: 'dom> PropInfo<'dom> {
 
         Ok(Self {
             prop_type: ser_type,
-            canonical_name,
+            cannonical_name,
             serialized_name,
             values: Vec::new(),
             default_value,
@@ -326,17 +281,75 @@ impl<'dom, 'db> TypeInfos<'dom, 'db> {
 impl<'dom, 'db: 'dom> TypeInfo<'dom, 'db> {
     fn get_or_create_logical_property<'short, 'long: 'short>(
         &'long mut self,
+        shared_strings: &mut Vec<SharedString>,
+        shared_string_ids: &mut HashMap<SharedString, u32>,
+        type_name: &str,
+        database: &'db ReflectionDatabase<'db>,
+        class_descriptor: Option<&'db ClassDescriptor<'db>>,
         prop_name: Ustr,
+        sample_value: &Variant,
     ) -> Result<&'short mut PropInfo<'dom>, InnerError> {
         // check if prop_name is already in properties_visited, return
         if let Some(&logical_index) = self.properties_visited.get(&prop_name) {
             return Ok(&mut self.properties[logical_index]);
         }
         // get database property cannonical name
-        let cannonical_name = get_cannonical_name();
+        let mut migration = None;
+        let mut default_value = None;
+        let mut cannonical_name = prop_name;
+        let mut serialized_name = prop_name;
+        let mut serialized_ty = sample_value.ty();
+        if let Some(class) = class_descriptor {
+            let class_name = class.name.as_ref().into();
+            if let Some(descriptors) = find_property_descriptors(database, class_name, prop_name) {
+                cannonical_name = descriptors.canonical.name.as_ref().into();
+                if let Some(mut serialized) = descriptors.serialized {
+                    if let PropertyKind::Canonical {
+                        serialization: PropertySerialization::Migrate(prop_migration),
+                    } = &serialized.kind
+                    {
+                        migration = Some(prop_migration);
+
+                        // If the property migrates, we need to look up the
+                        // property it should migrate to and use the reflection
+                        // information of the new property instead of the old
+                        // property, because migrated properties should not
+                        // serialize
+                        let new_descriptors = find_property_descriptors(
+                            database,
+                            class_name,
+                            prop_migration.new_property_name.as_str().into(),
+                        );
+
+                        if let Some(new_descriptor) = new_descriptors {
+                            if let Some(new_serialized) = new_descriptor.serialized {
+                                cannonical_name = new_descriptor.canonical.name.as_ref().into();
+                                serialized = new_serialized;
+                            }
+                        }
+                    }
+                    serialized_name = serialized.name.as_ref().into();
+                    serialized_ty = match &serialized.data_type {
+                        rbx_reflection::DataType::Value(variant_type) => *variant_type,
+                        rbx_reflection::DataType::Enum(_) => VariantType::Enum,
+                        _ => unimplemented!(),
+                    };
+                }
+            };
+            default_value = database.find_default_property(class, &cannonical_name);
+        };
         let logical_index = if cannonical_name == prop_name {
             // create logical property
-            let prop_info = PropInfo::new()?;
+            let prop_info = PropInfo::new(
+                shared_strings,
+                shared_string_ids,
+                type_name,
+                default_value,
+                serialized_ty,
+                cannonical_name,
+                serialized_name,
+                migration,
+            )?;
             let logical_index = self.properties.len();
             self.properties.push(prop_info);
             // insert prop_name PropInfo
@@ -349,7 +362,16 @@ impl<'dom, 'db: 'dom> TypeInfo<'dom, 'db> {
                 return Ok(&mut self.properties[logical_index]);
             }
             // create logical property
-            let prop_info = PropInfo::new()?;
+            let prop_info = PropInfo::new(
+                shared_strings,
+                shared_string_ids,
+                type_name,
+                default_value,
+                serialized_ty,
+                cannonical_name,
+                serialized_name,
+                migration,
+            )?;
             let logical_index = self.properties.len();
             self.properties.push(prop_info);
             // insert canonical PropInfo
@@ -447,7 +469,7 @@ impl<'dom, 'db: 'dom, W: Write> SerializerState<'dom, 'db, W> {
     /// Collect information about all the different types of instance and their
     /// properties.
     // Using the entry API here, as Clippy suggests, would require us to
-    // clone canonical_name in a cold branch. We don't want to do that.
+    // clone cannonical_name in a cold branch. We don't want to do that.
     #[allow(clippy::map_entry)]
     #[profiling::function]
     pub fn collect_type_info(&mut self, instance: &'dom Instance) -> Result<(), InnerError> {
@@ -466,7 +488,15 @@ impl<'dom, 'db: 'dom, W: Write> SerializerState<'dom, 'db, W> {
                 }
             }
 
-            let logical_property = type_info.get_or_create_logical_property(*prop_name)?;
+            let logical_property = type_info.get_or_create_logical_property(
+                &mut self.shared_strings,
+                &mut self.shared_string_ids,
+                &instance.class,
+                self.serializer.database,
+                type_info.class_descriptor,
+                *prop_name,
+                prop_value,
+            )?;
 
             // Add default values until the desired len is reached.
             logical_property.extend_with_default(desired_len);
@@ -609,14 +639,14 @@ impl<'dom, 'db: 'dom, W: Write> SerializerState<'dom, 'db, W> {
         for (type_name, type_info) in &mut self.type_infos.values {
             let desired_len = type_info.referents.len();
             // Sort logical properties by canonical name
-            type_info.properties.sort_by_key(|info| info.canonical_name);
+            type_info.properties.sort_by_key(|info| info.cannonical_name);
             let referents = &type_info.referents;
             for prop_info in &mut type_info.properties {
                 profiling::scope!("serialize property", prop_name.borrow());
                 log::trace!(
                     "Writing property {}.{} (type {:?})",
                     type_name,
-                    prop_info.canonical_name,
+                    prop_info.cannonical_name,
                     prop_info.prop_type
                 );
 
@@ -658,7 +688,7 @@ impl<'dom, 'db: 'dom, W: Write> SerializerState<'dom, 'db, W> {
                     |i: usize, bad_value: &Variant, valid_type_names: &'static str| {
                         Err(InnerError::PropTypeMismatch {
                             type_name: type_name.to_string(),
-                            prop_name: prop_info.canonical_name.to_string(),
+                            prop_name: prop_info.cannonical_name.to_string(),
                             valid_type_names,
                             actual_type_name: format!("{:?}", bad_value.ty()),
                             instance_full_name: full_name_for(dom, referents[i]),
@@ -668,7 +698,7 @@ impl<'dom, 'db: 'dom, W: Write> SerializerState<'dom, 'db, W> {
                 let invalid_value = |i: usize, bad_value: &Variant| InnerError::InvalidPropValue {
                     instance_full_name: full_name_for(dom, referents[i]),
                     type_name: type_name.to_string(),
-                    prop_name: prop_info.canonical_name.to_string(),
+                    prop_name: prop_info.cannonical_name.to_string(),
                     prop_type: format!("{:?}", bad_value.ty()),
                 };
 
