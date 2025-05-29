@@ -588,7 +588,7 @@ impl<'dom, 'db, W: Write> SerializerState<'dom, 'db, W> {
                 let values = &type_info.values[prop_info.values_index];
 
                 // Do migration
-                let migrated_properties: Vec<_>;
+                let migrated_values_bind: Vec<_>;
                 let migrated_values;
                 let (serialized_name, property_values) =
                     if let Some(prop_descriptor) = prop_info.property_descriptor {
@@ -601,7 +601,7 @@ impl<'dom, 'db, W: Write> SerializerState<'dom, 'db, W> {
                                     (serialized_name.as_ref(), values)
                                 }
                                 PropertySerialization::Migrate(property_migration) => {
-                                    migrated_properties = values
+                                    migrated_values_bind = values
                                         .iter()
                                         .map(|&value| {
                                             property_migration
@@ -612,7 +612,7 @@ impl<'dom, 'db, W: Write> SerializerState<'dom, 'db, W> {
                                         .collect();
                                     // We need to map twice to type match `values`
                                     migrated_values =
-                                        migrated_properties.iter().map(Cow::as_ref).collect();
+                                        migrated_values_bind.iter().map(Cow::as_ref).collect();
                                     (
                                         property_migration.new_property_name.as_str(),
                                         &migrated_values,
