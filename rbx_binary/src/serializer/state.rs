@@ -1,6 +1,6 @@
 use std::{
     borrow::Cow,
-    collections::{btree_map, hash_map, BTreeMap},
+    collections::{btree_map, BTreeMap},
     convert::TryInto,
     io::Write,
 };
@@ -18,7 +18,7 @@ use rbx_dom_weak::{
 };
 
 use rbx_reflection::{
-    ClassDescriptor, ClassTag, PropertyDescriptor, PropertyKind, PropertyMigration,
+    ClassDescriptor, ClassTag, PropertyKind, PropertyMigration,
     PropertySerialization, ReflectionDatabase,
 };
 
