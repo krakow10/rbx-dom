@@ -677,14 +677,6 @@ impl<'dom, 'db, W: Write> SerializerState<'dom, 'db, W> {
                     BorrowedVariantVec::Int32(values) => {
                         chunk.write_interleaved_i32_array(values.into_iter().copied().copied())?;
                     }
-                    BorrowedVariantVec::Float32(values) => {
-                        chunk.write_interleaved_f32_array(values.into_iter().copied().copied())?;
-                    }
-                    BorrowedVariantVec::Float64(values) => {
-                        for &value in values {
-                            chunk.write_le_f64(*value)?;
-                        }
-                    }
                     BorrowedVariantVec::UDim(values) => {
                         let mut scale = Vec::with_capacity(values.len());
                         let mut offset = Vec::with_capacity(values.len());
@@ -731,11 +723,6 @@ impl<'dom, 'db, W: Write> SerializerState<'dom, 'db, W> {
                             chunk.write_le_f32(value.direction.x)?;
                             chunk.write_le_f32(value.direction.y)?;
                             chunk.write_le_f32(value.direction.x)?;
-                        }
-                    }
-                    BorrowedVariantVec::Faces(values) => {
-                        for &value in values {
-                            chunk.write_u8(value.bits())?;
                         }
                     }
                     BorrowedVariantVec::Vector2(values) => {

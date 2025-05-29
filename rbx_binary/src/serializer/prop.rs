@@ -69,10 +69,10 @@ impl_prop_variant_builder! {
     ColorSequence(ColorSequenceBuilder<'a>, ColorSequenceBuilder),
     ContentId(ContentIdBuilder<'a>, ContentIdBuilder),
     Enum(EnumBuilder, EnumBuilder),
+    Faces(FacesBuilder, FacesBuilder),
+    Float32(Float32Builder, Float32Builder),
+    Float64(Float64Builder, Float64Builder),
 }
-    // Faces(FacesBuilder<'a>, FacesBuilder),
-    // Float32(Float32Builder<'a>, Float32Builder),
-    // Float64(Float64Builder<'a>, Float64Builder),
     // Int32(Int32Builder<'a>, Int32Builder),
     // Int64(Int64Builder<'a>, Int64Builder),
     // NumberRange(NumberRangeBuilder<'a>, NumberRangeBuilder),
@@ -128,14 +128,8 @@ macro_rules! impl_ref_builder {
 }
 macro_rules! impl_copy_builder {
     ($builder:ident, $variant:ident, $type:ty) => {
-        #[derive(Debug)]
-        struct $builder {
-            values: Vec<$type>,
-        }
+        impl_copy_builder_pushless!($builder, $variant, $type);
         impl $builder {
-            fn new() -> Self {
-                Self { values: Vec::new() }
-            }
             fn push(&mut self, variant: &Variant) -> Result<(), VariantError> {
                 match variant {
                     Variant::$variant(value) => self.values.push(*value),
@@ -147,6 +141,19 @@ macro_rules! impl_copy_builder {
                     }
                 }
                 Ok(())
+            }
+        }
+    };
+}
+macro_rules! impl_copy_builder_pushless {
+    ($builder:ident, $variant:ident, $type:ty) => {
+        #[derive(Debug)]
+        struct $builder {
+            values: Vec<$type>,
+        }
+        impl $builder {
+            fn new() -> Self {
+                Self { values: Vec::new() }
             }
         }
     };
@@ -326,7 +333,42 @@ impl EnumBuilder {
         )
     }
 }
+impl_convert_builder!(FacesBuilder, Faces, u8, |value:&Faces|value.bits());
+impl FacesBuilder {
+    fn dump(&self, chunk: &mut ChunkBuilder) -> Result<(), std::io::Error> {
+        chunk.write_all(&self.values)
+    }
+}
 
+impl_copy_builder!(Float32Builder, Float32, f32);
+impl Float32Builder {
+    fn dump(&self, chunk: &mut ChunkBuilder) -> Result<(), std::io::Error> {
+        chunk.write_interleaved_f32_array(self.values.iter().copied())
+    }
+}
+
+impl_copy_builder_pushless!(Float64Builder, Float64, f64);
+impl Float64Builder {
+    fn push(&mut self, variant: &Variant) -> Result<(), VariantError> {
+        match variant {
+            Variant::Float32(value) => self.values.push(*value as f64),
+            Variant::Float64(value) => self.values.push(*value),
+            observed => {
+                return Err(VariantError {
+                    expected: VariantType::Float64,
+                    observed: observed.ty(),
+                });
+            }
+        }
+        Ok(())
+    }
+    fn dump(&self, chunk: &mut ChunkBuilder) -> Result<(), std::io::Error> {
+        for &value in &self.values {
+            chunk.write_le_f64(value)?;
+        }
+        Ok(())
+    }
+}
 
 impl_ref_builder!(StringBuilder, String, str);
 impl StringBuilder<'_> {
