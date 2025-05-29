@@ -743,24 +743,6 @@ impl<'dom, 'db, W: Write> SerializerState<'dom, 'db, W> {
                             chunk.write_u8(value.bits())?;
                         }
                     }
-                    BorrowedVariantVec::BrickColor(values) => {
-                        chunk.write_interleaved_u32_array(
-                            values.into_iter().map(|&value| *value as u32),
-                        )?;
-                    }
-                    BorrowedVariantVec::Color3(values) => {
-                        let mut r = Vec::with_capacity(values.len());
-                        let mut g = Vec::with_capacity(values.len());
-                        let mut b = Vec::with_capacity(values.len());
-                        for &value in values {
-                            r.push(value.r);
-                            g.push(value.g);
-                            b.push(value.b);
-                        }
-                        chunk.write_interleaved_f32_array(r)?;
-                        chunk.write_interleaved_f32_array(g)?;
-                        chunk.write_interleaved_f32_array(b)?;
-                    }
                     BorrowedVariantVec::Vector2(values) => {
                         let mut x = Vec::with_capacity(values.len());
                         let mut y = Vec::with_capacity(values.len());
@@ -780,38 +762,6 @@ impl<'dom, 'db, W: Write> SerializerState<'dom, 'db, W> {
                             y.push(value.y);
                             z.push(value.z);
                         }
-                        chunk.write_interleaved_f32_array(x)?;
-                        chunk.write_interleaved_f32_array(y)?;
-                        chunk.write_interleaved_f32_array(z)?;
-                    }
-                    BorrowedVariantVec::CFrame(values) => {
-                        let mut x = Vec::with_capacity(values.len());
-                        let mut y = Vec::with_capacity(values.len());
-                        let mut z = Vec::with_capacity(values.len());
-                        for &value in values {
-                            let matrix = &value.orientation;
-                            if let Some(id) = matrix.to_basic_rotation_id() {
-                                chunk.write_u8(id)?;
-                            } else {
-                                chunk.write_u8(0x00)?;
-
-                                chunk.write_le_f32(matrix.x.x)?;
-                                chunk.write_le_f32(matrix.x.y)?;
-                                chunk.write_le_f32(matrix.x.z)?;
-
-                                chunk.write_le_f32(matrix.y.x)?;
-                                chunk.write_le_f32(matrix.y.y)?;
-                                chunk.write_le_f32(matrix.y.z)?;
-
-                                chunk.write_le_f32(matrix.z.x)?;
-                                chunk.write_le_f32(matrix.z.y)?;
-                                chunk.write_le_f32(matrix.z.z)?;
-                            }
-                            x.push(value.position.x);
-                            y.push(value.position.y);
-                            z.push(value.position.z);
-                        }
-
                         chunk.write_interleaved_f32_array(x)?;
                         chunk.write_interleaved_f32_array(y)?;
                         chunk.write_interleaved_f32_array(z)?;
@@ -850,21 +800,6 @@ impl<'dom, 'db, W: Write> SerializerState<'dom, 'db, W> {
                             }
                         }
                     }
-                    BorrowedVariantVec::ColorSequence(values) => {
-                        for &value in values {
-                            chunk.write_le_u32(value.keypoints.len() as u32)?;
-
-                            for keypoint in &value.keypoints {
-                                chunk.write_le_f32(keypoint.time)?;
-                                chunk.write_le_f32(keypoint.color.r)?;
-                                chunk.write_le_f32(keypoint.color.g)?;
-                                chunk.write_le_f32(keypoint.color.b)?;
-
-                                // write out a dummy value for envelope, which is serialized but doesn't do anything
-                                chunk.write_le_f32(0.0)?;
-                            }
-                        }
-                    }
                     BorrowedVariantVec::NumberRange(values) => {
                         for &value in values {
                             chunk.write_le_f32(value.min)?;
@@ -900,19 +835,6 @@ impl<'dom, 'db, W: Write> SerializerState<'dom, 'db, W> {
                                 chunk.write_u8(0)?;
                             }
                         }
-                    }
-                    BorrowedVariantVec::Color3uint8(values) => {
-                        let mut r = Vec::with_capacity(values.len());
-                        let mut g = Vec::with_capacity(values.len());
-                        let mut b = Vec::with_capacity(values.len());
-                        for &value in values {
-                            r.push(value.r);
-                            g.push(value.g);
-                            b.push(value.b);
-                        }
-                        chunk.write_all(r.as_slice())?;
-                        chunk.write_all(g.as_slice())?;
-                        chunk.write_all(b.as_slice())?;
                     }
                     BorrowedVariantVec::Int64(values) => {
                         chunk.write_interleaved_i64_array(values.into_iter().copied().copied())?;
