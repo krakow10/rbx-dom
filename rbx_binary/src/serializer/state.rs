@@ -135,7 +135,8 @@ struct PropInfo<'db> {
     /// present, followed by an educated guess based on the type of the value.
     default_value: Cow<'db, Variant>,
 
-    // TODO: doc
+    /// A reference to the type's property descriptor from rbx_reflection, if this
+    /// is a known property.
     property_descriptor: Option<&'db PropertyDescriptor<'db>>,
 }
 
