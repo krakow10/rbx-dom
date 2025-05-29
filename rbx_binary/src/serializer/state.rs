@@ -18,8 +18,8 @@ use rbx_dom_weak::{
 };
 
 use rbx_reflection::{
-    ClassDescriptor, ClassTag, DataType, PropertyKind, PropertyMigration, PropertySerialization,
-    ReflectionDatabase,
+    ClassDescriptor, ClassTag, DataType, PropertyDescriptor, PropertyKind, PropertyMigration,
+    PropertySerialization, ReflectionDatabase,
 };
 
 use crate::{
@@ -81,25 +81,125 @@ struct TypeInfo<'dom, 'db> {
     /// ServiceProvider in most projects.
     is_service: bool,
 
-    /// All of the instances referenced by this type.
-    instances: Vec<&'dom Instance>,
+    /// All of the instance referents referenced by this type.
+    referents: Vec<Ref>,
 
     /// All of the defined properties for this type found on any instance of
-    /// this type. Properties are keyed by their canonical name, and only one
-    /// entry should be present for each logical property.
+    /// this type. Properties are keyed by their serialized name, multiple
+    /// entries may be present for each logical property.  This is to avoid
+    /// multiple database lookups.
     ///
     /// Stored in a sorted map to try to ensure that we write out properties in
     /// a deterministic order.
-    properties: BTreeMap<Ustr, PropInfo<'db>>,
+    properties: BTreeMap<Ustr, PropInfo<'dom, 'db>>,
 
     /// A reference to the type's class descriptor from rbx_reflection, if this
     /// is a known class.
     class_descriptor: Option<&'db ClassDescriptor<'db>>,
+}
+impl<'dom, 'db> TypeInfo<'dom, 'db> {
+    fn get_or_create_prop_info(
+        &mut self,
+        shared_strings: &mut Vec<SharedString>,
+        shared_string_ids: &mut HashMap<SharedString, u32>,
+        database: &'db ReflectionDatabase<'db>,
+        type_name: &'dom str,
+        prop_name: Ustr,
+        sample_value: &'dom Variant,
+    ) -> Result<&mut PropInfo<'dom, 'db>, InnerError> {
+        // idea:
+        // TypeInfo.properties is BTreeMap<Ustr, PropInfo>
+        // PropInfo contains usize pointing to TypeInfo.values: Vec<PropVariantBuilder<'dom>>
+        // so they may be shared among multiple properties and use the same prop chunk.
+        // indexmap?
+        Ok(match self.properties.entry(prop_name) {
+            btree_map::Entry::Occupied(entry) => entry.into_mut(),
+            btree_map::Entry::Vacant(entry) => {
+                let property_descriptor;
+                let default_value;
+                let canonical_name;
+                let serialized_name;
+                let serialized_ty;
+                if let Some(class) = self.class_descriptor {
+                    let class_prop = database.superclasses_iter(class).find_map(|class| {
+                        class
+                            .properties
+                            .get(prop_name.as_str())
+                            .map(|prop| (class, prop))
+                    });
 
-    /// A set containing the properties that we have seen so far in the file and
-    /// processed. This helps us avoid traversing the reflection database
-    /// multiple times if there are many copies of the same kind of instance.
-    properties_visited: UstrSet,
+                    if let Some(descriptors) =
+                        class_prop.and_then(|(class, prop)| PropertyDescriptors::new(class, prop))
+                    {
+                        canonical_name = descriptors.canonical.name.as_ref().into();
+                        if let Some(serialized) = descriptors.serialized {
+                            serialized_name = serialized.name.as_ref().into();
+                            serialized_ty = serialized.data_type.ty();
+                        } else {
+                            serialized_name = prop_name;
+                            serialized_ty = sample_value.ty();
+                        }
+                    } else {
+                        canonical_name = prop_name;
+                        serialized_name = prop_name;
+                        serialized_ty = sample_value.ty();
+                    };
+
+                    property_descriptor = class_prop.map(|(_, prop)| prop);
+                    default_value = database.find_default_property(class, &canonical_name);
+                } else {
+                    property_descriptor = None;
+                    default_value = None;
+                    canonical_name = prop_name;
+                    serialized_name = prop_name;
+                    serialized_ty = sample_value.ty();
+                };
+
+                let default_value = default_value
+                    .or_else(|| fallback_default_value(serialized_ty))
+                    .ok_or_else(|| {
+                        // Since we don't know how to generate the default value
+                        // for this property, we consider it unsupported.
+                        InnerError::UnsupportedPropType {
+                            type_name: type_name.to_string(),
+                            prop_name: canonical_name.to_string(),
+                            prop_type: format!("{:?}", serialized_ty),
+                        }
+                    })?;
+
+                // There's no assurance that the default SharedString value
+                // will actually get serialized inside of the SSTR chunk, so we
+                // check here just to make sure.
+                if let Variant::SharedString(sstr) = default_value {
+                    if !shared_string_ids.contains_key(sstr) {
+                        shared_string_ids.insert(sstr.clone(), 0);
+                        shared_strings.push(sstr.clone());
+                    }
+                }
+
+                let ser_type = Type::from_rbx_type(serialized_ty).ok_or_else(|| {
+                    // This is a known value type, but rbx_binary doesn't have a
+                    // binary type value for it. rbx_binary might be out of
+                    // date?
+                    InnerError::UnsupportedPropType {
+                        type_name: type_name.to_string(),
+                        prop_name: serialized_name.to_string(),
+                        prop_type: format!("{:?}", serialized_ty),
+                    }
+                })?;
+
+                // TODO: insert type_info.instances.len() references to the default value into values
+
+                entry.insert(PropInfo {
+                    prop_type: ser_type,
+                    serialized_name,
+                    values: Vec::new(),
+                    default_value,
+                    property_descriptor,
+                })
+            }
+        })
+    }
 }
 
 /// A property on a specific class that our serializer knows about.
@@ -109,7 +209,7 @@ struct TypeInfo<'dom, 'db> {
 /// `BasePart.size` are present in the same document, they should share a
 /// `PropInfo` as they are the same logical property.
 #[derive(Debug)]
-struct PropInfo<'db> {
+struct PropInfo<'dom, 'db> {
     /// The binary format type ID that will be use to serialize this property.
     /// This type is related to the type of the serialized form of the logical
     /// property, but is not 1:1.
@@ -119,17 +219,17 @@ struct PropInfo<'db> {
     /// as the `Content` and `String` variants do.
     prop_type: Type,
 
+    /// An array of references to the values of this type.
+    /// PropVariantBuilder is a serialization gadget that also contains the Variant type.
+    ///
+    /// Contains the same type information as prop_type, duplicating its purpose.
+    // TODO: deduplicate the purpose
+    values: Vec<&'dom Variant>,
+
     /// The serialized name for this property. This is the name that is actually
     /// written as part of the PROP chunk and may not line up with the canonical
     /// name for the property.
     serialized_name: Ustr,
-
-    /// A set containing the names of all aliases discovered while preparing to
-    /// serialize this property. Ideally, this set will remain empty (and not
-    /// allocate) in most cases. However, if an instance is missing a property
-    /// from its canonical name, but does have another variant, we can use this
-    /// set to recover and map those values.
-    aliases: UstrSet,
 
     /// The default value for this property that should be used if any instances
     /// are missing this property.
@@ -143,10 +243,8 @@ struct PropInfo<'db> {
     /// present, followed by an educated guess based on the type of the value.
     default_value: Cow<'db, Variant>,
 
-    /// If a logical property has a migration associated with it (i.e. BrickColor ->
-    /// Color, Font -> FontFace), this field contains Some(PropertyMigration). Otherwise,
-    /// it is None.
-    migration: Option<&'db PropertyMigration>,
+    // TODO: doc
+    property_descriptor: Option<&'db PropertyDescriptor<'db>>,
 }
 
 /// Contains all of the `TypeInfo` objects known to the serializer so far. This
@@ -185,7 +283,10 @@ impl<'dom, 'db> TypeInfos<'dom, 'db> {
 
             let class_descriptor = self.database.classes.get(class.as_str());
 
+            let mut name_property_descriptor = None;
+
             let is_service = if let Some(descriptor) = &class_descriptor {
+                name_property_descriptor = descriptor.properties.get("Name");
                 descriptor.tags.contains(&ClassTag::Service)
             } else {
                 log::info!("The class {} is not known to rbx_binary", class);
@@ -206,19 +307,18 @@ impl<'dom, 'db> TypeInfos<'dom, 'db> {
                 PropInfo {
                     prop_type: Type::String,
                     serialized_name: "Name".into(),
-                    aliases: UstrSet::new(),
                     default_value: Cow::Owned(Variant::String(String::new())),
-                    migration: None,
+                    property_descriptor: name_property_descriptor,
+                    values: Vec::new(),
                 },
             );
 
             entry.insert(TypeInfo {
                 type_id,
                 is_service,
-                instances: Vec::new(),
+                referents: Vec::new(),
                 properties,
                 class_descriptor,
-                properties_visited: UstrSet::new(),
             });
         }
 
@@ -317,7 +417,7 @@ impl<'dom, 'db, W: Write> SerializerState<'dom, 'db, W> {
     #[profiling::function]
     pub fn collect_type_info(&mut self, instance: &'dom Instance) -> Result<(), InnerError> {
         let type_info = self.type_infos.get_or_create(instance.class);
-        type_info.instances.push(instance);
+        type_info.referents.push(instance.referent());
 
         for (prop_name, prop_value) in &instance.properties {
             // Discover and track any shared strings we come across.
@@ -330,153 +430,21 @@ impl<'dom, 'db, W: Write> SerializerState<'dom, 'db, W> {
                 }
             }
 
-            // Skip this property if we've already seen it.
-            if type_info.properties_visited.contains(prop_name) {
-                continue;
-            }
+            let prop_info = type_info.get_or_create_prop_info(
+                &mut self.shared_strings,
+                &mut self.shared_string_ids,
+                self.serializer.database,
+                instance.class.as_str(),
+                *prop_name,
+                prop_value,
+            )?;
 
-            // ...but add it to the set of visited properties if we haven't seen
-            // it.
-            type_info.properties_visited.insert(*prop_name);
-
-            let canonical_name;
-            let serialized_name;
-            let serialized_ty;
-            let mut migration = None;
-
-            let database = self.serializer.database;
-            match find_property_descriptors(database, instance.class, *prop_name) {
-                Some(descriptors) => {
-                    // For any properties that do not serialize, we can skip
-                    // adding them to the set of type_infos.
-                    let serialized = match descriptors.serialized {
-                        Some(descriptor) => {
-                            if let PropertyKind::Canonical {
-                                serialization: PropertySerialization::Migrate(prop_migration),
-                            } = &descriptor.kind
-                            {
-                                // If the property migrates, we need to look up the
-                                // property it should migrate to and use the reflection
-                                // information of the new property instead of the old
-                                // property, because migrated properties should not
-                                // serialize
-                                let new_descriptors = find_property_descriptors(
-                                    database,
-                                    instance.class,
-                                    prop_migration.new_property_name.as_str().into(),
-                                );
-
-                                migration = Some(prop_migration);
-
-                                match new_descriptors {
-                                    Some(descriptor) => match descriptor.serialized {
-                                        Some(serialized) => {
-                                            canonical_name =
-                                                descriptor.canonical.name.as_ref().into();
-                                            serialized
-                                        }
-                                        None => continue,
-                                    },
-                                    None => continue,
-                                }
-                            } else {
-                                canonical_name = descriptors.canonical.name.as_ref().into();
-                                descriptor
-                            }
-                        }
-                        None => continue,
-                    };
-
-                    serialized_name = serialized.name.as_ref().into();
-
-                    serialized_ty = match &serialized.data_type {
-                        DataType::Value(ty) => *ty,
-                        DataType::Enum(_) => VariantType::Enum,
-
-                        unknown_ty => {
-                            // rbx_binary is not new enough to handle this kind
-                            // of property, whatever it is.
-                            return Err(InnerError::UnsupportedPropType {
-                                type_name: instance.class.to_string(),
-                                prop_name: prop_name.to_string(),
-                                prop_type: format!("{:?}", unknown_ty),
-                            });
-                        }
-                    };
-                }
-
-                None => {
-                    canonical_name = *prop_name;
-                    serialized_name = *prop_name;
-                    serialized_ty = prop_value.ty();
-                }
-            }
-
-            if !type_info.properties.contains_key(&canonical_name) {
-                let default_value = type_info
-                    .class_descriptor
-                    .and_then(|class| {
-                        database
-                            .find_default_property(class, &canonical_name)
-                            .map(Cow::Borrowed)
-                    })
-                    .or_else(|| Self::fallback_default_value(serialized_ty).map(Cow::Owned))
-                    .ok_or_else(|| {
-                        // Since we don't know how to generate the default value
-                        // for this property, we consider it unsupported.
-                        InnerError::UnsupportedPropType {
-                            type_name: instance.class.to_string(),
-                            prop_name: canonical_name.to_string(),
-                            prop_type: format!("{:?}", serialized_ty),
-                        }
-                    })?;
-
-                // There's no assurance that the default SharedString value
-                // will actually get serialized inside of the SSTR chunk, so we
-                // check here just to make sure.
-                if let Variant::SharedString(sstr) = default_value.borrow() {
-                    if !self.shared_string_ids.contains_key(sstr) {
-                        self.shared_string_ids.insert(sstr.clone(), 0);
-                        self.shared_strings.push(sstr.clone());
-                    }
-                }
-
-                let ser_type = Type::from_rbx_type(serialized_ty).ok_or_else(|| {
-                    // This is a known value type, but rbx_binary doesn't have a
-                    // binary type value for it. rbx_binary might be out of
-                    // date?
-                    InnerError::UnsupportedPropType {
-                        type_name: instance.class.to_string(),
-                        prop_name: serialized_name.to_string(),
-                        prop_type: format!("{:?}", serialized_ty),
-                    }
-                })?;
-
-                type_info.properties.insert(
-                    canonical_name,
-                    PropInfo {
-                        prop_type: ser_type,
-                        serialized_name,
-                        aliases: UstrSet::new(),
-                        default_value,
-                        migration,
-                    },
-                );
-            }
-
-            // If the property we found on this instance is different than the
-            // canonical name for this property, stash it into the set of known
-            // aliases for this PropInfo.
-            if *prop_name != canonical_name {
-                let prop_info = type_info.properties.get_mut(&canonical_name).unwrap();
-
-                if !prop_info.aliases.contains(prop_name) {
-                    prop_info.aliases.insert(*prop_name);
-                }
-
-                prop_info.migration = migration;
-            }
+            // Append value to prop_info values.  This avoids
+            // iterating over the instances and properties twice.
+            prop_info.values.push(prop_value);
         }
+
+        // Note that default values must be filled for properties that were not visited.
 
         Ok(())
     }
@@ -554,7 +522,7 @@ impl<'dom, 'db, W: Write> SerializerState<'dom, 'db, W> {
             log::trace!(
                 "Writing chunk for {} ({} instances)",
                 type_name,
-                type_info.instances.len()
+                type_info.referents.len()
             );
 
             let mut chunk = ChunkBuilder::new(b"INST", self.serializer.compression);
@@ -570,13 +538,13 @@ impl<'dom, 'db, W: Write> SerializerState<'dom, 'db, W> {
             // instead of a bool.
             chunk.write_bool(type_info.is_service)?;
 
-            chunk.write_le_u32(type_info.instances.len() as u32)?;
+            chunk.write_le_u32(type_info.referents.len() as u32)?;
 
             chunk.write_referent_array(
                 type_info
-                    .instances
+                    .referents
                     .iter()
-                    .map(|instance| self.id_to_referent[&instance.referent()]),
+                    .map(|referent| self.id_to_referent[referent]),
             )?;
 
             if type_info.is_service {
@@ -587,7 +555,7 @@ impl<'dom, 'db, W: Write> SerializerState<'dom, 'db, W> {
                 // In 99.9% of cases, there's only going to be one copy of a
                 // given service, so we're not worried about doing this super
                 // efficiently.
-                for _ in 0..type_info.instances.len() {
+                for _ in 0..type_info.referents.len() {
                     chunk.write_u8(1)?;
                 }
             }
@@ -615,54 +583,52 @@ impl<'dom, 'db, W: Write> SerializerState<'dom, 'db, W> {
                     prop_info.prop_type
                 );
 
+                // Do migration
+                let migrated_properties: Vec<_>;
+                let migrated_values;
+                let (serialized_name, property_values) =
+                    if let Some(prop_descriptor) = prop_info.property_descriptor {
+                        match &prop_descriptor.kind {
+                            PropertyKind::Canonical { serialization } => match serialization {
+                                PropertySerialization::Serializes => {
+                                    (prop_name.as_str(), &prop_info.values)
+                                }
+                                // Skip serializing this property chunk entirely
+                                PropertySerialization::DoesNotSerialize => continue,
+                                PropertySerialization::SerializesAs(serialized_name) => {
+                                    (serialized_name.as_ref(), &prop_info.values)
+                                }
+                                PropertySerialization::Migrate(property_migration) => {
+                                    // This is hard to fit into the migration api and ends up being slow and wasteful
+                                    migrated_properties = prop_info
+                                        .values
+                                        .iter()
+                                        .map(|value| property_migration.perform(value).unwrap())
+                                        .collect();
+                                    migrated_values = migrated_properties.iter().collect();
+                                    (
+                                        property_migration.new_property_name.as_str(),
+                                        &migrated_values,
+                                    )
+                                }
+                                _ => panic!("Unknown PropertySerialization"),
+                            },
+                            PropertyKind::Alias { alias_for } => {
+                                (alias_for.as_ref(), &prop_info.values)
+                            }
+                            _ => panic!("Unknown PropertyKind"),
+                        }
+                    } else {
+                        (prop_name.as_str(), &prop_info.values)
+                    };
+
+                let values = property_values.iter().copied().enumerate();
+
                 let mut chunk = ChunkBuilder::new(b"PROP", self.serializer.compression);
 
                 chunk.write_le_u32(type_info.type_id)?;
-                chunk.write_string(&prop_info.serialized_name)?;
+                chunk.write_string(serialized_name)?;
                 chunk.write_u8(prop_info.prop_type as u8)?;
-
-                let values = type_info
-                    .instances
-                    .iter()
-                    .map(|instance| {
-                        // We store the Name property in a different field for
-                        // convenience, but when serializing to the binary model
-                        // format we need to handle it just like other properties.
-                        if *prop_name == "Name" {
-                            return Cow::Owned(Variant::String(instance.name.clone()));
-                        }
-
-                        // Most properties will be stored on instances using the
-                        // property's canonical name, so we'll try that first.
-                        if let Some(property) = instance.properties.get(prop_name) {
-                            return Cow::Borrowed(property);
-                        }
-
-                        // If there were any known aliases for this property
-                        // used as part of this file, we can check those next.
-                        for alias in &prop_info.aliases {
-                            if let Some(property) = instance.properties.get(alias) {
-                                return Cow::Borrowed(property);
-                            }
-                        }
-
-                        // Finally, we can fall back to the default value we
-                        // computed for this PropInfo. This is sourced from the
-                        // reflection database if available, or falls back to a
-                        // reasonable default.
-                        Cow::Borrowed(prop_info.default_value.borrow())
-                    })
-                    .map(|value| {
-                        if let Some(migration) = prop_info.migration {
-                            match migration.perform(&value) {
-                                Ok(new_value) => Cow::Owned(new_value),
-                                Err(_) => value,
-                            }
-                        } else {
-                            value
-                        }
-                    })
-                    .enumerate();
 
                 // Helper to generate a type mismatch error with context from
                 // this chunk.
@@ -673,13 +639,12 @@ impl<'dom, 'db, W: Write> SerializerState<'dom, 'db, W> {
                             prop_name: prop_name.to_string(),
                             valid_type_names,
                             actual_type_name: format!("{:?}", bad_value.ty()),
-                            instance_full_name: self
-                                .full_name_for(type_info.instances[i].referent()),
+                            instance_full_name: self.full_name_for(type_info.referents[i]),
                         })
                     };
 
                 let invalid_value = |i: usize, bad_value: &Variant| InnerError::InvalidPropValue {
-                    instance_full_name: self.full_name_for(type_info.instances[i].referent()),
+                    instance_full_name: self.full_name_for(type_info.referents[i]),
                     type_name: type_name.to_string(),
                     prop_name: prop_name.to_string(),
                     prop_type: format!("{:?}", bad_value.ty()),
@@ -688,7 +653,7 @@ impl<'dom, 'db, W: Write> SerializerState<'dom, 'db, W> {
                 match prop_info.prop_type {
                     Type::String => {
                         for (i, rbx_value) in values {
-                            match rbx_value.as_ref() {
+                            match rbx_value {
                                 Variant::String(value) => {
                                     chunk.write_string(value)?;
                                 }
@@ -726,7 +691,7 @@ impl<'dom, 'db, W: Write> SerializerState<'dom, 'db, W> {
                     }
                     Type::Bool => {
                         for (i, rbx_value) in values {
-                            if let Variant::Bool(value) = rbx_value.as_ref() {
+                            if let Variant::Bool(value) = rbx_value {
                                 chunk.write_bool(*value)?;
                             } else {
                                 return type_mismatch(i, &rbx_value, "Bool");
@@ -737,7 +702,7 @@ impl<'dom, 'db, W: Write> SerializerState<'dom, 'db, W> {
                         let mut buf = Vec::with_capacity(values.len());
 
                         for (i, rbx_value) in values {
-                            if let Variant::Int32(value) = rbx_value.as_ref() {
+                            if let Variant::Int32(value) = rbx_value {
                                 buf.push(*value);
                             } else {
                                 return type_mismatch(i, &rbx_value, "Int32");
@@ -750,7 +715,7 @@ impl<'dom, 'db, W: Write> SerializerState<'dom, 'db, W> {
                         let mut buf = Vec::with_capacity(values.len());
 
                         for (i, rbx_value) in values {
-                            if let Variant::Float32(value) = rbx_value.as_ref() {
+                            if let Variant::Float32(value) = rbx_value {
                                 buf.push(*value);
                             } else {
                                 return type_mismatch(i, &rbx_value, "Float32");
@@ -761,7 +726,7 @@ impl<'dom, 'db, W: Write> SerializerState<'dom, 'db, W> {
                     }
                     Type::Float64 => {
                         for (i, rbx_value) in values {
-                            match rbx_value.as_ref() {
+                            match rbx_value {
                                 Variant::Float64(value) => {
                                     chunk.write_le_f64(*value)?;
                                 }
@@ -777,7 +742,7 @@ impl<'dom, 'db, W: Write> SerializerState<'dom, 'db, W> {
                         let mut offset = Vec::with_capacity(values.len());
 
                         for (i, rbx_value) in values {
-                            if let Variant::UDim(value) = rbx_value.as_ref() {
+                            if let Variant::UDim(value) = rbx_value {
                                 scale.push(value.scale);
                                 offset.push(value.offset);
                             } else {
@@ -795,7 +760,7 @@ impl<'dom, 'db, W: Write> SerializerState<'dom, 'db, W> {
                         let mut offset_y = Vec::with_capacity(values.len());
 
                         for (i, rbx_value) in values {
-                            if let Variant::UDim2(value) = rbx_value.as_ref() {
+                            if let Variant::UDim2(value) = rbx_value {
                                 scale_x.push(value.x.scale);
                                 scale_y.push(value.y.scale);
                                 offset_x.push(value.x.offset);
@@ -812,7 +777,7 @@ impl<'dom, 'db, W: Write> SerializerState<'dom, 'db, W> {
                     }
                     Type::Font => {
                         for (i, rbx_value) in values {
-                            if let Variant::Font(value) = rbx_value.as_ref() {
+                            if let Variant::Font(value) = rbx_value {
                                 chunk.write_string(&value.family)?;
                                 chunk.write_le_u16(value.weight.as_u16())?;
                                 chunk.write_u8(value.style.as_u8())?;
@@ -826,7 +791,7 @@ impl<'dom, 'db, W: Write> SerializerState<'dom, 'db, W> {
                     }
                     Type::Ray => {
                         for (i, rbx_value) in values {
-                            if let Variant::Ray(value) = rbx_value.as_ref() {
+                            if let Variant::Ray(value) = rbx_value {
                                 chunk.write_le_f32(value.origin.x)?;
                                 chunk.write_le_f32(value.origin.y)?;
                                 chunk.write_le_f32(value.origin.z)?;
@@ -840,7 +805,7 @@ impl<'dom, 'db, W: Write> SerializerState<'dom, 'db, W> {
                     }
                     Type::Faces => {
                         for (i, rbx_value) in values {
-                            if let Variant::Faces(value) = rbx_value.as_ref() {
+                            if let Variant::Faces(value) = rbx_value {
                                 chunk.write_u8(value.bits())?;
                             } else {
                                 return type_mismatch(i, &rbx_value, "Faces");
@@ -849,7 +814,7 @@ impl<'dom, 'db, W: Write> SerializerState<'dom, 'db, W> {
                     }
                     Type::Axes => {
                         for (i, rbx_value) in values {
-                            if let Variant::Axes(value) = rbx_value.as_ref() {
+                            if let Variant::Axes(value) = rbx_value {
                                 chunk.write_u8(value.bits())?;
                             } else {
                                 return type_mismatch(i, &rbx_value, "Axes");
@@ -860,9 +825,9 @@ impl<'dom, 'db, W: Write> SerializerState<'dom, 'db, W> {
                         let mut numbers = Vec::with_capacity(values.len());
 
                         for (i, rbx_value) in values {
-                            if let Variant::BrickColor(value) = rbx_value.as_ref() {
+                            if let Variant::BrickColor(value) = rbx_value {
                                 numbers.push(*value as u32);
-                            } else if let Variant::Int32(value) = rbx_value.as_ref() {
+                            } else if let Variant::Int32(value) = rbx_value {
                                 numbers.push(*value as u32);
                             } else {
                                 return type_mismatch(i, &rbx_value, "BrickColor");
@@ -877,7 +842,7 @@ impl<'dom, 'db, W: Write> SerializerState<'dom, 'db, W> {
                         let mut b = Vec::with_capacity(values.len());
 
                         for (i, rbx_value) in values {
-                            if let Variant::Color3(value) = rbx_value.as_ref() {
+                            if let Variant::Color3(value) = rbx_value {
                                 r.push(value.r);
                                 g.push(value.g);
                                 b.push(value.b);
@@ -895,7 +860,7 @@ impl<'dom, 'db, W: Write> SerializerState<'dom, 'db, W> {
                         let mut y = Vec::with_capacity(values.len());
 
                         for (i, rbx_value) in values {
-                            if let Variant::Vector2(value) = rbx_value.as_ref() {
+                            if let Variant::Vector2(value) = rbx_value {
                                 x.push(value.x);
                                 y.push(value.y)
                             } else {
@@ -912,7 +877,7 @@ impl<'dom, 'db, W: Write> SerializerState<'dom, 'db, W> {
                         let mut z = Vec::with_capacity(values.len());
 
                         for (i, rbx_value) in values {
-                            if let Variant::Vector3(value) = rbx_value.as_ref() {
+                            if let Variant::Vector3(value) = rbx_value {
                                 x.push(value.x);
                                 y.push(value.y);
                                 z.push(value.z)
@@ -932,7 +897,7 @@ impl<'dom, 'db, W: Write> SerializerState<'dom, 'db, W> {
                         let mut z = Vec::with_capacity(values.len());
 
                         for (i, rbx_value) in values {
-                            if let Variant::CFrame(value) = rbx_value.as_ref() {
+                            if let Variant::CFrame(value) = rbx_value {
                                 rotations.push(value.orientation);
                                 x.push(value.position.x);
                                 y.push(value.position.y);
@@ -970,7 +935,7 @@ impl<'dom, 'db, W: Write> SerializerState<'dom, 'db, W> {
                         let mut buf = Vec::with_capacity(values.len());
 
                         for (i, rbx_value) in values {
-                            match rbx_value.as_ref() {
+                            match rbx_value {
                                 Variant::Enum(value) => buf.push(value.to_u32()),
                                 Variant::EnumItem(EnumItem { value, .. }) => buf.push(*value),
                                 _ => return type_mismatch(i, &rbx_value, "Enum or EnumItem"),
@@ -983,7 +948,7 @@ impl<'dom, 'db, W: Write> SerializerState<'dom, 'db, W> {
                         let mut buf = Vec::with_capacity(values.len());
 
                         for (i, rbx_value) in values {
-                            if let Variant::Ref(value) = rbx_value.as_ref() {
+                            if let Variant::Ref(value) = rbx_value {
                                 if let Some(id) = self.id_to_referent.get(value) {
                                     buf.push(*id);
                                 } else {
@@ -998,7 +963,7 @@ impl<'dom, 'db, W: Write> SerializerState<'dom, 'db, W> {
                     }
                     Type::Vector3int16 => {
                         for (i, rbx_value) in values {
-                            if let Variant::Vector3int16(value) = rbx_value.as_ref() {
+                            if let Variant::Vector3int16(value) = rbx_value {
                                 chunk.write_le_i16(value.x)?;
                                 chunk.write_le_i16(value.y)?;
                                 chunk.write_le_i16(value.z)?;
@@ -1009,7 +974,7 @@ impl<'dom, 'db, W: Write> SerializerState<'dom, 'db, W> {
                     }
                     Type::NumberSequence => {
                         for (i, rbx_value) in values {
-                            if let Variant::NumberSequence(value) = rbx_value.as_ref() {
+                            if let Variant::NumberSequence(value) = rbx_value {
                                 chunk.write_le_u32(value.keypoints.len() as u32)?;
 
                                 for keypoint in &value.keypoints {
@@ -1024,7 +989,7 @@ impl<'dom, 'db, W: Write> SerializerState<'dom, 'db, W> {
                     }
                     Type::ColorSequence => {
                         for (i, rbx_value) in values {
-                            if let Variant::ColorSequence(value) = rbx_value.as_ref() {
+                            if let Variant::ColorSequence(value) = rbx_value {
                                 chunk.write_le_u32(value.keypoints.len() as u32)?;
 
                                 for keypoint in &value.keypoints {
@@ -1043,7 +1008,7 @@ impl<'dom, 'db, W: Write> SerializerState<'dom, 'db, W> {
                     }
                     Type::NumberRange => {
                         for (i, rbx_value) in values {
-                            if let Variant::NumberRange(value) = rbx_value.as_ref() {
+                            if let Variant::NumberRange(value) = rbx_value {
                                 chunk.write_le_f32(value.min)?;
                                 chunk.write_le_f32(value.max)?;
                             } else {
@@ -1058,7 +1023,7 @@ impl<'dom, 'db, W: Write> SerializerState<'dom, 'db, W> {
                         let mut y_max = Vec::with_capacity(values.len());
 
                         for (i, rbx_value) in values {
-                            if let Variant::Rect(value) = rbx_value.as_ref() {
+                            if let Variant::Rect(value) = rbx_value {
                                 x_min.push(value.min.x);
                                 y_min.push(value.min.y);
                                 x_max.push(value.max.x);
@@ -1075,7 +1040,7 @@ impl<'dom, 'db, W: Write> SerializerState<'dom, 'db, W> {
                     }
                     Type::PhysicalProperties => {
                         for (i, rbx_value) in values {
-                            if let Variant::PhysicalProperties(value) = rbx_value.as_ref() {
+                            if let Variant::PhysicalProperties(value) = rbx_value {
                                 if let PhysicalProperties::Custom(props) = value {
                                     chunk.write_u8(1)?;
                                     chunk.write_le_f32(props.density)?;
@@ -1097,7 +1062,7 @@ impl<'dom, 'db, W: Write> SerializerState<'dom, 'db, W> {
                         let mut b = Vec::with_capacity(values.len());
 
                         for (i, rbx_value) in values {
-                            match rbx_value.as_ref() {
+                            match rbx_value {
                                 Variant::Color3uint8(value) => {
                                     r.push(value.r);
                                     g.push(value.g);
@@ -1122,7 +1087,7 @@ impl<'dom, 'db, W: Write> SerializerState<'dom, 'db, W> {
                         let mut buf = Vec::with_capacity(values.len());
 
                         for (i, rbx_value) in values {
-                            match rbx_value.as_ref() {
+                            match rbx_value {
                                 Variant::Int64(value) => {
                                     buf.push(*value);
                                 }
@@ -1139,7 +1104,7 @@ impl<'dom, 'db, W: Write> SerializerState<'dom, 'db, W> {
                         let mut entries = Vec::with_capacity(values.len());
 
                         for (i, rbx_value) in values {
-                            if let Variant::SharedString(value) = rbx_value.as_ref() {
+                            if let Variant::SharedString(value) = rbx_value {
                                 if let Some(id) = self.shared_string_ids.get(value) {
                                     entries.push(*id);
                                 } else {
@@ -1165,7 +1130,7 @@ impl<'dom, 'db, W: Write> SerializerState<'dom, 'db, W> {
                         chunk.write_u8(Type::CFrame as u8)?;
 
                         for (i, rbx_value) in values {
-                            if let Variant::OptionalCFrame(value) = rbx_value.as_ref() {
+                            if let Variant::OptionalCFrame(value) = rbx_value {
                                 if let Some(value) = value {
                                     rotations.push(value.orientation);
                                     x.push(value.position.x);
@@ -1214,7 +1179,7 @@ impl<'dom, 'db, W: Write> SerializerState<'dom, 'db, W> {
                     Type::UniqueId => {
                         let mut blobs = Vec::with_capacity(values.len());
                         for (i, rbx_value) in values {
-                            if let Variant::UniqueId(value) = rbx_value.as_ref() {
+                            if let Variant::UniqueId(value) = rbx_value {
                                 let mut blob = [0; 16];
                                 // This is maybe not the best solution to this
                                 // but we can always change it.
@@ -1234,7 +1199,7 @@ impl<'dom, 'db, W: Write> SerializerState<'dom, 'db, W> {
                         let mut capabilities = Vec::with_capacity(values.len());
 
                         for (i, rbx_value) in values {
-                            if let Variant::SecurityCapabilities(value) = rbx_value.as_ref() {
+                            if let Variant::SecurityCapabilities(value) = rbx_value {
                                 capabilities.push(value.bits() as i64)
                             } else {
                                 return type_mismatch(i, &rbx_value, "SecurityCapabilities");
@@ -1248,7 +1213,7 @@ impl<'dom, 'db, W: Write> SerializerState<'dom, 'db, W> {
                         let mut uris = Vec::with_capacity(values.len());
                         let mut objects = Vec::new();
                         for (i, rbx_value) in values {
-                            if let Variant::Content(content) = rbx_value.as_ref() {
+                            if let Variant::Content(content) = rbx_value {
                                 source_types.push(match content.value() {
                                     ContentType::None => 0,
                                     ContentType::Uri(uri) => {
