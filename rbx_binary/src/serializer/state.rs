@@ -254,7 +254,10 @@ impl<'dom, 'db: 'dom> PropInfo<'dom> {
     fn extend_with_default(&mut self, desired_len: usize) {
         let current_len = self.values.len();
         let Some(additional) = desired_len.checked_sub(current_len) else {
-            panic!("current_len ({}) must be less than or equal to desired_len ({})",current_len,desired_len);
+            panic!(
+                "current_len ({}) must be less than or equal to desired_len ({})",
+                current_len, desired_len
+            );
         };
         self.values
             .extend(core::iter::repeat(self.default_value).take(additional));
@@ -599,13 +602,18 @@ impl<'dom, 'db: 'dom, W: Write> SerializerState<'dom, 'db, W> {
                 // Ensure the number of values matches the number of referents.
                 prop_info.extend_with_default(desired_len);
 
-                let values = &prop_info.values;
+                let mut chunk = ChunkBuilder::new(b"PROP", self.serializer.compression);
+
+                chunk.write_le_u32(type_info.type_id)?;
+                chunk.write_string(&prop_info.serialized_name)?;
+                chunk.write_u8(prop_info.prop_type as u8)?;
 
                 // Do migration
                 let migrated_values_bind: Vec<_>;
                 let migrated_values;
                 let property_values = if let Some(property_migration) = prop_info.migration {
-                    migrated_values_bind = values
+                    migrated_values_bind = prop_info
+                        .values
                         .iter()
                         .map(|&value| {
                             property_migration
@@ -618,14 +626,8 @@ impl<'dom, 'db: 'dom, W: Write> SerializerState<'dom, 'db, W> {
                     migrated_values = migrated_values_bind.iter().map(Cow::as_ref).collect();
                     &migrated_values
                 } else {
-                    values
+                    &prop_info.values
                 };
-
-                let mut chunk = ChunkBuilder::new(b"PROP", self.serializer.compression);
-
-                chunk.write_le_u32(type_info.type_id)?;
-                chunk.write_string(&prop_info.serialized_name)?;
-                chunk.write_u8(prop_info.prop_type as u8)?;
 
                 let values = property_values.iter().copied().enumerate();
 
@@ -1329,8 +1331,8 @@ fn full_name_for(dom: &WeakDom, subject_ref: Ref) -> String {
 
     name
 }
-static DEFAULT_STRING: Variant = Variant::String(String::new());
 fn fallback_default_value(rbx_type: VariantType) -> Option<&'static Variant> {
+    static DEFAULT_STRING: Variant = Variant::String(String::new());
     static DEFAULT_BINARYSTRING: Variant = Variant::BinaryString(BinaryString::new());
     static DEFAULT_BOOL: Variant = Variant::Bool(false);
     static DEFAULT_INT32: Variant = Variant::Int32(0);
