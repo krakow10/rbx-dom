@@ -85,9 +85,8 @@ struct TypeInfo<'dom, 'db> {
     referents: Vec<Ref>,
 
     /// All of the defined properties for this type found on any instance of
-    /// this type. Properties are keyed using the instance property key,
-    /// multiple entries may be present for each logical property.  This avoids
-    /// repeated database lookups.
+    /// this type. Properties are keyed using the instance property key, so
+    /// multiple entries may be present for each logical property.
     ///
     /// Stored in a sorted map to try to ensure that we write out properties in
     /// a deterministic order.
