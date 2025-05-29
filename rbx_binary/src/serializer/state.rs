@@ -674,9 +674,6 @@ impl<'dom, 'db, W: Write> SerializerState<'dom, 'db, W> {
                             chunk.write_binary_string(&value.encode())?;
                         }
                     }
-                    BorrowedVariantVec::Int32(values) => {
-                        chunk.write_interleaved_i32_array(values.into_iter().copied().copied())?;
-                    }
                     BorrowedVariantVec::UDim(values) => {
                         let mut scale = Vec::with_capacity(values.len());
                         let mut offset = Vec::with_capacity(values.len());
@@ -715,16 +712,6 @@ impl<'dom, 'db, W: Write> SerializerState<'dom, 'db, W> {
                             )?;
                         }
                     }
-                    BorrowedVariantVec::Ray(values) => {
-                        for &value in values {
-                            chunk.write_le_f32(value.origin.x)?;
-                            chunk.write_le_f32(value.origin.y)?;
-                            chunk.write_le_f32(value.origin.z)?;
-                            chunk.write_le_f32(value.direction.x)?;
-                            chunk.write_le_f32(value.direction.y)?;
-                            chunk.write_le_f32(value.direction.x)?;
-                        }
-                    }
                     BorrowedVariantVec::Vector2(values) => {
                         let mut x = Vec::with_capacity(values.len());
                         let mut y = Vec::with_capacity(values.len());
@@ -748,73 +735,12 @@ impl<'dom, 'db, W: Write> SerializerState<'dom, 'db, W> {
                         chunk.write_interleaved_f32_array(y)?;
                         chunk.write_interleaved_f32_array(z)?;
                     }
-                    BorrowedVariantVec::Ref(values) => {
-                        let it = values.into_iter().map(|&value| {
-                            if let Some(id) = self.id_to_referent.get(value) {
-                                *id
-                            } else {
-                                -1
-                            }
-                        });
-
-                        chunk.write_referent_array(it)?;
-                    }
                     BorrowedVariantVec::Vector3int16(values) => {
                         for &value in values {
                             chunk.write_le_i16(value.x)?;
                             chunk.write_le_i16(value.y)?;
                             chunk.write_le_i16(value.z)?;
                         }
-                    }
-                    BorrowedVariantVec::NumberSequence(values) => {
-                        for &value in values {
-                            chunk.write_le_u32(value.keypoints.len() as u32)?;
-
-                            for keypoint in &value.keypoints {
-                                chunk.write_le_f32(keypoint.time)?;
-                                chunk.write_le_f32(keypoint.value)?;
-                                chunk.write_le_f32(keypoint.envelope)?;
-                            }
-                        }
-                    }
-                    BorrowedVariantVec::NumberRange(values) => {
-                        for &value in values {
-                            chunk.write_le_f32(value.min)?;
-                            chunk.write_le_f32(value.max)?;
-                        }
-                    }
-                    BorrowedVariantVec::Rect(values) => {
-                        let mut x_min = Vec::with_capacity(values.len());
-                        let mut y_min = Vec::with_capacity(values.len());
-                        let mut x_max = Vec::with_capacity(values.len());
-                        let mut y_max = Vec::with_capacity(values.len());
-                        for &value in values {
-                            x_min.push(value.min.x);
-                            y_min.push(value.min.y);
-                            x_max.push(value.max.x);
-                            y_max.push(value.max.y);
-                        }
-                        chunk.write_interleaved_f32_array(x_min)?;
-                        chunk.write_interleaved_f32_array(y_min)?;
-                        chunk.write_interleaved_f32_array(x_max)?;
-                        chunk.write_interleaved_f32_array(y_max)?;
-                    }
-                    BorrowedVariantVec::PhysicalProperties(values) => {
-                        for &value in values {
-                            if let PhysicalProperties::Custom(props) = value {
-                                chunk.write_u8(1)?;
-                                chunk.write_le_f32(props.density)?;
-                                chunk.write_le_f32(props.friction)?;
-                                chunk.write_le_f32(props.elasticity)?;
-                                chunk.write_le_f32(props.friction_weight)?;
-                                chunk.write_le_f32(props.elasticity_weight)?;
-                            } else {
-                                chunk.write_u8(0)?;
-                            }
-                        }
-                    }
-                    BorrowedVariantVec::Int64(values) => {
-                        chunk.write_interleaved_i64_array(values.into_iter().copied().copied())?;
                     }
                     BorrowedVariantVec::SharedString(values) => {
                         let it = values.into_iter().map(|&value| {

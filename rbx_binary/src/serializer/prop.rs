@@ -72,15 +72,15 @@ impl_prop_variant_builder! {
     Faces(FacesBuilder, FacesBuilder),
     Float32(Float32Builder, Float32Builder),
     Float64(Float64Builder, Float64Builder),
+    Int32(Int32Builder, Int32Builder),
+    Int64(Int64Builder, Int64Builder),
+    NumberRange(NumberRangeBuilder<'a>, NumberRangeBuilder),
+    NumberSequence(NumberSequenceBuilder<'a>, NumberSequenceBuilder),
+    PhysicalProperties(PhysicalPropertiesBuilder<'a>, PhysicalPropertiesBuilder),
+    Ray(RayBuilder<'a>, RayBuilder),
+    Rect(RectBuilder<'a>, RectBuilder),
+    Ref(RefBuilder<'a>, RefBuilder),
 }
-    // Int32(Int32Builder<'a>, Int32Builder),
-    // Int64(Int64Builder<'a>, Int64Builder),
-    // NumberRange(NumberRangeBuilder<'a>, NumberRangeBuilder),
-    // NumberSequence(NumberSequenceBuilder<'a>, NumberSequenceBuilder),
-    // PhysicalProperties(PhysicalPropertiesBuilder<'a>, PhysicalPropertiesBuilder),
-    // Ray(RayBuilder<'a>, RayBuilder),
-    // Rect(RectBuilder<'a>, RectBuilder),
-    // Ref(RefBuilder<'a>, RefBuilder),
     // // Region3(Region3Builder<'a>, Region3Builder),
     // // Region3int16(Region3int16Builder<'a>, Region3int16Builder),
     // SharedString(SharedStringBuilder<'a>, SharedStringBuilder),
@@ -324,7 +324,6 @@ impl ContentIdBuilder<'_> {
     }
 }
 
-
 impl_convert_builder!(EnumBuilder, Enum, u32, |value:&Enum|value.to_u32());
 impl EnumBuilder {
     fn dump(&self, chunk: &mut ChunkBuilder) -> Result<(), std::io::Error> {
@@ -333,6 +332,7 @@ impl EnumBuilder {
         )
     }
 }
+
 impl_convert_builder!(FacesBuilder, Faces, u8, |value:&Faces|value.bits());
 impl FacesBuilder {
     fn dump(&self, chunk: &mut ChunkBuilder) -> Result<(), std::io::Error> {
@@ -369,6 +369,132 @@ impl Float64Builder {
         Ok(())
     }
 }
+
+impl_copy_builder!(Int32Builder, Int32, i32);
+impl Int32Builder {
+    fn dump(&self, chunk: &mut ChunkBuilder) -> Result<(), std::io::Error> {
+        chunk.write_interleaved_i32_array(self.values.iter().copied())
+    }
+}
+
+impl_copy_builder_pushless!(Int64Builder, Int64, i64);
+impl Int64Builder {
+    fn push(&mut self, variant: &Variant) -> Result<(), VariantError> {
+        match variant {
+            Variant::Int32(value) => self.values.push(*value as i64),
+            Variant::Int64(value) => self.values.push(*value),
+            observed => {
+                return Err(VariantError {
+                    expected: VariantType::Int64,
+                    observed: observed.ty(),
+                });
+            }
+        }
+        Ok(())
+    }
+    fn dump(&self, chunk: &mut ChunkBuilder) -> Result<(), std::io::Error> {
+        chunk.write_interleaved_i64_array(self.values.iter().copied())
+    }
+}
+
+impl_ref_builder!(NumberRangeBuilder, NumberRange, NumberRange);
+impl NumberRangeBuilder<'_> {
+    fn dump(&self, chunk: &mut ChunkBuilder) -> Result<(), std::io::Error> {
+        for &value in &self.values {
+            chunk.write_le_f32(value.min)?;
+            chunk.write_le_f32(value.max)?;
+        }
+        Ok(())
+    }
+}
+
+impl_ref_builder!(NumberSequenceBuilder, NumberSequence, NumberSequence);
+impl NumberSequenceBuilder<'_> {
+    fn dump(&self, chunk: &mut ChunkBuilder) -> Result<(), std::io::Error> {
+        for &value in &self.values {
+            chunk.write_le_u32(value.keypoints.len() as u32)?;
+
+            for keypoint in &value.keypoints {
+                chunk.write_le_f32(keypoint.time)?;
+                chunk.write_le_f32(keypoint.value)?;
+                chunk.write_le_f32(keypoint.envelope)?;
+            }
+        }
+        Ok(())
+    }
+}
+
+impl_ref_builder!(PhysicalPropertiesBuilder, PhysicalProperties, PhysicalProperties);
+impl PhysicalPropertiesBuilder<'_> {
+    fn dump(&self, chunk: &mut ChunkBuilder) -> Result<(), std::io::Error> {
+        for &value in &self.values {
+            if let PhysicalProperties::Custom(props) = value {
+                chunk.write_u8(1)?;
+                chunk.write_le_f32(props.density)?;
+                chunk.write_le_f32(props.friction)?;
+                chunk.write_le_f32(props.elasticity)?;
+                chunk.write_le_f32(props.friction_weight)?;
+                chunk.write_le_f32(props.elasticity_weight)?;
+            } else {
+                chunk.write_u8(0)?;
+            }
+        }
+        Ok(())
+    }
+}
+
+impl_ref_builder!(RayBuilder, Ray, Ray);
+impl RayBuilder<'_> {
+    fn dump(&self, chunk: &mut ChunkBuilder) -> Result<(), std::io::Error> {
+        for &value in &self.values {
+            chunk.write_le_f32(value.origin.x)?;
+            chunk.write_le_f32(value.origin.y)?;
+            chunk.write_le_f32(value.origin.z)?;
+            chunk.write_le_f32(value.direction.x)?;
+            chunk.write_le_f32(value.direction.y)?;
+            chunk.write_le_f32(value.direction.x)?;
+        }
+        Ok(())
+    }
+}
+
+impl_ref_builder!(RectBuilder, Rect, Rect);
+impl RectBuilder<'_> {
+    fn dump(&self, chunk: &mut ChunkBuilder) -> Result<(), std::io::Error> {
+        let mut x_min = Vec::with_capacity(self.values.len());
+        let mut y_min = Vec::with_capacity(self.values.len());
+        let mut x_max = Vec::with_capacity(self.values.len());
+        let mut y_max = Vec::with_capacity(self.values.len());
+        for &value in &self.values {
+            x_min.push(value.min.x);
+            y_min.push(value.min.y);
+            x_max.push(value.max.x);
+            y_max.push(value.max.y);
+        }
+        chunk.write_interleaved_f32_array(x_min)?;
+        chunk.write_interleaved_f32_array(y_min)?;
+        chunk.write_interleaved_f32_array(x_max)?;
+        chunk.write_interleaved_f32_array(y_max)?;
+        Ok(())
+    }
+}
+
+impl_ref_builder!(RefBuilder, Ref, Ref);
+impl RefBuilder<'_> {
+    fn dump(&self, chunk: &mut ChunkBuilder) -> Result<(), std::io::Error> {
+        let it = self.values.iter().map(|&value| {
+            if let Some(id) = id_to_referent.get(value) {
+                *id
+            } else {
+                -1
+            }
+        });
+
+        chunk.write_referent_array(it)?;
+        Ok(())
+    }
+}
+
 
 impl_ref_builder!(StringBuilder, String, str);
 impl StringBuilder<'_> {
