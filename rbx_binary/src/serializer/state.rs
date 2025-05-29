@@ -279,8 +279,8 @@ impl<'dom, 'db> TypeInfos<'dom, 'db> {
 }
 
 impl<'dom, 'db: 'dom> TypeInfo<'dom, 'db> {
-    fn get_or_create_logical_property<'short, 'long: 'short>(
-        &'long mut self,
+    fn get_or_create_logical_property<'a>(
+        &'a mut self,
         shared_strings: &mut Vec<SharedString>,
         shared_string_ids: &mut HashMap<SharedString, u32>,
         type_name: &str,
@@ -288,7 +288,7 @@ impl<'dom, 'db: 'dom> TypeInfo<'dom, 'db> {
         class_descriptor: Option<&'db ClassDescriptor<'db>>,
         prop_name: Ustr,
         sample_value: &Variant,
-    ) -> Result<&'short mut PropInfo<'dom>, InnerError> {
+    ) -> Result<&'a mut PropInfo<'dom>, InnerError> {
         // check if prop_name is already in properties_visited, return
         if let Some(&logical_index) = self.properties_visited.get(&prop_name) {
             return Ok(&mut self.properties[logical_index]);
@@ -639,7 +639,9 @@ impl<'dom, 'db: 'dom, W: Write> SerializerState<'dom, 'db, W> {
         for (type_name, type_info) in &mut self.type_infos.values {
             let desired_len = type_info.referents.len();
             // Sort logical properties by canonical name
-            type_info.properties.sort_by_key(|info| info.cannonical_name);
+            type_info
+                .properties
+                .sort_by_key(|info| info.cannonical_name);
             let referents = &type_info.referents;
             for prop_info in &mut type_info.properties {
                 profiling::scope!("serialize property", prop_name.borrow());
