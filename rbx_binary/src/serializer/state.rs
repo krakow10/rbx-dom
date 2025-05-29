@@ -91,22 +91,27 @@ struct TypeInfo<'dom, 'db> {
     ///
     /// Stored in a sorted map to try to ensure that we write out properties in
     /// a deterministic order.
-    properties: BTreeMap<Ustr, PropInfo<'dom, 'db>>,
+    properties: BTreeMap<Ustr, PropInfo<'db>>,
+
+    /// References to property values.  This avoids looking up each property
+    /// a second time to write PROP chunks.  Only one entry should be present
+    /// for each logical property.
+    values: Vec<Vec<&'dom Variant>>,
 
     /// A reference to the type's class descriptor from rbx_reflection, if this
     /// is a known class.
     class_descriptor: Option<&'db ClassDescriptor<'db>>,
 }
-impl<'dom, 'db> TypeInfo<'dom, 'db> {
+impl<'db> TypeInfo<'_, 'db> {
     fn get_or_create_prop_info(
         &mut self,
         shared_strings: &mut Vec<SharedString>,
         shared_string_ids: &mut HashMap<SharedString, u32>,
         database: &'db ReflectionDatabase<'db>,
-        type_name: &'dom str,
+        type_name: &str,
         prop_name: Ustr,
-        sample_value: &'dom Variant,
-    ) -> Result<&mut PropInfo<'dom, 'db>, InnerError> {
+        sample_value: &Variant,
+    ) -> Result<&mut PropInfo<'db>, InnerError> {
         // idea:
         // TypeInfo.properties is BTreeMap<Ustr, PropInfo>
         // PropInfo contains usize pointing to TypeInfo.values: Vec<PropVariantBuilder<'dom>>
@@ -193,7 +198,6 @@ impl<'dom, 'db> TypeInfo<'dom, 'db> {
                 entry.insert(PropInfo {
                     prop_type: ser_type,
                     serialized_name,
-                    values: Vec::new(),
                     default_value,
                     property_descriptor,
                 })
@@ -209,7 +213,7 @@ impl<'dom, 'db> TypeInfo<'dom, 'db> {
 /// `BasePart.size` are present in the same document, they should share a
 /// `PropInfo` as they are the same logical property.
 #[derive(Debug)]
-struct PropInfo<'dom, 'db> {
+struct PropInfo<'db> {
     /// The binary format type ID that will be use to serialize this property.
     /// This type is related to the type of the serialized form of the logical
     /// property, but is not 1:1.
@@ -219,17 +223,9 @@ struct PropInfo<'dom, 'db> {
     /// as the `Content` and `String` variants do.
     prop_type: Type,
 
-    /// An array of references to the values of this type.
-    /// PropVariantBuilder is a serialization gadget that also contains the Variant type.
-    ///
-    /// Contains the same type information as prop_type, duplicating its purpose.
-    // TODO: deduplicate the purpose
-    values: Vec<&'dom Variant>,
-
-    /// The serialized name for this property. This is the name that is actually
-    /// written as part of the PROP chunk and may not line up with the canonical
-    /// name for the property.
-    serialized_name: Ustr,
+    /// Which index in TypeInfo.values holds the variants for the
+    /// logical property that this PropInfo corresponds to.
+    values_index: usize,
 
     /// The default value for this property that should be used if any instances
     /// are missing this property.
