@@ -67,8 +67,8 @@ impl_prop_variant_builder! {
     Color3(Color3Builder<'a>, Color3Builder),
     Color3uint8(Color3uint8Builder, Color3uint8Builder),
     ColorSequence(ColorSequenceBuilder<'a>, ColorSequenceBuilder),
+    ContentId(ContentIdBuilder<'a>, ContentIdBuilder),
 }
-    // ContentId(ContentIdBuilder<'a>, ContentIdBuilder),
     // Enum(EnumBuilder<'a>, EnumBuilder),
     // Faces(FacesBuilder<'a>, FacesBuilder),
     // Float32(Float32Builder<'a>, Float32Builder),
