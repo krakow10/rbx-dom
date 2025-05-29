@@ -601,12 +601,22 @@ impl<'dom, 'db, W: Write> SerializerState<'dom, 'db, W> {
                                     (serialized_name.as_ref(), values)
                                 }
                                 PropertySerialization::Migrate(property_migration) => {
-                                    // This is hard to fit into the migration api and ends up being slow and wasteful
                                     migrated_properties = values
                                         .iter()
-                                        .map(|value| property_migration.perform(value).unwrap())
+                                        .map(|&value| {
+                                            // replace the Err with the original value
+                                            property_migration.perform(value).ok().ok_or(value)
+                                        })
                                         .collect();
-                                    migrated_values = migrated_properties.iter().collect();
+                                    // We need to map twice to type match `values`
+                                    migrated_values = migrated_properties
+                                        .iter()
+                                        .map(|migration| match migration {
+                                            Ok(migrated) => migrated,
+                                            // take original if migration failed
+                                            Err(original) => original,
+                                        })
+                                        .collect();
                                     (
                                         property_migration.new_property_name.as_str(),
                                         &migrated_values,
