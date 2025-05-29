@@ -16,6 +16,7 @@ pub struct VariantError {
     expected: VariantType,
     observed: VariantType,
 }
+// tbh this is a failed experiment. just do values:Vec<&Variant>
 macro_rules! impl_prop_variant_builder {
     ($($variant:ident($builder_ty:ty, $builder_ident:ident),)*) => {
         #[derive(Debug)]
