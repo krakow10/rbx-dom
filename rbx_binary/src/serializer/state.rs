@@ -459,7 +459,7 @@ impl<'dom, 'db, W: Write> SerializerState<'dom, 'db, W> {
             // Append value to prop_info values.  This avoids
             // iterating over the instances and properties twice.
             if let Err(e) = prop_info.values.push(prop_value) {
-                panic!("Failed to add property: ")
+                panic!("Failed to add property: class={} prop={prop_name}\n{e:?}",instance.class);
             }
         }
 
