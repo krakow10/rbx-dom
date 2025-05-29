@@ -10,7 +10,7 @@ use rbx_dom_weak::types::{
     PhysicalProperties, Ray, Rect, Ref, SecurityCapabilities, SharedString, Tags, UDim, UDim2,
     UniqueId, Vector2, Vector3, Vector3int16,
 };
-use rbx_dom_weak::types::{Variant, VariantType};
+use rbx_dom_weak::types::{ContentType, Variant, VariantType};
 #[derive(Debug)]
 pub struct VariantError {
     expected: VariantType,
@@ -761,7 +761,7 @@ impl ContentBuilder<'_> {
             source_types.push(match value.value() {
                 ContentType::None => 0,
                 ContentType::Uri(uri) => {
-                    uris.push(uri.clone());
+                    uris.push(uri.as_str());
                     1
                 }
                 ContentType::Object(referent) => {
