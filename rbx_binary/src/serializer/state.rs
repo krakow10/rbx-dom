@@ -136,19 +136,7 @@ impl<'dom, 'db> TypeInfo<'dom, 'db> {
                         canonical_name = descriptors.canonical.name.as_ref().into();
                         if let Some(serialized) = descriptors.serialized {
                             serialized_name = serialized.name.as_ref().into();
-                            serialized_ty = match &serialized.data_type {
-                                DataType::Value(variant_type) => *variant_type,
-                                DataType::Enum(_) => VariantType::Enum,
-                                unknown_ty => {
-                                    // rbx_binary is not new enough to handle this kind
-                                    // of property, whatever it is.
-                                    return Err(InnerError::UnsupportedPropType {
-                                        type_name: type_name.to_string(),
-                                        prop_name: prop_name.to_string(),
-                                        prop_type: format!("{:?}", unknown_ty),
-                                    });
-                                }
-                            };
+                            serialized_ty = serialized.data_type.ty();
                         } else {
                             serialized_name = prop_name;
                             serialized_ty = sample_value.ty();
