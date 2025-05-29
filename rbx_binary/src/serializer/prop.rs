@@ -763,7 +763,7 @@ impl ContentBuilder<'_> {
                     1
                 }
                 ContentType::Object(referent) => {
-                    if let Some(id) = self.id_to_referent.get(referent) {
+                    if let Some(id) = id_to_referent.get(referent) {
                         objects.push(*id);
                     } else {
                         objects.push(-1);
