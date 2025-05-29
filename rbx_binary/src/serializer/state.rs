@@ -31,7 +31,7 @@ use crate::{
     Serializer,
 };
 
-use super::borrowed_variant_vec::BorrowedVariantVec;
+use super::prop::BorrowedVariantVec;
 use super::error::InnerError;
 use super::CompressionType;
 
@@ -652,19 +652,9 @@ impl<'dom, 'db, W: Write> SerializerState<'dom, 'db, W> {
                 };
 
                 match property_values {
-                    BorrowedVariantVec::String(values) => {
-                        for &value in values {
-                            chunk.write_string(value)?;
-                        }
-                    }
                     BorrowedVariantVec::ContentId(values) => {
                         for &value in values {
                             chunk.write_string(value.as_ref())?;
-                        }
-                    }
-                    BorrowedVariantVec::BinaryString(values) => {
-                        for &value in values {
-                            chunk.write_binary_string(value)?;
                         }
                     }
                     BorrowedVariantVec::Tags(values) => {
@@ -687,11 +677,6 @@ impl<'dom, 'db, W: Write> SerializerState<'dom, 'db, W> {
                     BorrowedVariantVec::MaterialColors(values) => {
                         for &value in values {
                             chunk.write_binary_string(&value.encode())?;
-                        }
-                    }
-                    BorrowedVariantVec::Bool(values) => {
-                        for &value in values {
-                            chunk.write_bool(*value)?;
                         }
                     }
                     BorrowedVariantVec::Int32(values) => {
@@ -754,11 +739,6 @@ impl<'dom, 'db, W: Write> SerializerState<'dom, 'db, W> {
                         }
                     }
                     BorrowedVariantVec::Faces(values) => {
-                        for &value in values {
-                            chunk.write_u8(value.bits())?;
-                        }
-                    }
-                    BorrowedVariantVec::Axes(values) => {
                         for &value in values {
                             chunk.write_u8(value.bits())?;
                         }
