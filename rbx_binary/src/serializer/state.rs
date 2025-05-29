@@ -627,13 +627,13 @@ impl<'dom, 'db, W: Write> SerializerState<'dom, 'db, W> {
                         (prop_name.as_str(), values)
                     };
 
-                let values = property_values.iter().copied().enumerate();
-
                 let mut chunk = ChunkBuilder::new(b"PROP", self.serializer.compression);
 
                 chunk.write_le_u32(type_info.type_id)?;
                 chunk.write_string(serialized_name)?;
                 chunk.write_u8(prop_info.prop_type as u8)?;
+
+                let values = property_values.iter().copied().enumerate();
 
                 // Helper to generate a type mismatch error with context from
                 // this chunk.
