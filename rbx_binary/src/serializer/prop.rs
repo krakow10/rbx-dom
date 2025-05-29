@@ -18,7 +18,6 @@ pub struct VariantError {
 }
 macro_rules! impl_prop_variant_builder {
     ($($variant:ident($builder_ty:ty, $builder_ident:ident),)*) => {
-        // use rbx_dom_weak::types::$type;
         #[derive(Debug)]
         pub enum PropVariantBuilder<'a>{
             $(
@@ -215,7 +214,7 @@ impl BoolBuilder {
     }
 }
 
-impl_convert_builder!(BrickColorBuilder, BrickColor, u32, |&value|value as u32);
+impl_convert_builder!(BrickColorBuilder, BrickColor, u32, |&value:&BrickColor|value as u32);
 impl BrickColorBuilder {
     fn dump(&self, chunk: &mut ChunkBuilder) -> Result<(), std::io::Error> {
         chunk.write_interleaved_u32_array(self.values.iter().copied())
