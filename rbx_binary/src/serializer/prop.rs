@@ -1,3 +1,6 @@
+use crate::core::RbxWriteExt;
+use crate::chunk::ChunkBuilder;
+
 use rbx_dom_weak::types::{
     Attributes, Axes, BinaryString, BrickColor, CFrame, Color3, Color3uint8, ColorSequence,
     Content, ContentId, Enum, Faces, Font, MaterialColors, NumberRange, NumberSequence,
@@ -10,20 +13,20 @@ pub struct VariantError {
     expected: VariantType,
     observed: VariantType,
 }
-macro_rules! impl_borrowed_variant_vec {
-    ($($variant:ident($type:ty),)*) => {
+macro_rules! impl_prop_variant_builder {
+    ($($variant:ident($builder:path),)*) => {
         // use rbx_dom_weak::types::$type;
         #[derive(Debug)]
-        pub enum BorrowedVariantVec<'a>{
+        pub enum PropVariantBuilder<'a>{
             $(
-                $variant(Vec<&'a $type>),
+                $variant($builder),
             )*
         }
-        impl<'a> BorrowedVariantVec<'a>{
+        impl<'a> PropVariantBuilder<'a>{
             pub fn new(variant_type:VariantType) -> Self {
                 match variant_type{
                     $(
-                        VariantType::$variant => BorrowedVariantVec::$variant(Vec::new()),
+                        VariantType::$variant => PropVariantBuilder::$variant($builder::new()),
                     )*
                     _=>panic!("Unknown VariantType {:?}", variant_type),
                 }
@@ -31,14 +34,14 @@ macro_rules! impl_borrowed_variant_vec {
             pub fn ty(&self) -> VariantType {
                 match self{
                     $(
-                        BorrowedVariantVec::$variant(_) => VariantType::$variant,
+                        PropVariantBuilder::$variant(_) => VariantType::$variant,
                     )*
                 }
             }
             pub fn push(&mut self, variant: &'a Variant) -> Result<(),VariantError> {
                 match (variant, self) {
                     $(
-                        (Variant::$variant(value), BorrowedVariantVec::$variant(values)) => values.push(value),
+                        (Variant::$variant(value), PropVariantBuilder::$variant(values)) => values.push(value),
                     )*
                     (observed,expected)=>return Err(VariantError{
                         expected:expected.ty(),
@@ -50,7 +53,7 @@ macro_rules! impl_borrowed_variant_vec {
             pub fn cloned_variant_vec(&self) -> Vec<Variant> {
                 match self{
                     $(
-                        BorrowedVariantVec::$variant(values) => values.iter().copied().cloned().map(Variant::$variant).collect(),
+                        PropVariantBuilder::$variant(values) => values.iter().copied().cloned().map(Variant::$variant).collect(),
                     )*
                 }
             }
@@ -58,7 +61,7 @@ macro_rules! impl_borrowed_variant_vec {
     };
 }
 
-impl_borrowed_variant_vec! {
+impl_prop_variant_builder! {
     Axes(Axes),
     BinaryString(BinaryString),
     Bool(bool),
@@ -99,4 +102,39 @@ impl_borrowed_variant_vec! {
     SecurityCapabilities(SecurityCapabilities),
     // EnumItem(EnumItem),
     Content(Content),
+}
+
+macro_rules! impl_simple_builder {
+    ($builder:ident, $variant:ident, $type:ty) => {
+        struct $builder<'a>{
+            values:Vec<&'a $type>,
+        }
+        impl<'a> $builder<'a>{
+            fn new() -> Self{
+                Self{
+                    values: Vec::new(),
+                }
+            }
+            fn push(&mut self, variant: &'a Variant) -> Result<(),VariantError> {
+                match variant {
+                    Variant::$variant(value) => self.values.push(value),
+                    observed=>return Err(VariantError{
+                        expected:VariantType::$variant,
+                        observed:observed.ty(),
+                    }),
+                }
+                Ok(())
+            }
+        }
+    };
+}
+
+impl_simple_builder!(StringBuilder, String, str);
+impl StringBuilder<'_>{
+    fn dump(&self, chunk: &mut ChunkBuilder) -> Result<(), std::io::Error> {
+        for &value in &self.values {
+            chunk.write_string(value)?;
+        }
+        Ok(())
+    }
 }
