@@ -58,6 +58,8 @@ macro_rules! impl_prop_variant_builder {
     };
 }
 
+// TODO: must copy otherwise migation is impossible
+
 impl_prop_variant_builder! {
     Axes(AxesBuilder, AxesBuilder),
     BinaryString(BinaryStringBuilder<'a>, BinaryStringBuilder),
@@ -483,6 +485,7 @@ impl_ref_builder!(RefBuilder, Ref, Ref);
 impl RefBuilder<'_> {
     fn dump(&self, chunk: &mut ChunkBuilder) -> Result<(), std::io::Error> {
         let it = self.values.iter().map(|&value| {
+            // it can't be in push because generate_referents is not called yet
             if let Some(id) = id_to_referent.get(value) {
                 *id
             } else {
