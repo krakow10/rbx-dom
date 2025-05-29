@@ -291,6 +291,11 @@ impl<'dom, 'db> TypeInfos<'dom, 'db> {
 
             let mut properties = BTreeMap::new();
 
+            let mut values = Vec::new();
+            let string_values = Vec::new();
+            let string_values_index = values.len();
+            values.push(string_values);
+
             // Every instance has a property named Name. Even though
             // rbx_dom_weak encodes the name property specially, we still insert
             // this property into the type info and handle it like a regular
@@ -302,10 +307,9 @@ impl<'dom, 'db> TypeInfos<'dom, 'db> {
                 "Name".into(),
                 PropInfo {
                     prop_type: Type::String,
-                    serialized_name: "Name".into(),
                     default_value: Cow::Owned(Variant::String(String::new())),
                     property_descriptor: name_property_descriptor,
-                    values: Vec::new(),
+                    values_index: string_values_index,
                 },
             );
 
@@ -315,6 +319,7 @@ impl<'dom, 'db> TypeInfos<'dom, 'db> {
                 referents: Vec::new(),
                 properties,
                 class_descriptor,
+                values,
             });
         }
 
