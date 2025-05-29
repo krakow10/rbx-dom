@@ -98,6 +98,7 @@ struct TypeInfo<'dom, 'db> {
     /// A set containing the properties that we have seen so far in the file and
     /// processed. This helps us avoid traversing the reflection database
     /// multiple times if there are many copies of the same kind of instance.
+    /// This acts as the key to `self.properties`.
     properties_visited: UstrMap<usize>,
 }
 
@@ -158,16 +159,40 @@ impl<'dom, 'db: 'dom> PropInfo<'dom> {
         prop_name: Ustr,
         sample_value: &Variant,
     ) -> Result<Self, InnerError> {
+        let mut migration = None;
         let mut default_value = None;
         let mut canonical_name = prop_name;
         let mut serialized_name = prop_name;
         let mut serialized_ty = sample_value.ty();
         if let Some(class) = class_descriptor {
-            if let Some(descriptors) =
-                find_property_descriptors(database, class.name.as_ref().into(), prop_name)
-            {
+            let class_name = class.name.as_ref().into();
+            if let Some(descriptors) = find_property_descriptors(database, class_name, prop_name) {
                 canonical_name = descriptors.canonical.name.as_ref().into();
-                if let Some(serialized) = descriptors.serialized {
+                if let Some(mut serialized) = descriptors.serialized {
+                    if let PropertyKind::Canonical {
+                        serialization: PropertySerialization::Migrate(prop_migration),
+                    } = &serialized.kind
+                    {
+                        migration = Some(prop_migration);
+
+                        // If the property migrates, we need to look up the
+                        // property it should migrate to and use the reflection
+                        // information of the new property instead of the old
+                        // property, because migrated properties should not
+                        // serialize
+                        let new_descriptors = find_property_descriptors(
+                            database,
+                            class_name,
+                            prop_migration.new_property_name.as_str().into(),
+                        );
+
+                        if let Some(new_descriptor) = new_descriptors {
+                            if let Some(new_serialized) = new_descriptor.serialized {
+                                canonical_name = new_descriptor.canonical.name.as_ref().into();
+                                serialized = new_serialized;
+                            }
+                        }
+                    }
                     serialized_name = serialized.name.as_ref().into();
                     serialized_ty = match &serialized.data_type {
                         rbx_reflection::DataType::Value(variant_type) => *variant_type,
@@ -217,6 +242,9 @@ impl<'dom, 'db: 'dom> PropInfo<'dom> {
             prop_type: ser_type,
             values: Vec::new(),
             default_value,
+            canonical_name,
+            serialized_name,
+            migration,
         })
     }
     /// This function extends the `self.values` with `self.default_value` values.
