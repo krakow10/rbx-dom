@@ -1,6 +1,6 @@
 use std::{
     borrow::Cow,
-    collections::{btree_map, BTreeMap},
+    collections::{btree_map, hash_map, BTreeMap},
     convert::TryInto,
     io::Write,
 };
@@ -269,52 +269,20 @@ impl<'dom, 'db> TypeInfos<'dom, 'db> {
 
             let class_descriptor = self.database.classes.get(class.as_str());
 
-            let mut name_property_descriptor = None;
-
             let is_service = if let Some(descriptor) = &class_descriptor {
-                name_property_descriptor = descriptor.properties.get("Name");
                 descriptor.tags.contains(&ClassTag::Service)
             } else {
                 log::info!("The class {} is not known to rbx_binary", class);
                 false
             };
 
-            let mut logical_properties = Vec::new();
-            let mut visited_properties = UstrMap::new();
-
-            let mut values = Vec::new();
-            let string_values = Vec::new();
-
-            let string_logical_property_index = values.len();
-            values.push(string_values);
-
-            let name_logical = PropInfo::new();
-            let name_visited = PropInfo::new();
-
-            // Every instance has a property named Name. Even though
-            // rbx_dom_weak encodes the name property specially, we still insert
-            // this property into the type info and handle it like a regular
-            // property during encoding.
-            //
-            // We can use a dummy default_value here because instances from
-            // rbx_dom_weak always have a name set.
-            visited_properties.insert(
-                "Name".into(),
-                PropInfo {
-                    prop_type: Type::String,
-                    default_value: &DEFAULT_STRING,
-                    property_descriptor: name_property_descriptor,
-                    logical_property_index: string_logical_property_index,
-                },
-            );
-
             entry.insert(TypeInfo {
                 type_id,
                 is_service,
                 referents: Vec::new(),
-                properties_visited: properties,
+                properties_visited: UstrMap::new(),
                 class_descriptor,
-                properties: values,
+                properties: Vec::new(),
             });
         }
 
@@ -324,50 +292,20 @@ impl<'dom, 'db> TypeInfos<'dom, 'db> {
     }
 }
 
-fn get_or_create_prop_info<'a, 'dom, 'db: 'dom>(
-    values: &mut Vec<Vec<&'dom Variant>>,
-    properties: &'a mut BTreeMap<Ustr, PropInfo<'db>>,
-    desired_len: usize,
-) -> Result<&'a mut PropInfo<'db>, InnerError> {
-    // idea:
-    // TypeInfo.properties is BTreeMap<Ustr, PropInfo>
-    // PropInfo contains usize pointing to TypeInfo.values: Vec<PropVariantBuilder<'dom>>
-    // so they may be shared among multiple properties and use the same prop chunk.
-    // indexmap?
-    Ok(match properties.entry(prop_name) {
-        btree_map::Entry::Occupied(entry) => entry.into_mut(),
-        btree_map::Entry::Vacant(entry) => {
-            // find canonical property
-            let (values, logical_property_index) = if canonical_name != prop_name {
-                let prop_info = get_or_create_prop_info(
-                    values,
-                    properties,
-                    shared_strings,
-                    shared_string_ids,
-                    desired_len,
-                    database,
-                    class_descriptor,
-                    type_name,
-                    canonical_name,
-                    sample_value,
-                )?;
-                let logical_property_index = prop_info.logical_property_index;
-                (&mut values[logical_property_index], logical_property_index)
-            } else {
-                // create new values index
-                let logical_property_index = values.len();
-                values.push(Vec::new());
-                (values.last_mut().unwrap(), logical_property_index)
-            };
-
-            entry.insert(PropInfo {
-                prop_type: ser_type,
-                default_value,
-                property_descriptor,
-                logical_property_index,
-            })
-        }
-    })
+impl<'dom, 'db: 'dom> TypeInfo<'dom, 'db> {
+    fn get_or_create_logical_property<'a: 'b, 'b>(
+        &'a mut self,
+        prop_name: Ustr,
+    ) -> Result<&'b mut PropInfo<'dom>, InnerError> {
+        Ok(match self.properties_visited.entry(prop_name) {
+            hash_map::Entry::Occupied(entry) => &mut self.properties[*entry.get()],
+            hash_map::Entry::Vacant(entry) => {
+                let logical_property_index = 0;
+                entry.insert(logical_property_index);
+                &mut self.properties[logical_property_index]
+            }
+        })
+    }
 }
 
 impl<'dom, 'db: 'dom, W: Write> SerializerState<'dom, 'db, W> {
@@ -473,7 +411,7 @@ impl<'dom, 'db: 'dom, W: Write> SerializerState<'dom, 'db, W> {
                 }
             }
 
-            let logical_property = type_info.get_or_create_logical_property()?;
+            let logical_property = type_info.get_or_create_logical_property(*prop_name)?;
 
             // Add default values until the desired len is reached.
             logical_property.extend_with_default(desired_len);
