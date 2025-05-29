@@ -14,7 +14,7 @@ use rbx_dom_weak::{
         PhysicalProperties, Ray, Rect, Ref, SecurityCapabilities, SharedString, Tags, UDim, UDim2,
         UniqueId, Variant, VariantType, Vector2, Vector3, Vector3int16,
     },
-    Instance, Ustr, WeakDom,
+    Instance, Ustr, WeakDom, UstrMap,
 };
 
 use rbx_reflection::{
@@ -85,21 +85,21 @@ struct TypeInfo<'dom, 'db> {
     referents: Vec<Ref>,
 
     /// All of the defined properties for this type found on any instance of
-    /// this type. Properties are keyed using the instance property key, so
-    /// multiple entries may be present for each logical property.
+    /// this type. Properties are keyed by their canonical name, and only one
+    /// entry should be present for each logical property.
     ///
-    /// Stored in a sorted map to try to ensure that we write out properties in
+    /// Sorted just before serialization to ensure that we write out properties in
     /// a deterministic order.
-    visited_properties: BTreeMap<Ustr, PropInfo<'db>>,
-
-    /// References to logical property values.  Each PropInfo contains
-    /// a `values_index` that corresponds to an entry in this list.
-    /// Only one entry should be present for each logical property.
     logical_properties: Vec<LogicalPropInfo<'dom>>,
 
     /// A reference to the type's class descriptor from rbx_reflection, if this
     /// is a known class.
     class_descriptor: Option<&'db ClassDescriptor<'db>>,
+
+    /// A set containing the properties that we have seen so far in the file and
+    /// processed. This helps us avoid traversing the reflection database
+    /// multiple times if there are many copies of the same kind of instance.
+    visited_properties: UstrMap<PropInfo<'db>>,
 }
 
 /// A property on a specific class that our serializer knows about.
