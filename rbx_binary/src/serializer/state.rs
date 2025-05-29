@@ -240,10 +240,10 @@ impl<'dom, 'db: 'dom> PropInfo<'dom> {
 
         Ok(Self {
             prop_type: ser_type,
-            values: Vec::new(),
-            default_value,
             canonical_name,
             serialized_name,
+            values: Vec::new(),
+            default_value,
             migration,
         })
     }
@@ -254,7 +254,7 @@ impl<'dom, 'db: 'dom> PropInfo<'dom> {
     fn extend_with_default(&mut self, desired_len: usize) {
         let current_len = self.values.len();
         let Some(additional) = desired_len.checked_sub(current_len) else {
-            panic!("current_len ({current_len}) must be less than or equal to desired_len ({desired_len})");
+            panic!("current_len ({}) must be less than or equal to desired_len ({})",current_len,desired_len);
         };
         self.values
             .extend(core::iter::repeat(self.default_value).take(additional));
@@ -308,9 +308,9 @@ impl<'dom, 'db> TypeInfos<'dom, 'db> {
                 type_id,
                 is_service,
                 referents: Vec::new(),
-                properties_visited: UstrMap::new(),
-                class_descriptor,
                 properties: Vec::new(),
+                class_descriptor,
+                properties_visited: UstrMap::new(),
             });
         }
 
