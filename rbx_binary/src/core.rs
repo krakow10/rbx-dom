@@ -250,6 +250,7 @@ pub trait RbxWriteExt: Write {
                 blob[i + len * j] = *byte;
             }
         }
+
         self.write_all(&blob)?;
 
         Ok(())

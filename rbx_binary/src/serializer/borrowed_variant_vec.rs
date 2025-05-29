@@ -5,6 +5,11 @@ use rbx_dom_weak::types::{
     UniqueId, Vector2, Vector3, Vector3int16,
 };
 use rbx_dom_weak::types::{Variant, VariantType};
+#[derive(Debug)]
+pub struct VariantError {
+    expected: VariantType,
+    observed: VariantType,
+}
 macro_rules! impl_borrowed_variant_vec {
     ($($variant:ident($type:ty),)*) => {
         // use rbx_dom_weak::types::$type;
@@ -23,13 +28,24 @@ macro_rules! impl_borrowed_variant_vec {
                     _=>panic!("Unknown VariantType {:?}", variant_type),
                 }
             }
-            pub fn push(&mut self, variant: &'a Variant) {
+            pub fn ty(&self) -> VariantType {
+                match self{
+                    $(
+                        BorrowedVariantVec::$variant(_) => VariantType::$variant,
+                    )*
+                }
+            }
+            pub fn push(&mut self, variant: &'a Variant) -> Result<(),VariantError> {
                 match (variant, self) {
                     $(
                         (Variant::$variant(value), BorrowedVariantVec::$variant(values)) => values.push(value),
                     )*
-                    _=>panic!("Variant does not match {:?}", variant.ty()),
+                    (observed,expected)=>return Err(VariantError{
+                        expected:expected.ty(),
+                        observed:observed.ty(),
+                    }),
                 }
+                Ok(())
             }
             pub fn cloned_variant_vec(&self) -> Vec<Variant> {
                 match self{

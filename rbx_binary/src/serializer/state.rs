@@ -458,7 +458,9 @@ impl<'dom, 'db, W: Write> SerializerState<'dom, 'db, W> {
 
             // Append value to prop_info values.  This avoids
             // iterating over the instances and properties twice.
-            prop_info.values.push(prop_value);
+            if let Err(e) = prop_info.values.push(prop_value) {
+                panic!("Failed to add property: ")
+            }
         }
 
         // Note that default values must be filled for properties that were not visited.
@@ -629,7 +631,7 @@ impl<'dom, 'db, W: Write> SerializerState<'dom, 'db, W> {
                                     );
                                     // Assume all migrations end up with the same type.
                                     for value in &migrated_properties {
-                                        values.push(value);
+                                        values.push(value).unwrap();
                                     }
                                     migrated_values = values;
                                     (
