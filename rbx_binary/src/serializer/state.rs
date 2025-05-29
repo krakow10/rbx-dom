@@ -329,13 +329,37 @@ impl<'dom, 'db: 'dom> TypeInfo<'dom, 'db> {
         prop_name: Ustr,
     ) -> Result<&'short mut PropInfo<'dom>, InnerError> {
         // check if prop_name is already in properties_visited, return
+        if let Some(&logical_index) = self.properties_visited.get(&prop_name) {
+            return Ok(&mut self.properties[logical_index]);
+        }
         // get database property cannonical name
-        // if canonical != prop_name {
-        //     check if canonical name is already in properties_visited, return
-        //     create logical property
-        //     insert canonical PropInfo
-        // }
-        // insert prop_name PropInfo
+        let cannonical_name = get_cannonical_name();
+        let logical_index = if cannonical_name == prop_name {
+            // create logical property
+            let prop_info = PropInfo::new()?;
+            let logical_index = self.properties.len();
+            self.properties.push(prop_info);
+            // insert prop_name PropInfo
+            self.properties_visited.insert(prop_name, logical_index);
+            logical_index
+        } else {
+            // check if canonical name is already in properties_visited, return
+            if let Some(&logical_index) = self.properties_visited.get(&cannonical_name) {
+                self.properties_visited.insert(prop_name, logical_index);
+                return Ok(&mut self.properties[logical_index]);
+            }
+            // create logical property
+            let prop_info = PropInfo::new()?;
+            let logical_index = self.properties.len();
+            self.properties.push(prop_info);
+            // insert canonical PropInfo
+            self.properties_visited
+                .insert(cannonical_name, logical_index);
+            // insert prop_name PropInfo
+            self.properties_visited.insert(prop_name, logical_index);
+            logical_index
+        };
+        return Ok(&mut self.properties[logical_index]);
     }
 }
 
