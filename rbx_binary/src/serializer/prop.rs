@@ -14,19 +14,19 @@ pub struct VariantError {
     observed: VariantType,
 }
 macro_rules! impl_prop_variant_builder {
-    ($($variant:ident($builder:path),)*) => {
+    ($($variant:ident($builder_ty:ty, $builder_ident:ident),)*) => {
         // use rbx_dom_weak::types::$type;
         #[derive(Debug)]
         pub enum PropVariantBuilder<'a>{
             $(
-                $variant($builder),
+                $variant($builder_ty),
             )*
         }
         impl<'a> PropVariantBuilder<'a>{
             pub fn new(variant_type:VariantType) -> Self {
                 match variant_type{
                     $(
-                        VariantType::$variant => PropVariantBuilder::$variant($builder::new()),
+                        VariantType::$variant => PropVariantBuilder::$variant($builder_ident::new()),
                     )*
                     _=>panic!("Unknown VariantType {:?}", variant_type),
                 }
@@ -39,21 +39,16 @@ macro_rules! impl_prop_variant_builder {
                 }
             }
             pub fn push(&mut self, variant: &'a Variant) -> Result<(),VariantError> {
-                match (variant, self) {
+                match self {
                     $(
-                        (Variant::$variant(value), PropVariantBuilder::$variant(values)) => values.push(value),
+                        PropVariantBuilder::$variant(builder) => builder.push(variant),
                     )*
-                    (observed,expected)=>return Err(VariantError{
-                        expected:expected.ty(),
-                        observed:observed.ty(),
-                    }),
                 }
-                Ok(())
             }
-            pub fn cloned_variant_vec(&self) -> Vec<Variant> {
+            pub fn dump(&self, chunk: &mut ChunkBuilder) -> Result<(), std::io::Error> {
                 match self{
                     $(
-                        PropVariantBuilder::$variant(values) => values.iter().copied().cloned().map(Variant::$variant).collect(),
+                        PropVariantBuilder::$variant(builder) => builder.dump(chunk),
                     )*
                 }
             }
@@ -62,50 +57,51 @@ macro_rules! impl_prop_variant_builder {
 }
 
 impl_prop_variant_builder! {
-    Axes(Axes),
-    BinaryString(BinaryString),
-    Bool(bool),
-    BrickColor(BrickColor),
-    CFrame(CFrame),
-    Color3(Color3),
-    Color3uint8(Color3uint8),
-    ColorSequence(ColorSequence),
-    ContentId(ContentId),
-    Enum(Enum),
-    Faces(Faces),
-    Float32(f32),
-    Float64(f64),
-    Int32(i32),
-    Int64(i64),
-    NumberRange(NumberRange),
-    NumberSequence(NumberSequence),
-    PhysicalProperties(PhysicalProperties),
-    Ray(Ray),
-    Rect(Rect),
-    Ref(Ref),
-    // Region3(Region3),
-    // Region3int16(Region3int16),
-    SharedString(SharedString),
-    String(String),
-    UDim(UDim),
-    UDim2(UDim2),
-    Vector2(Vector2),
-    // Vector2int16(Vector2int16),
-    Vector3(Vector3),
-    Vector3int16(Vector3int16),
-    OptionalCFrame(Option<CFrame>),
-    Tags(Tags),
-    Attributes(Attributes),
-    Font(Font),
-    UniqueId(UniqueId),
-    MaterialColors(MaterialColors),
-    SecurityCapabilities(SecurityCapabilities),
-    // EnumItem(EnumItem),
-    Content(Content),
+    Axes(AxesBuilder<'a>, AxesBuilder),
 }
+    // BinaryString(BinaryStringBuilder),
+    // Bool(BoolBuilder),
+    // BrickColor(BrickColorBuilder),
+    // CFrame(CFrameBuilder),
+    // Color3(Color3Builder),
+    // Color3uint8(Color3uint8Builder),
+    // ColorSequence(ColorSequenceBuilder),
+    // ContentId(ContentIdBuilder),
+    // Enum(EnumBuilder),
+    // Faces(FacesBuilder),
+    // Float32(Float32Builder),
+    // Float64(Float64Builder),
+    // Int32(Int32Builder),
+    // Int64(Int64Builder),
+    // NumberRange(NumberRangeBuilder),
+    // NumberSequence(NumberSequenceBuilder),
+    // PhysicalProperties(PhysicalPropertiesBuilder),
+    // Ray(RayBuilder),
+    // Rect(RectBuilder),
+    // Ref(RefBuilder),
+    // // Region3(Region3Builder),
+    // // Region3int16(Region3int16Builder),
+    // SharedString(SharedStringBuilder),
+    // String(StringBuilder),
+    // UDim(UDimBuilder),
+    // UDim2(UDim2Builder),
+    // Vector2(Vector2Builder),
+    // // Vector2int16(Vector2int16Builder),
+    // Vector3(Vector3Builder),
+    // Vector3int16(Vector3int16Builder),
+    // OptionalCFrame(OptionBuilder<CFrame>),
+    // Tags(TagsBuilder),
+    // Attributes(AttributesBuilder),
+    // Font(FontBuilder),
+    // UniqueId(UniqueIdBuilder),
+    // MaterialColors(MaterialColorsBuilder),
+    // SecurityCapabilities(SecurityCapabilitiesBuilder),
+    // // EnumItem(EnumItemBuilder),
+    // Content(ContentBuilder),
 
 macro_rules! impl_simple_builder {
     ($builder:ident, $variant:ident, $type:ty) => {
+        #[derive(Debug)]
         struct $builder<'a>{
             values:Vec<&'a $type>,
         }
@@ -129,6 +125,15 @@ macro_rules! impl_simple_builder {
     };
 }
 
+impl_simple_builder!(AxesBuilder, Axes, Axes);
+impl AxesBuilder<'_>{
+    fn dump(&self, chunk: &mut ChunkBuilder) -> Result<(), std::io::Error> {
+        for &value in &self.values {
+            chunk.write_u8(value.bits())?;
+        }
+        Ok(())
+    }
+}
 impl_simple_builder!(StringBuilder, String, str);
 impl StringBuilder<'_>{
     fn dump(&self, chunk: &mut ChunkBuilder) -> Result<(), std::io::Error> {
