@@ -85,17 +85,17 @@ struct TypeInfo<'dom, 'db> {
     referents: Vec<Ref>,
 
     /// All of the defined properties for this type found on any instance of
-    /// this type. Properties are keyed by their serialized name, multiple
-    /// entries may be present for each logical property.  This is to avoid
-    /// multiple database lookups.
+    /// this type. Properties are keyed using the instance property key,
+    /// multiple entries may be present for each logical property.  This avoids
+    /// repeated database lookups.
     ///
     /// Stored in a sorted map to try to ensure that we write out properties in
     /// a deterministic order.
     properties: BTreeMap<Ustr, PropInfo<'db>>,
 
-    /// References to property values.  This avoids looking up each property
-    /// a second time to write PROP chunks.  Only one entry should be present
-    /// for each logical property.
+    /// References to logical property values.  Each PropInfo contains
+    /// a `values_index` that corresponds to an entry in this list.
+    /// Only one entry should be present for each logical property.
     values: Vec<Vec<&'dom Variant>>,
 
     /// A reference to the type's class descriptor from rbx_reflection, if this
