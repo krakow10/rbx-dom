@@ -604,19 +604,15 @@ impl<'dom, 'db, W: Write> SerializerState<'dom, 'db, W> {
                                     migrated_properties = values
                                         .iter()
                                         .map(|&value| {
-                                            // replace the Err with the original value
-                                            property_migration.perform(value).ok().ok_or(value)
+                                            property_migration
+                                                .perform(value)
+                                                // take original if migration failed
+                                                .map_or(Cow::Borrowed(value), Cow::Owned)
                                         })
                                         .collect();
                                     // We need to map twice to type match `values`
-                                    migrated_values = migrated_properties
-                                        .iter()
-                                        .map(|migration| match migration {
-                                            Ok(migrated) => migrated,
-                                            // take original if migration failed
-                                            Err(original) => original,
-                                        })
-                                        .collect();
+                                    migrated_values =
+                                        migrated_properties.iter().map(Cow::as_ref).collect();
                                     (
                                         property_migration.new_property_name.as_str(),
                                         &migrated_values,
