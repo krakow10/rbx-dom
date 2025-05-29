@@ -343,10 +343,6 @@ fn get_or_create_prop_info<'a, 'dom, 'db: 'dom>(
                 (values.last_mut().unwrap(), values_index)
             };
 
-            // Insert type_info.referents.len() default values into values
-            let current_len = values.len();
-            values.extend(core::iter::repeat(default_value).take(desired_len - current_len));
-
             entry.insert(PropInfo {
                 prop_type: ser_type,
                 default_value,
