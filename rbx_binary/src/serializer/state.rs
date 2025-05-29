@@ -1,11 +1,11 @@
 use std::{
-    borrow::{Borrow, Cow},
+    borrow::Cow,
     collections::{btree_map, BTreeMap},
     convert::TryInto,
     io::Write,
 };
 
-use ahash::{HashMap, HashMapExt, HashSetExt};
+use ahash::{HashMap, HashMapExt};
 use rbx_dom_weak::{
     types::{
         Attributes, Axes, BinaryString, BrickColor, CFrame, Color3, Color3uint8, ColorSequence,
@@ -14,12 +14,12 @@ use rbx_dom_weak::{
         PhysicalProperties, Ray, Rect, Ref, SecurityCapabilities, SharedString, Tags, UDim, UDim2,
         UniqueId, Variant, VariantType, Vector2, Vector3, Vector3int16,
     },
-    Instance, Ustr, UstrSet, WeakDom,
+    Instance, Ustr, WeakDom,
 };
 
 use rbx_reflection::{
-    ClassDescriptor, ClassTag, DataType, PropertyDescriptor, PropertyKind, PropertyMigration,
-    PropertySerialization, ReflectionDatabase,
+    ClassDescriptor, ClassTag, PropertyDescriptor, PropertyKind, PropertySerialization,
+    ReflectionDatabase,
 };
 
 use crate::{
