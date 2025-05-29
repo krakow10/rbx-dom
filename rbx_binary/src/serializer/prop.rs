@@ -214,7 +214,12 @@ impl BoolBuilder {
     }
 }
 
-impl_convert_builder!(BrickColorBuilder, BrickColor, u32, |&value:&BrickColor|value as u32);
+impl_convert_builder!(
+    BrickColorBuilder,
+    BrickColor,
+    u32,
+    |&value: &BrickColor| value as u32
+);
 impl BrickColorBuilder {
     fn dump(&self, chunk: &mut ChunkBuilder) -> Result<(), std::io::Error> {
         chunk.write_interleaved_u32_array(self.values.iter().copied())
@@ -324,16 +329,14 @@ impl ContentIdBuilder<'_> {
     }
 }
 
-impl_convert_builder!(EnumBuilder, Enum, u32, |value:&Enum|value.to_u32());
+impl_convert_builder!(EnumBuilder, Enum, u32, |value: &Enum| value.to_u32());
 impl EnumBuilder {
     fn dump(&self, chunk: &mut ChunkBuilder) -> Result<(), std::io::Error> {
-        chunk.write_interleaved_u32_array(
-            self.values.iter().copied(),
-        )
+        chunk.write_interleaved_u32_array(self.values.iter().copied())
     }
 }
 
-impl_convert_builder!(FacesBuilder, Faces, u8, |value:&Faces|value.bits());
+impl_convert_builder!(FacesBuilder, Faces, u8, |value: &Faces| value.bits());
 impl FacesBuilder {
     fn dump(&self, chunk: &mut ChunkBuilder) -> Result<(), std::io::Error> {
         chunk.write_all(&self.values)
@@ -424,7 +427,11 @@ impl NumberSequenceBuilder<'_> {
     }
 }
 
-impl_ref_builder!(PhysicalPropertiesBuilder, PhysicalProperties, PhysicalProperties);
+impl_ref_builder!(
+    PhysicalPropertiesBuilder,
+    PhysicalProperties,
+    PhysicalProperties
+);
 impl PhysicalPropertiesBuilder<'_> {
     fn dump(&self, chunk: &mut ChunkBuilder) -> Result<(), std::io::Error> {
         for &value in &self.values {
@@ -680,9 +687,9 @@ impl AttributesBuilder<'_> {
         for (i, &value) in self.values.iter().enumerate() {
             let mut buf = Vec::new();
 
-            value.to_writer(&mut buf).map_err(|_| {
-                invalid_value(i, &Variant::Attributes(value.clone()))
-            })?;
+            value
+                .to_writer(&mut buf)
+                .map_err(|_| invalid_value(i, &Variant::Attributes(value.clone())))?;
 
             chunk.write_binary_string(&buf)?;
         }
@@ -697,9 +704,7 @@ impl FontBuilder<'_> {
             chunk.write_string(&value.family)?;
             chunk.write_le_u16(value.weight.as_u16())?;
             chunk.write_u8(value.style.as_u8())?;
-            chunk.write_string(
-                value.cached_face_id.as_deref().unwrap_or_default(),
-            )?;
+            chunk.write_string(value.cached_face_id.as_deref().unwrap_or_default())?;
         }
         Ok(())
     }
@@ -734,12 +739,15 @@ impl MaterialColorsBuilder<'_> {
     }
 }
 
-impl_convert_builder!(SecurityCapabilitiesBuilder, SecurityCapabilities, i64, |value:&SecurityCapabilities| value.bits() as i64);
+impl_convert_builder!(
+    SecurityCapabilitiesBuilder,
+    SecurityCapabilities,
+    i64,
+    |value: &SecurityCapabilities| value.bits() as i64
+);
 impl SecurityCapabilitiesBuilder {
     fn dump(&self, chunk: &mut ChunkBuilder) -> Result<(), std::io::Error> {
-        chunk.write_interleaved_i64_array(
-            self.values.iter().copied()
-        )
+        chunk.write_interleaved_i64_array(self.values.iter().copied())
     }
 }
 
@@ -764,9 +772,7 @@ impl ContentBuilder<'_> {
                     }
                     2
                 }
-                _ => {
-                    return Err(invalid_value(i, &Variant::Content(value.clone())))
-                }
+                _ => return Err(invalid_value(i, &Variant::Content(value.clone()))),
             });
         }
         chunk.write_interleaved_i32_array(source_types)?;

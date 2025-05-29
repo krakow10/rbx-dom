@@ -12,9 +12,7 @@ use rbx_dom_weak::{
     },
     InstanceBuilder, Ustr, WeakDom,
 };
-use rbx_reflection::{
-    ClassDescriptor, PropertyKind, PropertySerialization, ReflectionDatabase,
-};
+use rbx_reflection::{ClassDescriptor, PropertyKind, PropertySerialization, ReflectionDatabase};
 
 use crate::{
     chunk::Chunk,

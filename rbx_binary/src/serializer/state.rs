@@ -31,8 +31,8 @@ use crate::{
     Serializer,
 };
 
-use super::prop::PropVariantBuilder;
 use super::error::InnerError;
+use super::prop::PropVariantBuilder;
 use super::CompressionType;
 
 static FILE_FOOTER: &[u8] = b"</roblox>";
@@ -447,7 +447,10 @@ impl<'dom, 'db, W: Write> SerializerState<'dom, 'db, W> {
             // Append value to prop_info values.  This avoids
             // iterating over the instances and properties twice.
             if let Err(e) = prop_info.values.push(prop_value) {
-                panic!("Failed to add property: class={} prop={prop_name}\n{e:?}",instance.class);
+                panic!(
+                    "Failed to add property: class={} prop={prop_name}\n{e:?}",
+                    instance.class
+                );
             }
         }
 
@@ -614,9 +617,8 @@ impl<'dom, 'db, W: Write> SerializerState<'dom, 'db, W> {
                                         .collect();
                                     // Assume there is at least one value.
                                     // The prop_info would not have been created otherwise.
-                                    let mut values = PropVariantBuilder::new(
-                                        migrated_properties.first().unwrap().ty(),
-                                    );
+                                    let mut values =
+                                        PropVariantBuilder::new(prop_descriptor.data_type.ty());
                                     // Assume all migrations end up with the same type.
                                     for value in &migrated_properties {
                                         values.push(value).unwrap();
