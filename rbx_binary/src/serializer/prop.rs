@@ -2,6 +2,7 @@ use std::io::Write;
 
 use crate::chunk::ChunkBuilder;
 use crate::core::RbxWriteExt;
+use crate::types::Type;
 
 use rbx_dom_weak::types::{
     Attributes, Axes, BinaryString, BrickColor, CFrame, Color3, Color3uint8, ColorSequence,
@@ -80,26 +81,26 @@ impl_prop_variant_builder! {
     Ray(RayBuilder<'a>, RayBuilder),
     Rect(RectBuilder<'a>, RectBuilder),
     Ref(RefBuilder<'a>, RefBuilder),
+    // Region3(Region3Builder<'a>, Region3Builder),
+    // Region3int16(Region3int16Builder<'a>, Region3int16Builder),
+    SharedString(SharedStringBuilder<'a>, SharedStringBuilder),
+    String(StringBuilder<'a>, StringBuilder),
+    UDim(UDimBuilder<'a>, UDimBuilder),
+    UDim2(UDim2Builder<'a>, UDim2Builder),
+    Vector2(Vector2Builder<'a>, Vector2Builder),
+    // Vector2int16(Vector2int16Builder<'a>, Vector2int16Builder),
+    Vector3(Vector3Builder<'a>, Vector3Builder),
+    Vector3int16(Vector3int16Builder<'a>, Vector3int16Builder),
+    OptionalCFrame(OptionBuilder<'a>, OptionBuilder<CFrame>),
+    Tags(TagsBuilder<'a>, TagsBuilder),
+    Attributes(AttributesBuilder<'a>, AttributesBuilder),
+    Font(FontBuilder<'a>, FontBuilder),
+    UniqueId(UniqueIdBuilder<'a>, UniqueIdBuilder),
+    MaterialColors(MaterialColorsBuilder<'a>, MaterialColorsBuilder),
+    SecurityCapabilities(SecurityCapabilitiesBuilder<'a>, SecurityCapabilitiesBuilder),
+    // EnumItem(EnumItemBuilder<'a>, EnumItemBuilder),
+    Content(ContentBuilder<'a>, ContentBuilder),
 }
-    // // Region3(Region3Builder<'a>, Region3Builder),
-    // // Region3int16(Region3int16Builder<'a>, Region3int16Builder),
-    // SharedString(SharedStringBuilder<'a>, SharedStringBuilder),
-    // String(StringBuilder<'a>, StringBuilder),
-    // UDim(UDimBuilder<'a>, UDimBuilder),
-    // UDim2(UDim2Builder<'a>, UDim2Builder),
-    // Vector2(Vector2Builder<'a>, Vector2Builder),
-    // // Vector2int16(Vector2int16Builder<'a>, Vector2int16Builder),
-    // Vector3(Vector3Builder<'a>, Vector3Builder),
-    // Vector3int16(Vector3int16Builder<'a>, Vector3int16Builder),
-    // OptionalCFrame(OptionBuilder<'a>, OptionBuilder<CFrame>),
-    // Tags(TagsBuilder<'a>, TagsBuilder),
-    // Attributes(AttributesBuilder<'a>, AttributesBuilder),
-    // Font(FontBuilder<'a>, FontBuilder),
-    // UniqueId(UniqueIdBuilder<'a>, UniqueIdBuilder),
-    // MaterialColors(MaterialColorsBuilder<'a>, MaterialColorsBuilder),
-    // SecurityCapabilities(SecurityCapabilitiesBuilder<'a>, SecurityCapabilitiesBuilder),
-    // // EnumItem(EnumItemBuilder<'a>, EnumItemBuilder),
-    // Content(ContentBuilder<'a>, ContentBuilder),
 
 macro_rules! impl_ref_builder {
     ($builder:ident, $variant:ident, $type:ty) => {
@@ -495,6 +496,23 @@ impl RefBuilder<'_> {
     }
 }
 
+impl_ref_builder!(SharedStringBuilder, SharedString, SharedString);
+impl SharedStringBuilder<'_> {
+    fn dump(&self, chunk: &mut ChunkBuilder) -> Result<(), std::io::Error> {
+        let it = self.values.iter().map(|&value| {
+            if let Some(id) = shared_string_ids.get(value) {
+                *id
+            } else {
+                panic!(
+                    "SharedString {} was not found during type collection",
+                    value.hash()
+                )
+            }
+        });
+        chunk.write_interleaved_u32_array(it)?;
+        Ok(())
+    }
+}
 
 impl_ref_builder!(StringBuilder, String, str);
 impl StringBuilder<'_> {
@@ -502,6 +520,268 @@ impl StringBuilder<'_> {
         for &value in &self.values {
             chunk.write_string(value)?;
         }
+        Ok(())
+    }
+}
+
+impl_ref_builder!(UDimBuilder, UDim, UDim);
+impl UDimBuilder<'_> {
+    fn dump(&self, chunk: &mut ChunkBuilder) -> Result<(), std::io::Error> {
+        let mut scale = Vec::with_capacity(self.values.len());
+        let mut offset = Vec::with_capacity(self.values.len());
+        for &value in &self.values {
+            scale.push(value.scale);
+            offset.push(value.offset);
+        }
+        chunk.write_interleaved_f32_array(scale)?;
+        chunk.write_interleaved_i32_array(offset)?;
+        Ok(())
+    }
+}
+
+impl_ref_builder!(UDim2Builder, UDim2, UDim2);
+impl UDim2Builder<'_> {
+    fn dump(&self, chunk: &mut ChunkBuilder) -> Result<(), std::io::Error> {
+        let mut scale_x = Vec::with_capacity(self.values.len());
+        let mut scale_y = Vec::with_capacity(self.values.len());
+        let mut offset_x = Vec::with_capacity(self.values.len());
+        let mut offset_y = Vec::with_capacity(self.values.len());
+
+        for &value in &self.values {
+            scale_x.push(value.x.scale);
+            scale_y.push(value.y.scale);
+            offset_x.push(value.x.offset);
+            offset_y.push(value.y.offset);
+        }
+
+        chunk.write_interleaved_f32_array(scale_x)?;
+        chunk.write_interleaved_f32_array(scale_y)?;
+        chunk.write_interleaved_i32_array(offset_x)?;
+        chunk.write_interleaved_i32_array(offset_y)?;
+        Ok(())
+    }
+}
+
+impl_ref_builder!(Vector2Builder, Vector2, Vector2);
+impl Vector2Builder<'_> {
+    fn dump(&self, chunk: &mut ChunkBuilder) -> Result<(), std::io::Error> {
+        let mut x = Vec::with_capacity(self.values.len());
+        let mut y = Vec::with_capacity(self.values.len());
+        for &value in &self.values {
+            x.push(value.x);
+            y.push(value.y);
+        }
+        chunk.write_interleaved_f32_array(x)?;
+        chunk.write_interleaved_f32_array(y)?;
+        Ok(())
+    }
+}
+
+impl_ref_builder!(Vector3Builder, Vector3, Vector3);
+impl Vector3Builder<'_> {
+    fn dump(&self, chunk: &mut ChunkBuilder) -> Result<(), std::io::Error> {
+        let mut x = Vec::with_capacity(self.values.len());
+        let mut y = Vec::with_capacity(self.values.len());
+        let mut z = Vec::with_capacity(self.values.len());
+        for &value in &self.values {
+            x.push(value.x);
+            y.push(value.y);
+            z.push(value.z);
+        }
+        chunk.write_interleaved_f32_array(x)?;
+        chunk.write_interleaved_f32_array(y)?;
+        chunk.write_interleaved_f32_array(z)?;
+        Ok(())
+    }
+}
+
+impl_ref_builder!(Vector3int16Builder, Vector3int16, Vector3int16);
+impl Vector3int16Builder<'_> {
+    fn dump(&self, chunk: &mut ChunkBuilder) -> Result<(), std::io::Error> {
+        for &value in &self.values {
+            chunk.write_le_i16(value.x)?;
+            chunk.write_le_i16(value.y)?;
+            chunk.write_le_i16(value.z)?;
+        }
+        Ok(())
+    }
+}
+
+impl_ref_builder!(OptionalCFrameBuilder, OptionalCFrame, Option<CFrame>);
+impl OptionalCFrameBuilder<'_> {
+    fn dump(&self, chunk: &mut ChunkBuilder) -> Result<(), std::io::Error> {
+        let mut bools = Vec::with_capacity(self.values.len());
+        let mut x = Vec::with_capacity(self.values.len());
+        let mut y = Vec::with_capacity(self.values.len());
+        let mut z = Vec::with_capacity(self.values.len());
+
+        chunk.write_u8(Type::CFrame as u8)?;
+        for &value in &self.values {
+            if let Some(value) = value {
+                x.push(value.position.x);
+                y.push(value.position.y);
+                z.push(value.position.z);
+                bools.push(0x01);
+
+                let matrix = &value.orientation;
+
+                // write matrix
+                if let Some(id) = matrix.to_basic_rotation_id() {
+                    chunk.write_u8(id)?;
+                } else {
+                    chunk.write_u8(0x00)?;
+
+                    chunk.write_le_f32(matrix.x.x)?;
+                    chunk.write_le_f32(matrix.x.y)?;
+                    chunk.write_le_f32(matrix.x.z)?;
+
+                    chunk.write_le_f32(matrix.y.x)?;
+                    chunk.write_le_f32(matrix.y.y)?;
+                    chunk.write_le_f32(matrix.y.z)?;
+
+                    chunk.write_le_f32(matrix.z.x)?;
+                    chunk.write_le_f32(matrix.z.y)?;
+                    chunk.write_le_f32(matrix.z.z)?;
+                }
+            } else {
+                x.push(0.0);
+                y.push(0.0);
+                z.push(0.0);
+                bools.push(0x00);
+
+                // Identity basic rotation id
+                chunk.write_u8(0x02)?;
+            };
+        }
+
+        chunk.write_interleaved_f32_array(x)?;
+        chunk.write_interleaved_f32_array(y)?;
+        chunk.write_interleaved_f32_array(z)?;
+
+        chunk.write_u8(Type::Bool as u8)?;
+        chunk.write_all(bools.as_slice())?;
+        Ok(())
+    }
+}
+
+impl_ref_builder!(TagsBuilder, Tags, Tags);
+impl TagsBuilder<'_> {
+    fn dump(&self, chunk: &mut ChunkBuilder) -> Result<(), std::io::Error> {
+        for &value in &self.values {
+            let buf = value.encode();
+            chunk.write_binary_string(&buf)?;
+        }
+        Ok(())
+    }
+}
+
+impl_ref_builder!(AttributesBuilder, Attributes, Attributes);
+impl AttributesBuilder<'_> {
+    fn dump(&self, chunk: &mut ChunkBuilder) -> Result<(), std::io::Error> {
+        for (i, &value) in self.values.iter().enumerate() {
+            let mut buf = Vec::new();
+
+            value.to_writer(&mut buf).map_err(|_| {
+                invalid_value(i, &Variant::Attributes(value.clone()))
+            })?;
+
+            chunk.write_binary_string(&buf)?;
+        }
+        Ok(())
+    }
+}
+
+impl_ref_builder!(FontBuilder, Font, Font);
+impl FontBuilder<'_> {
+    fn dump(&self, chunk: &mut ChunkBuilder) -> Result<(), std::io::Error> {
+        for &value in &self.values {
+            chunk.write_string(&value.family)?;
+            chunk.write_le_u16(value.weight.as_u16())?;
+            chunk.write_u8(value.style.as_u8())?;
+            chunk.write_string(
+                value.cached_face_id.as_deref().unwrap_or_default(),
+            )?;
+        }
+        Ok(())
+    }
+}
+
+impl_ref_builder!(UniqueIdBuilder, UniqueId, UniqueId);
+impl UniqueIdBuilder<'_> {
+    fn dump(&self, chunk: &mut ChunkBuilder) -> Result<(), std::io::Error> {
+        let mut blobs = Vec::with_capacity(self.values.len());
+        for &value in &self.values {
+            let mut blob = [0; 16];
+            // This is maybe not the best solution to this
+            // but we can always change it.
+            blob[0..4].copy_from_slice(&value.index().to_be_bytes());
+            blob[4..8].copy_from_slice(&value.time().to_be_bytes());
+            blob[8..].copy_from_slice(&value.random().rotate_left(1).to_be_bytes());
+            blobs.push(blob);
+        }
+
+        chunk.write_interleaved_bytes::<16>(&blobs)?;
+        Ok(())
+    }
+}
+
+impl_ref_builder!(MaterialColorsBuilder, MaterialColors, MaterialColors);
+impl MaterialColorsBuilder<'_> {
+    fn dump(&self, chunk: &mut ChunkBuilder) -> Result<(), std::io::Error> {
+        for &value in &self.values {
+            chunk.write_binary_string(&value.encode())?;
+        }
+        Ok(())
+    }
+}
+
+impl_convert_builder!(SecurityCapabilitiesBuilder, SecurityCapabilities, i64, |value:&SecurityCapabilities| value.bits() as i64);
+impl SecurityCapabilitiesBuilder {
+    fn dump(&self, chunk: &mut ChunkBuilder) -> Result<(), std::io::Error> {
+        chunk.write_interleaved_i64_array(
+            self.values.iter().copied()
+        )
+    }
+}
+
+impl_ref_builder!(ContentBuilder, Content, Content);
+impl ContentBuilder<'_> {
+    fn dump(&self, chunk: &mut ChunkBuilder) -> Result<(), std::io::Error> {
+        let mut source_types = Vec::with_capacity(self.values.len());
+        let mut uris = Vec::with_capacity(self.values.len());
+        let mut objects = Vec::new();
+        for (i, &value) in self.values.iter().enumerate() {
+            source_types.push(match value.value() {
+                ContentType::None => 0,
+                ContentType::Uri(uri) => {
+                    uris.push(uri.clone());
+                    1
+                }
+                ContentType::Object(referent) => {
+                    if let Some(id) = self.id_to_referent.get(referent) {
+                        objects.push(*id);
+                    } else {
+                        objects.push(-1);
+                    }
+                    2
+                }
+                _ => {
+                    return Err(invalid_value(i, &Variant::Content(value.clone())))
+                }
+            });
+        }
+        chunk.write_interleaved_i32_array(source_types)?;
+
+        chunk.write_le_u32(uris.len() as u32)?;
+        for uri in uris {
+            chunk.write_string(uri)?;
+        }
+        chunk.write_le_u32(objects.len() as u32)?;
+        chunk.write_referent_array(objects)?;
+
+        // If we ever need to support the external referents,
+        // we will need to add it here.
+        chunk.write_le_u32(0)?;
         Ok(())
     }
 }

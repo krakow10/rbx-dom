@@ -31,7 +31,7 @@ use crate::{
     Serializer,
 };
 
-use super::prop::BorrowedVariantVec;
+use super::prop::PropVariantBuilder;
 use super::error::InnerError;
 use super::CompressionType;
 
@@ -111,7 +111,7 @@ impl<'dom, 'db> TypeInfo<'dom, 'db> {
     ) -> Result<&mut PropInfo<'dom, 'db>, InnerError> {
         // idea:
         // TypeInfo.properties is BTreeMap<Ustr, PropInfo>
-        // PropInfo contains usize pointing to TypeInfo.values: Vec<BorrowedVariantVec<'dom>>
+        // PropInfo contains usize pointing to TypeInfo.values: Vec<PropVariantBuilder<'dom>>
         // so they may be shared among multiple properties and use the same prop chunk.
         // indexmap?
         Ok(match self.properties.entry(prop_name) {
@@ -195,7 +195,7 @@ impl<'dom, 'db> TypeInfo<'dom, 'db> {
                 entry.insert(PropInfo {
                     prop_type: ser_type,
                     serialized_name,
-                    values: BorrowedVariantVec::new(serialized_ty),
+                    values: PropVariantBuilder::new(serialized_ty),
                     default_value,
                     property_descriptor,
                 })
@@ -222,11 +222,11 @@ struct PropInfo<'dom, 'db> {
     prop_type: Type,
 
     /// An array of references to the values of this type.
-    /// BorrowedVariantVec is a serialization gadget that also contains the Variant type.
+    /// PropVariantBuilder is a serialization gadget that also contains the Variant type.
     ///
     /// Contains the same type information as prop_type, duplicating its purpose.
     // TODO: deduplicate the purpose
-    values: BorrowedVariantVec<'dom>,
+    values: PropVariantBuilder<'dom>,
 
     /// The serialized name for this property. This is the name that is actually
     /// written as part of the PROP chunk and may not line up with the canonical
@@ -313,7 +313,7 @@ impl<'dom, 'db> TypeInfos<'dom, 'db> {
                 PropInfo {
                     prop_type: Type::String,
                     serialized_name: "Name".into(),
-                    values: BorrowedVariantVec::String(Vec::new()),
+                    values: PropVariantBuilder::String(Vec::new()),
                     default_value: &DEFAULT_STRING,
                     property_descriptor: class_descriptor
                         .and_then(|descriptor| descriptor.properties.get("Name")),
@@ -614,7 +614,7 @@ impl<'dom, 'db, W: Write> SerializerState<'dom, 'db, W> {
                                         .collect();
                                     // Assume there is at least one value.
                                     // The prop_info would not have been created otherwise.
-                                    let mut values = BorrowedVariantVec::new(
+                                    let mut values = PropVariantBuilder::new(
                                         migrated_properties.first().unwrap().ty(),
                                     );
                                     // Assume all migrations end up with the same type.
@@ -651,217 +651,7 @@ impl<'dom, 'db, W: Write> SerializerState<'dom, 'db, W> {
                     prop_type: format!("{:?}", bad_value.ty()),
                 };
 
-                match property_values {
-                    BorrowedVariantVec::Tags(values) => {
-                        for &value in values {
-                            let buf = value.encode();
-                            chunk.write_binary_string(&buf)?;
-                        }
-                    }
-                    BorrowedVariantVec::Attributes(values) => {
-                        for (i, &value) in values.into_iter().enumerate() {
-                            let mut buf = Vec::new();
-
-                            value.to_writer(&mut buf).map_err(|_| {
-                                invalid_value(i, &Variant::Attributes(value.clone()))
-                            })?;
-
-                            chunk.write_binary_string(&buf)?;
-                        }
-                    }
-                    BorrowedVariantVec::MaterialColors(values) => {
-                        for &value in values {
-                            chunk.write_binary_string(&value.encode())?;
-                        }
-                    }
-                    BorrowedVariantVec::UDim(values) => {
-                        let mut scale = Vec::with_capacity(values.len());
-                        let mut offset = Vec::with_capacity(values.len());
-                        for &value in values {
-                            scale.push(value.scale);
-                            offset.push(value.offset);
-                        }
-                        chunk.write_interleaved_f32_array(scale)?;
-                        chunk.write_interleaved_i32_array(offset)?;
-                    }
-                    BorrowedVariantVec::UDim2(values) => {
-                        let mut scale_x = Vec::with_capacity(values.len());
-                        let mut scale_y = Vec::with_capacity(values.len());
-                        let mut offset_x = Vec::with_capacity(values.len());
-                        let mut offset_y = Vec::with_capacity(values.len());
-
-                        for &value in values {
-                            scale_x.push(value.x.scale);
-                            scale_y.push(value.y.scale);
-                            offset_x.push(value.x.offset);
-                            offset_y.push(value.y.offset);
-                        }
-
-                        chunk.write_interleaved_f32_array(scale_x)?;
-                        chunk.write_interleaved_f32_array(scale_y)?;
-                        chunk.write_interleaved_i32_array(offset_x)?;
-                        chunk.write_interleaved_i32_array(offset_y)?;
-                    }
-                    BorrowedVariantVec::Font(values) => {
-                        for &value in values {
-                            chunk.write_string(&value.family)?;
-                            chunk.write_le_u16(value.weight.as_u16())?;
-                            chunk.write_u8(value.style.as_u8())?;
-                            chunk.write_string(
-                                value.cached_face_id.as_deref().unwrap_or_default(),
-                            )?;
-                        }
-                    }
-                    BorrowedVariantVec::Vector2(values) => {
-                        let mut x = Vec::with_capacity(values.len());
-                        let mut y = Vec::with_capacity(values.len());
-                        for &value in values {
-                            x.push(value.x);
-                            y.push(value.y);
-                        }
-                        chunk.write_interleaved_f32_array(x)?;
-                        chunk.write_interleaved_f32_array(y)?;
-                    }
-                    BorrowedVariantVec::Vector3(values) => {
-                        let mut x = Vec::with_capacity(values.len());
-                        let mut y = Vec::with_capacity(values.len());
-                        let mut z = Vec::with_capacity(values.len());
-                        for &value in values {
-                            x.push(value.x);
-                            y.push(value.y);
-                            z.push(value.z);
-                        }
-                        chunk.write_interleaved_f32_array(x)?;
-                        chunk.write_interleaved_f32_array(y)?;
-                        chunk.write_interleaved_f32_array(z)?;
-                    }
-                    BorrowedVariantVec::Vector3int16(values) => {
-                        for &value in values {
-                            chunk.write_le_i16(value.x)?;
-                            chunk.write_le_i16(value.y)?;
-                            chunk.write_le_i16(value.z)?;
-                        }
-                    }
-                    BorrowedVariantVec::SharedString(values) => {
-                        let it = values.into_iter().map(|&value| {
-                            if let Some(id) = self.shared_string_ids.get(value) {
-                                *id
-                            } else {
-                                panic!(
-                                    "SharedString {} was not found during type collection",
-                                    value.hash()
-                                )
-                            }
-                        });
-                        chunk.write_interleaved_u32_array(it)?;
-                    }
-                    BorrowedVariantVec::OptionalCFrame(values) => {
-                        let mut bools = Vec::with_capacity(values.len());
-                        let mut x = Vec::with_capacity(values.len());
-                        let mut y = Vec::with_capacity(values.len());
-                        let mut z = Vec::with_capacity(values.len());
-
-                        chunk.write_u8(Type::CFrame as u8)?;
-                        for &value in values {
-                            let matrix;
-                            if let Some(value) = value {
-                                matrix = value.orientation;
-                                x.push(value.position.x);
-                                y.push(value.position.y);
-                                z.push(value.position.z);
-                                bools.push(0x01);
-                            } else {
-                                matrix = Matrix3::identity();
-                                x.push(0.0);
-                                y.push(0.0);
-                                z.push(0.0);
-                                bools.push(0x00);
-                            };
-
-                            // write matrix
-                            if let Some(id) = matrix.to_basic_rotation_id() {
-                                chunk.write_u8(id)?;
-                            } else {
-                                chunk.write_u8(0x00)?;
-
-                                chunk.write_le_f32(matrix.x.x)?;
-                                chunk.write_le_f32(matrix.x.y)?;
-                                chunk.write_le_f32(matrix.x.z)?;
-
-                                chunk.write_le_f32(matrix.y.x)?;
-                                chunk.write_le_f32(matrix.y.y)?;
-                                chunk.write_le_f32(matrix.y.z)?;
-
-                                chunk.write_le_f32(matrix.z.x)?;
-                                chunk.write_le_f32(matrix.z.y)?;
-                                chunk.write_le_f32(matrix.z.z)?;
-                            }
-                        }
-
-                        chunk.write_interleaved_f32_array(x)?;
-                        chunk.write_interleaved_f32_array(y)?;
-                        chunk.write_interleaved_f32_array(z)?;
-
-                        chunk.write_u8(Type::Bool as u8)?;
-                        chunk.write_all(bools.as_slice())?;
-                    }
-                    BorrowedVariantVec::UniqueId(values) => {
-                        let mut blobs = Vec::with_capacity(values.len());
-                        for &value in values {
-                            let mut blob = [0; 16];
-                            // This is maybe not the best solution to this
-                            // but we can always change it.
-                            blob[0..4].copy_from_slice(&value.index().to_be_bytes());
-                            blob[4..8].copy_from_slice(&value.time().to_be_bytes());
-                            blob[8..].copy_from_slice(&value.random().rotate_left(1).to_be_bytes());
-                            blobs.push(blob);
-                        }
-
-                        chunk.write_interleaved_bytes::<16>(&blobs)?;
-                    }
-                    BorrowedVariantVec::SecurityCapabilities(values) => {
-                        chunk.write_interleaved_i64_array(
-                            values.into_iter().map(|&value| value.bits() as i64),
-                        )?;
-                    }
-                    BorrowedVariantVec::Content(values) => {
-                        let mut source_types = Vec::with_capacity(values.len());
-                        let mut uris = Vec::with_capacity(values.len());
-                        let mut objects = Vec::new();
-                        for (i, &value) in values.into_iter().enumerate() {
-                            source_types.push(match value.value() {
-                                ContentType::None => 0,
-                                ContentType::Uri(uri) => {
-                                    uris.push(uri.clone());
-                                    1
-                                }
-                                ContentType::Object(referent) => {
-                                    if let Some(id) = self.id_to_referent.get(referent) {
-                                        objects.push(*id);
-                                    } else {
-                                        objects.push(-1);
-                                    }
-                                    2
-                                }
-                                _ => {
-                                    return Err(invalid_value(i, &Variant::Content(value.clone())))
-                                }
-                            });
-                        }
-                        chunk.write_interleaved_i32_array(source_types)?;
-
-                        chunk.write_le_u32(uris.len() as u32)?;
-                        for uri in uris {
-                            chunk.write_string(&uri)?;
-                        }
-                        chunk.write_le_u32(objects.len() as u32)?;
-                        chunk.write_referent_array(objects)?;
-
-                        // If we ever need to support the external referents,
-                        // we will need to add it here.
-                        chunk.write_le_u32(0)?;
-                    }
-                }
+                prop_info.values.dump(&mut chunk)?;
 
                 chunk.dump(&mut self.output)?;
             }
