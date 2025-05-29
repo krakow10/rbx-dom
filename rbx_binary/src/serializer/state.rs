@@ -103,10 +103,10 @@ struct TypeInfo<'dom, 'db> {
 
 /// A property on a specific class that our serializer knows about.
 ///
-/// We should have one `LogicalPropInfo` per logical property per class that is used in
+/// We should have one `PropInfo` per logical property per class that is used in
 /// the document we are serializing. This means that even if `BasePart.Size` and
 /// `BasePart.size` are present in the same document, they should share a
-/// `LogicalPropInfo` as they are the same logical property.
+/// `PropInfo` as they are the same logical property.
 #[derive(Debug)]
 struct PropInfo<'dom> {
     /// The binary format type ID that will be use to serialize this property.
