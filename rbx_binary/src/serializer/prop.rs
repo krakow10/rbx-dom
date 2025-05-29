@@ -212,15 +212,10 @@ impl BoolBuilder {
     }
 }
 
-impl_convert_builder!(
-    BrickColorBuilder,
-    BrickColor,
-    u32,
-    |&value: &BrickColor| value as u32
-);
+impl_copy_builder!(BrickColorBuilder, BrickColor, BrickColor);
 impl BrickColorBuilder {
     fn dump(&self, chunk: &mut ChunkBuilder) -> Result<(), std::io::Error> {
-        chunk.write_interleaved_u32_array(self.values.iter().copied())
+        chunk.write_interleaved_u32_array(self.values.iter().map(|value| *value as u32))
     }
 }
 
@@ -327,10 +322,10 @@ impl ContentIdBuilder<'_> {
     }
 }
 
-impl_convert_builder!(EnumBuilder, Enum, u32, |value: &Enum| value.to_u32());
+impl_copy_builder!(EnumBuilder, Enum, Enum);
 impl EnumBuilder {
     fn dump(&self, chunk: &mut ChunkBuilder) -> Result<(), std::io::Error> {
-        chunk.write_interleaved_u32_array(self.values.iter().copied())
+        chunk.write_interleaved_u32_array(self.values.iter().copied().map(Enum::to_u32))
     }
 }
 
