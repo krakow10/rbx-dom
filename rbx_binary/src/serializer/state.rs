@@ -1255,7 +1255,7 @@ impl<'dom, 'db: 'dom, W: Write> SerializerState<'dom, 'db, W> {
                                 source_types.push(match content.value() {
                                     ContentType::None => 0,
                                     ContentType::Uri(uri) => {
-                                        uris.push(uri.clone());
+                                        uris.push(uri.as_ref());
                                         1
                                     }
                                     ContentType::Object(referent) => {
@@ -1276,7 +1276,7 @@ impl<'dom, 'db: 'dom, W: Write> SerializerState<'dom, 'db, W> {
 
                         chunk.write_le_u32(uris.len() as u32)?;
                         for uri in uris {
-                            chunk.write_string(&uri)?;
+                            chunk.write_string(uri)?;
                         }
                         chunk.write_le_u32(objects.len() as u32)?;
                         chunk.write_referent_array(objects.into_iter())?;
