@@ -231,8 +231,8 @@ fn get_or_create_prop_info<'a, 'db>(
     properties: &'a mut BTreeMap<Ustr, PropInfo<'db>>,
     shared_strings: &mut Vec<SharedString>,
     shared_string_ids: &mut HashMap<SharedString, u32>,
-    database: &'db ReflectionDatabase<'db>,
-    class_descriptor: Option<&'db ClassDescriptor<'_>>,
+    database: &ReflectionDatabase,
+    class_descriptor: Option<&ClassDescriptor>,
     type_name: &str,
     prop_name: Ustr,
     sample_value: &Variant,
@@ -251,12 +251,9 @@ fn get_or_create_prop_info<'a, 'db>(
             let serialized_name;
             let serialized_ty;
             if let Some(class) = class_descriptor {
-                let class_prop = database.superclasses_iter(class).find_map(|class| {
-                    class
-                        .properties
-                        .get(prop_name.as_str())
-                        .map(|prop| (class, prop))
-                });
+                property_descriptor = database
+                    .superclasses_iter(class)
+                    .find_map(|class| class.properties.get(prop_name.as_str()));
 
                 if let Some(descriptors) =
                     find_property_descriptors(database, class.name.as_ref().into(), prop_name)
@@ -275,7 +272,6 @@ fn get_or_create_prop_info<'a, 'db>(
                     serialized_ty = sample_value.ty();
                 };
 
-                property_descriptor = class_prop.map(|(_, prop)| prop);
                 default_value = database
                     .find_default_property(class, &canonical_name)
                     .map(Cow::Borrowed);
