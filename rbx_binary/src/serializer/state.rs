@@ -215,7 +215,7 @@ impl<'dom, 'db: 'dom> PropInfo<'dom> {
             );
         };
         self.values
-            .extend(core::iter::repeat(self.default_value).take(additional));
+            .extend(core::iter::repeat_n(self.default_value, additional));
     }
 }
 
@@ -381,7 +381,7 @@ impl<'dom, 'db: 'dom> TypeInfo<'dom, 'db> {
             self.properties_visited.insert(prop_name, logical_index);
             logical_index
         };
-        return Ok(&mut self.properties[logical_index]);
+        Ok(&mut self.properties[logical_index])
     }
 }
 
@@ -726,7 +726,7 @@ impl<'dom, 'db: 'dom, W: Write> SerializerState<'dom, 'db, W> {
 
                                     value
                                         .to_writer(&mut buf)
-                                        .map_err(|_| invalid_value(i, &rbx_value))?;
+                                        .map_err(|_| invalid_value(i, rbx_value))?;
 
                                     chunk.write_binary_string(&buf)?;
                                 }
@@ -736,7 +736,7 @@ impl<'dom, 'db: 'dom, W: Write> SerializerState<'dom, 'db, W> {
                                 _ => {
                                     return type_mismatch(
                                         i,
-                                        &rbx_value,
+                                        rbx_value,
                                         "String, ContentId, Tags, Attributes, MaterialColors, or BinaryString",
                                     );
                                 }
@@ -748,7 +748,7 @@ impl<'dom, 'db: 'dom, W: Write> SerializerState<'dom, 'db, W> {
                             if let Variant::Bool(value) = rbx_value {
                                 chunk.write_bool(*value)?;
                             } else {
-                                return type_mismatch(i, &rbx_value, "Bool");
+                                return type_mismatch(i, rbx_value, "Bool");
                             }
                         }
                     }
@@ -759,7 +759,7 @@ impl<'dom, 'db: 'dom, W: Write> SerializerState<'dom, 'db, W> {
                             if let Variant::Int32(value) = rbx_value {
                                 buf.push(*value);
                             } else {
-                                return type_mismatch(i, &rbx_value, "Int32");
+                                return type_mismatch(i, rbx_value, "Int32");
                             }
                         }
 
@@ -772,7 +772,7 @@ impl<'dom, 'db: 'dom, W: Write> SerializerState<'dom, 'db, W> {
                             if let Variant::Float32(value) = rbx_value {
                                 buf.push(*value);
                             } else {
-                                return type_mismatch(i, &rbx_value, "Float32");
+                                return type_mismatch(i, rbx_value, "Float32");
                             }
                         }
 
@@ -787,7 +787,7 @@ impl<'dom, 'db: 'dom, W: Write> SerializerState<'dom, 'db, W> {
                                 Variant::Float32(value) => {
                                     chunk.write_le_f64(*value as f64)?;
                                 }
-                                _ => return type_mismatch(i, &rbx_value, "Float64"),
+                                _ => return type_mismatch(i, rbx_value, "Float64"),
                             }
                         }
                     }
@@ -800,7 +800,7 @@ impl<'dom, 'db: 'dom, W: Write> SerializerState<'dom, 'db, W> {
                                 scale.push(value.scale);
                                 offset.push(value.offset);
                             } else {
-                                return type_mismatch(i, &rbx_value, "UDim");
+                                return type_mismatch(i, rbx_value, "UDim");
                             }
                         }
 
@@ -820,7 +820,7 @@ impl<'dom, 'db: 'dom, W: Write> SerializerState<'dom, 'db, W> {
                                 offset_x.push(value.x.offset);
                                 offset_y.push(value.y.offset);
                             } else {
-                                return type_mismatch(i, &rbx_value, "UDim2");
+                                return type_mismatch(i, rbx_value, "UDim2");
                             }
                         }
 
@@ -839,7 +839,7 @@ impl<'dom, 'db: 'dom, W: Write> SerializerState<'dom, 'db, W> {
                                     value.cached_face_id.as_deref().unwrap_or_default(),
                                 )?;
                             } else {
-                                return type_mismatch(i, &rbx_value, "Font");
+                                return type_mismatch(i, rbx_value, "Font");
                             }
                         }
                     }
@@ -853,7 +853,7 @@ impl<'dom, 'db: 'dom, W: Write> SerializerState<'dom, 'db, W> {
                                 chunk.write_le_f32(value.direction.y)?;
                                 chunk.write_le_f32(value.direction.x)?;
                             } else {
-                                return type_mismatch(i, &rbx_value, "Ray");
+                                return type_mismatch(i, rbx_value, "Ray");
                             }
                         }
                     }
@@ -862,7 +862,7 @@ impl<'dom, 'db: 'dom, W: Write> SerializerState<'dom, 'db, W> {
                             if let Variant::Faces(value) = rbx_value {
                                 chunk.write_u8(value.bits())?;
                             } else {
-                                return type_mismatch(i, &rbx_value, "Faces");
+                                return type_mismatch(i, rbx_value, "Faces");
                             }
                         }
                     }
@@ -871,7 +871,7 @@ impl<'dom, 'db: 'dom, W: Write> SerializerState<'dom, 'db, W> {
                             if let Variant::Axes(value) = rbx_value {
                                 chunk.write_u8(value.bits())?;
                             } else {
-                                return type_mismatch(i, &rbx_value, "Axes");
+                                return type_mismatch(i, rbx_value, "Axes");
                             }
                         }
                     }
@@ -884,7 +884,7 @@ impl<'dom, 'db: 'dom, W: Write> SerializerState<'dom, 'db, W> {
                             } else if let Variant::Int32(value) = rbx_value {
                                 numbers.push(*value as u32);
                             } else {
-                                return type_mismatch(i, &rbx_value, "BrickColor");
+                                return type_mismatch(i, rbx_value, "BrickColor");
                             }
                         }
 
@@ -901,7 +901,7 @@ impl<'dom, 'db: 'dom, W: Write> SerializerState<'dom, 'db, W> {
                                 g.push(value.g);
                                 b.push(value.b);
                             } else {
-                                return type_mismatch(i, &rbx_value, "Color3");
+                                return type_mismatch(i, rbx_value, "Color3");
                             }
                         }
 
@@ -918,7 +918,7 @@ impl<'dom, 'db: 'dom, W: Write> SerializerState<'dom, 'db, W> {
                                 x.push(value.x);
                                 y.push(value.y)
                             } else {
-                                return type_mismatch(i, &rbx_value, "Vector2");
+                                return type_mismatch(i, rbx_value, "Vector2");
                             }
                         }
 
@@ -936,7 +936,7 @@ impl<'dom, 'db: 'dom, W: Write> SerializerState<'dom, 'db, W> {
                                 y.push(value.y);
                                 z.push(value.z)
                             } else {
-                                return type_mismatch(i, &rbx_value, "Vector3");
+                                return type_mismatch(i, rbx_value, "Vector3");
                             }
                         }
 
@@ -957,7 +957,7 @@ impl<'dom, 'db: 'dom, W: Write> SerializerState<'dom, 'db, W> {
                                 y.push(value.position.y);
                                 z.push(value.position.z);
                             } else {
-                                return type_mismatch(i, &rbx_value, "CFrame");
+                                return type_mismatch(i, rbx_value, "CFrame");
                             }
                         }
 
@@ -992,7 +992,7 @@ impl<'dom, 'db: 'dom, W: Write> SerializerState<'dom, 'db, W> {
                             match rbx_value {
                                 Variant::Enum(value) => buf.push(value.to_u32()),
                                 Variant::EnumItem(EnumItem { value, .. }) => buf.push(*value),
-                                _ => return type_mismatch(i, &rbx_value, "Enum or EnumItem"),
+                                _ => return type_mismatch(i, rbx_value, "Enum or EnumItem"),
                             }
                         }
 
@@ -1009,7 +1009,7 @@ impl<'dom, 'db: 'dom, W: Write> SerializerState<'dom, 'db, W> {
                                     buf.push(-1);
                                 }
                             } else {
-                                return type_mismatch(i, &rbx_value, "Ref");
+                                return type_mismatch(i, rbx_value, "Ref");
                             }
                         }
 
@@ -1022,7 +1022,7 @@ impl<'dom, 'db: 'dom, W: Write> SerializerState<'dom, 'db, W> {
                                 chunk.write_le_i16(value.y)?;
                                 chunk.write_le_i16(value.z)?;
                             } else {
-                                return type_mismatch(i, &rbx_value, "Vector3int16");
+                                return type_mismatch(i, rbx_value, "Vector3int16");
                             }
                         }
                     }
@@ -1037,7 +1037,7 @@ impl<'dom, 'db: 'dom, W: Write> SerializerState<'dom, 'db, W> {
                                     chunk.write_le_f32(keypoint.envelope)?;
                                 }
                             } else {
-                                return type_mismatch(i, &rbx_value, "NumberSequence");
+                                return type_mismatch(i, rbx_value, "NumberSequence");
                             }
                         }
                     }
@@ -1056,7 +1056,7 @@ impl<'dom, 'db: 'dom, W: Write> SerializerState<'dom, 'db, W> {
                                     chunk.write_le_f32(0.0)?;
                                 }
                             } else {
-                                return type_mismatch(i, &rbx_value, "ColorSequence");
+                                return type_mismatch(i, rbx_value, "ColorSequence");
                             }
                         }
                     }
@@ -1066,7 +1066,7 @@ impl<'dom, 'db: 'dom, W: Write> SerializerState<'dom, 'db, W> {
                                 chunk.write_le_f32(value.min)?;
                                 chunk.write_le_f32(value.max)?;
                             } else {
-                                return type_mismatch(i, &rbx_value, "NumberRange");
+                                return type_mismatch(i, rbx_value, "NumberRange");
                             }
                         }
                     }
@@ -1083,7 +1083,7 @@ impl<'dom, 'db: 'dom, W: Write> SerializerState<'dom, 'db, W> {
                                 x_max.push(value.max.x);
                                 y_max.push(value.max.y);
                             } else {
-                                return type_mismatch(i, &rbx_value, "Rect");
+                                return type_mismatch(i, rbx_value, "Rect");
                             }
                         }
 
@@ -1106,7 +1106,7 @@ impl<'dom, 'db: 'dom, W: Write> SerializerState<'dom, 'db, W> {
                                     chunk.write_u8(0)?;
                                 }
                             } else {
-                                return type_mismatch(i, &rbx_value, "PhysicalProperties");
+                                return type_mismatch(i, rbx_value, "PhysicalProperties");
                             }
                         }
                     }
@@ -1129,7 +1129,7 @@ impl<'dom, 'db: 'dom, W: Write> SerializerState<'dom, 'db, W> {
                                     g.push(color.g);
                                     b.push(color.b);
                                 }
-                                _ => return type_mismatch(i, &rbx_value, "Color3uint8 or Color3"),
+                                _ => return type_mismatch(i, rbx_value, "Color3uint8 or Color3"),
                             }
                         }
 
@@ -1148,7 +1148,7 @@ impl<'dom, 'db: 'dom, W: Write> SerializerState<'dom, 'db, W> {
                                 Variant::Int32(value) => {
                                     buf.push(*value as i64);
                                 }
-                                _ => return type_mismatch(i, &rbx_value, "Int64"),
+                                _ => return type_mismatch(i, rbx_value, "Int64"),
                             }
                         }
 
@@ -1168,7 +1168,7 @@ impl<'dom, 'db: 'dom, W: Write> SerializerState<'dom, 'db, W> {
                                     )
                                 }
                             } else {
-                                return type_mismatch(i, &rbx_value, "SharedString");
+                                return type_mismatch(i, rbx_value, "SharedString");
                             }
                         }
 
@@ -1199,7 +1199,7 @@ impl<'dom, 'db: 'dom, W: Write> SerializerState<'dom, 'db, W> {
                                     bools.push(0x00);
                                 }
                             } else {
-                                return type_mismatch(i, &rbx_value, "OptionalCFrame");
+                                return type_mismatch(i, rbx_value, "OptionalCFrame");
                             }
                         }
 
@@ -1243,7 +1243,7 @@ impl<'dom, 'db: 'dom, W: Write> SerializerState<'dom, 'db, W> {
                                     .copy_from_slice(&value.random().rotate_left(1).to_be_bytes());
                                 blobs.push(blob);
                             } else {
-                                return type_mismatch(i, &rbx_value, "UniqueId");
+                                return type_mismatch(i, rbx_value, "UniqueId");
                             }
                         }
 
@@ -1256,7 +1256,7 @@ impl<'dom, 'db: 'dom, W: Write> SerializerState<'dom, 'db, W> {
                             if let Variant::SecurityCapabilities(value) = rbx_value {
                                 capabilities.push(value.bits() as i64)
                             } else {
-                                return type_mismatch(i, &rbx_value, "SecurityCapabilities");
+                                return type_mismatch(i, rbx_value, "SecurityCapabilities");
                             }
                         }
 
@@ -1282,10 +1282,10 @@ impl<'dom, 'db: 'dom, W: Write> SerializerState<'dom, 'db, W> {
                                         }
                                         2
                                     }
-                                    _ => return Err(invalid_value(i, &rbx_value)),
+                                    _ => return Err(invalid_value(i, rbx_value)),
                                 });
                             } else {
-                                return type_mismatch(i, &rbx_value, "Content");
+                                return type_mismatch(i, rbx_value, "Content");
                             }
                         }
                         chunk.write_interleaved_i32_array(source_types.into_iter())?;
