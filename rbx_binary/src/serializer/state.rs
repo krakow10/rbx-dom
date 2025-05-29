@@ -90,12 +90,12 @@ struct TypeInfo<'dom, 'db> {
     ///
     /// Stored in a sorted map to try to ensure that we write out properties in
     /// a deterministic order.
-    properties: BTreeMap<Ustr, PropInfo<'db>>,
+    visited_properties: BTreeMap<Ustr, PropInfo<'db>>,
 
     /// References to logical property values.  Each PropInfo contains
     /// a `values_index` that corresponds to an entry in this list.
     /// Only one entry should be present for each logical property.
-    values: Vec<Vec<&'dom Variant>>,
+    logical_properties: Vec<LogicalPropInfo<'dom>>,
 
     /// A reference to the type's class descriptor from rbx_reflection, if this
     /// is a known class.
@@ -104,12 +104,30 @@ struct TypeInfo<'dom, 'db> {
 
 /// A property on a specific class that our serializer knows about.
 ///
-/// We should have one `PropInfo` per logical property per class that is used in
-/// the document we are serializing. This means that even if `BasePart.Size` and
-/// `BasePart.size` are present in the same document, they should share a
-/// `PropInfo` as they are the same logical property.
+/// We should have one `PropInfo` per instance property per class that is used in
+/// the document we are serializing. This means that if `BasePart.Size` and
+/// `BasePart.size` are present in the same document, they will have distinct
+/// `PropInfo` values.  However, the `logical_property_index` will point to the
+/// same `LogicalPropInfo`.
 #[derive(Debug)]
 struct PropInfo<'db> {
+    /// Which index in TypeInfo.values holds the variants for the
+    /// logical property that this PropInfo corresponds to.
+    logical_property_index: usize,
+
+    /// A reference to the type's property descriptor from rbx_reflection, if this
+    /// is a known property.
+    property_descriptor: Option<&'db PropertyDescriptor<'db>>,
+}
+
+/// A property on a specific class that our serializer knows about.
+///
+/// We should have one `LogicalPropInfo` per logical property per class that is used in
+/// the document we are serializing. This means that even if `BasePart.Size` and
+/// `BasePart.size` are present in the same document, they should share a
+/// `LogicalPropInfo` as they are the same logical property.
+#[derive(Debug)]
+struct LogicalPropInfo<'dom> {
     /// The binary format type ID that will be use to serialize this property.
     /// This type is related to the type of the serialized form of the logical
     /// property, but is not 1:1.
@@ -119,9 +137,10 @@ struct PropInfo<'db> {
     /// as the `Content` and `String` variants do.
     prop_type: Type,
 
-    /// Which index in TypeInfo.values holds the variants for the
-    /// logical property that this PropInfo corresponds to.
-    values_index: usize,
+    /// References to logical property values.  Each PropInfo contains
+    /// a `values_index` that corresponds to an entry in this list.
+    /// Only one entry should be present for each logical property.
+    values: Vec<&'dom Variant>,
 
     /// The default value for this property that should be used if any instances
     /// are missing this property.
@@ -133,11 +152,7 @@ struct PropInfo<'db> {
     ///
     /// Default values are first populated from the reflection database, if
     /// present, followed by an educated guess based on the type of the value.
-    default_value: &'db Variant,
-
-    /// A reference to the type's property descriptor from rbx_reflection, if this
-    /// is a known property.
-    property_descriptor: Option<&'db PropertyDescriptor<'db>>,
+    default_value: &'dom Variant,
 }
 
 /// Contains all of the `TypeInfo` objects known to the serializer so far. This
@@ -215,9 +230,9 @@ impl<'dom, 'db> TypeInfos<'dom, 'db> {
                 type_id,
                 is_service,
                 referents: Vec::new(),
-                properties,
+                visited_properties: properties,
                 class_descriptor,
-                values,
+                logical_properties: values,
             });
         }
 
@@ -457,8 +472,8 @@ impl<'dom, 'db: 'dom, W: Write> SerializerState<'dom, 'db, W> {
             }
 
             let prop_info = get_or_create_prop_info(
-                &mut type_info.values,
-                &mut type_info.properties,
+                &mut type_info.logical_properties,
+                &mut type_info.visited_properties,
                 &mut self.shared_strings,
                 &mut self.shared_string_ids,
                 desired_len,
@@ -470,13 +485,13 @@ impl<'dom, 'db: 'dom, W: Write> SerializerState<'dom, 'db, W> {
             )?;
 
             // add default values until the desired len is reached
-            let current_len = type_info.values[prop_info.values_index].len();
-            type_info.values[prop_info.values_index].extend(
+            let current_len = type_info.logical_properties[prop_info.values_index].len();
+            type_info.logical_properties[prop_info.values_index].extend(
                 core::iter::repeat(prop_info.default_value).take(desired_len - current_len),
             );
             // Append value to prop_info values.  This avoids
             // iterating over the instances and properties twice.
-            type_info.values[prop_info.values_index].push(prop_value);
+            type_info.logical_properties[prop_info.values_index].push(prop_value);
         }
 
         // Note that default values must be filled for properties that were not visited.
@@ -609,7 +624,7 @@ impl<'dom, 'db: 'dom, W: Write> SerializerState<'dom, 'db, W> {
         log::trace!("Writing properties");
 
         for (type_name, type_info) in &self.type_infos.values {
-            for (prop_name, prop_info) in &type_info.properties {
+            for (prop_name, prop_info) in &type_info.visited_properties {
                 profiling::scope!("serialize property", prop_name.borrow());
                 log::trace!(
                     "Writing property {}.{} (type {:?})",
@@ -618,7 +633,7 @@ impl<'dom, 'db: 'dom, W: Write> SerializerState<'dom, 'db, W> {
                     prop_info.prop_type
                 );
 
-                let values = &type_info.values[prop_info.values_index];
+                let values = &type_info.logical_properties[prop_info.values_index];
 
                 // Do migration
                 let migrated_values_bind: Vec<_>;
