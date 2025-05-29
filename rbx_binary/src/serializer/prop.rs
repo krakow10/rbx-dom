@@ -25,12 +25,12 @@ macro_rules! impl_prop_variant_builder {
             )*
         }
         impl<'a> PropVariantBuilder<'a>{
-            pub fn new(variant_type:VariantType) -> Self {
+            pub const fn new(variant_type:VariantType) -> Self {
                 match variant_type{
                     $(
                         VariantType::$variant => PropVariantBuilder::$variant($builder_ident::new()),
                     )*
-                    _=>panic!("Unknown VariantType {:?}", variant_type),
+                    _=>panic!("Unknown VariantType"),
                 }
             }
             pub fn ty(&self) -> VariantType {
@@ -108,7 +108,7 @@ macro_rules! impl_ref_builder {
             values: Vec<&'a $type>,
         }
         impl<'a> $builder<'a> {
-            fn new() -> Self {
+            const fn new() -> Self {
                 Self { values: Vec::new() }
             }
             fn push(&mut self, variant: &'a Variant) -> Result<(), VariantError> {
@@ -152,7 +152,7 @@ macro_rules! impl_copy_builder_pushless {
             values: Vec<$type>,
         }
         impl $builder {
-            fn new() -> Self {
+            const fn new() -> Self {
                 Self { values: Vec::new() }
             }
         }
@@ -165,7 +165,7 @@ macro_rules! impl_convert_builder {
             values: Vec<$type>,
         }
         impl $builder {
-            fn new() -> Self {
+            const fn new() -> Self {
                 Self { values: Vec::new() }
             }
             fn push(&mut self, variant: &Variant) -> Result<(), VariantError> {

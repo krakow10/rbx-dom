@@ -313,7 +313,7 @@ impl<'dom, 'db> TypeInfos<'dom, 'db> {
                 PropInfo {
                     prop_type: Type::String,
                     serialized_name: "Name".into(),
-                    values: PropVariantBuilder::String(Vec::new()),
+                    values: PropVariantBuilder::new(VariantType::String),
                     default_value: &DEFAULT_STRING,
                     property_descriptor: class_descriptor
                         .and_then(|descriptor| descriptor.properties.get("Name")),
