@@ -102,108 +102,106 @@ struct TypeInfo<'dom, 'db> {
     /// is a known class.
     class_descriptor: Option<&'db ClassDescriptor<'db>>,
 }
-impl<'db> TypeInfo<'_, 'db> {
-    fn get_or_create_prop_info(
-        &mut self,
-        shared_strings: &mut Vec<SharedString>,
-        shared_string_ids: &mut HashMap<SharedString, u32>,
-        database: &'db ReflectionDatabase<'db>,
-        type_name: &str,
-        prop_name: Ustr,
-        sample_value: &Variant,
-    ) -> Result<&mut PropInfo<'db>, InnerError> {
-        // idea:
-        // TypeInfo.properties is BTreeMap<Ustr, PropInfo>
-        // PropInfo contains usize pointing to TypeInfo.values: Vec<PropVariantBuilder<'dom>>
-        // so they may be shared among multiple properties and use the same prop chunk.
-        // indexmap?
-        Ok(match self.properties.entry(prop_name) {
-            btree_map::Entry::Occupied(entry) => entry.into_mut(),
-            btree_map::Entry::Vacant(entry) => {
-                let property_descriptor;
-                let default_value;
-                let canonical_name;
-                let serialized_name;
-                let serialized_ty;
-                if let Some(class) = self.class_descriptor {
-                    let class_prop = database.superclasses_iter(class).find_map(|class| {
-                        class
-                            .properties
-                            .get(prop_name.as_str())
-                            .map(|prop| (class, prop))
-                    });
+fn get_or_create_prop_info<'a, 'db>(
+    properties: &'a mut BTreeMap<Ustr, PropInfo<'db>>,
+    shared_strings: &mut Vec<SharedString>,
+    shared_string_ids: &mut HashMap<SharedString, u32>,
+    database: &'db ReflectionDatabase<'db>,
+    class_descriptor: Option<&'db ClassDescriptor<'_>>,
+    type_name: &str,
+    prop_name: Ustr,
+    sample_value: &Variant,
+) -> Result<&'a mut PropInfo<'db>, InnerError> {
+    // idea:
+    // TypeInfo.properties is BTreeMap<Ustr, PropInfo>
+    // PropInfo contains usize pointing to TypeInfo.values: Vec<PropVariantBuilder<'dom>>
+    // so they may be shared among multiple properties and use the same prop chunk.
+    // indexmap?
+    Ok(match properties.entry(prop_name) {
+        btree_map::Entry::Occupied(entry) => entry.into_mut(),
+        btree_map::Entry::Vacant(entry) => {
+            let property_descriptor;
+            let default_value;
+            let canonical_name;
+            let serialized_name;
+            let serialized_ty;
+            if let Some(class) = class_descriptor {
+                let class_prop = database.superclasses_iter(class).find_map(|class| {
+                    class
+                        .properties
+                        .get(prop_name.as_str())
+                        .map(|prop| (class, prop))
+                });
 
-                    if let Some(descriptors) =
-                        class_prop.and_then(|(class, prop)| PropertyDescriptors::new(class, prop))
-                    {
-                        canonical_name = descriptors.canonical.name.as_ref().into();
-                        if let Some(serialized) = descriptors.serialized {
-                            serialized_name = serialized.name.as_ref().into();
-                            serialized_ty = serialized.data_type.ty();
-                        } else {
-                            serialized_name = prop_name;
-                            serialized_ty = sample_value.ty();
-                        }
+                if let Some(descriptors) =
+                    class_prop.and_then(|(class, prop)| PropertyDescriptors::new(class, prop))
+                {
+                    canonical_name = descriptors.canonical.name.as_ref().into();
+                    if let Some(serialized) = descriptors.serialized {
+                        serialized_name = serialized.name.as_ref().into();
+                        serialized_ty = serialized.data_type.ty();
                     } else {
-                        canonical_name = prop_name;
                         serialized_name = prop_name;
                         serialized_ty = sample_value.ty();
-                    };
-
-                    property_descriptor = class_prop.map(|(_, prop)| prop);
-                    default_value = database.find_default_property(class, &canonical_name);
+                    }
                 } else {
-                    property_descriptor = None;
-                    default_value = None;
                     canonical_name = prop_name;
                     serialized_name = prop_name;
                     serialized_ty = sample_value.ty();
                 };
 
-                let default_value = default_value
-                    .or_else(|| fallback_default_value(serialized_ty))
-                    .ok_or_else(|| {
-                        // Since we don't know how to generate the default value
-                        // for this property, we consider it unsupported.
-                        InnerError::UnsupportedPropType {
-                            type_name: type_name.to_string(),
-                            prop_name: canonical_name.to_string(),
-                            prop_type: format!("{:?}", serialized_ty),
-                        }
-                    })?;
+                property_descriptor = class_prop.map(|(_, prop)| prop);
+                default_value = database.find_default_property(class, &canonical_name);
+            } else {
+                property_descriptor = None;
+                default_value = None;
+                canonical_name = prop_name;
+                serialized_name = prop_name;
+                serialized_ty = sample_value.ty();
+            };
 
-                // There's no assurance that the default SharedString value
-                // will actually get serialized inside of the SSTR chunk, so we
-                // check here just to make sure.
-                if let Variant::SharedString(sstr) = default_value {
-                    if !shared_string_ids.contains_key(sstr) {
-                        shared_string_ids.insert(sstr.clone(), 0);
-                        shared_strings.push(sstr.clone());
-                    }
-                }
-
-                let ser_type = Type::from_rbx_type(serialized_ty).ok_or_else(|| {
-                    // This is a known value type, but rbx_binary doesn't have a
-                    // binary type value for it. rbx_binary might be out of
-                    // date?
+            let default_value = default_value
+                .or_else(|| fallback_default_value(serialized_ty))
+                .ok_or_else(|| {
+                    // Since we don't know how to generate the default value
+                    // for this property, we consider it unsupported.
                     InnerError::UnsupportedPropType {
                         type_name: type_name.to_string(),
-                        prop_name: serialized_name.to_string(),
+                        prop_name: canonical_name.to_string(),
                         prop_type: format!("{:?}", serialized_ty),
                     }
                 })?;
 
-                // TODO: insert type_info.instances.len() references to the default value into values
-
-                entry.insert(PropInfo {
-                    prop_type: ser_type,
-                    serialized_name,
-                    default_value,
-                    property_descriptor,
-                })
+            // There's no assurance that the default SharedString value
+            // will actually get serialized inside of the SSTR chunk, so we
+            // check here just to make sure.
+            if let Variant::SharedString(sstr) = default_value {
+                if !shared_string_ids.contains_key(sstr) {
+                    shared_string_ids.insert(sstr.clone(), 0);
+                    shared_strings.push(sstr.clone());
+                }
             }
-        })
-    }
+
+            let ser_type = Type::from_rbx_type(serialized_ty).ok_or_else(|| {
+                // This is a known value type, but rbx_binary doesn't have a
+                // binary type value for it. rbx_binary might be out of
+                // date?
+                InnerError::UnsupportedPropType {
+                    type_name: type_name.to_string(),
+                    prop_name: serialized_name.to_string(),
+                    prop_type: format!("{:?}", serialized_ty),
+                }
+            })?;
+
+            // TODO: insert type_info.instances.len() references to the default value into values
+
+            entry.insert(PropInfo {
+                prop_type: ser_type,
+                default_value,
+                property_descriptor,
+            })
+        }
+    })
 }
 
 /// A property on a specific class that our serializer knows about.
@@ -293,6 +291,7 @@ impl<'dom, 'db> TypeInfos<'dom, 'db> {
 
             let mut values = Vec::new();
             let string_values = Vec::new();
+
             let string_values_index = values.len();
             values.push(string_values);
 
@@ -431,10 +430,12 @@ impl<'dom, 'db, W: Write> SerializerState<'dom, 'db, W> {
                 }
             }
 
-            let prop_info = type_info.get_or_create_prop_info(
+            let prop_info = get_or_create_prop_info(
+                &mut type_info.properties,
                 &mut self.shared_strings,
                 &mut self.shared_string_ids,
                 self.serializer.database,
+                type_info.class_descriptor,
                 instance.class.as_str(),
                 *prop_name,
                 prop_value,
@@ -442,7 +443,7 @@ impl<'dom, 'db, W: Write> SerializerState<'dom, 'db, W> {
 
             // Append value to prop_info values.  This avoids
             // iterating over the instances and properties twice.
-            prop_info.values.push(prop_value);
+            type_info.values[prop_info.values_index].push(prop_value);
         }
 
         // Note that default values must be filled for properties that were not visited.
@@ -584,6 +585,8 @@ impl<'dom, 'db, W: Write> SerializerState<'dom, 'db, W> {
                     prop_info.prop_type
                 );
 
+                let values = &type_info.values[prop_info.values_index];
+
                 // Do migration
                 let migrated_properties: Vec<_>;
                 let migrated_values;
@@ -591,18 +594,15 @@ impl<'dom, 'db, W: Write> SerializerState<'dom, 'db, W> {
                     if let Some(prop_descriptor) = prop_info.property_descriptor {
                         match &prop_descriptor.kind {
                             PropertyKind::Canonical { serialization } => match serialization {
-                                PropertySerialization::Serializes => {
-                                    (prop_name.as_str(), &prop_info.values)
-                                }
+                                PropertySerialization::Serializes => (prop_name.as_str(), values),
                                 // Skip serializing this property chunk entirely
                                 PropertySerialization::DoesNotSerialize => continue,
                                 PropertySerialization::SerializesAs(serialized_name) => {
-                                    (serialized_name.as_ref(), &prop_info.values)
+                                    (serialized_name.as_ref(), values)
                                 }
                                 PropertySerialization::Migrate(property_migration) => {
                                     // This is hard to fit into the migration api and ends up being slow and wasteful
-                                    migrated_properties = prop_info
-                                        .values
+                                    migrated_properties = values
                                         .iter()
                                         .map(|value| property_migration.perform(value).unwrap())
                                         .collect();
@@ -614,13 +614,11 @@ impl<'dom, 'db, W: Write> SerializerState<'dom, 'db, W> {
                                 }
                                 _ => panic!("Unknown PropertySerialization"),
                             },
-                            PropertyKind::Alias { alias_for } => {
-                                (alias_for.as_ref(), &prop_info.values)
-                            }
+                            PropertyKind::Alias { alias_for } => (alias_for.as_ref(), values),
                             _ => panic!("Unknown PropertyKind"),
                         }
                     } else {
-                        (prop_name.as_str(), &prop_info.values)
+                        (prop_name.as_str(), values)
                     };
 
                 let values = property_values.iter().copied().enumerate();
