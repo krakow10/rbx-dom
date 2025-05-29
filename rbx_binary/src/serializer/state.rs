@@ -101,110 +101,6 @@ struct TypeInfo<'dom, 'db> {
     /// is a known class.
     class_descriptor: Option<&'db ClassDescriptor<'db>>,
 }
-fn get_or_create_prop_info<'a, 'db>(
-    properties: &'a mut BTreeMap<Ustr, PropInfo<'db>>,
-    shared_strings: &mut Vec<SharedString>,
-    shared_string_ids: &mut HashMap<SharedString, u32>,
-    database: &'db ReflectionDatabase<'db>,
-    class_descriptor: Option<&'db ClassDescriptor<'_>>,
-    type_name: &str,
-    prop_name: Ustr,
-    sample_value: &Variant,
-) -> Result<&'a mut PropInfo<'db>, InnerError> {
-    // idea:
-    // TypeInfo.properties is BTreeMap<Ustr, PropInfo>
-    // PropInfo contains usize pointing to TypeInfo.values: Vec<PropVariantBuilder<'dom>>
-    // so they may be shared among multiple properties and use the same prop chunk.
-    // indexmap?
-    Ok(match properties.entry(prop_name) {
-        btree_map::Entry::Occupied(entry) => entry.into_mut(),
-        btree_map::Entry::Vacant(entry) => {
-            let property_descriptor;
-            let default_value;
-            let canonical_name;
-            let serialized_name;
-            let serialized_ty;
-            if let Some(class) = class_descriptor {
-                let class_prop = database.superclasses_iter(class).find_map(|class| {
-                    class
-                        .properties
-                        .get(prop_name.as_str())
-                        .map(|prop| (class, prop))
-                });
-
-                if let Some(descriptors) =
-                    find_property_descriptors(database, class.name.as_ref().into(), prop_name)
-                {
-                    canonical_name = descriptors.canonical.name.as_ref().into();
-                    if let Some(serialized) = descriptors.serialized {
-                        serialized_name = serialized.name.as_ref().into();
-                        serialized_ty = serialized.data_type.ty();
-                    } else {
-                        serialized_name = prop_name;
-                        serialized_ty = sample_value.ty();
-                    }
-                } else {
-                    canonical_name = prop_name;
-                    serialized_name = prop_name;
-                    serialized_ty = sample_value.ty();
-                };
-
-                property_descriptor = class_prop.map(|(_, prop)| prop);
-                default_value = database
-                    .find_default_property(class, &canonical_name)
-                    .map(Cow::Borrowed);
-            } else {
-                property_descriptor = None;
-                default_value = None;
-                canonical_name = prop_name;
-                serialized_name = prop_name;
-                serialized_ty = sample_value.ty();
-            };
-
-            let default_value = default_value
-                .or_else(|| fallback_default_value(serialized_ty).map(Cow::Owned))
-                .ok_or_else(|| {
-                    // Since we don't know how to generate the default value
-                    // for this property, we consider it unsupported.
-                    InnerError::UnsupportedPropType {
-                        type_name: type_name.to_string(),
-                        prop_name: canonical_name.to_string(),
-                        prop_type: format!("{:?}", serialized_ty),
-                    }
-                })?;
-
-            // There's no assurance that the default SharedString value
-            // will actually get serialized inside of the SSTR chunk, so we
-            // check here just to make sure.
-            if let Variant::SharedString(sstr) = default_value.as_ref() {
-                if !shared_string_ids.contains_key(sstr) {
-                    shared_string_ids.insert(sstr.clone(), 0);
-                    shared_strings.push(sstr.clone());
-                }
-            }
-
-            let ser_type = Type::from_rbx_type(serialized_ty).ok_or_else(|| {
-                // This is a known value type, but rbx_binary doesn't have a
-                // binary type value for it. rbx_binary might be out of
-                // date?
-                InnerError::UnsupportedPropType {
-                    type_name: type_name.to_string(),
-                    prop_name: serialized_name.to_string(),
-                    prop_type: format!("{:?}", serialized_ty),
-                }
-            })?;
-
-            // TODO: insert type_info.instances.len() references to the default value into values
-
-            entry.insert(PropInfo {
-                prop_type: ser_type,
-                default_value,
-                property_descriptor,
-                values_index: todo!(),
-            })
-        }
-    })
-}
 
 /// A property on a specific class that our serializer knows about.
 ///
@@ -328,6 +224,111 @@ impl<'dom, 'db> TypeInfos<'dom, 'db> {
         // type_infos in this function.
         self.values.get_mut(&class).unwrap()
     }
+}
+
+fn get_or_create_prop_info<'a, 'db>(
+    properties: &'a mut BTreeMap<Ustr, PropInfo<'db>>,
+    shared_strings: &mut Vec<SharedString>,
+    shared_string_ids: &mut HashMap<SharedString, u32>,
+    database: &'db ReflectionDatabase<'db>,
+    class_descriptor: Option<&'db ClassDescriptor<'_>>,
+    type_name: &str,
+    prop_name: Ustr,
+    sample_value: &Variant,
+) -> Result<&'a mut PropInfo<'db>, InnerError> {
+    // idea:
+    // TypeInfo.properties is BTreeMap<Ustr, PropInfo>
+    // PropInfo contains usize pointing to TypeInfo.values: Vec<PropVariantBuilder<'dom>>
+    // so they may be shared among multiple properties and use the same prop chunk.
+    // indexmap?
+    Ok(match properties.entry(prop_name) {
+        btree_map::Entry::Occupied(entry) => entry.into_mut(),
+        btree_map::Entry::Vacant(entry) => {
+            let property_descriptor;
+            let default_value;
+            let canonical_name;
+            let serialized_name;
+            let serialized_ty;
+            if let Some(class) = class_descriptor {
+                let class_prop = database.superclasses_iter(class).find_map(|class| {
+                    class
+                        .properties
+                        .get(prop_name.as_str())
+                        .map(|prop| (class, prop))
+                });
+
+                if let Some(descriptors) =
+                    find_property_descriptors(database, class.name.as_ref().into(), prop_name)
+                {
+                    canonical_name = descriptors.canonical.name.as_ref().into();
+                    if let Some(serialized) = descriptors.serialized {
+                        serialized_name = serialized.name.as_ref().into();
+                        serialized_ty = serialized.data_type.ty();
+                    } else {
+                        serialized_name = prop_name;
+                        serialized_ty = sample_value.ty();
+                    }
+                } else {
+                    canonical_name = prop_name;
+                    serialized_name = prop_name;
+                    serialized_ty = sample_value.ty();
+                };
+
+                property_descriptor = class_prop.map(|(_, prop)| prop);
+                default_value = database
+                    .find_default_property(class, &canonical_name)
+                    .map(Cow::Borrowed);
+            } else {
+                property_descriptor = None;
+                default_value = None;
+                canonical_name = prop_name;
+                serialized_name = prop_name;
+                serialized_ty = sample_value.ty();
+            };
+
+            let default_value = default_value
+                .or_else(|| fallback_default_value(serialized_ty).map(Cow::Owned))
+                .ok_or_else(|| {
+                    // Since we don't know how to generate the default value
+                    // for this property, we consider it unsupported.
+                    InnerError::UnsupportedPropType {
+                        type_name: type_name.to_string(),
+                        prop_name: canonical_name.to_string(),
+                        prop_type: format!("{:?}", serialized_ty),
+                    }
+                })?;
+
+            // There's no assurance that the default SharedString value
+            // will actually get serialized inside of the SSTR chunk, so we
+            // check here just to make sure.
+            if let Variant::SharedString(sstr) = default_value.as_ref() {
+                if !shared_string_ids.contains_key(sstr) {
+                    shared_string_ids.insert(sstr.clone(), 0);
+                    shared_strings.push(sstr.clone());
+                }
+            }
+
+            let ser_type = Type::from_rbx_type(serialized_ty).ok_or_else(|| {
+                // This is a known value type, but rbx_binary doesn't have a
+                // binary type value for it. rbx_binary might be out of
+                // date?
+                InnerError::UnsupportedPropType {
+                    type_name: type_name.to_string(),
+                    prop_name: serialized_name.to_string(),
+                    prop_type: format!("{:?}", serialized_ty),
+                }
+            })?;
+
+            // TODO: insert type_info.instances.len() references to the default value into values
+
+            entry.insert(PropInfo {
+                prop_type: ser_type,
+                default_value,
+                property_descriptor,
+                values_index: todo!(),
+            })
+        }
+    })
 }
 
 impl<'dom, 'db, W: Write> SerializerState<'dom, 'db, W> {
