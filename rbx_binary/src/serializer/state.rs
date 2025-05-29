@@ -272,9 +272,7 @@ fn get_or_create_prop_info<'a, 'db>(
                     serialized_ty = sample_value.ty();
                 };
 
-                default_value = database
-                    .find_default_property(class, &canonical_name)
-                    .map(Cow::Borrowed);
+                default_value = database.find_default_property(class, &canonical_name);
             } else {
                 property_descriptor = None;
                 default_value = None;
@@ -284,7 +282,7 @@ fn get_or_create_prop_info<'a, 'db>(
             };
 
             let default_value = default_value
-                .or_else(|| fallback_default_value(serialized_ty).map(Cow::Owned))
+                .or_else(|| fallback_default_value(serialized_ty))
                 .ok_or_else(|| {
                     // Since we don't know how to generate the default value
                     // for this property, we consider it unsupported.
@@ -298,7 +296,7 @@ fn get_or_create_prop_info<'a, 'db>(
             // There's no assurance that the default SharedString value
             // will actually get serialized inside of the SSTR chunk, so we
             // check here just to make sure.
-            if let Variant::SharedString(sstr) = default_value.as_ref() {
+            if let Variant::SharedString(sstr) = default_value {
                 if !shared_string_ids.contains_key(sstr) {
                     shared_string_ids.insert(sstr.clone(), 0);
                     shared_strings.push(sstr.clone());
@@ -328,7 +326,7 @@ fn get_or_create_prop_info<'a, 'db>(
     })
 }
 
-impl<'dom, 'db, W: Write> SerializerState<'dom, 'db, W> {
+impl<'dom, 'db:'dom, W: Write> SerializerState<'dom, 'db, W> {
     pub fn new(serializer: &'db Serializer<'db>, dom: &'dom WeakDom, output: W) -> Self {
         SerializerState {
             serializer,
@@ -442,10 +440,10 @@ impl<'dom, 'db, W: Write> SerializerState<'dom, 'db, W> {
                 prop_value,
             )?;
 
+            // add default values until the desired len is reached
             let current_len = type_info.values[prop_info.values_index].len();
             type_info.values[prop_info.values_index].extend(
-                core::iter::repeat(prop_info.default_value.as_ref())
-                    .take(desired_len - current_len),
+                core::iter::repeat(prop_info.default_value).take(desired_len - current_len),
             );
             // Append value to prop_info values.  This avoids
             // iterating over the instances and properties twice.
