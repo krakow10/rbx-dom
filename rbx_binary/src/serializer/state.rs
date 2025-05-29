@@ -324,21 +324,18 @@ impl<'dom, 'db> TypeInfos<'dom, 'db> {
 }
 
 impl<'dom, 'db: 'dom> TypeInfo<'dom, 'db> {
-    fn get_or_create_logical_property<'a: 'b, 'b>(
-        &'a mut self,
+    fn get_or_create_logical_property<'short, 'long: 'short>(
+        &'long mut self,
         prop_name: Ustr,
-    ) -> Result<&'b mut PropInfo<'dom>, InnerError> {
-        let &mut logical_property_index = match self.properties_visited.entry(prop_name) {
-            hash_map::Entry::Occupied(entry) => entry.into_mut(),
-            hash_map::Entry::Vacant(entry) => {
-                // 1. get database property
-                // 2. find out logical property information
-                // 3. create logical proeprty information
-                let logical_property_index = todo!();
-                entry.insert(logical_property_index)
-            }
-        };
-        Ok(&mut self.properties[logical_property_index])
+    ) -> Result<&'short mut PropInfo<'dom>, InnerError> {
+        // check if prop_name is already in properties_visited, return
+        // get database property cannonical name
+        // if canonical != prop_name {
+        //     check if canonical name is already in properties_visited, return
+        //     create logical property
+        //     insert canonical PropInfo
+        // }
+        // insert prop_name PropInfo
     }
 }
 
