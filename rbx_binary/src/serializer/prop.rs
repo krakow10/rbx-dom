@@ -68,8 +68,8 @@ impl_prop_variant_builder! {
     Color3uint8(Color3uint8Builder, Color3uint8Builder),
     ColorSequence(ColorSequenceBuilder<'a>, ColorSequenceBuilder),
     ContentId(ContentIdBuilder<'a>, ContentIdBuilder),
+    Enum(EnumBuilder, EnumBuilder),
 }
-    // Enum(EnumBuilder<'a>, EnumBuilder),
     // Faces(FacesBuilder<'a>, FacesBuilder),
     // Float32(Float32Builder<'a>, Float32Builder),
     // Float64(Float64Builder<'a>, Float64Builder),
@@ -151,6 +151,31 @@ macro_rules! impl_copy_builder {
         }
     };
 }
+macro_rules! impl_convert_builder {
+    ($builder:ident, $variant:ident, $type:ty, $convert:expr) => {
+        #[derive(Debug)]
+        struct $builder {
+            values: Vec<$type>,
+        }
+        impl $builder {
+            fn new() -> Self {
+                Self { values: Vec::new() }
+            }
+            fn push(&mut self, variant: &Variant) -> Result<(), VariantError> {
+                match variant {
+                    Variant::$variant(value) => self.values.push($convert(value)),
+                    observed => {
+                        return Err(VariantError {
+                            expected: VariantType::$variant,
+                            observed: observed.ty(),
+                        });
+                    }
+                }
+                Ok(())
+            }
+        }
+    };
+}
 
 impl_ref_builder!(AxesBuilder, Axes, Axes);
 impl AxesBuilder<'_> {
@@ -161,6 +186,7 @@ impl AxesBuilder<'_> {
         Ok(())
     }
 }
+
 impl_ref_builder!(BinaryStringBuilder, BinaryString, BinaryString);
 impl BinaryStringBuilder<'_> {
     fn dump(&self, chunk: &mut ChunkBuilder) -> Result<(), std::io::Error> {
@@ -170,6 +196,7 @@ impl BinaryStringBuilder<'_> {
         Ok(())
     }
 }
+
 impl_copy_builder!(BoolBuilder, Bool, bool);
 impl BoolBuilder {
     fn dump(&self, chunk: &mut ChunkBuilder) -> Result<(), std::io::Error> {
@@ -179,30 +206,14 @@ impl BoolBuilder {
         Ok(())
     }
 }
-#[derive(Debug)]
-struct BrickColorBuilder {
-    values: Vec<u32>,
-}
+
+impl_convert_builder!(BrickColorBuilder, BrickColor, u32, |&value|value as u32);
 impl BrickColorBuilder {
-    fn new() -> Self {
-        Self { values: Vec::new() }
-    }
-    fn push(&mut self, variant: &Variant) -> Result<(), VariantError> {
-        match variant {
-            Variant::BrickColor(value) => self.values.push(*value as u32),
-            observed => {
-                return Err(VariantError {
-                    expected: VariantType::BrickColor,
-                    observed: observed.ty(),
-                });
-            }
-        }
-        Ok(())
-    }
     fn dump(&self, chunk: &mut ChunkBuilder) -> Result<(), std::io::Error> {
         chunk.write_interleaved_u32_array(self.values.iter().copied())
     }
 }
+
 impl_ref_builder!(CFrameBuilder, CFrame, CFrame);
 impl CFrameBuilder<'_> {
     fn dump(&self, chunk: &mut ChunkBuilder) -> Result<(), std::io::Error> {
@@ -257,6 +268,7 @@ impl Color3Builder<'_> {
         Ok(())
     }
 }
+
 impl_copy_builder!(Color3uint8Builder, Color3uint8, Color3uint8);
 impl Color3uint8Builder {
     fn dump(&self, chunk: &mut ChunkBuilder) -> Result<(), std::io::Error> {
@@ -274,6 +286,7 @@ impl Color3uint8Builder {
         Ok(())
     }
 }
+
 impl_ref_builder!(ColorSequenceBuilder, ColorSequence, ColorSequence);
 impl ColorSequenceBuilder<'_> {
     fn dump(&self, chunk: &mut ChunkBuilder) -> Result<(), std::io::Error> {
@@ -294,9 +307,25 @@ impl ColorSequenceBuilder<'_> {
     }
 }
 
+impl_ref_builder!(ContentIdBuilder, ContentId, ContentId);
+impl ContentIdBuilder<'_> {
+    fn dump(&self, chunk: &mut ChunkBuilder) -> Result<(), std::io::Error> {
+        for &value in &self.values {
+            chunk.write_string(value.as_ref())?;
+        }
+        Ok(())
+    }
+}
 
 
-
+impl_convert_builder!(EnumBuilder, Enum, u32, |value:&Enum|value.to_u32());
+impl EnumBuilder {
+    fn dump(&self, chunk: &mut ChunkBuilder) -> Result<(), std::io::Error> {
+        chunk.write_interleaved_u32_array(
+            self.values.iter().copied(),
+        )
+    }
+}
 
 
 impl_ref_builder!(StringBuilder, String, str);

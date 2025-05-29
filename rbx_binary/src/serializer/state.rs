@@ -652,11 +652,6 @@ impl<'dom, 'db, W: Write> SerializerState<'dom, 'db, W> {
                 };
 
                 match property_values {
-                    BorrowedVariantVec::ContentId(values) => {
-                        for &value in values {
-                            chunk.write_string(value.as_ref())?;
-                        }
-                    }
                     BorrowedVariantVec::Tags(values) => {
                         for &value in values {
                             let buf = value.encode();
@@ -765,11 +760,6 @@ impl<'dom, 'db, W: Write> SerializerState<'dom, 'db, W> {
                         chunk.write_interleaved_f32_array(x)?;
                         chunk.write_interleaved_f32_array(y)?;
                         chunk.write_interleaved_f32_array(z)?;
-                    }
-                    BorrowedVariantVec::Enum(values) => {
-                        chunk.write_interleaved_u32_array(
-                            values.into_iter().map(|&value| value.to_u32()),
-                        )?;
                     }
                     BorrowedVariantVec::Ref(values) => {
                         let it = values.into_iter().map(|&value| {
