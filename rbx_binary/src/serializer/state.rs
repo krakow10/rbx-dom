@@ -297,14 +297,17 @@ impl<'dom, 'db: 'dom> TypeInfo<'dom, 'db> {
         &'a mut self,
         prop_name: Ustr,
     ) -> Result<&'b mut PropInfo<'dom>, InnerError> {
-        Ok(match self.properties_visited.entry(prop_name) {
-            hash_map::Entry::Occupied(entry) => &mut self.properties[*entry.get()],
+        let &mut logical_property_index = match self.properties_visited.entry(prop_name) {
+            hash_map::Entry::Occupied(entry) => entry.into_mut(),
             hash_map::Entry::Vacant(entry) => {
-                let logical_property_index = 0;
-                entry.insert(logical_property_index);
-                &mut self.properties[logical_property_index]
+                // 1. get database property
+                // 2. find out logical property information
+                // 3. create logical proeprty information
+                let logical_property_index = todo!();
+                entry.insert(logical_property_index)
             }
-        })
+        };
+        Ok(&mut self.properties[logical_property_index])
     }
 }
 
