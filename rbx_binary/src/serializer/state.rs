@@ -227,12 +227,14 @@ impl<'dom, 'db> TypeInfos<'dom, 'db> {
     }
 }
 
-fn get_or_create_prop_info<'a, 'db>(
+fn get_or_create_prop_info<'a, 'dom, 'db: 'dom>(
+    values: &mut Vec<Vec<&'dom Variant>>,
     properties: &'a mut BTreeMap<Ustr, PropInfo<'db>>,
     shared_strings: &mut Vec<SharedString>,
     shared_string_ids: &mut HashMap<SharedString, u32>,
-    database: &ReflectionDatabase,
-    class_descriptor: Option<&ClassDescriptor>,
+    desired_len: usize,
+    database: &'db ReflectionDatabase<'db>,
+    class_descriptor: Option<&'db ClassDescriptor<'db>>,
     type_name: &str,
     prop_name: Ustr,
     sample_value: &Variant,
@@ -261,7 +263,11 @@ fn get_or_create_prop_info<'a, 'db>(
                     canonical_name = descriptors.canonical.name.as_ref().into();
                     if let Some(serialized) = descriptors.serialized {
                         serialized_name = serialized.name.as_ref().into();
-                        serialized_ty = serialized.data_type.ty();
+                        serialized_ty = match &serialized.data_type {
+                            rbx_reflection::DataType::Value(variant_type) => *variant_type,
+                            rbx_reflection::DataType::Enum(_) => VariantType::Enum,
+                            _ => unimplemented!(),
+                        };
                     } else {
                         serialized_name = prop_name;
                         serialized_ty = sample_value.ty();
@@ -314,19 +320,44 @@ fn get_or_create_prop_info<'a, 'db>(
                 }
             })?;
 
-            // TODO: insert type_info.instances.len() references to the default value into values
+            // find canonical property
+            let (values, values_index) = if canonical_name != prop_name {
+                let prop_info = get_or_create_prop_info(
+                    values,
+                    properties,
+                    shared_strings,
+                    shared_string_ids,
+                    desired_len,
+                    database,
+                    class_descriptor,
+                    type_name,
+                    canonical_name,
+                    sample_value,
+                )?;
+                let values_index = prop_info.values_index;
+                (&mut values[values_index], values_index)
+            } else {
+                // create new values index
+                let values_index = values.len();
+                values.push(Vec::new());
+                (values.last_mut().unwrap(), values_index)
+            };
+
+            // Insert type_info.referents.len() default values into values
+            let current_len = values.len();
+            values.extend(core::iter::repeat(default_value).take(desired_len - current_len));
 
             entry.insert(PropInfo {
                 prop_type: ser_type,
                 default_value,
                 property_descriptor,
-                values_index: todo!(),
+                values_index,
             })
         }
     })
 }
 
-impl<'dom, 'db:'dom, W: Write> SerializerState<'dom, 'db, W> {
+impl<'dom, 'db: 'dom, W: Write> SerializerState<'dom, 'db, W> {
     pub fn new(serializer: &'db Serializer<'db>, dom: &'dom WeakDom, output: W) -> Self {
         SerializerState {
             serializer,
@@ -430,9 +461,11 @@ impl<'dom, 'db:'dom, W: Write> SerializerState<'dom, 'db, W> {
             }
 
             let prop_info = get_or_create_prop_info(
+                &mut type_info.values,
                 &mut type_info.properties,
                 &mut self.shared_strings,
                 &mut self.shared_string_ids,
+                desired_len,
                 self.serializer.database,
                 type_info.class_descriptor,
                 instance.class.as_str(),
