@@ -59,7 +59,7 @@ macro_rules! impl_prop_variant_builder {
 }
 
 impl_prop_variant_builder! {
-    Axes(AxesBuilder<'a>, AxesBuilder),
+    Axes(AxesBuilder, AxesBuilder),
     BinaryString(BinaryStringBuilder<'a>, BinaryStringBuilder),
     Bool(BoolBuilder, BoolBuilder),
     BrickColor(BrickColorBuilder, BrickColorBuilder),
@@ -90,13 +90,13 @@ impl_prop_variant_builder! {
     // Vector2int16(Vector2int16Builder<'a>, Vector2int16Builder),
     Vector3(Vector3Builder<'a>, Vector3Builder),
     Vector3int16(Vector3int16Builder<'a>, Vector3int16Builder),
-    OptionalCFrame(OptionBuilder<'a>, OptionBuilder<CFrame>),
+    OptionalCFrame(OptionalCFrameBuilder<'a>, OptionalCFrameBuilder),
     Tags(TagsBuilder<'a>, TagsBuilder),
     Attributes(AttributesBuilder<'a>, AttributesBuilder),
     Font(FontBuilder<'a>, FontBuilder),
     UniqueId(UniqueIdBuilder<'a>, UniqueIdBuilder),
     MaterialColors(MaterialColorsBuilder<'a>, MaterialColorsBuilder),
-    SecurityCapabilities(SecurityCapabilitiesBuilder<'a>, SecurityCapabilitiesBuilder),
+    SecurityCapabilities(SecurityCapabilitiesBuilder, SecurityCapabilitiesBuilder),
     // EnumItem(EnumItemBuilder<'a>, EnumItemBuilder),
     Content(ContentBuilder<'a>, ContentBuilder),
 }
@@ -184,12 +184,10 @@ macro_rules! impl_convert_builder {
     };
 }
 
-impl_ref_builder!(AxesBuilder, Axes, Axes);
-impl AxesBuilder<'_> {
+impl_convert_builder!(AxesBuilder, Axes, u8, |value: &Axes| value.bits());
+impl AxesBuilder {
     fn dump(&self, chunk: &mut ChunkBuilder) -> Result<(), std::io::Error> {
-        for &value in &self.values {
-            chunk.write_u8(value.bits())?;
-        }
+        chunk.write_all(&self.values)?;
         Ok(())
     }
 }
