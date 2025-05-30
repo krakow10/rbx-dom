@@ -505,9 +505,6 @@ impl<'dom, 'db: 'dom, W: Write> SerializerState<'dom, 'db, W> {
             // iterating over the instances and properties twice.
             logical_property.values.push(prop_value);
         }
-
-        // Note that default values must be filled for properties that were not visited.
-
         Ok(())
     }
 
