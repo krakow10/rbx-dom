@@ -689,6 +689,7 @@ impl<'dom, 'db: 'dom, W: Write> SerializerState<'dom, 'db, W> {
                     |_, _, _| panic!(),
                     |_, _| panic!(),
                 )?;
+                chunk.dump(&mut self.output)?;
             }
 
             for prop_info in properties_after_name {
