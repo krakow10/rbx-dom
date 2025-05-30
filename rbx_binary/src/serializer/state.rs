@@ -18,8 +18,8 @@ use rbx_dom_weak::{
 };
 
 use rbx_reflection::{
-    ClassDescriptor, ClassTag, PropertyKind, PropertyMigration,
-    PropertySerialization, ReflectionDatabase,
+    ClassDescriptor, ClassTag, PropertyKind, PropertyMigration, PropertySerialization,
+    ReflectionDatabase,
 };
 
 use crate::{
@@ -639,9 +639,7 @@ impl<'dom, 'db: 'dom, W: Write> SerializerState<'dom, 'db, W> {
         for (type_name, type_info) in &mut self.type_infos.values {
             let desired_len = type_info.referents.len();
             // Sort logical properties by canonical name
-            type_info
-                .properties
-                .sort_by_key(|info| info.canonical_name);
+            type_info.properties.sort_by_key(|info| info.canonical_name);
             let referents = &type_info.referents;
             for prop_info in &mut type_info.properties {
                 profiling::scope!("serialize property", prop_name.borrow());
@@ -704,7 +702,33 @@ impl<'dom, 'db: 'dom, W: Write> SerializerState<'dom, 'db, W> {
                     prop_type: format!("{:?}", bad_value.ty()),
                 };
 
-                match prop_info.prop_type {
+                write_prop_values(
+                    &mut chunk,
+                    &self.id_to_referent,
+                    &self.shared_string_ids,
+                    prop_info.prop_type,
+                    values,
+                    type_mismatch,
+                    invalid_value,
+                )?;
+                chunk.dump(&mut self.output)?;
+            }
+            fn write_prop_values<'a, I, TypeMismatch, InvalidValue>(
+                chunk: &mut ChunkBuilder,
+                id_to_referent: &HashMap<Ref, i32>,
+                shared_string_ids: &HashMap<SharedString, u32>,
+                prop_type: Type,
+                values: I,
+                type_mismatch: TypeMismatch,
+                invalid_value: InvalidValue,
+            ) -> Result<(), InnerError>
+            where
+                I: IntoIterator<Item = (usize, &'a Variant)>,
+                I: ExactSizeIterator,
+                TypeMismatch: Fn(usize, &Variant, &'static str) -> Result<(), InnerError>,
+                InvalidValue: Fn(usize, &Variant) -> InnerError,
+            {
+                match prop_type {
                     Type::String => {
                         for (i, rbx_value) in values {
                             match rbx_value {
@@ -1003,7 +1027,7 @@ impl<'dom, 'db: 'dom, W: Write> SerializerState<'dom, 'db, W> {
 
                         for (i, rbx_value) in values {
                             if let Variant::Ref(value) = rbx_value {
-                                if let Some(id) = self.id_to_referent.get(value) {
+                                if let Some(id) = id_to_referent.get(value) {
                                     buf.push(*id);
                                 } else {
                                     buf.push(-1);
@@ -1159,7 +1183,7 @@ impl<'dom, 'db: 'dom, W: Write> SerializerState<'dom, 'db, W> {
 
                         for (i, rbx_value) in values {
                             if let Variant::SharedString(value) = rbx_value {
-                                if let Some(id) = self.shared_string_ids.get(value) {
+                                if let Some(id) = shared_string_ids.get(value) {
                                     entries.push(*id);
                                 } else {
                                     panic!(
@@ -1275,7 +1299,7 @@ impl<'dom, 'db: 'dom, W: Write> SerializerState<'dom, 'db, W> {
                                         1
                                     }
                                     ContentType::Object(referent) => {
-                                        if let Some(id) = self.id_to_referent.get(referent) {
+                                        if let Some(id) = id_to_referent.get(referent) {
                                             objects.push(*id);
                                         } else {
                                             objects.push(-1);
@@ -1302,8 +1326,7 @@ impl<'dom, 'db: 'dom, W: Write> SerializerState<'dom, 'db, W> {
                         chunk.write_le_u32(0)?;
                     }
                 }
-
-                chunk.dump(&mut self.output)?;
+                Ok(())
             }
         }
 
