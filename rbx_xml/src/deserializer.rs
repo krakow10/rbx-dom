@@ -6,9 +6,7 @@ use rbx_dom_weak::{
     types::{Ref, SharedString, Variant, VariantType},
     InstanceBuilder, WeakDom,
 };
-use rbx_reflection::{
-    DataType, InternFunction, PropertyKind, PropertySerialization, ReflectionDatabase, StringIntern,
-};
+use rbx_reflection::{DataType, PropertyKind, PropertySerialization, ReflectionDatabase};
 
 use crate::{
     conversion::ConvertVariant,
@@ -21,7 +19,7 @@ use crate::deserializer_core::{XmlEventReader, XmlReadEvent};
 
 pub fn decode_internal<'de, 'dom, 'db: 'dom, R: Read, S: StringIntern<'dom>>(
     source: R,
-    options: DecodeOptions<'de, 'db, S>,
+    options: DecodeOptions<'db, S>,
 ) -> Result<WeakDom<'dom>, DecodeError> {
     let mut tree = WeakDom::new(InstanceBuilder::new("DataModel"));
 
@@ -85,7 +83,7 @@ pub struct DecodeOptions<'db, S> {
     database: &'db ReflectionDatabase<'db>,
 }
 
-impl<'db> DecodeOptions<'db> {
+impl<'db, S> DecodeOptions<'db, S> {
     /// Constructs a `DecodeOptions` with all values set to their defaults.
     #[inline]
     pub fn new() -> Self {
@@ -98,7 +96,7 @@ impl<'db> DecodeOptions<'db> {
     /// Determines how rbx_xml will deserialize properties, especially unknown
     /// ones.
     #[inline]
-    pub fn property_behavior(self, property_behavior: DecodePropertyBehavior) -> Self {
+    pub fn property_behavior(self, property_behavior: DecodePropertyBehavior<S>) -> Self {
         DecodeOptions {
             property_behavior,
             ..self
@@ -119,8 +117,8 @@ impl<'db> DecodeOptions<'db> {
     }
 }
 
-impl<'db> Default for DecodeOptions<'db> {
-    fn default() -> DecodeOptions<'db> {
+impl<'db, S> Default for DecodeOptions<'db, S> {
+    fn default() -> DecodeOptions<'db, S> {
         DecodeOptions::new()
     }
 }

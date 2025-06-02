@@ -126,7 +126,6 @@ mod tests;
 use std::io::{Read, Write};
 
 use rbx_dom_weak::{types::Ref, WeakDom};
-use rbx_reflection::StringIntern;
 
 use crate::{deserializer::decode_internal, serializer::encode_internal};
 
