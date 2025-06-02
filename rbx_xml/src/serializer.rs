@@ -163,7 +163,7 @@ impl<'db> EmitState<'db> {
 fn serialize_instance<'dom, W: Write>(
     writer: &mut XmlEventWriter<W>,
     state: &mut EmitState,
-    tree: &'dom WeakDom,
+    tree: &'dom WeakDom<'dom>,
     id: Ref,
     property_buffer: &mut Vec<(&'dom str, &'dom Variant)>,
 ) -> Result<(), NewEncodeError> {
@@ -187,8 +187,8 @@ fn serialize_instance<'dom, W: Write>(
 
     // Move references to our properties into property_buffer so we can sort
     // them and iterate them in order.
-    property_buffer.extend(instance.properties.iter().map(|(k, v)| (k.as_str(), v)));
-    property_buffer.sort_unstable_by_key(|(key, _)| *key);
+    property_buffer.extend(instance.properties.iter().map(|(&k, v)| (k, v)));
+    property_buffer.sort_unstable_by_key(|&(key, _)| key);
 
     for (property_name, value) in property_buffer.drain(..) {
         let maybe_serialized_descriptor = if state.options.use_reflection() {
@@ -234,7 +234,7 @@ fn serialize_instance<'dom, W: Write>(
                 // since old values will still load in Studio.
                 if let Ok(new_value) = migration.perform(&converted_value) {
                     converted_value = Cow::Owned(new_value);
-                    serialized_name = migration.new_property_name
+                    serialized_name = &migration.new_property_name
                 }
             }
 

@@ -42,11 +42,11 @@ pub fn write_ref<W: Write>(
     Ok(())
 }
 
-pub fn read_ref<R: Read>(
+pub fn read_ref<'dom, R: Read, S>(
     reader: &mut XmlEventReader<R>,
     id: Ref,
-    property_name: &str,
-    state: &mut ParseState,
+    property_name: &'dom str,
+    state: &mut ParseState<'_, 'dom, '_, S>,
 ) -> Result<Ref, DecodeError> {
     let ref_contents = reader.read_tag_contents(XML_TAG_NAME)?;
 
@@ -56,7 +56,7 @@ pub fn read_ref<R: Read>(
         // We might not know which ID this referent points to yet, so instead of
         // trying to handle the case where we do here, we just let all referents
         // get written later.
-        state.add_referent_rewrite(id, property_name.into(), ref_contents);
+        state.add_referent_rewrite(id, property_name, ref_contents);
     }
 
     Ok(Ref::none())

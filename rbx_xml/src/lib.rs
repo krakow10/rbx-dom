@@ -14,7 +14,7 @@
 //! pass in custom options.
 //!
 //! ```
-//! use rbx_dom_weak::{ustr, types::Variant};
+//! use rbx_dom_weak::types::Variant;
 //!
 //! let model_file = r#"
 //! <roblox version="4">
@@ -34,7 +34,7 @@
 //! let number_value = model.get_by_ref(number_value_ref).unwrap();
 //!
 //! assert_eq!(
-//!     number_value.properties.get(&ustr("Value")),
+//!     number_value.properties.get("Value"),
 //!     Some(&Variant::Float64(12345.0)),
 //! );
 //! # Ok::<(), Box<dyn std::error::Error>>(())
@@ -126,35 +126,42 @@ mod tests;
 use std::io::{Read, Write};
 
 use rbx_dom_weak::{types::Ref, WeakDom};
+use rbx_reflection::StringIntern;
 
 use crate::{deserializer::decode_internal, serializer::encode_internal};
 
 pub use crate::{
-    deserializer::{DecodeOptions, DecodePropertyBehavior},
+    deserializer::DecodeOptions,
     error::{DecodeError, EncodeError},
     serializer::{EncodeOptions, EncodePropertyBehavior},
 };
 
 /// Decodes an XML-format model or place from something that implements the
 /// `std::io::Read` trait.
-pub fn from_reader<R: Read>(reader: R, options: DecodeOptions) -> Result<WeakDom, DecodeError> {
+pub fn from_reader<'dom, 'db: 'dom, R: Read, S: StringIntern<'dom>>(
+    reader: R,
+    options: DecodeOptions<'_, 'db, S>,
+) -> Result<WeakDom<'dom>, DecodeError> {
     decode_internal(reader, options)
 }
 
 /// Decodes an XML-format model or place from something that implements the
 /// `std::io::Read` trait using the default decoder options.
-pub fn from_reader_default<R: Read>(reader: R) -> Result<WeakDom, DecodeError> {
+pub fn from_reader_default<R: Read>(reader: R) -> Result<WeakDom<'static>, DecodeError> {
     decode_internal(reader, DecodeOptions::default())
 }
 
 /// Decodes an XML-format model or place from a string.
-pub fn from_str<S: AsRef<str>>(reader: S, options: DecodeOptions) -> Result<WeakDom, DecodeError> {
+pub fn from_str<'dom, 'db: 'dom, R: AsRef<str>, S: StringIntern<'dom>>(
+    reader: R,
+    options: DecodeOptions<'_, 'db, S>,
+) -> Result<WeakDom<'dom>, DecodeError> {
     decode_internal(reader.as_ref().as_bytes(), options)
 }
 
 /// Decodes an XML-format model or place from a string using the default decoder
 /// options.
-pub fn from_str_default<S: AsRef<str>>(reader: S) -> Result<WeakDom, DecodeError> {
+pub fn from_str_default<S: AsRef<str>>(reader: S) -> Result<WeakDom<'static>, DecodeError> {
     decode_internal(reader.as_ref().as_bytes(), DecodeOptions::default())
 }
 

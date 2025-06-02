@@ -69,12 +69,12 @@ macro_rules! declare_rbx_types {
 
         /// Reads a Roblox property value with the given type from the XML event
         /// stream.
-        pub fn read_value_xml<R: Read>(
+        pub fn read_value_xml<'dom, R: Read, S>(
             reader: &mut XmlEventReader<R>,
-            state: &mut ParseState,
+            state: &mut ParseState<'_, 'dom, '_, S>,
             xml_type_name: &str,
             instance_id: Ref,
-            property_name: &str,
+            property_name: &'dom str,
         ) -> Result<Option<Variant>, DecodeError> {
             match xml_type_name {
                 $(<$inner_type>::XML_TAG_NAME => Ok(Some(Variant::$variant_name(<$inner_type>::read_outer_xml(reader)?))),)*

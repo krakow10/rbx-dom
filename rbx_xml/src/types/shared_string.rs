@@ -34,15 +34,15 @@ pub fn write_shared_string<W: Write>(
     Ok(())
 }
 
-pub fn read_shared_string<R: Read>(
+pub fn read_shared_string<'dom, R: Read, S>(
     reader: &mut XmlEventReader<R>,
     referent: Ref,
-    property_name: &str,
-    state: &mut ParseState,
+    property_name: &'dom str,
+    state: &mut ParseState<'_, 'dom, '_, S>,
 ) -> Result<Variant, DecodeError> {
     let contents = reader.read_tag_contents(XML_TAG_NAME)?;
 
-    state.add_shared_string_rewrite(referent, property_name.into(), contents);
+    state.add_shared_string_rewrite(referent, property_name, contents);
 
     // The value we actually pick here doesn't matter, it'll be overwritten
     // later.
