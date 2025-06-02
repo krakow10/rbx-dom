@@ -80,8 +80,8 @@ pub enum DecodePropertyBehavior<S> {
 
 /// Options available for deserializing an XML-format model or place.
 #[derive(Debug, Clone)]
-pub struct DecodeOptions<'db> {
-    property_behavior: DecodePropertyBehavior,
+pub struct DecodeOptions<'db, S> {
+    property_behavior: DecodePropertyBehavior<S>,
     database: &'db ReflectionDatabase<'db>,
 }
 
@@ -129,7 +129,7 @@ impl<'db> Default for DecodeOptions<'db> {
 pub struct ParseState<'de, 'dom, 'db, S> {
     tree: &'de mut WeakDom<'dom>,
 
-    options: DecodeOptions<'de, 'db, S>,
+    options: DecodeOptions<'db, S>,
 
     /// Metadata deserialized from 'Meta' fields in the file.
     /// Known fields are:
@@ -177,7 +177,7 @@ struct SharedStringRewrite<'a> {
 impl<'de, 'dom, 'db, S> ParseState<'de, 'dom, 'db, S> {
     fn new(
         tree: &'de mut WeakDom<'dom>,
-        options: DecodeOptions<'de, 'db, S>,
+        options: DecodeOptions<'db, S>,
     ) -> ParseState<'de, 'dom, 'db, S> {
         ParseState {
             tree,

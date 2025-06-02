@@ -140,7 +140,7 @@ pub use crate::{
 /// `std::io::Read` trait.
 pub fn from_reader<'dom, 'db: 'dom, R: Read, S: StringIntern<'dom>>(
     reader: R,
-    options: DecodeOptions<'_, 'db, S>,
+    options: DecodeOptions<'db, S>,
 ) -> Result<WeakDom<'dom>, DecodeError> {
     decode_internal(reader, options)
 }
@@ -154,7 +154,7 @@ pub fn from_reader_default<R: Read>(reader: R) -> Result<WeakDom<'static>, Decod
 /// Decodes an XML-format model or place from a string.
 pub fn from_str<'dom, 'db: 'dom, R: AsRef<str>, S: StringIntern<'dom>>(
     reader: R,
-    options: DecodeOptions<'_, 'db, S>,
+    options: DecodeOptions<'db, S>,
 ) -> Result<WeakDom<'dom>, DecodeError> {
     decode_internal(reader.as_ref().as_bytes(), options)
 }
