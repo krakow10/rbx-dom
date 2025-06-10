@@ -132,27 +132,14 @@ mod smoke_test {
     fn custom_interner() {
         use ahash::HashSet;
 
-        unsafe fn extend_lifetime<'short, 'long, T: ?Sized>(value: &'short T) -> &'long T {
-            unsafe { &*(value as *const T) }
-        }
-
-        let mut host = Vec::new();
+        let host = bumpalo::Bump::new();
         let mut cache = HashSet::default();
-        let interner = |str: &str| {
-            match cache.get(str) {
-                Some(&interned) => interned,
-                None => {
-                    host.push(str.to_owned());
-                    let interned = host.last().unwrap().as_str();
-                    // SAFETY: we're borrowing from host within this scope,
-                    // but we know that the inner &str reference will remain valid
-                    // for as long as host lives since we never modify the Strings.
-                    // This becomes UB if a &str escapes the scope of host,
-                    // or if a string is modified.
-                    let interned = unsafe { extend_lifetime(interned) };
-                    cache.insert(interned);
-                    interned
-                }
+        let interner = |str: &str| match cache.get(str) {
+            Some(&interned) => interned,
+            None => {
+                let interned = host.alloc_str(str) as &str;
+                cache.insert(interned);
+                interned
             }
         };
         from_reader(EMPTY_SLICE, DecodeOptions::read_unknown_with(interner)).unwrap();
