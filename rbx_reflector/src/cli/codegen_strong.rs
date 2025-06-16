@@ -140,6 +140,11 @@ impl StrongInstancesCollector {
         }
     }
     fn push(&mut self, descriptor: &ClassDescriptor) {
+        struct FieldInfo<'a> {
+            prop_name: &'a str,
+            ident: syn::Ident,
+            field: syn::Field,
+        }
         // generate fields
         let mut fields = Vec::new();
         for prop in descriptor.properties.values() {
@@ -150,20 +155,22 @@ impl StrongInstancesCollector {
                 // skip properties which are migrated or serialize as something else
                 _ => continue,
             }
-            let ident = syn::Ident::new(
-                &heck::ToUpperCamelCase::to_upper_camel_case(prop.name.as_ref()),
-                proc_macro2::Span::call_site(),
-            );
+            let field_name = heck::ToUpperCamelCase::to_upper_camel_case(prop.name.as_ref());
+            let ident = syn::Ident::new(&field_name, proc_macro2::Span::call_site());
             let ty = generate_data_type(&prop.data_type);
             let field = syn::Field {
                 attrs: Vec::new(),
                 vis: syn::Visibility::Public(syn::token::Pub::default()),
                 mutability: syn::FieldMutability::None,
-                ident: Some(ident),
+                ident: Some(ident.clone()),
                 colon_token: Some(syn::token::Colon::default()),
                 ty,
             };
-            fields.push(field);
+            fields.push(FieldInfo {
+                prop_name: prop.name.as_ref(),
+                ident,
+                field,
+            });
         }
         // sort props for consistency
         fields.sort_by(|a, b| a.ident.cmp(&b.ident));
@@ -190,6 +197,50 @@ impl StrongInstancesCollector {
             impl_strong_instance_from!(#ident);
         });
 
+        // Attributes
+        let mut attrs: Vec<syn::Attribute> = syn::parse_quote!(
+            #[derive(Debug, Clone)]
+            #[allow(nonstandard_style)]
+        );
+
+        // Simply derive default if there are no fields
+        // (whether superclass has default is not checked)
+        if fields.is_empty() {
+            attrs.push(syn::parse_quote!(#[derive(Default)]));
+        } else {
+            let descriptor_name = descriptor.name.as_ref();
+            let mut default_struct: syn::ExprStruct = syn::parse_quote! {
+                Self{
+                }
+            };
+            // superclass default value
+            if let Some(superclass_ident) = &superclass_ident {
+                default_struct.fields.push(syn::parse_quote! {
+                    superclass: #superclass_ident::default()
+                });
+            }
+            default_struct.fields.extend(fields.iter().map(
+                |FieldInfo {
+                     prop_name, ident, ..
+                 }| {
+                    let field: syn::FieldValue = syn::parse_quote! {
+                        #ident: descriptor.default_properties[#prop_name].clone()
+                    };
+                    field
+                },
+            ));
+            let default_impl = syn::parse_quote! {
+                impl Default for #ident{
+                    fn default() -> Self {
+                        let db = rbx_reflection_database::get();
+                        let descriptor = &db.classes[#descriptor_name];
+                        #default_struct
+                    }
+                }
+            };
+            impls.push(default_impl);
+        }
+
         // superclass field is added to the top
         let superclass_field = superclass_ident.map(|superclass_ident| syn::Field {
             attrs: Vec::new(),
@@ -203,17 +254,17 @@ impl StrongInstancesCollector {
         // generate the class struct
         self.structs.push(StructWithImpls {
             item: syn::ItemStruct {
-                attrs: syn::parse_quote!(
-                    #[derive(Debug, Clone)]
-                    #[allow(nonstandard_style)]
-                ),
+                attrs,
                 vis: syn::Visibility::Public(syn::token::Pub::default()),
                 struct_token: syn::token::Struct::default(),
                 ident: ident.clone(),
                 generics: syn::Generics::default(),
                 fields: syn::Fields::Named(syn::FieldsNamed {
                     brace_token: syn::token::Brace::default(),
-                    named: superclass_field.into_iter().chain(fields).collect(),
+                    named: superclass_field
+                        .into_iter()
+                        .chain(fields.into_iter().map(|field_info| field_info.field))
+                        .collect(),
                 }),
                 semi_token: None,
             },
