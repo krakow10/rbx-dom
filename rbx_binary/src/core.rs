@@ -104,7 +104,7 @@ pub trait ReadSlice<'a> {
     /// Read a slice of length `len`, or return
     /// an error if the length overruns the source data.
     fn read_slice(&mut self, len: usize) -> io::Result<&'a [u8]>;
-    /// Read a slice of length `len`, or return
+    /// Read an array of length `N`, or return
     /// an error if the length overruns the source data.
     fn read_array<const N: usize>(&mut self) -> io::Result<&'a [u8; N]> {
         let slice = self.read_slice(N)?;
