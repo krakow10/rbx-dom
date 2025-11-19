@@ -106,14 +106,7 @@ pub trait ReadSlice<'a> {
     fn read_slice(&mut self, len: usize) -> io::Result<&'a [u8]>;
     /// Read an array of length `N`, or return
     /// an error if the length overruns the source data.
-    fn read_array<const N: usize>(&mut self) -> io::Result<&'a [u8; N]> {
-        let slice = self.read_slice(N)?;
-        // cast slice fat pointer to array pointer, dropping length information
-        let fat_ptr = slice as *const [u8];
-        let ptr = fat_ptr as *const [u8; N];
-        // SAFETY: read_slice checks the length of slice
-        Ok(unsafe { &*ptr })
-    }
+    fn read_array<const N: usize>(&mut self) -> io::Result<&'a [u8; N]>;
 }
 
 #[cold]
@@ -128,6 +121,17 @@ impl<'a> ReadSlice<'a> for &'a [u8] {
         (out, *self) = self.split_at_checked(len).ok_or_else(unexpected_eof)?;
 
         Ok(out)
+    }
+    fn read_array<const N: usize>(&mut self) -> io::Result<&'a [u8; N]> {
+        let len = self.len();
+        if N <= len {
+            let ptr = self.as_ptr();
+            let array = unsafe { &*ptr.cast() };
+            *self = unsafe { core::slice::from_raw_parts(ptr.add(N), len.unchecked_sub(N)) };
+            return Ok(array);
+        } else {
+            return Err(unexpected_eof());
+        };
     }
 }
 
