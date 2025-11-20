@@ -107,7 +107,13 @@ pub trait ReadSlice<'a> {
     fn read_slice(&mut self, len: usize) -> io::Result<&'a [u8]>;
     /// Read an array of length `N`, or return
     /// an error if the length overruns the source data.
-    fn read_array<const N: usize>(&mut self) -> io::Result<&'a [u8; N]>;
+    fn read_array<const N: usize>(&mut self) -> io::Result<&'a [u8; N]> {
+        let slice = self.read_slice(N)?;
+
+        let array = slice.try_into().unwrap();
+
+        Ok(array)
+    }
 }
 
 #[cold]
@@ -122,13 +128,6 @@ impl<'a> ReadSlice<'a> for &'a [u8] {
         (out, *self) = self.split_at_checked(len).ok_or_else(unexpected_eof)?;
 
         Ok(out)
-    }
-    fn read_array<const N: usize>(&mut self) -> io::Result<&'a [u8; N]> {
-        let slice = self.read_slice(N)?;
-
-        let array = slice.try_into().unwrap();
-
-        Ok(array)
     }
 }
 
