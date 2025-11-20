@@ -1,3 +1,4 @@
+use std::convert::TryInto;
 use std::io::{self, Write};
 
 use rbx_reflection::{
@@ -123,21 +124,11 @@ impl<'a> ReadSlice<'a> for &'a [u8] {
         Ok(out)
     }
     fn read_array<const N: usize>(&mut self) -> io::Result<&'a [u8; N]> {
-        if self.len() < N {
-            return Err(unexpected_eof());
-        }
+        let slice = self.read_slice(N)?;
 
-        // Cast the slice to a pointer to an array of the first N bytes of the slice.
-        let ptr = self.as_ptr().cast();
-        // SAFETY:
-        // This is a non-null pointer because it was constructed from a reference.
-        // The length of the array is checked above.
-        let array = unsafe { &*ptr };
-        // SAFETY:
-        // The length of the array is checked above.
-        *self = unsafe { self.get_unchecked(N..) };
+        let array = slice.try_into().unwrap();
 
-        return Ok(array);
+        Ok(array)
     }
 }
 
