@@ -123,21 +123,21 @@ impl<'a> ReadSlice<'a> for &'a [u8] {
         Ok(out)
     }
     fn read_array<const N: usize>(&mut self) -> io::Result<&'a [u8; N]> {
-        if N <= self.len() {
-            // Cast the slice to a pointer to an array of the first N bytes of the slice.
-            let ptr = self.as_ptr().cast();
-            // SAFETY:
-            // This is a non-null pointer because it was constructed from a reference.
-            // The length of the array is checked above.
-            let array = unsafe { &*ptr };
-            // SAFETY:
-            // The length of the array is checked above.
-            *self = unsafe { self.get_unchecked(N..) };
-
-            return Ok(array);
-        } else {
+        if self.len() < N {
             return Err(unexpected_eof());
-        };
+        }
+
+        // Cast the slice to a pointer to an array of the first N bytes of the slice.
+        let ptr = self.as_ptr().cast();
+        // SAFETY:
+        // This is a non-null pointer because it was constructed from a reference.
+        // The length of the array is checked above.
+        let array = unsafe { &*ptr };
+        // SAFETY:
+        // The length of the array is checked above.
+        *self = unsafe { self.get_unchecked(N..) };
+
+        return Ok(array);
     }
 }
 
