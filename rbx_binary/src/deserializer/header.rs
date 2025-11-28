@@ -18,34 +18,34 @@ pub(crate) struct FileHeader {
 
 impl FileHeader {
     pub(crate) fn decode<R: Read>(mut source: R) -> Result<Self, InnerError> {
-        #[repr(C, packed)]
-        struct RawFileHeader {
-            magic_header: [u8; 8],
-            signature: [u8; 6],
-            version: u16,
-            num_types: u32,
-            num_instances: u32,
-            reserved: [u8; 8],
-        }
-        let mut data = [0; size_of::<RawFileHeader>()];
-        source.read_exact(&mut data)?;
-
-        let mut slice: &[u8] = &data;
+        // Read a buffer the same length as the header
+        let mut data;
+        let mut slice: &[u8] = {
+            #[repr(C, packed)]
+            struct RawFileHeader {
+                magic_header: [u8; 8],
+                signature: [u8; 6],
+                version: u16,
+                num_types: u32,
+                num_instances: u32,
+                reserved: [u8; 8],
+            }
+            data = [0; size_of::<RawFileHeader>()];
+            source.read_exact(&mut data)?;
+            &data
+        };
 
         let magic_header: &[u8; 8] = slice.read_array()?;
-
         if magic_header != FILE_MAGIC_HEADER {
             return Err(InnerError::BadHeader);
         }
 
         let signature: &[u8; 6] = slice.read_array()?;
-
         if signature != FILE_SIGNATURE {
             return Err(InnerError::BadHeader);
         }
 
         let version = slice.read_le_u16()?;
-
         if version != FILE_VERSION {
             return Err(InnerError::UnknownFileVersion { version });
         }
@@ -53,9 +53,8 @@ impl FileHeader {
         let num_types = slice.read_le_u32()?;
         let num_instances = slice.read_le_u32()?;
 
-        let reserved: [u8; 8] = *slice.read_array()?;
-
-        if reserved != [0; 8] {
+        let reserved: &[u8; 8] = slice.read_array()?;
+        if reserved != &[0; 8] {
             return Err(InnerError::BadHeader);
         }
 
