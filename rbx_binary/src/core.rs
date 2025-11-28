@@ -67,7 +67,8 @@ pub trait RbxReadExt<'a>: ReadSlice<'a> {
     }
 
     fn read_u8(&mut self) -> io::Result<u8> {
-        Ok(self.read_array::<1>()?[0])
+        let [byte] = *self.read_array()?;
+        Ok(byte)
     }
 
     /// Read a binary "string" in the format that Roblox's model files use.
