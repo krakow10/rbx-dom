@@ -16,24 +16,24 @@ pub(crate) struct FileHeader {
     pub(crate) num_instances: u32,
 }
 
+/// The raw header as it appears in the file.
+/// Used to calculate the length of data to read.
+#[repr(C, packed)]
+struct RawFileHeader {
+    magic_header: [u8; 8],
+    signature: [u8; 6],
+    version: u16,
+    num_types: u32,
+    num_instances: u32,
+    reserved: [u8; 8],
+}
+
 impl FileHeader {
     pub(crate) fn decode<R: Read>(mut source: R) -> Result<Self, InnerError> {
         // Read a buffer the same length as the header
-        let mut data;
-        let mut slice: &[u8] = {
-            #[repr(C, packed)]
-            struct RawFileHeader {
-                magic_header: [u8; 8],
-                signature: [u8; 6],
-                version: u16,
-                num_types: u32,
-                num_instances: u32,
-                reserved: [u8; 8],
-            }
-            data = [0; size_of::<RawFileHeader>()];
-            source.read_exact(&mut data)?;
-            &data
-        };
+        let mut data = [0; size_of::<RawFileHeader>()];
+        source.read_exact(&mut data)?;
+        let mut slice: &[u8] = &data;
 
         let magic_header: &[u8; 8] = slice.read_array()?;
         if magic_header != FILE_MAGIC_HEADER {
