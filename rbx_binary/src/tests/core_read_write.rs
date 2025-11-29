@@ -65,7 +65,7 @@ fn write_interleaved_bytes() {
         ];
 
     let mut result = Vec::new();
-    result.write_interleaved_bytes(input).unwrap();
+    result.write_interleaved_bytes(input);
 
     assert_eq!(result, expected);
 }

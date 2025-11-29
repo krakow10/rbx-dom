@@ -711,7 +711,7 @@ impl<'dom, 'db: 'dom, W: Write> SerializerState<'dom, 'db, W> {
                     .instances
                     .iter()
                     .map(|instance| self.id_to_referent[&instance.referent()]),
-            )?;
+            );
 
             if type_info.is_service {
                 // It's unclear what this byte is used for, but when the type is
@@ -964,7 +964,7 @@ impl<'dom, 'db: 'dom, W: Write> SerializerState<'dom, 'db, W> {
                             }
                         }
 
-                        chunk.write_interleaved_i32_array(buf)?;
+                        chunk.write_interleaved_i32_array(buf);
                     }
                     Type::Float32 => {
                         let mut buf = Vec::with_capacity(values.len());
@@ -977,7 +977,7 @@ impl<'dom, 'db: 'dom, W: Write> SerializerState<'dom, 'db, W> {
                             }
                         }
 
-                        chunk.write_interleaved_f32_array(buf)?;
+                        chunk.write_interleaved_f32_array(buf);
                     }
                     Type::Float64 => {
                         for (i, rbx_value) in values {
@@ -1005,8 +1005,8 @@ impl<'dom, 'db: 'dom, W: Write> SerializerState<'dom, 'db, W> {
                             }
                         }
 
-                        chunk.write_interleaved_f32_array(scale)?;
-                        chunk.write_interleaved_i32_array(offset)?;
+                        chunk.write_interleaved_f32_array(scale);
+                        chunk.write_interleaved_i32_array(offset);
                     }
                     Type::UDim2 => {
                         let mut scale_x = Vec::with_capacity(values.len());
@@ -1025,10 +1025,10 @@ impl<'dom, 'db: 'dom, W: Write> SerializerState<'dom, 'db, W> {
                             }
                         }
 
-                        chunk.write_interleaved_f32_array(scale_x)?;
-                        chunk.write_interleaved_f32_array(scale_y)?;
-                        chunk.write_interleaved_i32_array(offset_x)?;
-                        chunk.write_interleaved_i32_array(offset_y)?;
+                        chunk.write_interleaved_f32_array(scale_x);
+                        chunk.write_interleaved_f32_array(scale_y);
+                        chunk.write_interleaved_i32_array(offset_x);
+                        chunk.write_interleaved_i32_array(offset_y);
                     }
                     Type::Font => {
                         for (i, rbx_value) in values {
@@ -1089,7 +1089,7 @@ impl<'dom, 'db: 'dom, W: Write> SerializerState<'dom, 'db, W> {
                             }
                         }
 
-                        chunk.write_interleaved_u32_array(numbers)?;
+                        chunk.write_interleaved_u32_array(numbers);
                     }
                     Type::Color3 => {
                         let mut r = Vec::with_capacity(values.len());
@@ -1106,9 +1106,9 @@ impl<'dom, 'db: 'dom, W: Write> SerializerState<'dom, 'db, W> {
                             }
                         }
 
-                        chunk.write_interleaved_f32_array(r)?;
-                        chunk.write_interleaved_f32_array(g)?;
-                        chunk.write_interleaved_f32_array(b)?;
+                        chunk.write_interleaved_f32_array(r);
+                        chunk.write_interleaved_f32_array(g);
+                        chunk.write_interleaved_f32_array(b);
                     }
                     Type::Vector2 => {
                         let mut x = Vec::with_capacity(values.len());
@@ -1123,8 +1123,8 @@ impl<'dom, 'db: 'dom, W: Write> SerializerState<'dom, 'db, W> {
                             }
                         }
 
-                        chunk.write_interleaved_f32_array(x)?;
-                        chunk.write_interleaved_f32_array(y)?;
+                        chunk.write_interleaved_f32_array(x);
+                        chunk.write_interleaved_f32_array(y);
                     }
                     Type::Vector3 => {
                         let mut x = Vec::with_capacity(values.len());
@@ -1141,9 +1141,9 @@ impl<'dom, 'db: 'dom, W: Write> SerializerState<'dom, 'db, W> {
                             }
                         }
 
-                        chunk.write_interleaved_f32_array(x)?;
-                        chunk.write_interleaved_f32_array(y)?;
-                        chunk.write_interleaved_f32_array(z)?;
+                        chunk.write_interleaved_f32_array(x);
+                        chunk.write_interleaved_f32_array(y);
+                        chunk.write_interleaved_f32_array(z);
                     }
                     Type::CFrame => {
                         let mut rotations = Vec::with_capacity(values.len());
@@ -1182,9 +1182,9 @@ impl<'dom, 'db: 'dom, W: Write> SerializerState<'dom, 'db, W> {
                             }
                         }
 
-                        chunk.write_interleaved_f32_array(x)?;
-                        chunk.write_interleaved_f32_array(y)?;
-                        chunk.write_interleaved_f32_array(z)?;
+                        chunk.write_interleaved_f32_array(x);
+                        chunk.write_interleaved_f32_array(y);
+                        chunk.write_interleaved_f32_array(z);
                     }
                     Type::Enum => {
                         let mut buf = Vec::with_capacity(values.len());
@@ -1197,7 +1197,7 @@ impl<'dom, 'db: 'dom, W: Write> SerializerState<'dom, 'db, W> {
                             }
                         }
 
-                        chunk.write_interleaved_u32_array(buf)?;
+                        chunk.write_interleaved_u32_array(buf);
                     }
                     Type::Ref => {
                         let mut buf = Vec::with_capacity(values.len());
@@ -1214,7 +1214,7 @@ impl<'dom, 'db: 'dom, W: Write> SerializerState<'dom, 'db, W> {
                             }
                         }
 
-                        chunk.write_referent_array(buf)?;
+                        chunk.write_referent_array(buf);
                     }
                     Type::Vector3int16 => {
                         for (i, rbx_value) in values {
@@ -1288,10 +1288,10 @@ impl<'dom, 'db: 'dom, W: Write> SerializerState<'dom, 'db, W> {
                             }
                         }
 
-                        chunk.write_interleaved_f32_array(x_min)?;
-                        chunk.write_interleaved_f32_array(y_min)?;
-                        chunk.write_interleaved_f32_array(x_max)?;
-                        chunk.write_interleaved_f32_array(y_max)?;
+                        chunk.write_interleaved_f32_array(x_min);
+                        chunk.write_interleaved_f32_array(y_min);
+                        chunk.write_interleaved_f32_array(x_max);
+                        chunk.write_interleaved_f32_array(y_max);
                     }
                     Type::PhysicalProperties => {
                         for (i, rbx_value) in values {
@@ -1363,7 +1363,7 @@ impl<'dom, 'db: 'dom, W: Write> SerializerState<'dom, 'db, W> {
                             }
                         }
 
-                        chunk.write_interleaved_i64_array(buf)?;
+                        chunk.write_interleaved_i64_array(buf);
                     }
                     Type::SharedString => {
                         let mut entries = Vec::with_capacity(values.len());
@@ -1393,7 +1393,7 @@ impl<'dom, 'db: 'dom, W: Write> SerializerState<'dom, 'db, W> {
                             }
                         }
 
-                        chunk.write_interleaved_u32_array(entries)?;
+                        chunk.write_interleaved_u32_array(entries);
                     }
                     Type::OptionalCFrame => {
                         let mut rotations = Vec::with_capacity(values.len());
@@ -1444,9 +1444,9 @@ impl<'dom, 'db: 'dom, W: Write> SerializerState<'dom, 'db, W> {
                             }
                         }
 
-                        chunk.write_interleaved_f32_array(x)?;
-                        chunk.write_interleaved_f32_array(y)?;
-                        chunk.write_interleaved_f32_array(z)?;
+                        chunk.write_interleaved_f32_array(x);
+                        chunk.write_interleaved_f32_array(y);
+                        chunk.write_interleaved_f32_array(z);
 
                         chunk.write_u8(Type::Bool as u8)?;
                         chunk.write_all(bools.as_slice())?;
@@ -1468,7 +1468,7 @@ impl<'dom, 'db: 'dom, W: Write> SerializerState<'dom, 'db, W> {
                             }
                         }
 
-                        chunk.write_interleaved_bytes(blobs)?;
+                        chunk.write_interleaved_bytes(blobs);
                     }
                     Type::SecurityCapabilities => {
                         let mut capabilities = Vec::with_capacity(values.len());
@@ -1481,7 +1481,7 @@ impl<'dom, 'db: 'dom, W: Write> SerializerState<'dom, 'db, W> {
                             }
                         }
 
-                        chunk.write_interleaved_i64_array(capabilities)?;
+                        chunk.write_interleaved_i64_array(capabilities);
                     }
                     Type::Content => {
                         let mut source_types = Vec::with_capacity(values.len());
@@ -1509,14 +1509,14 @@ impl<'dom, 'db: 'dom, W: Write> SerializerState<'dom, 'db, W> {
                                 return type_mismatch(i, rbx_value, "Content");
                             }
                         }
-                        chunk.write_interleaved_i32_array(source_types)?;
+                        chunk.write_interleaved_i32_array(source_types);
 
                         chunk.write_le_u32(uris.len() as u32)?;
                         for uri in uris {
                             chunk.write_string(uri)?;
                         }
                         chunk.write_le_u32(objects.len() as u32)?;
-                        chunk.write_referent_array(objects)?;
+                        chunk.write_referent_array(objects);
 
                         // If we ever need to support the external referents,
                         // we will need to add it here.
@@ -1562,8 +1562,8 @@ impl<'dom, 'db: 'dom, W: Write> SerializerState<'dom, 'db, W> {
             }
         });
 
-        chunk.write_referent_array(object_referents)?;
-        chunk.write_referent_array(parent_referents)?;
+        chunk.write_referent_array(object_referents);
+        chunk.write_referent_array(parent_referents);
 
         chunk.dump(&mut self.output)?;
 

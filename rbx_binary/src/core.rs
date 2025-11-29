@@ -256,14 +256,14 @@ pub trait RbxWriteExt: Write {
 pub trait RbxWriteInterleaved {
     /// Takes `values` and writes it as a blob of data with each value
     /// interleaved by `N` bytes.
-    fn write_interleaved_bytes<const N: usize, I>(&mut self, values: I) -> io::Result<()>
+    fn write_interleaved_bytes<const N: usize, I>(&mut self, values: I)
     where
         I: IntoIterator<Item = [u8; N]>,
         <I as IntoIterator>::IntoIter: ExactSizeIterator;
 
     /// Writes all items from `values` into the buffer as a blob of interleaved
     /// bytes. Transformation is applied to the values as they're written.
-    fn write_interleaved_i32_array<I>(&mut self, values: I) -> io::Result<()>
+    fn write_interleaved_i32_array<I>(&mut self, values: I)
     where
         I: IntoIterator<Item = i32>,
         <I as IntoIterator>::IntoIter: ExactSizeIterator,
@@ -273,7 +273,7 @@ pub trait RbxWriteInterleaved {
 
     /// Writes all items from `values` into the buffer as a blob of interleaved
     /// bytes.
-    fn write_interleaved_u32_array<I>(&mut self, values: I) -> io::Result<()>
+    fn write_interleaved_u32_array<I>(&mut self, values: I)
     where
         I: IntoIterator<Item = u32>,
         <I as IntoIterator>::IntoIter: ExactSizeIterator,
@@ -283,7 +283,7 @@ pub trait RbxWriteInterleaved {
 
     /// Writes all items from `values` into the buffer as a blob of interleaved
     /// bytes. Rotation is applied to the values as they're written.
-    fn write_interleaved_f32_array<I>(&mut self, values: I) -> io::Result<()>
+    fn write_interleaved_f32_array<I>(&mut self, values: I)
     where
         I: IntoIterator<Item = f32>,
         <I as IntoIterator>::IntoIter: ExactSizeIterator,
@@ -298,7 +298,7 @@ pub trait RbxWriteInterleaved {
     /// Writes all items from `values` into the buffer as a blob of interleaved
     /// bytes. The appropriate transformation and de-accumulation is done as
     /// values are written.
-    fn write_referent_array<I>(&mut self, values: I) -> io::Result<()>
+    fn write_referent_array<I>(&mut self, values: I)
     where
         I: IntoIterator<Item = i32>,
         <I as IntoIterator>::IntoIter: ExactSizeIterator,
@@ -315,7 +315,7 @@ pub trait RbxWriteInterleaved {
 
     /// Writes all items from `values` into the buffer as a blob of interleaved
     /// bytes. Transformation is applied to the values as they're written.
-    fn write_interleaved_i64_array<I>(&mut self, values: I) -> io::Result<()>
+    fn write_interleaved_i64_array<I>(&mut self, values: I)
     where
         I: IntoIterator<Item = i64>,
         <I as IntoIterator>::IntoIter: ExactSizeIterator,
@@ -325,7 +325,7 @@ pub trait RbxWriteInterleaved {
 }
 
 impl RbxWriteInterleaved for Vec<u8> {
-    fn write_interleaved_bytes<const N: usize, I>(&mut self, values: I) -> io::Result<()>
+    fn write_interleaved_bytes<const N: usize, I>(&mut self, values: I)
     where
         I: IntoIterator<Item = [u8; N]>,
         <I as IntoIterator>::IntoIter: ExactSizeIterator,
@@ -345,8 +345,6 @@ impl RbxWriteInterleaved for Vec<u8> {
                 buffer[i + b * values_len] = byte;
             }
         }
-
-        Ok(())
     }
 }
 
