@@ -336,14 +336,22 @@ impl RbxWriteInterleaved for Vec<u8> {
 
         // Reserve space for new values
         let current_len = self.len();
-        self.extend(core::iter::repeat_n(0, bytes_len));
+        self.reserve(bytes_len);
 
-        // Write new values
-        let buffer = &mut self[current_len..];
+        // Write new values into spare capacity
+        let buffer = self.spare_capacity_mut();
         for (i, bytes) in values.enumerate() {
             for (b, byte) in IntoIterator::into_iter(bytes).enumerate() {
-                buffer[i + b * values_len] = byte;
+                buffer[i + b * values_len].write(byte);
             }
+        }
+
+        // Manually set length of Vec
+        // SAFETY:
+        // - new_len must be less than or equal to [capacity()].
+        // - The elements at old_len..new_len must be initialized.
+        unsafe {
+            self.set_len(current_len + bytes_len);
         }
 
         Ok(())
