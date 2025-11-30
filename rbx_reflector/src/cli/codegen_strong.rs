@@ -1,9 +1,6 @@
-use std::io::Write;
 use std::path::PathBuf;
-use std::process::{Command, Stdio};
 
 use clap::Parser;
-use quote::ToTokens;
 use rbx_reflection::{ClassDescriptor, DataType, EnumDescriptor};
 
 /// Generate strong types for all classes and enums.
@@ -330,11 +327,8 @@ impl CodegenStrongSubcommand {
             }
             let complete_file = strong_instances.sort().codegen();
 
-            // make a string of the unformatted code
-            let code = complete_file.into_token_stream().to_string();
-
-            // format via cli
-            let code = rustfmt(code.as_bytes())?;
+            // format
+            let code = prettyplease::unparse(&complete_file);
 
             code
         };
@@ -346,11 +340,8 @@ impl CodegenStrongSubcommand {
             }
             let complete_file = strong_enum.sort().codegen();
 
-            // make a string of the unformatted code
-            let code = complete_file.into_token_stream().to_string();
-
-            // format via cli
-            let code = rustfmt(code.as_bytes())?;
+            // format
+            let code = prettyplease::unparse(&complete_file);
 
             code
         };
@@ -360,36 +351,4 @@ impl CodegenStrongSubcommand {
         std::fs::write(dest_enum, enum_code)?;
         Ok(())
     }
-}
-
-#[allow(dead_code)]
-#[derive(Debug)]
-enum FormatError {
-    Io(std::io::Error),
-    FormatFailed,
-}
-impl std::fmt::Display for FormatError {
-    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-        write!(f, "{self:?}")
-    }
-}
-impl std::error::Error for FormatError {}
-fn rustfmt(code: &[u8]) -> Result<Vec<u8>, FormatError> {
-    let cmd = Command::new("rustfmt")
-        .stdin(Stdio::piped())
-        .stdout(Stdio::piped())
-        .spawn()
-        .map_err(FormatError::Io)?;
-    cmd.stdin
-        .as_ref()
-        .unwrap()
-        .write_all(code)
-        .map_err(FormatError::Io)?;
-    let output = cmd.wait_with_output().map_err(FormatError::Io)?;
-
-    if !output.status.success() {
-        return Err(FormatError::FormatFailed);
-    }
-
-    Ok(output.stdout)
 }
