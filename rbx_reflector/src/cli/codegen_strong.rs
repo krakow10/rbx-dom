@@ -70,7 +70,7 @@ fn generate_data_type(data_type: &DataType) -> syn::Type {
             let ident = syn::Ident::new(name, proc_macro2::Span::call_site());
             syn::parse_quote!(enums::#ident)
         }
-        _ => unimplemented!(),
+        data_type => unimplemented!("{data_type:?}"),
     }
 }
 
