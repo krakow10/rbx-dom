@@ -23,7 +23,7 @@ pub fn run_model_base_suite(model_path: impl AsRef<Path>) {
     // Write out a text version of the test file. This helps when debugging what
     // the actual test file is and also guards us against the test file
     // changing.
-    let text_decoded = DecodedModel::from_reader(contents.as_slice());
+    let text_decoded = DecodedModel::from_reader(contents.as_slice()).unwrap();
     insta::assert_yaml_snapshot!(format!("{}__input", model_stem), text_decoded);
 
     // Decode the test file and snapshot a stable version of the resulting tree.
@@ -42,7 +42,7 @@ pub fn run_model_base_suite(model_path: impl AsRef<Path>) {
     // ideal world, this would be very similar or the same as the text
     // representation of the original test file. In practice, we'll differ
     // slightly in chunk ordering, compression, etc.
-    let text_roundtrip = DecodedModel::from_reader(encoded.as_slice());
+    let text_roundtrip = DecodedModel::from_reader(encoded.as_slice()).unwrap();
     insta::assert_yaml_snapshot!(format!("{}__encoded", model_stem), text_roundtrip);
 
     // As a sanity check, make sure we can decode the re-encoded version of the

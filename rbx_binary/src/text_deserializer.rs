@@ -8,7 +8,7 @@ use std::{
     collections::{HashMap, VecDeque},
     convert::TryInto,
     fmt::Write,
-    io::Read,
+    io::{self, Read},
 };
 
 use rbx_dom_weak::types::{
@@ -34,7 +34,7 @@ pub struct DecodedModel {
 }
 
 impl DecodedModel {
-    pub fn from_reader<R: Read>(mut reader: R) -> Self {
+    pub fn from_reader<R: Read>(mut reader: R) -> io::Result<Self> {
         let header = FileHeader::decode(&mut reader).expect("invalid file header");
         let mut chunks = Vec::new();
 
@@ -43,20 +43,20 @@ impl DecodedModel {
         let mut count_by_type_id = HashMap::new();
 
         loop {
-            let chunk = Chunk::decode(&mut reader).expect("invalid chunk");
+            let chunk = Chunk::decode(&mut reader)?;
 
             match &chunk.name {
-                b"META" => chunks.push(decode_meta_chunk(chunk.data.as_slice())),
-                b"SSTR" => chunks.push(decode_sstr_chunk(chunk.data.as_slice())),
+                b"META" => chunks.push(decode_meta_chunk(chunk.data.as_slice())?),
+                b"SSTR" => chunks.push(decode_sstr_chunk(chunk.data.as_slice())?),
                 b"INST" => chunks.push(decode_inst_chunk(
                     chunk.data.as_slice(),
                     &mut count_by_type_id,
-                )),
+                )?),
                 b"PROP" => chunks.push(decode_prop_chunk(
                     chunk.data.as_slice(),
                     &mut count_by_type_id,
-                )),
-                b"PRNT" => chunks.push(decode_prnt_chunk(chunk.data.as_slice())),
+                )?),
+                b"PRNT" => chunks.push(decode_prnt_chunk(chunk.data.as_slice())?),
                 b"END\0" => {
                     chunks.push(DecodedChunk::End);
                     break;
@@ -70,78 +70,81 @@ impl DecodedModel {
             }
         }
 
-        DecodedModel {
+        Ok(DecodedModel {
             num_types: header.num_types,
             num_instances: header.num_instances,
             chunks,
-        }
+        })
     }
 }
 
-fn decode_meta_chunk(mut chunk: &[u8]) -> DecodedChunk {
-    let num_entries = chunk.read_le_u32().unwrap();
+fn decode_meta_chunk(mut chunk: &[u8]) -> io::Result<DecodedChunk> {
+    let num_entries = chunk.read_le_u32()?;
     let mut entries = Vec::with_capacity(num_entries as usize);
 
     for _ in 0..num_entries {
-        let key = chunk.read_string().unwrap().to_owned();
-        let value = chunk.read_string().unwrap().to_owned();
+        let key = chunk.read_string()?.to_owned();
+        let value = chunk.read_string()?.to_owned();
         entries.push((key, value));
     }
 
     let remaining = chunk.to_owned();
 
-    DecodedChunk::Meta { entries, remaining }
+    Ok(DecodedChunk::Meta { entries, remaining })
 }
 
-fn decode_sstr_chunk(mut chunk: &[u8]) -> DecodedChunk {
-    let version = chunk.read_le_u32().unwrap();
-    let num_entries = chunk.read_le_u32().unwrap();
+fn decode_sstr_chunk(mut chunk: &[u8]) -> io::Result<DecodedChunk> {
+    let version = chunk.read_le_u32()?;
+    let num_entries = chunk.read_le_u32()?;
     let mut entries = Vec::with_capacity(num_entries as usize);
 
     for _ in 0..num_entries {
-        let _hash = chunk.read_slice(16).unwrap();
-        let data = chunk.read_binary_string().unwrap().to_owned();
+        let _hash = chunk.read_slice(16)?;
+        let data = chunk.read_binary_string()?.to_owned();
         entries.push(SharedString::new(data));
     }
 
     let remaining = chunk.to_owned();
 
-    DecodedChunk::Sstr {
+    Ok(DecodedChunk::Sstr {
         version,
         entries,
         remaining,
-    }
+    })
 }
 
-fn decode_inst_chunk(mut chunk: &[u8], count_by_type_id: &mut HashMap<u32, usize>) -> DecodedChunk {
-    let type_id = chunk.read_le_u32().unwrap();
-    let type_name = chunk.read_string().unwrap().to_owned();
-    let object_format = chunk.read_u8().unwrap();
-    let num_instances = chunk.read_le_u32().unwrap();
+fn decode_inst_chunk(
+    mut chunk: &[u8],
+    count_by_type_id: &mut HashMap<u32, usize>,
+) -> io::Result<DecodedChunk> {
+    let type_id = chunk.read_le_u32()?;
+    let type_name = chunk.read_string()?.to_owned();
+    let object_format = chunk.read_u8()?;
+    let num_instances = chunk.read_le_u32()?;
 
     count_by_type_id.insert(type_id, num_instances as usize);
 
-    let referents = chunk
-        .read_referent_array(num_instances as usize)
-        .unwrap()
-        .collect();
+    let referents = chunk.read_referent_array(num_instances as usize)?.collect();
 
     let remaining = chunk.to_owned();
 
-    DecodedChunk::Inst {
+    Ok(DecodedChunk::Inst {
         type_id,
         type_name,
         object_format,
         referents,
         remaining,
-    }
+    })
 }
 
-fn decode_prop_chunk(mut chunk: &[u8], count_by_type_id: &mut HashMap<u32, usize>) -> DecodedChunk {
-    let type_id = chunk.read_le_u32().unwrap();
-    let prop_name = chunk.read_string().unwrap().to_owned();
+fn decode_prop_chunk(
+    mut chunk: &[u8],
+    count_by_type_id: &mut HashMap<u32, usize>,
+) -> io::Result<DecodedChunk> {
+    let type_id = chunk.read_le_u32()?;
+    let prop_name = chunk.read_string()?.to_owned();
 
-    let prop_type_value = chunk.read_u8().unwrap();
+    let prop_type_value = chunk.read_u8()?;
     let (prop_type, values) = match prop_type_value.try_into() {
         Ok(prop_type) => {
             // If this type ID is unknown, we'll default to assuming that type
@@ -149,7 +152,7 @@ fn decode_prop_chunk(mut chunk: &[u8], count_by_type_id: &mut HashMap<u32, usize
             let values = count_by_type_id
                 .get(&type_id)
                 .map(|&prop_count| DecodedValues::decode(&mut chunk, prop_count, prop_type))
-                .unwrap_or(None);
+                .transpose()?;
 
             (DecodedPropType::Known(prop_type), values)
         }
@@ -158,31 +161,31 @@ fn decode_prop_chunk(mut chunk: &[u8], count_by_type_id: &mut HashMap<u32, usize
 
     let remaining = chunk.to_owned();
 
-    DecodedChunk::Prop {
+    Ok(DecodedChunk::Prop {
         type_id,
         prop_name,
         prop_type,
         values,
         remaining,
-    }
+    })
 }
 
-fn decode_prnt_chunk(mut chunk: &[u8]) -> DecodedChunk {
-    let version = chunk.read_u8().unwrap();
-    let num_referents = chunk.read_le_u32().unwrap();
+fn decode_prnt_chunk(mut chunk: &[u8]) -> io::Result<DecodedChunk> {
+    let version = chunk.read_u8()?;
+    let num_referents = chunk.read_le_u32()?;
 
-    let subjects = chunk.read_referent_array(num_referents as usize).unwrap();
-    let parents = chunk.read_referent_array(num_referents as usize).unwrap();
+    let subjects = chunk.read_referent_array(num_referents as usize)?;
+    let parents = chunk.read_referent_array(num_referents as usize)?;
 
     let links = subjects.zip(parents).collect();
 
     let remaining = chunk.to_owned();
 
-    DecodedChunk::Prnt {
+    Ok(DecodedChunk::Prnt {
         version,
         links,
         remaining,
-    }
+    })
 }
 
 #[derive(Debug, Serialize)]
@@ -222,67 +225,61 @@ pub enum DecodedValues {
 }
 
 impl DecodedValues {
-    fn decode(chunk: &mut &[u8], prop_count: usize, prop_type: Type) -> Option<Self> {
+    fn decode(chunk: &mut &[u8], prop_count: usize, prop_type: Type) -> io::Result<Self> {
         match prop_type {
             Type::String => {
                 let mut values = Vec::with_capacity(prop_count);
 
                 for _ in 0..prop_count {
-                    values.push(chunk.read_binary_string().unwrap().to_owned().into());
+                    values.push(chunk.read_binary_string()?.to_owned().into());
                 }
 
-                Some(DecodedValues::String(values))
+                Ok(DecodedValues::String(values))
             }
             Type::Bool => {
                 let mut values = Vec::with_capacity(prop_count);
 
                 for _ in 0..prop_count {
-                    values.push(chunk.read_bool().unwrap());
+                    values.push(chunk.read_bool()?);
                 }
 
-                Some(DecodedValues::Bool(values))
+                Ok(DecodedValues::Bool(values))
             }
             Type::Int32 => {
-                let values = chunk
-                    .read_interleaved_i32_array(prop_count)
-                    .unwrap()
-                    .collect();
+                let values = chunk.read_interleaved_i32_array(prop_count)?.collect();
 
-                Some(DecodedValues::Int32(values))
+                Ok(DecodedValues::Int32(values))
             }
             Type::Float32 => {
-                let values = chunk
-                    .read_interleaved_f32_array(prop_count)
-                    .unwrap()
-                    .collect();
+                let values = chunk.read_interleaved_f32_array(prop_count)?.collect();
 
-                Some(DecodedValues::Float32(values))
+                Ok(DecodedValues::Float32(values))
             }
             Type::Float64 => {
                 let mut values = Vec::with_capacity(prop_count);
 
                 for _ in 0..prop_count {
-                    values.push(chunk.read_le_f64().unwrap());
+                    values.push(chunk.read_le_f64()?);
                 }
 
-                Some(DecodedValues::Float64(values))
+                Ok(DecodedValues::Float64(values))
             }
             Type::UDim => {
-                let scale = chunk.read_interleaved_f32_array(prop_count).unwrap();
-                let offset = chunk.read_interleaved_i32_array(prop_count).unwrap();
+                let scale = chunk.read_interleaved_f32_array(prop_count)?;
+                let offset = chunk.read_interleaved_i32_array(prop_count)?;
 
                 let values = scale
                     .zip(offset)
                     .map(|(scale, offset)| UDim::new(scale, offset))
                     .collect();
 
-                Some(DecodedValues::UDim(values))
+                Ok(DecodedValues::UDim(values))
             }
             Type::UDim2 => {
-                let scale_x = chunk.read_interleaved_f32_array(prop_count).unwrap();
-                let scale_y = chunk.read_interleaved_f32_array(prop_count).unwrap();
-                let offset_x = chunk.read_interleaved_i32_array(prop_count).unwrap();
-                let offset_y = chunk.read_interleaved_i32_array(prop_count).unwrap();
+                let scale_x = chunk.read_interleaved_f32_array(prop_count)?;
+                let scale_y = chunk.read_interleaved_f32_array(prop_count)?;
+                let offset_x = chunk.read_interleaved_i32_array(prop_count)?;
+                let offset_y = chunk.read_interleaved_i32_array(prop_count)?;
 
                 let x_values = scale_x
                     .zip(offset_x)
@@ -296,17 +293,16 @@ impl DecodedValues {
                     .map(|(x, y)| UDim2::new(x, y))
                     .collect();
 
-                Some(DecodedValues::UDim2(values))
+                Ok(DecodedValues::UDim2(values))
             }
             Type::Font => {
                 let mut values = Vec::with_capacity(prop_count);
 
                 for _ in 0..prop_count {
-                    let family = chunk.read_string().unwrap().to_owned();
-                    let weight =
-                        FontWeight::from_u16(chunk.read_le_u16().unwrap()).unwrap_or_default();
-                    let style = FontStyle::from_u8(chunk.read_u8().unwrap()).unwrap_or_default();
-                    let cached_face_id = chunk.read_string().unwrap().to_owned();
+                    let family = chunk.read_string()?.to_owned();
+                    let weight = FontWeight::from_u16(chunk.read_le_u16()?).unwrap_or_default();
+                    let style = FontStyle::from_u8(chunk.read_u8()?).unwrap_or_default();
+                    let cached_face_id = chunk.read_string()?.to_owned();
 
                     let cached_face_id = if cached_face_id.is_empty() {
                         None
@@ -322,18 +318,18 @@ impl DecodedValues {
                     })
                 }
 
-                Some(DecodedValues::Font(values))
+                Ok(DecodedValues::Font(values))
             }
             Type::Ray => {
                 let mut values = Vec::with_capacity(prop_count);
 
                 for _ in 0..prop_count {
-                    let origin_x = chunk.read_le_f32().unwrap();
-                    let origin_y = chunk.read_le_f32().unwrap();
-                    let origin_z = chunk.read_le_f32().unwrap();
-                    let direction_x = chunk.read_le_f32().unwrap();
-                    let direction_y = chunk.read_le_f32().unwrap();
-                    let direction_z = chunk.read_le_f32().unwrap();
+                    let origin_x = chunk.read_le_f32()?;
+                    let origin_y = chunk.read_le_f32()?;
+                    let origin_z = chunk.read_le_f32()?;
+                    let direction_x = chunk.read_le_f32()?;
+                    let direction_y = chunk.read_le_f32()?;
+                    let direction_z = chunk.read_le_f32()?;
 
                     values.push(Ray::new(
                         Vector3::new(origin_x, origin_y, origin_z),
@@ -341,56 +337,56 @@ impl DecodedValues {
                     ))
                 }
 
-                Some(DecodedValues::Ray(values))
+                Ok(DecodedValues::Ray(values))
             }
             Type::Faces => {
                 let mut values = Vec::with_capacity(prop_count);
 
                 for _ in 0..prop_count {
-                    values.push(Faces::from_bits(chunk.read_u8().unwrap())?)
+                    values.push(Faces::from_bits(chunk.read_u8()?).unwrap())
                 }
 
-                Some(DecodedValues::Faces(values))
+                Ok(DecodedValues::Faces(values))
             }
             Type::Axes => {
                 let mut values = Vec::with_capacity(prop_count);
 
                 for _ in 0..prop_count {
-                    values.push(Axes::from_bits(chunk.read_u8().unwrap())?)
+                    values.push(Axes::from_bits(chunk.read_u8()?).unwrap())
                 }
 
-                Some(DecodedValues::Axes(values))
+                Ok(DecodedValues::Axes(values))
             }
             Type::BrickColor => {
-                let values = chunk.read_interleaved_u32_array(prop_count).unwrap();
+                let values = chunk.read_interleaved_u32_array(prop_count)?;
 
                 let values = values
                     .map(|value| BrickColor::from_number(value.try_into().unwrap()).unwrap())
                     .collect();
 
-                Some(DecodedValues::BrickColor(values))
+                Ok(DecodedValues::BrickColor(values))
             }
             Type::CFrame => {
                 let mut rotations = vec![Matrix3::identity(); prop_count];
 
                 for rotation in rotations.iter_mut() {
-                    let id = chunk.read_u8().unwrap();
+                    let id = chunk.read_u8()?;
                     if id == 0 {
                         *rotation = Matrix3::new(
                             Vector3::new(
-                                chunk.read_le_f32().unwrap(),
-                                chunk.read_le_f32().unwrap(),
-                                chunk.read_le_f32().unwrap(),
+                                chunk.read_le_f32()?,
+                                chunk.read_le_f32()?,
+                                chunk.read_le_f32()?,
                             ),
                             Vector3::new(
-                                chunk.read_le_f32().unwrap(),
-                                chunk.read_le_f32().unwrap(),
-                                chunk.read_le_f32().unwrap(),
+                                chunk.read_le_f32()?,
+                                chunk.read_le_f32()?,
+                                chunk.read_le_f32()?,
                             ),
                             Vector3::new(
-                                chunk.read_le_f32().unwrap(),
-                                chunk.read_le_f32().unwrap(),
-                                chunk.read_le_f32().unwrap(),
+                                chunk.read_le_f32()?,
+                                chunk.read_le_f32()?,
+                                chunk.read_le_f32()?,
                             ),
                         );
                     } else {
@@ -398,9 +394,9 @@ impl DecodedValues {
                     }
                 }
 
-                let x = chunk.read_interleaved_f32_array(prop_count).unwrap();
-                let y = chunk.read_interleaved_f32_array(prop_count).unwrap();
-                let z = chunk.read_interleaved_f32_array(prop_count).unwrap();
+                let x = chunk.read_interleaved_f32_array(prop_count)?;
+                let y = chunk.read_interleaved_f32_array(prop_count)?;
+                let z = chunk.read_interleaved_f32_array(prop_count)?;
 
                 let values = x
                     .zip(y)
@@ -409,24 +405,24 @@ impl DecodedValues {
                     .map(|(((x, y), z), rotation)| CFrame::new(Vector3::new(x, y, z), rotation))
                     .collect();
 
-                Some(DecodedValues::CFrame(values))
+                Ok(DecodedValues::CFrame(values))
             }
             Type::Enum => {
-                let ints = chunk.read_interleaved_u32_array(prop_count).unwrap();
+                let ints = chunk.read_interleaved_u32_array(prop_count)?;
 
                 let values = ints.map(Enum::from_u32).collect();
 
-                Some(DecodedValues::Enum(values))
+                Ok(DecodedValues::Enum(values))
             }
             Type::Ref => {
-                let refs = chunk.read_referent_array(prop_count).unwrap().collect();
+                let refs = chunk.read_referent_array(prop_count)?.collect();
 
-                Some(DecodedValues::Ref(refs))
+                Ok(DecodedValues::Ref(refs))
             }
             Type::Color3 => {
-                let r = chunk.read_interleaved_f32_array(prop_count).unwrap();
-                let g = chunk.read_interleaved_f32_array(prop_count).unwrap();
-                let b = chunk.read_interleaved_f32_array(prop_count).unwrap();
+                let r = chunk.read_interleaved_f32_array(prop_count)?;
+                let g = chunk.read_interleaved_f32_array(prop_count)?;
+                let b = chunk.read_interleaved_f32_array(prop_count)?;
 
                 let values = r
                     .zip(g)
@@ -434,20 +430,20 @@ impl DecodedValues {
                     .map(|((r, g), b)| Color3::new(r, g, b))
                     .collect();
 
-                Some(DecodedValues::Color3(values))
+                Ok(DecodedValues::Color3(values))
             }
             Type::Vector2 => {
-                let x = chunk.read_interleaved_f32_array(prop_count).unwrap();
-                let y = chunk.read_interleaved_f32_array(prop_count).unwrap();
+                let x = chunk.read_interleaved_f32_array(prop_count)?;
+                let y = chunk.read_interleaved_f32_array(prop_count)?;
 
                 let values = x.zip(y).map(|(x, y)| Vector2::new(x, y)).collect();
 
-                Some(DecodedValues::Vector2(values))
+                Ok(DecodedValues::Vector2(values))
             }
             Type::Vector3 => {
-                let x = chunk.read_interleaved_f32_array(prop_count).unwrap();
-                let y = chunk.read_interleaved_f32_array(prop_count).unwrap();
-                let z = chunk.read_interleaved_f32_array(prop_count).unwrap();
+                let x = chunk.read_interleaved_f32_array(prop_count)?;
+                let y = chunk.read_interleaved_f32_array(prop_count)?;
+                let z = chunk.read_interleaved_f32_array(prop_count)?;
 
                 let values = x
                     .zip(y)
@@ -455,84 +451,81 @@ impl DecodedValues {
                     .map(|((x, y), z)| Vector3::new(x, y, z))
                     .collect();
 
-                Some(DecodedValues::Vector3(values))
+                Ok(DecodedValues::Vector3(values))
             }
             Type::ColorSequence => {
                 let mut values = Vec::with_capacity(prop_count);
 
                 for _ in 0..prop_count {
-                    let keypoint_count = chunk.read_le_u32().unwrap() as usize;
+                    let keypoint_count = chunk.read_le_u32()? as usize;
                     let mut keypoints = Vec::with_capacity(keypoint_count);
 
                     for _ in 0..keypoint_count {
                         keypoints.push(ColorSequenceKeypoint::new(
-                            chunk.read_le_f32().unwrap(),
+                            chunk.read_le_f32()?,
                             Color3::new(
-                                chunk.read_le_f32().unwrap(),
-                                chunk.read_le_f32().unwrap(),
-                                chunk.read_le_f32().unwrap(),
+                                chunk.read_le_f32()?,
+                                chunk.read_le_f32()?,
+                                chunk.read_le_f32()?,
                             ),
                         ));
 
                         // envelope is serialized but doesn't do anything; don't do anything with it
-                        chunk.read_le_f32().unwrap();
+                        chunk.read_le_f32()?;
                     }
 
                     values.push(ColorSequence { keypoints })
                 }
 
-                Some(DecodedValues::ColorSequence(values))
+                Ok(DecodedValues::ColorSequence(values))
             }
             Type::Vector3int16 => {
                 let mut values = Vec::with_capacity(prop_count);
 
                 for _ in 0..prop_count {
                     values.push(Vector3int16::new(
-                        chunk.read_le_i16().unwrap(),
-                        chunk.read_le_i16().unwrap(),
-                        chunk.read_le_i16().unwrap(),
+                        chunk.read_le_i16()?,
+                        chunk.read_le_i16()?,
+                        chunk.read_le_i16()?,
                     ));
                 }
 
-                Some(DecodedValues::Vector3int16(values))
+                Ok(DecodedValues::Vector3int16(values))
             }
             Type::NumberRange => {
                 let mut values = Vec::with_capacity(prop_count);
 
                 for _ in 0..prop_count {
-                    values.push(NumberRange::new(
-                        chunk.read_le_f32().unwrap(),
-                        chunk.read_le_f32().unwrap(),
-                    ));
+                    values.push(NumberRange::new(chunk.read_le_f32()?, chunk.read_le_f32()?));
                 }
 
-                Some(DecodedValues::NumberRange(values))
+                Ok(DecodedValues::NumberRange(values))
             }
             Type::NumberSequence => {
                 let mut values = Vec::with_capacity(prop_count);
 
                 for _ in 0..prop_count {
-                    let keypoint_count = chunk.read_le_u32().unwrap();
+                    let keypoint_count = chunk.read_le_u32()?;
                     let mut keypoints = Vec::with_capacity(keypoint_count as usize);
 
                     for _ in 0..keypoint_count {
                         keypoints.push(NumberSequenceKeypoint::new(
-                            chunk.read_le_f32().unwrap(),
-                            chunk.read_le_f32().unwrap(),
-                            chunk.read_le_f32().unwrap(),
+                            chunk.read_le_f32()?,
+                            chunk.read_le_f32()?,
+                            chunk.read_le_f32()?,
                         ))
                     }
 
                     values.push(NumberSequence { keypoints })
                 }
 
-                Some(DecodedValues::NumberSequence(values))
+                Ok(DecodedValues::NumberSequence(values))
             }
             Type::Rect => {
-                let x_min = chunk.read_interleaved_f32_array(prop_count).unwrap();
-                let y_min = chunk.read_interleaved_f32_array(prop_count).unwrap();
-                let x_max = chunk.read_interleaved_f32_array(prop_count).unwrap();
-                let y_max = chunk.read_interleaved_f32_array(prop_count).unwrap();
+                let x_min = chunk.read_interleaved_f32_array(prop_count)?;
+                let y_min = chunk.read_interleaved_f32_array(prop_count)?;
+                let x_max = chunk.read_interleaved_f32_array(prop_count)?;
+                let y_max = chunk.read_interleaved_f32_array(prop_count)?;
 
                 let values = x_min
                     .zip(y_min)
@@ -543,30 +536,30 @@ impl DecodedValues {
                     })
                     .collect();
 
-                Some(DecodedValues::Rect(values))
+                Ok(DecodedValues::Rect(values))
             }
             Type::PhysicalProperties => {
                 let mut values = Vec::with_capacity(prop_count);
 
                 for _ in 0..prop_count {
-                    let discriminator = chunk.read_u8().unwrap();
+                    let discriminator = chunk.read_u8()?;
                     values.push(match discriminator {
                         0b00 | 0b10 => PhysicalProperties::Default,
                         0b01 => PhysicalProperties::Custom(CustomPhysicalProperties::new(
-                            chunk.read_le_f32().unwrap(),
-                            chunk.read_le_f32().unwrap(),
-                            chunk.read_le_f32().unwrap(),
-                            chunk.read_le_f32().unwrap(),
-                            chunk.read_le_f32().unwrap(),
+                            chunk.read_le_f32()?,
+                            chunk.read_le_f32()?,
+                            chunk.read_le_f32()?,
+                            chunk.read_le_f32()?,
+                            chunk.read_le_f32()?,
                             1.0,
                         )),
                         0b11 => PhysicalProperties::Custom(CustomPhysicalProperties::new(
-                            chunk.read_le_f32().unwrap(),
-                            chunk.read_le_f32().unwrap(),
-                            chunk.read_le_f32().unwrap(),
-                            chunk.read_le_f32().unwrap(),
-                            chunk.read_le_f32().unwrap(),
-                            chunk.read_le_f32().unwrap(),
+                            chunk.read_le_f32()?,
+                            chunk.read_le_f32()?,
+                            chunk.read_le_f32()?,
+                            chunk.read_le_f32()?,
+                            chunk.read_le_f32()?,
+                            chunk.read_le_f32()?,
                         )),
                         _ => panic!(
                             "cannot read PhysicalProperties with discriminator 0b{:b}",
@@ -575,12 +568,12 @@ impl DecodedValues {
                     });
                 }
 
-                Some(DecodedValues::PhysicalProperties(values))
+                Ok(DecodedValues::PhysicalProperties(values))
             }
             Type::Color3uint8 => {
-                let r = chunk.read_slice(prop_count).unwrap();
-                let g = chunk.read_slice(prop_count).unwrap();
-                let b = chunk.read_slice(prop_count).unwrap();
+                let r = chunk.read_slice(prop_count)?;
+                let g = chunk.read_slice(prop_count)?;
+                let b = chunk.read_slice(prop_count)?;
 
                 let values = r
                     .iter()
@@ -589,47 +582,41 @@ impl DecodedValues {
                     .map(|((r, g), b)| Color3uint8::new(*r, *g, *b))
                     .collect();
 
-                Some(DecodedValues::Color3uint8(values))
+                Ok(DecodedValues::Color3uint8(values))
             }
             Type::Int64 => {
-                let values = chunk
-                    .read_interleaved_i64_array(prop_count)
-                    .unwrap()
-                    .collect();
+                let values = chunk.read_interleaved_i64_array(prop_count)?.collect();
 
-                Some(DecodedValues::Int64(values))
+                Ok(DecodedValues::Int64(values))
             }
             Type::SharedString => {
-                let values = chunk
-                    .read_interleaved_u32_array(prop_count)
-                    .unwrap()
-                    .collect();
+                let values = chunk.read_interleaved_u32_array(prop_count)?.collect();
 
-                Some(DecodedValues::SharedString(values))
+                Ok(DecodedValues::SharedString(values))
             }
             Type::OptionalCFrame => {
                 let mut rotations = vec![Matrix3::identity(); prop_count];
 
-                chunk.read_u8().unwrap();
+                chunk.read_u8()?;
 
                 for rotation in rotations.iter_mut() {
-                    let id = chunk.read_u8().unwrap();
+                    let id = chunk.read_u8()?;
                     if id == 0 {
                         *rotation = Matrix3::new(
                             Vector3::new(
-                                chunk.read_le_f32().unwrap(),
-                                chunk.read_le_f32().unwrap(),
-                                chunk.read_le_f32().unwrap(),
+                                chunk.read_le_f32()?,
+                                chunk.read_le_f32()?,
+                                chunk.read_le_f32()?,
                             ),
                             Vector3::new(
-                                chunk.read_le_f32().unwrap(),
-                                chunk.read_le_f32().unwrap(),
-                                chunk.read_le_f32().unwrap(),
+                                chunk.read_le_f32()?,
+                                chunk.read_le_f32()?,
+                                chunk.read_le_f32()?,
                             ),
                             Vector3::new(
-                                chunk.read_le_f32().unwrap(),
-                                chunk.read_le_f32().unwrap(),
-                                chunk.read_le_f32().unwrap(),
+                                chunk.read_le_f32()?,
+                                chunk.read_le_f32()?,
+                                chunk.read_le_f32()?,
                             ),
                         );
                     } else {
@@ -637,70 +624,68 @@ impl DecodedValues {
                     }
                 }
 
-                let x = chunk.read_interleaved_f32_array(prop_count).unwrap();
-                let y = chunk.read_interleaved_f32_array(prop_count).unwrap();
-                let z = chunk.read_interleaved_f32_array(prop_count).unwrap();
+                let x = chunk.read_interleaved_f32_array(prop_count)?;
+                let y = chunk.read_interleaved_f32_array(prop_count)?;
+                let z = chunk.read_interleaved_f32_array(prop_count)?;
 
-                chunk.read_u8().unwrap();
+                chunk.read_u8()?;
 
                 let values = x
                     .zip(y)
                     .zip(z)
                     .zip(rotations)
                     .map(|(((x, y), z), rotation)| {
-                        if chunk.read_u8().unwrap() == 0 {
-                            None
+                        if chunk.read_u8()? == 0 {
+                            Ok::<_, io::Error>(None)
                         } else {
-                            Some(CFrame::new(Vector3::new(x, y, z), rotation))
+                            Ok(Some(CFrame::new(Vector3::new(x, y, z), rotation)))
                         }
                     })
-                    .collect();
+                    .collect::<Result<Vec<_>, _>>()?;
 
-                Some(DecodedValues::OptionalCFrame(values))
+                Ok(DecodedValues::OptionalCFrame(values))
             }
             Type::UniqueId => {
                 let values = chunk
-                    .read_interleaved_bytes::<16>(prop_count)
-                    .unwrap()
+                    .read_interleaved_bytes::<16>(prop_count)?
                     .map(|v| {
                         let mut bytes = v.as_slice();
 
-                        let index = bytes.read_be_u32().unwrap();
-                        let time = bytes.read_be_u32().unwrap();
-                        let random = bytes.read_be_i64().unwrap().rotate_right(1);
+                        let index = bytes.read_be_u32()?;
+                        let time = bytes.read_be_u32()?;
+                        let random = bytes.read_be_i64()?.rotate_right(1);
 
-                        UniqueId::new(index, time, random)
+                        Ok::<_, io::Error>(UniqueId::new(index, time, random))
                     })
-                    .collect();
+                    .collect::<Result<Vec<_>, _>>()?;
 
-                Some(DecodedValues::UniqueId(values))
+                Ok(DecodedValues::UniqueId(values))
             }
             Type::SecurityCapabilities => {
-                let values = chunk.read_interleaved_i64_array(prop_count).unwrap();
+                let values = chunk.read_interleaved_i64_array(prop_count)?;
 
                 let values = values
                     .map(|value| SecurityCapabilities::from_bits(value as u64))
                     .collect();
 
-                Some(DecodedValues::SecurityCapabilities(values))
+                Ok(DecodedValues::SecurityCapabilities(values))
             }
             Type::Content => {
                 let mut values = vec![SerializedContentType::None; prop_count];
 
-                let source_types = chunk.read_interleaved_i32_array(prop_count).unwrap();
+                let source_types = chunk.read_interleaved_i32_array(prop_count)?;
 
-                let uri_count = chunk.read_le_u32().unwrap() as usize;
+                let uri_count = chunk.read_le_u32()? as usize;
                 let mut uris = VecDeque::with_capacity(uri_count);
                 for _ in 0..uri_count {
-                    uris.push_front(chunk.read_string().unwrap().to_owned());
+                    uris.push_front(chunk.read_string()?.to_owned());
                 }
 
-                let object_count = chunk.read_le_u32().unwrap() as usize;
-                let mut objects: VecDeque<i32> =
-                    chunk.read_referent_array(object_count).unwrap().collect();
+                let object_count = chunk.read_le_u32()? as usize;
+                let mut objects: VecDeque<i32> = chunk.read_referent_array(object_count)?.collect();
 
-                let external_count = chunk.read_le_u32().unwrap() as usize;
-                let _external_objects = chunk.read_slice(external_count * 4).unwrap();
+                let external_count = chunk.read_le_u32()? as usize;
+                let _external_objects = chunk.read_slice(external_count * 4)?;
 
                 for (v, ty) in values.iter_mut().zip(source_types) {
                     *v = match ty {
@@ -711,7 +696,7 @@ impl DecodedValues {
                     }
                 }
 
-                Some(DecodedValues::Content(values))
+                Ok(DecodedValues::Content(values))
             }
         }
     }
