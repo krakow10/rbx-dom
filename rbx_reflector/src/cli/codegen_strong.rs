@@ -176,11 +176,17 @@ impl StrongInstancesCollector {
         // generate the StrongInstances variant
         self.variants.push(syn::parse_quote!(#ident(Box<#ident>)));
     }
-    fn codegen(mut self) -> syn::File {
+    fn sort(mut self) -> SortedStrongInstances {
         // sort for consistency
         self.structs.sort_by(|a, b| a.item.ident.cmp(&b.item.ident));
         self.variants.sort_by(|a, b| a.ident.cmp(&b.ident));
-
+        SortedStrongInstances(self)
+    }
+}
+struct SortedStrongInstances(StrongInstancesCollector);
+impl SortedStrongInstances {
+    fn codegen(self) -> syn::File {
+        let SortedStrongInstances(instances) = self;
         // generate StrongInstance enum
         let mut strong_instances_enum: syn::ItemEnum = syn::parse_quote! {
             #[derive(Debug, Clone)]
@@ -188,7 +194,7 @@ impl StrongInstancesCollector {
             pub enum StrongInstance {
             }
         };
-        strong_instances_enum.variants.extend(self.variants);
+        strong_instances_enum.variants.extend(instances.variants);
 
         // create complete file including use statements
         let mut complete_file: syn::File = syn::parse_quote! {
@@ -203,7 +209,8 @@ impl StrongInstancesCollector {
         complete_file
             .items
             .extend(
-                self.structs
+                instances
+                    .structs
                     .into_iter()
                     .flat_map(|StructWithImpls { item, impls }| {
                         std::iter::once(syn::Item::Struct(item)).chain(impls)
@@ -276,10 +283,17 @@ impl EnumCollector {
         // generate the StrongEnum variant
         self.variants.push(syn::parse_quote!(#ident(#ident)));
     }
-    fn codegen(mut self) -> syn::File {
+    fn sort(mut self) -> SortedEnums {
         // sort for consistency
         self.enums.sort_by(|a, b| a.ident.cmp(&b.ident));
         self.variants.sort_by(|a, b| a.ident.cmp(&b.ident));
+        SortedEnums(self)
+    }
+}
+struct SortedEnums(EnumCollector);
+impl SortedEnums {
+    fn codegen(self) -> syn::File {
+        let Self(enums) = self;
 
         // generate StrongInstance enum
         let mut strong_enum: syn::ItemEnum = syn::parse_quote! {
@@ -288,14 +302,14 @@ impl EnumCollector {
             pub enum StrongEnum {
             }
         };
-        strong_enum.variants.extend(self.variants);
+        strong_enum.variants.extend(enums.variants);
 
         // create complete file including use statements
         let mut complete_file: syn::File = syn::parse_quote! {};
         complete_file.items.push(syn::Item::Enum(strong_enum));
         complete_file
             .items
-            .extend(self.enums.into_iter().map(syn::Item::Enum));
+            .extend(enums.enums.into_iter().map(syn::Item::Enum));
 
         complete_file
     }
@@ -314,7 +328,7 @@ impl CodegenStrongSubcommand {
             for descriptor in db.classes.values() {
                 strong_instances.push(descriptor);
             }
-            let complete_file = strong_instances.codegen();
+            let complete_file = strong_instances.sort().codegen();
 
             // make a string of the unformatted code
             let code = complete_file.into_token_stream().to_string();
@@ -330,7 +344,7 @@ impl CodegenStrongSubcommand {
             for descriptor in db.enums.values() {
                 strong_enum.push(descriptor);
             }
-            let complete_file = strong_enum.codegen();
+            let complete_file = strong_enum.sort().codegen();
 
             // make a string of the unformatted code
             let code = complete_file.into_token_stream().to_string();
