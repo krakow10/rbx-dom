@@ -19,7 +19,6 @@ pub enum StrongInstance {
     AirController(Box<AirController>),
     AlignOrientation(Box<AlignOrientation>),
     AlignPosition(Box<AlignPosition>),
-    AnalysticsSettings(Box<AnalysticsSettings>),
     AnalyticsService(Box<AnalyticsService>),
     AngularVelocity(Box<AngularVelocity>),
     Animation(Box<Animation>),
@@ -29,7 +28,10 @@ pub enum StrongInstance {
     AnimationController(Box<AnimationController>),
     AnimationFromVideoCreatorService(Box<AnimationFromVideoCreatorService>),
     AnimationFromVideoCreatorStudioService(Box<AnimationFromVideoCreatorStudioService>),
+    AnimationGraphDefinition(Box<AnimationGraphDefinition>),
     AnimationImportData(Box<AnimationImportData>),
+    AnimationNode(Box<AnimationNode>),
+    AnimationNodeDefinition(Box<AnimationNodeDefinition>),
     AnimationRigData(Box<AnimationRigData>),
     AnimationStreamTrack(Box<AnimationStreamTrack>),
     AnimationTrack(Box<AnimationTrack>),
@@ -37,6 +39,7 @@ pub enum StrongInstance {
     Annotation(Box<Annotation>),
     AnnotationsService(Box<AnnotationsService>),
     AppLifecycleObserverService(Box<AppLifecycleObserverService>),
+    AppRatingPromptService(Box<AppRatingPromptService>),
     AppStorageService(Box<AppStorageService>),
     AppUpdateService(Box<AppUpdateService>),
     ArcHandles(Box<ArcHandles>),
@@ -66,22 +69,33 @@ pub enum StrongInstance {
     AudioFilter(Box<AudioFilter>),
     AudioFlanger(Box<AudioFlanger>),
     AudioFocusService(Box<AudioFocusService>),
+    AudioGate(Box<AudioGate>),
     AudioLimiter(Box<AudioLimiter>),
     AudioListener(Box<AudioListener>),
     AudioPages(Box<AudioPages>),
     AudioPitchShifter(Box<AudioPitchShifter>),
     AudioPlayer(Box<AudioPlayer>),
+    AudioRecorder(Box<AudioRecorder>),
     AudioReverb(Box<AudioReverb>),
     AudioSearchParams(Box<AudioSearchParams>),
+    AudioSpeechToText(Box<AudioSpeechToText>),
     AudioTextToSpeech(Box<AudioTextToSpeech>),
+    AudioTremolo(Box<AudioTremolo>),
     AuroraScript(Box<AuroraScript>),
+    AuroraScriptObject(Box<AuroraScriptObject>),
     AuroraScriptService(Box<AuroraScriptService>),
     AuroraService(Box<AuroraService>),
+    AvatarAccessoryRules(Box<AvatarAccessoryRules>),
+    AvatarAnimationRules(Box<AvatarAnimationRules>),
+    AvatarBodyRules(Box<AvatarBodyRules>),
     AvatarChatService(Box<AvatarChatService>),
+    AvatarClothingRules(Box<AvatarClothingRules>),
+    AvatarCollisionRules(Box<AvatarCollisionRules>),
     AvatarCreationService(Box<AvatarCreationService>),
     AvatarEditorService(Box<AvatarEditorService>),
     AvatarImportService(Box<AvatarImportService>),
-    AvatarPreloader(Box<AvatarPreloader>),
+    AvatarRules(Box<AvatarRules>),
+    AvatarSettings(Box<AvatarSettings>),
     Backpack(Box<Backpack>),
     BackpackItem(Box<BackpackItem>),
     BadgeService(Box<BadgeService>),
@@ -130,8 +144,10 @@ pub enum StrongInstance {
     CanvasGroup(Box<CanvasGroup>),
     Capture(Box<Capture>),
     CaptureService(Box<CaptureService>),
+    CapturesPages(Box<CapturesPages>),
     CatalogPages(Box<CatalogPages>),
     ChangeHistoryService(Box<ChangeHistoryService>),
+    ChangeHistoryStreamingService(Box<ChangeHistoryStreamingService>),
     ChannelSelectorSoundEffect(Box<ChannelSelectorSoundEffect>),
     ChannelTabsConfiguration(Box<ChannelTabsConfiguration>),
     CharacterAppearance(Box<CharacterAppearance>),
@@ -156,8 +172,6 @@ pub enum StrongInstance {
     Color3Value(Box<Color3Value>),
     ColorCorrectionEffect(Box<ColorCorrectionEffect>),
     ColorGradingEffect(Box<ColorGradingEffect>),
-    CommandInstance(Box<CommandInstance>),
-    CommandService(Box<CommandService>),
     CommerceService(Box<CommerceService>),
     CompressorSoundEffect(Box<CompressorSoundEffect>),
     ConeHandleAdornment(Box<ConeHandleAdornment>),
@@ -241,15 +255,18 @@ pub enum StrongInstance {
     EditableMesh(Box<EditableMesh>),
     EditableService(Box<EditableService>),
     EmotesPages(Box<EmotesPages>),
+    EncodingService(Box<EncodingService>),
     EqualizerSoundEffect(Box<EqualizerSoundEffect>),
     EulerRotationCurve(Box<EulerRotationCurve>),
     EventIngestService(Box<EventIngestService>),
-    ExampleService(Box<ExampleService>),
+    ExampleV2Service(Box<ExampleV2Service>),
+    ExecutedRemoteCommand(Box<ExecutedRemoteCommand>),
     ExperienceAuthService(Box<ExperienceAuthService>),
     ExperienceInviteOptions(Box<ExperienceInviteOptions>),
     ExperienceNotificationService(Box<ExperienceNotificationService>),
     ExperienceService(Box<ExperienceService>),
     ExperienceStateCaptureService(Box<ExperienceStateCaptureService>),
+    ExperienceStateRecordingService(Box<ExperienceStateRecordingService>),
     ExplorerFilter(Box<ExplorerFilter>),
     ExplorerFilterAutocompleter(Box<ExplorerFilterAutocompleter>),
     ExplorerServiceVisibilityService(Box<ExplorerServiceVisibilityService>),
@@ -265,8 +282,6 @@ pub enum StrongInstance {
     FacsImportData(Box<FacsImportData>),
     Feature(Box<Feature>),
     FeatureRestrictionManager(Box<FeatureRestrictionManager>),
-    FeedPages(Box<FeedPages>),
-    FeedService(Box<FeedService>),
     File(Box<File>),
     FileMesh(Box<FileMesh>),
     Fire(Box<Fire>),
@@ -297,7 +312,6 @@ pub enum StrongInstance {
     GlobalDataStore(Box<GlobalDataStore>),
     GlobalSettings(Box<GlobalSettings>),
     Glue(Box<Glue>),
-    GoogleAnalyticsConfiguration(Box<GoogleAnalyticsConfiguration>),
     GroundController(Box<GroundController>),
     GroupImportData(Box<GroupImportData>),
     GroupService(Box<GroupService>),
@@ -311,11 +325,13 @@ pub enum StrongInstance {
     GuiService(Box<GuiService>),
     GuidRegistryService(Box<GuidRegistryService>),
     HSRDataContentProvider(Box<HSRDataContentProvider>),
+    HandRigDescription(Box<HandRigDescription>),
     HandleAdornment(Box<HandleAdornment>),
     Handles(Box<Handles>),
     HandlesBase(Box<HandlesBase>),
     HapticEffect(Box<HapticEffect>),
     HapticService(Box<HapticService>),
+    HarmonyService(Box<HarmonyService>),
     Hat(Box<Hat>),
     HeapProfilerService(Box<HeapProfilerService>),
     HeatmapService(Box<HeatmapService>),
@@ -349,6 +365,7 @@ pub enum StrongInstance {
     InsertService(Box<InsertService>),
     Instance(Box<Instance>),
     InstanceAdornment(Box<InstanceAdornment>),
+    InstanceExtensionsService(Box<InstanceExtensionsService>),
     IntConstrainedValue(Box<IntConstrainedValue>),
     IntValue(Box<IntValue>),
     InternalSyncItem(Box<InternalSyncItem>),
@@ -390,6 +407,8 @@ pub enum StrongInstance {
     LuaWebService(Box<LuaWebService>),
     LuauScriptAnalyzerService(Box<LuauScriptAnalyzerService>),
     MLModelDeliveryService(Box<MLModelDeliveryService>),
+    MLService(Box<MLService>),
+    MLSession(Box<MLSession>),
     ManualGlue(Box<ManualGlue>),
     ManualSurfaceJointInstance(Box<ManualSurfaceJointInstance>),
     ManualWeld(Box<ManualWeld>),
@@ -397,7 +416,6 @@ pub enum StrongInstance {
     MarketplaceService(Box<MarketplaceService>),
     MatchmakingService(Box<MatchmakingService>),
     MaterialGenerationService(Box<MaterialGenerationService>),
-    MaterialGenerationSession(Box<MaterialGenerationSession>),
     MaterialImportData(Box<MaterialImportData>),
     MaterialService(Box<MaterialService>),
     MaterialVariant(Box<MaterialVariant>),
@@ -418,7 +436,9 @@ pub enum StrongInstance {
     MetaBreakpoint(Box<MetaBreakpoint>),
     MetaBreakpointContext(Box<MetaBreakpointContext>),
     MetaBreakpointManager(Box<MetaBreakpointManager>),
+    MicroProfilerService(Box<MicroProfilerService>),
     Model(Box<Model>),
+    ModerationService(Box<ModerationService>),
     ModuleScript(Box<ModuleScript>),
     Motor(Box<Motor>),
     Motor6D(Box<Motor6D>),
@@ -460,6 +480,7 @@ pub enum StrongInstance {
     PartOperation(Box<PartOperation>),
     PartOperationAsset(Box<PartOperationAsset>),
     ParticleEmitter(Box<ParticleEmitter>),
+    PartyEmulatorService(Box<PartyEmulatorService>),
     PatchBundlerFileWatch(Box<PatchBundlerFileWatch>),
     PatchMapping(Box<PatchMapping>),
     Path(Box<Path>),
@@ -521,10 +542,13 @@ pub enum StrongInstance {
     ProximityPrompt(Box<ProximityPrompt>),
     ProximityPromptService(Box<ProximityPromptService>),
     PublishService(Box<PublishService>),
+    PyramidHandleAdornment(Box<PyramidHandleAdornment>),
     QWidgetPluginGui(Box<QWidgetPluginGui>),
     RTAnimationTracker(Box<RTAnimationTracker>),
     RayValue(Box<RayValue>),
     RbxAnalyticsService(Box<RbxAnalyticsService>),
+    RecommendationPages(Box<RecommendationPages>),
+    RecommendationService(Box<RecommendationService>),
     ReflectionMetadata(Box<ReflectionMetadata>),
     ReflectionMetadataCallbacks(Box<ReflectionMetadataCallbacks>),
     ReflectionMetadataClass(Box<ReflectionMetadataClass>),
@@ -540,6 +564,7 @@ pub enum StrongInstance {
     ReflectionMetadataYieldFunctions(Box<ReflectionMetadataYieldFunctions>),
     ReflectionService(Box<ReflectionService>),
     RelativeGui(Box<RelativeGui>),
+    RemoteCommandService(Box<RemoteCommandService>),
     RemoteCursorService(Box<RemoteCursorService>),
     RemoteDebuggerServer(Box<RemoteDebuggerServer>),
     RemoteEvent(Box<RemoteEvent>),
@@ -570,6 +595,7 @@ pub enum StrongInstance {
     RunningAverageItemDouble(Box<RunningAverageItemDouble>),
     RunningAverageItemInt(Box<RunningAverageItemInt>),
     RunningAverageTimeIntervalItem(Box<RunningAverageTimeIntervalItem>),
+    RuntimeContentService(Box<RuntimeContentService>),
     RuntimeScriptService(Box<RuntimeScriptService>),
     SafetyService(Box<SafetyService>),
     ScreenGui(Box<ScreenGui>),
@@ -605,6 +631,7 @@ pub enum StrongInstance {
     ServerStorage(Box<ServerStorage>),
     ServiceProvider(Box<ServiceProvider>),
     ServiceVisibilityService(Box<ServiceVisibilityService>),
+    SessionCheckService(Box<SessionCheckService>),
     SessionService(Box<SessionService>),
     SharedTableRegistry(Box<SharedTableRegistry>),
     Shirt(Box<Shirt>),
@@ -614,6 +641,8 @@ pub enum StrongInstance {
     Skin(Box<Skin>),
     Sky(Box<Sky>),
     SlidingBallConstraint(Box<SlidingBallConstraint>),
+    SlimContentProvider(Box<SlimContentProvider>),
+    SlimService(Box<SlimService>),
     Smoke(Box<Smoke>),
     SmoothVoxelsUpgraderService(Box<SmoothVoxelsUpgraderService>),
     Snap(Box<Snap>),
@@ -624,6 +653,7 @@ pub enum StrongInstance {
     SoundEffect(Box<SoundEffect>),
     SoundGroup(Box<SoundGroup>),
     SoundService(Box<SoundService>),
+    SoundShimService(Box<SoundShimService>),
     Sparkles(Box<Sparkles>),
     SpawnLocation(Box<SpawnLocation>),
     SpawnerService(Box<SpawnerService>),
@@ -660,6 +690,7 @@ pub enum StrongInstance {
     StudioScriptDebugEventListener(Box<StudioScriptDebugEventListener>),
     StudioSdkService(Box<StudioSdkService>),
     StudioService(Box<StudioService>),
+    StudioTestService(Box<StudioTestService>),
     StudioTheme(Box<StudioTheme>),
     StudioUserService(Box<StudioUserService>),
     StudioWidget(Box<StudioWidget>),
@@ -667,6 +698,7 @@ pub enum StrongInstance {
     StyleBase(Box<StyleBase>),
     StyleDerive(Box<StyleDerive>),
     StyleLink(Box<StyleLink>),
+    StyleQuery(Box<StyleQuery>),
     StyleRule(Box<StyleRule>),
     StyleSheet(Box<StyleSheet>),
     StylingService(Box<StylingService>),
@@ -693,7 +725,11 @@ pub enum StrongInstance {
     TemporaryScriptService(Box<TemporaryScriptService>),
     Terrain(Box<Terrain>),
     TerrainDetail(Box<TerrainDetail>),
+    TerrainIterateOperation(Box<TerrainIterateOperation>),
+    TerrainModifyOperation(Box<TerrainModifyOperation>),
+    TerrainReadOperation(Box<TerrainReadOperation>),
     TerrainRegion(Box<TerrainRegion>),
+    TerrainWriteOperation(Box<TerrainWriteOperation>),
     TestService(Box<TestService>),
     TextBox(Box<TextBox>),
     TextBoxService(Box<TextBoxService>),
@@ -706,6 +742,7 @@ pub enum StrongInstance {
     TextChatService(Box<TextChatService>),
     TextFilterResult(Box<TextFilterResult>),
     TextFilterTranslatedResult(Box<TextFilterTranslatedResult>),
+    TextGenerator(Box<TextGenerator>),
     TextLabel(Box<TextLabel>),
     TextService(Box<TextService>),
     TextSource(Box<TextSource>),
@@ -770,6 +807,7 @@ pub enum StrongInstance {
     VRService(Box<VRService>),
     VRStatusService(Box<VRStatusService>),
     ValueBase(Box<ValueBase>),
+    ValueCurve(Box<ValueCurve>),
     Vector3Curve(Box<Vector3Curve>),
     Vector3Value(Box<Vector3Value>),
     VectorForce(Box<VectorForce>),
@@ -777,11 +815,14 @@ pub enum StrongInstance {
     VehicleSeat(Box<VehicleSeat>),
     VelocityMotor(Box<VelocityMotor>),
     VersionControlService(Box<VersionControlService>),
+    VideoCapture(Box<VideoCapture>),
     VideoCaptureService(Box<VideoCaptureService>),
     VideoDeviceInput(Box<VideoDeviceInput>),
     VideoDisplay(Box<VideoDisplay>),
     VideoFrame(Box<VideoFrame>),
     VideoPlayer(Box<VideoPlayer>),
+    VideoSampler(Box<VideoSampler>),
+    VideoScreenCaptureService(Box<VideoScreenCaptureService>),
     VideoService(Box<VideoService>),
     ViewportFrame(Box<ViewportFrame>),
     VirtualInputManager(Box<VirtualInputManager>),
@@ -795,6 +836,7 @@ pub enum StrongInstance {
     VoiceChatService(Box<VoiceChatService>),
     WebSocketClient(Box<WebSocketClient>),
     WebSocketService(Box<WebSocketService>),
+    WebStreamClient(Box<WebStreamClient>),
     WebViewService(Box<WebViewService>),
     WedgePart(Box<WedgePart>),
     Weld(Box<Weld>),
@@ -808,6 +850,7 @@ pub enum StrongInstance {
     WrapDeformer(Box<WrapDeformer>),
     WrapLayer(Box<WrapLayer>),
     WrapTarget(Box<WrapTarget>),
+    WrapTextureTransfer(Box<WrapTextureTransfer>),
 }
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
@@ -950,13 +993,6 @@ impl_inherits!(AlignPosition, Constraint);
 impl_strong_instance_from!(AlignPosition);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
-pub struct AnalysticsSettings {
-    superclass: GenericSettings,
-}
-impl_inherits!(AnalysticsSettings, GenericSettings);
-impl_strong_instance_from!(AnalysticsSettings);
-#[derive(Debug, Clone)]
-#[allow(nonstandard_style)]
 pub struct AnalyticsService {
     superclass: Instance,
     pub ApiKey: String,
@@ -1033,11 +1069,34 @@ impl_inherits!(AnimationFromVideoCreatorStudioService, Instance);
 impl_strong_instance_from!(AnimationFromVideoCreatorStudioService);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
+pub struct AnimationGraphDefinition {
+    superclass: AnimationClip,
+}
+impl_inherits!(AnimationGraphDefinition, AnimationClip);
+impl_strong_instance_from!(AnimationGraphDefinition);
+#[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct AnimationImportData {
     superclass: BaseImportData,
 }
 impl_inherits!(AnimationImportData, BaseImportData);
 impl_strong_instance_from!(AnimationImportData);
+#[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
+pub struct AnimationNode {
+    superclass: Object,
+}
+impl_inherits!(AnimationNode, Object);
+impl_strong_instance_from!(AnimationNode);
+#[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
+pub struct AnimationNodeDefinition {
+    superclass: Instance,
+    pub InputPinData: BinaryString,
+    pub NodeType: enums::AnimationNodeType,
+}
+impl_inherits!(AnimationNodeDefinition, Instance);
+impl_strong_instance_from!(AnimationNodeDefinition);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct AnimationRigData {
@@ -1095,6 +1154,13 @@ pub struct AppLifecycleObserverService {
 }
 impl_inherits!(AppLifecycleObserverService, Instance);
 impl_strong_instance_from!(AppLifecycleObserverService);
+#[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
+pub struct AppRatingPromptService {
+    superclass: Instance,
+}
+impl_inherits!(AppRatingPromptService, Instance);
+impl_strong_instance_from!(AppRatingPromptService);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct AppStorageService {
@@ -1169,6 +1235,7 @@ impl_strong_instance_from!(AssetPatchSettings);
 #[allow(nonstandard_style)]
 pub struct AssetService {
     superclass: Instance,
+    pub AllowInsertFreeAssets: bool,
 }
 impl_inherits!(AssetService, Instance);
 impl_strong_instance_from!(AssetService);
@@ -1303,9 +1370,11 @@ impl_strong_instance_from!(AudioEcho);
 #[allow(nonstandard_style)]
 pub struct AudioEmitter {
     superclass: Instance,
+    pub AcousticSimulationEnabled: bool,
     pub AngleAttenuation: BinaryString,
     pub AudioInteractionGroup: String,
     pub DistanceAttenuation: BinaryString,
+    pub PositionOverride: Ref,
     pub SimulationFidelity: enums::AudioSimulationFidelity,
 }
 impl_inherits!(AudioEmitter, Instance);
@@ -1363,6 +1432,17 @@ impl_inherits!(AudioFocusService, Instance);
 impl_strong_instance_from!(AudioFocusService);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
+pub struct AudioGate {
+    superclass: Instance,
+    pub Attack: f32,
+    pub Bypass: bool,
+    pub Release: f32,
+    pub Threshold: NumberRange,
+}
+impl_inherits!(AudioGate, Instance);
+impl_strong_instance_from!(AudioGate);
+#[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct AudioLimiter {
     superclass: Instance,
     pub Bypass: bool,
@@ -1375,9 +1455,11 @@ impl_strong_instance_from!(AudioLimiter);
 #[allow(nonstandard_style)]
 pub struct AudioListener {
     superclass: Instance,
+    pub AcousticSimulationEnabled: bool,
     pub AngleAttenuation: BinaryString,
     pub AudioInteractionGroup: String,
     pub DistanceAttenuation: BinaryString,
+    pub PositionOverride: Ref,
     pub SimulationFidelity: enums::AudioSimulationFidelity,
 }
 impl_inherits!(AudioListener, Instance);
@@ -1403,8 +1485,10 @@ impl_strong_instance_from!(AudioPitchShifter);
 #[allow(nonstandard_style)]
 pub struct AudioPlayer {
     superclass: Instance,
-    pub Asset: ContentId,
+    pub AudioContent: Content,
     pub AutoLoad: bool,
+    pub AutoPlay: bool,
+    pub IsMutedForCapture: bool,
     pub LoopRegion: NumberRange,
     pub Looping: bool,
     pub PlaybackRegion: NumberRange,
@@ -1414,6 +1498,14 @@ pub struct AudioPlayer {
 }
 impl_inherits!(AudioPlayer, Instance);
 impl_strong_instance_from!(AudioPlayer);
+#[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
+pub struct AudioRecorder {
+    superclass: Instance,
+    pub IsRecording: bool,
+}
+impl_inherits!(AudioRecorder, Instance);
+impl_strong_instance_from!(AudioRecorder);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct AudioReverb {
@@ -1451,6 +1543,15 @@ impl_inherits!(AudioSearchParams, Instance);
 impl_strong_instance_from!(AudioSearchParams);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
+pub struct AudioSpeechToText {
+    superclass: Instance,
+    pub Enabled: bool,
+    pub Text: String,
+}
+impl_inherits!(AudioSpeechToText, Instance);
+impl_strong_instance_from!(AudioSpeechToText);
+#[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct AudioTextToSpeech {
     superclass: Instance,
     pub Looping: bool,
@@ -1466,22 +1567,47 @@ impl_inherits!(AudioTextToSpeech, Instance);
 impl_strong_instance_from!(AudioTextToSpeech);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
+pub struct AudioTremolo {
+    superclass: Instance,
+    pub Bypass: bool,
+    pub Depth: f32,
+    pub Duty: f32,
+    pub Frequency: f32,
+    pub Shape: f32,
+    pub Skew: f32,
+    pub Square: f32,
+}
+impl_inherits!(AudioTremolo, Instance);
+impl_strong_instance_from!(AudioTremolo);
+#[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct AuroraScript {
     superclass: LuaSourceContainer,
+    pub AuroraScriptBindingsSerialize: BinaryString,
     pub EnableCulling: bool,
     pub EnableLod: bool,
     pub LodCriticality: i32,
     pub Priority: i32,
     pub Source: String,
-    pub Tag: String,
 }
 impl_inherits!(AuroraScript, LuaSourceContainer);
 impl_strong_instance_from!(AuroraScript);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
+pub struct AuroraScriptObject {
+    superclass: Instance,
+    pub BehaviorWeak: Ref,
+    pub BoundInstanceWeak: Ref,
+    pub FrameId: i32,
+    pub LodLevel: i32,
+    pub PriorFrameInvoked: i32,
+}
+impl_inherits!(AuroraScriptObject, Instance);
+impl_strong_instance_from!(AuroraScriptObject);
+#[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct AuroraScriptService {
     superclass: Instance,
-    pub BufferSize: i32,
 }
 impl_inherits!(AuroraScriptService, Instance);
 impl_strong_instance_from!(AuroraScriptService);
@@ -1489,9 +1615,110 @@ impl_strong_instance_from!(AuroraScriptService);
 #[allow(nonstandard_style)]
 pub struct AuroraService {
     superclass: Instance,
+    pub HashRoundingPoint: f64,
+    pub IgnoreRotation: bool,
+    pub LockStepIdOffset: bool,
+    pub RollbackOffset: i32,
 }
 impl_inherits!(AuroraService, Instance);
 impl_strong_instance_from!(AuroraService);
+#[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
+pub struct AvatarAccessoryRules {
+    superclass: Instance,
+    pub AccessoryMode: enums::AvatarSettingsAccessoryMode,
+    pub CustomAccessoryMode: enums::AvatarSettingsCustomAccessoryMode,
+    pub CustomBackAccessoryEnabled: bool,
+    pub CustomBackAccessoryId: i64,
+    pub CustomFaceAccessoryEnabled: bool,
+    pub CustomFaceAccessoryId: i64,
+    pub CustomFrontAccessoryEnabled: bool,
+    pub CustomFrontAccessoryId: i64,
+    pub CustomHairAccessoryEnabled: bool,
+    pub CustomHairAccessoryId: i64,
+    pub CustomHeadAccessoryEnabled: bool,
+    pub CustomHeadAccessoryId: i64,
+    pub CustomNeckAccessoryEnabled: bool,
+    pub CustomNeckAccessoryId: i64,
+    pub CustomShoulderAccessoryEnabled: bool,
+    pub CustomShoulderAccessoryId: i64,
+    pub CustomWaistAccessoryEnabled: bool,
+    pub CustomWaistAccessoryId: i64,
+    pub EnableSound: bool,
+    pub EnableVfx: bool,
+    pub LimitBounds: Vector3,
+    pub LimitMethod: enums::AvatarSettingsAccessoryLimitMethod,
+}
+impl_inherits!(AvatarAccessoryRules, Instance);
+impl_strong_instance_from!(AvatarAccessoryRules);
+#[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
+pub struct AvatarAnimationRules {
+    superclass: Instance,
+    pub AnimationClipsMode: enums::AvatarSettingsAnimationClipsMode,
+    pub AnimationPacksMode: enums::AvatarSettingsAnimationPacksMode,
+    pub CustomClimbAnimationEnabled: bool,
+    pub CustomClimbAnimationId: i64,
+    pub CustomFallAnimationEnabled: bool,
+    pub CustomFallAnimationId: i64,
+    pub CustomIdleAlt1AnimationEnabled: bool,
+    pub CustomIdleAlt1AnimationId: i64,
+    pub CustomIdleAlt2AnimationEnabled: bool,
+    pub CustomIdleAlt2AnimationId: i64,
+    pub CustomIdleAnimationEnabled: bool,
+    pub CustomIdleAnimationId: i64,
+    pub CustomJumpAnimationEnabled: bool,
+    pub CustomJumpAnimationId: i64,
+    pub CustomRunAnimationEnabled: bool,
+    pub CustomRunAnimationId: i64,
+    pub CustomSwimAnimationEnabled: bool,
+    pub CustomSwimAnimationId: i64,
+    pub CustomSwimIdleAnimationEnabled: bool,
+    pub CustomSwimIdleAnimationId: i64,
+    pub CustomWalkAnimationEnabled: bool,
+    pub CustomWalkAnimationId: i64,
+}
+impl_inherits!(AvatarAnimationRules, Instance);
+impl_strong_instance_from!(AvatarAnimationRules);
+#[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
+pub struct AvatarBodyRules {
+    superclass: Instance,
+    pub AppearanceMode: enums::AvatarSettingsAppearanceMode,
+    pub BuildMode: enums::AvatarSettingsBuildMode,
+    pub CustomBodyBundleId: i64,
+    pub CustomBodyType: enums::AvatarSettingsCustomBodyType,
+    pub CustomBodyTypeScale: NumberRange,
+    pub CustomEyebrowEnabled: bool,
+    pub CustomEyebrowId: i64,
+    pub CustomEyelashEnabled: bool,
+    pub CustomEyelashId: i64,
+    pub CustomFaceEnabled: bool,
+    pub CustomFaceId: i64,
+    pub CustomHeadEnabled: bool,
+    pub CustomHeadId: i64,
+    pub CustomHeadScale: NumberRange,
+    pub CustomHeight: NumberRange,
+    pub CustomHeightScale: NumberRange,
+    pub CustomLeftArmEnabled: bool,
+    pub CustomLeftArmId: i64,
+    pub CustomLeftLegEnabled: bool,
+    pub CustomLeftLegId: i64,
+    pub CustomMoodEnabled: bool,
+    pub CustomMoodId: i64,
+    pub CustomProportionsScale: NumberRange,
+    pub CustomRightArmEnabled: bool,
+    pub CustomRightArmId: i64,
+    pub CustomRightLegEnabled: bool,
+    pub CustomRightLegId: i64,
+    pub CustomTorsoEnabled: bool,
+    pub CustomTorsoId: i64,
+    pub CustomWidthScale: NumberRange,
+    pub KeepPlayerHead: bool,
+    pub ScaleMode: enums::AvatarSettingsScaleMode,
+}
+impl_inherits!(AvatarBodyRules, Instance);
+impl_strong_instance_from!(AvatarBodyRules);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct AvatarChatService {
@@ -1499,6 +1726,51 @@ pub struct AvatarChatService {
 }
 impl_inherits!(AvatarChatService, Instance);
 impl_strong_instance_from!(AvatarChatService);
+#[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
+pub struct AvatarClothingRules {
+    superclass: Instance,
+    pub ClothingMode: enums::AvatarSettingsClothingMode,
+    pub CustomClassicPantsAccessoryEnabled: bool,
+    pub CustomClassicPantsAccessoryId: i64,
+    pub CustomClassicShirtsAccessoryEnabled: bool,
+    pub CustomClassicShirtsAccessoryId: i64,
+    pub CustomClassicTShirtsAccessoryEnabled: bool,
+    pub CustomClassicTShirtsAccessoryId: i64,
+    pub CustomClothingMode: enums::AvatarSettingsCustomClothingMode,
+    pub CustomDressSkirtAccessoryEnabled: bool,
+    pub CustomDressSkirtAccessoryId: i64,
+    pub CustomJacketAccessoryEnabled: bool,
+    pub CustomJacketAccessoryId: i64,
+    pub CustomLeftShoesAccessoryEnabled: bool,
+    pub CustomLeftShoesAccessoryId: i64,
+    pub CustomPantsAccessoryEnabled: bool,
+    pub CustomPantsAccessoryId: i64,
+    pub CustomRightShoesAccessoryEnabled: bool,
+    pub CustomRightShoesAccessoryId: i64,
+    pub CustomShirtAccessoryEnabled: bool,
+    pub CustomShirtAccessoryId: i64,
+    pub CustomShortsAccessoryEnabled: bool,
+    pub CustomShortsAccessoryId: i64,
+    pub CustomSweaterAccessoryEnabled: bool,
+    pub CustomSweaterAccessoryId: i64,
+    pub CustomTShirtAccessoryEnabled: bool,
+    pub CustomTShirtAccessoryId: i64,
+    pub LimitBounds: Vector3,
+}
+impl_inherits!(AvatarClothingRules, Instance);
+impl_strong_instance_from!(AvatarClothingRules);
+#[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
+pub struct AvatarCollisionRules {
+    superclass: Instance,
+    pub CollisionMode: enums::AvatarSettingsCollisionMode,
+    pub HitAndTouchDetectionMode: enums::AvatarSettingsHitAndTouchDetectionMode,
+    pub LegacyCollisionMode: enums::AvatarSettingsLegacyCollisionMode,
+    pub SingleColliderSize: Vector3,
+}
+impl_inherits!(AvatarCollisionRules, Instance);
+impl_strong_instance_from!(AvatarCollisionRules);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct AvatarCreationService {
@@ -1522,11 +1794,19 @@ impl_inherits!(AvatarImportService, Instance);
 impl_strong_instance_from!(AvatarImportService);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
-pub struct AvatarPreloader {
+pub struct AvatarRules {
+    superclass: Instance,
+    pub AvatarType: enums::GameAvatarType,
+}
+impl_inherits!(AvatarRules, Instance);
+impl_strong_instance_from!(AvatarRules);
+#[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
+pub struct AvatarSettings {
     superclass: Instance,
 }
-impl_inherits!(AvatarPreloader, Instance);
-impl_strong_instance_from!(AvatarPreloader);
+impl_inherits!(AvatarSettings, Instance);
+impl_strong_instance_from!(AvatarSettings);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct Backpack {
@@ -1538,7 +1818,7 @@ impl_strong_instance_from!(Backpack);
 #[allow(nonstandard_style)]
 pub struct BackpackItem {
     superclass: Model,
-    pub TextureId: ContentId,
+    pub TextureContent: Content,
 }
 impl_inherits!(BackpackItem, Model);
 impl_strong_instance_from!(BackpackItem);
@@ -1715,7 +1995,6 @@ pub struct BillboardGui {
     pub Brightness: f32,
     pub ClipsDescendants: bool,
     pub DistanceLowerLimit: f32,
-    pub DistanceStep: f32,
     pub DistanceUpperLimit: f32,
     pub ExtentsOffset: Vector3,
     pub ExtentsOffsetWorldSpace: Vector3,
@@ -1832,6 +2111,7 @@ pub struct BodyPartDescription {
     pub AssetId: i64,
     pub BodyPart: enums::BodyPart,
     pub Color: Color3,
+    pub HeadShape: String,
     pub Instance: Ref,
 }
 impl_inherits!(BodyPartDescription, Instance);
@@ -1885,6 +2165,7 @@ impl_strong_instance_from!(BoolValue);
 #[allow(nonstandard_style)]
 pub struct BoxHandleAdornment {
     superclass: HandleAdornment,
+    pub Shading: enums::AdornShading,
     pub Size: Vector3,
 }
 impl_inherits!(BoxHandleAdornment, HandleAdornment);
@@ -2034,6 +2315,13 @@ impl_inherits!(CaptureService, Instance);
 impl_strong_instance_from!(CaptureService);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
+pub struct CapturesPages {
+    superclass: Pages,
+}
+impl_inherits!(CapturesPages, Pages);
+impl_strong_instance_from!(CapturesPages);
+#[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct CatalogPages {
     superclass: Pages,
 }
@@ -2046,6 +2334,13 @@ pub struct ChangeHistoryService {
 }
 impl_inherits!(ChangeHistoryService, Instance);
 impl_strong_instance_from!(ChangeHistoryService);
+#[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
+pub struct ChangeHistoryStreamingService {
+    superclass: Instance,
+}
+impl_inherits!(ChangeHistoryStreamingService, Instance);
+impl_strong_instance_from!(ChangeHistoryStreamingService);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct ChannelSelectorSoundEffect {
@@ -2165,7 +2460,7 @@ impl_strong_instance_from!(ChorusSoundEffect);
 #[allow(nonstandard_style)]
 pub struct ClickDetector {
     superclass: Instance,
-    pub CursorIcon: ContentId,
+    pub CursorIconContent: Content,
     pub MaxActivationDistance: f32,
 }
 impl_inherits!(ClickDetector, Instance);
@@ -2278,20 +2573,6 @@ impl_inherits!(ColorGradingEffect, PostEffect);
 impl_strong_instance_from!(ColorGradingEffect);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
-pub struct CommandInstance {
-    superclass: Instance,
-}
-impl_inherits!(CommandInstance, Instance);
-impl_strong_instance_from!(CommandInstance);
-#[derive(Debug, Clone)]
-#[allow(nonstandard_style)]
-pub struct CommandService {
-    superclass: Instance,
-}
-impl_inherits!(CommandService, Instance);
-impl_strong_instance_from!(CommandService);
-#[derive(Debug, Clone)]
-#[allow(nonstandard_style)]
 pub struct CommerceService {
     superclass: Instance,
 }
@@ -2315,7 +2596,9 @@ impl_strong_instance_from!(CompressorSoundEffect);
 pub struct ConeHandleAdornment {
     superclass: HandleAdornment,
     pub Height: f32,
+    pub Hollow: bool,
     pub Radius: f32,
+    pub Shading: enums::AdornShading,
 }
 impl_inherits!(ConeHandleAdornment, HandleAdornment);
 impl_strong_instance_from!(ConeHandleAdornment);
@@ -2561,6 +2844,7 @@ pub struct CylinderHandleAdornment {
     pub Height: f32,
     pub InnerRadius: f32,
     pub Radius: f32,
+    pub Shading: enums::AdornShading,
 }
 impl_inherits!(CylinderHandleAdornment, HandleAdornment);
 impl_strong_instance_from!(CylinderHandleAdornment);
@@ -2820,8 +3104,15 @@ impl_strong_instance_from!(DebuggerWatch);
 pub struct Decal {
     superclass: FaceInstance,
     pub Color3: Color3,
+    pub MetalnessMapContent: Content,
+    pub NormalMapContent: Content,
+    pub RoughnessMapContent: Content,
     pub TextureContent: Content,
+    pub TexturePack: ContentId,
+    pub TexturePackMetadata: String,
     pub Transparency: f32,
+    pub UvOffset: Vector2,
+    pub UvScale: Vector2,
     pub ZIndex: i32,
 }
 impl_inherits!(Decal, FaceInstance);
@@ -2907,7 +3198,7 @@ impl_strong_instance_from!(DraftsService);
 #[allow(nonstandard_style)]
 pub struct DragDetector {
     superclass: ClickDetector,
-    pub ActivatedCursorIcon: ContentId,
+    pub ActivatedCursorIconContent: Content,
     pub ApplyAtCenterOfMass: bool,
     pub DragFrame: CFrame,
     pub DragStyle: enums::DragDetectorDragStyle,
@@ -2998,6 +3289,13 @@ impl_inherits!(EmotesPages, InventoryPages);
 impl_strong_instance_from!(EmotesPages);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
+pub struct EncodingService {
+    superclass: Instance,
+}
+impl_inherits!(EncodingService, Instance);
+impl_strong_instance_from!(EncodingService);
+#[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct EqualizerSoundEffect {
     superclass: SoundEffect,
     pub HighGain: f32,
@@ -3023,11 +3321,18 @@ impl_inherits!(EventIngestService, Instance);
 impl_strong_instance_from!(EventIngestService);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
-pub struct ExampleService {
+pub struct ExampleV2Service {
     superclass: Instance,
 }
-impl_inherits!(ExampleService, Instance);
-impl_strong_instance_from!(ExampleService);
+impl_inherits!(ExampleV2Service, Instance);
+impl_strong_instance_from!(ExampleV2Service);
+#[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
+pub struct ExecutedRemoteCommand {
+    superclass: Object,
+}
+impl_inherits!(ExecutedRemoteCommand, Object);
+impl_strong_instance_from!(ExecutedRemoteCommand);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct ExperienceAuthService {
@@ -3067,6 +3372,13 @@ pub struct ExperienceStateCaptureService {
 }
 impl_inherits!(ExperienceStateCaptureService, Instance);
 impl_strong_instance_from!(ExperienceStateCaptureService);
+#[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
+pub struct ExperienceStateRecordingService {
+    superclass: Instance,
+}
+impl_inherits!(ExperienceStateRecordingService, Instance);
+impl_strong_instance_from!(ExperienceStateRecordingService);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct ExplorerFilter {
@@ -3185,20 +3497,6 @@ pub struct FeatureRestrictionManager {
 }
 impl_inherits!(FeatureRestrictionManager, Instance);
 impl_strong_instance_from!(FeatureRestrictionManager);
-#[derive(Debug, Clone)]
-#[allow(nonstandard_style)]
-pub struct FeedPages {
-    superclass: Pages,
-}
-impl_inherits!(FeedPages, Pages);
-impl_strong_instance_from!(FeedPages);
-#[derive(Debug, Clone)]
-#[allow(nonstandard_style)]
-pub struct FeedService {
-    superclass: Instance,
-}
-impl_inherits!(FeedService, Instance);
-impl_strong_instance_from!(FeedService);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct File {
@@ -3446,14 +3744,6 @@ impl_inherits!(Glue, JointInstance);
 impl_strong_instance_from!(Glue);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
-pub struct GoogleAnalyticsConfiguration {
-    superclass: Instance,
-    pub GaId: String,
-}
-impl_inherits!(GoogleAnalyticsConfiguration, Instance);
-impl_strong_instance_from!(GoogleAnalyticsConfiguration);
-#[derive(Debug, Clone)]
-#[allow(nonstandard_style)]
 pub struct GroundController {
     superclass: ControllerBase,
     pub AccelerationLean: f32,
@@ -3603,6 +3893,54 @@ impl_inherits!(HSRDataContentProvider, CacheableContentProvider);
 impl_strong_instance_from!(HSRDataContentProvider);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
+pub struct HandRigDescription {
+    superclass: Instance,
+    pub Index1: Ref,
+    pub Index1TposeAdjustment: CFrame,
+    pub Index2: Ref,
+    pub Index2TposeAdjustment: CFrame,
+    pub Index3: Ref,
+    pub Index3TposeAdjustment: CFrame,
+    pub IndexRange: Vector3,
+    pub IndexSize: f32,
+    pub Middle1: Ref,
+    pub Middle1TposeAdjustment: CFrame,
+    pub Middle2: Ref,
+    pub Middle2TposeAdjustment: CFrame,
+    pub Middle3: Ref,
+    pub Middle3TposeAdjustment: CFrame,
+    pub MiddleRange: Vector3,
+    pub MiddleSize: f32,
+    pub Pinky1: Ref,
+    pub Pinky1TposeAdjustment: CFrame,
+    pub Pinky2: Ref,
+    pub Pinky2TposeAdjustment: CFrame,
+    pub Pinky3: Ref,
+    pub Pinky3TposeAdjustment: CFrame,
+    pub PinkyRange: Vector3,
+    pub PinkySize: f32,
+    pub Ring1: Ref,
+    pub Ring1TposeAdjustment: CFrame,
+    pub Ring2: Ref,
+    pub Ring2TposeAdjustment: CFrame,
+    pub Ring3: Ref,
+    pub Ring3TposeAdjustment: CFrame,
+    pub RingRange: Vector3,
+    pub RingSize: f32,
+    pub Side: enums::HandRigDescriptionSide,
+    pub Thumb1: Ref,
+    pub Thumb1TposeAdjustment: CFrame,
+    pub Thumb2: Ref,
+    pub Thumb2TposeAdjustment: CFrame,
+    pub Thumb3: Ref,
+    pub Thumb3TposeAdjustment: CFrame,
+    pub ThumbRange: Vector3,
+    pub ThumbSize: f32,
+}
+impl_inherits!(HandRigDescription, Instance);
+impl_strong_instance_from!(HandRigDescription);
+#[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct HandleAdornment {
     superclass: PVAdornment,
     pub AdornCullingMode: enums::AdornCullingMode,
@@ -3638,6 +3976,7 @@ pub struct HapticEffect {
     pub Radius: f32,
     pub Type: enums::HapticEffectType,
     pub Waveform: Ref,
+    pub WaveformData: BinaryString,
 }
 impl_inherits!(HapticEffect, Instance);
 impl_strong_instance_from!(HapticEffect);
@@ -3648,6 +3987,13 @@ pub struct HapticService {
 }
 impl_inherits!(HapticService, Instance);
 impl_strong_instance_from!(HapticService);
+#[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
+pub struct HarmonyService {
+    superclass: Instance,
+}
+impl_inherits!(HarmonyService, Instance);
+impl_strong_instance_from!(HarmonyService);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct Hat {
@@ -3846,11 +4192,11 @@ pub struct HumanoidRigDescription {
     pub ChestRangeMin: Vector3,
     pub ChestSize: f32,
     pub ChestTposeAdjustment: CFrame,
-    pub Head: Ref,
-    pub HeadRangeMax: Vector3,
-    pub HeadRangeMin: Vector3,
-    pub HeadSize: f32,
-    pub HeadTposeAdjustment: CFrame,
+    pub HeadBase: Ref,
+    pub HeadBaseRangeMax: Vector3,
+    pub HeadBaseRangeMin: Vector3,
+    pub HeadBaseSize: f32,
+    pub HeadBaseTposeAdjustment: CFrame,
     pub LeftAnkle: Ref,
     pub LeftAnkleRangeMax: Vector3,
     pub LeftAnkleRangeMin: Vector3,
@@ -3896,6 +4242,7 @@ pub struct HumanoidRigDescription {
     pub NeckRangeMin: Vector3,
     pub NeckSize: f32,
     pub NeckTposeAdjustment: CFrame,
+    pub OriginOffset: CFrame,
     pub Pelvis: Ref,
     pub PelvisRangeMax: Vector3,
     pub PelvisRangeMin: Vector3,
@@ -4046,6 +4393,7 @@ pub struct IncrementalPatchBuilder {
     pub BuildDebouncePeriod: f64,
     pub HighCompression: bool,
     pub SerializePatch: bool,
+    pub UseFileLevelCompressionInsteadOfChunk: bool,
     pub ZstdCompression: bool,
 }
 impl_inherits!(IncrementalPatchBuilder, Instance);
@@ -4063,11 +4411,14 @@ impl_strong_instance_from!(InputAction);
 #[allow(nonstandard_style)]
 pub struct InputBinding {
     superclass: Instance,
+    pub Backward: enums::KeyCode,
     pub Down: enums::KeyCode,
+    pub Forward: enums::KeyCode,
     pub KeyCode: enums::KeyCode,
     pub Left: enums::KeyCode,
     pub PressedThreshold: f32,
     pub ReleasedThreshold: f32,
+    pub ResponseCurve: f32,
     pub Right: enums::KeyCode,
     pub Scale: f32,
     pub UiButton: Ref,
@@ -4123,6 +4474,13 @@ pub struct InstanceAdornment {
 }
 impl_inherits!(InstanceAdornment, GuiBase3d);
 impl_strong_instance_from!(InstanceAdornment);
+#[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
+pub struct InstanceExtensionsService {
+    superclass: Instance,
+}
+impl_inherits!(InstanceExtensionsService, Instance);
+impl_strong_instance_from!(InstanceExtensionsService);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct IntConstrainedValue {
@@ -4290,6 +4648,7 @@ pub struct Lighting {
     pub EnvironmentDiffuseScale: f32,
     pub EnvironmentSpecularScale: f32,
     pub ExposureCompensation: f32,
+    pub ExtendLightRangeTo120: enums::RolloutState,
     pub FogColor: Color3,
     pub FogEnd: f32,
     pub FogStart: f32,
@@ -4339,6 +4698,7 @@ pub struct LinearVelocity {
     pub MaxPlanarAxesForce: Vector2,
     pub PlaneVelocity: Vector2,
     pub PrimaryTangentAxis: Vector3,
+    pub ReactionForceEnabled: bool,
     pub RelativeTo: enums::ActuatorRelativeTo,
     pub SecondaryTangentAxis: Vector3,
     pub VectorVelocity: Vector3,
@@ -4477,6 +4837,20 @@ impl_inherits!(MLModelDeliveryService, Instance);
 impl_strong_instance_from!(MLModelDeliveryService);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
+pub struct MLService {
+    superclass: Instance,
+}
+impl_inherits!(MLService, Instance);
+impl_strong_instance_from!(MLService);
+#[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
+pub struct MLSession {
+    superclass: Object,
+}
+impl_inherits!(MLSession, Object);
+impl_strong_instance_from!(MLSession);
+#[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct ManualGlue {
     superclass: ManualSurfaceJointInstance,
 }
@@ -4527,16 +4901,10 @@ impl_inherits!(MaterialGenerationService, Instance);
 impl_strong_instance_from!(MaterialGenerationService);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
-pub struct MaterialGenerationSession {
-    superclass: Instance,
-}
-impl_inherits!(MaterialGenerationSession, Instance);
-impl_strong_instance_from!(MaterialGenerationSession);
-#[derive(Debug, Clone)]
-#[allow(nonstandard_style)]
 pub struct MaterialImportData {
     superclass: BaseImportData,
     pub DiffuseFilePath: String,
+    pub EmissiveFilePath: String,
     pub MetalnessFilePath: String,
     pub NormalFilePath: String,
     pub RoughnessFilePath: String,
@@ -4596,12 +4964,15 @@ impl_strong_instance_from!(MaterialService);
 pub struct MaterialVariant {
     superclass: Instance,
     pub BaseMaterial: enums::Material,
-    pub ColorMap: ContentId,
+    pub ColorMapContent: Content,
     pub CustomPhysicalProperties: PhysicalProperties,
+    pub EmissiveMaskContent: Content,
+    pub EmissiveStrength: f32,
+    pub EmissiveTint: Color3,
     pub MaterialPattern: enums::MaterialPattern,
-    pub MetalnessMap: ContentId,
-    pub NormalMap: ContentId,
-    pub RoughnessMap: ContentId,
+    pub MetalnessMapContent: Content,
+    pub NormalMapContent: Content,
+    pub RoughnessMapContent: Content,
     pub StudsPerTile: f32,
     pub TexturePack: ContentId,
 }
@@ -4758,6 +5129,14 @@ impl_inherits!(MetaBreakpointManager, Instance);
 impl_strong_instance_from!(MetaBreakpointManager);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
+pub struct MicroProfilerService {
+    superclass: Instance,
+    pub ContextLabel: String,
+}
+impl_inherits!(MicroProfilerService, Instance);
+impl_strong_instance_from!(MicroProfilerService);
+#[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct Model {
     superclass: PVInstance,
     pub LevelOfDetail: enums::ModelLevelOfDetail,
@@ -4767,10 +5146,18 @@ pub struct Model {
     pub ModelStreamingMode: enums::ModelStreamingMode,
     pub NeedsPivotMigration: bool,
     pub PrimaryPart: Ref,
+    pub SlimHash: SharedString,
     pub WorldPivotData: Option<CFrame>,
 }
 impl_inherits!(Model, PVInstance);
 impl_strong_instance_from!(Model);
+#[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
+pub struct ModerationService {
+    superclass: Instance,
+}
+impl_inherits!(ModerationService, Instance);
+impl_strong_instance_from!(ModerationService);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct ModuleScript {
@@ -4807,7 +5194,7 @@ impl_strong_instance_from!(MotorFeature);
 #[allow(nonstandard_style)]
 pub struct Mouse {
     superclass: Instance,
-    pub Icon: ContentId,
+    pub IconContent: Content,
     pub TargetFilter: Ref,
 }
 impl_inherits!(Mouse, Instance);
@@ -4830,6 +5217,7 @@ impl_strong_instance_from!(MultipleDocumentInterfaceInstance);
 #[allow(nonstandard_style)]
 pub struct NegateOperation {
     superclass: PartOperation,
+    pub PreviousOperation: enums::NegateOperationHiddenHistory,
 }
 impl_inherits!(NegateOperation, PartOperation);
 impl_strong_instance_from!(NegateOperation);
@@ -5072,13 +5460,16 @@ pub struct PartOperation {
     pub AssetId: ContentId,
     pub ChildData: BinaryString,
     pub ChildData2: SharedString,
+    pub ComponentIndex: i32,
     pub FormFactor: enums::FormFactor,
     pub InitialSize: Vector3,
     pub MeshData: BinaryString,
     pub MeshData2: SharedString,
+    pub OffCentered: bool,
     pub PhysicsData: BinaryString,
     pub RenderFidelity: enums::RenderFidelity,
     pub SmoothingAngle: f32,
+    pub SolidMeshHolder: NetAssetRef,
     pub UsePartColor: bool,
 }
 impl_inherits!(PartOperation, TriangleMeshPart);
@@ -5106,6 +5497,8 @@ pub struct ParticleEmitter {
     pub FlipbookIncompatible: String,
     pub FlipbookLayout: enums::ParticleFlipbookLayout,
     pub FlipbookMode: enums::ParticleFlipbookMode,
+    pub FlipbookSizeX: i32,
+    pub FlipbookSizeY: i32,
     pub FlipbookStartRandom: bool,
     pub Lifetime: NumberRange,
     pub LightEmission: f32,
@@ -5132,6 +5525,13 @@ pub struct ParticleEmitter {
 }
 impl_inherits!(ParticleEmitter, Instance);
 impl_strong_instance_from!(ParticleEmitter);
+#[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
+pub struct PartyEmulatorService {
+    superclass: Instance,
+}
+impl_inherits!(PartyEmulatorService, Instance);
+impl_strong_instance_from!(PartyEmulatorService);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct PatchBundlerFileWatch {
@@ -5375,7 +5775,6 @@ pub struct Player {
     pub DevEnableMouseLock: bool,
     pub DevTouchCameraMode: enums::DevTouchCameraMovementMode,
     pub DevTouchMovementMode: enums::DevTouchMovementMode,
-    pub GameplayPaused: bool,
     pub HealthDisplayDistance: f32,
     pub NameDisplayDistance: f32,
     pub Neutral: bool,
@@ -5666,6 +6065,7 @@ pub struct ProximityPrompt {
     pub HoldDuration: f32,
     pub KeyboardKeyCode: enums::KeyCode,
     pub MaxActivationDistance: f32,
+    pub MaxIndicatorDistance: f32,
     pub ObjectText: String,
     pub RequiresLineOfSight: bool,
     pub RootLocalizationTable: Ref,
@@ -5679,6 +6079,7 @@ impl_strong_instance_from!(ProximityPrompt);
 pub struct ProximityPromptService {
     superclass: Instance,
     pub Enabled: bool,
+    pub MaxIndicatorsVisible: i32,
     pub MaxPromptsVisible: i32,
 }
 impl_inherits!(ProximityPromptService, Instance);
@@ -5690,6 +6091,17 @@ pub struct PublishService {
 }
 impl_inherits!(PublishService, Instance);
 impl_strong_instance_from!(PublishService);
+#[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
+pub struct PyramidHandleAdornment {
+    superclass: HandleAdornment,
+    pub Height: f32,
+    pub Shading: enums::AdornShading,
+    pub Sides: i32,
+    pub Size: f32,
+}
+impl_inherits!(PyramidHandleAdornment, HandleAdornment);
+impl_strong_instance_from!(PyramidHandleAdornment);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct QWidgetPluginGui {
@@ -5719,6 +6131,20 @@ pub struct RbxAnalyticsService {
 }
 impl_inherits!(RbxAnalyticsService, Instance);
 impl_strong_instance_from!(RbxAnalyticsService);
+#[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
+pub struct RecommendationPages {
+    superclass: Pages,
+}
+impl_inherits!(RecommendationPages, Pages);
+impl_strong_instance_from!(RecommendationPages);
+#[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
+pub struct RecommendationService {
+    superclass: Instance,
+}
+impl_inherits!(RecommendationService, Instance);
+impl_strong_instance_from!(RecommendationService);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct ReflectionMetadata {
@@ -5845,6 +6271,13 @@ pub struct RelativeGui {
 }
 impl_inherits!(RelativeGui, GuiObject);
 impl_strong_instance_from!(RelativeGui);
+#[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
+pub struct RemoteCommandService {
+    superclass: Instance,
+}
+impl_inherits!(RemoteCommandService, Instance);
+impl_strong_instance_from!(RemoteCommandService);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct RemoteCursorService {
@@ -6137,6 +6570,13 @@ impl_inherits!(RunningAverageTimeIntervalItem, StatsItem);
 impl_strong_instance_from!(RunningAverageTimeIntervalItem);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
+pub struct RuntimeContentService {
+    superclass: Instance,
+}
+impl_inherits!(RuntimeContentService, Instance);
+impl_strong_instance_from!(RuntimeContentService);
+#[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct RuntimeScriptService {
     superclass: Instance,
 }
@@ -6291,18 +6731,18 @@ impl_strong_instance_from!(ScriptService);
 pub struct ScrollingFrame {
     superclass: GuiObject,
     pub AutomaticCanvasSize: enums::AutomaticSize,
-    pub BottomImage: ContentId,
+    pub BottomImageContent: Content,
     pub CanvasPosition: Vector2,
     pub CanvasSize: UDim2,
     pub ElasticBehavior: enums::ElasticBehavior,
     pub HorizontalScrollBarInset: enums::ScrollBarInset,
-    pub MidImage: ContentId,
+    pub MidImageContent: Content,
     pub ScrollBarImageColor3: Color3,
     pub ScrollBarImageTransparency: f32,
     pub ScrollBarThickness: i32,
     pub ScrollingDirection: enums::ScrollingDirection,
     pub ScrollingEnabled: bool,
-    pub TopImage: ContentId,
+    pub TopImageContent: Content,
     pub VerticalScrollBarInset: enums::ScrollBarInset,
     pub VerticalScrollBarPosition: enums::VerticalScrollBarPosition,
 }
@@ -6429,6 +6869,13 @@ impl_inherits!(ServiceVisibilityService, Instance);
 impl_strong_instance_from!(ServiceVisibilityService);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
+pub struct SessionCheckService {
+    superclass: Instance,
+}
+impl_inherits!(SessionCheckService, Instance);
+impl_strong_instance_from!(SessionCheckService);
+#[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct SessionService {
     superclass: Instance,
 }
@@ -6494,6 +6941,7 @@ pub struct Sky {
     pub SkyboxDn: ContentId,
     pub SkyboxFt: ContentId,
     pub SkyboxLf: ContentId,
+    pub SkyboxOrientation: Vector3,
     pub SkyboxRt: ContentId,
     pub SkyboxUp: ContentId,
     pub StarCount: i32,
@@ -6523,6 +6971,20 @@ pub struct SlidingBallConstraint {
 }
 impl_inherits!(SlidingBallConstraint, Constraint);
 impl_strong_instance_from!(SlidingBallConstraint);
+#[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
+pub struct SlimContentProvider {
+    superclass: CacheableContentProvider,
+}
+impl_inherits!(SlimContentProvider, CacheableContentProvider);
+impl_strong_instance_from!(SlimContentProvider);
+#[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
+pub struct SlimService {
+    superclass: Instance,
+}
+impl_inherits!(SlimService, Instance);
+impl_strong_instance_from!(SlimService);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct Smoke {
@@ -6572,6 +7034,8 @@ impl_strong_instance_from!(SolidModelContentProvider);
 #[allow(nonstandard_style)]
 pub struct Sound {
     superclass: Instance,
+    pub AudioContent: Content,
+    pub IsMutedForCapture: bool,
     pub LoopRegion: NumberRange,
     pub Looped: bool,
     pub PlayOnRemove: bool,
@@ -6581,7 +7045,6 @@ pub struct Sound {
     pub Playing: bool,
     pub RollOffMode: enums::RollOffMode,
     pub SoundGroup: Ref,
-    pub SoundId: ContentId,
     pub TimePosition: f64,
     pub Volume: f32,
 }
@@ -6608,6 +7071,7 @@ impl_strong_instance_from!(SoundGroup);
 #[allow(nonstandard_style)]
 pub struct SoundService {
     superclass: Instance,
+    pub AcousticSimulationEnabled: bool,
     pub AmbientReverb: enums::ReverbType,
     pub AudioApiByDefault: enums::RolloutState,
     pub CharacterSoundsUseNewApi: enums::RolloutState,
@@ -6621,6 +7085,13 @@ pub struct SoundService {
 }
 impl_inherits!(SoundService, Instance);
 impl_strong_instance_from!(SoundService);
+#[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
+pub struct SoundShimService {
+    superclass: Instance,
+}
+impl_inherits!(SoundShimService, Instance);
+impl_strong_instance_from!(SoundShimService);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct Sparkles {
@@ -6663,6 +7134,7 @@ impl_strong_instance_from!(SpecialMesh);
 pub struct SphereHandleAdornment {
     superclass: HandleAdornment,
     pub Radius: f32,
+    pub Shading: enums::AdornShading,
 }
 impl_inherits!(SphereHandleAdornment, HandleAdornment);
 impl_strong_instance_from!(SphereHandleAdornment);
@@ -6766,11 +7238,14 @@ pub struct StarterPlayer {
     pub CameraMaxZoomDistance: f32,
     pub CameraMinZoomDistance: f32,
     pub CameraMode: enums::CameraMode,
+    pub CharacterBreakJointsOnDeath: bool,
     pub CharacterJumpHeight: f32,
     pub CharacterJumpPower: f32,
     pub CharacterMaxSlopeAngle: f32,
     pub CharacterUseJumpPower: bool,
     pub CharacterWalkSpeed: f32,
+    pub ClassicDeath: bool,
+    pub CreateDefaultPlayerModule: bool,
     pub DevCameraOcclusionMode: enums::DevCameraOcclusionMode,
     pub DevComputerCameraMovementMode: enums::DevComputerCameraMovementMode,
     pub DevComputerMovementMode: enums::DevComputerMovementMode,
@@ -6800,7 +7275,6 @@ pub struct StarterPlayer {
     pub LoadCharacterLayeredClothing: enums::LoadCharacterLayeredClothing,
     pub LuaCharacterController: enums::CharacterControlMode,
     pub NameDisplayDistance: f32,
-    pub RagdollDeath: bool,
     pub UserEmotesEnabled: bool,
 }
 impl_inherits!(StarterPlayer, Instance);
@@ -6880,6 +7354,7 @@ pub struct Studio {
     pub AutoRecoveryEnabled: bool,
     pub AutoRecoveryIntervalMinutes: i32,
     pub AutoResumeSyncOnPlaceOpen: bool,
+    pub AutoUpdateEnabled: bool,
     pub AutocompleteAcceptanceBehavior: enums::CompletionAcceptanceBehavior,
     pub AutomaticallyTriggerAiCodeCompletion: bool,
     pub BasicObjectsDisplayMode: enums::ListDisplayMode,
@@ -6892,11 +7367,13 @@ pub struct Studio {
     pub CameraShiftSpeed: f32,
     pub CameraSpeed: f32,
     pub CameraSpeedAdjustBinding: enums::CameraSpeedAdjustBinding,
+    pub CameraSpeedLockDefault: bool,
     pub CameraTweenFocus: bool,
     pub CameraZoomSpeed: f32,
     pub CameraZoomToMousePosition: bool,
     pub ClearOutputOnStart: bool,
     pub CommandBarLocalState: bool,
+    pub DefaultScriptSyncFileType: enums::DefaultScriptSyncFileType,
     pub DeprecatedObjectsShown: bool,
     pub DisplayLanguage: String,
     pub DraggerActiveColor: Color3,
@@ -6913,6 +7390,7 @@ pub struct Studio {
     pub EnableAutocompleteDocView: bool,
     pub EnableCodeAssist: bool,
     pub EnableCoreScriptDebugger: bool,
+    pub EnableFindOnType: bool,
     pub EnableHttpSandboxing: bool,
     pub EnableIndentationRulers: bool,
     pub EnableInternalBetaFeatures: bool,
@@ -6923,12 +7401,12 @@ pub struct Studio {
     pub EnableSelectionTooltips: bool,
     pub EnableSignatureHelp: bool,
     pub EnableSignatureHelpDocView: bool,
+    pub EnableStudioStreaming: bool,
     pub EnableTemporaryTabs: bool,
     pub EnableTemporaryTabsInExplorer: bool,
     pub EnableTypeHover: bool,
     pub FormatOnPaste: bool,
     pub FormatOnType: bool,
-    pub FreeCameraSpeedScroll: bool,
     pub HighlightCurrentLine: bool,
     pub HighlightOccurances: bool,
     pub HoverAnimateSpeed: enums::HoverAnimateSpeed,
@@ -6940,9 +7418,11 @@ pub struct Studio {
     pub LargeFileThreshold: i32,
     pub LineThickness: f32,
     pub LoadAllBuiltinPluginsInRunModes: bool,
+    pub LoadInternalPlugins: bool,
     pub LoadUserPluginsInRunModes: bool,
     pub LuaDebuggerEnabled: bool,
     pub MainVolume: f32,
+    pub MaxFindReplaceAllResults: i32,
     pub MaximumOutputLines: i32,
     pub OnlyPlayAudioFromWindowInFocus: bool,
     pub OutputLayoutMode: enums::OutputLayoutMode,
@@ -7016,6 +7496,7 @@ impl_strong_instance_from!(StudioCallout);
 pub struct StudioCameraService {
     superclass: Instance,
     pub LockCameraSpeed: bool,
+    pub LoggingEnabled: bool,
 }
 impl_inherits!(StudioCameraService, Instance);
 impl_strong_instance_from!(StudioCameraService);
@@ -7073,6 +7554,13 @@ impl_inherits!(StudioService, Instance);
 impl_strong_instance_from!(StudioService);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
+pub struct StudioTestService {
+    superclass: Instance,
+}
+impl_inherits!(StudioTestService, Instance);
+impl_strong_instance_from!(StudioTestService);
+#[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct StudioTheme {
     superclass: Instance,
 }
@@ -7110,7 +7598,7 @@ impl_strong_instance_from!(StyleBase);
 #[allow(nonstandard_style)]
 pub struct StyleDerive {
     superclass: Instance,
-    pub Index: i32,
+    pub Priority: i32,
     pub StyleSheet: Ref,
 }
 impl_inherits!(StyleDerive, Instance);
@@ -7125,10 +7613,20 @@ impl_inherits!(StyleLink, Instance);
 impl_strong_instance_from!(StyleLink);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
+pub struct StyleQuery {
+    superclass: Instance,
+    pub AspectRatioRange: NumberRange,
+    pub ConditionsSerialize: BinaryString,
+    pub MaxSize: Vector2,
+    pub MinSize: Vector2,
+}
+impl_inherits!(StyleQuery, Instance);
+impl_strong_instance_from!(StyleQuery);
+#[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct StyleRule {
     superclass: StyleBase,
     pub Priority: i32,
-    pub PropertiesSerialize: BinaryString,
     pub Selector: String,
 }
 impl_inherits!(StyleRule, StyleBase);
@@ -7163,6 +7661,9 @@ pub struct SurfaceAppearance {
     pub AlphaMode: enums::AlphaMode,
     pub Color: Color3,
     pub ColorMapContent: Content,
+    pub EmissiveMaskContent: Content,
+    pub EmissiveStrength: f32,
+    pub EmissiveTint: Color3,
     pub MetalnessMapContent: Content,
     pub NormalMapContent: Content,
     pub RoughnessMapContent: Content,
@@ -7345,7 +7846,6 @@ pub struct Terrain {
     pub GrassLength: f32,
     pub MaterialColors: MaterialColors,
     pub PhysicsGrid: BinaryString,
-    pub ShorelinesUpgraded: bool,
     pub SmoothGrid: BinaryString,
     pub SmoothVoxelsUpgraded: bool,
     pub WaterColor: Color3,
@@ -7360,17 +7860,41 @@ impl_strong_instance_from!(Terrain);
 #[allow(nonstandard_style)]
 pub struct TerrainDetail {
     superclass: Instance,
-    pub ColorMap: ContentId,
+    pub ColorMapContent: Content,
+    pub EmissiveMaskContent: Content,
+    pub EmissiveStrength: f32,
+    pub EmissiveTint: Color3,
     pub Face: enums::TerrainFace,
     pub MaterialPattern: enums::MaterialPattern,
-    pub MetalnessMap: ContentId,
-    pub NormalMap: ContentId,
-    pub RoughnessMap: ContentId,
+    pub MetalnessMapContent: Content,
+    pub NormalMapContent: Content,
+    pub RoughnessMapContent: Content,
     pub StudsPerTile: f32,
     pub TexturePack: ContentId,
 }
 impl_inherits!(TerrainDetail, Instance);
 impl_strong_instance_from!(TerrainDetail);
+#[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
+pub struct TerrainIterateOperation {
+    superclass: Object,
+}
+impl_inherits!(TerrainIterateOperation, Object);
+impl_strong_instance_from!(TerrainIterateOperation);
+#[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
+pub struct TerrainModifyOperation {
+    superclass: Object,
+}
+impl_inherits!(TerrainModifyOperation, Object);
+impl_strong_instance_from!(TerrainModifyOperation);
+#[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
+pub struct TerrainReadOperation {
+    superclass: Object,
+}
+impl_inherits!(TerrainReadOperation, Object);
+impl_strong_instance_from!(TerrainReadOperation);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct TerrainRegion {
@@ -7381,6 +7905,13 @@ pub struct TerrainRegion {
 }
 impl_inherits!(TerrainRegion, Instance);
 impl_strong_instance_from!(TerrainRegion);
+#[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
+pub struct TerrainWriteOperation {
+    superclass: Object,
+}
+impl_inherits!(TerrainWriteOperation, Object);
+impl_strong_instance_from!(TerrainWriteOperation);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct TestService {
@@ -7515,6 +8046,7 @@ pub struct TextChatService {
     pub CreateDefaultCommands: bool,
     pub CreateDefaultTextChannels: bool,
     pub HasSeenDeprecationDialog: bool,
+    pub IsLegacyChatDisabled: bool,
 }
 impl_inherits!(TextChatService, Instance);
 impl_strong_instance_from!(TextChatService);
@@ -7532,6 +8064,17 @@ pub struct TextFilterTranslatedResult {
 }
 impl_inherits!(TextFilterTranslatedResult, Instance);
 impl_strong_instance_from!(TextFilterTranslatedResult);
+#[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
+pub struct TextGenerator {
+    superclass: Instance,
+    pub Seed: i32,
+    pub SystemPrompt: String,
+    pub Temperature: f32,
+    pub TopP: f32,
+}
+impl_inherits!(TextGenerator, Instance);
+impl_strong_instance_from!(TextGenerator);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct TextLabel {
@@ -7763,6 +8306,7 @@ pub struct TriangleMeshPart {
     superclass: BasePart,
     pub AeroMeshData: SharedString,
     pub FluidFidelityInternal: enums::FluidFidelity,
+    pub InertiaMigrated: bool,
     pub PhysicalConfigData: SharedString,
     pub UnscaledCofm: Vector3,
     pub UnscaledVolInertiaDiags: Vector3,
@@ -7864,10 +8408,10 @@ impl_strong_instance_from!(UICorner);
 #[allow(nonstandard_style)]
 pub struct UIDragDetector {
     superclass: UIComponent,
-    pub ActivatedCursorIcon: ContentId,
+    pub ActivatedCursorIconContent: Content,
     pub BoundingBehavior: enums::UIDragDetectorBoundingBehavior,
     pub BoundingUi: Ref,
-    pub CursorIcon: ContentId,
+    pub CursorIconContent: Content,
     pub DragAxis: Vector2,
     pub DragRelativity: enums::UIDragDetectorDragRelativity,
     pub DragRotation: f32,
@@ -8007,11 +8551,15 @@ impl_strong_instance_from!(UISizeConstraint);
 pub struct UIStroke {
     superclass: UIComponent,
     pub ApplyStrokeMode: enums::ApplyStrokeMode,
+    pub BorderOffset: UDim,
+    pub BorderStrokePosition: enums::BorderStrokePosition,
     pub Color: Color3,
     pub Enabled: bool,
     pub LineJoinMode: enums::LineJoinMode,
+    pub StrokeSizingMode: enums::StrokeSizingMode,
     pub Thickness: f32,
     pub Transparency: f32,
+    pub ZIndex: i32,
 }
 impl_inherits!(UIStroke, UIComponent);
 impl_strong_instance_from!(UIStroke);
@@ -8080,6 +8628,7 @@ impl_strong_instance_from!(UnvalidatedAssetService);
 pub struct UserGameSettings {
     superclass: Instance,
     pub AllTutorialsDisabled: bool,
+    pub BadgeVisible: bool,
     pub CameraMode: enums::CustomCameraMode,
     pub CameraYInverted: bool,
     pub ChatTranslationEnabled: bool,
@@ -8111,13 +8660,17 @@ pub struct UserGameSettings {
     pub MouseSensitivityThirdPerson: Vector2,
     pub OnScreenProfilerEnabled: bool,
     pub PartyVoiceVolume: f32,
+    pub PeoplePageLayout: enums::PeoplePageLayout,
     pub PerformanceStatsVisible: bool,
     pub PlayerHeight: f32,
+    pub PlayerListVisible: bool,
+    pub PlayerNamesEnabled: bool,
     pub PreferredTextSize: enums::PreferredTextSize,
     pub PreferredTransparency: f32,
     pub QualityResetLevel: i32,
     pub RccProfilerRecordFrameRate: i32,
     pub RccProfilerRecordTimeFrame: i32,
+    pub ReadAloud: bool,
     pub ReducedMotion: bool,
     pub SavedQualityLevel: enums::SavedQualitySetting,
     pub StartMaximized: bool,
@@ -8150,7 +8703,7 @@ pub struct UserInputService {
     superclass: Instance,
     pub LegacyInputEventsEnabled: bool,
     pub MouseBehavior: enums::MouseBehavior,
-    pub MouseIcon: ContentId,
+    pub MouseIconContent: Content,
     pub MouseIconEnabled: bool,
 }
 impl_inherits!(UserInputService, Instance);
@@ -8202,6 +8755,14 @@ pub struct ValueBase {
 }
 impl_inherits!(ValueBase, Instance);
 impl_strong_instance_from!(ValueBase);
+#[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
+pub struct ValueCurve {
+    superclass: Instance,
+    pub ValuesAndTimes: BinaryString,
+}
+impl_inherits!(ValueCurve, Instance);
+impl_strong_instance_from!(ValueCurve);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct Vector3Curve {
@@ -8270,6 +8831,13 @@ impl_inherits!(VersionControlService, Instance);
 impl_strong_instance_from!(VersionControlService);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
+pub struct VideoCapture {
+    superclass: Capture,
+}
+impl_inherits!(VideoCapture, Capture);
+impl_strong_instance_from!(VideoCapture);
+#[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct VideoCaptureService {
     superclass: Instance,
 }
@@ -8306,7 +8874,7 @@ pub struct VideoFrame {
     pub Looped: bool,
     pub Playing: bool,
     pub TimePosition: f64,
-    pub Video: ContentId,
+    pub VideoContent: Content,
     pub Volume: f32,
 }
 impl_inherits!(VideoFrame, GuiObject);
@@ -8315,14 +8883,28 @@ impl_strong_instance_from!(VideoFrame);
 #[allow(nonstandard_style)]
 pub struct VideoPlayer {
     superclass: Instance,
-    pub Asset: ContentId,
     pub Looping: bool,
     pub PlaybackSpeed: f32,
     pub TimePosition: f64,
+    pub VideoContent: Content,
     pub Volume: f32,
 }
 impl_inherits!(VideoPlayer, Instance);
 impl_strong_instance_from!(VideoPlayer);
+#[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
+pub struct VideoSampler {
+    superclass: Object,
+}
+impl_inherits!(VideoSampler, Object);
+impl_strong_instance_from!(VideoSampler);
+#[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
+pub struct VideoScreenCaptureService {
+    superclass: Instance,
+}
+impl_inherits!(VideoScreenCaptureService, Instance);
+impl_strong_instance_from!(VideoScreenCaptureService);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct VideoService {
@@ -8431,6 +9013,13 @@ impl_inherits!(WebSocketService, Instance);
 impl_strong_instance_from!(WebSocketService);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
+pub struct WebStreamClient {
+    superclass: Object,
+}
+impl_inherits!(WebStreamClient, Object);
+impl_strong_instance_from!(WebStreamClient);
+#[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct WebViewService {
     superclass: Instance,
 }
@@ -8484,7 +9073,9 @@ impl_strong_instance_from!(WireframeHandleAdornment);
 pub struct Workspace {
     superclass: WorldRoot,
     pub AirDensity: f32,
+    pub AirTurbulenceIntensity: f32,
     pub AllowThirdPartySales: bool,
+    pub AuthorityMode: enums::AuthorityMode,
     pub AvatarUnificationMode: enums::AvatarUnificationMode,
     pub ClientAnimatorThrottling: enums::ClientAnimatorThrottlingMode,
     pub CollisionGroupData: BinaryString,
@@ -8498,6 +9089,7 @@ pub struct Workspace {
     pub GlobalWind: Vector3,
     pub Gravity: f32,
     pub IkControlConstraintSupport: enums::IKControlConstraintSupport,
+    pub LuauTypeCheckMode: enums::LuauTypeCheckMode,
     pub MeshPartHeadsAndAccessories: enums::MeshPartHeadsAndAccessories,
     pub ModelStreamingBehavior: enums::ModelStreamingBehavior,
     pub MoverConstraintRootBehavior: enums::MoverConstraintRootBehaviorMode,
@@ -8519,6 +9111,7 @@ pub struct Workspace {
     pub TerrainWeldsFixed: bool,
     pub TouchEventsUseCollisionGroups: enums::RolloutState,
     pub TouchesUseCollisionGroups: bool,
+    pub UseNewLuauTypeSolver: enums::RolloutState,
 }
 impl_inherits!(Workspace, WorldRoot);
 impl_strong_instance_from!(Workspace);
@@ -8574,3 +9167,13 @@ pub struct WrapTarget {
 }
 impl_inherits!(WrapTarget, BaseWrap);
 impl_strong_instance_from!(WrapTarget);
+#[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
+pub struct WrapTextureTransfer {
+    superclass: Instance,
+    pub ReferenceCageMeshContent: Content,
+    pub UvMaxBound: Vector2,
+    pub UvMinBound: Vector2,
+}
+impl_inherits!(WrapTextureTransfer, Instance);
+impl_strong_instance_from!(WrapTextureTransfer);

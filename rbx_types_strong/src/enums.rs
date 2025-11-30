@@ -17,6 +17,7 @@ pub enum StrongEnum {
     AdUIType(AdUIType),
     AdUnitStatus(AdUnitStatus),
     AdornCullingMode(AdornCullingMode),
+    AdornShading(AdornShading),
     AlignType(AlignType),
     AlphaMode(AlphaMode),
     AnalyticsCustomFieldKeys(AnalyticsCustomFieldKeys),
@@ -27,9 +28,14 @@ pub enum StrongEnum {
     AnalyticsProgressionStatus(AnalyticsProgressionStatus),
     AnalyticsProgressionType(AnalyticsProgressionType),
     AnimationClipFromVideoStatus(AnimationClipFromVideoStatus),
+    AnimationNodePlayMode(AnimationNodePlayMode),
+    AnimationNodeTransitionType(AnimationNodeTransitionType),
+    AnimationNodeType(AnimationNodeType),
     AnimationPriority(AnimationPriority),
     AnimatorRetargetingMode(AnimatorRetargetingMode),
+    AnnotationChannelContentPreference(AnnotationChannelContentPreference),
     AnnotationEditingMode(AnnotationEditingMode),
+    AnnotationPlaceContentPreference(AnnotationPlaceContentPreference),
     AnnotationRequestStatus(AnnotationRequestStatus),
     AnnotationRequestType(AnnotationRequestType),
     AppLifecycleManagerState(AppLifecycleManagerState),
@@ -43,11 +49,13 @@ pub enum StrongEnum {
     AssetType(AssetType),
     AssetTypeVerification(AssetTypeVerification),
     AudioApiRollout(AudioApiRollout),
+    AudioCaptureMode(AudioCaptureMode),
     AudioChannelLayout(AudioChannelLayout),
     AudioFilterType(AudioFilterType),
     AudioSimulationFidelity(AudioSimulationFidelity),
     AudioSubType(AudioSubType),
     AudioWindowSize(AudioWindowSize),
+    AuthorityMode(AuthorityMode),
     AutoIndentRule(AutoIndentRule),
     AutomaticSize(AutomaticSize),
     AvatarAssetType(AvatarAssetType),
@@ -56,6 +64,21 @@ pub enum StrongEnum {
     AvatarGenerationError(AvatarGenerationError),
     AvatarItemType(AvatarItemType),
     AvatarPromptResult(AvatarPromptResult),
+    AvatarSettingsAccessoryLimitMethod(AvatarSettingsAccessoryLimitMethod),
+    AvatarSettingsAccessoryMode(AvatarSettingsAccessoryMode),
+    AvatarSettingsAnimationClipsMode(AvatarSettingsAnimationClipsMode),
+    AvatarSettingsAnimationPacksMode(AvatarSettingsAnimationPacksMode),
+    AvatarSettingsAppearanceMode(AvatarSettingsAppearanceMode),
+    AvatarSettingsBuildMode(AvatarSettingsBuildMode),
+    AvatarSettingsClothingMode(AvatarSettingsClothingMode),
+    AvatarSettingsCollisionMode(AvatarSettingsCollisionMode),
+    AvatarSettingsCustomAccessoryMode(AvatarSettingsCustomAccessoryMode),
+    AvatarSettingsCustomBodyType(AvatarSettingsCustomBodyType),
+    AvatarSettingsCustomClothingMode(AvatarSettingsCustomClothingMode),
+    AvatarSettingsHitAndTouchDetectionMode(AvatarSettingsHitAndTouchDetectionMode),
+    AvatarSettingsJumpMode(AvatarSettingsJumpMode),
+    AvatarSettingsLegacyCollisionMode(AvatarSettingsLegacyCollisionMode),
+    AvatarSettingsScaleMode(AvatarSettingsScaleMode),
     AvatarThumbnailCustomizationType(AvatarThumbnailCustomizationType),
     AvatarUnificationMode(AvatarUnificationMode),
     Axis(Axis),
@@ -64,6 +87,7 @@ pub enum StrongEnum {
     BodyPart(BodyPart),
     BodyPartR15(BodyPartR15),
     BorderMode(BorderMode),
+    BorderStrokePosition(BorderStrokePosition),
     BreakReason(BreakReason),
     BreakpointRemoveReason(BreakpointRemoveReason),
     BulkMoveMode(BulkMoveMode),
@@ -75,9 +99,12 @@ pub enum StrongEnum {
     CameraPanMode(CameraPanMode),
     CameraSpeedAdjustBinding(CameraSpeedAdjustBinding),
     CameraType(CameraType),
+    CaptureGalleryPermission(CaptureGalleryPermission),
+    CaptureType(CaptureType),
     CatalogCategoryFilter(CatalogCategoryFilter),
     CatalogSortAggregation(CatalogSortAggregation),
     CatalogSortType(CatalogSortType),
+    CatalogTimedOptionFilter(CatalogTimedOptionFilter),
     CellBlock(CellBlock),
     CellMaterial(CellMaterial),
     CellOrientation(CellOrientation),
@@ -100,6 +127,7 @@ pub enum StrongEnum {
     CompletionItemKind(CompletionItemKind),
     CompletionItemTag(CompletionItemTag),
     CompletionTriggerKind(CompletionTriggerKind),
+    CompressionAlgorithm(CompressionAlgorithm),
     ComputerCameraMovementMode(ComputerCameraMovementMode),
     ComputerMovementMode(ComputerMovementMode),
     ConfigSnapshotErrorState(ConfigSnapshotErrorState),
@@ -122,6 +150,7 @@ pub enum StrongEnum {
     DebuggerFrameType(DebuggerFrameType),
     DebuggerPauseReason(DebuggerPauseReason),
     DebuggerStatus(DebuggerStatus),
+    DefaultScriptSyncFileType(DefaultScriptSyncFileType),
     DevCameraOcclusionMode(DevCameraOcclusionMode),
     DevComputerCameraMovementMode(DevComputerCameraMovementMode),
     DevComputerMovementMode(DevComputerMovementMode),
@@ -135,6 +164,7 @@ pub enum StrongEnum {
     DialogBehaviorType(DialogBehaviorType),
     DialogPurpose(DialogPurpose),
     DialogTone(DialogTone),
+    DisplaySize(DisplaySize),
     DominantAxis(DominantAxis),
     DraftStatusCode(DraftStatusCode),
     DragDetectorDragStyle(DragDetectorDragStyle),
@@ -149,12 +179,17 @@ pub enum StrongEnum {
     ElasticBehavior(ElasticBehavior),
     EnviromentalPhysicsThrottle(EnviromentalPhysicsThrottle),
     ExperienceAuthScope(ExperienceAuthScope),
+    ExperienceEventStatus(ExperienceEventStatus),
+    ExperienceStateCaptureSelectionMode(ExperienceStateCaptureSelectionMode),
+    ExperienceStateRecordingLoadMode(ExperienceStateRecordingLoadMode),
+    ExperienceStateRecordingLoadSourceType(ExperienceStateRecordingLoadSourceType),
+    ExperienceStateRecordingPlaybackMode(ExperienceStateRecordingPlaybackMode),
     ExplosionType(ExplosionType),
     FACSDataLod(FACSDataLod),
     FacialAgeEstimationResultType(FacialAgeEstimationResultType),
     FacialAnimationStreamingState(FacialAnimationStreamingState),
     FacsActionUnit(FacsActionUnit),
-    FeedRankingScoreType(FeedRankingScoreType),
+    FeatureRestrictionAbuseVector(FeatureRestrictionAbuseVector),
     FieldOfViewMode(FieldOfViewMode),
     FillDirection(FillDirection),
     FilterErrorType(FilterErrorType),
@@ -180,10 +215,13 @@ pub enum StrongEnum {
     Genre(Genre),
     GraphicsMode(GraphicsMode),
     GraphicsOptimizationMode(GraphicsOptimizationMode),
+    GroupMembershipStatus(GroupMembershipStatus),
     GuiState(GuiState),
     GuiType(GuiType),
+    HandRigDescriptionSide(HandRigDescriptionSide),
     HandlesStyle(HandlesStyle),
     HapticEffectType(HapticEffectType),
+    HashAlgorithm(HashAlgorithm),
     HighlightDepthMode(HighlightDepthMode),
     HorizontalAlignment(HorizontalAlignment),
     HoverAnimateSpeed(HoverAnimateSpeed),
@@ -231,6 +269,7 @@ pub enum StrongEnum {
     LoadCharacterLayeredClothing(LoadCharacterLayeredClothing),
     LoadDynamicHeads(LoadDynamicHeads),
     LocationType(LocationType),
+    LuauTypeCheckMode(LuauTypeCheckMode),
     MarketplaceBulkPurchasePromptStatus(MarketplaceBulkPurchasePromptStatus),
     MarketplaceItemPurchaseStatus(MarketplaceItemPurchaseStatus),
     MarketplaceProductType(MarketplaceProductType),
@@ -247,6 +286,8 @@ pub enum StrongEnum {
     ModelLevelOfDetail(ModelLevelOfDetail),
     ModelStreamingBehavior(ModelStreamingBehavior),
     ModelStreamingMode(ModelStreamingMode),
+    ModerationResultCategory(ModerationResultCategory),
+    ModerationResultLabel(ModerationResultLabel),
     ModerationStatus(ModerationStatus),
     ModifierKey(ModifierKey),
     MouseBehavior(MouseBehavior),
@@ -254,6 +295,7 @@ pub enum StrongEnum {
     MoverConstraintRootBehaviorMode(MoverConstraintRootBehaviorMode),
     MuteState(MuteState),
     NameOcclusion(NameOcclusion),
+    NegateOperationHiddenHistory(NegateOperationHiddenHistory),
     NetworkOwnership(NetworkOwnership),
     NetworkStatus(NetworkStatus),
     NoiseType(NoiseType),
@@ -277,9 +319,13 @@ pub enum StrongEnum {
     PathStatus(PathStatus),
     PathWaypointAction(PathWaypointAction),
     PathfindingUseImprovedSearch(PathfindingUseImprovedSearch),
+    PeoplePageLayout(PeoplePageLayout),
+    PerformanceOverlayMode(PerformanceOverlayMode),
     PermissionLevelShown(PermissionLevelShown),
     PhysicsSimulationRate(PhysicsSimulationRate),
     PhysicsSteppingMethod(PhysicsSteppingMethod),
+    PlaceContentPreference(PlaceContentPreference),
+    PlacePublishType(PlacePublishType),
     Platform(Platform),
     PlaybackState(PlaybackState),
     PlayerActions(PlayerActions),
@@ -287,9 +333,13 @@ pub enum StrongEnum {
     PlayerChatType(PlayerChatType),
     PlayerDataErrorState(PlayerDataErrorState),
     PlayerDataLoadFailureBehavior(PlayerDataLoadFailureBehavior),
+    PlayerExitReason(PlayerExitReason),
     PoseEasingDirection(PoseEasingDirection),
     PoseEasingStyle(PoseEasingStyle),
     PositionAlignmentMode(PositionAlignmentMode),
+    PredictionMode(PredictionMode),
+    PredictionStatus(PredictionStatus),
+    PreferredInput(PreferredInput),
     PreferredTextSize(PreferredTextSize),
     PrimalPhysicsSolver(PrimalPhysicsSolver),
     PrimitiveType(PrimitiveType),
@@ -299,6 +349,8 @@ pub enum StrongEnum {
     ProductPurchaseDecision(ProductPurchaseDecision),
     PromptCreateAssetResult(PromptCreateAssetResult),
     PromptCreateAvatarResult(PromptCreateAvatarResult),
+    PromptExperienceDetailsResult(PromptExperienceDetailsResult),
+    PromptLinkSharingResult(PromptLinkSharingResult),
     PromptPublishAssetResult(PromptPublishAssetResult),
     PropertyStatus(PropertyStatus),
     ProximityPromptExclusivity(ProximityPromptExclusivity),
@@ -307,6 +359,12 @@ pub enum StrongEnum {
     QualityLevel(QualityLevel),
     R15CollisionType(R15CollisionType),
     RaycastFilterType(RaycastFilterType),
+    ReadCapturesFromGalleryResult(ReadCapturesFromGalleryResult),
+    RecommendationActionType(RecommendationActionType),
+    RecommendationDepartureIntent(RecommendationDepartureIntent),
+    RecommendationImpressionType(RecommendationImpressionType),
+    RecommendationItemContentType(RecommendationItemContentType),
+    RecommendationItemVisibility(RecommendationItemVisibility),
     RejectCharacterDeletions(RejectCharacterDeletions),
     RenderFidelity(RenderFidelity),
     RenderPriority(RenderPriority),
@@ -318,6 +376,7 @@ pub enum StrongEnum {
     RestPose(RestPose),
     ReturnKeyType(ReturnKeyType),
     ReverbType(ReverbType),
+    ReviewableContentState(ReviewableContentState),
     RibbonTool(RibbonTool),
     RigScale(RigScale),
     RigType(RigType),
@@ -325,6 +384,7 @@ pub enum StrongEnum {
     RolloutState(RolloutState),
     RotationOrder(RotationOrder),
     RotationType(RotationType),
+    RsvpStatus(RsvpStatus),
     RtlTextSupport(RtlTextSupport),
     RunContext(RunContext),
     RunState(RunState),
@@ -361,9 +421,11 @@ pub enum StrongEnum {
     StartCorner(StartCorner),
     StateObjectFieldType(StateObjectFieldType),
     Status(Status),
+    StepFrequency(StepFrequency),
     StreamOutBehavior(StreamOutBehavior),
     StreamingIntegrityMode(StreamingIntegrityMode),
     StreamingPauseMode(StreamingPauseMode),
+    StrokeSizingMode(StrokeSizingMode),
     StudioCloseMode(StudioCloseMode),
     StudioDataModelType(StudioDataModelType),
     StudioPlaceUpdateFailureReason(StudioPlaceUpdateFailureReason),
@@ -385,6 +447,8 @@ pub enum StrongEnum {
     TableMajorAxis(TableMajorAxis),
     TeamCreateErrorState(TeamCreateErrorState),
     Technology(Technology),
+    TelemetryBackend(TelemetryBackend),
+    TelemetryStandardizedField(TelemetryStandardizedField),
     TeleportMethod(TeleportMethod),
     TeleportResult(TeleportResult),
     TeleportState(TeleportState),
@@ -430,6 +494,8 @@ pub enum StrongEnum {
     UIFlexMode(UIFlexMode),
     UITheme(UITheme),
     UiMessageType(UiMessageType),
+    UpdateState(UpdateState),
+    UploadCaptureResult(UploadCaptureResult),
     UsageContext(UsageContext),
     UserCFrame(UserCFrame),
     UserInputState(UserInputState),
@@ -447,18 +513,24 @@ pub enum StrongEnum {
     VerticalAlignment(VerticalAlignment),
     VerticalScrollBarPosition(VerticalScrollBarPosition),
     VibrationMotor(VibrationMotor),
+    VideoCaptureResult(VideoCaptureResult),
+    VideoCaptureStartedResult(VideoCaptureStartedResult),
     VideoDeviceCaptureQuality(VideoDeviceCaptureQuality),
     VideoError(VideoError),
+    VideoSampleSize(VideoSampleSize),
     ViewMode(ViewMode),
     VirtualCursorMode(VirtualCursorMode),
     VirtualInputMode(VirtualInputMode),
     VoiceChatDistanceAttenuationType(VoiceChatDistanceAttenuationType),
     VoiceChatState(VoiceChatState),
+    VoiceClientLeaveReasons(VoiceClientLeaveReasons),
     VoiceControlPath(VoiceControlPath),
     VolumetricAudio(VolumetricAudio),
     WaterDirection(WaterDirection),
     WaterForce(WaterForce),
     WebSocketState(WebSocketState),
+    WebStreamClientState(WebStreamClientState),
+    WebStreamClientType(WebStreamClientType),
     WeldConstraintPreserve(WeldConstraintPreserve),
     WhisperChatPrivacyMode(WhisperChatPrivacyMode),
     WrapLayerAutoSkin(WrapLayerAutoSkin),
@@ -606,6 +678,15 @@ pub enum AdornCullingMode {
 }
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
+pub enum AdornShading {
+    Default = 0,
+    Shaded = 1,
+    XRay = 2,
+    XRayShaded = 3,
+    AlwaysOnTop = 4,
+}
+#[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub enum AlignType {
     Parallel = 0,
     Perpendicular = 1,
@@ -696,6 +777,39 @@ pub enum AnimationClipFromVideoStatus {
 }
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
+pub enum AnimationNodePlayMode {
+    Loop = 0,
+    PingPong = 1,
+    OnceAndHold = 2,
+    OnceAndReset = 3,
+}
+#[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
+pub enum AnimationNodeTransitionType {
+    CrossFade = 0,
+    InertialBlend = 1,
+    DeadBlend = 2,
+}
+#[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
+pub enum AnimationNodeType {
+    InvalidNode = 0,
+    AddNode = 1,
+    BlendNode = 2,
+    Blend1DNode = 3,
+    Blend2DNode = 4,
+    ClipNode = 5,
+    GraphOutput = 6,
+    MaskNode = 7,
+    PrioritySelectNode = 8,
+    RandomSequenceNode = 9,
+    SelectNode = 10,
+    SequenceNode = 11,
+    SpeedNode = 12,
+    SubtractNode = 13,
+}
+#[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub enum AnimationPriority {
     Idle = 0,
     Movement = 1,
@@ -714,10 +828,25 @@ pub enum AnimatorRetargetingMode {
 }
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
+pub enum AnnotationChannelContentPreference {
+    None = 0,
+    All = 1,
+    Unknown = 2,
+}
+#[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub enum AnnotationEditingMode {
     None = 0,
     PlacingNew = 1,
     WritingNew = 2,
+}
+#[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
+pub enum AnnotationPlaceContentPreference {
+    None = 0,
+    All = 1,
+    MentionsAndReplies = 2,
+    Unknown = 3,
 }
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
@@ -780,6 +909,7 @@ pub enum AppUpdateStatus {
     NotAvailable = 3,
     Available = 4,
     AvailableBoundChannel = 5,
+    AvailableBetaProgram = 6,
 }
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
@@ -870,6 +1000,9 @@ pub enum AssetType {
     EyelashAccessory = 77,
     MoodAnimation = 78,
     DynamicHead = 79,
+    FaceMakeup = 88,
+    LipMakeup = 89,
+    EyeMakeup = 90,
 }
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
@@ -885,6 +1018,9 @@ pub enum AudioApiRollout {
     Automatic = 1,
     Enabled = 2,
 }
+#[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
+pub enum AudioCaptureMode {}
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub enum AudioChannelLayout {
@@ -930,6 +1066,12 @@ pub enum AudioWindowSize {
     Small = 0,
     Medium = 1,
     Large = 2,
+}
+#[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
+pub enum AuthorityMode {
+    Server = 0,
+    Automatic = 1,
 }
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
@@ -989,6 +1131,9 @@ pub enum AvatarAssetType {
     EyelashAccessory = 77,
     MoodAnimation = 78,
     DynamicHead = 79,
+    FaceMakeup = 88,
+    LipMakeup = 89,
+    EyeMakeup = 90,
 }
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
@@ -1036,6 +1181,101 @@ pub enum AvatarPromptResult {
     Success = 1,
     PermissionDenied = 2,
     Failed = 3,
+}
+#[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
+pub enum AvatarSettingsAccessoryLimitMethod {
+    Scale = 0,
+    Remove = 1,
+    PreviewScale = 2,
+    PreviewRemove = 3,
+}
+#[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
+pub enum AvatarSettingsAccessoryMode {
+    PlayerChoice = 0,
+    CustomLimit = 1,
+}
+#[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
+pub enum AvatarSettingsAnimationClipsMode {
+    PlayerChoice = 0,
+    CustomClips = 1,
+}
+#[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
+pub enum AvatarSettingsAnimationPacksMode {
+    PlayerChoice = 0,
+    StandardR15 = 1,
+    StandardR6 = 2,
+}
+#[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
+pub enum AvatarSettingsAppearanceMode {
+    PlayerChoice = 0,
+    CustomParts = 1,
+    CustomBody = 2,
+}
+#[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
+pub enum AvatarSettingsBuildMode {
+    PlayerChoice = 0,
+    CustomBuild = 1,
+}
+#[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
+pub enum AvatarSettingsClothingMode {
+    PlayerChoice = 0,
+    CustomLimit = 1,
+}
+#[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
+pub enum AvatarSettingsCollisionMode {
+    Default = 0,
+    SingleCollider = 1,
+    Legacy = 2,
+}
+#[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
+pub enum AvatarSettingsCustomAccessoryMode {
+    PlayerChoice = 0,
+    CustomAccessories = 1,
+}
+#[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
+pub enum AvatarSettingsCustomBodyType {
+    AvatarReference = 0,
+    BundleId = 1,
+}
+#[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
+pub enum AvatarSettingsCustomClothingMode {
+    PlayerChoice = 0,
+    CustomClothing = 1,
+}
+#[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
+pub enum AvatarSettingsHitAndTouchDetectionMode {
+    UseParts = 0,
+    UseCollider = 1,
+}
+#[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
+pub enum AvatarSettingsJumpMode {
+    JumpHeight = 0,
+    JumpPower = 1,
+}
+#[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
+pub enum AvatarSettingsLegacyCollisionMode {
+    R6Colliders = 0,
+    InnerBoxColliders = 1,
+}
+#[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
+pub enum AvatarSettingsScaleMode {
+    PlayerChoice = 0,
+    CustomScale = 1,
 }
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
@@ -1110,6 +1350,13 @@ pub enum BorderMode {
     Outline = 0,
     Middle = 1,
     Inset = 2,
+}
+#[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
+pub enum BorderStrokePosition {
+    Outer = 0,
+    Center = 1,
+    Inner = 2,
 }
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
@@ -1196,6 +1443,17 @@ pub enum CameraType {
 }
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
+pub enum CaptureGalleryPermission {
+    ReadAndUpload = 0,
+}
+#[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
+pub enum CaptureType {
+    Screenshot = 1,
+    Video = 2,
+}
+#[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub enum CatalogCategoryFilter {
     None = 1,
     Featured = 2,
@@ -1223,6 +1481,12 @@ pub enum CatalogSortType {
     MostFavorited = 5,
     RecentlyCreated = 6,
     Bestselling = 7,
+}
+#[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
+pub enum CatalogTimedOptionFilter {
+    All = 1,
+    TimedOptionOnly = 2,
 }
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
@@ -1436,6 +1700,11 @@ pub enum CompletionTriggerKind {
 }
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
+pub enum CompressionAlgorithm {
+    Zstd = 0,
+}
+#[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub enum ComputerCameraMovementMode {
     Default = 0,
     Classic = 1,
@@ -1461,6 +1730,15 @@ pub enum ConfigSnapshotErrorState {
 pub enum ConnectionError {
     OK = 0,
     Unknown = 1,
+    ConnectErrors = 2,
+    AlreadyConnected = 3,
+    NoFreeIncomingConnections = 4,
+    ConnectionBanned = 5,
+    InvalidPassword = 6,
+    IncompatibleProtocolVersion = 7,
+    IPRecentlyConnected = 8,
+    OurSystemRequiresSecurity = 9,
+    SecurityKeyMismatch = 10,
     DisconnectErrors = 256,
     DisconnectBadhash = 257,
     DisconnectSecurityKeyMismatch = 258,
@@ -1509,6 +1787,10 @@ pub enum ConnectionError {
     PhantomFreeze = 303,
     AndroidAnticheatKick = 304,
     AndroidEmulatorKick = 305,
+    AndroidRootedKick = 306,
+    ScreentimeLockoutKick = 307,
+    DisconnectionNotification = 308,
+    DisconnectVerboselyModeratedGame = 309,
     PlacelaunchErrors = 512,
     PlacelaunchDisabled = 515,
     PlacelaunchError = 516,
@@ -1547,6 +1829,7 @@ pub enum ContentSourceType {
     None = 0,
     Uri = 1,
     Object = 2,
+    Opaque = 3,
 }
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
@@ -1633,6 +1916,14 @@ pub enum DataStoreRequestType {
     ListAsync = 6,
     GetVersionAsync = 7,
     RemoveVersionAsync = 8,
+    StandardRead = 9,
+    StandardWrite = 10,
+    StandardList = 11,
+    StandardRemove = 12,
+    OrderedRead = 13,
+    OrderedWrite = 14,
+    OrderedList = 15,
+    OrderedRemove = 16,
 }
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
@@ -1681,6 +1972,12 @@ pub enum DebuggerStatus {
     RpcError = 6,
     InvalidArgument = 7,
     ConnectionClosed = 8,
+}
+#[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
+pub enum DefaultScriptSyncFileType {
+    Lua = 0,
+    Luau = 1,
 }
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
@@ -1734,7 +2031,7 @@ pub enum DeveloperMemoryTag {
     LuaHeap = 4,
     Script = 5,
     PhysicsCollision = 6,
-    PhysicsParts = 7,
+    BaseParts = 7,
     GraphicsSolidModels = 8,
     GraphicsMeshParts = 10,
     GraphicsParticles = 11,
@@ -1750,11 +2047,13 @@ pub enum DeveloperMemoryTag {
     Animation = 22,
     Navigation = 23,
     GeometryCSG = 24,
+    GraphicsSlimModels = 25,
 }
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub enum DeviceFeatureType {
     DeviceCapture = 0,
+    InExperienceFAE = 1,
 }
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
@@ -1799,6 +2098,13 @@ pub enum DialogTone {
     Neutral = 0,
     Friendly = 1,
     Enemy = 2,
+}
+#[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
+pub enum DisplaySize {
+    Small = 0,
+    Medium = 1,
+    Large = 2,
 }
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
@@ -1915,6 +2221,42 @@ pub enum ExperienceAuthScope {
 }
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
+pub enum ExperienceEventStatus {
+    Active = 0,
+    Cancelled = 1,
+    Moderated = 2,
+    Unpublished = 3,
+    Unknown = 4,
+}
+#[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
+pub enum ExperienceStateCaptureSelectionMode {
+    Default = 0,
+    SafetyHighlightMode = 1,
+}
+#[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
+pub enum ExperienceStateRecordingLoadMode {
+    NewReplay = 0,
+    ContiguousSlice = 1,
+    NoncontiguousSlice = 2,
+}
+#[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
+pub enum ExperienceStateRecordingLoadSourceType {
+    S3Url = 0,
+    File = 1,
+}
+#[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
+pub enum ExperienceStateRecordingPlaybackMode {
+    Undefined = 0,
+    Stopped = 1,
+    Playing = 2,
+    Rewinding = 3,
+}
+#[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub enum ExplosionType {
     NoCraters = 0,
     Craters = 1,
@@ -1998,13 +2340,9 @@ pub enum FacsActionUnit {
 }
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
-pub enum FeedRankingScoreType {
-    Content = 0,
-    Final = 1,
-    GameJoin = 2,
-    Interaction = 3,
-    Invalid = 4,
-    Sharing = 5,
+pub enum FeatureRestrictionAbuseVector {
+    ExperienceChat = 0,
+    Communication = 1,
 }
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
@@ -2290,6 +2628,14 @@ pub enum GraphicsOptimizationMode {
 }
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
+pub enum GroupMembershipStatus {
+    None = 0,
+    Joined = 1,
+    JoinRequestPending = 2,
+    AlreadyMember = 3,
+}
+#[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub enum GuiState {
     Idle = 0,
     Hover = 1,
@@ -2307,6 +2653,13 @@ pub enum GuiType {
 }
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
+pub enum HandRigDescriptionSide {
+    None = 0,
+    Left = 1,
+    Right = 2,
+}
+#[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub enum HandlesStyle {
     Resize = 0,
     Movement = 1,
@@ -2320,6 +2673,15 @@ pub enum HapticEffectType {
     UINotification = 3,
     GameplayExplosion = 4,
     GameplayCollision = 5,
+}
+#[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
+pub enum HashAlgorithm {
+    Blake2b = 0,
+    Blake3 = 1,
+    Md5 = 2,
+    Sha1 = 3,
+    Sha256 = 4,
 }
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
@@ -2383,6 +2745,9 @@ pub enum HttpError {
     SslConnectFail = 10,
     SslVerificationFail = 11,
     Unknown = 12,
+    ConnectionClosed = 13,
+    ServerProtocolError = 14,
+    CreatorEnvironmentsNotSupportedByService = 15,
 }
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
@@ -2520,8 +2885,10 @@ pub enum InitialDockState {
 #[allow(nonstandard_style)]
 pub enum InputActionType {
     Bool = 0,
-    Float = 1,
+    Direction1D = 1,
     Direction2D = 2,
+    Direction3D = 3,
+    ViewportPosition = 4,
 }
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
@@ -2828,13 +3195,22 @@ pub enum KeyCode {
     DPadDown = 1015,
     Thumbstick1 = 1016,
     Thumbstick2 = 1017,
-    MouseLeftButton = 1018,
-    MouseRightButton = 1019,
-    MouseMiddleButton = 1020,
-    MouseBackButton = 1021,
-    MouseNoButton = 1022,
-    MouseX = 1023,
-    MouseY = 1024,
+    Thumbstick1Up = 1018,
+    Thumbstick1Down = 1019,
+    Thumbstick1Left = 1020,
+    Thumbstick1Right = 1021,
+    Thumbstick2Up = 1022,
+    Thumbstick2Down = 1023,
+    Thumbstick2Left = 1024,
+    Thumbstick2Right = 1025,
+    MouseLeftButton = 1026,
+    MouseRightButton = 1027,
+    MouseMiddleButton = 1028,
+    MouseBackButton = 1029,
+    MouseNoButton = 1030,
+    MouseX = 1031,
+    MouseY = 1032,
+    MousePosition = 1033,
 }
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
@@ -2965,6 +3341,14 @@ pub enum LocationType {
     Character = 0,
     Camera = 1,
     ObjectPosition = 2,
+}
+#[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
+pub enum LuauTypeCheckMode {
+    Default = 0,
+    NoCheck = 1,
+    Nonstrict = 2,
+    Strict = 3,
 }
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
@@ -3130,6 +3514,7 @@ pub enum ModelLevelOfDetail {
     Automatic = 0,
     StreamingMesh = 1,
     Disabled = 2,
+    SLIM = 4,
 }
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
@@ -3146,6 +3531,28 @@ pub enum ModelStreamingMode {
     Persistent = 2,
     PersistentPerPlayer = 3,
     Nonatomic = 4,
+}
+#[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
+pub enum ModerationResultCategory {
+    ViolationDetected = 0,
+    Borderline = 1,
+    NoViolationDetected = 2,
+}
+#[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
+pub enum ModerationResultLabel {
+    ChildExploitation = 0,
+    SuicideSelfInjuryAndHarmfulBehavior = 1,
+    ThreatsBullyingAndHarassment = 2,
+    TerrorismAndViolentExtremism = 3,
+    DiscriminationSlursAndHateSpeech = 4,
+    RealWorldSensitiveEvents = 5,
+    ViolentContentAndGore = 6,
+    RomanticAndSexualContent = 7,
+    IllegalAndRegulatedGoodsAndActivities = 8,
+    Profanity = 9,
+    Other = 100,
 }
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
@@ -3199,6 +3606,13 @@ pub enum NameOcclusion {
     NoOcclusion = 0,
     EnemyOcclusion = 1,
     OccludeAll = 2,
+}
+#[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
+pub enum NegateOperationHiddenHistory {
+    None = 0,
+    NegatedUnion = 1,
+    NegatedIntersection = 2,
 }
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
@@ -3263,6 +3677,7 @@ pub enum OutfitType {
     All = 1,
     Avatar = 2,
     DynamicHead = 3,
+    Shoes = 4,
 }
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
@@ -3324,6 +3739,7 @@ pub enum ParticleFlipbookLayout {
     Grid2x2 = 1,
     Grid4x4 = 2,
     Grid8x8 = 3,
+    Custom = 4,
 }
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
@@ -3374,6 +3790,20 @@ pub enum PathfindingUseImprovedSearch {
 }
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
+pub enum PeoplePageLayout {
+    Card = 0,
+    List = 1,
+}
+#[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
+pub enum PerformanceOverlayMode {
+    Overdraw = 0,
+    Transparent = 1,
+    Decals = 2,
+    Lights = 3,
+}
+#[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub enum PermissionLevelShown {
     Game = 0,
     RobloxGame = 1,
@@ -3394,6 +3824,21 @@ pub enum PhysicsSteppingMethod {
     Default = 0,
     Fixed = 1,
     Adaptive = 2,
+}
+#[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
+pub enum PlaceContentPreference {
+    None = 0,
+    All = 1,
+    MentionsAndReplies = 2,
+    Unknown = 3,
+}
+#[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
+pub enum PlacePublishType {
+    None = 0,
+    Publish = 1,
+    Save = 2,
 }
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
@@ -3471,6 +3916,13 @@ pub enum PlayerDataLoadFailureBehavior {
 }
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
+pub enum PlayerExitReason {
+    Unknown = 0,
+    PlatformKick = 1,
+    CreatorKick = 2,
+}
+#[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub enum PoseEasingDirection {
     In = 0,
     Out = 1,
@@ -3491,6 +3943,27 @@ pub enum PoseEasingStyle {
 pub enum PositionAlignmentMode {
     OneAttachment = 0,
     TwoAttachment = 1,
+}
+#[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
+pub enum PredictionMode {
+    Automatic = 0,
+    On = 1,
+    Off = 2,
+}
+#[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
+pub enum PredictionStatus {
+    Authoritative = 0,
+    Predicted = 1,
+    None = 2,
+}
+#[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
+pub enum PreferredInput {
+    KeyboardAndMouse = 0,
+    Gamepad = 1,
+    Touch = 2,
 }
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
@@ -3556,6 +4029,10 @@ pub enum PromptCreateAssetResult {
     UploadFailed = 4,
     NoUserInput = 5,
     UnknownFailure = 6,
+    UGCValidationFailed = 7,
+    ModeratedName = 8,
+    PurchaseFailure = 9,
+    TokenInvalid = 10,
 }
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
@@ -3572,6 +4049,19 @@ pub enum PromptCreateAvatarResult {
     PurchaseFailure = 10,
     UnknownFailure = 11,
     TokenInvalid = 12,
+}
+#[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
+pub enum PromptExperienceDetailsResult {
+    PromptClosed = 0,
+    TeleportAttempted = 1,
+}
+#[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
+pub enum PromptLinkSharingResult {
+    Success = 1,
+    PlayerLeft = 2,
+    InvalidLaunchData = 3,
 }
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
@@ -3647,6 +4137,49 @@ pub enum R15CollisionType {
 pub enum RaycastFilterType {
     Exclude = 0,
     Include = 1,
+}
+#[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
+pub enum ReadCapturesFromGalleryResult {
+    Success = 0,
+    NeedPermission = 1,
+}
+#[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
+pub enum RecommendationActionType {
+    AddReaction = 0,
+    RemoveReaction = 1,
+    Share = 2,
+    Report = 3,
+    Comment = 4,
+    Play = 5,
+    Purchase = 6,
+}
+#[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
+pub enum RecommendationDepartureIntent {
+    Neutral = 0,
+    Positive = 1,
+    Negative = 2,
+}
+#[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
+pub enum RecommendationImpressionType {
+    View = 0,
+    NotViewable = 1,
+}
+#[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
+pub enum RecommendationItemContentType {
+    Static = 0,
+    Dynamic = 1,
+    Interactive = 2,
+}
+#[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
+pub enum RecommendationItemVisibility {
+    Private = 0,
+    Public = 1,
 }
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
@@ -3752,6 +4285,13 @@ pub enum ReverbType {
 }
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
+pub enum ReviewableContentState {
+    Pending = 0,
+    Completed = 1,
+    Failed = 2,
+}
+#[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub enum RibbonTool {
     Select = 0,
     Scale = 1,
@@ -3776,8 +4316,9 @@ pub enum RigScale {
 #[allow(nonstandard_style)]
 pub enum RigType {
     R15 = 0,
-    Custom = 1,
-    None = 2,
+    CustomHumanoid = 1,
+    Custom = 2,
+    None = 3,
 }
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
@@ -3809,6 +4350,13 @@ pub enum RotationOrder {
 pub enum RotationType {
     MovementRelative = 0,
     CameraRelative = 1,
+}
+#[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
+pub enum RsvpStatus {
+    None = 0,
+    Going = 1,
+    NotGoing = 2,
 }
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
@@ -3851,6 +4399,7 @@ pub enum SalesTypeFilter {
     All = 1,
     Collectibles = 2,
     Premium = 3,
+    TimedOptions = 4,
 }
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
@@ -3968,6 +4517,16 @@ pub enum SecurityCapability {
     LegacySound = 20,
     Players = 21,
     CapabilityControl = 22,
+    Plugin = 23,
+    LocalUser = 24,
+    WritePlayer = 25,
+    RobloxScript = 26,
+    RobloxEngine = 27,
+    Unassigned = 28,
+    InternalTest = 29,
+    PluginOrOpenCloud = 30,
+    Assistant = 31,
+    RemoteCommand = 32,
 }
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
@@ -4115,6 +4674,16 @@ pub enum Status {
 }
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
+pub enum StepFrequency {
+    Hz60 = 0,
+    Hz30 = 1,
+    Hz15 = 2,
+    Hz10 = 3,
+    Hz5 = 4,
+    Hz1 = 5,
+}
+#[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub enum StreamOutBehavior {
     Default = 0,
     LowMemory = 1,
@@ -4134,6 +4703,12 @@ pub enum StreamingPauseMode {
     Default = 0,
     Disabled = 1,
     ClientPhysicsPause = 2,
+}
+#[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
+pub enum StrokeSizingMode {
+    FixedSize = 0,
+    ScaledSize = 1,
 }
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
@@ -4459,7 +5034,8 @@ pub enum TableMajorAxis {
 pub enum TeamCreateErrorState {
     PlaceSizeTooLarge = 0,
     PlaceSizeApproachingLimit = 1,
-    NoError = 2,
+    PlaceUploadFailing = 2,
+    NoError = 3,
 }
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
@@ -4470,6 +5046,33 @@ pub enum Technology {
     ShadowMap = 3,
     Future = 4,
     Unified = 5,
+}
+#[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
+pub enum TelemetryBackend {
+    UNSPECIFIED = 0,
+    EventIngest = 1,
+    Points = 2,
+    Teletune = 3,
+    EphemeralCounter = 4,
+    EphemeralStat = 5,
+    Counter = 6,
+    Stat = 7,
+}
+#[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
+pub enum TelemetryStandardizedField {
+    AddDatacenterId = 0,
+    AddPlaceId = 1,
+    AddUniverseId = 2,
+    AddPlaceInstanceId = 3,
+    AddPlaySessionId = 4,
+    AddCurrentContextName = 5,
+    AddOsInfo = 6,
+    AddArchitectureInfo = 7,
+    AddCpuInfo = 8,
+    AddMemoryInfo = 9,
+    AddSessionInfo = 10,
 }
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
@@ -4850,6 +5453,25 @@ pub enum UiMessageType {
 }
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
+pub enum UpdateState {
+    UpdateNotAvailable = 0,
+    UpdateAvailable = 1,
+    UpdateInProgress = 2,
+    UpdateReady = 3,
+    UpdateFailed = 4,
+}
+#[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
+pub enum UploadCaptureResult {
+    Success = 0,
+    NeedPermission = 1,
+    CaptureModerated = 2,
+    CaptureNotInGallery = 3,
+    IneligibleCapture = 4,
+    UploadQuotaReached = 5,
+}
+#[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub enum UsageContext {
     Default = 0,
     Preview = 1,
@@ -4993,6 +5615,23 @@ pub enum VibrationMotor {
 }
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
+pub enum VideoCaptureResult {
+    Success = 0,
+    OtherError = 1,
+    ScreenSizeChanged = 2,
+    TimeLimitReached = 3,
+}
+#[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
+pub enum VideoCaptureStartedResult {
+    Success = 0,
+    OtherError = 1,
+    CapturingAlready = 2,
+    NoDeviceSupport = 3,
+    NoSpaceOnDevice = 4,
+}
+#[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub enum VideoDeviceCaptureQuality {
     Default = 0,
     Low = 1,
@@ -5021,6 +5660,14 @@ pub enum VideoError {
     NoService = 16,
     ReleaseFailed = 17,
     Unknown = 18,
+}
+#[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
+pub enum VideoSampleSize {
+    Small = 0,
+    Medium = 1,
+    Large = 2,
+    Full = 3,
 }
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
@@ -5060,6 +5707,19 @@ pub enum VoiceChatState {
     Leaving = 4,
     Ended = 5,
     Failed = 6,
+}
+#[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
+pub enum VoiceClientLeaveReasons {
+    Unknown = 0,
+    ClientNetworkDisconnected = 1,
+    PlayerLeft = 2,
+    ClientShutdown = 3,
+    PublishFailed = 4,
+    RejoinReceived = 5,
+    VoiceReboot = 6,
+    ImguiDebugLeave = 7,
+    LuaInitiated = 8,
 }
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
@@ -5104,6 +5764,21 @@ pub enum WebSocketState {
 }
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
+pub enum WebStreamClientState {
+    Connecting = 0,
+    Open = 1,
+    Error = 2,
+    Closed = 3,
+}
+#[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
+pub enum WebStreamClientType {
+    SSE = 0,
+    RawStream = 1,
+    WebSocket = 2,
+}
+#[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub enum WeldConstraintPreserve {
     All = 0,
     None = 1,
@@ -5139,6 +5814,7 @@ pub enum WrapLayerDebugMode {
     HSRInnerReverse = 11,
     LayerCageFittedToBase = 12,
     LayerCageFittedToPrev = 13,
+    PreWrapDeformerOuterCage = 14,
 }
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
@@ -5152,6 +5828,7 @@ pub enum WrapTargetDebugMode {
     TargetLayerInterface = 6,
     Rbf = 7,
     OuterCageDetail = 8,
+    PreWrapDeformerCage = 9,
 }
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
