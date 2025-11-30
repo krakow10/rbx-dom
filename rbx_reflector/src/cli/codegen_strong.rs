@@ -302,7 +302,7 @@ impl EnumCollector {
 
 impl CodegenStrongSubcommand {
     pub fn run(&self) -> anyhow::Result<()> {
-        let db = rbx_reflection_database::get();
+        let db = rbx_reflection_database::get().unwrap();
 
         let dest_instance = self.output.join("instances.rs");
         let dest_enum = self.output.join("enums.rs");
