@@ -141,7 +141,7 @@ impl StrongInstancesCollector {
     }
     fn push(&mut self, descriptor: &ClassDescriptor) {
         struct FieldInfo<'a> {
-            prop_name: &'a str,
+            prop: &'a rbx_reflection::PropertyDescriptor<'a>,
             ident: syn::Ident,
             field: syn::Field,
         }
@@ -166,11 +166,7 @@ impl StrongInstancesCollector {
                 colon_token: Some(syn::token::Colon::default()),
                 ty,
             };
-            fields.push(FieldInfo {
-                prop_name: prop.name.as_ref(),
-                ident,
-                field,
-            });
+            fields.push(FieldInfo { prop, ident, field });
         }
         // sort props for consistency
         fields.sort_by(|a, b| a.ident.cmp(&b.ident));
@@ -204,11 +200,9 @@ impl StrongInstancesCollector {
         );
 
         // Simply derive default if there are no fields
-        // (whether superclass has default is not checked)
         if fields.is_empty() {
             attrs.push(syn::parse_quote!(#[derive(Default)]));
         } else {
-            let descriptor_name = descriptor.name.as_ref();
             let mut default_struct: syn::ExprStruct = syn::parse_quote! {
                 Self{
                 }
@@ -219,21 +213,22 @@ impl StrongInstancesCollector {
                     superclass: #superclass_ident::default()
                 });
             }
-            default_struct.fields.extend(fields.iter().map(
-                |FieldInfo {
-                     prop_name, ident, ..
-                 }| {
+            default_struct
+                .fields
+                .extend(fields.iter().map(|FieldInfo { prop, ident, .. }| {
+                    let value = descriptor
+                        .default_properties
+                        .get(prop.name.as_ref())
+                        .unwrap_or_else(|| prop.data_type.ty().fallback_default_value().unwrap());
+                    let value = format!("{value:?}");
                     let field: syn::FieldValue = syn::parse_quote! {
-                        #ident: descriptor.default_properties[#prop_name].clone()
+                        #ident: #value
                     };
                     field
-                },
-            ));
+                }));
             let default_impl = syn::parse_quote! {
                 impl Default for #ident{
                     fn default() -> Self {
-                        let db = rbx_reflection_database::get();
-                        let descriptor = &db.classes[#descriptor_name];
                         #default_struct
                     }
                 }
