@@ -13,6 +13,53 @@ pub struct CodegenStrongSubcommand {
     pub output: PathBuf,
 }
 
+impl CodegenStrongSubcommand {
+    pub fn run(&self) -> anyhow::Result<()> {
+        let db = rbx_reflection_database::get().unwrap();
+
+        let dest_instance = self.output.join("instances.rs");
+        let dest_enum = self.output.join("enums.rs");
+
+        // ==== generate instances.rs ====
+        let instance_code = {
+            let mut strong_instances = StrongInstancesCollector::new();
+            for descriptor in db.classes.values() {
+                strong_instances.push(descriptor);
+            }
+            let complete_file = strong_instances.sort().codegen();
+
+            // make a string of the unformatted code
+            let code = complete_file.into_token_stream().to_string();
+
+            // format via cli
+            let code = rustfmt(code.as_bytes())?;
+
+            code
+        };
+        // ==== generate enum.rs ====
+        let enum_code = {
+            let mut strong_enum = EnumCollector::new();
+            for descriptor in db.enums.values() {
+                strong_enum.push(descriptor);
+            }
+            let complete_file = strong_enum.sort().codegen();
+
+            // make a string of the unformatted code
+            let code = complete_file.into_token_stream().to_string();
+
+            // format via cli
+            let code = rustfmt(code.as_bytes())?;
+
+            code
+        };
+
+        // save to destination file
+        std::fs::write(dest_instance, instance_code)?;
+        std::fs::write(dest_enum, enum_code)?;
+        Ok(())
+    }
+}
+
 fn generate_data_type(data_type: &DataType) -> syn::Type {
     match data_type {
         DataType::Value(rbx_types::VariantType::Axes) => syn::parse_quote!(Axes),
@@ -312,53 +359,6 @@ impl SortedEnums {
             .extend(enums.enums.into_iter().map(syn::Item::Enum));
 
         complete_file
-    }
-}
-
-impl CodegenStrongSubcommand {
-    pub fn run(&self) -> anyhow::Result<()> {
-        let db = rbx_reflection_database::get().unwrap();
-
-        let dest_instance = self.output.join("instances.rs");
-        let dest_enum = self.output.join("enums.rs");
-
-        // ==== generate instances.rs ====
-        let instance_code = {
-            let mut strong_instances = StrongInstancesCollector::new();
-            for descriptor in db.classes.values() {
-                strong_instances.push(descriptor);
-            }
-            let complete_file = strong_instances.sort().codegen();
-
-            // make a string of the unformatted code
-            let code = complete_file.into_token_stream().to_string();
-
-            // format via cli
-            let code = rustfmt(code.as_bytes())?;
-
-            code
-        };
-        // ==== generate enum.rs ====
-        let enum_code = {
-            let mut strong_enum = EnumCollector::new();
-            for descriptor in db.enums.values() {
-                strong_enum.push(descriptor);
-            }
-            let complete_file = strong_enum.sort().codegen();
-
-            // make a string of the unformatted code
-            let code = complete_file.into_token_stream().to_string();
-
-            // format via cli
-            let code = rustfmt(code.as_bytes())?;
-
-            code
-        };
-
-        // save to destination file
-        std::fs::write(dest_instance, instance_code)?;
-        std::fs::write(dest_enum, enum_code)?;
-        Ok(())
     }
 }
 
