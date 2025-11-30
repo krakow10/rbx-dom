@@ -15,4 +15,4 @@ authors = [
 edition = "2018"
 
 [dependencies]
-rbx_types = { version = "2.0.0", path = "../rbx_types", features = ["serde"] }
+rbx_types = { version = "3.1.0", path = "../rbx_types", features = ["serde"] }
