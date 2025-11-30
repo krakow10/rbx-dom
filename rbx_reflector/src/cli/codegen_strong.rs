@@ -156,8 +156,8 @@ impl quote::ToTokens for WrapToTokens<Variant> {
                 let dz = value.direction.z;
                 tokens.append(syn::parse_quote! {Ray::new(Vector3::new(#ox,#oy,#oz),Vector3::new(#dx,#dy,#dz))});
             }
-            Variant::Faces(value) => unimplemented!("bleh"),
-            Variant::Axes(value) => unimplemented!("bleh"),
+            Variant::Faces(value) => unimplemented!(),
+            Variant::Axes(value) => unimplemented!(),
             Variant::BrickColor(value) => {
                 let number: u16 = *value as u16;
                 tokens.append(syn::parse_quote! {BrickColor::from_number(#number)});
@@ -184,28 +184,76 @@ impl quote::ToTokens for WrapToTokens<Variant> {
                 let b = value.b;
                 tokens.append(syn::parse_quote! {Color3::new(#r,#g,#b)});
             }
-            Variant::Vector2(value) => tokens.append(Vector2::new()),
-            Variant::Vector3(value) => tokens.append(Vector3::new()),
-            Variant::Ref(value) => tokens.append(Ref::new()),
-            Variant::Vector3int16(value) => tokens.append(Vector3int16::new()),
-            Variant::NumberSequence(value) => tokens.append(NumberSequence::new()),
-            Variant::ColorSequence(value) => tokens.append(ColorSequence::new()),
-            Variant::NumberRange(value) => tokens.append(NumberRange::new()),
-            Variant::Rect(value) => tokens.append(Rect::new()),
-            Variant::PhysicalProperties(value) => tokens.append(PhysicalProperties::new()),
-            Variant::Color3uint8(value) => tokens.append(Color3uint8::new()),
-            Variant::Int64(value) => tokens.append(Int64::new()),
-            Variant::SharedString(value) => tokens.append(SharedString::new()),
-            Variant::OptionalCFrame(value) => tokens.append(OptionalCFrame::new()),
-            Variant::Tags(value) => tokens.append(Tags::new()),
-            Variant::ContentId(value) => tokens.append(ContentId::new()),
-            Variant::Attributes(value) => tokens.append(Attributes::new()),
-            Variant::UniqueId(value) => tokens.append(UniqueId::new()),
-            Variant::Font(value) => tokens.append(Font::new()),
-            Variant::MaterialColors(value) => tokens.append(MaterialColors::new()),
-            Variant::SecurityCapabilities(value) => tokens.append(SecurityCapabilities::new()),
-            Variant::Content(value) => tokens.append(Content::new()),
-            Variant::NetAssetRef(value) => tokens.append(NetAssetRef::new()),
+            Variant::Vector2(value) => {
+                let x = value.x;
+                let y = value.y;
+                tokens.append(syn::parse_quote! {Vector2::new(#x,#y)});
+            }
+            Variant::Vector3(value) => {
+                let x = value.x;
+                let y = value.y;
+                let z = value.z;
+                tokens.append(syn::parse_quote! {Vector3::new(#x,#y,#z)});
+            }
+            Variant::Ref(value) => {
+                if value.is_some() {
+                    panic!("Cannot create default Ref");
+                }
+                tokens.append(syn::parse_quote! {Ref::none()});
+            }
+            Variant::Vector3int16(value) => {
+                let x = value.x;
+                let y = value.y;
+                let z = value.z;
+                tokens.append(syn::parse_quote! {Vector3int16::new(#x,#y,#z)});
+            }
+            Variant::NumberSequence(value) => unimplemented!(),
+            Variant::ColorSequence(value) => unimplemented!(),
+            Variant::NumberRange(value) => {
+                let min = value.min;
+                let max = value.max;
+                tokens.append(syn::parse_quote! {NumberRange::new(#min,#max)});
+            }
+            Variant::Rect(value) => {
+                let min_x = value.min.x;
+                let min_y = value.min.y;
+                let max_x = value.max.x;
+                let max_y = value.max.y;
+                tokens.append(syn::parse_quote! {Rect::new(Vector2::new(#min_x,#min_y),Vector2::new(#max_x,#max_y))});
+            }
+            Variant::PhysicalProperties(value) => unimplemented!(),
+            Variant::Color3uint8(value) => {
+                let r = value.r;
+                let g = value.g;
+                let b = value.b;
+                tokens.append(syn::parse_quote! {Color3uint8::new(#r,#g,#b)});
+            }
+            Variant::Int64(value) => tokens.append(syn::parse_quote! {#value}),
+            Variant::SharedString(value) => {
+                let lit = syn::LitByteStr::new(value.data(), proc_macro2::Span::call_site());
+                tokens.append(syn::parse_quote! {SharedString::new(#lit.to_owned())});
+            }
+            Variant::OptionalCFrame(value) => unimplemented!(),
+            Variant::Tags(value) => unimplemented!(),
+            Variant::ContentId(value) => {
+                let lit = value.as_str();
+                tokens.append(syn::parse_quote! {#lit.into()});
+            }
+            Variant::Attributes(value) => unimplemented!(),
+            Variant::UniqueId(value) => unimplemented!(),
+            Variant::Font(value) => unimplemented!(),
+            Variant::MaterialColors(value) => unimplemented!(),
+            Variant::SecurityCapabilities(value) => unimplemented!(),
+            Variant::Content(value) => match value.value() {
+                ContentType::None => tokens.append(syn::parse_quote! {Content::none()}),
+                ContentType::Uri(uri) => tokens.append(syn::parse_quote! {Content::from_uri(#uri)}),
+                ContentType::Object(_) => panic!("Cannot create Object Content"),
+                _ => panic!(),
+            },
+            Variant::NetAssetRef(value) => {
+                let lit = syn::LitByteStr::new(value.data(), proc_macro2::Span::call_site());
+                tokens.append(syn::parse_quote! {NetAssetRef::new(#lit.to_owned())});
+            }
             variant => unimplemented!("{variant:?}"),
         }
     }
