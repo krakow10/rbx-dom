@@ -2,6 +2,7 @@ use std::path::PathBuf;
 
 use clap::Parser;
 use rbx_reflection::{ClassDescriptor, DataType, EnumDescriptor};
+use rbx_types::Variant;
 
 /// Generate strong types for all classes and enums.
 #[derive(Debug, Parser)]
@@ -117,6 +118,96 @@ fn generate_data_type(data_type: &DataType) -> syn::Type {
             syn::parse_quote!(enums::#ident)
         }
         data_type => unimplemented!("{data_type:?}"),
+    }
+}
+
+struct WrapToTokens<T>(T);
+impl quote::ToTokens for WrapToTokens<Variant> {
+    fn to_tokens(&self, tokens: &mut proc_macro2::TokenStream) {
+        use quote::TokenStreamExt;
+        use rbx_types::*;
+        match &self.0 {
+            Variant::String(value) => tokens.append(syn::parse_quote! {#value.to_owned()}),
+            Variant::BinaryString(value) => {
+                let lit = syn::LitByteStr::new(value.as_ref(), proc_macro2::Span::call_site());
+                tokens.append(syn::parse_quote! {#lit.into()});
+            }
+            Variant::Bool(value) => tokens.append(syn::parse_quote! {#value}),
+            Variant::Int32(value) => tokens.append(syn::parse_quote! {#value}),
+            Variant::Float32(value) => tokens.append(syn::parse_quote! {#value}),
+            Variant::Float64(value) => tokens.append(syn::parse_quote! {#value}),
+            Variant::UDim(UDim { scale, offset }) => {
+                tokens.append(syn::parse_quote! {UDim::new(#scale,#offset)});
+            }
+            Variant::UDim2(value) => {
+                let sx = value.x.scale;
+                let sy = value.y.scale;
+                let ox = value.x.offset;
+                let oy = value.y.offset;
+                tokens
+                    .append(syn::parse_quote! {UDim2::new(UDim::new(#sx,#ox),UDim::new(#sy,#oy))});
+            }
+            Variant::Ray(value) => {
+                let ox = value.origin.x;
+                let oy = value.origin.y;
+                let oz = value.origin.z;
+                let dx = value.direction.x;
+                let dy = value.direction.y;
+                let dz = value.direction.z;
+                tokens.append(syn::parse_quote! {Ray::new(Vector3::new(#ox,#oy,#oz),Vector3::new(#dx,#dy,#dz))});
+            }
+            Variant::Faces(value) => unimplemented!("bleh"),
+            Variant::Axes(value) => unimplemented!("bleh"),
+            Variant::BrickColor(value) => {
+                let number: u16 = *value as u16;
+                tokens.append(syn::parse_quote! {BrickColor::from_number(#number)});
+            }
+            Variant::CFrame(value) => {
+                let px = value.position.x;
+                let py = value.position.y;
+                let pz = value.position.z;
+                let xx = value.orientation.x.x;
+                let xy = value.orientation.x.y;
+                let xz = value.orientation.x.z;
+                let yx = value.orientation.y.x;
+                let yy = value.orientation.y.y;
+                let yz = value.orientation.y.z;
+                let zx = value.orientation.z.x;
+                let zy = value.orientation.z.y;
+                let zz = value.orientation.z.z;
+                tokens.append(syn::parse_quote! {CFrame::new(Vector3::new(#px,#py,#pz),Matrix3::new(Vector3::new(#xx,#xy,#xz),Vector3::new(#yx,#yy,#yz),Vector3::new(#zx,#zy,#zz)))});
+            }
+            Variant::Enum(value) => unimplemented!("convert u32 Enum to precise strong variant"),
+            Variant::Color3(value) => {
+                let r = value.r;
+                let g = value.g;
+                let b = value.b;
+                tokens.append(syn::parse_quote! {Color3::new(#r,#g,#b)});
+            }
+            Variant::Vector2(value) => tokens.append(Vector2::new()),
+            Variant::Vector3(value) => tokens.append(Vector3::new()),
+            Variant::Ref(value) => tokens.append(Ref::new()),
+            Variant::Vector3int16(value) => tokens.append(Vector3int16::new()),
+            Variant::NumberSequence(value) => tokens.append(NumberSequence::new()),
+            Variant::ColorSequence(value) => tokens.append(ColorSequence::new()),
+            Variant::NumberRange(value) => tokens.append(NumberRange::new()),
+            Variant::Rect(value) => tokens.append(Rect::new()),
+            Variant::PhysicalProperties(value) => tokens.append(PhysicalProperties::new()),
+            Variant::Color3uint8(value) => tokens.append(Color3uint8::new()),
+            Variant::Int64(value) => tokens.append(Int64::new()),
+            Variant::SharedString(value) => tokens.append(SharedString::new()),
+            Variant::OptionalCFrame(value) => tokens.append(OptionalCFrame::new()),
+            Variant::Tags(value) => tokens.append(Tags::new()),
+            Variant::ContentId(value) => tokens.append(ContentId::new()),
+            Variant::Attributes(value) => tokens.append(Attributes::new()),
+            Variant::UniqueId(value) => tokens.append(UniqueId::new()),
+            Variant::Font(value) => tokens.append(Font::new()),
+            Variant::MaterialColors(value) => tokens.append(MaterialColors::new()),
+            Variant::SecurityCapabilities(value) => tokens.append(SecurityCapabilities::new()),
+            Variant::Content(value) => tokens.append(Content::new()),
+            Variant::NetAssetRef(value) => tokens.append(NetAssetRef::new()),
+            variant => unimplemented!("{variant:?}"),
+        }
     }
 }
 
