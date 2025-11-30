@@ -120,6 +120,8 @@ fn generate_data_type(data_type: &DataType) -> syn::Type {
     }
 }
 
+struct Sorted<T>(T);
+
 // A struct with impls trailing under it.
 // Sorted together so the impls stay postfixed to the struct.
 struct StructWithImpls {
@@ -221,17 +223,16 @@ impl StrongInstancesCollector {
         // generate the StrongInstances variant
         self.variants.push(syn::parse_quote!(#ident(Box<#ident>)));
     }
-    fn sort(mut self) -> SortedStrongInstances {
+    fn sort(mut self) -> Sorted<Self> {
         // sort for consistency
         self.structs.sort_by(|a, b| a.item.ident.cmp(&b.item.ident));
         self.variants.sort_by(|a, b| a.ident.cmp(&b.ident));
-        SortedStrongInstances(self)
+        Sorted(self)
     }
 }
-struct SortedStrongInstances(StrongInstancesCollector);
-impl SortedStrongInstances {
+impl Sorted<StrongInstancesCollector> {
     fn codegen(self) -> syn::File {
-        let SortedStrongInstances(instances) = self;
+        let Sorted(instances) = self;
         // generate StrongInstance enum
         let mut strong_instances_enum: syn::ItemEnum = syn::parse_quote! {
             #[derive(Debug, Clone)]
@@ -328,17 +329,16 @@ impl EnumCollector {
         // generate the StrongEnum variant
         self.variants.push(syn::parse_quote!(#ident(#ident)));
     }
-    fn sort(mut self) -> SortedEnums {
+    fn sort(mut self) -> Sorted<Self> {
         // sort for consistency
         self.enums.sort_by(|a, b| a.ident.cmp(&b.ident));
         self.variants.sort_by(|a, b| a.ident.cmp(&b.ident));
-        SortedEnums(self)
+        Sorted(self)
     }
 }
-struct SortedEnums(EnumCollector);
-impl SortedEnums {
+impl Sorted<EnumCollector> {
     fn codegen(self) -> syn::File {
-        let Self(enums) = self;
+        let Sorted(enums) = self;
 
         // generate StrongInstance enum
         let mut strong_enum: syn::ItemEnum = syn::parse_quote! {
