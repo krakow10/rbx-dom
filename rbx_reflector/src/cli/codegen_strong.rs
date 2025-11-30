@@ -1,9 +1,6 @@
-use std::io::Write;
 use std::path::PathBuf;
-use std::process::{Command, Stdio};
 
 use clap::Parser;
-use quote::ToTokens;
 use rbx_reflection::{ClassDescriptor, DataType, EnumDescriptor};
 
 /// Generate strong types for all classes and enums.
@@ -15,6 +12,7 @@ pub struct CodegenStrongSubcommand {
 
 impl CodegenStrongSubcommand {
     pub fn run(&self) -> anyhow::Result<()> {
+        use quote::ToTokens;
         let db = rbx_reflection_database::get().unwrap();
 
         let dest_instance = self.output.join("instances.rs");
@@ -375,6 +373,8 @@ impl std::fmt::Display for FormatError {
 }
 impl std::error::Error for FormatError {}
 fn rustfmt(code: &[u8]) -> Result<Vec<u8>, FormatError> {
+    use std::io::Write;
+    use std::process::{Command, Stdio};
     let cmd = Command::new("rustfmt")
         .stdin(Stdio::piped())
         .stdout(Stdio::piped())
