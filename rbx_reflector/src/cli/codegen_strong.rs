@@ -65,6 +65,7 @@ fn generate_data_type(data_type: &DataType) -> syn::Type {
         }
         DataType::Value(rbx_types::VariantType::EnumItem) => syn::parse_quote!(EnumItem),
         DataType::Value(rbx_types::VariantType::Content) => syn::parse_quote!(Content),
+        DataType::Value(rbx_types::VariantType::NetAssetRef) => syn::parse_quote!(NetAssetRef),
         // enums::name
         DataType::Enum(name) => {
             let ident = syn::Ident::new(name, proc_macro2::Span::call_site());
