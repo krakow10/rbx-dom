@@ -860,6 +860,14 @@ pub struct Accessory {
 }
 impl_inherits!(Accessory, Accoutrement);
 impl_strong_instance_from!(Accessory);
+impl Default for Accessory {
+    fn default() -> Self {
+        Self {
+            superclass: Accoutrement::default(),
+            AccessoryType: unimplemented!("convert u32 Enum to precise strong variant"),
+        }
+    }
+}
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct AccessoryDescription {
@@ -876,8 +884,25 @@ pub struct AccessoryDescription {
 }
 impl_inherits!(AccessoryDescription, Instance);
 impl_strong_instance_from!(AccessoryDescription);
+impl Default for AccessoryDescription {
+    fn default() -> Self {
+        Self {
+            superclass: Instance::default(),
+            AccessoryType: unimplemented!("convert u32 Enum to precise strong variant"),
+            AssetId: 0i64,
+            Instance: Ref::none(),
+            IsLayered: false,
+            Order: 0i32,
+            Position: Vector3::new(0f32, 0f32, 0f32),
+            Puffiness: 1f32,
+            Rotation: Vector3::new(0f32, 0f32, 0f32),
+            Scale: Vector3::new(1f32, 1f32, 1f32),
+        }
+    }
+}
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
+#[derive(Default)]
 pub struct AccountService {
     superclass: Instance,
 }
@@ -891,8 +916,17 @@ pub struct Accoutrement {
 }
 impl_inherits!(Accoutrement, Instance);
 impl_strong_instance_from!(Accoutrement);
+impl Default for Accoutrement {
+    fn default() -> Self {
+        Self {
+            superclass: Instance::default(),
+            AttachmentPoint: CFrame::identity(),
+        }
+    }
+}
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
+#[derive(Default)]
 pub struct AchievementService {
     superclass: Instance,
 }
@@ -900,6 +934,7 @@ impl_inherits!(AchievementService, Instance);
 impl_strong_instance_from!(AchievementService);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
+#[derive(Default)]
 pub struct ActivityHistoryEventService {
     superclass: Instance,
 }
@@ -907,6 +942,7 @@ impl_inherits!(ActivityHistoryEventService, Instance);
 impl_strong_instance_from!(ActivityHistoryEventService);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
+#[derive(Default)]
 pub struct Actor {
     superclass: Model,
 }
@@ -922,8 +958,19 @@ pub struct AdGui {
 }
 impl_inherits!(AdGui, SurfaceGuiBase);
 impl_strong_instance_from!(AdGui);
+impl Default for AdGui {
+    fn default() -> Self {
+        Self {
+            superclass: SurfaceGuiBase::default(),
+            AdShape: unimplemented!("convert u32 Enum to precise strong variant"),
+            EnableVideoAds: false,
+            FallbackImage: "".into(),
+        }
+    }
+}
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
+#[derive(Default)]
 pub struct AdPortal {
     superclass: Instance,
 }
@@ -931,6 +978,7 @@ impl_inherits!(AdPortal, Instance);
 impl_strong_instance_from!(AdPortal);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
+#[derive(Default)]
 pub struct AdService {
     superclass: Instance,
 }
@@ -938,6 +986,7 @@ impl_inherits!(AdService, Instance);
 impl_strong_instance_from!(AdService);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
+#[derive(Default)]
 pub struct AdvancedDragger {
     superclass: Instance,
 }
@@ -957,6 +1006,20 @@ pub struct AirController {
 }
 impl_inherits!(AirController, ControllerBase);
 impl_strong_instance_from!(AirController);
+impl Default for AirController {
+    fn default() -> Self {
+        Self {
+            superclass: ControllerBase::default(),
+            BalanceMaxTorque: 10000f32,
+            BalanceSpeed: 100f32,
+            MaintainAngularMomentum: true,
+            MaintainLinearMomentum: true,
+            MoveMaxForce: 1000f32,
+            TurnMaxTorque: 10000f32,
+            TurnSpeedFactor: 1f32,
+        }
+    }
+}
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct AlignOrientation {
@@ -973,6 +1036,22 @@ pub struct AlignOrientation {
 }
 impl_inherits!(AlignOrientation, Constraint);
 impl_strong_instance_from!(AlignOrientation);
+impl Default for AlignOrientation {
+    fn default() -> Self {
+        Self {
+            superclass: Constraint::default(),
+            AlignType: unimplemented!("convert u32 Enum to precise strong variant"),
+            CFrame: CFrame::identity(),
+            MaxAngularVelocity: f32::INFINITY,
+            MaxTorque: 10000f32,
+            Mode: unimplemented!("convert u32 Enum to precise strong variant"),
+            PrimaryAxisOnly: false,
+            ReactionTorqueEnabled: false,
+            Responsiveness: 10f32,
+            RigidityEnabled: false,
+        }
+    }
+}
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct AlignPosition {
@@ -991,6 +1070,24 @@ pub struct AlignPosition {
 }
 impl_inherits!(AlignPosition, Constraint);
 impl_strong_instance_from!(AlignPosition);
+impl Default for AlignPosition {
+    fn default() -> Self {
+        Self {
+            superclass: Constraint::default(),
+            ApplyAtCenterOfMass: false,
+            ForceLimitMode: unimplemented!("convert u32 Enum to precise strong variant"),
+            ForceRelativeTo: unimplemented!("convert u32 Enum to precise strong variant"),
+            MaxAxesForce: Vector3::new(10000f32, 10000f32, 10000f32),
+            MaxForce: 10000f32,
+            MaxVelocity: f32::INFINITY,
+            Mode: unimplemented!("convert u32 Enum to precise strong variant"),
+            Position: Vector3::new(0f32, 0f32, 0f32),
+            ReactionForceEnabled: false,
+            Responsiveness: 10f32,
+            RigidityEnabled: false,
+        }
+    }
+}
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct AnalyticsService {
@@ -999,6 +1096,14 @@ pub struct AnalyticsService {
 }
 impl_inherits!(AnalyticsService, Instance);
 impl_strong_instance_from!(AnalyticsService);
+impl Default for AnalyticsService {
+    fn default() -> Self {
+        Self {
+            superclass: Instance::default(),
+            ApiKey: "".to_owned(),
+        }
+    }
+}
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct AngularVelocity {
@@ -1010,6 +1115,17 @@ pub struct AngularVelocity {
 }
 impl_inherits!(AngularVelocity, Constraint);
 impl_strong_instance_from!(AngularVelocity);
+impl Default for AngularVelocity {
+    fn default() -> Self {
+        Self {
+            superclass: Constraint::default(),
+            AngularVelocity: Vector3::new(0f32, 0f32, 0f32),
+            MaxTorque: 0f32,
+            ReactionTorqueEnabled: false,
+            RelativeTo: unimplemented!("convert u32 Enum to precise strong variant"),
+        }
+    }
+}
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct Animation {
@@ -1018,6 +1134,14 @@ pub struct Animation {
 }
 impl_inherits!(Animation, Instance);
 impl_strong_instance_from!(Animation);
+impl Default for Animation {
+    fn default() -> Self {
+        Self {
+            superclass: Instance::default(),
+            AnimationId: "".into(),
+        }
+    }
+}
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct AnimationClip {
@@ -1028,8 +1152,19 @@ pub struct AnimationClip {
 }
 impl_inherits!(AnimationClip, Instance);
 impl_strong_instance_from!(AnimationClip);
+impl Default for AnimationClip {
+    fn default() -> Self {
+        Self {
+            superclass: Instance::default(),
+            GuidBinaryString: b"".as_slice().into(),
+            Loop: false,
+            Priority: unimplemented!("convert u32 Enum to precise strong variant"),
+        }
+    }
+}
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
+#[derive(Default)]
 pub struct AnimationClipProvider {
     superclass: Instance,
 }
@@ -1046,8 +1181,20 @@ pub struct AnimationConstraint {
 }
 impl_inherits!(AnimationConstraint, Constraint);
 impl_strong_instance_from!(AnimationConstraint);
+impl Default for AnimationConstraint {
+    fn default() -> Self {
+        Self {
+            superclass: Constraint::default(),
+            IsKinematic: false,
+            MaxForce: 10000f32,
+            MaxTorque: 10000f32,
+            Transform: CFrame::identity(),
+        }
+    }
+}
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
+#[derive(Default)]
 pub struct AnimationController {
     superclass: Instance,
 }
@@ -1055,6 +1202,7 @@ impl_inherits!(AnimationController, Instance);
 impl_strong_instance_from!(AnimationController);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
+#[derive(Default)]
 pub struct AnimationFromVideoCreatorService {
     superclass: Instance,
 }
@@ -1062,6 +1210,7 @@ impl_inherits!(AnimationFromVideoCreatorService, Instance);
 impl_strong_instance_from!(AnimationFromVideoCreatorService);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
+#[derive(Default)]
 pub struct AnimationFromVideoCreatorStudioService {
     superclass: Instance,
 }
@@ -1069,6 +1218,7 @@ impl_inherits!(AnimationFromVideoCreatorStudioService, Instance);
 impl_strong_instance_from!(AnimationFromVideoCreatorStudioService);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
+#[derive(Default)]
 pub struct AnimationGraphDefinition {
     superclass: AnimationClip,
 }
@@ -1076,6 +1226,7 @@ impl_inherits!(AnimationGraphDefinition, AnimationClip);
 impl_strong_instance_from!(AnimationGraphDefinition);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
+#[derive(Default)]
 pub struct AnimationImportData {
     superclass: BaseImportData,
 }
@@ -1083,6 +1234,7 @@ impl_inherits!(AnimationImportData, BaseImportData);
 impl_strong_instance_from!(AnimationImportData);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
+#[derive(Default)]
 pub struct AnimationNode {
     superclass: Object,
 }
@@ -1097,6 +1249,15 @@ pub struct AnimationNodeDefinition {
 }
 impl_inherits!(AnimationNodeDefinition, Instance);
 impl_strong_instance_from!(AnimationNodeDefinition);
+impl Default for AnimationNodeDefinition {
+    fn default() -> Self {
+        Self {
+            superclass: Instance::default(),
+            InputPinData: b"\x01\0\0\0\0\0\0\0".as_slice().into(),
+            NodeType: unimplemented!("convert u32 Enum to precise strong variant"),
+        }
+    }
+}
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct AnimationRigData {
@@ -1110,8 +1271,14 @@ pub struct AnimationRigData {
 }
 impl_inherits!(AnimationRigData, Instance);
 impl_strong_instance_from!(AnimationRigData);
+impl Default for AnimationRigData {
+    fn default() -> Self {
+        Self { superclass : Instance :: default () , Label : b"\x01\0\0\0\x01\0\0\0\0\0\0\0" . as_slice () . into () , Name : b"\x01\0\0\0\x01\0\0\0\0\0\0\0" . as_slice () . into () , Parent : b"\x01\0\0\0\x01\0\0\0\0\0" . as_slice () . into () , PostTransform : b"\x01\0\0\0\x01\0\0\0\0\0\x80?\0\0\0\0\0\0\0\0\0\0\0\0\0\0\x80?\0\0\0\0\0\0\0\0\0\0\0\0\0\0\x80?\0\0\0\0\0\0\0\0\0\0\0\0" . as_slice () . into () , PreTransform : b"\x01\0\0\0\x01\0\0\0\0\0\x80?\0\0\0\0\0\0\0\0\0\0\0\0\0\0\x80?\0\0\0\0\0\0\0\0\0\0\0\0\0\0\x80?\0\0\0\0\0\0\0\0\0\0\0\0" . as_slice () . into () , Transform : b"\x01\0\0\0\x01\0\0\0\0\0\x80?\0\0\0\0\0\0\0\0\0\0\0\0\0\0\x80?\0\0\0\0\0\0\0\0\0\0\0\0\0\0\x80?\0\0\0\0\0\0\0\0\0\0\0\0" . as_slice () . into () }
+    }
+}
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
+#[derive(Default)]
 pub struct AnimationStreamTrack {
     superclass: Instance,
 }
@@ -1125,6 +1292,14 @@ pub struct AnimationTrack {
 }
 impl_inherits!(AnimationTrack, Instance);
 impl_strong_instance_from!(AnimationTrack);
+impl Default for AnimationTrack {
+    fn default() -> Self {
+        Self {
+            superclass: Instance::default(),
+            Priority: unimplemented!("convert u32 Enum to precise strong variant"),
+        }
+    }
+}
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct Animator {
@@ -1133,8 +1308,17 @@ pub struct Animator {
 }
 impl_inherits!(Animator, Instance);
 impl_strong_instance_from!(Animator);
+impl Default for Animator {
+    fn default() -> Self {
+        Self {
+            superclass: Instance::default(),
+            PreferLodEnabled: true,
+        }
+    }
+}
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
+#[derive(Default)]
 pub struct Annotation {
     superclass: Instance,
 }
@@ -1142,6 +1326,7 @@ impl_inherits!(Annotation, Instance);
 impl_strong_instance_from!(Annotation);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
+#[derive(Default)]
 pub struct AnnotationsService {
     superclass: Instance,
 }
@@ -1149,6 +1334,7 @@ impl_inherits!(AnnotationsService, Instance);
 impl_strong_instance_from!(AnnotationsService);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
+#[derive(Default)]
 pub struct AppLifecycleObserverService {
     superclass: Instance,
 }
@@ -1156,6 +1342,7 @@ impl_inherits!(AppLifecycleObserverService, Instance);
 impl_strong_instance_from!(AppLifecycleObserverService);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
+#[derive(Default)]
 pub struct AppRatingPromptService {
     superclass: Instance,
 }
@@ -1163,6 +1350,7 @@ impl_inherits!(AppRatingPromptService, Instance);
 impl_strong_instance_from!(AppRatingPromptService);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
+#[derive(Default)]
 pub struct AppStorageService {
     superclass: LocalStorageService,
 }
@@ -1170,6 +1358,7 @@ impl_inherits!(AppStorageService, LocalStorageService);
 impl_strong_instance_from!(AppStorageService);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
+#[derive(Default)]
 pub struct AppUpdateService {
     superclass: Instance,
 }
@@ -1183,8 +1372,17 @@ pub struct ArcHandles {
 }
 impl_inherits!(ArcHandles, HandlesBase);
 impl_strong_instance_from!(ArcHandles);
+impl Default for ArcHandles {
+    fn default() -> Self {
+        Self {
+            superclass: HandlesBase::default(),
+            Axes: unimplemented!(),
+        }
+    }
+}
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
+#[derive(Default)]
 pub struct AssetCounterService {
     superclass: Instance,
 }
@@ -1200,8 +1398,19 @@ pub struct AssetDeliveryProxy {
 }
 impl_inherits!(AssetDeliveryProxy, Instance);
 impl_strong_instance_from!(AssetDeliveryProxy);
+impl Default for AssetDeliveryProxy {
+    fn default() -> Self {
+        Self {
+            superclass: Instance::default(),
+            Interface: "".to_owned(),
+            Port: 0i32,
+            StartServer: false,
+        }
+    }
+}
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
+#[derive(Default)]
 pub struct AssetImportService {
     superclass: Instance,
 }
@@ -1209,6 +1418,7 @@ impl_inherits!(AssetImportService, Instance);
 impl_strong_instance_from!(AssetImportService);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
+#[derive(Default)]
 pub struct AssetImportSession {
     superclass: ImportSession,
 }
@@ -1216,6 +1426,7 @@ impl_inherits!(AssetImportSession, ImportSession);
 impl_strong_instance_from!(AssetImportSession);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
+#[derive(Default)]
 pub struct AssetManagerService {
     superclass: Instance,
 }
@@ -1231,6 +1442,16 @@ pub struct AssetPatchSettings {
 }
 impl_inherits!(AssetPatchSettings, Instance);
 impl_strong_instance_from!(AssetPatchSettings);
+impl Default for AssetPatchSettings {
+    fn default() -> Self {
+        Self {
+            superclass: Instance::default(),
+            ContentId: "".to_owned(),
+            OutputPath: "".to_owned(),
+            PatchId: "".to_owned(),
+        }
+    }
+}
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct AssetService {
@@ -1239,8 +1460,17 @@ pub struct AssetService {
 }
 impl_inherits!(AssetService, Instance);
 impl_strong_instance_from!(AssetService);
+impl Default for AssetService {
+    fn default() -> Self {
+        Self {
+            superclass: Instance::default(),
+            AllowInsertFreeAssets: false,
+        }
+    }
+}
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
+#[derive(Default)]
 pub struct AssetSoundEffect {
     superclass: CustomSoundEffect,
 }
@@ -1259,8 +1489,22 @@ pub struct Atmosphere {
 }
 impl_inherits!(Atmosphere, Instance);
 impl_strong_instance_from!(Atmosphere);
+impl Default for Atmosphere {
+    fn default() -> Self {
+        Self {
+            superclass: Instance::default(),
+            Color: Color3::new(0.7843f32, 0.6667f32, 0.4235f32),
+            Decay: Color3::new(0.3608f32, 0.2353f32, 0.0549f32),
+            Density: 0.395f32,
+            Glare: 0f32,
+            Haze: 0f32,
+            Offset: 0f32,
+        }
+    }
+}
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
+#[derive(Default)]
 pub struct AtmosphereSensor {
     superclass: SensorBase,
 }
@@ -1275,6 +1519,15 @@ pub struct Attachment {
 }
 impl_inherits!(Attachment, Instance);
 impl_strong_instance_from!(Attachment);
+impl Default for Attachment {
+    fn default() -> Self {
+        Self {
+            superclass: Instance::default(),
+            CFrame: CFrame::identity(),
+            Visible: false,
+        }
+    }
+}
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct AudioAnalyzer {
@@ -1284,6 +1537,15 @@ pub struct AudioAnalyzer {
 }
 impl_inherits!(AudioAnalyzer, Instance);
 impl_strong_instance_from!(AudioAnalyzer);
+impl Default for AudioAnalyzer {
+    fn default() -> Self {
+        Self {
+            superclass: Instance::default(),
+            SpectrumEnabled: true,
+            WindowSize: unimplemented!("convert u32 Enum to precise strong variant"),
+        }
+    }
+}
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct AudioChannelMixer {
@@ -1292,6 +1554,14 @@ pub struct AudioChannelMixer {
 }
 impl_inherits!(AudioChannelMixer, Instance);
 impl_strong_instance_from!(AudioChannelMixer);
+impl Default for AudioChannelMixer {
+    fn default() -> Self {
+        Self {
+            superclass: Instance::default(),
+            Layout: unimplemented!("convert u32 Enum to precise strong variant"),
+        }
+    }
+}
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct AudioChannelSplitter {
@@ -1300,6 +1570,14 @@ pub struct AudioChannelSplitter {
 }
 impl_inherits!(AudioChannelSplitter, Instance);
 impl_strong_instance_from!(AudioChannelSplitter);
+impl Default for AudioChannelSplitter {
+    fn default() -> Self {
+        Self {
+            superclass: Instance::default(),
+            Layout: unimplemented!("convert u32 Enum to precise strong variant"),
+        }
+    }
+}
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct AudioChorus {
@@ -1311,6 +1589,17 @@ pub struct AudioChorus {
 }
 impl_inherits!(AudioChorus, Instance);
 impl_strong_instance_from!(AudioChorus);
+impl Default for AudioChorus {
+    fn default() -> Self {
+        Self {
+            superclass: Instance::default(),
+            Bypass: false,
+            Depth: 0.45f32,
+            Mix: 0.85f32,
+            Rate: 5f32,
+        }
+    }
+}
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct AudioCompressor {
@@ -1324,6 +1613,19 @@ pub struct AudioCompressor {
 }
 impl_inherits!(AudioCompressor, Instance);
 impl_strong_instance_from!(AudioCompressor);
+impl Default for AudioCompressor {
+    fn default() -> Self {
+        Self {
+            superclass: Instance::default(),
+            Attack: 0.1f32,
+            Bypass: false,
+            MakeupGain: 0f32,
+            Ratio: 40f32,
+            Release: 0.1f32,
+            Threshold: -40f32,
+        }
+    }
+}
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct AudioDeviceInput {
@@ -1336,6 +1638,18 @@ pub struct AudioDeviceInput {
 }
 impl_inherits!(AudioDeviceInput, Instance);
 impl_strong_instance_from!(AudioDeviceInput);
+impl Default for AudioDeviceInput {
+    fn default() -> Self {
+        Self {
+            superclass: Instance::default(),
+            AccessType: unimplemented!("convert u32 Enum to precise strong variant"),
+            Active: true,
+            Muted: false,
+            Player: Ref::none(),
+            Volume: 1f32,
+        }
+    }
+}
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct AudioDeviceOutput {
@@ -1344,6 +1658,14 @@ pub struct AudioDeviceOutput {
 }
 impl_inherits!(AudioDeviceOutput, Instance);
 impl_strong_instance_from!(AudioDeviceOutput);
+impl Default for AudioDeviceOutput {
+    fn default() -> Self {
+        Self {
+            superclass: Instance::default(),
+            Player: Ref::none(),
+        }
+    }
+}
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct AudioDistortion {
@@ -1353,6 +1675,15 @@ pub struct AudioDistortion {
 }
 impl_inherits!(AudioDistortion, Instance);
 impl_strong_instance_from!(AudioDistortion);
+impl Default for AudioDistortion {
+    fn default() -> Self {
+        Self {
+            superclass: Instance::default(),
+            Bypass: false,
+            Level: 0.5f32,
+        }
+    }
+}
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct AudioEcho {
@@ -1366,6 +1697,19 @@ pub struct AudioEcho {
 }
 impl_inherits!(AudioEcho, Instance);
 impl_strong_instance_from!(AudioEcho);
+impl Default for AudioEcho {
+    fn default() -> Self {
+        Self {
+            superclass: Instance::default(),
+            Bypass: false,
+            DelayTime: 1f32,
+            DryLevel: 0f32,
+            Feedback: 0.5f32,
+            RampTime: 0f32,
+            WetLevel: 0f32,
+        }
+    }
+}
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct AudioEmitter {
@@ -1379,6 +1723,19 @@ pub struct AudioEmitter {
 }
 impl_inherits!(AudioEmitter, Instance);
 impl_strong_instance_from!(AudioEmitter);
+impl Default for AudioEmitter {
+    fn default() -> Self {
+        Self {
+            superclass: Instance::default(),
+            AcousticSimulationEnabled: true,
+            AngleAttenuation: b"\0".as_slice().into(),
+            AudioInteractionGroup: "".to_owned(),
+            DistanceAttenuation: b"\0".as_slice().into(),
+            PositionOverride: Ref::none(),
+            SimulationFidelity: unimplemented!("convert u32 Enum to precise strong variant"),
+        }
+    }
+}
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct AudioEqualizer {
@@ -1391,6 +1748,18 @@ pub struct AudioEqualizer {
 }
 impl_inherits!(AudioEqualizer, Instance);
 impl_strong_instance_from!(AudioEqualizer);
+impl Default for AudioEqualizer {
+    fn default() -> Self {
+        Self {
+            superclass: Instance::default(),
+            Bypass: false,
+            HighGain: 0f32,
+            LowGain: 0f32,
+            MidGain: 0f32,
+            MidRange: NumberRange::new(400f32, 4000f32),
+        }
+    }
+}
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct AudioFader {
@@ -1400,6 +1769,15 @@ pub struct AudioFader {
 }
 impl_inherits!(AudioFader, Instance);
 impl_strong_instance_from!(AudioFader);
+impl Default for AudioFader {
+    fn default() -> Self {
+        Self {
+            superclass: Instance::default(),
+            Bypass: false,
+            Volume: 1f32,
+        }
+    }
+}
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct AudioFilter {
@@ -1412,6 +1790,18 @@ pub struct AudioFilter {
 }
 impl_inherits!(AudioFilter, Instance);
 impl_strong_instance_from!(AudioFilter);
+impl Default for AudioFilter {
+    fn default() -> Self {
+        Self {
+            superclass: Instance::default(),
+            Bypass: false,
+            FilterType: unimplemented!("convert u32 Enum to precise strong variant"),
+            Frequency: 2000f32,
+            Gain: 0f32,
+            Q: 0.707f32,
+        }
+    }
+}
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct AudioFlanger {
@@ -1423,8 +1813,20 @@ pub struct AudioFlanger {
 }
 impl_inherits!(AudioFlanger, Instance);
 impl_strong_instance_from!(AudioFlanger);
+impl Default for AudioFlanger {
+    fn default() -> Self {
+        Self {
+            superclass: Instance::default(),
+            Bypass: false,
+            Depth: 0.45f32,
+            Mix: 0.85f32,
+            Rate: 5f32,
+        }
+    }
+}
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
+#[derive(Default)]
 pub struct AudioFocusService {
     superclass: Instance,
 }
@@ -1441,6 +1843,17 @@ pub struct AudioGate {
 }
 impl_inherits!(AudioGate, Instance);
 impl_strong_instance_from!(AudioGate);
+impl Default for AudioGate {
+    fn default() -> Self {
+        Self {
+            superclass: Instance::default(),
+            Attack: 0.01f32,
+            Bypass: false,
+            Release: 0.1f32,
+            Threshold: NumberRange::new(-36f32, -24f32),
+        }
+    }
+}
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct AudioLimiter {
@@ -1451,6 +1864,16 @@ pub struct AudioLimiter {
 }
 impl_inherits!(AudioLimiter, Instance);
 impl_strong_instance_from!(AudioLimiter);
+impl Default for AudioLimiter {
+    fn default() -> Self {
+        Self {
+            superclass: Instance::default(),
+            Bypass: false,
+            MaxLevel: 0f32,
+            Release: 0.01f32,
+        }
+    }
+}
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct AudioListener {
@@ -1464,8 +1887,22 @@ pub struct AudioListener {
 }
 impl_inherits!(AudioListener, Instance);
 impl_strong_instance_from!(AudioListener);
+impl Default for AudioListener {
+    fn default() -> Self {
+        Self {
+            superclass: Instance::default(),
+            AcousticSimulationEnabled: true,
+            AngleAttenuation: b"\0".as_slice().into(),
+            AudioInteractionGroup: "".to_owned(),
+            DistanceAttenuation: b"\0".as_slice().into(),
+            PositionOverride: Ref::none(),
+            SimulationFidelity: unimplemented!("convert u32 Enum to precise strong variant"),
+        }
+    }
+}
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
+#[derive(Default)]
 pub struct AudioPages {
     superclass: Pages,
 }
@@ -1481,6 +1918,16 @@ pub struct AudioPitchShifter {
 }
 impl_inherits!(AudioPitchShifter, Instance);
 impl_strong_instance_from!(AudioPitchShifter);
+impl Default for AudioPitchShifter {
+    fn default() -> Self {
+        Self {
+            superclass: Instance::default(),
+            Bypass: false,
+            Pitch: 1.25f32,
+            WindowSize: unimplemented!("convert u32 Enum to precise strong variant"),
+        }
+    }
+}
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct AudioPlayer {
@@ -1498,6 +1945,23 @@ pub struct AudioPlayer {
 }
 impl_inherits!(AudioPlayer, Instance);
 impl_strong_instance_from!(AudioPlayer);
+impl Default for AudioPlayer {
+    fn default() -> Self {
+        Self {
+            superclass: Instance::default(),
+            AudioContent: Content::none(),
+            AutoLoad: true,
+            AutoPlay: false,
+            IsMutedForCapture: false,
+            LoopRegion: NumberRange::new(0f32, 60000f32),
+            Looping: false,
+            PlaybackRegion: NumberRange::new(0f32, 60000f32),
+            PlaybackSpeed: 1f64,
+            TimePosition: 0f64,
+            Volume: 1f32,
+        }
+    }
+}
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct AudioRecorder {
@@ -1506,6 +1970,14 @@ pub struct AudioRecorder {
 }
 impl_inherits!(AudioRecorder, Instance);
 impl_strong_instance_from!(AudioRecorder);
+impl Default for AudioRecorder {
+    fn default() -> Self {
+        Self {
+            superclass: Instance::default(),
+            IsRecording: false,
+        }
+    }
+}
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct AudioReverb {
@@ -1526,6 +1998,26 @@ pub struct AudioReverb {
 }
 impl_inherits!(AudioReverb, Instance);
 impl_strong_instance_from!(AudioReverb);
+impl Default for AudioReverb {
+    fn default() -> Self {
+        Self {
+            superclass: Instance::default(),
+            Bypass: false,
+            DecayRatio: 0.5f32,
+            DecayTime: 1.5f32,
+            Density: 1f32,
+            Diffusion: 1f32,
+            DryLevel: 0f32,
+            EarlyDelayTime: 0.02f32,
+            HighCutFrequency: 20000f32,
+            LateDelayTime: 0.04f32,
+            LowShelfFrequency: 250f32,
+            LowShelfGain: 0f32,
+            ReferenceFrequency: 5000f32,
+            WetLevel: -6f32,
+        }
+    }
+}
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct AudioSearchParams {
@@ -1541,6 +2033,21 @@ pub struct AudioSearchParams {
 }
 impl_inherits!(AudioSearchParams, Instance);
 impl_strong_instance_from!(AudioSearchParams);
+impl Default for AudioSearchParams {
+    fn default() -> Self {
+        Self {
+            superclass: Instance::default(),
+            Album: "".to_owned(),
+            Artist: "".to_owned(),
+            AudioSubType: unimplemented!("convert u32 Enum to precise strong variant"),
+            MaxDuration: 0i32,
+            MinDuration: 0i32,
+            SearchKeyword: "".to_owned(),
+            Tag: "".to_owned(),
+            Title: "".to_owned(),
+        }
+    }
+}
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct AudioSpeechToText {
@@ -1550,6 +2057,15 @@ pub struct AudioSpeechToText {
 }
 impl_inherits!(AudioSpeechToText, Instance);
 impl_strong_instance_from!(AudioSpeechToText);
+impl Default for AudioSpeechToText {
+    fn default() -> Self {
+        Self {
+            superclass: Instance::default(),
+            Enabled: false,
+            Text: "".to_owned(),
+        }
+    }
+}
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct AudioTextToSpeech {
@@ -1565,6 +2081,21 @@ pub struct AudioTextToSpeech {
 }
 impl_inherits!(AudioTextToSpeech, Instance);
 impl_strong_instance_from!(AudioTextToSpeech);
+impl Default for AudioTextToSpeech {
+    fn default() -> Self {
+        Self {
+            superclass: Instance::default(),
+            Looping: false,
+            Pitch: 0f32,
+            PlaybackSpeed: 1f32,
+            Speed: 1f32,
+            Text: "".to_owned(),
+            TimePosition: 0f64,
+            VoiceId: "".to_owned(),
+            Volume: 1f32,
+        }
+    }
+}
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct AudioTremolo {
@@ -1579,6 +2110,20 @@ pub struct AudioTremolo {
 }
 impl_inherits!(AudioTremolo, Instance);
 impl_strong_instance_from!(AudioTremolo);
+impl Default for AudioTremolo {
+    fn default() -> Self {
+        Self {
+            superclass: Instance::default(),
+            Bypass: false,
+            Depth: 1f32,
+            Duty: 0.5f32,
+            Frequency: 5f32,
+            Shape: 0f32,
+            Skew: 0f32,
+            Square: 0f32,
+        }
+    }
+}
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct AuroraScript {
@@ -1592,6 +2137,19 @@ pub struct AuroraScript {
 }
 impl_inherits!(AuroraScript, LuaSourceContainer);
 impl_strong_instance_from!(AuroraScript);
+impl Default for AuroraScript {
+    fn default() -> Self {
+        Self {
+            superclass: LuaSourceContainer::default(),
+            AuroraScriptBindingsSerialize: b"".as_slice().into(),
+            EnableCulling: false,
+            EnableLod: false,
+            LodCriticality: 0i32,
+            Priority: 0i32,
+            Source: "".to_owned(),
+        }
+    }
+}
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct AuroraScriptObject {
@@ -1604,8 +2162,21 @@ pub struct AuroraScriptObject {
 }
 impl_inherits!(AuroraScriptObject, Instance);
 impl_strong_instance_from!(AuroraScriptObject);
+impl Default for AuroraScriptObject {
+    fn default() -> Self {
+        Self {
+            superclass: Instance::default(),
+            BehaviorWeak: Ref::none(),
+            BoundInstanceWeak: Ref::none(),
+            FrameId: 0i32,
+            LodLevel: 0i32,
+            PriorFrameInvoked: 0i32,
+        }
+    }
+}
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
+#[derive(Default)]
 pub struct AuroraScriptService {
     superclass: Instance,
 }
@@ -1622,6 +2193,17 @@ pub struct AuroraService {
 }
 impl_inherits!(AuroraService, Instance);
 impl_strong_instance_from!(AuroraService);
+impl Default for AuroraService {
+    fn default() -> Self {
+        Self {
+            superclass: Instance::default(),
+            HashRoundingPoint: 0f64,
+            IgnoreRotation: false,
+            LockStepIdOffset: false,
+            RollbackOffset: 0i32,
+        }
+    }
+}
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct AvatarAccessoryRules {
@@ -1651,6 +2233,35 @@ pub struct AvatarAccessoryRules {
 }
 impl_inherits!(AvatarAccessoryRules, Instance);
 impl_strong_instance_from!(AvatarAccessoryRules);
+impl Default for AvatarAccessoryRules {
+    fn default() -> Self {
+        Self {
+            superclass: Instance::default(),
+            AccessoryMode: unimplemented!("convert u32 Enum to precise strong variant"),
+            CustomAccessoryMode: unimplemented!("convert u32 Enum to precise strong variant"),
+            CustomBackAccessoryEnabled: false,
+            CustomBackAccessoryId: 0i64,
+            CustomFaceAccessoryEnabled: false,
+            CustomFaceAccessoryId: 0i64,
+            CustomFrontAccessoryEnabled: false,
+            CustomFrontAccessoryId: 0i64,
+            CustomHairAccessoryEnabled: false,
+            CustomHairAccessoryId: 0i64,
+            CustomHeadAccessoryEnabled: false,
+            CustomHeadAccessoryId: 0i64,
+            CustomNeckAccessoryEnabled: false,
+            CustomNeckAccessoryId: 0i64,
+            CustomShoulderAccessoryEnabled: false,
+            CustomShoulderAccessoryId: 0i64,
+            CustomWaistAccessoryEnabled: false,
+            CustomWaistAccessoryId: 0i64,
+            EnableSound: true,
+            EnableVfx: true,
+            LimitBounds: Vector3::new(0f32, 0f32, 0f32),
+            LimitMethod: unimplemented!("convert u32 Enum to precise strong variant"),
+        }
+    }
+}
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct AvatarAnimationRules {
@@ -1680,6 +2291,35 @@ pub struct AvatarAnimationRules {
 }
 impl_inherits!(AvatarAnimationRules, Instance);
 impl_strong_instance_from!(AvatarAnimationRules);
+impl Default for AvatarAnimationRules {
+    fn default() -> Self {
+        Self {
+            superclass: Instance::default(),
+            AnimationClipsMode: unimplemented!("convert u32 Enum to precise strong variant"),
+            AnimationPacksMode: unimplemented!("convert u32 Enum to precise strong variant"),
+            CustomClimbAnimationEnabled: false,
+            CustomClimbAnimationId: 0i64,
+            CustomFallAnimationEnabled: false,
+            CustomFallAnimationId: 0i64,
+            CustomIdleAlt1AnimationEnabled: false,
+            CustomIdleAlt1AnimationId: 0i64,
+            CustomIdleAlt2AnimationEnabled: false,
+            CustomIdleAlt2AnimationId: 0i64,
+            CustomIdleAnimationEnabled: false,
+            CustomIdleAnimationId: 0i64,
+            CustomJumpAnimationEnabled: false,
+            CustomJumpAnimationId: 0i64,
+            CustomRunAnimationEnabled: false,
+            CustomRunAnimationId: 0i64,
+            CustomSwimAnimationEnabled: false,
+            CustomSwimAnimationId: 0i64,
+            CustomSwimIdleAnimationEnabled: false,
+            CustomSwimIdleAnimationId: 0i64,
+            CustomWalkAnimationEnabled: false,
+            CustomWalkAnimationId: 0i64,
+        }
+    }
+}
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct AvatarBodyRules {
@@ -1719,8 +2359,48 @@ pub struct AvatarBodyRules {
 }
 impl_inherits!(AvatarBodyRules, Instance);
 impl_strong_instance_from!(AvatarBodyRules);
+impl Default for AvatarBodyRules {
+    fn default() -> Self {
+        Self {
+            superclass: Instance::default(),
+            AppearanceMode: unimplemented!("convert u32 Enum to precise strong variant"),
+            BuildMode: unimplemented!("convert u32 Enum to precise strong variant"),
+            CustomBodyBundleId: 0i64,
+            CustomBodyType: unimplemented!("convert u32 Enum to precise strong variant"),
+            CustomBodyTypeScale: NumberRange::new(0f32, 1f32),
+            CustomEyebrowEnabled: false,
+            CustomEyebrowId: 0i64,
+            CustomEyelashEnabled: false,
+            CustomEyelashId: 0i64,
+            CustomFaceEnabled: false,
+            CustomFaceId: 0i64,
+            CustomHeadEnabled: false,
+            CustomHeadId: 0i64,
+            CustomHeadScale: NumberRange::new(0.95f32, 1f32),
+            CustomHeight: NumberRange::new(5.5f32, 5.5f32),
+            CustomHeightScale: NumberRange::new(0.9f32, 1.05f32),
+            CustomLeftArmEnabled: false,
+            CustomLeftArmId: 0i64,
+            CustomLeftLegEnabled: false,
+            CustomLeftLegId: 0i64,
+            CustomMoodEnabled: false,
+            CustomMoodId: 0i64,
+            CustomProportionsScale: NumberRange::new(0f32, 1f32),
+            CustomRightArmEnabled: false,
+            CustomRightArmId: 0i64,
+            CustomRightLegEnabled: false,
+            CustomRightLegId: 0i64,
+            CustomTorsoEnabled: false,
+            CustomTorsoId: 0i64,
+            CustomWidthScale: NumberRange::new(0.7f32, 1f32),
+            KeepPlayerHead: true,
+            ScaleMode: unimplemented!("convert u32 Enum to precise strong variant"),
+        }
+    }
+}
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
+#[derive(Default)]
 pub struct AvatarChatService {
     superclass: Instance,
 }
@@ -1760,6 +2440,40 @@ pub struct AvatarClothingRules {
 }
 impl_inherits!(AvatarClothingRules, Instance);
 impl_strong_instance_from!(AvatarClothingRules);
+impl Default for AvatarClothingRules {
+    fn default() -> Self {
+        Self {
+            superclass: Instance::default(),
+            ClothingMode: unimplemented!("convert u32 Enum to precise strong variant"),
+            CustomClassicPantsAccessoryEnabled: false,
+            CustomClassicPantsAccessoryId: 0i64,
+            CustomClassicShirtsAccessoryEnabled: false,
+            CustomClassicShirtsAccessoryId: 0i64,
+            CustomClassicTShirtsAccessoryEnabled: false,
+            CustomClassicTShirtsAccessoryId: 0i64,
+            CustomClothingMode: unimplemented!("convert u32 Enum to precise strong variant"),
+            CustomDressSkirtAccessoryEnabled: false,
+            CustomDressSkirtAccessoryId: 0i64,
+            CustomJacketAccessoryEnabled: false,
+            CustomJacketAccessoryId: 0i64,
+            CustomLeftShoesAccessoryEnabled: false,
+            CustomLeftShoesAccessoryId: 0i64,
+            CustomPantsAccessoryEnabled: false,
+            CustomPantsAccessoryId: 0i64,
+            CustomRightShoesAccessoryEnabled: false,
+            CustomRightShoesAccessoryId: 0i64,
+            CustomShirtAccessoryEnabled: false,
+            CustomShirtAccessoryId: 0i64,
+            CustomShortsAccessoryEnabled: false,
+            CustomShortsAccessoryId: 0i64,
+            CustomSweaterAccessoryEnabled: false,
+            CustomSweaterAccessoryId: 0i64,
+            CustomTShirtAccessoryEnabled: false,
+            CustomTShirtAccessoryId: 0i64,
+            LimitBounds: Vector3::new(0f32, 0f32, 0f32),
+        }
+    }
+}
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct AvatarCollisionRules {
@@ -1771,8 +2485,20 @@ pub struct AvatarCollisionRules {
 }
 impl_inherits!(AvatarCollisionRules, Instance);
 impl_strong_instance_from!(AvatarCollisionRules);
+impl Default for AvatarCollisionRules {
+    fn default() -> Self {
+        Self {
+            superclass: Instance::default(),
+            CollisionMode: unimplemented!("convert u32 Enum to precise strong variant"),
+            HitAndTouchDetectionMode: unimplemented!("convert u32 Enum to precise strong variant"),
+            LegacyCollisionMode: unimplemented!("convert u32 Enum to precise strong variant"),
+            SingleColliderSize: Vector3::new(2f32, 3f32, 1f32),
+        }
+    }
+}
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
+#[derive(Default)]
 pub struct AvatarCreationService {
     superclass: Instance,
 }
@@ -1780,6 +2506,7 @@ impl_inherits!(AvatarCreationService, Instance);
 impl_strong_instance_from!(AvatarCreationService);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
+#[derive(Default)]
 pub struct AvatarEditorService {
     superclass: Instance,
 }
@@ -1787,6 +2514,7 @@ impl_inherits!(AvatarEditorService, Instance);
 impl_strong_instance_from!(AvatarEditorService);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
+#[derive(Default)]
 pub struct AvatarImportService {
     superclass: Instance,
 }
@@ -1800,8 +2528,17 @@ pub struct AvatarRules {
 }
 impl_inherits!(AvatarRules, Instance);
 impl_strong_instance_from!(AvatarRules);
+impl Default for AvatarRules {
+    fn default() -> Self {
+        Self {
+            superclass: Instance::default(),
+            AvatarType: unimplemented!("convert u32 Enum to precise strong variant"),
+        }
+    }
+}
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
+#[derive(Default)]
 pub struct AvatarSettings {
     superclass: Instance,
 }
@@ -1809,6 +2546,7 @@ impl_inherits!(AvatarSettings, Instance);
 impl_strong_instance_from!(AvatarSettings);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
+#[derive(Default)]
 pub struct Backpack {
     superclass: Instance,
 }
@@ -1822,8 +2560,17 @@ pub struct BackpackItem {
 }
 impl_inherits!(BackpackItem, Model);
 impl_strong_instance_from!(BackpackItem);
+impl Default for BackpackItem {
+    fn default() -> Self {
+        Self {
+            superclass: Model::default(),
+            TextureContent: Content::none(),
+        }
+    }
+}
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
+#[derive(Default)]
 pub struct BadgeService {
     superclass: Instance,
 }
@@ -1844,8 +2591,24 @@ pub struct BallSocketConstraint {
 }
 impl_inherits!(BallSocketConstraint, Constraint);
 impl_strong_instance_from!(BallSocketConstraint);
+impl Default for BallSocketConstraint {
+    fn default() -> Self {
+        Self {
+            superclass: Constraint::default(),
+            LimitsEnabled: false,
+            MaxFrictionTorqueXml: 0f32,
+            Radius: 0.15f32,
+            Restitution: 0f32,
+            TwistLimitsEnabled: false,
+            TwistLowerAngle: -45f32,
+            TwistUpperAngle: 45f32,
+            UpperAngle: 45f32,
+        }
+    }
+}
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
+#[derive(Default)]
 pub struct BanHistoryPages {
     superclass: Pages,
 }
@@ -1860,6 +2623,15 @@ pub struct BaseImportData {
 }
 impl_inherits!(BaseImportData, Instance);
 impl_strong_instance_from!(BaseImportData);
+impl Default for BaseImportData {
+    fn default() -> Self {
+        Self {
+            superclass: Instance::default(),
+            ImportName: "".to_owned(),
+            ShouldImport: false,
+        }
+    }
+}
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct BasePart {
@@ -1911,8 +2683,60 @@ pub struct BasePart {
 }
 impl_inherits!(BasePart, PVInstance);
 impl_strong_instance_from!(BasePart);
+impl Default for BasePart {
+    fn default() -> Self {
+        Self {
+            superclass: PVInstance::default(),
+            Anchored: false,
+            AudioCanCollide: false,
+            BackParamA: 0f32,
+            BackParamB: 0f32,
+            BackSurface: unimplemented!("convert u32 Enum to precise strong variant"),
+            BackSurfaceInput: unimplemented!("convert u32 Enum to precise strong variant"),
+            BottomParamA: 0f32,
+            BottomParamB: 0f32,
+            BottomSurface: unimplemented!("convert u32 Enum to precise strong variant"),
+            BottomSurfaceInput: unimplemented!("convert u32 Enum to precise strong variant"),
+            CFrame: CFrame::identity(),
+            CanCollide: false,
+            CanQuery: false,
+            CanTouch: false,
+            CastShadow: false,
+            CollisionGroup: "".to_owned(),
+            CollisionGroupId: 0i32,
+            CustomPhysicalProperties: PhysicalProperties::Default,
+            EnableFluidForces: false,
+            FrontParamA: 0f32,
+            FrontParamB: 0f32,
+            FrontSurface: unimplemented!("convert u32 Enum to precise strong variant"),
+            FrontSurfaceInput: unimplemented!("convert u32 Enum to precise strong variant"),
+            LeftParamA: 0f32,
+            LeftParamB: 0f32,
+            LeftSurface: unimplemented!("convert u32 Enum to precise strong variant"),
+            LeftSurfaceInput: unimplemented!("convert u32 Enum to precise strong variant"),
+            Locked: false,
+            Massless: false,
+            Material: unimplemented!("convert u32 Enum to precise strong variant"),
+            PivotOffset: CFrame::identity(),
+            Reflectance: 0f32,
+            RightParamA: 0f32,
+            RightParamB: 0f32,
+            RightSurface: unimplemented!("convert u32 Enum to precise strong variant"),
+            RightSurfaceInput: unimplemented!("convert u32 Enum to precise strong variant"),
+            RootPriority: 0i32,
+            RotVelocity: Vector3::new(0f32, 0f32, 0f32),
+            TopParamA: 0f32,
+            TopParamB: 0f32,
+            TopSurface: unimplemented!("convert u32 Enum to precise strong variant"),
+            TopSurfaceInput: unimplemented!("convert u32 Enum to precise strong variant"),
+            Transparency: 0f32,
+            Velocity: Vector3::new(0f32, 0f32, 0f32),
+        }
+    }
+}
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
+#[derive(Default)]
 pub struct BasePlayerGui {
     superclass: Instance,
 }
@@ -1920,6 +2744,7 @@ impl_inherits!(BasePlayerGui, Instance);
 impl_strong_instance_from!(BasePlayerGui);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
+#[derive(Default)]
 pub struct BaseRemoteEvent {
     superclass: Instance,
 }
@@ -1935,6 +2760,16 @@ pub struct BaseScript {
 }
 impl_inherits!(BaseScript, LuaSourceContainer);
 impl_strong_instance_from!(BaseScript);
+impl Default for BaseScript {
+    fn default() -> Self {
+        Self {
+            superclass: LuaSourceContainer::default(),
+            Disabled: false,
+            LinkedSource: "".into(),
+            RunContext: unimplemented!("convert u32 Enum to precise strong variant"),
+        }
+    }
+}
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct BaseWrap {
@@ -1949,6 +2784,20 @@ pub struct BaseWrap {
 }
 impl_inherits!(BaseWrap, Instance);
 impl_strong_instance_from!(BaseWrap);
+impl Default for BaseWrap {
+    fn default() -> Self {
+        Self {
+            superclass: Instance::default(),
+            CageMeshContent: Content::none(),
+            CageOrigin: CFrame::identity(),
+            HsrAssetId: "".into(),
+            HsrData: SharedString::new(b"".to_vec()),
+            HsrMeshIdData: SharedString::new(b"".to_vec()),
+            ImportOrigin: CFrame::identity(),
+            TemporaryCageMeshId: "".into(),
+        }
+    }
+}
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct Beam {
@@ -1975,6 +2824,32 @@ pub struct Beam {
 }
 impl_inherits!(Beam, Instance);
 impl_strong_instance_from!(Beam);
+impl Default for Beam {
+    fn default() -> Self {
+        Self {
+            superclass: Instance::default(),
+            Attachment0: Ref::none(),
+            Attachment1: Ref::none(),
+            Brightness: 1f32,
+            Color: unimplemented!("ColorSequence"),
+            CurveSize0: 0f32,
+            CurveSize1: 0f32,
+            Enabled: true,
+            FaceCamera: false,
+            LightEmission: 0f32,
+            LightInfluence: 0f32,
+            Segments: 10i32,
+            Texture: "".into(),
+            TextureLength: 1f32,
+            TextureMode: unimplemented!("convert u32 Enum to precise strong variant"),
+            TextureSpeed: 1f32,
+            Transparency: unimplemented!("NumberSequence"),
+            Width0: 1f32,
+            Width1: 1f32,
+            ZOffset: 0f32,
+        }
+    }
+}
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct BevelMesh {
@@ -1985,6 +2860,16 @@ pub struct BevelMesh {
 }
 impl_inherits!(BevelMesh, DataModelMesh);
 impl_strong_instance_from!(BevelMesh);
+impl Default for BevelMesh {
+    fn default() -> Self {
+        Self {
+            superclass: DataModelMesh::default(),
+            Bevel: 0f32,
+            BevelRoundness: 0f32,
+            Bulge: 0f32,
+        }
+    }
+}
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct BillboardGui {
@@ -2008,6 +2893,29 @@ pub struct BillboardGui {
 }
 impl_inherits!(BillboardGui, LayerCollector);
 impl_strong_instance_from!(BillboardGui);
+impl Default for BillboardGui {
+    fn default() -> Self {
+        Self {
+            superclass: LayerCollector::default(),
+            Active: false,
+            Adornee: Ref::none(),
+            AlwaysOnTop: false,
+            Brightness: 1f32,
+            ClipsDescendants: false,
+            DistanceLowerLimit: 0f32,
+            DistanceUpperLimit: -1f32,
+            ExtentsOffset: Vector3::new(0f32, 0f32, 0f32),
+            ExtentsOffsetWorldSpace: Vector3::new(0f32, 0f32, 0f32),
+            LightInfluence: 0f32,
+            MaxDistance: f32::INFINITY,
+            PlayerToHideFrom: Ref::none(),
+            Size: UDim2::new(UDim::new(0f32, 0i32), UDim::new(0f32, 0i32)),
+            SizeOffset: Vector2::new(0f32, 0f32),
+            StudsOffset: Vector3::new(0f32, 0f32, 0f32),
+            StudsOffsetWorldSpace: Vector3::new(0f32, 0f32, 0f32),
+        }
+    }
+}
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct BinaryStringValue {
@@ -2016,8 +2924,17 @@ pub struct BinaryStringValue {
 }
 impl_inherits!(BinaryStringValue, ValueBase);
 impl_strong_instance_from!(BinaryStringValue);
+impl Default for BinaryStringValue {
+    fn default() -> Self {
+        Self {
+            superclass: ValueBase::default(),
+            Value: b"".as_slice().into(),
+        }
+    }
+}
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
+#[derive(Default)]
 pub struct BindableEvent {
     superclass: Instance,
 }
@@ -2025,6 +2942,7 @@ impl_inherits!(BindableEvent, Instance);
 impl_strong_instance_from!(BindableEvent);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
+#[derive(Default)]
 pub struct BindableFunction {
     superclass: Instance,
 }
@@ -2032,6 +2950,7 @@ impl_inherits!(BindableFunction, Instance);
 impl_strong_instance_from!(BindableFunction);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
+#[derive(Default)]
 pub struct BlockMesh {
     superclass: BevelMesh,
 }
@@ -2047,6 +2966,16 @@ pub struct BloomEffect {
 }
 impl_inherits!(BloomEffect, PostEffect);
 impl_strong_instance_from!(BloomEffect);
+impl Default for BloomEffect {
+    fn default() -> Self {
+        Self {
+            superclass: PostEffect::default(),
+            Intensity: 0.4f32,
+            Size: 24f32,
+            Threshold: 0.95f32,
+        }
+    }
+}
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct BlurEffect {
@@ -2055,6 +2984,14 @@ pub struct BlurEffect {
 }
 impl_inherits!(BlurEffect, PostEffect);
 impl_strong_instance_from!(BlurEffect);
+impl Default for BlurEffect {
+    fn default() -> Self {
+        Self {
+            superclass: PostEffect::default(),
+            Size: 24f32,
+        }
+    }
+}
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct BodyAngularVelocity {
@@ -2065,6 +3002,16 @@ pub struct BodyAngularVelocity {
 }
 impl_inherits!(BodyAngularVelocity, BodyMover);
 impl_strong_instance_from!(BodyAngularVelocity);
+impl Default for BodyAngularVelocity {
+    fn default() -> Self {
+        Self {
+            superclass: BodyMover::default(),
+            AngularVelocity: Vector3::new(0f32, 2f32, 0f32),
+            MaxTorque: Vector3::new(4000f32, 4000f32, 4000f32),
+            P: 1250f32,
+        }
+    }
+}
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct BodyColors {
@@ -2078,6 +3025,19 @@ pub struct BodyColors {
 }
 impl_inherits!(BodyColors, CharacterAppearance);
 impl_strong_instance_from!(BodyColors);
+impl Default for BodyColors {
+    fn default() -> Self {
+        Self {
+            superclass: CharacterAppearance::default(),
+            HeadColor3: Color3::new(0.9921569f32, 0.9176471f32, 0.5529412f32),
+            LeftArmColor3: Color3::new(0.9921569f32, 0.9176471f32, 0.5529412f32),
+            LeftLegColor3: Color3::new(0.050980397f32, 0.41176474f32, 0.6745098f32),
+            RightArmColor3: Color3::new(0.9921569f32, 0.9176471f32, 0.5529412f32),
+            RightLegColor3: Color3::new(0.050980397f32, 0.41176474f32, 0.6745098f32),
+            TorsoColor3: Color3::new(0.15686275f32, 0.49803925f32, 0.2784314f32),
+        }
+    }
+}
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct BodyForce {
@@ -2086,6 +3046,14 @@ pub struct BodyForce {
 }
 impl_inherits!(BodyForce, BodyMover);
 impl_strong_instance_from!(BodyForce);
+impl Default for BodyForce {
+    fn default() -> Self {
+        Self {
+            superclass: BodyMover::default(),
+            Force: Vector3::new(0f32, 1f32, 0f32),
+        }
+    }
+}
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct BodyGyro {
@@ -2097,8 +3065,20 @@ pub struct BodyGyro {
 }
 impl_inherits!(BodyGyro, BodyMover);
 impl_strong_instance_from!(BodyGyro);
+impl Default for BodyGyro {
+    fn default() -> Self {
+        Self {
+            superclass: BodyMover::default(),
+            CFrame: CFrame::identity(),
+            D: 500f32,
+            MaxTorque: Vector3::new(400000f32, 0f32, 400000f32),
+            P: 3000f32,
+        }
+    }
+}
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
+#[derive(Default)]
 pub struct BodyMover {
     superclass: Instance,
 }
@@ -2116,6 +3096,18 @@ pub struct BodyPartDescription {
 }
 impl_inherits!(BodyPartDescription, Instance);
 impl_strong_instance_from!(BodyPartDescription);
+impl Default for BodyPartDescription {
+    fn default() -> Self {
+        Self {
+            superclass: Instance::default(),
+            AssetId: 0i64,
+            BodyPart: unimplemented!("convert u32 Enum to precise strong variant"),
+            Color: Color3::new(0f32, 0f32, 0f32),
+            HeadShape: "".to_owned(),
+            Instance: Ref::none(),
+        }
+    }
+}
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct BodyPosition {
@@ -2127,6 +3119,17 @@ pub struct BodyPosition {
 }
 impl_inherits!(BodyPosition, BodyMover);
 impl_strong_instance_from!(BodyPosition);
+impl Default for BodyPosition {
+    fn default() -> Self {
+        Self {
+            superclass: BodyMover::default(),
+            D: 1250f32,
+            MaxForce: Vector3::new(4000f32, 4000f32, 4000f32),
+            P: 10000f32,
+            Position: Vector3::new(0f32, 50f32, 0f32),
+        }
+    }
+}
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct BodyThrust {
@@ -2136,6 +3139,15 @@ pub struct BodyThrust {
 }
 impl_inherits!(BodyThrust, BodyMover);
 impl_strong_instance_from!(BodyThrust);
+impl Default for BodyThrust {
+    fn default() -> Self {
+        Self {
+            superclass: BodyMover::default(),
+            Force: Vector3::new(0f32, 1f32, 0f32),
+            Location: Vector3::new(0f32, 0f32, 0f32),
+        }
+    }
+}
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct BodyVelocity {
@@ -2146,8 +3158,19 @@ pub struct BodyVelocity {
 }
 impl_inherits!(BodyVelocity, BodyMover);
 impl_strong_instance_from!(BodyVelocity);
+impl Default for BodyVelocity {
+    fn default() -> Self {
+        Self {
+            superclass: BodyMover::default(),
+            MaxForce: Vector3::new(4000f32, 4000f32, 4000f32),
+            P: 1250f32,
+            Velocity: Vector3::new(0f32, 2f32, 0f32),
+        }
+    }
+}
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
+#[derive(Default)]
 pub struct Bone {
     superclass: Attachment,
 }
@@ -2161,6 +3184,14 @@ pub struct BoolValue {
 }
 impl_inherits!(BoolValue, ValueBase);
 impl_strong_instance_from!(BoolValue);
+impl Default for BoolValue {
+    fn default() -> Self {
+        Self {
+            superclass: ValueBase::default(),
+            Value: false,
+        }
+    }
+}
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct BoxHandleAdornment {
@@ -2170,8 +3201,18 @@ pub struct BoxHandleAdornment {
 }
 impl_inherits!(BoxHandleAdornment, HandleAdornment);
 impl_strong_instance_from!(BoxHandleAdornment);
+impl Default for BoxHandleAdornment {
+    fn default() -> Self {
+        Self {
+            superclass: HandleAdornment::default(),
+            Shading: unimplemented!("convert u32 Enum to precise strong variant"),
+            Size: Vector3::new(1f32, 1f32, 1f32),
+        }
+    }
+}
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
+#[derive(Default)]
 pub struct Breakpoint {
     superclass: Instance,
 }
@@ -2185,8 +3226,17 @@ pub struct BrickColorValue {
 }
 impl_inherits!(BrickColorValue, ValueBase);
 impl_strong_instance_from!(BrickColorValue);
+impl Default for BrickColorValue {
+    fn default() -> Self {
+        Self {
+            superclass: ValueBase::default(),
+            Value: BrickColor::from_number(194u16).unwrap(),
+        }
+    }
+}
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
+#[derive(Default)]
 pub struct BrowserService {
     superclass: Instance,
 }
@@ -2215,8 +3265,32 @@ pub struct BubbleChatConfiguration {
 }
 impl_inherits!(BubbleChatConfiguration, TextChatConfigurations);
 impl_strong_instance_from!(BubbleChatConfiguration);
+impl Default for BubbleChatConfiguration {
+    fn default() -> Self {
+        Self {
+            superclass: TextChatConfigurations::default(),
+            AdorneeName: "HumanoidRootPart".to_owned(),
+            BackgroundColor3: Color3::new(0.98039216f32, 0.98039216f32, 0.98039216f32),
+            BackgroundTransparency: 0.1f64,
+            BubbleDuration: 15f32,
+            BubblesSpacing: 6f32,
+            Enabled: true,
+            Font: unimplemented!("convert u32 Enum to precise strong variant"),
+            FontFace: unimplemented!("Font"),
+            LocalPlayerStudsOffset: Vector3::new(0f32, 0f32, 0f32),
+            MaxBubbles: 3f32,
+            MaxDistance: 100f32,
+            MinimizeDistance: 40f32,
+            TailVisible: true,
+            TextColor3: Color3::new(0.22352941f32, 0.23137255f32, 0.23921569f32),
+            TextSize: 16i64,
+            VerticalStudsOffset: 0f32,
+        }
+    }
+}
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
+#[derive(Default)]
 pub struct BubbleChatMessageProperties {
     superclass: TextChatMessageProperties,
 }
@@ -2224,6 +3298,7 @@ impl_inherits!(BubbleChatMessageProperties, TextChatMessageProperties);
 impl_strong_instance_from!(BubbleChatMessageProperties);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
+#[derive(Default)]
 pub struct BugReporterService {
     superclass: Instance,
 }
@@ -2231,6 +3306,7 @@ impl_inherits!(BugReporterService, Instance);
 impl_strong_instance_from!(BugReporterService);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
+#[derive(Default)]
 pub struct BulkImportService {
     superclass: Instance,
 }
@@ -2245,6 +3321,15 @@ pub struct BuoyancySensor {
 }
 impl_inherits!(BuoyancySensor, SensorBase);
 impl_strong_instance_from!(BuoyancySensor);
+impl Default for BuoyancySensor {
+    fn default() -> Self {
+        Self {
+            superclass: SensorBase::default(),
+            FullySubmerged: false,
+            TouchingSurface: false,
+        }
+    }
+}
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct CFrameValue {
@@ -2253,8 +3338,17 @@ pub struct CFrameValue {
 }
 impl_inherits!(CFrameValue, ValueBase);
 impl_strong_instance_from!(CFrameValue);
+impl Default for CFrameValue {
+    fn default() -> Self {
+        Self {
+            superclass: ValueBase::default(),
+            Value: CFrame::identity(),
+        }
+    }
+}
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
+#[derive(Default)]
 pub struct CSGDictionaryService {
     superclass: FlyweightService,
 }
@@ -2262,6 +3356,7 @@ impl_inherits!(CSGDictionaryService, FlyweightService);
 impl_strong_instance_from!(CSGDictionaryService);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
+#[derive(Default)]
 pub struct CacheableContentProvider {
     superclass: Instance,
 }
@@ -2269,6 +3364,7 @@ impl_inherits!(CacheableContentProvider, Instance);
 impl_strong_instance_from!(CacheableContentProvider);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
+#[derive(Default)]
 pub struct CalloutService {
     superclass: Instance,
 }
@@ -2290,6 +3386,36 @@ pub struct Camera {
 }
 impl_inherits!(Camera, PVInstance);
 impl_strong_instance_from!(Camera);
+impl Default for Camera {
+    fn default() -> Self {
+        Self {
+            superclass: PVInstance::default(),
+            CFrame: CFrame::new(
+                Vector3::new(0f32, 20f32, 20f32),
+                Matrix3::new(
+                    Vector3::new(1f32, 0f32, -0f32),
+                    Vector3::new(-0f32, 0.7071068f32, 0.7071068f32),
+                    Vector3::new(0f32, -0.7071068f32, 0.7071068f32),
+                ),
+            ),
+            CameraSubject: Ref::none(),
+            CameraType: unimplemented!("convert u32 Enum to precise strong variant"),
+            FieldOfView: 70f32,
+            FieldOfViewMode: unimplemented!("convert u32 Enum to precise strong variant"),
+            Focus: CFrame::new(
+                Vector3::new(0f32, 0f32, -5f32),
+                Matrix3::new(
+                    Vector3::new(1f32, 0f32, 0f32),
+                    Vector3::new(0f32, 1f32, 0f32),
+                    Vector3::new(0f32, 0f32, 1f32),
+                ),
+            ),
+            HeadLocked: true,
+            HeadScale: 1f32,
+            VrTiltAndRollEnabled: false,
+        }
+    }
+}
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct CanvasGroup {
@@ -2299,8 +3425,18 @@ pub struct CanvasGroup {
 }
 impl_inherits!(CanvasGroup, GuiObject);
 impl_strong_instance_from!(CanvasGroup);
+impl Default for CanvasGroup {
+    fn default() -> Self {
+        Self {
+            superclass: GuiObject::default(),
+            GroupColor3: Color3::new(1f32, 1f32, 1f32),
+            GroupTransparency: 0f32,
+        }
+    }
+}
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
+#[derive(Default)]
 pub struct Capture {
     superclass: Object,
 }
@@ -2308,6 +3444,7 @@ impl_inherits!(Capture, Object);
 impl_strong_instance_from!(Capture);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
+#[derive(Default)]
 pub struct CaptureService {
     superclass: Instance,
 }
@@ -2315,6 +3452,7 @@ impl_inherits!(CaptureService, Instance);
 impl_strong_instance_from!(CaptureService);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
+#[derive(Default)]
 pub struct CapturesPages {
     superclass: Pages,
 }
@@ -2322,6 +3460,7 @@ impl_inherits!(CapturesPages, Pages);
 impl_strong_instance_from!(CapturesPages);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
+#[derive(Default)]
 pub struct CatalogPages {
     superclass: Pages,
 }
@@ -2329,6 +3468,7 @@ impl_inherits!(CatalogPages, Pages);
 impl_strong_instance_from!(CatalogPages);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
+#[derive(Default)]
 pub struct ChangeHistoryService {
     superclass: Instance,
 }
@@ -2336,6 +3476,7 @@ impl_inherits!(ChangeHistoryService, Instance);
 impl_strong_instance_from!(ChangeHistoryService);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
+#[derive(Default)]
 pub struct ChangeHistoryStreamingService {
     superclass: Instance,
 }
@@ -2349,6 +3490,14 @@ pub struct ChannelSelectorSoundEffect {
 }
 impl_inherits!(ChannelSelectorSoundEffect, CustomSoundEffect);
 impl_strong_instance_from!(ChannelSelectorSoundEffect);
+impl Default for ChannelSelectorSoundEffect {
+    fn default() -> Self {
+        Self {
+            superclass: CustomSoundEffect::default(),
+            Channel: 1i32,
+        }
+    }
+}
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct ChannelTabsConfiguration {
@@ -2366,8 +3515,26 @@ pub struct ChannelTabsConfiguration {
 }
 impl_inherits!(ChannelTabsConfiguration, TextChatConfigurations);
 impl_strong_instance_from!(ChannelTabsConfiguration);
+impl Default for ChannelTabsConfiguration {
+    fn default() -> Self {
+        Self {
+            superclass: TextChatConfigurations::default(),
+            BackgroundColor3: Color3::new(0.09803922f32, 0.105882354f32, 0.11372549f32),
+            BackgroundTransparency: 0f64,
+            Enabled: false,
+            FontFace: unimplemented!("Font"),
+            HoverBackgroundColor3: Color3::new(0.49019608f32, 0.49019608f32, 0.49019608f32),
+            SelectedTabTextColor3: Color3::new(1f32, 1f32, 1f32),
+            TextColor3: Color3::new(0.6862745f32, 0.6862745f32, 0.6862745f32),
+            TextSize: 18i64,
+            TextStrokeColor3: Color3::new(0f32, 0f32, 0f32),
+            TextStrokeTransparency: 1f64,
+        }
+    }
+}
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
+#[derive(Default)]
 pub struct CharacterAppearance {
     superclass: Instance,
 }
@@ -2384,6 +3551,17 @@ pub struct CharacterMesh {
 }
 impl_inherits!(CharacterMesh, CharacterAppearance);
 impl_strong_instance_from!(CharacterMesh);
+impl Default for CharacterMesh {
+    fn default() -> Self {
+        Self {
+            superclass: CharacterAppearance::default(),
+            BaseTextureId: 0i64,
+            BodyPart: unimplemented!("convert u32 Enum to precise strong variant"),
+            MeshId: 0i64,
+            OverlayTextureId: 0i64,
+        }
+    }
+}
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct Chat {
@@ -2394,6 +3572,16 @@ pub struct Chat {
 }
 impl_inherits!(Chat, Instance);
 impl_strong_instance_from!(Chat);
+impl Default for Chat {
+    fn default() -> Self {
+        Self {
+            superclass: Instance::default(),
+            BubbleChatEnabled: false,
+            IsAutoMigrated: false,
+            LoadDefaultChat: true,
+        }
+    }
+}
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct ChatInputBarConfiguration {
@@ -2413,6 +3601,25 @@ pub struct ChatInputBarConfiguration {
 }
 impl_inherits!(ChatInputBarConfiguration, TextChatConfigurations);
 impl_strong_instance_from!(ChatInputBarConfiguration);
+impl Default for ChatInputBarConfiguration {
+    fn default() -> Self {
+        Self {
+            superclass: TextChatConfigurations::default(),
+            AutocompleteEnabled: true,
+            BackgroundColor3: Color3::new(0.09803922f32, 0.105882354f32, 0.11372549f32),
+            BackgroundTransparency: 0.2f64,
+            Enabled: true,
+            FontFace: unimplemented!("Font"),
+            KeyboardKeyCode: unimplemented!("convert u32 Enum to precise strong variant"),
+            PlaceholderColor3: Color3::new(0.69803923f32, 0.69803923f32, 0.69803923f32),
+            TargetTextChannel: Ref::none(),
+            TextColor3: Color3::new(1f32, 1f32, 1f32),
+            TextSize: 14i64,
+            TextStrokeColor3: Color3::new(0f32, 0f32, 0f32),
+            TextStrokeTransparency: 0.5f64,
+        }
+    }
+}
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct ChatWindowConfiguration {
@@ -2432,8 +3639,28 @@ pub struct ChatWindowConfiguration {
 }
 impl_inherits!(ChatWindowConfiguration, TextChatConfigurations);
 impl_strong_instance_from!(ChatWindowConfiguration);
+impl Default for ChatWindowConfiguration {
+    fn default() -> Self {
+        Self {
+            superclass: TextChatConfigurations::default(),
+            BackgroundColor3: Color3::new(0.09803922f32, 0.105882354f32, 0.11372549f32),
+            BackgroundTransparency: 0.3f64,
+            Enabled: true,
+            FontFace: unimplemented!("Font"),
+            HeightScale: 1f32,
+            HorizontalAlignment: unimplemented!("convert u32 Enum to precise strong variant"),
+            TextColor3: Color3::new(1f32, 1f32, 1f32),
+            TextSize: 14i64,
+            TextStrokeColor3: Color3::new(0f32, 0f32, 0f32),
+            TextStrokeTransparency: 0.5f64,
+            VerticalAlignment: unimplemented!("convert u32 Enum to precise strong variant"),
+            WidthScale: 1f32,
+        }
+    }
+}
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
+#[derive(Default)]
 pub struct ChatWindowMessageProperties {
     superclass: TextChatMessageProperties,
 }
@@ -2441,6 +3668,7 @@ impl_inherits!(ChatWindowMessageProperties, TextChatMessageProperties);
 impl_strong_instance_from!(ChatWindowMessageProperties);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
+#[derive(Default)]
 pub struct ChatbotUIService {
     superclass: Instance,
 }
@@ -2456,6 +3684,16 @@ pub struct ChorusSoundEffect {
 }
 impl_inherits!(ChorusSoundEffect, SoundEffect);
 impl_strong_instance_from!(ChorusSoundEffect);
+impl Default for ChorusSoundEffect {
+    fn default() -> Self {
+        Self {
+            superclass: SoundEffect::default(),
+            Depth: 0.15f32,
+            Mix: 0.5f32,
+            Rate: 0.5f32,
+        }
+    }
+}
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct ClickDetector {
@@ -2465,8 +3703,18 @@ pub struct ClickDetector {
 }
 impl_inherits!(ClickDetector, Instance);
 impl_strong_instance_from!(ClickDetector);
+impl Default for ClickDetector {
+    fn default() -> Self {
+        Self {
+            superclass: Instance::default(),
+            CursorIconContent: Content::none(),
+            MaxActivationDistance: 32f32,
+        }
+    }
+}
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
+#[derive(Default)]
 pub struct ClientReplicator {
     superclass: NetworkReplicator,
 }
@@ -2483,6 +3731,17 @@ pub struct ClimbController {
 }
 impl_inherits!(ClimbController, ControllerBase);
 impl_strong_instance_from!(ClimbController);
+impl Default for ClimbController {
+    fn default() -> Self {
+        Self {
+            superclass: ControllerBase::default(),
+            AccelerationTime: 0f32,
+            BalanceMaxTorque: 10000f32,
+            BalanceSpeed: 100f32,
+            MoveMaxForce: 10000f32,
+        }
+    }
+}
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct Clothing {
@@ -2491,8 +3750,17 @@ pub struct Clothing {
 }
 impl_inherits!(Clothing, CharacterAppearance);
 impl_strong_instance_from!(Clothing);
+impl Default for Clothing {
+    fn default() -> Self {
+        Self {
+            superclass: CharacterAppearance::default(),
+            Color3: Color3::new(0f32, 0f32, 0f32),
+        }
+    }
+}
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
+#[derive(Default)]
 pub struct CloudCRUDService {
     superclass: Instance,
 }
@@ -2500,6 +3768,7 @@ impl_inherits!(CloudCRUDService, Instance);
 impl_strong_instance_from!(CloudCRUDService);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
+#[derive(Default)]
 pub struct CloudLocalizationTable {
     superclass: LocalizationTable,
 }
@@ -2516,8 +3785,20 @@ pub struct Clouds {
 }
 impl_inherits!(Clouds, Instance);
 impl_strong_instance_from!(Clouds);
+impl Default for Clouds {
+    fn default() -> Self {
+        Self {
+            superclass: Instance::default(),
+            Color: Color3::new(1f32, 1f32, 1f32),
+            Cover: 0.5f32,
+            Density: 0.7f32,
+            Enabled: true,
+        }
+    }
+}
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
+#[derive(Default)]
 pub struct ClusterPacketCache {
     superclass: Instance,
 }
@@ -2525,6 +3806,7 @@ impl_inherits!(ClusterPacketCache, Instance);
 impl_strong_instance_from!(ClusterPacketCache);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
+#[derive(Default)]
 pub struct Collaborator {
     superclass: Instance,
 }
@@ -2532,6 +3814,7 @@ impl_inherits!(Collaborator, Instance);
 impl_strong_instance_from!(Collaborator);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
+#[derive(Default)]
 pub struct CollaboratorsService {
     superclass: Instance,
 }
@@ -2539,6 +3822,7 @@ impl_inherits!(CollaboratorsService, Instance);
 impl_strong_instance_from!(CollaboratorsService);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
+#[derive(Default)]
 pub struct CollectionService {
     superclass: Instance,
 }
@@ -2552,6 +3836,14 @@ pub struct Color3Value {
 }
 impl_inherits!(Color3Value, ValueBase);
 impl_strong_instance_from!(Color3Value);
+impl Default for Color3Value {
+    fn default() -> Self {
+        Self {
+            superclass: ValueBase::default(),
+            Value: Color3::new(0f32, 0f32, 0f32),
+        }
+    }
+}
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct ColorCorrectionEffect {
@@ -2563,6 +3855,17 @@ pub struct ColorCorrectionEffect {
 }
 impl_inherits!(ColorCorrectionEffect, PostEffect);
 impl_strong_instance_from!(ColorCorrectionEffect);
+impl Default for ColorCorrectionEffect {
+    fn default() -> Self {
+        Self {
+            superclass: PostEffect::default(),
+            Brightness: 0f32,
+            Contrast: 0f32,
+            Saturation: 0f32,
+            TintColor: Color3::new(1f32, 1f32, 1f32),
+        }
+    }
+}
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct ColorGradingEffect {
@@ -2571,8 +3874,17 @@ pub struct ColorGradingEffect {
 }
 impl_inherits!(ColorGradingEffect, PostEffect);
 impl_strong_instance_from!(ColorGradingEffect);
+impl Default for ColorGradingEffect {
+    fn default() -> Self {
+        Self {
+            superclass: PostEffect::default(),
+            TonemapperPreset: unimplemented!("convert u32 Enum to precise strong variant"),
+        }
+    }
+}
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
+#[derive(Default)]
 pub struct CommerceService {
     superclass: Instance,
 }
@@ -2591,6 +3903,19 @@ pub struct CompressorSoundEffect {
 }
 impl_inherits!(CompressorSoundEffect, SoundEffect);
 impl_strong_instance_from!(CompressorSoundEffect);
+impl Default for CompressorSoundEffect {
+    fn default() -> Self {
+        Self {
+            superclass: SoundEffect::default(),
+            Attack: 0.1f32,
+            GainMakeup: 0f32,
+            Ratio: 40f32,
+            Release: 0.1f32,
+            SideChain: Ref::none(),
+            Threshold: -40f32,
+        }
+    }
+}
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct ConeHandleAdornment {
@@ -2602,8 +3927,20 @@ pub struct ConeHandleAdornment {
 }
 impl_inherits!(ConeHandleAdornment, HandleAdornment);
 impl_strong_instance_from!(ConeHandleAdornment);
+impl Default for ConeHandleAdornment {
+    fn default() -> Self {
+        Self {
+            superclass: HandleAdornment::default(),
+            Height: 2f32,
+            Hollow: false,
+            Radius: 0.5f32,
+            Shading: unimplemented!("convert u32 Enum to precise strong variant"),
+        }
+    }
+}
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
+#[derive(Default)]
 pub struct ConfigService {
     superclass: Instance,
 }
@@ -2611,6 +3948,7 @@ impl_inherits!(ConfigService, Instance);
 impl_strong_instance_from!(ConfigService);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
+#[derive(Default)]
 pub struct ConfigSnapshot {
     superclass: Object,
 }
@@ -2618,6 +3956,7 @@ impl_inherits!(ConfigSnapshot, Object);
 impl_strong_instance_from!(ConfigSnapshot);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
+#[derive(Default)]
 pub struct Configuration {
     superclass: Instance,
 }
@@ -2625,6 +3964,7 @@ impl_inherits!(Configuration, Instance);
 impl_strong_instance_from!(Configuration);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
+#[derive(Default)]
 pub struct ConfigureServerService {
     superclass: Instance,
 }
@@ -2632,6 +3972,7 @@ impl_inherits!(ConfigureServerService, Instance);
 impl_strong_instance_from!(ConfigureServerService);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
+#[derive(Default)]
 pub struct ConnectivityService {
     superclass: Instance,
 }
@@ -2649,8 +3990,21 @@ pub struct Constraint {
 }
 impl_inherits!(Constraint, Instance);
 impl_strong_instance_from!(Constraint);
+impl Default for Constraint {
+    fn default() -> Self {
+        Self {
+            superclass: Instance::default(),
+            Attachment0: Ref::none(),
+            Attachment1: Ref::none(),
+            Color: BrickColor::from_number(194u16).unwrap(),
+            Enabled: false,
+            Visible: false,
+        }
+    }
+}
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
+#[derive(Default)]
 pub struct ContentProvider {
     superclass: Instance,
 }
@@ -2658,6 +4012,7 @@ impl_inherits!(ContentProvider, Instance);
 impl_strong_instance_from!(ContentProvider);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
+#[derive(Default)]
 pub struct ContextActionService {
     superclass: Instance,
 }
@@ -2665,6 +4020,7 @@ impl_inherits!(ContextActionService, Instance);
 impl_strong_instance_from!(ContextActionService);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
+#[derive(Default)]
 pub struct Controller {
     superclass: Instance,
 }
@@ -2679,6 +4035,15 @@ pub struct ControllerBase {
 }
 impl_inherits!(ControllerBase, Instance);
 impl_strong_instance_from!(ControllerBase);
+impl Default for ControllerBase {
+    fn default() -> Self {
+        Self {
+            superclass: Instance::default(),
+            BalanceRigidityEnabled: false,
+            MoveSpeedFactor: 0f32,
+        }
+    }
+}
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct ControllerManager {
@@ -2695,6 +4060,22 @@ pub struct ControllerManager {
 }
 impl_inherits!(ControllerManager, Instance);
 impl_strong_instance_from!(ControllerManager);
+impl Default for ControllerManager {
+    fn default() -> Self {
+        Self {
+            superclass: Instance::default(),
+            ActiveController: Ref::none(),
+            BaseMoveSpeed: 16f32,
+            BaseTurnSpeed: 8f32,
+            ClimbSensor: Ref::none(),
+            FacingDirection: Vector3::new(0f32, 0f32, 1f32),
+            GroundSensor: Ref::none(),
+            MovingDirection: Vector3::new(0f32, 0f32, 0f32),
+            RootPart: Ref::none(),
+            UpDirection: Vector3::new(0f32, 1f32, 0f32),
+        }
+    }
+}
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct ControllerPartSensor {
@@ -2707,8 +4088,21 @@ pub struct ControllerPartSensor {
 }
 impl_inherits!(ControllerPartSensor, ControllerSensor);
 impl_strong_instance_from!(ControllerPartSensor);
+impl Default for ControllerPartSensor {
+    fn default() -> Self {
+        Self {
+            superclass: ControllerSensor::default(),
+            HitFrame: CFrame::identity(),
+            HitNormal: Vector3::new(0f32, 0f32, 0f32),
+            SearchDistance: 0f32,
+            SensedPart: Ref::none(),
+            SensorMode: unimplemented!("convert u32 Enum to precise strong variant"),
+        }
+    }
+}
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
+#[derive(Default)]
 pub struct ControllerSensor {
     superclass: SensorBase,
 }
@@ -2716,6 +4110,7 @@ impl_inherits!(ControllerSensor, SensorBase);
 impl_strong_instance_from!(ControllerSensor);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
+#[derive(Default)]
 pub struct ControllerService {
     superclass: Instance,
 }
@@ -2723,6 +4118,7 @@ impl_inherits!(ControllerService, Instance);
 impl_strong_instance_from!(ControllerService);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
+#[derive(Default)]
 pub struct ConversationalAIAcceptanceService {
     superclass: Instance,
 }
@@ -2730,6 +4126,7 @@ impl_inherits!(ConversationalAIAcceptanceService, Instance);
 impl_strong_instance_from!(ConversationalAIAcceptanceService);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
+#[derive(Default)]
 pub struct CookiesService {
     superclass: Instance,
 }
@@ -2743,8 +4140,17 @@ pub struct CoreGui {
 }
 impl_inherits!(CoreGui, BasePlayerGui);
 impl_strong_instance_from!(CoreGui);
+impl Default for CoreGui {
+    fn default() -> Self {
+        Self {
+            superclass: BasePlayerGui::default(),
+            SelectionImageObject: Ref::none(),
+        }
+    }
+}
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
+#[derive(Default)]
 pub struct CorePackages {
     superclass: Instance,
 }
@@ -2752,6 +4158,7 @@ impl_inherits!(CorePackages, Instance);
 impl_strong_instance_from!(CorePackages);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
+#[derive(Default)]
 pub struct CoreScript {
     superclass: BaseScript,
 }
@@ -2759,6 +4166,7 @@ impl_inherits!(CoreScript, BaseScript);
 impl_strong_instance_from!(CoreScript);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
+#[derive(Default)]
 pub struct CoreScriptDebuggingManagerHelper {
     superclass: Instance,
 }
@@ -2766,6 +4174,7 @@ impl_inherits!(CoreScriptDebuggingManagerHelper, Instance);
 impl_strong_instance_from!(CoreScriptDebuggingManagerHelper);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
+#[derive(Default)]
 pub struct CoreScriptSyncService {
     superclass: Instance,
 }
@@ -2773,6 +4182,7 @@ impl_inherits!(CoreScriptSyncService, Instance);
 impl_strong_instance_from!(CoreScriptSyncService);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
+#[derive(Default)]
 pub struct CornerWedgePart {
     superclass: BasePart,
 }
@@ -2780,6 +4190,7 @@ impl_inherits!(CornerWedgePart, BasePart);
 impl_strong_instance_from!(CornerWedgePart);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
+#[derive(Default)]
 pub struct CreationDBService {
     superclass: Instance,
 }
@@ -2787,6 +4198,7 @@ impl_inherits!(CreationDBService, Instance);
 impl_strong_instance_from!(CreationDBService);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
+#[derive(Default)]
 pub struct CreatorStoreService {
     superclass: Instance,
 }
@@ -2794,6 +4206,7 @@ impl_inherits!(CreatorStoreService, Instance);
 impl_strong_instance_from!(CreatorStoreService);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
+#[derive(Default)]
 pub struct CrossDMScriptChangeListener {
     superclass: Instance,
 }
@@ -2801,6 +4214,7 @@ impl_inherits!(CrossDMScriptChangeListener, Instance);
 impl_strong_instance_from!(CrossDMScriptChangeListener);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
+#[derive(Default)]
 pub struct CurveAnimation {
     superclass: AnimationClip,
 }
@@ -2814,6 +4228,14 @@ pub struct CustomEvent {
 }
 impl_inherits!(CustomEvent, Instance);
 impl_strong_instance_from!(CustomEvent);
+impl Default for CustomEvent {
+    fn default() -> Self {
+        Self {
+            superclass: Instance::default(),
+            PersistedCurrentValue: 0f32,
+        }
+    }
+}
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct CustomEventReceiver {
@@ -2822,8 +4244,17 @@ pub struct CustomEventReceiver {
 }
 impl_inherits!(CustomEventReceiver, Instance);
 impl_strong_instance_from!(CustomEventReceiver);
+impl Default for CustomEventReceiver {
+    fn default() -> Self {
+        Self {
+            superclass: Instance::default(),
+            Source: Ref::none(),
+        }
+    }
+}
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
+#[derive(Default)]
 pub struct CustomLog {
     superclass: Instance,
 }
@@ -2831,6 +4262,7 @@ impl_inherits!(CustomLog, Instance);
 impl_strong_instance_from!(CustomLog);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
+#[derive(Default)]
 pub struct CustomSoundEffect {
     superclass: SoundEffect,
 }
@@ -2848,8 +4280,21 @@ pub struct CylinderHandleAdornment {
 }
 impl_inherits!(CylinderHandleAdornment, HandleAdornment);
 impl_strong_instance_from!(CylinderHandleAdornment);
+impl Default for CylinderHandleAdornment {
+    fn default() -> Self {
+        Self {
+            superclass: HandleAdornment::default(),
+            Angle: 360f32,
+            Height: 1f32,
+            InnerRadius: 0f32,
+            Radius: 1f32,
+            Shading: unimplemented!("convert u32 Enum to precise strong variant"),
+        }
+    }
+}
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
+#[derive(Default)]
 pub struct CylinderMesh {
     superclass: BevelMesh,
 }
@@ -2877,8 +4322,31 @@ pub struct CylindricalConstraint {
 }
 impl_inherits!(CylindricalConstraint, SlidingBallConstraint);
 impl_strong_instance_from!(CylindricalConstraint);
+impl Default for CylindricalConstraint {
+    fn default() -> Self {
+        Self {
+            superclass: SlidingBallConstraint::default(),
+            AngularActuatorType: unimplemented!("convert u32 Enum to precise strong variant"),
+            AngularLimitsEnabled: false,
+            AngularResponsiveness: 45f32,
+            AngularRestitution: 0f32,
+            AngularSpeed: 0f32,
+            AngularVelocity: 0f32,
+            InclinationAngle: 0f32,
+            LowerAngle: -45f32,
+            MotorMaxAngularAcceleration: 500000f32,
+            MotorMaxTorque: 0f32,
+            RotationAxisVisible: false,
+            ServoMaxTorque: 0f32,
+            SoftlockAngularServoUponReachingTarget: false,
+            TargetAngle: 0f32,
+            UpperAngle: 45f32,
+        }
+    }
+}
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
+#[derive(Default)]
 pub struct DataModel {
     superclass: ServiceProvider,
 }
@@ -2894,8 +4362,19 @@ pub struct DataModelMesh {
 }
 impl_inherits!(DataModelMesh, Instance);
 impl_strong_instance_from!(DataModelMesh);
+impl Default for DataModelMesh {
+    fn default() -> Self {
+        Self {
+            superclass: Instance::default(),
+            Offset: Vector3::new(0f32, 0f32, 0f32),
+            Scale: Vector3::new(0f32, 0f32, 0f32),
+            VertexColor: Vector3::new(0f32, 0f32, 0f32),
+        }
+    }
+}
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
+#[derive(Default)]
 pub struct DataModelPatchService {
     superclass: Instance,
 }
@@ -2903,6 +4382,7 @@ impl_inherits!(DataModelPatchService, Instance);
 impl_strong_instance_from!(DataModelPatchService);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
+#[derive(Default)]
 pub struct DataModelSession {
     superclass: Instance,
 }
@@ -2910,6 +4390,7 @@ impl_inherits!(DataModelSession, Instance);
 impl_strong_instance_from!(DataModelSession);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
+#[derive(Default)]
 pub struct DataStore {
     superclass: GlobalDataStore,
 }
@@ -2923,8 +4404,17 @@ pub struct DataStoreGetOptions {
 }
 impl_inherits!(DataStoreGetOptions, Instance);
 impl_strong_instance_from!(DataStoreGetOptions);
+impl Default for DataStoreGetOptions {
+    fn default() -> Self {
+        Self {
+            superclass: Instance::default(),
+            UseCache: false,
+        }
+    }
+}
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
+#[derive(Default)]
 pub struct DataStoreIncrementOptions {
     superclass: Instance,
 }
@@ -2932,6 +4422,7 @@ impl_inherits!(DataStoreIncrementOptions, Instance);
 impl_strong_instance_from!(DataStoreIncrementOptions);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
+#[derive(Default)]
 pub struct DataStoreInfo {
     superclass: Instance,
 }
@@ -2939,6 +4430,7 @@ impl_inherits!(DataStoreInfo, Instance);
 impl_strong_instance_from!(DataStoreInfo);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
+#[derive(Default)]
 pub struct DataStoreKey {
     superclass: Instance,
 }
@@ -2946,6 +4438,7 @@ impl_inherits!(DataStoreKey, Instance);
 impl_strong_instance_from!(DataStoreKey);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
+#[derive(Default)]
 pub struct DataStoreKeyInfo {
     superclass: Instance,
 }
@@ -2953,6 +4446,7 @@ impl_inherits!(DataStoreKeyInfo, Instance);
 impl_strong_instance_from!(DataStoreKeyInfo);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
+#[derive(Default)]
 pub struct DataStoreKeyPages {
     superclass: Pages,
 }
@@ -2960,6 +4454,7 @@ impl_inherits!(DataStoreKeyPages, Pages);
 impl_strong_instance_from!(DataStoreKeyPages);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
+#[derive(Default)]
 pub struct DataStoreListingPages {
     superclass: Pages,
 }
@@ -2967,6 +4462,7 @@ impl_inherits!(DataStoreListingPages, Pages);
 impl_strong_instance_from!(DataStoreListingPages);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
+#[derive(Default)]
 pub struct DataStoreObjectVersionInfo {
     superclass: Instance,
 }
@@ -2980,8 +4476,17 @@ pub struct DataStoreOptions {
 }
 impl_inherits!(DataStoreOptions, Instance);
 impl_strong_instance_from!(DataStoreOptions);
+impl Default for DataStoreOptions {
+    fn default() -> Self {
+        Self {
+            superclass: Instance::default(),
+            AllScopes: false,
+        }
+    }
+}
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
+#[derive(Default)]
 pub struct DataStorePages {
     superclass: Pages,
 }
@@ -2996,8 +4501,18 @@ pub struct DataStoreService {
 }
 impl_inherits!(DataStoreService, Instance);
 impl_strong_instance_from!(DataStoreService);
+impl Default for DataStoreService {
+    fn default() -> Self {
+        Self {
+            superclass: Instance::default(),
+            AutomaticRetry: true,
+            LegacyNamingScheme: false,
+        }
+    }
+}
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
+#[derive(Default)]
 pub struct DataStoreSetOptions {
     superclass: Instance,
 }
@@ -3005,6 +4520,7 @@ impl_inherits!(DataStoreSetOptions, Instance);
 impl_strong_instance_from!(DataStoreSetOptions);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
+#[derive(Default)]
 pub struct DataStoreVersionPages {
     superclass: Pages,
 }
@@ -3018,6 +4534,14 @@ pub struct Debris {
 }
 impl_inherits!(Debris, Instance);
 impl_strong_instance_from!(Debris);
+impl Default for Debris {
+    fn default() -> Self {
+        Self {
+            superclass: Instance::default(),
+            MaxItems: 1000i32,
+        }
+    }
+}
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct DebugSettings {
@@ -3028,8 +4552,19 @@ pub struct DebugSettings {
 }
 impl_inherits!(DebugSettings, Instance);
 impl_strong_instance_from!(DebugSettings);
+impl Default for DebugSettings {
+    fn default() -> Self {
+        Self {
+            superclass: Instance::default(),
+            IsScriptStackTracingEnabled: false,
+            ReportSoundWarnings: false,
+            TickCountPreciseOverride: unimplemented!("convert u32 Enum to precise strong variant"),
+        }
+    }
+}
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
+#[derive(Default)]
 pub struct DebuggablePluginWatcher {
     superclass: Instance,
 }
@@ -3048,8 +4583,22 @@ pub struct DebuggerBreakpoint {
 }
 impl_inherits!(DebuggerBreakpoint, Instance);
 impl_strong_instance_from!(DebuggerBreakpoint);
+impl Default for DebuggerBreakpoint {
+    fn default() -> Self {
+        Self {
+            superclass: Instance::default(),
+            Condition: "".to_owned(),
+            ContinueExecution: false,
+            IsContextDependentBreakpoint: false,
+            IsEnabled: false,
+            Line: 0i32,
+            LogExpression: "".to_owned(),
+        }
+    }
+}
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
+#[derive(Default)]
 pub struct DebuggerConnection {
     superclass: Instance,
 }
@@ -3063,8 +4612,17 @@ pub struct DebuggerConnectionManager {
 }
 impl_inherits!(DebuggerConnectionManager, Instance);
 impl_strong_instance_from!(DebuggerConnectionManager);
+impl Default for DebuggerConnectionManager {
+    fn default() -> Self {
+        Self {
+            superclass: Instance::default(),
+            Timeout: 0f64,
+        }
+    }
+}
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
+#[derive(Default)]
 pub struct DebuggerLuaResponse {
     superclass: Instance,
 }
@@ -3072,6 +4630,7 @@ impl_inherits!(DebuggerLuaResponse, Instance);
 impl_strong_instance_from!(DebuggerLuaResponse);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
+#[derive(Default)]
 pub struct DebuggerManager {
     superclass: Instance,
 }
@@ -3079,6 +4638,7 @@ impl_inherits!(DebuggerManager, Instance);
 impl_strong_instance_from!(DebuggerManager);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
+#[derive(Default)]
 pub struct DebuggerUIService {
     superclass: Instance,
 }
@@ -3086,6 +4646,7 @@ impl_inherits!(DebuggerUIService, Instance);
 impl_strong_instance_from!(DebuggerUIService);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
+#[derive(Default)]
 pub struct DebuggerVariable {
     superclass: Instance,
 }
@@ -3099,6 +4660,14 @@ pub struct DebuggerWatch {
 }
 impl_inherits!(DebuggerWatch, Instance);
 impl_strong_instance_from!(DebuggerWatch);
+impl Default for DebuggerWatch {
+    fn default() -> Self {
+        Self {
+            superclass: Instance::default(),
+            Expression: "".to_owned(),
+        }
+    }
+}
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct Decal {
@@ -3117,6 +4686,24 @@ pub struct Decal {
 }
 impl_inherits!(Decal, FaceInstance);
 impl_strong_instance_from!(Decal);
+impl Default for Decal {
+    fn default() -> Self {
+        Self {
+            superclass: FaceInstance::default(),
+            Color3: Color3::new(1f32, 1f32, 1f32),
+            MetalnessMapContent: Content::none(),
+            NormalMapContent: Content::none(),
+            RoughnessMapContent: Content::none(),
+            TextureContent: Content::none(),
+            TexturePack: "".into(),
+            TexturePackMetadata: "".to_owned(),
+            Transparency: 0f32,
+            UvOffset: Vector2::new(0f32, 0f32),
+            UvScale: Vector2::new(1f32, 1f32),
+            ZIndex: 1i32,
+        }
+    }
+}
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct DepthOfFieldEffect {
@@ -3128,8 +4715,20 @@ pub struct DepthOfFieldEffect {
 }
 impl_inherits!(DepthOfFieldEffect, PostEffect);
 impl_strong_instance_from!(DepthOfFieldEffect);
+impl Default for DepthOfFieldEffect {
+    fn default() -> Self {
+        Self {
+            superclass: PostEffect::default(),
+            FarIntensity: 0.75f32,
+            FocusDistance: 0.05f32,
+            InFocusRadius: 10f32,
+            NearIntensity: 0.75f32,
+        }
+    }
+}
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
+#[derive(Default)]
 pub struct DeviceIdService {
     superclass: Instance,
 }
@@ -3151,6 +4750,22 @@ pub struct Dialog {
 }
 impl_inherits!(Dialog, Instance);
 impl_strong_instance_from!(Dialog);
+impl Default for Dialog {
+    fn default() -> Self {
+        Self {
+            superclass: Instance::default(),
+            BehaviorType: unimplemented!("convert u32 Enum to precise strong variant"),
+            ConversationDistance: 25f32,
+            GoodbyeChoiceActive: true,
+            GoodbyeDialog: "".to_owned(),
+            InitialPrompt: "".to_owned(),
+            Purpose: unimplemented!("convert u32 Enum to precise strong variant"),
+            Tone: unimplemented!("convert u32 Enum to precise strong variant"),
+            TriggerDistance: 0f32,
+            TriggerOffset: Vector3::new(0f32, 0f32, 0f32),
+        }
+    }
+}
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct DialogChoice {
@@ -3162,6 +4777,17 @@ pub struct DialogChoice {
 }
 impl_inherits!(DialogChoice, Instance);
 impl_strong_instance_from!(DialogChoice);
+impl Default for DialogChoice {
+    fn default() -> Self {
+        Self {
+            superclass: Instance::default(),
+            GoodbyeChoiceActive: true,
+            GoodbyeDialog: "".to_owned(),
+            ResponseDialog: "".to_owned(),
+            UserDialog: "".to_owned(),
+        }
+    }
+}
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct DistortionSoundEffect {
@@ -3170,8 +4796,17 @@ pub struct DistortionSoundEffect {
 }
 impl_inherits!(DistortionSoundEffect, SoundEffect);
 impl_strong_instance_from!(DistortionSoundEffect);
+impl Default for DistortionSoundEffect {
+    fn default() -> Self {
+        Self {
+            superclass: SoundEffect::default(),
+            Level: 0.75f32,
+        }
+    }
+}
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
+#[derive(Default)]
 pub struct DockWidgetPluginGui {
     superclass: PluginGui,
 }
@@ -3187,8 +4822,19 @@ pub struct DoubleConstrainedValue {
 }
 impl_inherits!(DoubleConstrainedValue, ValueBase);
 impl_strong_instance_from!(DoubleConstrainedValue);
+impl Default for DoubleConstrainedValue {
+    fn default() -> Self {
+        Self {
+            superclass: ValueBase::default(),
+            MaxValue: 1f64,
+            MinValue: 0f64,
+            Value: 0f64,
+        }
+    }
+}
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
+#[derive(Default)]
 pub struct DraftsService {
     superclass: Instance,
 }
@@ -3223,8 +4869,38 @@ pub struct DragDetector {
 }
 impl_inherits!(DragDetector, ClickDetector);
 impl_strong_instance_from!(DragDetector);
+impl Default for DragDetector {
+    fn default() -> Self {
+        Self {
+            superclass: ClickDetector::default(),
+            ActivatedCursorIconContent: Content::none(),
+            ApplyAtCenterOfMass: false,
+            DragFrame: CFrame::identity(),
+            DragStyle: unimplemented!("convert u32 Enum to precise strong variant"),
+            Enabled: true,
+            GamepadModeSwitchKeyCode: unimplemented!("convert u32 Enum to precise strong variant"),
+            KeyboardModeSwitchKeyCode: unimplemented!("convert u32 Enum to precise strong variant"),
+            MaxDragAngle: 0f32,
+            MaxDragTranslation: Vector3::new(0f32, 0f32, 0f32),
+            MaxForce: 10000000f32,
+            MaxTorque: 10000f32,
+            MinDragAngle: 0f32,
+            MinDragTranslation: Vector3::new(0f32, 0f32, 0f32),
+            Orientation: Vector3::new(-0f32, 179.99998f32, 90f32),
+            PermissionPolicy: unimplemented!("convert u32 Enum to precise strong variant"),
+            ReferenceInstance: Ref::none(),
+            ResponseStyle: unimplemented!("convert u32 Enum to precise strong variant"),
+            Responsiveness: 10f32,
+            RunLocally: false,
+            TrackballRadialPullFactor: 1f32,
+            TrackballRollFactor: 1f32,
+            VrSwitchKeyCode: unimplemented!("convert u32 Enum to precise strong variant"),
+        }
+    }
+}
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
+#[derive(Default)]
 pub struct Dragger {
     superclass: Instance,
 }
@@ -3232,6 +4908,7 @@ impl_inherits!(Dragger, Instance);
 impl_strong_instance_from!(Dragger);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
+#[derive(Default)]
 pub struct DraggerService {
     superclass: Instance,
 }
@@ -3245,6 +4922,14 @@ pub struct DynamicRotate {
 }
 impl_inherits!(DynamicRotate, JointInstance);
 impl_strong_instance_from!(DynamicRotate);
+impl Default for DynamicRotate {
+    fn default() -> Self {
+        Self {
+            superclass: JointInstance::default(),
+            BaseAngle: 0f32,
+        }
+    }
+}
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct EchoSoundEffect {
@@ -3256,6 +4941,17 @@ pub struct EchoSoundEffect {
 }
 impl_inherits!(EchoSoundEffect, SoundEffect);
 impl_strong_instance_from!(EchoSoundEffect);
+impl Default for EchoSoundEffect {
+    fn default() -> Self {
+        Self {
+            superclass: SoundEffect::default(),
+            Delay: 1f32,
+            DryLevel: 0f32,
+            Feedback: 0.5f32,
+            WetLevel: 0f32,
+        }
+    }
+}
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct EditableImage {
@@ -3264,6 +4960,14 @@ pub struct EditableImage {
 }
 impl_inherits!(EditableImage, Object);
 impl_strong_instance_from!(EditableImage);
+impl Default for EditableImage {
+    fn default() -> Self {
+        Self {
+            superclass: Object::default(),
+            ImageData: b"".as_slice().into(),
+        }
+    }
+}
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct EditableMesh {
@@ -3273,8 +4977,18 @@ pub struct EditableMesh {
 }
 impl_inherits!(EditableMesh, Object);
 impl_strong_instance_from!(EditableMesh);
+impl Default for EditableMesh {
+    fn default() -> Self {
+        Self {
+            superclass: Object::default(),
+            MeshData: SharedString::new(b"".to_vec()),
+            SkinningEnabled: false,
+        }
+    }
+}
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
+#[derive(Default)]
 pub struct EditableService {
     superclass: Instance,
 }
@@ -3282,6 +4996,7 @@ impl_inherits!(EditableService, Instance);
 impl_strong_instance_from!(EditableService);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
+#[derive(Default)]
 pub struct EmotesPages {
     superclass: InventoryPages,
 }
@@ -3289,6 +5004,7 @@ impl_inherits!(EmotesPages, InventoryPages);
 impl_strong_instance_from!(EmotesPages);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
+#[derive(Default)]
 pub struct EncodingService {
     superclass: Instance,
 }
@@ -3304,6 +5020,16 @@ pub struct EqualizerSoundEffect {
 }
 impl_inherits!(EqualizerSoundEffect, SoundEffect);
 impl_strong_instance_from!(EqualizerSoundEffect);
+impl Default for EqualizerSoundEffect {
+    fn default() -> Self {
+        Self {
+            superclass: SoundEffect::default(),
+            HighGain: 0f32,
+            LowGain: -20f32,
+            MidGain: -10f32,
+        }
+    }
+}
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct EulerRotationCurve {
@@ -3312,8 +5038,17 @@ pub struct EulerRotationCurve {
 }
 impl_inherits!(EulerRotationCurve, Instance);
 impl_strong_instance_from!(EulerRotationCurve);
+impl Default for EulerRotationCurve {
+    fn default() -> Self {
+        Self {
+            superclass: Instance::default(),
+            RotationOrder: unimplemented!("convert u32 Enum to precise strong variant"),
+        }
+    }
+}
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
+#[derive(Default)]
 pub struct EventIngestService {
     superclass: Instance,
 }
@@ -3321,6 +5056,7 @@ impl_inherits!(EventIngestService, Instance);
 impl_strong_instance_from!(EventIngestService);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
+#[derive(Default)]
 pub struct ExampleV2Service {
     superclass: Instance,
 }
@@ -3328,6 +5064,7 @@ impl_inherits!(ExampleV2Service, Instance);
 impl_strong_instance_from!(ExampleV2Service);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
+#[derive(Default)]
 pub struct ExecutedRemoteCommand {
     superclass: Object,
 }
@@ -3335,6 +5072,7 @@ impl_inherits!(ExecutedRemoteCommand, Object);
 impl_strong_instance_from!(ExecutedRemoteCommand);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
+#[derive(Default)]
 pub struct ExperienceAuthService {
     superclass: Instance,
 }
@@ -3351,8 +5089,20 @@ pub struct ExperienceInviteOptions {
 }
 impl_inherits!(ExperienceInviteOptions, Instance);
 impl_strong_instance_from!(ExperienceInviteOptions);
+impl Default for ExperienceInviteOptions {
+    fn default() -> Self {
+        Self {
+            superclass: Instance::default(),
+            InviteMessageId: "".to_owned(),
+            InviteUser: 0i64,
+            LaunchData: "".to_owned(),
+            PromptMessage: "".to_owned(),
+        }
+    }
+}
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
+#[derive(Default)]
 pub struct ExperienceNotificationService {
     superclass: Instance,
 }
@@ -3360,6 +5110,7 @@ impl_inherits!(ExperienceNotificationService, Instance);
 impl_strong_instance_from!(ExperienceNotificationService);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
+#[derive(Default)]
 pub struct ExperienceService {
     superclass: Instance,
 }
@@ -3367,6 +5118,7 @@ impl_inherits!(ExperienceService, Instance);
 impl_strong_instance_from!(ExperienceService);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
+#[derive(Default)]
 pub struct ExperienceStateCaptureService {
     superclass: Instance,
 }
@@ -3374,6 +5126,7 @@ impl_inherits!(ExperienceStateCaptureService, Instance);
 impl_strong_instance_from!(ExperienceStateCaptureService);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
+#[derive(Default)]
 pub struct ExperienceStateRecordingService {
     superclass: Instance,
 }
@@ -3381,6 +5134,7 @@ impl_inherits!(ExperienceStateRecordingService, Instance);
 impl_strong_instance_from!(ExperienceStateRecordingService);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
+#[derive(Default)]
 pub struct ExplorerFilter {
     superclass: Instance,
 }
@@ -3388,6 +5142,7 @@ impl_inherits!(ExplorerFilter, Instance);
 impl_strong_instance_from!(ExplorerFilter);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
+#[derive(Default)]
 pub struct ExplorerFilterAutocompleter {
     superclass: Instance,
 }
@@ -3395,6 +5150,7 @@ impl_inherits!(ExplorerFilterAutocompleter, Instance);
 impl_strong_instance_from!(ExplorerFilterAutocompleter);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
+#[derive(Default)]
 pub struct ExplorerServiceVisibilityService {
     superclass: Instance,
 }
@@ -3414,8 +5170,23 @@ pub struct Explosion {
 }
 impl_inherits!(Explosion, Instance);
 impl_strong_instance_from!(Explosion);
+impl Default for Explosion {
+    fn default() -> Self {
+        Self {
+            superclass: Instance::default(),
+            BlastPressure: 500000f32,
+            BlastRadius: 4f32,
+            DestroyJointRadiusPercent: 1f32,
+            ExplosionType: unimplemented!("convert u32 Enum to precise strong variant"),
+            Position: Vector3::new(0f32, 0f32, 0f32),
+            TimeScale: 1f32,
+            Visible: true,
+        }
+    }
+}
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
+#[derive(Default)]
 pub struct FaceAnimatorService {
     superclass: Instance,
 }
@@ -3423,6 +5194,7 @@ impl_inherits!(FaceAnimatorService, Instance);
 impl_strong_instance_from!(FaceAnimatorService);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
+#[derive(Default)]
 pub struct FaceControls {
     superclass: Instance,
 }
@@ -3436,8 +5208,17 @@ pub struct FaceInstance {
 }
 impl_inherits!(FaceInstance, Instance);
 impl_strong_instance_from!(FaceInstance);
+impl Default for FaceInstance {
+    fn default() -> Self {
+        Self {
+            superclass: Instance::default(),
+            Face: unimplemented!("convert u32 Enum to precise strong variant"),
+        }
+    }
+}
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
+#[derive(Default)]
 pub struct FacialAgeEstimationService {
     superclass: Instance,
 }
@@ -3445,6 +5226,7 @@ impl_inherits!(FacialAgeEstimationService, Instance);
 impl_strong_instance_from!(FacialAgeEstimationService);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
+#[derive(Default)]
 pub struct FacialAnimationRecordingService {
     superclass: Instance,
 }
@@ -3452,6 +5234,7 @@ impl_inherits!(FacialAnimationRecordingService, Instance);
 impl_strong_instance_from!(FacialAnimationRecordingService);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
+#[derive(Default)]
 pub struct FacialAnimationStreamingServiceStats {
     superclass: Instance,
 }
@@ -3465,8 +5248,17 @@ pub struct FacialAnimationStreamingServiceV2 {
 }
 impl_inherits!(FacialAnimationStreamingServiceV2, Instance);
 impl_strong_instance_from!(FacialAnimationStreamingServiceV2);
+impl Default for FacialAnimationStreamingServiceV2 {
+    fn default() -> Self {
+        Self {
+            superclass: Instance::default(),
+            ServiceState: 0i32,
+        }
+    }
+}
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
+#[derive(Default)]
 pub struct FacialAnimationStreamingSubsessionStats {
     superclass: Instance,
 }
@@ -3474,6 +5266,7 @@ impl_inherits!(FacialAnimationStreamingSubsessionStats, Instance);
 impl_strong_instance_from!(FacialAnimationStreamingSubsessionStats);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
+#[derive(Default)]
 pub struct FacsImportData {
     superclass: BaseImportData,
 }
@@ -3490,8 +5283,20 @@ pub struct Feature {
 }
 impl_inherits!(Feature, Instance);
 impl_strong_instance_from!(Feature);
+impl Default for Feature {
+    fn default() -> Self {
+        Self {
+            superclass: Instance::default(),
+            FaceId: unimplemented!("convert u32 Enum to precise strong variant"),
+            InOut: unimplemented!("convert u32 Enum to precise strong variant"),
+            LeftRight: unimplemented!("convert u32 Enum to precise strong variant"),
+            TopBottom: unimplemented!("convert u32 Enum to precise strong variant"),
+        }
+    }
+}
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
+#[derive(Default)]
 pub struct FeatureRestrictionManager {
     superclass: Instance,
 }
@@ -3499,6 +5304,7 @@ impl_inherits!(FeatureRestrictionManager, Instance);
 impl_strong_instance_from!(FeatureRestrictionManager);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
+#[derive(Default)]
 pub struct File {
     superclass: Instance,
 }
@@ -3513,6 +5319,15 @@ pub struct FileMesh {
 }
 impl_inherits!(FileMesh, DataModelMesh);
 impl_strong_instance_from!(FileMesh);
+impl Default for FileMesh {
+    fn default() -> Self {
+        Self {
+            superclass: DataModelMesh::default(),
+            MeshId: "".into(),
+            TextureId: "".into(),
+        }
+    }
+}
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct Fire {
@@ -3524,6 +5339,17 @@ pub struct Fire {
 }
 impl_inherits!(Fire, Instance);
 impl_strong_instance_from!(Fire);
+impl Default for Fire {
+    fn default() -> Self {
+        Self {
+            superclass: Instance::default(),
+            Color: Color3::new(0.92549026f32, 0.54509807f32, 0.27450982f32),
+            Enabled: true,
+            SecondaryColor: Color3::new(0.54509807f32, 0.3137255f32, 0.21568629f32),
+            TimeScale: 1f32,
+        }
+    }
+}
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct Flag {
@@ -3532,6 +5358,14 @@ pub struct Flag {
 }
 impl_inherits!(Flag, Tool);
 impl_strong_instance_from!(Flag);
+impl Default for Flag {
+    fn default() -> Self {
+        Self {
+            superclass: Tool::default(),
+            TeamColor: BrickColor::from_number(194u16).unwrap(),
+        }
+    }
+}
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct FlagStand {
@@ -3540,8 +5374,17 @@ pub struct FlagStand {
 }
 impl_inherits!(FlagStand, Part);
 impl_strong_instance_from!(FlagStand);
+impl Default for FlagStand {
+    fn default() -> Self {
+        Self {
+            superclass: Part::default(),
+            TeamColor: BrickColor::from_number(194u16).unwrap(),
+        }
+    }
+}
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
+#[derive(Default)]
 pub struct FlagStandService {
     superclass: Instance,
 }
@@ -3557,6 +5400,16 @@ pub struct FlangeSoundEffect {
 }
 impl_inherits!(FlangeSoundEffect, SoundEffect);
 impl_strong_instance_from!(FlangeSoundEffect);
+impl Default for FlangeSoundEffect {
+    fn default() -> Self {
+        Self {
+            superclass: SoundEffect::default(),
+            Depth: 0.45f32,
+            Mix: 0.85f32,
+            Rate: 5f32,
+        }
+    }
+}
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct FloatCurve {
@@ -3565,6 +5418,14 @@ pub struct FloatCurve {
 }
 impl_inherits!(FloatCurve, Instance);
 impl_strong_instance_from!(FloatCurve);
+impl Default for FloatCurve {
+    fn default() -> Self {
+        Self {
+            superclass: Instance::default(),
+            ValuesAndTimes: b"\x02\0\0\0\0\0\0\0\x01\0\0\0\0\0\0\0".as_slice().into(),
+        }
+    }
+}
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct FloorWire {
@@ -3580,8 +5441,24 @@ pub struct FloorWire {
 }
 impl_inherits!(FloorWire, GuiBase3d);
 impl_strong_instance_from!(FloorWire);
+impl Default for FloorWire {
+    fn default() -> Self {
+        Self {
+            superclass: GuiBase3d::default(),
+            CycleOffset: 0f32,
+            From: Ref::none(),
+            StudsBetweenTextures: 4f32,
+            Texture: "".into(),
+            TextureSize: Vector2::new(1f32, 1f32),
+            To: Ref::none(),
+            Velocity: 2f32,
+            WireRadius: 0.0625f32,
+        }
+    }
+}
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
+#[derive(Default)]
 pub struct FluidForceSensor {
     superclass: SensorBase,
 }
@@ -3589,6 +5466,7 @@ impl_inherits!(FluidForceSensor, SensorBase);
 impl_strong_instance_from!(FluidForceSensor);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
+#[derive(Default)]
 pub struct FlyweightService {
     superclass: Instance,
 }
@@ -3596,6 +5474,7 @@ impl_inherits!(FlyweightService, Instance);
 impl_strong_instance_from!(FlyweightService);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
+#[derive(Default)]
 pub struct Folder {
     superclass: Instance,
 }
@@ -3609,8 +5488,17 @@ pub struct ForceField {
 }
 impl_inherits!(ForceField, Instance);
 impl_strong_instance_from!(ForceField);
+impl Default for ForceField {
+    fn default() -> Self {
+        Self {
+            superclass: Instance::default(),
+            Visible: true,
+        }
+    }
+}
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
+#[derive(Default)]
 pub struct FormFactorPart {
     superclass: BasePart,
 }
@@ -3624,8 +5512,17 @@ pub struct Frame {
 }
 impl_inherits!(Frame, GuiObject);
 impl_strong_instance_from!(Frame);
+impl Default for Frame {
+    fn default() -> Self {
+        Self {
+            superclass: GuiObject::default(),
+            Style: unimplemented!("convert u32 Enum to precise strong variant"),
+        }
+    }
+}
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
+#[derive(Default)]
 pub struct FriendPages {
     superclass: Pages,
 }
@@ -3633,6 +5530,7 @@ impl_inherits!(FriendPages, Pages);
 impl_strong_instance_from!(FriendPages);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
+#[derive(Default)]
 pub struct FriendService {
     superclass: Instance,
 }
@@ -3647,8 +5545,18 @@ pub struct FunctionalTest {
 }
 impl_inherits!(FunctionalTest, Instance);
 impl_strong_instance_from!(FunctionalTest);
+impl Default for FunctionalTest {
+    fn default() -> Self {
+        Self {
+            superclass: Instance::default(),
+            Description: "?".to_owned(),
+            HasMigratedSettingsToTestService: false,
+        }
+    }
+}
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
+#[derive(Default)]
 pub struct GamePassService {
     superclass: Instance,
 }
@@ -3662,6 +5570,14 @@ pub struct GameSettings {
 }
 impl_inherits!(GameSettings, Instance);
 impl_strong_instance_from!(GameSettings);
+impl Default for GameSettings {
+    fn default() -> Self {
+        Self {
+            superclass: Instance::default(),
+            VideoCaptureEnabled: false,
+        }
+    }
+}
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct GamepadService {
@@ -3670,8 +5586,17 @@ pub struct GamepadService {
 }
 impl_inherits!(GamepadService, Instance);
 impl_strong_instance_from!(GamepadService);
+impl Default for GamepadService {
+    fn default() -> Self {
+        Self {
+            superclass: Instance::default(),
+            GamepadCursorEnabled: false,
+        }
+    }
+}
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
+#[derive(Default)]
 pub struct GenerationService {
     superclass: Instance,
 }
@@ -3679,6 +5604,7 @@ impl_inherits!(GenerationService, Instance);
 impl_strong_instance_from!(GenerationService);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
+#[derive(Default)]
 pub struct GenericChallengeService {
     superclass: Instance,
 }
@@ -3686,6 +5612,7 @@ impl_inherits!(GenericChallengeService, Instance);
 impl_strong_instance_from!(GenericChallengeService);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
+#[derive(Default)]
 pub struct GenericSettings {
     superclass: ServiceProvider,
 }
@@ -3693,6 +5620,7 @@ impl_inherits!(GenericSettings, ServiceProvider);
 impl_strong_instance_from!(GenericSettings);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
+#[derive(Default)]
 pub struct Geometry {
     superclass: Instance,
 }
@@ -3700,6 +5628,7 @@ impl_inherits!(Geometry, Instance);
 impl_strong_instance_from!(Geometry);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
+#[derive(Default)]
 pub struct GeometryService {
     superclass: Instance,
 }
@@ -3717,8 +5646,21 @@ pub struct GetTextBoundsParams {
 }
 impl_inherits!(GetTextBoundsParams, Instance);
 impl_strong_instance_from!(GetTextBoundsParams);
+impl Default for GetTextBoundsParams {
+    fn default() -> Self {
+        Self {
+            superclass: Instance::default(),
+            Font: unimplemented!("Font"),
+            RichText: false,
+            Size: 0f32,
+            Text: "".to_owned(),
+            Width: 0f32,
+        }
+    }
+}
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
+#[derive(Default)]
 pub struct GlobalDataStore {
     superclass: Instance,
 }
@@ -3726,6 +5668,7 @@ impl_inherits!(GlobalDataStore, Instance);
 impl_strong_instance_from!(GlobalDataStore);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
+#[derive(Default)]
 pub struct GlobalSettings {
     superclass: GenericSettings,
 }
@@ -3742,6 +5685,17 @@ pub struct Glue {
 }
 impl_inherits!(Glue, JointInstance);
 impl_strong_instance_from!(Glue);
+impl Default for Glue {
+    fn default() -> Self {
+        Self {
+            superclass: JointInstance::default(),
+            F0: Vector3::new(0f32, 0f32, 0f32),
+            F1: Vector3::new(0f32, 0f32, 0f32),
+            F2: Vector3::new(0f32, 0f32, 0f32),
+            F3: Vector3::new(0f32, 0f32, 0f32),
+        }
+    }
+}
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct GroundController {
@@ -3760,6 +5714,24 @@ pub struct GroundController {
 }
 impl_inherits!(GroundController, ControllerBase);
 impl_strong_instance_from!(GroundController);
+impl Default for GroundController {
+    fn default() -> Self {
+        Self {
+            superclass: ControllerBase::default(),
+            AccelerationLean: 1f32,
+            AccelerationTime: 0f32,
+            BalanceMaxTorque: 10000f32,
+            BalanceSpeed: 100f32,
+            DecelerationTime: 0f32,
+            Friction: 2f32,
+            FrictionWeight: 1f32,
+            GroundOffset: 1f32,
+            StandForce: 10000f32,
+            StandSpeed: 100f32,
+            TurnSpeedFactor: 1f32,
+        }
+    }
+}
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct GroupImportData {
@@ -3770,8 +5742,19 @@ pub struct GroupImportData {
 }
 impl_inherits!(GroupImportData, BaseImportData);
 impl_strong_instance_from!(GroupImportData);
+impl Default for GroupImportData {
+    fn default() -> Self {
+        Self {
+            superclass: BaseImportData::default(),
+            Anchored: false,
+            ImportAsModelAsset: false,
+            InsertInWorkspace: false,
+        }
+    }
+}
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
+#[derive(Default)]
 pub struct GroupService {
     superclass: Instance,
 }
@@ -3779,6 +5762,7 @@ impl_inherits!(GroupService, Instance);
 impl_strong_instance_from!(GroupService);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
+#[derive(Default)]
 pub struct GuiBase {
     superclass: Instance,
 }
@@ -3798,6 +5782,20 @@ pub struct GuiBase2d {
 }
 impl_inherits!(GuiBase2d, GuiBase);
 impl_strong_instance_from!(GuiBase2d);
+impl Default for GuiBase2d {
+    fn default() -> Self {
+        Self {
+            superclass: GuiBase::default(),
+            AutoLocalize: false,
+            RootLocalizationTable: Ref::none(),
+            SelectionBehaviorDown: unimplemented!("convert u32 Enum to precise strong variant"),
+            SelectionBehaviorLeft: unimplemented!("convert u32 Enum to precise strong variant"),
+            SelectionBehaviorRight: unimplemented!("convert u32 Enum to precise strong variant"),
+            SelectionBehaviorUp: unimplemented!("convert u32 Enum to precise strong variant"),
+            SelectionGroup: false,
+        }
+    }
+}
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct GuiBase3d {
@@ -3808,6 +5806,16 @@ pub struct GuiBase3d {
 }
 impl_inherits!(GuiBase3d, GuiBase);
 impl_strong_instance_from!(GuiBase3d);
+impl Default for GuiBase3d {
+    fn default() -> Self {
+        Self {
+            superclass: GuiBase::default(),
+            Color3: Color3::new(0f32, 0f32, 0f32),
+            Transparency: 0f32,
+            Visible: false,
+        }
+    }
+}
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct GuiButton {
@@ -3821,8 +5829,22 @@ pub struct GuiButton {
 }
 impl_inherits!(GuiButton, GuiObject);
 impl_strong_instance_from!(GuiButton);
+impl Default for GuiButton {
+    fn default() -> Self {
+        Self {
+            superclass: GuiObject::default(),
+            AutoButtonColor: false,
+            HoverHapticEffect: Ref::none(),
+            Modal: false,
+            PressHapticEffect: Ref::none(),
+            Selected: false,
+            Style: unimplemented!("convert u32 Enum to precise strong variant"),
+        }
+    }
+}
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
+#[derive(Default)]
 pub struct GuiLabel {
     superclass: GuiObject,
 }
@@ -3830,6 +5852,7 @@ impl_inherits!(GuiLabel, GuiObject);
 impl_strong_instance_from!(GuiLabel);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
+#[derive(Default)]
 pub struct GuiMain {
     superclass: ScreenGui,
 }
@@ -3867,6 +5890,38 @@ pub struct GuiObject {
 }
 impl_inherits!(GuiObject, GuiBase2d);
 impl_strong_instance_from!(GuiObject);
+impl Default for GuiObject {
+    fn default() -> Self {
+        Self {
+            superclass: GuiBase2d::default(),
+            Active: false,
+            AnchorPoint: Vector2::new(0f32, 0f32),
+            AutomaticSize: unimplemented!("convert u32 Enum to precise strong variant"),
+            BackgroundColor3: Color3::new(0f32, 0f32, 0f32),
+            BackgroundTransparency: 0f32,
+            BorderColor3: Color3::new(0f32, 0f32, 0f32),
+            BorderMode: unimplemented!("convert u32 Enum to precise strong variant"),
+            BorderSizePixel: 0i32,
+            ClipsDescendants: false,
+            Draggable: false,
+            Interactable: false,
+            LayoutOrder: 0i32,
+            NextSelectionDown: Ref::none(),
+            NextSelectionLeft: Ref::none(),
+            NextSelectionRight: Ref::none(),
+            NextSelectionUp: Ref::none(),
+            Position: UDim2::new(UDim::new(0f32, 0i32), UDim::new(0f32, 0i32)),
+            Rotation: 0f32,
+            Selectable: false,
+            SelectionImageObject: Ref::none(),
+            SelectionOrder: 0i32,
+            Size: UDim2::new(UDim::new(0f32, 0i32), UDim::new(0f32, 0i32)),
+            SizeConstraint: unimplemented!("convert u32 Enum to precise strong variant"),
+            Visible: false,
+            ZIndex: 0i32,
+        }
+    }
+}
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct GuiService {
@@ -3877,8 +5932,19 @@ pub struct GuiService {
 }
 impl_inherits!(GuiService, Instance);
 impl_strong_instance_from!(GuiService);
+impl Default for GuiService {
+    fn default() -> Self {
+        Self {
+            superclass: Instance::default(),
+            AutoSelectGuiEnabled: false,
+            GuiNavigationEnabled: false,
+            SelectedObject: Ref::none(),
+        }
+    }
+}
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
+#[derive(Default)]
 pub struct GuidRegistryService {
     superclass: Instance,
 }
@@ -3886,6 +5952,7 @@ impl_inherits!(GuidRegistryService, Instance);
 impl_strong_instance_from!(GuidRegistryService);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
+#[derive(Default)]
 pub struct HSRDataContentProvider {
     superclass: CacheableContentProvider,
 }
@@ -3939,6 +6006,54 @@ pub struct HandRigDescription {
 }
 impl_inherits!(HandRigDescription, Instance);
 impl_strong_instance_from!(HandRigDescription);
+impl Default for HandRigDescription {
+    fn default() -> Self {
+        Self {
+            superclass: Instance::default(),
+            Index1: Ref::none(),
+            Index1TposeAdjustment: CFrame::identity(),
+            Index2: Ref::none(),
+            Index2TposeAdjustment: CFrame::identity(),
+            Index3: Ref::none(),
+            Index3TposeAdjustment: CFrame::identity(),
+            IndexRange: Vector3::new(0f32, 0f32, 0f32),
+            IndexSize: 0f32,
+            Middle1: Ref::none(),
+            Middle1TposeAdjustment: CFrame::identity(),
+            Middle2: Ref::none(),
+            Middle2TposeAdjustment: CFrame::identity(),
+            Middle3: Ref::none(),
+            Middle3TposeAdjustment: CFrame::identity(),
+            MiddleRange: Vector3::new(0f32, 0f32, 0f32),
+            MiddleSize: 0f32,
+            Pinky1: Ref::none(),
+            Pinky1TposeAdjustment: CFrame::identity(),
+            Pinky2: Ref::none(),
+            Pinky2TposeAdjustment: CFrame::identity(),
+            Pinky3: Ref::none(),
+            Pinky3TposeAdjustment: CFrame::identity(),
+            PinkyRange: Vector3::new(0f32, 0f32, 0f32),
+            PinkySize: 0f32,
+            Ring1: Ref::none(),
+            Ring1TposeAdjustment: CFrame::identity(),
+            Ring2: Ref::none(),
+            Ring2TposeAdjustment: CFrame::identity(),
+            Ring3: Ref::none(),
+            Ring3TposeAdjustment: CFrame::identity(),
+            RingRange: Vector3::new(0f32, 0f32, 0f32),
+            RingSize: 0f32,
+            Side: unimplemented!("convert u32 Enum to precise strong variant"),
+            Thumb1: Ref::none(),
+            Thumb1TposeAdjustment: CFrame::identity(),
+            Thumb2: Ref::none(),
+            Thumb2TposeAdjustment: CFrame::identity(),
+            Thumb3: Ref::none(),
+            Thumb3TposeAdjustment: CFrame::identity(),
+            ThumbRange: Vector3::new(0f32, 0f32, 0f32),
+            ThumbSize: 0f32,
+        }
+    }
+}
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct HandleAdornment {
@@ -3951,6 +6066,18 @@ pub struct HandleAdornment {
 }
 impl_inherits!(HandleAdornment, PVAdornment);
 impl_strong_instance_from!(HandleAdornment);
+impl Default for HandleAdornment {
+    fn default() -> Self {
+        Self {
+            superclass: PVAdornment::default(),
+            AdornCullingMode: unimplemented!("convert u32 Enum to precise strong variant"),
+            AlwaysOnTop: false,
+            CFrame: CFrame::identity(),
+            SizeRelativeOffset: Vector3::new(0f32, 0f32, 0f32),
+            ZIndex: 0i32,
+        }
+    }
+}
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct Handles {
@@ -3960,8 +6087,18 @@ pub struct Handles {
 }
 impl_inherits!(Handles, HandlesBase);
 impl_strong_instance_from!(Handles);
+impl Default for Handles {
+    fn default() -> Self {
+        Self {
+            superclass: HandlesBase::default(),
+            Faces: unimplemented!(),
+            Style: unimplemented!("convert u32 Enum to precise strong variant"),
+        }
+    }
+}
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
+#[derive(Default)]
 pub struct HandlesBase {
     superclass: PartAdornment,
 }
@@ -3980,8 +6117,22 @@ pub struct HapticEffect {
 }
 impl_inherits!(HapticEffect, Instance);
 impl_strong_instance_from!(HapticEffect);
+impl Default for HapticEffect {
+    fn default() -> Self {
+        Self {
+            superclass: Instance::default(),
+            Looped: false,
+            Position: Vector3::new(0f32, 0f32, 0f32),
+            Radius: 3f32,
+            Type: unimplemented!("convert u32 Enum to precise strong variant"),
+            Waveform: Ref::none(),
+            WaveformData: b"".as_slice().into(),
+        }
+    }
+}
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
+#[derive(Default)]
 pub struct HapticService {
     superclass: Instance,
 }
@@ -3989,6 +6140,7 @@ impl_inherits!(HapticService, Instance);
 impl_strong_instance_from!(HapticService);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
+#[derive(Default)]
 pub struct HarmonyService {
     superclass: Instance,
 }
@@ -3996,6 +6148,7 @@ impl_inherits!(HarmonyService, Instance);
 impl_strong_instance_from!(HarmonyService);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
+#[derive(Default)]
 pub struct Hat {
     superclass: Accoutrement,
 }
@@ -4003,6 +6156,7 @@ impl_inherits!(Hat, Accoutrement);
 impl_strong_instance_from!(Hat);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
+#[derive(Default)]
 pub struct HeapProfilerService {
     superclass: Instance,
 }
@@ -4010,6 +6164,7 @@ impl_inherits!(HeapProfilerService, Instance);
 impl_strong_instance_from!(HeapProfilerService);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
+#[derive(Default)]
 pub struct HeatmapService {
     superclass: Instance,
 }
@@ -4017,6 +6172,7 @@ impl_inherits!(HeatmapService, Instance);
 impl_strong_instance_from!(HeatmapService);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
+#[derive(Default)]
 pub struct HeightmapImporterService {
     superclass: Instance,
 }
@@ -4031,6 +6187,15 @@ pub struct HiddenSurfaceRemovalAsset {
 }
 impl_inherits!(HiddenSurfaceRemovalAsset, Instance);
 impl_strong_instance_from!(HiddenSurfaceRemovalAsset);
+impl Default for HiddenSurfaceRemovalAsset {
+    fn default() -> Self {
+        Self {
+            superclass: Instance::default(),
+            HsrData: b"".as_slice().into(),
+            HsrMeshIdData: b"".as_slice().into(),
+        }
+    }
+}
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct Highlight {
@@ -4045,6 +6210,20 @@ pub struct Highlight {
 }
 impl_inherits!(Highlight, Instance);
 impl_strong_instance_from!(Highlight);
+impl Default for Highlight {
+    fn default() -> Self {
+        Self {
+            superclass: Instance::default(),
+            Adornee: Ref::none(),
+            DepthMode: unimplemented!("convert u32 Enum to precise strong variant"),
+            Enabled: true,
+            FillColor: Color3::new(1f32, 0f32, 0f32),
+            FillTransparency: 0.5f32,
+            OutlineColor: Color3::new(1f32, 1f32, 1f32),
+            OutlineTransparency: 0f32,
+        }
+    }
+}
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct HingeConstraint {
@@ -4066,8 +6245,30 @@ pub struct HingeConstraint {
 }
 impl_inherits!(HingeConstraint, Constraint);
 impl_strong_instance_from!(HingeConstraint);
+impl Default for HingeConstraint {
+    fn default() -> Self {
+        Self {
+            superclass: Constraint::default(),
+            ActuatorType: unimplemented!("convert u32 Enum to precise strong variant"),
+            AngularResponsiveness: 45f32,
+            AngularSpeed: 0f32,
+            AngularVelocity: 0f32,
+            LimitsEnabled: false,
+            LowerAngle: -45f32,
+            MotorMaxAcceleration: 500000f32,
+            MotorMaxTorque: 0f32,
+            Radius: 0.15f32,
+            Restitution: 0f32,
+            ServoMaxTorque: 0f32,
+            SoftlockServoUponReachingTarget: false,
+            TargetAngle: 0f32,
+            UpperAngle: 45f32,
+        }
+    }
+}
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
+#[derive(Default)]
 pub struct Hint {
     superclass: Message,
 }
@@ -4075,6 +6276,7 @@ impl_inherits!(Hint, Message);
 impl_strong_instance_from!(Hint);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
+#[derive(Default)]
 pub struct Hole {
     superclass: Feature,
 }
@@ -4082,6 +6284,7 @@ impl_inherits!(Hole, Feature);
 impl_strong_instance_from!(Hole);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
+#[derive(Default)]
 pub struct Hopper {
     superclass: Instance,
 }
@@ -4096,8 +6299,18 @@ pub struct HopperBin {
 }
 impl_inherits!(HopperBin, BackpackItem);
 impl_strong_instance_from!(HopperBin);
+impl Default for HopperBin {
+    fn default() -> Self {
+        Self {
+            superclass: BackpackItem::default(),
+            Active: false,
+            BinType: unimplemented!("convert u32 Enum to precise strong variant"),
+        }
+    }
+}
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
+#[derive(Default)]
 pub struct HttpRbxApiService {
     superclass: Instance,
 }
@@ -4105,6 +6318,7 @@ impl_inherits!(HttpRbxApiService, Instance);
 impl_strong_instance_from!(HttpRbxApiService);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
+#[derive(Default)]
 pub struct HttpRequest {
     superclass: Instance,
 }
@@ -4118,6 +6332,14 @@ pub struct HttpService {
 }
 impl_inherits!(HttpService, Instance);
 impl_strong_instance_from!(HttpService);
+impl Default for HttpService {
+    fn default() -> Self {
+        Self {
+            superclass: Instance::default(),
+            HttpEnabled: false,
+        }
+    }
+}
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct Humanoid {
@@ -4149,8 +6371,40 @@ pub struct Humanoid {
 }
 impl_inherits!(Humanoid, Instance);
 impl_strong_instance_from!(Humanoid);
+impl Default for Humanoid {
+    fn default() -> Self {
+        Self {
+            superclass: Instance::default(),
+            AutoJumpEnabled: true,
+            AutoRotate: true,
+            AutomaticScalingEnabled: true,
+            BreakJointsOnDeath: true,
+            CollisionType: unimplemented!("convert u32 Enum to precise strong variant"),
+            DisplayDistanceType: unimplemented!("convert u32 Enum to precise strong variant"),
+            DisplayName: "".to_owned(),
+            EvaluateStateMachine: true,
+            HealthDisplayDistance: 100f32,
+            HealthDisplayType: unimplemented!("convert u32 Enum to precise strong variant"),
+            HealthXml: 100f32,
+            HipHeight: 0f32,
+            InternalBodyScale: Vector3::new(1f32, 1f32, 1f32),
+            InternalHeadScale: 1f32,
+            JumpHeight: 7.2f32,
+            JumpPower: 50f32,
+            MaxHealth: 100f32,
+            MaxSlopeAngle: 89f32,
+            NameDisplayDistance: 100f32,
+            NameOcclusion: unimplemented!("convert u32 Enum to precise strong variant"),
+            RequiresNeck: true,
+            RigType: unimplemented!("convert u32 Enum to precise strong variant"),
+            UseJumpPower: true,
+            WalkSpeed: 16f32,
+        }
+    }
+}
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
+#[derive(Default)]
 pub struct HumanoidController {
     superclass: Controller,
 }
@@ -4183,6 +6437,33 @@ pub struct HumanoidDescription {
 }
 impl_inherits!(HumanoidDescription, Instance);
 impl_strong_instance_from!(HumanoidDescription);
+impl Default for HumanoidDescription {
+    fn default() -> Self {
+        Self {
+            superclass: Instance::default(),
+            BodyTypeScale: 0.3f32,
+            ClimbAnimation: 0i64,
+            DepthScale: 1f32,
+            EmotesDataInternal: "".to_owned(),
+            EquippedEmotesDataInternal: "".to_owned(),
+            Face: 0i64,
+            FallAnimation: 0i64,
+            GraphicTShirt: 0i64,
+            HeadScale: 1f32,
+            HeightScale: 1f32,
+            IdleAnimation: 0i64,
+            JumpAnimation: 0i64,
+            MoodAnimation: 0i64,
+            Pants: 0i64,
+            ProportionScale: 1f32,
+            RunAnimation: 0i64,
+            Shirt: 0i64,
+            SwimAnimation: 0i64,
+            WalkAnimation: 0i64,
+            WidthScale: 1f32,
+        }
+    }
+}
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct HumanoidRigDescription {
@@ -4301,6 +6582,124 @@ pub struct HumanoidRigDescription {
 }
 impl_inherits!(HumanoidRigDescription, Instance);
 impl_strong_instance_from!(HumanoidRigDescription);
+impl Default for HumanoidRigDescription {
+    fn default() -> Self {
+        Self {
+            superclass: Instance::default(),
+            Chest: Ref::none(),
+            ChestRangeMax: Vector3::new(0f32, 0f32, 0f32),
+            ChestRangeMin: Vector3::new(0f32, 0f32, 0f32),
+            ChestSize: 0f32,
+            ChestTposeAdjustment: CFrame::identity(),
+            HeadBase: Ref::none(),
+            HeadBaseRangeMax: Vector3::new(0f32, 0f32, 0f32),
+            HeadBaseRangeMin: Vector3::new(0f32, 0f32, 0f32),
+            HeadBaseSize: 0f32,
+            HeadBaseTposeAdjustment: CFrame::identity(),
+            LeftAnkle: Ref::none(),
+            LeftAnkleRangeMax: Vector3::new(0f32, 0f32, 0f32),
+            LeftAnkleRangeMin: Vector3::new(0f32, 0f32, 0f32),
+            LeftAnkleSize: 0f32,
+            LeftAnkleTposeAdjustment: CFrame::identity(),
+            LeftClavicle: Ref::none(),
+            LeftClavicleRangeMax: Vector3::new(0f32, 0f32, 0f32),
+            LeftClavicleRangeMin: Vector3::new(0f32, 0f32, 0f32),
+            LeftClavicleSize: 0f32,
+            LeftClavicleTposeAdjustment: CFrame::identity(),
+            LeftElbow: Ref::none(),
+            LeftElbowRangeMax: Vector3::new(0f32, 0f32, 0f32),
+            LeftElbowRangeMin: Vector3::new(0f32, 0f32, 0f32),
+            LeftElbowSize: 0f32,
+            LeftElbowTposeAdjustment: CFrame::identity(),
+            LeftHip: Ref::none(),
+            LeftHipRangeMax: Vector3::new(0f32, 0f32, 0f32),
+            LeftHipRangeMin: Vector3::new(0f32, 0f32, 0f32),
+            LeftHipSize: 0f32,
+            LeftHipTposeAdjustment: CFrame::identity(),
+            LeftKnee: Ref::none(),
+            LeftKneeRangeMax: Vector3::new(0f32, 0f32, 0f32),
+            LeftKneeRangeMin: Vector3::new(0f32, 0f32, 0f32),
+            LeftKneeSize: 0f32,
+            LeftKneeTposeAdjustment: CFrame::identity(),
+            LeftShoulder: Ref::none(),
+            LeftShoulderRangeMax: Vector3::new(0f32, 0f32, 0f32),
+            LeftShoulderRangeMin: Vector3::new(0f32, 0f32, 0f32),
+            LeftShoulderSize: 0f32,
+            LeftShoulderTposeAdjustment: CFrame::identity(),
+            LeftToes: Ref::none(),
+            LeftToesRangeMax: Vector3::new(0f32, 0f32, 0f32),
+            LeftToesRangeMin: Vector3::new(0f32, 0f32, 0f32),
+            LeftToesSize: 0f32,
+            LeftToesTposeAdjustment: CFrame::identity(),
+            LeftWrist: Ref::none(),
+            LeftWristRangeMax: Vector3::new(0f32, 0f32, 0f32),
+            LeftWristRangeMin: Vector3::new(0f32, 0f32, 0f32),
+            LeftWristSize: 0f32,
+            LeftWristTposeAdjustment: CFrame::identity(),
+            Neck: Ref::none(),
+            NeckRangeMax: Vector3::new(0f32, 0f32, 0f32),
+            NeckRangeMin: Vector3::new(0f32, 0f32, 0f32),
+            NeckSize: 0f32,
+            NeckTposeAdjustment: CFrame::identity(),
+            OriginOffset: CFrame::identity(),
+            Pelvis: Ref::none(),
+            PelvisRangeMax: Vector3::new(0f32, 0f32, 0f32),
+            PelvisRangeMin: Vector3::new(0f32, 0f32, 0f32),
+            PelvisSize: 0f32,
+            PelvisTposeAdjustment: CFrame::identity(),
+            RightAnkle: Ref::none(),
+            RightAnkleRangeMax: Vector3::new(0f32, 0f32, 0f32),
+            RightAnkleRangeMin: Vector3::new(0f32, 0f32, 0f32),
+            RightAnkleSize: 0f32,
+            RightAnkleTposeAdjustment: CFrame::identity(),
+            RightClavicle: Ref::none(),
+            RightClavicleRangeMax: Vector3::new(0f32, 0f32, 0f32),
+            RightClavicleRangeMin: Vector3::new(0f32, 0f32, 0f32),
+            RightClavicleSize: 0f32,
+            RightClavicleTposeAdjustment: CFrame::identity(),
+            RightElbow: Ref::none(),
+            RightElbowRangeMax: Vector3::new(0f32, 0f32, 0f32),
+            RightElbowRangeMin: Vector3::new(0f32, 0f32, 0f32),
+            RightElbowSize: 0f32,
+            RightElbowTposeAdjustment: CFrame::identity(),
+            RightHip: Ref::none(),
+            RightHipRangeMax: Vector3::new(0f32, 0f32, 0f32),
+            RightHipRangeMin: Vector3::new(0f32, 0f32, 0f32),
+            RightHipSize: 0f32,
+            RightHipTposeAdjustment: CFrame::identity(),
+            RightKnee: Ref::none(),
+            RightKneeRangeMax: Vector3::new(0f32, 0f32, 0f32),
+            RightKneeRangeMin: Vector3::new(0f32, 0f32, 0f32),
+            RightKneeSize: 0f32,
+            RightKneeTposeAdjustment: CFrame::identity(),
+            RightShoulder: Ref::none(),
+            RightShoulderRangeMax: Vector3::new(0f32, 0f32, 0f32),
+            RightShoulderRangeMin: Vector3::new(0f32, 0f32, 0f32),
+            RightShoulderSize: 0f32,
+            RightShoulderTposeAdjustment: CFrame::identity(),
+            RightToes: Ref::none(),
+            RightToesRangeMax: Vector3::new(0f32, 0f32, 0f32),
+            RightToesRangeMin: Vector3::new(0f32, 0f32, 0f32),
+            RightToesSize: 0f32,
+            RightToesTposeAdjustment: CFrame::identity(),
+            RightWrist: Ref::none(),
+            RightWristRangeMax: Vector3::new(0f32, 0f32, 0f32),
+            RightWristRangeMin: Vector3::new(0f32, 0f32, 0f32),
+            RightWristSize: 0f32,
+            RightWristTposeAdjustment: CFrame::identity(),
+            Root: Ref::none(),
+            RootRangeMax: Vector3::new(0f32, 0f32, 0f32),
+            RootRangeMin: Vector3::new(0f32, 0f32, 0f32),
+            RootSize: 0f32,
+            RootTposeAdjustment: CFrame::identity(),
+            Waist: Ref::none(),
+            WaistRangeMax: Vector3::new(0f32, 0f32, 0f32),
+            WaistRangeMin: Vector3::new(0f32, 0f32, 0f32),
+            WaistSize: 0f32,
+            WaistTposeAdjustment: CFrame::identity(),
+        }
+    }
+}
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct IKControl {
@@ -4319,8 +6718,27 @@ pub struct IKControl {
 }
 impl_inherits!(IKControl, Instance);
 impl_strong_instance_from!(IKControl);
+impl Default for IKControl {
+    fn default() -> Self {
+        Self {
+            superclass: Instance::default(),
+            ChainRoot: Ref::none(),
+            Enabled: true,
+            EndEffector: Ref::none(),
+            EndEffectorOffset: CFrame::identity(),
+            Offset: CFrame::identity(),
+            Pole: Ref::none(),
+            Priority: 0i32,
+            SmoothTime: 0.05f32,
+            Target: Ref::none(),
+            Type: unimplemented!("convert u32 Enum to precise strong variant"),
+            Weight: 1f32,
+        }
+    }
+}
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
+#[derive(Default)]
 pub struct ILegacyStudioBridge {
     superclass: Instance,
 }
@@ -4328,6 +6746,7 @@ impl_inherits!(ILegacyStudioBridge, Instance);
 impl_strong_instance_from!(ILegacyStudioBridge);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
+#[derive(Default)]
 pub struct IXPService {
     superclass: Instance,
 }
@@ -4352,6 +6771,25 @@ pub struct ImageButton {
 }
 impl_inherits!(ImageButton, GuiButton);
 impl_strong_instance_from!(ImageButton);
+impl Default for ImageButton {
+    fn default() -> Self {
+        Self {
+            superclass: GuiButton::default(),
+            HoverImageContent: Content::none(),
+            ImageColor3: Color3::new(1f32, 1f32, 1f32),
+            ImageContent: Content::none(),
+            ImageRectOffset: Vector2::new(0f32, 0f32),
+            ImageRectSize: Vector2::new(0f32, 0f32),
+            ImageTransparency: 0f32,
+            PressedImageContent: Content::none(),
+            ResampleMode: unimplemented!("convert u32 Enum to precise strong variant"),
+            ScaleType: unimplemented!("convert u32 Enum to precise strong variant"),
+            SliceCenter: Rect::new(Vector2::new(0f32, 0f32), Vector2::new(0f32, 0f32)),
+            SliceScale: 1f32,
+            TileSize: UDim2::new(UDim::new(1f32, 0i32), UDim::new(1f32, 0i32)),
+        }
+    }
+}
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct ImageHandleAdornment {
@@ -4361,6 +6799,15 @@ pub struct ImageHandleAdornment {
 }
 impl_inherits!(ImageHandleAdornment, HandleAdornment);
 impl_strong_instance_from!(ImageHandleAdornment);
+impl Default for ImageHandleAdornment {
+    fn default() -> Self {
+        Self {
+            superclass: HandleAdornment::default(),
+            Image: "rbxasset://textures/SurfacesDefault.png".into(),
+            Size: Vector2::new(1f32, 1f32),
+        }
+    }
+}
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct ImageLabel {
@@ -4378,8 +6825,26 @@ pub struct ImageLabel {
 }
 impl_inherits!(ImageLabel, GuiLabel);
 impl_strong_instance_from!(ImageLabel);
+impl Default for ImageLabel {
+    fn default() -> Self {
+        Self {
+            superclass: GuiLabel::default(),
+            ImageColor3: Color3::new(1f32, 1f32, 1f32),
+            ImageContent: Content::none(),
+            ImageRectOffset: Vector2::new(0f32, 0f32),
+            ImageRectSize: Vector2::new(0f32, 0f32),
+            ImageTransparency: 0f32,
+            ResampleMode: unimplemented!("convert u32 Enum to precise strong variant"),
+            ScaleType: unimplemented!("convert u32 Enum to precise strong variant"),
+            SliceCenter: Rect::new(Vector2::new(0f32, 0f32), Vector2::new(0f32, 0f32)),
+            SliceScale: 1f32,
+            TileSize: UDim2::new(UDim::new(1f32, 0i32), UDim::new(1f32, 0i32)),
+        }
+    }
+}
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
+#[derive(Default)]
 pub struct ImportSession {
     superclass: Instance,
 }
@@ -4398,6 +6863,19 @@ pub struct IncrementalPatchBuilder {
 }
 impl_inherits!(IncrementalPatchBuilder, Instance);
 impl_strong_instance_from!(IncrementalPatchBuilder);
+impl Default for IncrementalPatchBuilder {
+    fn default() -> Self {
+        Self {
+            superclass: Instance::default(),
+            AddPathsToBundle: false,
+            BuildDebouncePeriod: 0f64,
+            HighCompression: false,
+            SerializePatch: false,
+            UseFileLevelCompressionInsteadOfChunk: false,
+            ZstdCompression: false,
+        }
+    }
+}
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct InputAction {
@@ -4407,6 +6885,15 @@ pub struct InputAction {
 }
 impl_inherits!(InputAction, Instance);
 impl_strong_instance_from!(InputAction);
+impl Default for InputAction {
+    fn default() -> Self {
+        Self {
+            superclass: Instance::default(),
+            Enabled: true,
+            Type: unimplemented!("convert u32 Enum to precise strong variant"),
+        }
+    }
+}
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct InputBinding {
@@ -4427,6 +6914,26 @@ pub struct InputBinding {
 }
 impl_inherits!(InputBinding, Instance);
 impl_strong_instance_from!(InputBinding);
+impl Default for InputBinding {
+    fn default() -> Self {
+        Self {
+            superclass: Instance::default(),
+            Backward: unimplemented!("convert u32 Enum to precise strong variant"),
+            Down: unimplemented!("convert u32 Enum to precise strong variant"),
+            Forward: unimplemented!("convert u32 Enum to precise strong variant"),
+            KeyCode: unimplemented!("convert u32 Enum to precise strong variant"),
+            Left: unimplemented!("convert u32 Enum to precise strong variant"),
+            PressedThreshold: 0.5f32,
+            ReleasedThreshold: 0.2f32,
+            ResponseCurve: 1f32,
+            Right: unimplemented!("convert u32 Enum to precise strong variant"),
+            Scale: 1f32,
+            UiButton: Ref::none(),
+            Up: unimplemented!("convert u32 Enum to precise strong variant"),
+            Vector2Scale: Vector2::new(1f32, 1f32),
+        }
+    }
+}
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct InputContext {
@@ -4437,8 +6944,19 @@ pub struct InputContext {
 }
 impl_inherits!(InputContext, Instance);
 impl_strong_instance_from!(InputContext);
+impl Default for InputContext {
+    fn default() -> Self {
+        Self {
+            superclass: Instance::default(),
+            Enabled: true,
+            Priority: 1000i32,
+            Sink: false,
+        }
+    }
+}
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
+#[derive(Default)]
 pub struct InputObject {
     superclass: Instance,
 }
@@ -4453,6 +6971,15 @@ pub struct InsertService {
 }
 impl_inherits!(InsertService, Instance);
 impl_strong_instance_from!(InsertService);
+impl Default for InsertService {
+    fn default() -> Self {
+        Self {
+            superclass: Instance::default(),
+            AllowClientInsertModels: false,
+            AllowInsertFreeModels: false,
+        }
+    }
+}
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct Instance {
@@ -4466,6 +6993,19 @@ pub struct Instance {
 }
 impl_inherits!(Instance, Object);
 impl_strong_instance_from!(Instance);
+impl Default for Instance {
+    fn default() -> Self {
+        Self {
+            superclass: Object::default(),
+            Capabilities: SecurityCapabilities::from_bits(0u64),
+            HistoryId: UniqueId::nil(),
+            Name: "".to_owned(),
+            SourceAssetId: 0i64,
+            Tags: Tags::new(),
+            UniqueId: UniqueId::nil(),
+        }
+    }
+}
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct InstanceAdornment {
@@ -4474,8 +7014,17 @@ pub struct InstanceAdornment {
 }
 impl_inherits!(InstanceAdornment, GuiBase3d);
 impl_strong_instance_from!(InstanceAdornment);
+impl Default for InstanceAdornment {
+    fn default() -> Self {
+        Self {
+            superclass: GuiBase3d::default(),
+            Adornee: Ref::none(),
+        }
+    }
+}
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
+#[derive(Default)]
 pub struct InstanceExtensionsService {
     superclass: Instance,
 }
@@ -4491,6 +7040,16 @@ pub struct IntConstrainedValue {
 }
 impl_inherits!(IntConstrainedValue, ValueBase);
 impl_strong_instance_from!(IntConstrainedValue);
+impl Default for IntConstrainedValue {
+    fn default() -> Self {
+        Self {
+            superclass: ValueBase::default(),
+            MaxValue: 10i64,
+            MinValue: 0i64,
+            Value: 0i64,
+        }
+    }
+}
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct IntValue {
@@ -4499,6 +7058,14 @@ pub struct IntValue {
 }
 impl_inherits!(IntValue, ValueBase);
 impl_strong_instance_from!(IntValue);
+impl Default for IntValue {
+    fn default() -> Self {
+        Self {
+            superclass: ValueBase::default(),
+            Value: 0i64,
+        }
+    }
+}
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct InternalSyncItem {
@@ -4509,8 +7076,19 @@ pub struct InternalSyncItem {
 }
 impl_inherits!(InternalSyncItem, Instance);
 impl_strong_instance_from!(InternalSyncItem);
+impl Default for InternalSyncItem {
+    fn default() -> Self {
+        Self {
+            superclass: Instance::default(),
+            AutoSync: false,
+            Enabled: false,
+            Path: "".to_owned(),
+        }
+    }
+}
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
+#[derive(Default)]
 pub struct InternalSyncService {
     superclass: Instance,
 }
@@ -4518,6 +7096,7 @@ impl_inherits!(InternalSyncService, Instance);
 impl_strong_instance_from!(InternalSyncService);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
+#[derive(Default)]
 pub struct IntersectOperation {
     superclass: PartOperation,
 }
@@ -4525,6 +7104,7 @@ impl_inherits!(IntersectOperation, PartOperation);
 impl_strong_instance_from!(IntersectOperation);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
+#[derive(Default)]
 pub struct InventoryPages {
     superclass: Pages,
 }
@@ -4532,6 +7112,7 @@ impl_inherits!(InventoryPages, Pages);
 impl_strong_instance_from!(InventoryPages);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
+#[derive(Default)]
 pub struct JointImportData {
     superclass: BaseImportData,
 }
@@ -4549,8 +7130,21 @@ pub struct JointInstance {
 }
 impl_inherits!(JointInstance, Instance);
 impl_strong_instance_from!(JointInstance);
+impl Default for JointInstance {
+    fn default() -> Self {
+        Self {
+            superclass: Instance::default(),
+            C0: CFrame::identity(),
+            C1: CFrame::identity(),
+            Enabled: false,
+            Part0: Ref::none(),
+            Part1: Ref::none(),
+        }
+    }
+}
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
+#[derive(Default)]
 pub struct JointsService {
     superclass: Instance,
 }
@@ -4558,6 +7152,7 @@ impl_inherits!(JointsService, Instance);
 impl_strong_instance_from!(JointsService);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
+#[derive(Default)]
 pub struct KeyboardService {
     superclass: Instance,
 }
@@ -4571,6 +7166,14 @@ pub struct Keyframe {
 }
 impl_inherits!(Keyframe, Instance);
 impl_strong_instance_from!(Keyframe);
+impl Default for Keyframe {
+    fn default() -> Self {
+        Self {
+            superclass: Instance::default(),
+            Time: 0f32,
+        }
+    }
+}
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct KeyframeMarker {
@@ -4579,6 +7182,14 @@ pub struct KeyframeMarker {
 }
 impl_inherits!(KeyframeMarker, Instance);
 impl_strong_instance_from!(KeyframeMarker);
+impl Default for KeyframeMarker {
+    fn default() -> Self {
+        Self {
+            superclass: Instance::default(),
+            Value: "".to_owned(),
+        }
+    }
+}
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct KeyframeSequence {
@@ -4587,8 +7198,17 @@ pub struct KeyframeSequence {
 }
 impl_inherits!(KeyframeSequence, AnimationClip);
 impl_strong_instance_from!(KeyframeSequence);
+impl Default for KeyframeSequence {
+    fn default() -> Self {
+        Self {
+            superclass: AnimationClip::default(),
+            AuthoredHipHeight: 2f32,
+        }
+    }
+}
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
+#[derive(Default)]
 pub struct KeyframeSequenceProvider {
     superclass: Instance,
 }
@@ -4596,6 +7216,7 @@ impl_inherits!(KeyframeSequenceProvider, Instance);
 impl_strong_instance_from!(KeyframeSequenceProvider);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
+#[derive(Default)]
 pub struct LSPFileSyncService {
     superclass: Instance,
 }
@@ -4603,6 +7224,7 @@ impl_inherits!(LSPFileSyncService, Instance);
 impl_strong_instance_from!(LSPFileSyncService);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
+#[derive(Default)]
 pub struct LanguageService {
     superclass: Instance,
 }
@@ -4618,8 +7240,19 @@ pub struct LayerCollector {
 }
 impl_inherits!(LayerCollector, GuiBase2d);
 impl_strong_instance_from!(LayerCollector);
+impl Default for LayerCollector {
+    fn default() -> Self {
+        Self {
+            superclass: GuiBase2d::default(),
+            Enabled: false,
+            ResetOnSpawn: false,
+            ZIndexBehavior: unimplemented!("convert u32 Enum to precise strong variant"),
+        }
+    }
+}
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
+#[derive(Default)]
 pub struct LegacyStudioBridge {
     superclass: ILegacyStudioBridge,
 }
@@ -4636,6 +7269,17 @@ pub struct Light {
 }
 impl_inherits!(Light, Instance);
 impl_strong_instance_from!(Light);
+impl Default for Light {
+    fn default() -> Self {
+        Self {
+            superclass: Instance::default(),
+            Brightness: 0f32,
+            Color: Color3::new(0f32, 0f32, 0f32),
+            Enabled: false,
+            Shadows: false,
+        }
+    }
+}
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct Lighting {
@@ -4664,6 +7308,34 @@ pub struct Lighting {
 }
 impl_inherits!(Lighting, Instance);
 impl_strong_instance_from!(Lighting);
+impl Default for Lighting {
+    fn default() -> Self {
+        Self {
+            superclass: Instance::default(),
+            Ambient: Color3::new(0.5f32, 0.5f32, 0.5f32),
+            Brightness: 1.9812492f32,
+            ClockTime: 0f32,
+            ColorShiftBottom: Color3::new(0f32, 0f32, 0f32),
+            ColorShiftTop: Color3::new(0f32, 0f32, 0f32),
+            EnvironmentDiffuseScale: 0f32,
+            EnvironmentSpecularScale: 0f32,
+            ExposureCompensation: 0f32,
+            ExtendLightRangeTo120: unimplemented!("convert u32 Enum to precise strong variant"),
+            FogColor: Color3::new(0.75f32, 0.75f32, 0.75f32),
+            FogEnd: 100000f32,
+            FogStart: 0f32,
+            GeographicLatitude: 41.7333f32,
+            GlobalShadows: false,
+            LightingStyle: unimplemented!("convert u32 Enum to precise strong variant"),
+            OutdoorAmbient: Color3::new(0.5f32, 0.5f32, 0.5f32),
+            Outlines: true,
+            PrioritizeLightingQuality: false,
+            ShadowSoftness: 0.5f32,
+            Technology: unimplemented!("convert u32 Enum to precise strong variant"),
+            TimeOfDay: "14:00:00".to_owned(),
+        }
+    }
+}
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct LineForce {
@@ -4676,6 +7348,18 @@ pub struct LineForce {
 }
 impl_inherits!(LineForce, Constraint);
 impl_strong_instance_from!(LineForce);
+impl Default for LineForce {
+    fn default() -> Self {
+        Self {
+            superclass: Constraint::default(),
+            ApplyAtCenterOfMass: false,
+            InverseSquareLaw: false,
+            Magnitude: 1000f32,
+            MaxForce: f32::INFINITY,
+            ReactionForceEnabled: false,
+        }
+    }
+}
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct LineHandleAdornment {
@@ -4685,6 +7369,15 @@ pub struct LineHandleAdornment {
 }
 impl_inherits!(LineHandleAdornment, HandleAdornment);
 impl_strong_instance_from!(LineHandleAdornment);
+impl Default for LineHandleAdornment {
+    fn default() -> Self {
+        Self {
+            superclass: HandleAdornment::default(),
+            Length: 5f32,
+            Thickness: 1f32,
+        }
+    }
+}
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct LinearVelocity {
@@ -4706,8 +7399,30 @@ pub struct LinearVelocity {
 }
 impl_inherits!(LinearVelocity, Constraint);
 impl_strong_instance_from!(LinearVelocity);
+impl Default for LinearVelocity {
+    fn default() -> Self {
+        Self {
+            superclass: Constraint::default(),
+            ForceLimitMode: unimplemented!("convert u32 Enum to precise strong variant"),
+            ForceLimitsEnabled: true,
+            LineDirection: Vector3::new(1f32, 0f32, 0f32),
+            LineVelocity: -0f32,
+            MaxAxesForce: Vector3::new(1000f32, 1000f32, 1000f32),
+            MaxForce: 1000f32,
+            MaxPlanarAxesForce: Vector2::new(1000f32, 1000f32),
+            PlaneVelocity: Vector2::new(0f32, 0f32),
+            PrimaryTangentAxis: Vector3::new(1f32, 0f32, 0f32),
+            ReactionForceEnabled: true,
+            RelativeTo: unimplemented!("convert u32 Enum to precise strong variant"),
+            SecondaryTangentAxis: Vector3::new(0f32, 1f32, 0f32),
+            VectorVelocity: Vector3::new(0f32, 0f32, 0f32),
+            VelocityConstraintMode: unimplemented!("convert u32 Enum to precise strong variant"),
+        }
+    }
+}
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
+#[derive(Default)]
 pub struct LinkingService {
     superclass: Instance,
 }
@@ -4715,6 +7430,7 @@ impl_inherits!(LinkingService, Instance);
 impl_strong_instance_from!(LinkingService);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
+#[derive(Default)]
 pub struct LiveScriptingService {
     superclass: Instance,
 }
@@ -4722,6 +7438,7 @@ impl_inherits!(LiveScriptingService, Instance);
 impl_strong_instance_from!(LiveScriptingService);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
+#[derive(Default)]
 pub struct LiveSyncService {
     superclass: Instance,
 }
@@ -4729,6 +7446,7 @@ impl_inherits!(LiveSyncService, Instance);
 impl_strong_instance_from!(LiveSyncService);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
+#[derive(Default)]
 pub struct LocalDebuggerConnection {
     superclass: DebuggerConnection,
 }
@@ -4736,6 +7454,7 @@ impl_inherits!(LocalDebuggerConnection, DebuggerConnection);
 impl_strong_instance_from!(LocalDebuggerConnection);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
+#[derive(Default)]
 pub struct LocalScript {
     superclass: Script,
 }
@@ -4743,6 +7462,7 @@ impl_inherits!(LocalScript, Script);
 impl_strong_instance_from!(LocalScript);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
+#[derive(Default)]
 pub struct LocalStorageService {
     superclass: Instance,
 }
@@ -4750,6 +7470,7 @@ impl_inherits!(LocalStorageService, Instance);
 impl_strong_instance_from!(LocalStorageService);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
+#[derive(Default)]
 pub struct LocalizationService {
     superclass: Instance,
 }
@@ -4764,8 +7485,18 @@ pub struct LocalizationTable {
 }
 impl_inherits!(LocalizationTable, Instance);
 impl_strong_instance_from!(LocalizationTable);
+impl Default for LocalizationTable {
+    fn default() -> Self {
+        Self {
+            superclass: Instance::default(),
+            Contents: "[]".to_owned(),
+            SourceLocaleId: "en-us".to_owned(),
+        }
+    }
+}
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
+#[derive(Default)]
 pub struct LodDataEntity {
     superclass: Instance,
 }
@@ -4773,6 +7504,7 @@ impl_inherits!(LodDataEntity, Instance);
 impl_strong_instance_from!(LodDataEntity);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
+#[derive(Default)]
 pub struct LodDataService {
     superclass: Instance,
 }
@@ -4780,6 +7512,7 @@ impl_inherits!(LodDataService, Instance);
 impl_strong_instance_from!(LodDataService);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
+#[derive(Default)]
 pub struct LogReporterService {
     superclass: Instance,
 }
@@ -4787,6 +7520,7 @@ impl_inherits!(LogReporterService, Instance);
 impl_strong_instance_from!(LogReporterService);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
+#[derive(Default)]
 pub struct LogService {
     superclass: Instance,
 }
@@ -4794,6 +7528,7 @@ impl_inherits!(LogService, Instance);
 impl_strong_instance_from!(LogService);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
+#[derive(Default)]
 pub struct LoginService {
     superclass: Instance,
 }
@@ -4801,6 +7536,7 @@ impl_inherits!(LoginService, Instance);
 impl_strong_instance_from!(LoginService);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
+#[derive(Default)]
 pub struct LuaSettings {
     superclass: Instance,
 }
@@ -4814,8 +7550,17 @@ pub struct LuaSourceContainer {
 }
 impl_inherits!(LuaSourceContainer, Instance);
 impl_strong_instance_from!(LuaSourceContainer);
+impl Default for LuaSourceContainer {
+    fn default() -> Self {
+        Self {
+            superclass: Instance::default(),
+            ScriptGuid: "".to_owned(),
+        }
+    }
+}
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
+#[derive(Default)]
 pub struct LuaWebService {
     superclass: Instance,
 }
@@ -4823,6 +7568,7 @@ impl_inherits!(LuaWebService, Instance);
 impl_strong_instance_from!(LuaWebService);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
+#[derive(Default)]
 pub struct LuauScriptAnalyzerService {
     superclass: Instance,
 }
@@ -4830,6 +7576,7 @@ impl_inherits!(LuauScriptAnalyzerService, Instance);
 impl_strong_instance_from!(LuauScriptAnalyzerService);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
+#[derive(Default)]
 pub struct MLModelDeliveryService {
     superclass: Instance,
 }
@@ -4837,6 +7584,7 @@ impl_inherits!(MLModelDeliveryService, Instance);
 impl_strong_instance_from!(MLModelDeliveryService);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
+#[derive(Default)]
 pub struct MLService {
     superclass: Instance,
 }
@@ -4844,6 +7592,7 @@ impl_inherits!(MLService, Instance);
 impl_strong_instance_from!(MLService);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
+#[derive(Default)]
 pub struct MLSession {
     superclass: Object,
 }
@@ -4851,6 +7600,7 @@ impl_inherits!(MLSession, Object);
 impl_strong_instance_from!(MLSession);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
+#[derive(Default)]
 pub struct ManualGlue {
     superclass: ManualSurfaceJointInstance,
 }
@@ -4858,6 +7608,7 @@ impl_inherits!(ManualGlue, ManualSurfaceJointInstance);
 impl_strong_instance_from!(ManualGlue);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
+#[derive(Default)]
 pub struct ManualSurfaceJointInstance {
     superclass: JointInstance,
 }
@@ -4865,6 +7616,7 @@ impl_inherits!(ManualSurfaceJointInstance, JointInstance);
 impl_strong_instance_from!(ManualSurfaceJointInstance);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
+#[derive(Default)]
 pub struct ManualWeld {
     superclass: ManualSurfaceJointInstance,
 }
@@ -4878,8 +7630,17 @@ pub struct MarkerCurve {
 }
 impl_inherits!(MarkerCurve, Instance);
 impl_strong_instance_from!(MarkerCurve);
+impl Default for MarkerCurve {
+    fn default() -> Self {
+        Self {
+            superclass: Instance::default(),
+            ValuesAndTimes: b"\x02\0\0\0\0\0\0\0\x01\0\0\0\0\0\0\0".as_slice().into(),
+        }
+    }
+}
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
+#[derive(Default)]
 pub struct MarketplaceService {
     superclass: Instance,
 }
@@ -4887,6 +7648,7 @@ impl_inherits!(MarketplaceService, Instance);
 impl_strong_instance_from!(MarketplaceService);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
+#[derive(Default)]
 pub struct MatchmakingService {
     superclass: Instance,
 }
@@ -4894,6 +7656,7 @@ impl_inherits!(MatchmakingService, Instance);
 impl_strong_instance_from!(MatchmakingService);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
+#[derive(Default)]
 pub struct MaterialGenerationService {
     superclass: Instance,
 }
@@ -4911,6 +7674,18 @@ pub struct MaterialImportData {
 }
 impl_inherits!(MaterialImportData, BaseImportData);
 impl_strong_instance_from!(MaterialImportData);
+impl Default for MaterialImportData {
+    fn default() -> Self {
+        Self {
+            superclass: BaseImportData::default(),
+            DiffuseFilePath: "".to_owned(),
+            EmissiveFilePath: "".to_owned(),
+            MetalnessFilePath: "".to_owned(),
+            NormalFilePath: "".to_owned(),
+            RoughnessFilePath: "".to_owned(),
+        }
+    }
+}
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct MaterialService {
@@ -4959,6 +7734,54 @@ pub struct MaterialService {
 }
 impl_inherits!(MaterialService, Instance);
 impl_strong_instance_from!(MaterialService);
+impl Default for MaterialService {
+    fn default() -> Self {
+        Self {
+            superclass: Instance::default(),
+            AsphaltName: "Asphalt".to_owned(),
+            BasaltName: "Basalt".to_owned(),
+            BrickName: "Brick".to_owned(),
+            CardboardName: "Cardboard".to_owned(),
+            CarpetName: "Carpet".to_owned(),
+            CeramicTilesName: "CeramicTiles".to_owned(),
+            ClayRoofTilesName: "ClayRoofTiles".to_owned(),
+            CobblestoneName: "Cobblestone".to_owned(),
+            ConcreteName: "Concrete".to_owned(),
+            CorrodedMetalName: "CorrodedMetal".to_owned(),
+            CrackedLavaName: "CrackedLava".to_owned(),
+            DiamondPlateName: "DiamondPlate".to_owned(),
+            FabricName: "Fabric".to_owned(),
+            FoilName: "Foil".to_owned(),
+            GlacierName: "Glacier".to_owned(),
+            GraniteName: "Granite".to_owned(),
+            GrassName: "Grass".to_owned(),
+            GroundName: "Ground".to_owned(),
+            IceName: "Ice".to_owned(),
+            LeafyGrassName: "LeafyGrass".to_owned(),
+            LeatherName: "Leather".to_owned(),
+            LimestoneName: "Limestone".to_owned(),
+            MarbleName: "Marble".to_owned(),
+            MetalName: "Metal".to_owned(),
+            MudName: "Mud".to_owned(),
+            PavementName: "Pavement".to_owned(),
+            PebbleName: "Pebble".to_owned(),
+            PlasterName: "Plaster".to_owned(),
+            PlasticName: "Plastic".to_owned(),
+            RockName: "Rock".to_owned(),
+            RoofShinglesName: "RoofShingles".to_owned(),
+            RubberName: "Rubber".to_owned(),
+            SaltName: "Salt".to_owned(),
+            SandName: "Sand".to_owned(),
+            SandstoneName: "Sandstone".to_owned(),
+            SlateName: "Slate".to_owned(),
+            SmoothPlasticName: "SmoothPlastic".to_owned(),
+            SnowName: "Snow".to_owned(),
+            Use2022MaterialsXml: false,
+            WoodName: "Wood".to_owned(),
+            WoodPlanksName: "WoodPlanks".to_owned(),
+        }
+    }
+}
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct MaterialVariant {
@@ -4978,8 +7801,28 @@ pub struct MaterialVariant {
 }
 impl_inherits!(MaterialVariant, Instance);
 impl_strong_instance_from!(MaterialVariant);
+impl Default for MaterialVariant {
+    fn default() -> Self {
+        Self {
+            superclass: Instance::default(),
+            BaseMaterial: unimplemented!("convert u32 Enum to precise strong variant"),
+            ColorMapContent: Content::none(),
+            CustomPhysicalProperties: PhysicalProperties::Default,
+            EmissiveMaskContent: Content::none(),
+            EmissiveStrength: 1f32,
+            EmissiveTint: Color3::new(1f32, 1f32, 1f32),
+            MaterialPattern: unimplemented!("convert u32 Enum to precise strong variant"),
+            MetalnessMapContent: Content::none(),
+            NormalMapContent: Content::none(),
+            RoughnessMapContent: Content::none(),
+            StudsPerTile: 10f32,
+            TexturePack: "".into(),
+        }
+    }
+}
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
+#[derive(Default)]
 pub struct MemStorageConnection {
     superclass: Instance,
 }
@@ -4987,6 +7830,7 @@ impl_inherits!(MemStorageConnection, Instance);
 impl_strong_instance_from!(MemStorageConnection);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
+#[derive(Default)]
 pub struct MemStorageService {
     superclass: Instance,
 }
@@ -4994,6 +7838,7 @@ impl_inherits!(MemStorageService, Instance);
 impl_strong_instance_from!(MemStorageService);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
+#[derive(Default)]
 pub struct MemoryStoreHashMap {
     superclass: Instance,
 }
@@ -5001,6 +7846,7 @@ impl_inherits!(MemoryStoreHashMap, Instance);
 impl_strong_instance_from!(MemoryStoreHashMap);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
+#[derive(Default)]
 pub struct MemoryStoreHashMapPages {
     superclass: Pages,
 }
@@ -5008,6 +7854,7 @@ impl_inherits!(MemoryStoreHashMapPages, Pages);
 impl_strong_instance_from!(MemoryStoreHashMapPages);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
+#[derive(Default)]
 pub struct MemoryStoreQueue {
     superclass: Instance,
 }
@@ -5015,6 +7862,7 @@ impl_inherits!(MemoryStoreQueue, Instance);
 impl_strong_instance_from!(MemoryStoreQueue);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
+#[derive(Default)]
 pub struct MemoryStoreService {
     superclass: Instance,
 }
@@ -5022,6 +7870,7 @@ impl_inherits!(MemoryStoreService, Instance);
 impl_strong_instance_from!(MemoryStoreService);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
+#[derive(Default)]
 pub struct MemoryStoreSortedMap {
     superclass: Instance,
 }
@@ -5029,6 +7878,7 @@ impl_inherits!(MemoryStoreSortedMap, Instance);
 impl_strong_instance_from!(MemoryStoreSortedMap);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
+#[derive(Default)]
 pub struct MeshContentProvider {
     superclass: CacheableContentProvider,
 }
@@ -5052,6 +7902,24 @@ pub struct MeshImportData {
 }
 impl_inherits!(MeshImportData, BaseImportData);
 impl_strong_instance_from!(MeshImportData);
+impl Default for MeshImportData {
+    fn default() -> Self {
+        Self {
+            superclass: BaseImportData::default(),
+            Anchored: false,
+            CageMeshIntersectedPreview: false,
+            CageNonManifoldPreview: false,
+            CageOverlappingVerticesPreview: false,
+            CageUvMisMatchedPreview: false,
+            DoubleSided: false,
+            IgnoreVertexColors: false,
+            IrrelevantCageModifiedPreview: false,
+            MeshHoleDetectedPreview: false,
+            OuterCageFarExtendedFromMeshPreview: false,
+            UseImportedPivot: false,
+        }
+    }
+}
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct MeshPart {
@@ -5069,6 +7937,23 @@ pub struct MeshPart {
 }
 impl_inherits!(MeshPart, TriangleMeshPart);
 impl_strong_instance_from!(MeshPart);
+impl Default for MeshPart {
+    fn default() -> Self {
+        Self {
+            superclass: TriangleMeshPart::default(),
+            DoubleSided: false,
+            HasJointOffset: false,
+            HasSkinnedMesh: false,
+            InitialSize: Vector3::new(0f32, 0f32, 0f32),
+            JointOffset: Vector3::new(0f32, 0f32, 0f32),
+            MeshContent: Content::none(),
+            PhysicsData: b"".as_slice().into(),
+            RenderFidelity: unimplemented!("convert u32 Enum to precise strong variant"),
+            TextureContent: Content::none(),
+            VertexCount: 0i32,
+        }
+    }
+}
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct Message {
@@ -5077,8 +7962,17 @@ pub struct Message {
 }
 impl_inherits!(Message, Instance);
 impl_strong_instance_from!(Message);
+impl Default for Message {
+    fn default() -> Self {
+        Self {
+            superclass: Instance::default(),
+            Text: "".to_owned(),
+        }
+    }
+}
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
+#[derive(Default)]
 pub struct MessageBusConnection {
     superclass: Instance,
 }
@@ -5086,6 +7980,7 @@ impl_inherits!(MessageBusConnection, Instance);
 impl_strong_instance_from!(MessageBusConnection);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
+#[derive(Default)]
 pub struct MessageBusService {
     superclass: Instance,
 }
@@ -5093,6 +7988,7 @@ impl_inherits!(MessageBusService, Instance);
 impl_strong_instance_from!(MessageBusService);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
+#[derive(Default)]
 pub struct MessagingService {
     superclass: Instance,
 }
@@ -5112,6 +8008,20 @@ pub struct MetaBreakpoint {
 }
 impl_inherits!(MetaBreakpoint, Instance);
 impl_strong_instance_from!(MetaBreakpoint);
+impl Default for MetaBreakpoint {
+    fn default() -> Self {
+        Self {
+            superclass: Instance::default(),
+            Condition: "".to_owned(),
+            ContinueExecution: false,
+            Enabled: true,
+            Line: 0i32,
+            LogMessage: "".to_owned(),
+            RemoveOnHit: false,
+            Script: "".to_owned(),
+        }
+    }
+}
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct MetaBreakpointContext {
@@ -5120,8 +8030,17 @@ pub struct MetaBreakpointContext {
 }
 impl_inherits!(MetaBreakpointContext, Instance);
 impl_strong_instance_from!(MetaBreakpointContext);
+impl Default for MetaBreakpointContext {
+    fn default() -> Self {
+        Self {
+            superclass: Instance::default(),
+            ContextDataInternal: "0 1 2 ".to_owned(),
+        }
+    }
+}
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
+#[derive(Default)]
 pub struct MetaBreakpointManager {
     superclass: Instance,
 }
@@ -5135,6 +8054,14 @@ pub struct MicroProfilerService {
 }
 impl_inherits!(MicroProfilerService, Instance);
 impl_strong_instance_from!(MicroProfilerService);
+impl Default for MicroProfilerService {
+    fn default() -> Self {
+        Self {
+            superclass: Instance::default(),
+            ContextLabel: "".to_owned(),
+        }
+    }
+}
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct Model {
@@ -5151,8 +8078,25 @@ pub struct Model {
 }
 impl_inherits!(Model, PVInstance);
 impl_strong_instance_from!(Model);
+impl Default for Model {
+    fn default() -> Self {
+        Self {
+            superclass: PVInstance::default(),
+            LevelOfDetail: unimplemented!("convert u32 Enum to precise strong variant"),
+            ModelMeshCFrame: CFrame::identity(),
+            ModelMeshData: SharedString::new(b"".to_vec()),
+            ModelMeshSize: Vector3::new(0f32, 0f32, 0f32),
+            ModelStreamingMode: unimplemented!("convert u32 Enum to precise strong variant"),
+            NeedsPivotMigration: false,
+            PrimaryPart: Ref::none(),
+            SlimHash: SharedString::new(b"".to_vec()),
+            WorldPivotData: None,
+        }
+    }
+}
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
+#[derive(Default)]
 pub struct ModerationService {
     superclass: Instance,
 }
@@ -5167,6 +8111,15 @@ pub struct ModuleScript {
 }
 impl_inherits!(ModuleScript, LuaSourceContainer);
 impl_strong_instance_from!(ModuleScript);
+impl Default for ModuleScript {
+    fn default() -> Self {
+        Self {
+            superclass: LuaSourceContainer::default(),
+            LinkedSource: "".into(),
+            Source: "".to_owned(),
+        }
+    }
+}
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct Motor {
@@ -5176,8 +8129,18 @@ pub struct Motor {
 }
 impl_inherits!(Motor, JointInstance);
 impl_strong_instance_from!(Motor);
+impl Default for Motor {
+    fn default() -> Self {
+        Self {
+            superclass: JointInstance::default(),
+            DesiredAngle: 0f32,
+            MaxVelocity: 0f32,
+        }
+    }
+}
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
+#[derive(Default)]
 pub struct Motor6D {
     superclass: Motor,
 }
@@ -5185,6 +8148,7 @@ impl_inherits!(Motor6D, Motor);
 impl_strong_instance_from!(Motor6D);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
+#[derive(Default)]
 pub struct MotorFeature {
     superclass: Feature,
 }
@@ -5199,8 +8163,18 @@ pub struct Mouse {
 }
 impl_inherits!(Mouse, Instance);
 impl_strong_instance_from!(Mouse);
+impl Default for Mouse {
+    fn default() -> Self {
+        Self {
+            superclass: Instance::default(),
+            IconContent: Content::none(),
+            TargetFilter: Ref::none(),
+        }
+    }
+}
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
+#[derive(Default)]
 pub struct MouseService {
     superclass: Instance,
 }
@@ -5208,6 +8182,7 @@ impl_inherits!(MouseService, Instance);
 impl_strong_instance_from!(MouseService);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
+#[derive(Default)]
 pub struct MultipleDocumentInterfaceInstance {
     superclass: Instance,
 }
@@ -5221,8 +8196,17 @@ pub struct NegateOperation {
 }
 impl_inherits!(NegateOperation, PartOperation);
 impl_strong_instance_from!(NegateOperation);
+impl Default for NegateOperation {
+    fn default() -> Self {
+        Self {
+            superclass: PartOperation::default(),
+            PreviousOperation: unimplemented!("convert u32 Enum to precise strong variant"),
+        }
+    }
+}
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
+#[derive(Default)]
 pub struct NetworkClient {
     superclass: NetworkPeer,
 }
@@ -5230,6 +8214,7 @@ impl_inherits!(NetworkClient, NetworkPeer);
 impl_strong_instance_from!(NetworkClient);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
+#[derive(Default)]
 pub struct NetworkMarker {
     superclass: Instance,
 }
@@ -5237,6 +8222,7 @@ impl_inherits!(NetworkMarker, Instance);
 impl_strong_instance_from!(NetworkMarker);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
+#[derive(Default)]
 pub struct NetworkPeer {
     superclass: Instance,
 }
@@ -5244,6 +8230,7 @@ impl_inherits!(NetworkPeer, Instance);
 impl_strong_instance_from!(NetworkPeer);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
+#[derive(Default)]
 pub struct NetworkReplicator {
     superclass: Instance,
 }
@@ -5251,6 +8238,7 @@ impl_inherits!(NetworkReplicator, Instance);
 impl_strong_instance_from!(NetworkReplicator);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
+#[derive(Default)]
 pub struct NetworkServer {
     superclass: NetworkPeer,
 }
@@ -5272,6 +8260,22 @@ pub struct NetworkSettings {
 }
 impl_inherits!(NetworkSettings, Instance);
 impl_strong_instance_from!(NetworkSettings);
+impl Default for NetworkSettings {
+    fn default() -> Self {
+        Self {
+            superclass: Instance::default(),
+            HttpProxyEnabled: false,
+            HttpProxyUrl: "".to_owned(),
+            IncomingReplicationLag: 0f64,
+            PrintJoinSizeBreakdown: false,
+            PrintPhysicsErrors: false,
+            PrintStreamInstanceQuota: false,
+            RandomizeJoinInstanceOrder: false,
+            RenderStreamedRegions: false,
+            ShowActiveAnimationAsset: false,
+        }
+    }
+}
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct NoCollisionConstraint {
@@ -5282,6 +8286,16 @@ pub struct NoCollisionConstraint {
 }
 impl_inherits!(NoCollisionConstraint, Instance);
 impl_strong_instance_from!(NoCollisionConstraint);
+impl Default for NoCollisionConstraint {
+    fn default() -> Self {
+        Self {
+            superclass: Instance::default(),
+            Enabled: true,
+            Part0: Ref::none(),
+            Part1: Ref::none(),
+        }
+    }
+}
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct Noise {
@@ -5291,8 +8305,18 @@ pub struct Noise {
 }
 impl_inherits!(Noise, Instance);
 impl_strong_instance_from!(Noise);
+impl Default for Noise {
+    fn default() -> Self {
+        Self {
+            superclass: Instance::default(),
+            NoiseType: unimplemented!("convert u32 Enum to precise strong variant"),
+            Seed: 0i32,
+        }
+    }
+}
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
+#[derive(Default)]
 pub struct NonReplicatedCSGDictionaryService {
     superclass: FlyweightService,
 }
@@ -5300,6 +8324,7 @@ impl_inherits!(NonReplicatedCSGDictionaryService, FlyweightService);
 impl_strong_instance_from!(NonReplicatedCSGDictionaryService);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
+#[derive(Default)]
 pub struct NotificationService {
     superclass: Instance,
 }
@@ -5313,6 +8338,14 @@ pub struct NumberPose {
 }
 impl_inherits!(NumberPose, PoseBase);
 impl_strong_instance_from!(NumberPose);
+impl Default for NumberPose {
+    fn default() -> Self {
+        Self {
+            superclass: PoseBase::default(),
+            Value: 0f64,
+        }
+    }
+}
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct NumberValue {
@@ -5321,8 +8354,17 @@ pub struct NumberValue {
 }
 impl_inherits!(NumberValue, ValueBase);
 impl_strong_instance_from!(NumberValue);
+impl Default for NumberValue {
+    fn default() -> Self {
+        Self {
+            superclass: ValueBase::default(),
+            Value: 0f64,
+        }
+    }
+}
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
+#[derive(Default)]
 pub struct Object {}
 impl_strong_instance_from!(Object);
 #[derive(Debug, Clone)]
@@ -5333,8 +8375,17 @@ pub struct ObjectValue {
 }
 impl_inherits!(ObjectValue, ValueBase);
 impl_strong_instance_from!(ObjectValue);
+impl Default for ObjectValue {
+    fn default() -> Self {
+        Self {
+            superclass: ValueBase::default(),
+            Value: Ref::none(),
+        }
+    }
+}
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
+#[derive(Default)]
 pub struct OmniRecommendationsService {
     superclass: Instance,
 }
@@ -5342,6 +8393,7 @@ impl_inherits!(OmniRecommendationsService, Instance);
 impl_strong_instance_from!(OmniRecommendationsService);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
+#[derive(Default)]
 pub struct OpenCloudApiV1 {
     superclass: Instance,
 }
@@ -5349,6 +8401,7 @@ impl_inherits!(OpenCloudApiV1, Instance);
 impl_strong_instance_from!(OpenCloudApiV1);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
+#[derive(Default)]
 pub struct OpenCloudService {
     superclass: Instance,
 }
@@ -5356,6 +8409,7 @@ impl_inherits!(OpenCloudService, Instance);
 impl_strong_instance_from!(OpenCloudService);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
+#[derive(Default)]
 pub struct OperationGraph {
     superclass: Instance,
 }
@@ -5363,6 +8417,7 @@ impl_inherits!(OperationGraph, Instance);
 impl_strong_instance_from!(OperationGraph);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
+#[derive(Default)]
 pub struct OrderedDataStore {
     superclass: GlobalDataStore,
 }
@@ -5370,6 +8425,7 @@ impl_inherits!(OrderedDataStore, GlobalDataStore);
 impl_strong_instance_from!(OrderedDataStore);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
+#[derive(Default)]
 pub struct OutfitPages {
     superclass: Pages,
 }
@@ -5383,8 +8439,17 @@ pub struct PVAdornment {
 }
 impl_inherits!(PVAdornment, GuiBase3d);
 impl_strong_instance_from!(PVAdornment);
+impl Default for PVAdornment {
+    fn default() -> Self {
+        Self {
+            superclass: GuiBase3d::default(),
+            Adornee: Ref::none(),
+        }
+    }
+}
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
+#[derive(Default)]
 pub struct PVInstance {
     superclass: Instance,
 }
@@ -5402,8 +8467,21 @@ pub struct PackageLink {
 }
 impl_inherits!(PackageLink, Instance);
 impl_strong_instance_from!(PackageLink);
+impl Default for PackageLink {
+    fn default() -> Self {
+        Self {
+            superclass: Instance::default(),
+            AutoUpdate: false,
+            DefaultName: "".to_owned(),
+            ModifiedState: 0i32,
+            SerializedDefaultAttributes: b"".as_slice().into(),
+            VersionIdSerialize: 0i64,
+        }
+    }
+}
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
+#[derive(Default)]
 pub struct PackageService {
     superclass: Instance,
 }
@@ -5411,6 +8489,7 @@ impl_inherits!(PackageService, Instance);
 impl_strong_instance_from!(PackageService);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
+#[derive(Default)]
 pub struct PackageUIService {
     superclass: Instance,
 }
@@ -5418,6 +8497,7 @@ impl_inherits!(PackageUIService, Instance);
 impl_strong_instance_from!(PackageUIService);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
+#[derive(Default)]
 pub struct Pages {
     superclass: Instance,
 }
@@ -5431,8 +8511,17 @@ pub struct Pants {
 }
 impl_inherits!(Pants, Clothing);
 impl_strong_instance_from!(Pants);
+impl Default for Pants {
+    fn default() -> Self {
+        Self {
+            superclass: Clothing::default(),
+            PantsTemplate: "".into(),
+        }
+    }
+}
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
+#[derive(Default)]
 pub struct ParabolaAdornment {
     superclass: PVAdornment,
 }
@@ -5440,6 +8529,7 @@ impl_inherits!(ParabolaAdornment, PVAdornment);
 impl_strong_instance_from!(ParabolaAdornment);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
+#[derive(Default)]
 pub struct Part {
     superclass: FormFactorPart,
 }
@@ -5453,6 +8543,14 @@ pub struct PartAdornment {
 }
 impl_inherits!(PartAdornment, GuiBase3d);
 impl_strong_instance_from!(PartAdornment);
+impl Default for PartAdornment {
+    fn default() -> Self {
+        Self {
+            superclass: GuiBase3d::default(),
+            Adornee: Ref::none(),
+        }
+    }
+}
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct PartOperation {
@@ -5474,6 +8572,27 @@ pub struct PartOperation {
 }
 impl_inherits!(PartOperation, TriangleMeshPart);
 impl_strong_instance_from!(PartOperation);
+impl Default for PartOperation {
+    fn default() -> Self {
+        Self {
+            superclass: TriangleMeshPart::default(),
+            AssetId: "".into(),
+            ChildData: b"".as_slice().into(),
+            ChildData2: SharedString::new(b"".to_vec()),
+            ComponentIndex: -1i32,
+            FormFactor: unimplemented!("convert u32 Enum to precise strong variant"),
+            InitialSize: Vector3::new(1f32, 1f32, 1f32),
+            MeshData: b"".as_slice().into(),
+            MeshData2: SharedString::new(b"".to_vec()),
+            OffCentered: false,
+            PhysicsData: b"".as_slice().into(),
+            RenderFidelity: unimplemented!("convert u32 Enum to precise strong variant"),
+            SmoothingAngle: 0f32,
+            SolidMeshHolder: NetAssetRef::new(b"".to_vec()),
+            UsePartColor: false,
+        }
+    }
+}
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct PartOperationAsset {
@@ -5483,6 +8602,15 @@ pub struct PartOperationAsset {
 }
 impl_inherits!(PartOperationAsset, Instance);
 impl_strong_instance_from!(PartOperationAsset);
+impl Default for PartOperationAsset {
+    fn default() -> Self {
+        Self {
+            superclass: Instance::default(),
+            ChildData: b"".as_slice().into(),
+            MeshData: b"".as_slice().into(),
+        }
+    }
+}
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct ParticleEmitter {
@@ -5525,8 +8653,52 @@ pub struct ParticleEmitter {
 }
 impl_inherits!(ParticleEmitter, Instance);
 impl_strong_instance_from!(ParticleEmitter);
+impl Default for ParticleEmitter {
+    fn default() -> Self {
+        Self {
+            superclass: Instance::default(),
+            Acceleration: Vector3::new(0f32, 0f32, 0f32),
+            Brightness: 1f32,
+            Color: unimplemented!("ColorSequence"),
+            Drag: 0f32,
+            EmissionDirection: unimplemented!("convert u32 Enum to precise strong variant"),
+            Enabled: true,
+            FlipbookFramerate: NumberRange::new(1f32, 1f32),
+            FlipbookIncompatible: "Particle texture must be 1024 by 1024 to use flipbooks."
+                .to_owned(),
+            FlipbookLayout: unimplemented!("convert u32 Enum to precise strong variant"),
+            FlipbookMode: unimplemented!("convert u32 Enum to precise strong variant"),
+            FlipbookSizeX: 1i32,
+            FlipbookSizeY: 1i32,
+            FlipbookStartRandom: false,
+            Lifetime: NumberRange::new(5f32, 10f32),
+            LightEmission: 0f32,
+            LightInfluence: 0f32,
+            LockedToPart: false,
+            Orientation: unimplemented!("convert u32 Enum to precise strong variant"),
+            Rate: 20f32,
+            RotSpeed: NumberRange::new(0f32, 0f32),
+            Rotation: NumberRange::new(0f32, 0f32),
+            Shape: unimplemented!("convert u32 Enum to precise strong variant"),
+            ShapeInOut: unimplemented!("convert u32 Enum to precise strong variant"),
+            ShapePartial: 1f32,
+            ShapeStyle: unimplemented!("convert u32 Enum to precise strong variant"),
+            Size: unimplemented!("NumberSequence"),
+            Speed: NumberRange::new(5f32, 5f32),
+            SpreadAngle: Vector2::new(0f32, 0f32),
+            Squash: unimplemented!("NumberSequence"),
+            Texture: "rbxasset://textures/particles/sparkles_main.dds".into(),
+            TimeScale: 1f32,
+            Transparency: unimplemented!("NumberSequence"),
+            VelocityInheritance: 0f32,
+            WindAffectsDrag: false,
+            ZOffset: 0f32,
+        }
+    }
+}
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
+#[derive(Default)]
 pub struct PartyEmulatorService {
     superclass: Instance,
 }
@@ -5534,6 +8706,7 @@ impl_inherits!(PartyEmulatorService, Instance);
 impl_strong_instance_from!(PartyEmulatorService);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
+#[derive(Default)]
 pub struct PatchBundlerFileWatch {
     superclass: Instance,
 }
@@ -5549,8 +8722,19 @@ pub struct PatchMapping {
 }
 impl_inherits!(PatchMapping, Instance);
 impl_strong_instance_from!(PatchMapping);
+impl Default for PatchMapping {
+    fn default() -> Self {
+        Self {
+            superclass: Instance::default(),
+            FlattenTree: false,
+            PatchId: "".to_owned(),
+            TargetPath: "".to_owned(),
+        }
+    }
+}
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
+#[derive(Default)]
 pub struct Path {
     superclass: Instance,
 }
@@ -5570,6 +8754,20 @@ pub struct Path2D {
 }
 impl_inherits!(Path2D, GuiBase);
 impl_strong_instance_from!(Path2D);
+impl Default for Path2D {
+    fn default() -> Self {
+        Self {
+            superclass: GuiBase::default(),
+            Closed: false,
+            Color3: Color3::new(0f32, 0f32, 0f32),
+            PropertiesSerialize: b"\0\0\0\0".as_slice().into(),
+            Thickness: 1f32,
+            Transparency: 0f32,
+            Visible: true,
+            ZIndex: 1i32,
+        }
+    }
+}
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct PathfindingLink {
@@ -5581,6 +8779,17 @@ pub struct PathfindingLink {
 }
 impl_inherits!(PathfindingLink, Instance);
 impl_strong_instance_from!(PathfindingLink);
+impl Default for PathfindingLink {
+    fn default() -> Self {
+        Self {
+            superclass: Instance::default(),
+            Attachment0: Ref::none(),
+            Attachment1: Ref::none(),
+            IsBidirectional: true,
+            Label: "".to_owned(),
+        }
+    }
+}
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct PathfindingModifier {
@@ -5590,8 +8799,18 @@ pub struct PathfindingModifier {
 }
 impl_inherits!(PathfindingModifier, Instance);
 impl_strong_instance_from!(PathfindingModifier);
+impl Default for PathfindingModifier {
+    fn default() -> Self {
+        Self {
+            superclass: Instance::default(),
+            Label: "".to_owned(),
+            PassThrough: false,
+        }
+    }
+}
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
+#[derive(Default)]
 pub struct PathfindingService {
     superclass: Instance,
 }
@@ -5599,6 +8818,7 @@ impl_inherits!(PathfindingService, Instance);
 impl_strong_instance_from!(PathfindingService);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
+#[derive(Default)]
 pub struct PausedState {
     superclass: Instance,
 }
@@ -5606,6 +8826,7 @@ impl_inherits!(PausedState, Instance);
 impl_strong_instance_from!(PausedState);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
+#[derive(Default)]
 pub struct PausedStateBreakpoint {
     superclass: PausedState,
 }
@@ -5613,6 +8834,7 @@ impl_inherits!(PausedStateBreakpoint, PausedState);
 impl_strong_instance_from!(PausedStateBreakpoint);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
+#[derive(Default)]
 pub struct PausedStateException {
     superclass: PausedState,
 }
@@ -5620,6 +8842,7 @@ impl_inherits!(PausedStateException, PausedState);
 impl_strong_instance_from!(PausedStateException);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
+#[derive(Default)]
 pub struct PerformanceControlService {
     superclass: Instance,
 }
@@ -5627,6 +8850,7 @@ impl_inherits!(PerformanceControlService, Instance);
 impl_strong_instance_from!(PerformanceControlService);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
+#[derive(Default)]
 pub struct PermissionsService {
     superclass: Instance,
 }
@@ -5634,6 +8858,7 @@ impl_inherits!(PermissionsService, Instance);
 impl_strong_instance_from!(PermissionsService);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
+#[derive(Default)]
 pub struct PhysicsService {
     superclass: Instance,
 }
@@ -5694,6 +8919,67 @@ pub struct PhysicsSettings {
 }
 impl_inherits!(PhysicsSettings, Instance);
 impl_strong_instance_from!(PhysicsSettings);
+impl Default for PhysicsSettings {
+    fn default() -> Self {
+        Self {
+            superclass: Instance::default(),
+            AllowSleep: false,
+            AreAnchorsShown: false,
+            AreAssembliesShown: false,
+            AreAssemblyCentersOfMassShown: false,
+            AreAwakePartsHighlighted: false,
+            AreBodyTypesShown: false,
+            AreCollisionCostsShown: false,
+            AreConstraintForcesShownForSelectedOrHoveredInstances: false,
+            AreConstraintTorquesShownForSelectedOrHoveredInstances: false,
+            AreContactForcesShownForSelectedOrHoveredAssemblies: false,
+            AreContactIslandsShown: false,
+            AreContactPointsShown: false,
+            AreGravityForcesShownForSelectedOrHoveredAssemblies: false,
+            AreJointCoordinatesShown: false,
+            AreMagnitudesShownForDrawnForcesAndTorques: false,
+            AreMechanismsShown: false,
+            AreModelCoordsShown: false,
+            AreNonAnchorsShown: false,
+            AreOwnersShown: false,
+            ArePartCoordsShown: false,
+            AreRegionsShown: false,
+            AreSolverIslandsShown: false,
+            AreTerrainReplicationRegionsShown: false,
+            AreTimestepsShown: false,
+            AreUnalignedPartsShown: false,
+            AreWorldCoordsShown: false,
+            DisableCsGv2: false,
+            DisableCsGv3ForPlugins: false,
+            DrawConstraintsNetForce: false,
+            DrawContactsNetForce: false,
+            DrawTotalNetForce: false,
+            EnableForceVisualizationSmoothing: false,
+            FluidForceDrawScale: 0f32,
+            ForceCsGv2: false,
+            ForceDrawScale: 0f32,
+            ForceVisualizationSmoothingSteps: 0i32,
+            IsInterpolationThrottleShown: false,
+            IsReceiveAgeShown: false,
+            IsTreeShown: false,
+            PhysicsEnvironmentalThrottle: unimplemented!(
+                "convert u32 Enum to precise strong variant"
+            ),
+            ShowDecompositionGeometry: false,
+            ShowFluidForcesForSelectedOrHoveredMechanisms: false,
+            ShowInstanceNamesForDrawnForcesAndTorques: false,
+            SolverConvergenceMetricType: unimplemented!(
+                "convert u32 Enum to precise strong variant"
+            ),
+            SolverConvergenceVisualizationMode: unimplemented!(
+                "convert u32 Enum to precise strong variant"
+            ),
+            ThrottleAdjustTime: 0f64,
+            TorqueDrawScale: 0f32,
+            UseCsGv2: false,
+        }
+    }
+}
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct PitchShiftSoundEffect {
@@ -5702,8 +8988,17 @@ pub struct PitchShiftSoundEffect {
 }
 impl_inherits!(PitchShiftSoundEffect, SoundEffect);
 impl_strong_instance_from!(PitchShiftSoundEffect);
+impl Default for PitchShiftSoundEffect {
+    fn default() -> Self {
+        Self {
+            superclass: SoundEffect::default(),
+            Octave: 1.25f32,
+        }
+    }
+}
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
+#[derive(Default)]
 pub struct PlaceAssetIdsService {
     superclass: Instance,
 }
@@ -5711,6 +9006,7 @@ impl_inherits!(PlaceAssetIdsService, Instance);
 impl_strong_instance_from!(PlaceAssetIdsService);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
+#[derive(Default)]
 pub struct PlaceStatsService {
     superclass: Instance,
 }
@@ -5718,6 +9014,7 @@ impl_inherits!(PlaceStatsService, Instance);
 impl_strong_instance_from!(PlaceStatsService);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
+#[derive(Default)]
 pub struct PlacesService {
     superclass: Instance,
 }
@@ -5725,6 +9022,7 @@ impl_inherits!(PlacesService, Instance);
 impl_strong_instance_from!(PlacesService);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
+#[derive(Default)]
 pub struct Plane {
     superclass: PlaneConstraint,
 }
@@ -5732,6 +9030,7 @@ impl_inherits!(Plane, PlaneConstraint);
 impl_strong_instance_from!(Plane);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
+#[derive(Default)]
 pub struct PlaneConstraint {
     superclass: Constraint,
 }
@@ -5739,6 +9038,7 @@ impl_inherits!(PlaneConstraint, Constraint);
 impl_strong_instance_from!(PlaneConstraint);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
+#[derive(Default)]
 pub struct Platform {
     superclass: Part,
 }
@@ -5746,6 +9046,7 @@ impl_inherits!(Platform, Part);
 impl_strong_instance_from!(Platform);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
+#[derive(Default)]
 pub struct PlatformCloudStorageService {
     superclass: Instance,
 }
@@ -5753,6 +9054,7 @@ impl_inherits!(PlatformCloudStorageService, Instance);
 impl_strong_instance_from!(PlatformCloudStorageService);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
+#[derive(Default)]
 pub struct PlatformFriendsService {
     superclass: Instance,
 }
@@ -5788,8 +9090,39 @@ pub struct Player {
 }
 impl_inherits!(Player, Instance);
 impl_strong_instance_from!(Player);
+impl Default for Player {
+    fn default() -> Self {
+        Self {
+            superclass: Instance::default(),
+            AutoJumpEnabled: false,
+            CameraMaxZoomDistance: 0f32,
+            CameraMinZoomDistance: 0f32,
+            CameraMode: unimplemented!("convert u32 Enum to precise strong variant"),
+            Character: Ref::none(),
+            CharacterAppearance: "".to_owned(),
+            CharacterAppearanceId: 0i64,
+            DevCameraOcclusionMode: unimplemented!("convert u32 Enum to precise strong variant"),
+            DevComputerCameraMode: unimplemented!("convert u32 Enum to precise strong variant"),
+            DevComputerMovementMode: unimplemented!("convert u32 Enum to precise strong variant"),
+            DevEnableMouseLock: false,
+            DevTouchCameraMode: unimplemented!("convert u32 Enum to precise strong variant"),
+            DevTouchMovementMode: unimplemented!("convert u32 Enum to precise strong variant"),
+            HealthDisplayDistance: 0f32,
+            NameDisplayDistance: 0f32,
+            Neutral: false,
+            RawJoinData: b"".as_slice().into(),
+            ReplicationFocus: Ref::none(),
+            RespawnLocation: Ref::none(),
+            StepIdOffset: 0i32,
+            Team: Ref::none(),
+            TeamColor: BrickColor::from_number(194u16).unwrap(),
+            TeleportedIn: false,
+        }
+    }
+}
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
+#[derive(Default)]
 pub struct PlayerData {
     superclass: Instance,
 }
@@ -5797,6 +9130,7 @@ impl_inherits!(PlayerData, Instance);
 impl_strong_instance_from!(PlayerData);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
+#[derive(Default)]
 pub struct PlayerDataRecord {
     superclass: Instance,
 }
@@ -5804,6 +9138,7 @@ impl_inherits!(PlayerDataRecord, Instance);
 impl_strong_instance_from!(PlayerDataRecord);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
+#[derive(Default)]
 pub struct PlayerDataRecordConfig {
     superclass: Instance,
 }
@@ -5817,6 +9152,14 @@ pub struct PlayerDataService {
 }
 impl_inherits!(PlayerDataService, Instance);
 impl_strong_instance_from!(PlayerDataService);
+impl Default for PlayerDataService {
+    fn default() -> Self {
+        Self {
+            superclass: Instance::default(),
+            LoadFailureBehavior: unimplemented!("convert u32 Enum to precise strong variant"),
+        }
+    }
+}
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct PlayerEmulatorService {
@@ -5831,6 +9174,20 @@ pub struct PlayerEmulatorService {
 }
 impl_inherits!(PlayerEmulatorService, Instance);
 impl_strong_instance_from!(PlayerEmulatorService);
+impl Default for PlayerEmulatorService {
+    fn default() -> Self {
+        Self {
+            superclass: Instance::default(),
+            CustomPoliciesEnabled: false,
+            EmulatedCountryCode: "".to_owned(),
+            EmulatedGameLocale: "".to_owned(),
+            PlayerEmulationEnabled: false,
+            PseudolocalizationEnabled: false,
+            SerializedEmulatedPolicyInfo: b"".as_slice().into(),
+            TextElongationFactor: 0i32,
+        }
+    }
+}
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct PlayerGui {
@@ -5840,8 +9197,18 @@ pub struct PlayerGui {
 }
 impl_inherits!(PlayerGui, BasePlayerGui);
 impl_strong_instance_from!(PlayerGui);
+impl Default for PlayerGui {
+    fn default() -> Self {
+        Self {
+            superclass: BasePlayerGui::default(),
+            ScreenOrientation: unimplemented!("convert u32 Enum to precise strong variant"),
+            SelectionImageObject: Ref::none(),
+        }
+    }
+}
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
+#[derive(Default)]
 pub struct PlayerHydrationService {
     superclass: Instance,
 }
@@ -5849,6 +9216,7 @@ impl_inherits!(PlayerHydrationService, Instance);
 impl_strong_instance_from!(PlayerHydrationService);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
+#[derive(Default)]
 pub struct PlayerMouse {
     superclass: Mouse,
 }
@@ -5856,6 +9224,7 @@ impl_inherits!(PlayerMouse, Mouse);
 impl_strong_instance_from!(PlayerMouse);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
+#[derive(Default)]
 pub struct PlayerScripts {
     superclass: Instance,
 }
@@ -5863,6 +9232,7 @@ impl_inherits!(PlayerScripts, Instance);
 impl_strong_instance_from!(PlayerScripts);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
+#[derive(Default)]
 pub struct PlayerViewService {
     superclass: Instance,
 }
@@ -5879,6 +9249,17 @@ pub struct Players {
 }
 impl_inherits!(Players, Instance);
 impl_strong_instance_from!(Players);
+impl Default for Players {
+    fn default() -> Self {
+        Self {
+            superclass: Instance::default(),
+            BanningEnabled: true,
+            CharacterAutoLoads: true,
+            RespawnTime: 5f32,
+            UseStrafingAnimations: false,
+        }
+    }
+}
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct Plugin {
@@ -5888,8 +9269,18 @@ pub struct Plugin {
 }
 impl_inherits!(Plugin, Instance);
 impl_strong_instance_from!(Plugin);
+impl Default for Plugin {
+    fn default() -> Self {
+        Self {
+            superclass: Instance::default(),
+            DisableUiDragDetectorDrags: false,
+            IsDebuggable: false,
+        }
+    }
+}
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
+#[derive(Default)]
 pub struct PluginAction {
     superclass: Instance,
 }
@@ -5903,8 +9294,14 @@ pub struct PluginCapabilities {
 }
 impl_inherits!(PluginCapabilities, Instance);
 impl_strong_instance_from!(PluginCapabilities);
+impl Default for PluginCapabilities {
+    fn default() -> Self {
+        Self { superclass : Instance :: default () , Manifest : "{\"Metadata\":{\"TargetDataModels\": [\"Edit\", \"Server\", \"Client\"]},\"Permissions\":{}}" . to_owned () }
+    }
+}
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
+#[derive(Default)]
 pub struct PluginDebugService {
     superclass: Instance,
 }
@@ -5912,6 +9309,7 @@ impl_inherits!(PluginDebugService, Instance);
 impl_strong_instance_from!(PluginDebugService);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
+#[derive(Default)]
 pub struct PluginDragEvent {
     superclass: Instance,
 }
@@ -5925,8 +9323,17 @@ pub struct PluginGui {
 }
 impl_inherits!(PluginGui, LayerCollector);
 impl_strong_instance_from!(PluginGui);
+impl Default for PluginGui {
+    fn default() -> Self {
+        Self {
+            superclass: LayerCollector::default(),
+            Title: "".to_owned(),
+        }
+    }
+}
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
+#[derive(Default)]
 pub struct PluginGuiService {
     superclass: Instance,
 }
@@ -5934,6 +9341,7 @@ impl_inherits!(PluginGuiService, Instance);
 impl_strong_instance_from!(PluginGuiService);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
+#[derive(Default)]
 pub struct PluginManagementService {
     superclass: Instance,
 }
@@ -5941,6 +9349,7 @@ impl_inherits!(PluginManagementService, Instance);
 impl_strong_instance_from!(PluginManagementService);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
+#[derive(Default)]
 pub struct PluginManager {
     superclass: Instance,
 }
@@ -5948,6 +9357,7 @@ impl_inherits!(PluginManager, Instance);
 impl_strong_instance_from!(PluginManager);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
+#[derive(Default)]
 pub struct PluginManagerInterface {
     superclass: Instance,
 }
@@ -5955,6 +9365,7 @@ impl_inherits!(PluginManagerInterface, Instance);
 impl_strong_instance_from!(PluginManagerInterface);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
+#[derive(Default)]
 pub struct PluginMenu {
     superclass: Instance,
 }
@@ -5962,6 +9373,7 @@ impl_inherits!(PluginMenu, Instance);
 impl_strong_instance_from!(PluginMenu);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
+#[derive(Default)]
 pub struct PluginMouse {
     superclass: Mouse,
 }
@@ -5969,6 +9381,7 @@ impl_inherits!(PluginMouse, Mouse);
 impl_strong_instance_from!(PluginMouse);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
+#[derive(Default)]
 pub struct PluginPolicyService {
     superclass: Instance,
 }
@@ -5976,6 +9389,7 @@ impl_inherits!(PluginPolicyService, Instance);
 impl_strong_instance_from!(PluginPolicyService);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
+#[derive(Default)]
 pub struct PluginToolbar {
     superclass: Instance,
 }
@@ -5983,6 +9397,7 @@ impl_inherits!(PluginToolbar, Instance);
 impl_strong_instance_from!(PluginToolbar);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
+#[derive(Default)]
 pub struct PluginToolbarButton {
     superclass: Instance,
 }
@@ -5996,8 +9411,17 @@ pub struct PointLight {
 }
 impl_inherits!(PointLight, Light);
 impl_strong_instance_from!(PointLight);
+impl Default for PointLight {
+    fn default() -> Self {
+        Self {
+            superclass: Light::default(),
+            Range: 8f32,
+        }
+    }
+}
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
+#[derive(Default)]
 pub struct PointsService {
     superclass: Instance,
 }
@@ -6012,6 +9436,15 @@ pub struct PolicyService {
 }
 impl_inherits!(PolicyService, Instance);
 impl_strong_instance_from!(PolicyService);
+impl Default for PolicyService {
+    fn default() -> Self {
+        Self {
+            superclass: Instance::default(),
+            IsLuobuServer: unimplemented!("convert u32 Enum to precise strong variant"),
+            LuobuWhitelisted: unimplemented!("convert u32 Enum to precise strong variant"),
+        }
+    }
+}
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct Pose {
@@ -6020,6 +9453,14 @@ pub struct Pose {
 }
 impl_inherits!(Pose, PoseBase);
 impl_strong_instance_from!(Pose);
+impl Default for Pose {
+    fn default() -> Self {
+        Self {
+            superclass: PoseBase::default(),
+            CFrame: CFrame::identity(),
+        }
+    }
+}
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct PoseBase {
@@ -6030,6 +9471,16 @@ pub struct PoseBase {
 }
 impl_inherits!(PoseBase, Instance);
 impl_strong_instance_from!(PoseBase);
+impl Default for PoseBase {
+    fn default() -> Self {
+        Self {
+            superclass: Instance::default(),
+            EasingDirection: unimplemented!("convert u32 Enum to precise strong variant"),
+            EasingStyle: unimplemented!("convert u32 Enum to precise strong variant"),
+            Weight: 0f32,
+        }
+    }
+}
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct PostEffect {
@@ -6038,8 +9489,17 @@ pub struct PostEffect {
 }
 impl_inherits!(PostEffect, Instance);
 impl_strong_instance_from!(PostEffect);
+impl Default for PostEffect {
+    fn default() -> Self {
+        Self {
+            superclass: Instance::default(),
+            Enabled: false,
+        }
+    }
+}
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
+#[derive(Default)]
 pub struct PrismaticConstraint {
     superclass: SlidingBallConstraint,
 }
@@ -6047,6 +9507,7 @@ impl_inherits!(PrismaticConstraint, SlidingBallConstraint);
 impl_strong_instance_from!(PrismaticConstraint);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
+#[derive(Default)]
 pub struct ProcessInstancePhysicsService {
     superclass: Instance,
 }
@@ -6074,6 +9535,28 @@ pub struct ProximityPrompt {
 }
 impl_inherits!(ProximityPrompt, Instance);
 impl_strong_instance_from!(ProximityPrompt);
+impl Default for ProximityPrompt {
+    fn default() -> Self {
+        Self {
+            superclass: Instance::default(),
+            ActionText: "Interact".to_owned(),
+            AutoLocalize: true,
+            ClickablePrompt: true,
+            Enabled: true,
+            Exclusivity: unimplemented!("convert u32 Enum to precise strong variant"),
+            GamepadKeyCode: unimplemented!("convert u32 Enum to precise strong variant"),
+            HoldDuration: 0f32,
+            KeyboardKeyCode: unimplemented!("convert u32 Enum to precise strong variant"),
+            MaxActivationDistance: 10f32,
+            MaxIndicatorDistance: 0f32,
+            ObjectText: "".to_owned(),
+            RequiresLineOfSight: true,
+            RootLocalizationTable: Ref::none(),
+            Style: unimplemented!("convert u32 Enum to precise strong variant"),
+            UiOffset: Vector2::new(0f32, 0f32),
+        }
+    }
+}
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct ProximityPromptService {
@@ -6084,8 +9567,19 @@ pub struct ProximityPromptService {
 }
 impl_inherits!(ProximityPromptService, Instance);
 impl_strong_instance_from!(ProximityPromptService);
+impl Default for ProximityPromptService {
+    fn default() -> Self {
+        Self {
+            superclass: Instance::default(),
+            Enabled: true,
+            MaxIndicatorsVisible: 16i32,
+            MaxPromptsVisible: 16i32,
+        }
+    }
+}
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
+#[derive(Default)]
 pub struct PublishService {
     superclass: Instance,
 }
@@ -6102,8 +9596,20 @@ pub struct PyramidHandleAdornment {
 }
 impl_inherits!(PyramidHandleAdornment, HandleAdornment);
 impl_strong_instance_from!(PyramidHandleAdornment);
+impl Default for PyramidHandleAdornment {
+    fn default() -> Self {
+        Self {
+            superclass: HandleAdornment::default(),
+            Height: 2f32,
+            Shading: unimplemented!("convert u32 Enum to precise strong variant"),
+            Sides: 4i32,
+            Size: 1f32,
+        }
+    }
+}
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
+#[derive(Default)]
 pub struct QWidgetPluginGui {
     superclass: PluginGui,
 }
@@ -6111,6 +9617,7 @@ impl_inherits!(QWidgetPluginGui, PluginGui);
 impl_strong_instance_from!(QWidgetPluginGui);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
+#[derive(Default)]
 pub struct RTAnimationTracker {
     superclass: Instance,
 }
@@ -6124,8 +9631,20 @@ pub struct RayValue {
 }
 impl_inherits!(RayValue, ValueBase);
 impl_strong_instance_from!(RayValue);
+impl Default for RayValue {
+    fn default() -> Self {
+        Self {
+            superclass: ValueBase::default(),
+            Value: Ray::new(
+                Vector3::new(0f32, 0f32, 0f32),
+                Vector3::new(0f32, 0f32, 0f32),
+            ),
+        }
+    }
+}
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
+#[derive(Default)]
 pub struct RbxAnalyticsService {
     superclass: Instance,
 }
@@ -6133,6 +9652,7 @@ impl_inherits!(RbxAnalyticsService, Instance);
 impl_strong_instance_from!(RbxAnalyticsService);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
+#[derive(Default)]
 pub struct RecommendationPages {
     superclass: Pages,
 }
@@ -6140,6 +9660,7 @@ impl_inherits!(RecommendationPages, Pages);
 impl_strong_instance_from!(RecommendationPages);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
+#[derive(Default)]
 pub struct RecommendationService {
     superclass: Instance,
 }
@@ -6147,6 +9668,7 @@ impl_inherits!(RecommendationService, Instance);
 impl_strong_instance_from!(RecommendationService);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
+#[derive(Default)]
 pub struct ReflectionMetadata {
     superclass: Instance,
 }
@@ -6154,6 +9676,7 @@ impl_inherits!(ReflectionMetadata, Instance);
 impl_strong_instance_from!(ReflectionMetadata);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
+#[derive(Default)]
 pub struct ReflectionMetadataCallbacks {
     superclass: Instance,
 }
@@ -6171,8 +9694,21 @@ pub struct ReflectionMetadataClass {
 }
 impl_inherits!(ReflectionMetadataClass, ReflectionMetadataItem);
 impl_strong_instance_from!(ReflectionMetadataClass);
+impl Default for ReflectionMetadataClass {
+    fn default() -> Self {
+        Self {
+            superclass: ReflectionMetadataItem::default(),
+            ExplorerImageIndex: 0i32,
+            ExplorerOrder: 2147483647i32,
+            Insertable: true,
+            PreferredParent: "".to_owned(),
+            ServiceVisibility: unimplemented!("convert u32 Enum to precise strong variant"),
+        }
+    }
+}
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
+#[derive(Default)]
 pub struct ReflectionMetadataClasses {
     superclass: Instance,
 }
@@ -6180,6 +9716,7 @@ impl_inherits!(ReflectionMetadataClasses, Instance);
 impl_strong_instance_from!(ReflectionMetadataClasses);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
+#[derive(Default)]
 pub struct ReflectionMetadataEnum {
     superclass: ReflectionMetadataItem,
 }
@@ -6187,6 +9724,7 @@ impl_inherits!(ReflectionMetadataEnum, ReflectionMetadataItem);
 impl_strong_instance_from!(ReflectionMetadataEnum);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
+#[derive(Default)]
 pub struct ReflectionMetadataEnumItem {
     superclass: ReflectionMetadataItem,
 }
@@ -6194,6 +9732,7 @@ impl_inherits!(ReflectionMetadataEnumItem, ReflectionMetadataItem);
 impl_strong_instance_from!(ReflectionMetadataEnumItem);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
+#[derive(Default)]
 pub struct ReflectionMetadataEnums {
     superclass: Instance,
 }
@@ -6201,6 +9740,7 @@ impl_inherits!(ReflectionMetadataEnums, Instance);
 impl_strong_instance_from!(ReflectionMetadataEnums);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
+#[derive(Default)]
 pub struct ReflectionMetadataEvents {
     superclass: Instance,
 }
@@ -6208,6 +9748,7 @@ impl_inherits!(ReflectionMetadataEvents, Instance);
 impl_strong_instance_from!(ReflectionMetadataEvents);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
+#[derive(Default)]
 pub struct ReflectionMetadataFunctions {
     superclass: Instance,
 }
@@ -6236,8 +9777,32 @@ pub struct ReflectionMetadataItem {
 }
 impl_inherits!(ReflectionMetadataItem, Instance);
 impl_strong_instance_from!(ReflectionMetadataItem);
+impl Default for ReflectionMetadataItem {
+    fn default() -> Self {
+        Self {
+            superclass: Instance::default(),
+            Browsable: false,
+            ClassCategory: "".to_owned(),
+            ClientOnly: false,
+            Constraint: "".to_owned(),
+            Deprecated: false,
+            EditingDisabled: false,
+            EditorType: "".to_owned(),
+            FFlag: "".to_owned(),
+            IsBackend: false,
+            PropertyOrder: 0i32,
+            ScriptContext: "".to_owned(),
+            ServerOnly: false,
+            SliderScaling: "".to_owned(),
+            UiMaximum: 0f64,
+            UiMinimum: 0f64,
+            UiNumTicks: 0f64,
+        }
+    }
+}
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
+#[derive(Default)]
 pub struct ReflectionMetadataMember {
     superclass: ReflectionMetadataItem,
 }
@@ -6245,6 +9810,7 @@ impl_inherits!(ReflectionMetadataMember, ReflectionMetadataItem);
 impl_strong_instance_from!(ReflectionMetadataMember);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
+#[derive(Default)]
 pub struct ReflectionMetadataProperties {
     superclass: Instance,
 }
@@ -6252,6 +9818,7 @@ impl_inherits!(ReflectionMetadataProperties, Instance);
 impl_strong_instance_from!(ReflectionMetadataProperties);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
+#[derive(Default)]
 pub struct ReflectionMetadataYieldFunctions {
     superclass: Instance,
 }
@@ -6259,6 +9826,7 @@ impl_inherits!(ReflectionMetadataYieldFunctions, Instance);
 impl_strong_instance_from!(ReflectionMetadataYieldFunctions);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
+#[derive(Default)]
 pub struct ReflectionService {
     superclass: Instance,
 }
@@ -6266,6 +9834,7 @@ impl_inherits!(ReflectionService, Instance);
 impl_strong_instance_from!(ReflectionService);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
+#[derive(Default)]
 pub struct RelativeGui {
     superclass: GuiObject,
 }
@@ -6273,6 +9842,7 @@ impl_inherits!(RelativeGui, GuiObject);
 impl_strong_instance_from!(RelativeGui);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
+#[derive(Default)]
 pub struct RemoteCommandService {
     superclass: Instance,
 }
@@ -6280,6 +9850,7 @@ impl_inherits!(RemoteCommandService, Instance);
 impl_strong_instance_from!(RemoteCommandService);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
+#[derive(Default)]
 pub struct RemoteCursorService {
     superclass: Instance,
 }
@@ -6287,6 +9858,7 @@ impl_inherits!(RemoteCursorService, Instance);
 impl_strong_instance_from!(RemoteCursorService);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
+#[derive(Default)]
 pub struct RemoteDebuggerServer {
     superclass: Instance,
 }
@@ -6294,6 +9866,7 @@ impl_inherits!(RemoteDebuggerServer, Instance);
 impl_strong_instance_from!(RemoteDebuggerServer);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
+#[derive(Default)]
 pub struct RemoteEvent {
     superclass: BaseRemoteEvent,
 }
@@ -6301,6 +9874,7 @@ impl_inherits!(RemoteEvent, BaseRemoteEvent);
 impl_strong_instance_from!(RemoteEvent);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
+#[derive(Default)]
 pub struct RemoteFunction {
     superclass: Instance,
 }
@@ -6327,6 +9901,27 @@ pub struct RenderSettings {
 }
 impl_inherits!(RenderSettings, Instance);
 impl_strong_instance_from!(RenderSettings);
+impl Default for RenderSettings {
+    fn default() -> Self {
+        Self {
+            superclass: Instance::default(),
+            AutoFrmLevel: 0i32,
+            EagerBulkExecution: false,
+            EditQualityLevel: unimplemented!("convert u32 Enum to precise strong variant"),
+            EnableVrMode: false,
+            ExportMergeByMaterial: false,
+            FrameRateManager: unimplemented!("convert u32 Enum to precise strong variant"),
+            GraphicsMode: unimplemented!("convert u32 Enum to precise strong variant"),
+            MeshCacheSize: 0i32,
+            MeshPartDetailLevel: unimplemented!("convert u32 Enum to precise strong variant"),
+            QualityLevel: unimplemented!("convert u32 Enum to precise strong variant"),
+            ReloadAssets: false,
+            RenderCsgTrianglesDebug: false,
+            ShowBoundingBoxes: false,
+            ViewMode: unimplemented!("convert u32 Enum to precise strong variant"),
+        }
+    }
+}
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct RenderingTest {
@@ -6347,8 +9942,29 @@ pub struct RenderingTest {
 }
 impl_inherits!(RenderingTest, Instance);
 impl_strong_instance_from!(RenderingTest);
+impl Default for RenderingTest {
+    fn default() -> Self {
+        Self {
+            superclass: Instance::default(),
+            CFrame: CFrame::identity(),
+            ComparisonDiffThreshold: 10i32,
+            ComparisonMethod: unimplemented!("convert u32 Enum to precise strong variant"),
+            ComparisonPsnrThreshold: 50f32,
+            Description: "".to_owned(),
+            FieldOfView: 70f32,
+            PerfTest: false,
+            QualityAuto: false,
+            QualityLevel: 21i32,
+            RenderingTestFrameCount: 20i32,
+            ShouldSkip: false,
+            Ticket: "".to_owned(),
+            Timeout: 30i32,
+        }
+    }
+}
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
+#[derive(Default)]
 pub struct ReplicatedFirst {
     superclass: Instance,
 }
@@ -6356,6 +9972,7 @@ impl_inherits!(ReplicatedFirst, Instance);
 impl_strong_instance_from!(ReplicatedFirst);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
+#[derive(Default)]
 pub struct ReplicatedStorage {
     superclass: Instance,
 }
@@ -6373,8 +9990,21 @@ pub struct ReverbSoundEffect {
 }
 impl_inherits!(ReverbSoundEffect, SoundEffect);
 impl_strong_instance_from!(ReverbSoundEffect);
+impl Default for ReverbSoundEffect {
+    fn default() -> Self {
+        Self {
+            superclass: SoundEffect::default(),
+            DecayTime: 1.5f32,
+            Density: 1f32,
+            Diffusion: 1f32,
+            DryLevel: -6f32,
+            WetLevel: 0f32,
+        }
+    }
+}
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
+#[derive(Default)]
 pub struct RibbonNotificationService {
     superclass: Instance,
 }
@@ -6382,6 +10012,7 @@ impl_inherits!(RibbonNotificationService, Instance);
 impl_strong_instance_from!(RibbonNotificationService);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
+#[derive(Default)]
 pub struct RigidConstraint {
     superclass: Constraint,
 }
@@ -6389,6 +10020,7 @@ impl_inherits!(RigidConstraint, Constraint);
 impl_strong_instance_from!(RigidConstraint);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
+#[derive(Default)]
 pub struct RobloxPluginGuiService {
     superclass: Instance,
 }
@@ -6396,6 +10028,7 @@ impl_inherits!(RobloxPluginGuiService, Instance);
 impl_strong_instance_from!(RobloxPluginGuiService);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
+#[derive(Default)]
 pub struct RobloxReplicatedStorage {
     superclass: Instance,
 }
@@ -6409,8 +10042,17 @@ pub struct RobloxSerializableInstance {
 }
 impl_inherits!(RobloxSerializableInstance, Instance);
 impl_strong_instance_from!(RobloxSerializableInstance);
+impl Default for RobloxSerializableInstance {
+    fn default() -> Self {
+        Self {
+            superclass: Instance::default(),
+            Data: b"".as_slice().into(),
+        }
+    }
+}
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
+#[derive(Default)]
 pub struct RobloxServerStorage {
     superclass: Instance,
 }
@@ -6434,6 +10076,24 @@ pub struct RocketPropulsion {
 }
 impl_inherits!(RocketPropulsion, BodyMover);
 impl_strong_instance_from!(RocketPropulsion);
+impl Default for RocketPropulsion {
+    fn default() -> Self {
+        Self {
+            superclass: BodyMover::default(),
+            CartoonFactor: 0.7f32,
+            MaxSpeed: 30f32,
+            MaxThrust: 4000f32,
+            MaxTorque: Vector3::new(400000f32, 400000f32, 0f32),
+            Target: Ref::none(),
+            TargetOffset: Vector3::new(0f32, 0f32, 0f32),
+            TargetRadius: 4f32,
+            ThrustD: 0.001f32,
+            ThrustP: 5f32,
+            TurnD: 500f32,
+            TurnP: 3000f32,
+        }
+    }
+}
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct RodConstraint {
@@ -6446,8 +10106,21 @@ pub struct RodConstraint {
 }
 impl_inherits!(RodConstraint, Constraint);
 impl_strong_instance_from!(RodConstraint);
+impl Default for RodConstraint {
+    fn default() -> Self {
+        Self {
+            superclass: Constraint::default(),
+            Length: 5f32,
+            LimitAngle0: 90f32,
+            LimitAngle1: 90f32,
+            LimitsEnabled: false,
+            Thickness: 0.1f32,
+        }
+    }
+}
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
+#[derive(Default)]
 pub struct RomarkRbxAnalyticsService {
     superclass: Instance,
 }
@@ -6455,6 +10128,7 @@ impl_inherits!(RomarkRbxAnalyticsService, Instance);
 impl_strong_instance_from!(RomarkRbxAnalyticsService);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
+#[derive(Default)]
 pub struct RomarkService {
     superclass: Instance,
 }
@@ -6489,6 +10163,35 @@ pub struct RootImportData {
 }
 impl_inherits!(RootImportData, BaseImportData);
 impl_strong_instance_from!(RootImportData);
+impl Default for RootImportData {
+    fn default() -> Self {
+        Self {
+            superclass: BaseImportData::default(),
+            AddModelToInventory: false,
+            Anchored: false,
+            AnimationIdForRestPose: 0f32,
+            ExistingPackageId: "".to_owned(),
+            ImportAsModelAsset: false,
+            ImportAsPackage: false,
+            InsertInWorkspace: false,
+            InsertWithScenePosition: false,
+            InvertNegativeFaces: false,
+            KeepZeroInfluenceBones: false,
+            MergeMeshes: false,
+            PreferredUploadId: 0i64,
+            RestPose: unimplemented!("convert u32 Enum to precise strong variant"),
+            RigScale: unimplemented!("convert u32 Enum to precise strong variant"),
+            RigType: unimplemented!("convert u32 Enum to precise strong variant"),
+            RigVisualization: false,
+            ScaleUnit: unimplemented!("convert u32 Enum to precise strong variant"),
+            UseSceneOriginAsPivot: false,
+            UsesCages: false,
+            ValidateUgcBody: false,
+            WorldForward: unimplemented!("convert u32 Enum to precise strong variant"),
+            WorldUp: unimplemented!("convert u32 Enum to precise strong variant"),
+        }
+    }
+}
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct RopeConstraint {
@@ -6504,8 +10207,24 @@ pub struct RopeConstraint {
 }
 impl_inherits!(RopeConstraint, Constraint);
 impl_strong_instance_from!(RopeConstraint);
+impl Default for RopeConstraint {
+    fn default() -> Self {
+        Self {
+            superclass: Constraint::default(),
+            Length: 5f32,
+            Restitution: 0f32,
+            Thickness: 0.1f32,
+            WinchEnabled: false,
+            WinchForce: 10000f32,
+            WinchResponsiveness: 45f32,
+            WinchSpeed: 2f32,
+            WinchTarget: 5f32,
+        }
+    }
+}
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
+#[derive(Default)]
 pub struct Rotate {
     superclass: JointInstance,
 }
@@ -6513,6 +10232,7 @@ impl_inherits!(Rotate, JointInstance);
 impl_strong_instance_from!(Rotate);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
+#[derive(Default)]
 pub struct RotateP {
     superclass: DynamicRotate,
 }
@@ -6520,6 +10240,7 @@ impl_inherits!(RotateP, DynamicRotate);
 impl_strong_instance_from!(RotateP);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
+#[derive(Default)]
 pub struct RotateV {
     superclass: DynamicRotate,
 }
@@ -6533,8 +10254,17 @@ pub struct RotationCurve {
 }
 impl_inherits!(RotationCurve, Instance);
 impl_strong_instance_from!(RotationCurve);
+impl Default for RotationCurve {
+    fn default() -> Self {
+        Self {
+            superclass: Instance::default(),
+            ValuesAndTimes: b"\x01\0\0\0\0\0\0\0\x01\0\0\0\0\0\0\0".as_slice().into(),
+        }
+    }
+}
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
+#[derive(Default)]
 pub struct RtMessagingService {
     superclass: Instance,
 }
@@ -6542,6 +10272,7 @@ impl_inherits!(RtMessagingService, Instance);
 impl_strong_instance_from!(RtMessagingService);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
+#[derive(Default)]
 pub struct RunService {
     superclass: Instance,
 }
@@ -6549,6 +10280,7 @@ impl_inherits!(RunService, Instance);
 impl_strong_instance_from!(RunService);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
+#[derive(Default)]
 pub struct RunningAverageItemDouble {
     superclass: StatsItem,
 }
@@ -6556,6 +10288,7 @@ impl_inherits!(RunningAverageItemDouble, StatsItem);
 impl_strong_instance_from!(RunningAverageItemDouble);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
+#[derive(Default)]
 pub struct RunningAverageItemInt {
     superclass: StatsItem,
 }
@@ -6563,6 +10296,7 @@ impl_inherits!(RunningAverageItemInt, StatsItem);
 impl_strong_instance_from!(RunningAverageItemInt);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
+#[derive(Default)]
 pub struct RunningAverageTimeIntervalItem {
     superclass: StatsItem,
 }
@@ -6570,6 +10304,7 @@ impl_inherits!(RunningAverageTimeIntervalItem, StatsItem);
 impl_strong_instance_from!(RunningAverageTimeIntervalItem);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
+#[derive(Default)]
 pub struct RuntimeContentService {
     superclass: Instance,
 }
@@ -6577,6 +10312,7 @@ impl_inherits!(RuntimeContentService, Instance);
 impl_strong_instance_from!(RuntimeContentService);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
+#[derive(Default)]
 pub struct RuntimeScriptService {
     superclass: Instance,
 }
@@ -6590,6 +10326,14 @@ pub struct SafetyService {
 }
 impl_inherits!(SafetyService, Instance);
 impl_strong_instance_from!(SafetyService);
+impl Default for SafetyService {
+    fn default() -> Self {
+        Self {
+            superclass: Instance::default(),
+            IsCaptureModeForReport: false,
+        }
+    }
+}
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct ScreenGui {
@@ -6601,8 +10345,20 @@ pub struct ScreenGui {
 }
 impl_inherits!(ScreenGui, LayerCollector);
 impl_strong_instance_from!(ScreenGui);
+impl Default for ScreenGui {
+    fn default() -> Self {
+        Self {
+            superclass: LayerCollector::default(),
+            ClipToDeviceSafeArea: true,
+            DisplayOrder: 0i32,
+            SafeAreaCompatibility: unimplemented!("convert u32 Enum to precise strong variant"),
+            ScreenInsets: unimplemented!("convert u32 Enum to precise strong variant"),
+        }
+    }
+}
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
+#[derive(Default)]
 pub struct ScreenshotCapture {
     superclass: Capture,
 }
@@ -6625,6 +10381,23 @@ pub struct ScreenshotHud {
 }
 impl_inherits!(ScreenshotHud, Instance);
 impl_strong_instance_from!(ScreenshotHud);
+impl Default for ScreenshotHud {
+    fn default() -> Self {
+        Self {
+            superclass: Instance::default(),
+            CameraButtonIcon: "".into(),
+            CameraButtonPosition: UDim2::new(UDim::new(0f32, 0i32), UDim::new(0f32, 0i32)),
+            CloseButtonPosition: UDim2::new(UDim::new(0f32, 0i32), UDim::new(0f32, 0i32)),
+            CloseWhenScreenshotTaken: false,
+            ExperienceNameOverlayEnabled: false,
+            HideCoreGuiForCaptures: false,
+            HidePlayerGuiForCaptures: false,
+            OverlayFont: unimplemented!("convert u32 Enum to precise strong variant"),
+            UsernameOverlayEnabled: false,
+            Visible: false,
+        }
+    }
+}
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct Script {
@@ -6633,8 +10406,17 @@ pub struct Script {
 }
 impl_inherits!(Script, BaseScript);
 impl_strong_instance_from!(Script);
+impl Default for Script {
+    fn default() -> Self {
+        Self {
+            superclass: BaseScript::default(),
+            Source: "".to_owned(),
+        }
+    }
+}
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
+#[derive(Default)]
 pub struct ScriptBuilder {
     superclass: Instance,
 }
@@ -6642,6 +10424,7 @@ impl_inherits!(ScriptBuilder, Instance);
 impl_strong_instance_from!(ScriptBuilder);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
+#[derive(Default)]
 pub struct ScriptChangeService {
     superclass: Instance,
 }
@@ -6649,6 +10432,7 @@ impl_inherits!(ScriptChangeService, Instance);
 impl_strong_instance_from!(ScriptChangeService);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
+#[derive(Default)]
 pub struct ScriptCloneWatcher {
     superclass: Instance,
 }
@@ -6656,6 +10440,7 @@ impl_inherits!(ScriptCloneWatcher, Instance);
 impl_strong_instance_from!(ScriptCloneWatcher);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
+#[derive(Default)]
 pub struct ScriptCloneWatcherHelper {
     superclass: Instance,
 }
@@ -6663,6 +10448,7 @@ impl_inherits!(ScriptCloneWatcherHelper, Instance);
 impl_strong_instance_from!(ScriptCloneWatcherHelper);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
+#[derive(Default)]
 pub struct ScriptCommitService {
     superclass: Instance,
 }
@@ -6670,6 +10456,7 @@ impl_inherits!(ScriptCommitService, Instance);
 impl_strong_instance_from!(ScriptCommitService);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
+#[derive(Default)]
 pub struct ScriptContext {
     superclass: Instance,
 }
@@ -6684,8 +10471,18 @@ pub struct ScriptDebugger {
 }
 impl_inherits!(ScriptDebugger, Instance);
 impl_strong_instance_from!(ScriptDebugger);
+impl Default for ScriptDebugger {
+    fn default() -> Self {
+        Self {
+            superclass: Instance::default(),
+            CoreScriptIdentifier: "".to_owned(),
+            ScriptGuid: "".to_owned(),
+        }
+    }
+}
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
+#[derive(Default)]
 pub struct ScriptDocument {
     superclass: Instance,
 }
@@ -6693,6 +10490,7 @@ impl_inherits!(ScriptDocument, Instance);
 impl_strong_instance_from!(ScriptDocument);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
+#[derive(Default)]
 pub struct ScriptEditorService {
     superclass: Instance,
 }
@@ -6700,6 +10498,7 @@ impl_inherits!(ScriptEditorService, Instance);
 impl_strong_instance_from!(ScriptEditorService);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
+#[derive(Default)]
 pub struct ScriptProfilerService {
     superclass: Instance,
 }
@@ -6707,6 +10506,7 @@ impl_inherits!(ScriptProfilerService, Instance);
 impl_strong_instance_from!(ScriptProfilerService);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
+#[derive(Default)]
 pub struct ScriptRegistrationService {
     superclass: Instance,
 }
@@ -6714,6 +10514,7 @@ impl_inherits!(ScriptRegistrationService, Instance);
 impl_strong_instance_from!(ScriptRegistrationService);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
+#[derive(Default)]
 pub struct ScriptRuntime {
     superclass: Instance,
 }
@@ -6721,6 +10522,7 @@ impl_inherits!(ScriptRuntime, Instance);
 impl_strong_instance_from!(ScriptRuntime);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
+#[derive(Default)]
 pub struct ScriptService {
     superclass: Instance,
 }
@@ -6748,6 +10550,30 @@ pub struct ScrollingFrame {
 }
 impl_inherits!(ScrollingFrame, GuiObject);
 impl_strong_instance_from!(ScrollingFrame);
+impl Default for ScrollingFrame {
+    fn default() -> Self {
+        Self {
+            superclass: GuiObject::default(),
+            AutomaticCanvasSize: unimplemented!("convert u32 Enum to precise strong variant"),
+            BottomImageContent: Content::from_uri(
+                "rbxasset://textures/ui/Scroll/scroll-bottom.png",
+            ),
+            CanvasPosition: Vector2::new(0f32, 0f32),
+            CanvasSize: UDim2::new(UDim::new(0f32, 0i32), UDim::new(2f32, 0i32)),
+            ElasticBehavior: unimplemented!("convert u32 Enum to precise strong variant"),
+            HorizontalScrollBarInset: unimplemented!("convert u32 Enum to precise strong variant"),
+            MidImageContent: Content::from_uri("rbxasset://textures/ui/Scroll/scroll-middle.png"),
+            ScrollBarImageColor3: Color3::new(1f32, 1f32, 1f32),
+            ScrollBarImageTransparency: 0f32,
+            ScrollBarThickness: 12i32,
+            ScrollingDirection: unimplemented!("convert u32 Enum to precise strong variant"),
+            ScrollingEnabled: true,
+            TopImageContent: Content::from_uri("rbxasset://textures/ui/Scroll/scroll-top.png"),
+            VerticalScrollBarInset: unimplemented!("convert u32 Enum to precise strong variant"),
+            VerticalScrollBarPosition: unimplemented!("convert u32 Enum to precise strong variant"),
+        }
+    }
+}
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct Seat {
@@ -6756,8 +10582,17 @@ pub struct Seat {
 }
 impl_inherits!(Seat, Part);
 impl_strong_instance_from!(Seat);
+impl Default for Seat {
+    fn default() -> Self {
+        Self {
+            superclass: Part::default(),
+            Disabled: false,
+        }
+    }
+}
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
+#[derive(Default)]
 pub struct Selection {
     superclass: Instance,
 }
@@ -6774,8 +10609,20 @@ pub struct SelectionBox {
 }
 impl_inherits!(SelectionBox, InstanceAdornment);
 impl_strong_instance_from!(SelectionBox);
+impl Default for SelectionBox {
+    fn default() -> Self {
+        Self {
+            superclass: InstanceAdornment::default(),
+            LineThickness: 0.15f32,
+            StudioSelectionBox: false,
+            SurfaceColor3: Color3::new(0.050980397f32, 0.41176474f32, 0.6745098f32),
+            SurfaceTransparency: 1f32,
+        }
+    }
+}
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
+#[derive(Default)]
 pub struct SelectionHighlightManager {
     superclass: Instance,
 }
@@ -6789,6 +10636,14 @@ pub struct SelectionLasso {
 }
 impl_inherits!(SelectionLasso, GuiBase3d);
 impl_strong_instance_from!(SelectionLasso);
+impl Default for SelectionLasso {
+    fn default() -> Self {
+        Self {
+            superclass: GuiBase3d::default(),
+            Humanoid: Ref::none(),
+        }
+    }
+}
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct SelectionPartLasso {
@@ -6797,6 +10652,14 @@ pub struct SelectionPartLasso {
 }
 impl_inherits!(SelectionPartLasso, SelectionLasso);
 impl_strong_instance_from!(SelectionPartLasso);
+impl Default for SelectionPartLasso {
+    fn default() -> Self {
+        Self {
+            superclass: SelectionLasso::default(),
+            Part: Ref::none(),
+        }
+    }
+}
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct SelectionPointLasso {
@@ -6805,6 +10668,14 @@ pub struct SelectionPointLasso {
 }
 impl_inherits!(SelectionPointLasso, SelectionLasso);
 impl_strong_instance_from!(SelectionPointLasso);
+impl Default for SelectionPointLasso {
+    fn default() -> Self {
+        Self {
+            superclass: SelectionLasso::default(),
+            Point: Vector3::new(0f32, 0f32, 0f32),
+        }
+    }
+}
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct SelectionSphere {
@@ -6814,6 +10685,15 @@ pub struct SelectionSphere {
 }
 impl_inherits!(SelectionSphere, PVAdornment);
 impl_strong_instance_from!(SelectionSphere);
+impl Default for SelectionSphere {
+    fn default() -> Self {
+        Self {
+            superclass: PVAdornment::default(),
+            SurfaceColor3: Color3::new(0.050980397f32, 0.41176474f32, 0.6745098f32),
+            SurfaceTransparency: 1f32,
+        }
+    }
+}
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct SensorBase {
@@ -6822,8 +10702,17 @@ pub struct SensorBase {
 }
 impl_inherits!(SensorBase, Instance);
 impl_strong_instance_from!(SensorBase);
+impl Default for SensorBase {
+    fn default() -> Self {
+        Self {
+            superclass: Instance::default(),
+            UpdateType: unimplemented!("convert u32 Enum to precise strong variant"),
+        }
+    }
+}
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
+#[derive(Default)]
 pub struct SerializationService {
     superclass: Instance,
 }
@@ -6831,6 +10720,7 @@ impl_inherits!(SerializationService, Instance);
 impl_strong_instance_from!(SerializationService);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
+#[derive(Default)]
 pub struct ServerReplicator {
     superclass: NetworkReplicator,
 }
@@ -6844,8 +10734,17 @@ pub struct ServerScriptService {
 }
 impl_inherits!(ServerScriptService, Instance);
 impl_strong_instance_from!(ServerScriptService);
+impl Default for ServerScriptService {
+    fn default() -> Self {
+        Self {
+            superclass: Instance::default(),
+            LoadStringEnabled: false,
+        }
+    }
+}
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
+#[derive(Default)]
 pub struct ServerStorage {
     superclass: Instance,
 }
@@ -6853,6 +10752,7 @@ impl_inherits!(ServerStorage, Instance);
 impl_strong_instance_from!(ServerStorage);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
+#[derive(Default)]
 pub struct ServiceProvider {
     superclass: Instance,
 }
@@ -6867,8 +10767,18 @@ pub struct ServiceVisibilityService {
 }
 impl_inherits!(ServiceVisibilityService, Instance);
 impl_strong_instance_from!(ServiceVisibilityService);
+impl Default for ServiceVisibilityService {
+    fn default() -> Self {
+        Self {
+            superclass: Instance::default(),
+            HiddenServices: b"\0\0\0\0".as_slice().into(),
+            VisibleServices: b"\0\0\0\0".as_slice().into(),
+        }
+    }
+}
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
+#[derive(Default)]
 pub struct SessionCheckService {
     superclass: Instance,
 }
@@ -6876,6 +10786,7 @@ impl_inherits!(SessionCheckService, Instance);
 impl_strong_instance_from!(SessionCheckService);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
+#[derive(Default)]
 pub struct SessionService {
     superclass: Instance,
 }
@@ -6883,6 +10794,7 @@ impl_inherits!(SessionService, Instance);
 impl_strong_instance_from!(SessionService);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
+#[derive(Default)]
 pub struct SharedTableRegistry {
     superclass: Instance,
 }
@@ -6896,6 +10808,14 @@ pub struct Shirt {
 }
 impl_inherits!(Shirt, Clothing);
 impl_strong_instance_from!(Shirt);
+impl Default for Shirt {
+    fn default() -> Self {
+        Self {
+            superclass: Clothing::default(),
+            ShirtTemplate: "".into(),
+        }
+    }
+}
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct ShirtGraphic {
@@ -6905,8 +10825,18 @@ pub struct ShirtGraphic {
 }
 impl_inherits!(ShirtGraphic, CharacterAppearance);
 impl_strong_instance_from!(ShirtGraphic);
+impl Default for ShirtGraphic {
+    fn default() -> Self {
+        Self {
+            superclass: CharacterAppearance::default(),
+            Color3: Color3::new(1f32, 1f32, 1f32),
+            Graphic: "".into(),
+        }
+    }
+}
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
+#[derive(Default)]
 pub struct SkateboardController {
     superclass: Controller,
 }
@@ -6922,6 +10852,16 @@ pub struct SkateboardPlatform {
 }
 impl_inherits!(SkateboardPlatform, Part);
 impl_strong_instance_from!(SkateboardPlatform);
+impl Default for SkateboardPlatform {
+    fn default() -> Self {
+        Self {
+            superclass: Part::default(),
+            Steer: 0i32,
+            StickyWheels: true,
+            Throttle: 0i32,
+        }
+    }
+}
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct Skin {
@@ -6930,6 +10870,14 @@ pub struct Skin {
 }
 impl_inherits!(Skin, CharacterAppearance);
 impl_strong_instance_from!(Skin);
+impl Default for Skin {
+    fn default() -> Self {
+        Self {
+            superclass: CharacterAppearance::default(),
+            SkinColor: BrickColor::from_number(226u16).unwrap(),
+        }
+    }
+}
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct Sky {
@@ -6950,6 +10898,26 @@ pub struct Sky {
 }
 impl_inherits!(Sky, Instance);
 impl_strong_instance_from!(Sky);
+impl Default for Sky {
+    fn default() -> Self {
+        Self {
+            superclass: Instance::default(),
+            CelestialBodiesShown: true,
+            MoonAngularSize: 11f32,
+            MoonTextureId: "rbxasset://sky/moon.jpg".into(),
+            SkyboxBk: "rbxasset://textures/sky/sky512_bk.tex".into(),
+            SkyboxDn: "rbxasset://textures/sky/sky512_dn.tex".into(),
+            SkyboxFt: "rbxasset://textures/sky/sky512_ft.tex".into(),
+            SkyboxLf: "rbxasset://textures/sky/sky512_lf.tex".into(),
+            SkyboxOrientation: Vector3::new(0f32, 0f32, 0f32),
+            SkyboxRt: "rbxasset://textures/sky/sky512_rt.tex".into(),
+            SkyboxUp: "rbxasset://textures/sky/sky512_up.tex".into(),
+            StarCount: 3000i32,
+            SunAngularSize: 21f32,
+            SunTextureId: "rbxasset://sky/sun.jpg".into(),
+        }
+    }
+}
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct SlidingBallConstraint {
@@ -6971,8 +10939,30 @@ pub struct SlidingBallConstraint {
 }
 impl_inherits!(SlidingBallConstraint, Constraint);
 impl_strong_instance_from!(SlidingBallConstraint);
+impl Default for SlidingBallConstraint {
+    fn default() -> Self {
+        Self {
+            superclass: Constraint::default(),
+            ActuatorType: unimplemented!("convert u32 Enum to precise strong variant"),
+            LimitsEnabled: false,
+            LinearResponsiveness: 0f32,
+            LowerLimit: 0f32,
+            MotorMaxAcceleration: 0f32,
+            MotorMaxForce: 0f32,
+            Restitution: 0f32,
+            ServoMaxForce: 0f32,
+            Size: 0f32,
+            SoftlockServoUponReachingTarget: false,
+            Speed: 0f32,
+            TargetPosition: 0f32,
+            UpperLimit: 0f32,
+            Velocity: 0f32,
+        }
+    }
+}
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
+#[derive(Default)]
 pub struct SlimContentProvider {
     superclass: CacheableContentProvider,
 }
@@ -6980,6 +10970,7 @@ impl_inherits!(SlimContentProvider, CacheableContentProvider);
 impl_strong_instance_from!(SlimContentProvider);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
+#[derive(Default)]
 pub struct SlimService {
     superclass: Instance,
 }
@@ -6995,8 +10986,19 @@ pub struct Smoke {
 }
 impl_inherits!(Smoke, Instance);
 impl_strong_instance_from!(Smoke);
+impl Default for Smoke {
+    fn default() -> Self {
+        Self {
+            superclass: Instance::default(),
+            Color: Color3::new(1f32, 1f32, 1f32),
+            Enabled: true,
+            TimeScale: 1f32,
+        }
+    }
+}
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
+#[derive(Default)]
 pub struct SmoothVoxelsUpgraderService {
     superclass: Instance,
 }
@@ -7004,6 +11006,7 @@ impl_inherits!(SmoothVoxelsUpgraderService, Instance);
 impl_strong_instance_from!(SmoothVoxelsUpgraderService);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
+#[derive(Default)]
 pub struct Snap {
     superclass: JointInstance,
 }
@@ -7011,6 +11014,7 @@ impl_inherits!(Snap, JointInstance);
 impl_strong_instance_from!(Snap);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
+#[derive(Default)]
 pub struct SnippetService {
     superclass: Instance,
 }
@@ -7018,6 +11022,7 @@ impl_inherits!(SnippetService, Instance);
 impl_strong_instance_from!(SnippetService);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
+#[derive(Default)]
 pub struct SocialService {
     superclass: Instance,
 }
@@ -7025,6 +11030,7 @@ impl_inherits!(SocialService, Instance);
 impl_strong_instance_from!(SocialService);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
+#[derive(Default)]
 pub struct SolidModelContentProvider {
     superclass: CacheableContentProvider,
 }
@@ -7050,6 +11056,26 @@ pub struct Sound {
 }
 impl_inherits!(Sound, Instance);
 impl_strong_instance_from!(Sound);
+impl Default for Sound {
+    fn default() -> Self {
+        Self {
+            superclass: Instance::default(),
+            AudioContent: Content::none(),
+            IsMutedForCapture: false,
+            LoopRegion: NumberRange::new(0f32, 60000f32),
+            Looped: false,
+            PlayOnRemove: false,
+            PlaybackRegion: NumberRange::new(0f32, 60000f32),
+            PlaybackRegionsEnabled: false,
+            PlaybackSpeed: 1f32,
+            Playing: false,
+            RollOffMode: unimplemented!("convert u32 Enum to precise strong variant"),
+            SoundGroup: Ref::none(),
+            TimePosition: 0f64,
+            Volume: 0.5f32,
+        }
+    }
+}
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct SoundEffect {
@@ -7059,6 +11085,15 @@ pub struct SoundEffect {
 }
 impl_inherits!(SoundEffect, Instance);
 impl_strong_instance_from!(SoundEffect);
+impl Default for SoundEffect {
+    fn default() -> Self {
+        Self {
+            superclass: Instance::default(),
+            Enabled: false,
+            Priority: 0i32,
+        }
+    }
+}
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct SoundGroup {
@@ -7067,6 +11102,14 @@ pub struct SoundGroup {
 }
 impl_inherits!(SoundGroup, Instance);
 impl_strong_instance_from!(SoundGroup);
+impl Default for SoundGroup {
+    fn default() -> Self {
+        Self {
+            superclass: Instance::default(),
+            Volume: 0.5f32,
+        }
+    }
+}
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct SoundService {
@@ -7085,8 +11128,27 @@ pub struct SoundService {
 }
 impl_inherits!(SoundService, Instance);
 impl_strong_instance_from!(SoundService);
+impl Default for SoundService {
+    fn default() -> Self {
+        Self {
+            superclass: Instance::default(),
+            AcousticSimulationEnabled: false,
+            AmbientReverb: unimplemented!("convert u32 Enum to precise strong variant"),
+            AudioApiByDefault: unimplemented!("convert u32 Enum to precise strong variant"),
+            CharacterSoundsUseNewApi: unimplemented!("convert u32 Enum to precise strong variant"),
+            DefaultListenerLocation: unimplemented!("convert u32 Enum to precise strong variant"),
+            DistanceFactor: 3.33f32,
+            DopplerScale: 1f32,
+            IsNewExpForAudioApiByDefault: false,
+            RespectFilteringEnabled: false,
+            RolloffScale: 1f32,
+            VolumetricAudio: unimplemented!("convert u32 Enum to precise strong variant"),
+        }
+    }
+}
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
+#[derive(Default)]
 pub struct SoundShimService {
     superclass: Instance,
 }
@@ -7102,6 +11164,16 @@ pub struct Sparkles {
 }
 impl_inherits!(Sparkles, Instance);
 impl_strong_instance_from!(Sparkles);
+impl Default for Sparkles {
+    fn default() -> Self {
+        Self {
+            superclass: Instance::default(),
+            Enabled: true,
+            SparkleColor: Color3::new(0.5647059f32, 0.098039225f32, 1f32),
+            TimeScale: 1f32,
+        }
+    }
+}
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct SpawnLocation {
@@ -7114,8 +11186,21 @@ pub struct SpawnLocation {
 }
 impl_inherits!(SpawnLocation, Part);
 impl_strong_instance_from!(SpawnLocation);
+impl Default for SpawnLocation {
+    fn default() -> Self {
+        Self {
+            superclass: Part::default(),
+            AllowTeamChangeOnTouch: false,
+            Duration: 10i32,
+            Enabled: true,
+            Neutral: true,
+            TeamColor: BrickColor::from_number(194u16).unwrap(),
+        }
+    }
+}
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
+#[derive(Default)]
 pub struct SpawnerService {
     superclass: Instance,
 }
@@ -7129,6 +11214,14 @@ pub struct SpecialMesh {
 }
 impl_inherits!(SpecialMesh, FileMesh);
 impl_strong_instance_from!(SpecialMesh);
+impl Default for SpecialMesh {
+    fn default() -> Self {
+        Self {
+            superclass: FileMesh::default(),
+            MeshType: unimplemented!("convert u32 Enum to precise strong variant"),
+        }
+    }
+}
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct SphereHandleAdornment {
@@ -7138,6 +11231,15 @@ pub struct SphereHandleAdornment {
 }
 impl_inherits!(SphereHandleAdornment, HandleAdornment);
 impl_strong_instance_from!(SphereHandleAdornment);
+impl Default for SphereHandleAdornment {
+    fn default() -> Self {
+        Self {
+            superclass: HandleAdornment::default(),
+            Radius: 1f32,
+            Shading: unimplemented!("convert u32 Enum to precise strong variant"),
+        }
+    }
+}
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct SpotLight {
@@ -7148,6 +11250,16 @@ pub struct SpotLight {
 }
 impl_inherits!(SpotLight, Light);
 impl_strong_instance_from!(SpotLight);
+impl Default for SpotLight {
+    fn default() -> Self {
+        Self {
+            superclass: Light::default(),
+            Angle: 90f32,
+            Face: unimplemented!("convert u32 Enum to precise strong variant"),
+            Range: 16f32,
+        }
+    }
+}
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct SpringConstraint {
@@ -7165,8 +11277,26 @@ pub struct SpringConstraint {
 }
 impl_inherits!(SpringConstraint, Constraint);
 impl_strong_instance_from!(SpringConstraint);
+impl Default for SpringConstraint {
+    fn default() -> Self {
+        Self {
+            superclass: Constraint::default(),
+            Coils: 3f32,
+            Damping: 0f32,
+            FreeLength: 1f32,
+            LimitsEnabled: false,
+            MaxForce: f32::INFINITY,
+            MaxLength: 5f32,
+            MinLength: 0f32,
+            Radius: 0.4f32,
+            Stiffness: 0f32,
+            Thickness: 0.1f32,
+        }
+    }
+}
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
+#[derive(Default)]
 pub struct StackFrame {
     superclass: Instance,
 }
@@ -7174,6 +11304,7 @@ impl_inherits!(StackFrame, Instance);
 impl_strong_instance_from!(StackFrame);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
+#[derive(Default)]
 pub struct StandalonePluginScripts {
     superclass: Instance,
 }
@@ -7181,6 +11312,7 @@ impl_inherits!(StandalonePluginScripts, Instance);
 impl_strong_instance_from!(StandalonePluginScripts);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
+#[derive(Default)]
 pub struct StandardPages {
     superclass: Pages,
 }
@@ -7188,6 +11320,7 @@ impl_inherits!(StandardPages, Pages);
 impl_strong_instance_from!(StandardPages);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
+#[derive(Default)]
 pub struct StartPageService {
     superclass: Instance,
 }
@@ -7195,6 +11328,7 @@ impl_inherits!(StartPageService, Instance);
 impl_strong_instance_from!(StartPageService);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
+#[derive(Default)]
 pub struct StarterCharacterScripts {
     superclass: StarterPlayerScripts,
 }
@@ -7202,6 +11336,7 @@ impl_inherits!(StarterCharacterScripts, StarterPlayerScripts);
 impl_strong_instance_from!(StarterCharacterScripts);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
+#[derive(Default)]
 pub struct StarterGear {
     superclass: Instance,
 }
@@ -7221,8 +11356,23 @@ pub struct StarterGui {
 }
 impl_inherits!(StarterGui, BasePlayerGui);
 impl_strong_instance_from!(StarterGui);
+impl Default for StarterGui {
+    fn default() -> Self {
+        Self {
+            superclass: BasePlayerGui::default(),
+            ResetPlayerGuiOnSpawn: true,
+            RtlTextSupport: unimplemented!("convert u32 Enum to precise strong variant"),
+            ScreenOrientation: unimplemented!("convert u32 Enum to precise strong variant"),
+            ShowDevelopmentGui: true,
+            StudioDefaultStyleSheet: Ref::none(),
+            StudioInsertWidgetLayerCollectorAutoLinkStyleSheet: Ref::none(),
+            VirtualCursorMode: unimplemented!("convert u32 Enum to precise strong variant"),
+        }
+    }
+}
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
+#[derive(Default)]
 pub struct StarterPack {
     superclass: Instance,
 }
@@ -7279,8 +11429,68 @@ pub struct StarterPlayer {
 }
 impl_inherits!(StarterPlayer, Instance);
 impl_strong_instance_from!(StarterPlayer);
+impl Default for StarterPlayer {
+    fn default() -> Self {
+        Self {
+            superclass: Instance::default(),
+            AllowCustomAnimations: true,
+            AutoJumpEnabled: true,
+            AvatarJointUpgradeSerializedRollout: unimplemented!(
+                "convert u32 Enum to precise strong variant"
+            ),
+            CameraMaxZoomDistance: 400f32,
+            CameraMinZoomDistance: 0.5f32,
+            CameraMode: unimplemented!("convert u32 Enum to precise strong variant"),
+            CharacterBreakJointsOnDeath: true,
+            CharacterJumpHeight: 7.2f32,
+            CharacterJumpPower: 50f32,
+            CharacterMaxSlopeAngle: 89f32,
+            CharacterUseJumpPower: true,
+            CharacterWalkSpeed: 16f32,
+            ClassicDeath: true,
+            CreateDefaultPlayerModule: true,
+            DevCameraOcclusionMode: unimplemented!("convert u32 Enum to precise strong variant"),
+            DevComputerCameraMovementMode: unimplemented!(
+                "convert u32 Enum to precise strong variant"
+            ),
+            DevComputerMovementMode: unimplemented!("convert u32 Enum to precise strong variant"),
+            DevTouchCameraMovementMode: unimplemented!(
+                "convert u32 Enum to precise strong variant"
+            ),
+            DevTouchMovementMode: unimplemented!("convert u32 Enum to precise strong variant"),
+            EnableDynamicHeads: unimplemented!("convert u32 Enum to precise strong variant"),
+            EnableMouseLockOption: true,
+            GameSettingsAssetIdFace: 0i64,
+            GameSettingsAssetIdHead: 0i64,
+            GameSettingsAssetIdLeftArm: 0i64,
+            GameSettingsAssetIdLeftLeg: 0i64,
+            GameSettingsAssetIdPants: 0i64,
+            GameSettingsAssetIdRightArm: 0i64,
+            GameSettingsAssetIdRightLeg: 0i64,
+            GameSettingsAssetIdShirt: 0i64,
+            GameSettingsAssetIdTeeShirt: 0i64,
+            GameSettingsAssetIdTorso: 0i64,
+            GameSettingsAvatar: unimplemented!("convert u32 Enum to precise strong variant"),
+            GameSettingsR15Collision: unimplemented!("convert u32 Enum to precise strong variant"),
+            GameSettingsScaleRangeBodyType: NumberRange::new(0f32, 1f32),
+            GameSettingsScaleRangeHead: NumberRange::new(0.95f32, 1f32),
+            GameSettingsScaleRangeHeight: NumberRange::new(0.9f32, 1.05f32),
+            GameSettingsScaleRangeProportion: NumberRange::new(0f32, 1f32),
+            GameSettingsScaleRangeWidth: NumberRange::new(0.7f32, 1f32),
+            HealthDisplayDistance: 100f32,
+            LoadCharacterAppearance: true,
+            LoadCharacterLayeredClothing: unimplemented!(
+                "convert u32 Enum to precise strong variant"
+            ),
+            LuaCharacterController: unimplemented!("convert u32 Enum to precise strong variant"),
+            NameDisplayDistance: 100f32,
+            UserEmotesEnabled: true,
+        }
+    }
+}
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
+#[derive(Default)]
 pub struct StarterPlayerScripts {
     superclass: Instance,
 }
@@ -7288,6 +11498,7 @@ impl_inherits!(StarterPlayerScripts, Instance);
 impl_strong_instance_from!(StarterPlayerScripts);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
+#[derive(Default)]
 pub struct StartupMessageService {
     superclass: Instance,
 }
@@ -7295,6 +11506,7 @@ impl_inherits!(StartupMessageService, Instance);
 impl_strong_instance_from!(StartupMessageService);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
+#[derive(Default)]
 pub struct Stats {
     superclass: Instance,
 }
@@ -7302,6 +11514,7 @@ impl_inherits!(Stats, Instance);
 impl_strong_instance_from!(Stats);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
+#[derive(Default)]
 pub struct StatsItem {
     superclass: Instance,
 }
@@ -7309,6 +11522,7 @@ impl_inherits!(StatsItem, Instance);
 impl_strong_instance_from!(StatsItem);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
+#[derive(Default)]
 pub struct Status {
     superclass: Model,
 }
@@ -7316,6 +11530,7 @@ impl_inherits!(Status, Model);
 impl_strong_instance_from!(Status);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
+#[derive(Default)]
 pub struct StopWatchReporter {
     superclass: Instance,
 }
@@ -7323,6 +11538,7 @@ impl_inherits!(StopWatchReporter, Instance);
 impl_strong_instance_from!(StopWatchReporter);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
+#[derive(Default)]
 pub struct StreamingService {
     superclass: Instance,
 }
@@ -7336,6 +11552,14 @@ pub struct StringValue {
 }
 impl_inherits!(StringValue, ValueBase);
 impl_strong_instance_from!(StringValue);
+impl Default for StringValue {
+    fn default() -> Self {
+        Self {
+            superclass: ValueBase::default(),
+            Value: "".to_owned(),
+        }
+    }
+}
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct Studio {
@@ -7465,8 +11689,140 @@ pub struct Studio {
 }
 impl_inherits!(Studio, Instance);
 impl_strong_instance_from!(Studio);
+impl Default for Studio {
+    fn default() -> Self {
+        Self {
+            superclass: Instance::default(),
+            ActionOnAutoResumeSync: unimplemented!("convert u32 Enum to precise strong variant"),
+            ActionOnStopSync: unimplemented!("convert u32 Enum to precise strong variant"),
+            ActiveColor: Color3::new(0f32, 0f32, 0f32),
+            ActiveHoverOverColor: Color3::new(0f32, 0f32, 0f32),
+            AlwaysSaveScriptChanges: false,
+            AnimateHoverOver: false,
+            AutoCleanEmptyLine: false,
+            AutoClosingBrackets: false,
+            AutoClosingQuotes: false,
+            AutoDeleteClosingBracketsAndQuotes: false,
+            AutoIndentRule: unimplemented!("convert u32 Enum to precise strong variant"),
+            AutoRecoveryEnabled: false,
+            AutoRecoveryIntervalMinutes: 0i32,
+            AutoResumeSyncOnPlaceOpen: false,
+            AutoUpdateEnabled: false,
+            AutocompleteAcceptanceBehavior: unimplemented!(
+                "convert u32 Enum to precise strong variant"
+            ),
+            AutomaticallyTriggerAiCodeCompletion: false,
+            BasicObjectsDisplayMode: unimplemented!("convert u32 Enum to precise strong variant"),
+            CameraAdaptiveSpeed: false,
+            CameraMouseWheelSpeed: 0f32,
+            CameraOrbitSensitivity: 0f32,
+            CameraPanSensitivity: 0f32,
+            CameraPanSpeed: 0f32,
+            CameraShiftFactor: 0f32,
+            CameraShiftSpeed: 0f32,
+            CameraSpeed: 0f32,
+            CameraSpeedAdjustBinding: unimplemented!("convert u32 Enum to precise strong variant"),
+            CameraSpeedLockDefault: false,
+            CameraTweenFocus: false,
+            CameraZoomSpeed: 0f32,
+            CameraZoomToMousePosition: false,
+            ClearOutputOnStart: false,
+            CommandBarLocalState: false,
+            DefaultScriptSyncFileType: unimplemented!("convert u32 Enum to precise strong variant"),
+            DeprecatedObjectsShown: false,
+            DisplayLanguage: "".to_owned(),
+            DraggerActiveColor: Color3::new(0f32, 0f32, 0f32),
+            DraggerMajorGridIncrement: 0i32,
+            DraggerMaxSoftSnaps: 0i32,
+            DraggerPassiveColor: Color3::new(0f32, 0f32, 0f32),
+            DraggerShowHoverRuler: false,
+            DraggerShowMeasurement: false,
+            DraggerShowTargetSnap: false,
+            DraggerSoftSnapMarginFactor: 0f32,
+            DraggerSummonMarginFactor: 0f32,
+            DraggerTiltRotateDuration: 0f32,
+            EnableAutocomplete: false,
+            EnableAutocompleteDocView: false,
+            EnableCodeAssist: false,
+            EnableCoreScriptDebugger: false,
+            EnableFindOnType: false,
+            EnableHttpSandboxing: false,
+            EnableIndentationRulers: false,
+            EnableInternalBetaFeatures: false,
+            EnableInternalFeatures: false,
+            EnableOnTypeAutocomplete: false,
+            EnableScriptAnalysis: false,
+            EnableScrollbarMarkers: false,
+            EnableSelectionTooltips: false,
+            EnableSignatureHelp: false,
+            EnableSignatureHelpDocView: false,
+            EnableStudioStreaming: false,
+            EnableTemporaryTabs: false,
+            EnableTemporaryTabsInExplorer: false,
+            EnableTypeHover: false,
+            FormatOnPaste: false,
+            FormatOnType: false,
+            HighlightCurrentLine: false,
+            HighlightOccurances: false,
+            HoverAnimateSpeed: unimplemented!("convert u32 Enum to precise strong variant"),
+            HoverBoxThickness: 0f32,
+            HoverLineThickness: 0i32,
+            HoverOverColor: Color3::new(0f32, 0f32, 0f32),
+            IndentUsingSpaces: false,
+            LargeFileLineCountThreshold: 0i32,
+            LargeFileThreshold: 0i32,
+            LineThickness: 0f32,
+            LoadAllBuiltinPluginsInRunModes: false,
+            LoadInternalPlugins: false,
+            LoadUserPluginsInRunModes: false,
+            LuaDebuggerEnabled: false,
+            MainVolume: 0f32,
+            MaxFindReplaceAllResults: 0i32,
+            MaximumOutputLines: 0i32,
+            OnlyPlayAudioFromWindowInFocus: false,
+            OutputLayoutMode: unimplemented!("convert u32 Enum to precise strong variant"),
+            PermissionLevelShown: unimplemented!("convert u32 Enum to precise strong variant"),
+            PhysicalDraggersSelectScopeByDefault: false,
+            PivotSnapToGeometryColor: Color3::new(0f32, 0f32, 0f32),
+            PluginDebuggingEnabled: false,
+            ReloadBuiltinPluginsOnChange: false,
+            ReloadLocalPluginsOnChange: false,
+            RespectStudioShortcutsWhenGameHasFocus: false,
+            Rulers: "".to_owned(),
+            RuntimeUndoBehavior: unimplemented!("convert u32 Enum to precise strong variant"),
+            ScriptEditorColorPreset: unimplemented!("convert u32 Enum to precise strong variant"),
+            ScriptEditorShouldShowPluginMethods: false,
+            ScriptTimeoutLength: 0i32,
+            ScrollPastLastLine: false,
+            SelectColor: Color3::new(0f32, 0f32, 0f32),
+            SelectHoverColor: Color3::new(0f32, 0f32, 0f32),
+            SelectionBoxThickness: 0f32,
+            SelectionLineThickness: 0i32,
+            SetPivotOfImportedParts: false,
+            ShowCoreGuiInExplorerWhilePlaying: false,
+            ShowCorePackagesInExplorer: false,
+            ShowDiagnosticsBar: false,
+            ShowFileSyncService: false,
+            ShowHiddenObjectsInExplorer: false,
+            ShowHoverOver: false,
+            ShowLightGuides: false,
+            ShowNavigationLabels: false,
+            ShowNavigationMesh: false,
+            ShowPathfindingLinks: false,
+            ShowPluginGuiServiceInExplorer: false,
+            ShowPlusButtonOnHoverInExplorer: false,
+            ShowSinglySelectedAttachmentParentFrame: false,
+            ShowWhitespace: false,
+            SkipClosingBracketsAndQuotes: false,
+            TabWidth: 0i32,
+            TextWrapping: false,
+            UseBoundingBoxMoveHandles: false,
+        }
+    }
+}
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
+#[derive(Default)]
 pub struct StudioAssetService {
     superclass: Instance,
 }
@@ -7484,8 +11840,21 @@ pub struct StudioAttachment {
 }
 impl_inherits!(StudioAttachment, Instance);
 impl_strong_instance_from!(StudioAttachment);
+impl Default for StudioAttachment {
+    fn default() -> Self {
+        Self {
+            superclass: Instance::default(),
+            AutoHideParent: false,
+            IsArrowVisible: false,
+            Offset: Vector2::new(0f32, 0f32),
+            SourceAnchorPoint: Vector2::new(0f32, 0f32),
+            TargetAnchorPoint: Vector2::new(0f32, 0f32),
+        }
+    }
+}
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
+#[derive(Default)]
 pub struct StudioCallout {
     superclass: Instance,
 }
@@ -7500,6 +11869,15 @@ pub struct StudioCameraService {
 }
 impl_inherits!(StudioCameraService, Instance);
 impl_strong_instance_from!(StudioCameraService);
+impl Default for StudioCameraService {
+    fn default() -> Self {
+        Self {
+            superclass: Instance::default(),
+            LockCameraSpeed: false,
+            LoggingEnabled: false,
+        }
+    }
+}
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct StudioData {
@@ -7508,8 +11886,17 @@ pub struct StudioData {
 }
 impl_inherits!(StudioData, Instance);
 impl_strong_instance_from!(StudioData);
+impl Default for StudioData {
+    fn default() -> Self {
+        Self {
+            superclass: Instance::default(),
+            EnableScriptCollabByDefaultOnLoad: false,
+        }
+    }
+}
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
+#[derive(Default)]
 pub struct StudioDeviceEmulatorService {
     superclass: Instance,
 }
@@ -7517,6 +11904,7 @@ impl_inherits!(StudioDeviceEmulatorService, Instance);
 impl_strong_instance_from!(StudioDeviceEmulatorService);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
+#[derive(Default)]
 pub struct StudioObjectBase {
     superclass: Instance,
 }
@@ -7530,8 +11918,17 @@ pub struct StudioPublishService {
 }
 impl_inherits!(StudioPublishService, Instance);
 impl_strong_instance_from!(StudioPublishService);
+impl Default for StudioPublishService {
+    fn default() -> Self {
+        Self {
+            superclass: Instance::default(),
+            PublishLocked: false,
+        }
+    }
+}
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
+#[derive(Default)]
 pub struct StudioScriptDebugEventListener {
     superclass: Instance,
 }
@@ -7539,6 +11936,7 @@ impl_inherits!(StudioScriptDebugEventListener, Instance);
 impl_strong_instance_from!(StudioScriptDebugEventListener);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
+#[derive(Default)]
 pub struct StudioSdkService {
     superclass: Instance,
 }
@@ -7552,8 +11950,17 @@ pub struct StudioService {
 }
 impl_inherits!(StudioService, Instance);
 impl_strong_instance_from!(StudioService);
+impl Default for StudioService {
+    fn default() -> Self {
+        Self {
+            superclass: Instance::default(),
+            Secrets: "".to_owned(),
+        }
+    }
+}
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
+#[derive(Default)]
 pub struct StudioTestService {
     superclass: Instance,
 }
@@ -7561,6 +11968,7 @@ impl_inherits!(StudioTestService, Instance);
 impl_strong_instance_from!(StudioTestService);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
+#[derive(Default)]
 pub struct StudioTheme {
     superclass: Instance,
 }
@@ -7568,6 +11976,7 @@ impl_inherits!(StudioTheme, Instance);
 impl_strong_instance_from!(StudioTheme);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
+#[derive(Default)]
 pub struct StudioUserService {
     superclass: Instance,
 }
@@ -7575,6 +11984,7 @@ impl_inherits!(StudioUserService, Instance);
 impl_strong_instance_from!(StudioUserService);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
+#[derive(Default)]
 pub struct StudioWidget {
     superclass: StudioObjectBase,
 }
@@ -7582,6 +11992,7 @@ impl_inherits!(StudioWidget, StudioObjectBase);
 impl_strong_instance_from!(StudioWidget);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
+#[derive(Default)]
 pub struct StudioWidgetsService {
     superclass: Instance,
 }
@@ -7589,6 +12000,7 @@ impl_inherits!(StudioWidgetsService, Instance);
 impl_strong_instance_from!(StudioWidgetsService);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
+#[derive(Default)]
 pub struct StyleBase {
     superclass: Instance,
 }
@@ -7603,6 +12015,15 @@ pub struct StyleDerive {
 }
 impl_inherits!(StyleDerive, Instance);
 impl_strong_instance_from!(StyleDerive);
+impl Default for StyleDerive {
+    fn default() -> Self {
+        Self {
+            superclass: Instance::default(),
+            Priority: 0i32,
+            StyleSheet: Ref::none(),
+        }
+    }
+}
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct StyleLink {
@@ -7611,6 +12032,14 @@ pub struct StyleLink {
 }
 impl_inherits!(StyleLink, Instance);
 impl_strong_instance_from!(StyleLink);
+impl Default for StyleLink {
+    fn default() -> Self {
+        Self {
+            superclass: Instance::default(),
+            StyleSheet: Ref::none(),
+        }
+    }
+}
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct StyleQuery {
@@ -7622,6 +12051,17 @@ pub struct StyleQuery {
 }
 impl_inherits!(StyleQuery, Instance);
 impl_strong_instance_from!(StyleQuery);
+impl Default for StyleQuery {
+    fn default() -> Self {
+        Self {
+            superclass: Instance::default(),
+            AspectRatioRange: NumberRange::new(0f32, 0f32),
+            ConditionsSerialize: b"".as_slice().into(),
+            MaxSize: Vector2::new(0f32, 0f32),
+            MinSize: Vector2::new(0f32, 0f32),
+        }
+    }
+}
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct StyleRule {
@@ -7631,8 +12071,18 @@ pub struct StyleRule {
 }
 impl_inherits!(StyleRule, StyleBase);
 impl_strong_instance_from!(StyleRule);
+impl Default for StyleRule {
+    fn default() -> Self {
+        Self {
+            superclass: StyleBase::default(),
+            Priority: 0i32,
+            Selector: "".to_owned(),
+        }
+    }
+}
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
+#[derive(Default)]
 pub struct StyleSheet {
     superclass: StyleBase,
 }
@@ -7640,6 +12090,7 @@ impl_inherits!(StyleSheet, StyleBase);
 impl_strong_instance_from!(StyleSheet);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
+#[derive(Default)]
 pub struct StylingService {
     superclass: Instance,
 }
@@ -7654,6 +12105,15 @@ pub struct SunRaysEffect {
 }
 impl_inherits!(SunRaysEffect, PostEffect);
 impl_strong_instance_from!(SunRaysEffect);
+impl Default for SunRaysEffect {
+    fn default() -> Self {
+        Self {
+            superclass: PostEffect::default(),
+            Intensity: 0.25f32,
+            Spread: 1f32,
+        }
+    }
+}
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct SurfaceAppearance {
@@ -7671,6 +12131,23 @@ pub struct SurfaceAppearance {
 }
 impl_inherits!(SurfaceAppearance, Instance);
 impl_strong_instance_from!(SurfaceAppearance);
+impl Default for SurfaceAppearance {
+    fn default() -> Self {
+        Self {
+            superclass: Instance::default(),
+            AlphaMode: unimplemented!("convert u32 Enum to precise strong variant"),
+            Color: Color3::new(1f32, 1f32, 1f32),
+            ColorMapContent: Content::none(),
+            EmissiveMaskContent: Content::none(),
+            EmissiveStrength: 1f32,
+            EmissiveTint: Color3::new(1f32, 1f32, 1f32),
+            MetalnessMapContent: Content::none(),
+            NormalMapContent: Content::none(),
+            RoughnessMapContent: Content::none(),
+            TexturePack: "".into(),
+        }
+    }
+}
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct SurfaceGui {
@@ -7688,6 +12165,23 @@ pub struct SurfaceGui {
 }
 impl_inherits!(SurfaceGui, SurfaceGuiBase);
 impl_strong_instance_from!(SurfaceGui);
+impl Default for SurfaceGui {
+    fn default() -> Self {
+        Self {
+            superclass: SurfaceGuiBase::default(),
+            AlwaysOnTop: false,
+            Brightness: 1f32,
+            CanvasSize: Vector2::new(800f32, 600f32),
+            ClipsDescendants: false,
+            LightInfluence: 0f32,
+            MaxDistance: 0f32,
+            PixelsPerStud: 50f32,
+            SizingMode: unimplemented!("convert u32 Enum to precise strong variant"),
+            ToolPunchThroughDistance: 0f32,
+            ZOffset: 0f32,
+        }
+    }
+}
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct SurfaceGuiBase {
@@ -7698,6 +12192,16 @@ pub struct SurfaceGuiBase {
 }
 impl_inherits!(SurfaceGuiBase, LayerCollector);
 impl_strong_instance_from!(SurfaceGuiBase);
+impl Default for SurfaceGuiBase {
+    fn default() -> Self {
+        Self {
+            superclass: LayerCollector::default(),
+            Active: false,
+            Adornee: Ref::none(),
+            Face: unimplemented!("convert u32 Enum to precise strong variant"),
+        }
+    }
+}
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct SurfaceLight {
@@ -7708,6 +12212,16 @@ pub struct SurfaceLight {
 }
 impl_inherits!(SurfaceLight, Light);
 impl_strong_instance_from!(SurfaceLight);
+impl Default for SurfaceLight {
+    fn default() -> Self {
+        Self {
+            superclass: Light::default(),
+            Angle: 90f32,
+            Face: unimplemented!("convert u32 Enum to precise strong variant"),
+            Range: 16f32,
+        }
+    }
+}
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct SurfaceSelection {
@@ -7716,6 +12230,14 @@ pub struct SurfaceSelection {
 }
 impl_inherits!(SurfaceSelection, PartAdornment);
 impl_strong_instance_from!(SurfaceSelection);
+impl Default for SurfaceSelection {
+    fn default() -> Self {
+        Self {
+            superclass: PartAdornment::default(),
+            TargetSurface: unimplemented!("convert u32 Enum to precise strong variant"),
+        }
+    }
+}
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct SwimController {
@@ -7728,6 +12250,18 @@ pub struct SwimController {
 }
 impl_inherits!(SwimController, ControllerBase);
 impl_strong_instance_from!(SwimController);
+impl Default for SwimController {
+    fn default() -> Self {
+        Self {
+            superclass: ControllerBase::default(),
+            AccelerationTime: 0f32,
+            PitchMaxTorque: 10000f32,
+            PitchSpeedFactor: 1f32,
+            RollMaxTorque: 10000f32,
+            RollSpeedFactor: 1f32,
+        }
+    }
+}
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct SyncScriptBuilder {
@@ -7740,8 +12274,21 @@ pub struct SyncScriptBuilder {
 }
 impl_inherits!(SyncScriptBuilder, ScriptBuilder);
 impl_strong_instance_from!(SyncScriptBuilder);
+impl Default for SyncScriptBuilder {
+    fn default() -> Self {
+        Self {
+            superclass: ScriptBuilder::default(),
+            CompileTarget: unimplemented!("convert u32 Enum to precise strong variant"),
+            CoverageInfo: false,
+            DebugInfo: false,
+            PackAsSource: false,
+            RawBytecode: false,
+        }
+    }
+}
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
+#[derive(Default)]
 pub struct SystemThemeService {
     superclass: Instance,
 }
@@ -7755,6 +12302,14 @@ pub struct TaskScheduler {
 }
 impl_inherits!(TaskScheduler, Instance);
 impl_strong_instance_from!(TaskScheduler);
+impl Default for TaskScheduler {
+    fn default() -> Self {
+        Self {
+            superclass: Instance::default(),
+            ThreadPoolConfig: unimplemented!("convert u32 Enum to precise strong variant"),
+        }
+    }
+}
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct Team {
@@ -7764,8 +12319,18 @@ pub struct Team {
 }
 impl_inherits!(Team, Instance);
 impl_strong_instance_from!(Team);
+impl Default for Team {
+    fn default() -> Self {
+        Self {
+            superclass: Instance::default(),
+            AutoAssignable: true,
+            TeamColor: BrickColor::from_number(1u16).unwrap(),
+        }
+    }
+}
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
+#[derive(Default)]
 pub struct TeamCreateData {
     superclass: Instance,
 }
@@ -7773,6 +12338,7 @@ impl_inherits!(TeamCreateData, Instance);
 impl_strong_instance_from!(TeamCreateData);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
+#[derive(Default)]
 pub struct TeamCreatePublishService {
     superclass: Instance,
 }
@@ -7780,6 +12346,7 @@ impl_inherits!(TeamCreatePublishService, Instance);
 impl_strong_instance_from!(TeamCreatePublishService);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
+#[derive(Default)]
 pub struct TeamCreateService {
     superclass: Instance,
 }
@@ -7787,6 +12354,7 @@ impl_inherits!(TeamCreateService, Instance);
 impl_strong_instance_from!(TeamCreateService);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
+#[derive(Default)]
 pub struct Teams {
     superclass: Instance,
 }
@@ -7794,6 +12362,7 @@ impl_inherits!(Teams, Instance);
 impl_strong_instance_from!(Teams);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
+#[derive(Default)]
 pub struct TelemetryService {
     superclass: Instance,
 }
@@ -7801,6 +12370,7 @@ impl_inherits!(TelemetryService, Instance);
 impl_strong_instance_from!(TelemetryService);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
+#[derive(Default)]
 pub struct TeleportAsyncResult {
     superclass: Instance,
 }
@@ -7816,8 +12386,19 @@ pub struct TeleportOptions {
 }
 impl_inherits!(TeleportOptions, Instance);
 impl_strong_instance_from!(TeleportOptions);
+impl Default for TeleportOptions {
+    fn default() -> Self {
+        Self {
+            superclass: Instance::default(),
+            ReservedServerAccessCode: "".to_owned(),
+            ServerInstanceId: "".to_owned(),
+            ShouldReserveServer: false,
+        }
+    }
+}
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
+#[derive(Default)]
 pub struct TeleportService {
     superclass: Instance,
 }
@@ -7825,6 +12406,7 @@ impl_inherits!(TeleportService, Instance);
 impl_strong_instance_from!(TeleportService);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
+#[derive(Default)]
 pub struct TemporaryCageMeshProvider {
     superclass: Instance,
 }
@@ -7832,6 +12414,7 @@ impl_inherits!(TemporaryCageMeshProvider, Instance);
 impl_strong_instance_from!(TemporaryCageMeshProvider);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
+#[derive(Default)]
 pub struct TemporaryScriptService {
     superclass: Instance,
 }
@@ -7856,6 +12439,25 @@ pub struct Terrain {
 }
 impl_inherits!(Terrain, BasePart);
 impl_strong_instance_from!(Terrain);
+impl Default for Terrain {
+    fn default() -> Self {
+        Self {
+            superclass: BasePart::default(),
+            AcquisitionMethod: unimplemented!("convert u32 Enum to precise strong variant"),
+            Decoration: false,
+            GrassLength: 0.7f32,
+            MaterialColors: unimplemented!("MaterialColors"),
+            PhysicsGrid: b"\x02\x03\0\0\0\0\0\0\0\0\0\0\0\0".as_slice().into(),
+            SmoothGrid: b"\x01\x05".as_slice().into(),
+            SmoothVoxelsUpgraded: false,
+            WaterColor: Color3::new(0.05f32, 0.33f32, 0.36f32),
+            WaterReflectance: 1f32,
+            WaterTransparency: 0.3f32,
+            WaterWaveSize: 0.15f32,
+            WaterWaveSpeed: 10f32,
+        }
+    }
+}
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct TerrainDetail {
@@ -7874,8 +12476,27 @@ pub struct TerrainDetail {
 }
 impl_inherits!(TerrainDetail, Instance);
 impl_strong_instance_from!(TerrainDetail);
+impl Default for TerrainDetail {
+    fn default() -> Self {
+        Self {
+            superclass: Instance::default(),
+            ColorMapContent: Content::none(),
+            EmissiveMaskContent: Content::none(),
+            EmissiveStrength: 1f32,
+            EmissiveTint: Color3::new(1f32, 1f32, 1f32),
+            Face: unimplemented!("convert u32 Enum to precise strong variant"),
+            MaterialPattern: unimplemented!("convert u32 Enum to precise strong variant"),
+            MetalnessMapContent: Content::none(),
+            NormalMapContent: Content::none(),
+            RoughnessMapContent: Content::none(),
+            StudsPerTile: 10f32,
+            TexturePack: "".into(),
+        }
+    }
+}
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
+#[derive(Default)]
 pub struct TerrainIterateOperation {
     superclass: Object,
 }
@@ -7883,6 +12504,7 @@ impl_inherits!(TerrainIterateOperation, Object);
 impl_strong_instance_from!(TerrainIterateOperation);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
+#[derive(Default)]
 pub struct TerrainModifyOperation {
     superclass: Object,
 }
@@ -7890,6 +12512,7 @@ impl_inherits!(TerrainModifyOperation, Object);
 impl_strong_instance_from!(TerrainModifyOperation);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
+#[derive(Default)]
 pub struct TerrainReadOperation {
     superclass: Object,
 }
@@ -7905,8 +12528,19 @@ pub struct TerrainRegion {
 }
 impl_inherits!(TerrainRegion, Instance);
 impl_strong_instance_from!(TerrainRegion);
+impl Default for TerrainRegion {
+    fn default() -> Self {
+        Self {
+            superclass: Instance::default(),
+            ExtentsMax: Vector3int16::new(0i16, 0i16, 0i16),
+            ExtentsMin: Vector3int16::new(0i16, 0i16, 0i16),
+            SmoothGrid: b"\x01\x05".as_slice().into(),
+        }
+    }
+}
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
+#[derive(Default)]
 pub struct TerrainWriteOperation {
     superclass: Object,
 }
@@ -7928,6 +12562,22 @@ pub struct TestService {
 }
 impl_inherits!(TestService, Instance);
 impl_strong_instance_from!(TestService);
+impl Default for TestService {
+    fn default() -> Self {
+        Self {
+            superclass: Instance::default(),
+            AutoRuns: true,
+            Description: "".to_owned(),
+            ExecuteWithStudioRun: false,
+            IsPhysicsEnvironmentalThrottled: true,
+            IsSleepAllowed: true,
+            NumberOfPlayers: 0i32,
+            SimulateSecondsLag: 0f64,
+            ThrottlePhysicsToRealtime: true,
+            Timeout: 10f64,
+        }
+    }
+}
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct TextBox {
@@ -7960,8 +12610,41 @@ pub struct TextBox {
 }
 impl_inherits!(TextBox, GuiObject);
 impl_strong_instance_from!(TextBox);
+impl Default for TextBox {
+    fn default() -> Self {
+        Self {
+            superclass: GuiObject::default(),
+            ClearTextOnFocus: true,
+            FontFace: unimplemented!("Font"),
+            LineHeight: 1f32,
+            LocalizationMatchIdentifier: "".to_owned(),
+            LocalizationMatchedSourceText: "".to_owned(),
+            MaxVisibleGraphemes: -1i32,
+            MultiLine: false,
+            OpenTypeFeatures: "".to_owned(),
+            PlaceholderColor3: Color3::new(0.7f32, 0.7f32, 0.7f32),
+            PlaceholderText: "".to_owned(),
+            RichText: false,
+            ShowNativeInput: true,
+            Text: "TextBox".to_owned(),
+            TextColor3: Color3::new(0.10588236f32, 0.16470589f32, 0.20784315f32),
+            TextDirection: unimplemented!("convert u32 Enum to precise strong variant"),
+            TextEditable: true,
+            TextScaled: false,
+            TextSize: 8f32,
+            TextStrokeColor3: Color3::new(0f32, 0f32, 0f32),
+            TextStrokeTransparency: 1f32,
+            TextTransparency: 0f32,
+            TextTruncate: unimplemented!("convert u32 Enum to precise strong variant"),
+            TextWrapped: false,
+            TextXAlignment: unimplemented!("convert u32 Enum to precise strong variant"),
+            TextYAlignment: unimplemented!("convert u32 Enum to precise strong variant"),
+        }
+    }
+}
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
+#[derive(Default)]
 pub struct TextBoxService {
     superclass: Instance,
 }
@@ -7993,8 +12676,35 @@ pub struct TextButton {
 }
 impl_inherits!(TextButton, GuiButton);
 impl_strong_instance_from!(TextButton);
+impl Default for TextButton {
+    fn default() -> Self {
+        Self {
+            superclass: GuiButton::default(),
+            FontFace: unimplemented!("Font"),
+            LineHeight: 1f32,
+            LocalizationMatchIdentifier: "".to_owned(),
+            LocalizationMatchedSourceText: "".to_owned(),
+            MaxVisibleGraphemes: -1i32,
+            OpenTypeFeatures: "".to_owned(),
+            RichText: false,
+            Text: "Button".to_owned(),
+            TextColor3: Color3::new(0.10588236f32, 0.16470589f32, 0.20784315f32),
+            TextDirection: unimplemented!("convert u32 Enum to precise strong variant"),
+            TextScaled: false,
+            TextSize: 8f32,
+            TextStrokeColor3: Color3::new(0f32, 0f32, 0f32),
+            TextStrokeTransparency: 1f32,
+            TextTransparency: 0f32,
+            TextTruncate: unimplemented!("convert u32 Enum to precise strong variant"),
+            TextWrapped: false,
+            TextXAlignment: unimplemented!("convert u32 Enum to precise strong variant"),
+            TextYAlignment: unimplemented!("convert u32 Enum to precise strong variant"),
+        }
+    }
+}
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
+#[derive(Default)]
 pub struct TextChannel {
     superclass: Instance,
 }
@@ -8011,8 +12721,20 @@ pub struct TextChatCommand {
 }
 impl_inherits!(TextChatCommand, Instance);
 impl_strong_instance_from!(TextChatCommand);
+impl Default for TextChatCommand {
+    fn default() -> Self {
+        Self {
+            superclass: Instance::default(),
+            AutocompleteVisible: true,
+            Enabled: true,
+            PrimaryAlias: "".to_owned(),
+            SecondaryAlias: "".to_owned(),
+        }
+    }
+}
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
+#[derive(Default)]
 pub struct TextChatConfigurations {
     superclass: Instance,
 }
@@ -8029,8 +12751,20 @@ pub struct TextChatMessage {
 }
 impl_inherits!(TextChatMessage, Instance);
 impl_strong_instance_from!(TextChatMessage);
+impl Default for TextChatMessage {
+    fn default() -> Self {
+        Self {
+            superclass: Instance::default(),
+            BubbleChatMessageProperties: Ref::none(),
+            ChatWindowMessageProperties: Ref::none(),
+            TextChannel: Ref::none(),
+            TextSource: Ref::none(),
+        }
+    }
+}
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
+#[derive(Default)]
 pub struct TextChatMessageProperties {
     superclass: Instance,
 }
@@ -8050,8 +12784,23 @@ pub struct TextChatService {
 }
 impl_inherits!(TextChatService, Instance);
 impl_strong_instance_from!(TextChatService);
+impl Default for TextChatService {
+    fn default() -> Self {
+        Self {
+            superclass: Instance::default(),
+            ChatTranslationFtuxShown: true,
+            ChatTranslationToggleEnabled: false,
+            ChatVersion: unimplemented!("convert u32 Enum to precise strong variant"),
+            CreateDefaultCommands: true,
+            CreateDefaultTextChannels: true,
+            HasSeenDeprecationDialog: false,
+            IsLegacyChatDisabled: false,
+        }
+    }
+}
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
+#[derive(Default)]
 pub struct TextFilterResult {
     superclass: Instance,
 }
@@ -8059,6 +12808,7 @@ impl_inherits!(TextFilterResult, Instance);
 impl_strong_instance_from!(TextFilterResult);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
+#[derive(Default)]
 pub struct TextFilterTranslatedResult {
     superclass: Instance,
 }
@@ -8075,6 +12825,17 @@ pub struct TextGenerator {
 }
 impl_inherits!(TextGenerator, Instance);
 impl_strong_instance_from!(TextGenerator);
+impl Default for TextGenerator {
+    fn default() -> Self {
+        Self {
+            superclass: Instance::default(),
+            Seed: 0i32,
+            SystemPrompt: "".to_owned(),
+            Temperature: 0.7f32,
+            TopP: 0.9f32,
+        }
+    }
+}
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct TextLabel {
@@ -8101,8 +12862,35 @@ pub struct TextLabel {
 }
 impl_inherits!(TextLabel, GuiLabel);
 impl_strong_instance_from!(TextLabel);
+impl Default for TextLabel {
+    fn default() -> Self {
+        Self {
+            superclass: GuiLabel::default(),
+            FontFace: unimplemented!("Font"),
+            LineHeight: 1f32,
+            LocalizationMatchIdentifier: "".to_owned(),
+            LocalizationMatchedSourceText: "".to_owned(),
+            MaxVisibleGraphemes: -1i32,
+            OpenTypeFeatures: "".to_owned(),
+            RichText: false,
+            Text: "Label".to_owned(),
+            TextColor3: Color3::new(0.10588236f32, 0.16470589f32, 0.20784315f32),
+            TextDirection: unimplemented!("convert u32 Enum to precise strong variant"),
+            TextScaled: false,
+            TextSize: 8f32,
+            TextStrokeColor3: Color3::new(0f32, 0f32, 0f32),
+            TextStrokeTransparency: 1f32,
+            TextTransparency: 0f32,
+            TextTruncate: unimplemented!("convert u32 Enum to precise strong variant"),
+            TextWrapped: false,
+            TextXAlignment: unimplemented!("convert u32 Enum to precise strong variant"),
+            TextYAlignment: unimplemented!("convert u32 Enum to precise strong variant"),
+        }
+    }
+}
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
+#[derive(Default)]
 pub struct TextService {
     superclass: Instance,
 }
@@ -8116,6 +12904,14 @@ pub struct TextSource {
 }
 impl_inherits!(TextSource, Instance);
 impl_strong_instance_from!(TextSource);
+impl Default for TextSource {
+    fn default() -> Self {
+        Self {
+            superclass: Instance::default(),
+            CanSend: false,
+        }
+    }
+}
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct Texture {
@@ -8127,8 +12923,20 @@ pub struct Texture {
 }
 impl_inherits!(Texture, Decal);
 impl_strong_instance_from!(Texture);
+impl Default for Texture {
+    fn default() -> Self {
+        Self {
+            superclass: Decal::default(),
+            OffsetStudsU: 0f32,
+            OffsetStudsV: 0f32,
+            StudsPerTileU: 2f32,
+            StudsPerTileV: 2f32,
+        }
+    }
+}
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
+#[derive(Default)]
 pub struct TextureGenerationPartGroup {
     superclass: Instance,
 }
@@ -8136,6 +12944,7 @@ impl_inherits!(TextureGenerationPartGroup, Instance);
 impl_strong_instance_from!(TextureGenerationPartGroup);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
+#[derive(Default)]
 pub struct TextureGenerationService {
     superclass: Instance,
 }
@@ -8143,6 +12952,7 @@ impl_inherits!(TextureGenerationService, Instance);
 impl_strong_instance_from!(TextureGenerationService);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
+#[derive(Default)]
 pub struct TextureGenerationUnwrappingRequest {
     superclass: Instance,
 }
@@ -8150,6 +12960,7 @@ impl_inherits!(TextureGenerationUnwrappingRequest, Instance);
 impl_strong_instance_from!(TextureGenerationUnwrappingRequest);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
+#[derive(Default)]
 pub struct ThirdPartyUserService {
     superclass: Instance,
 }
@@ -8157,6 +12968,7 @@ impl_inherits!(ThirdPartyUserService, Instance);
 impl_strong_instance_from!(ThirdPartyUserService);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
+#[derive(Default)]
 pub struct ThreadState {
     superclass: Instance,
 }
@@ -8164,6 +12976,7 @@ impl_inherits!(ThreadState, Instance);
 impl_strong_instance_from!(ThreadState);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
+#[derive(Default)]
 pub struct TimerService {
     superclass: Instance,
 }
@@ -8171,6 +12984,7 @@ impl_inherits!(TimerService, Instance);
 impl_strong_instance_from!(TimerService);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
+#[derive(Default)]
 pub struct ToastNotificationService {
     superclass: Instance,
 }
@@ -8189,6 +13003,19 @@ pub struct Tool {
 }
 impl_inherits!(Tool, BackpackItem);
 impl_strong_instance_from!(Tool);
+impl Default for Tool {
+    fn default() -> Self {
+        Self {
+            superclass: BackpackItem::default(),
+            CanBeDropped: true,
+            Enabled: true,
+            Grip: CFrame::identity(),
+            ManualActivationOnly: false,
+            RequiresHandle: true,
+            ToolTip: "".to_owned(),
+        }
+    }
+}
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct Torque {
@@ -8198,6 +13025,15 @@ pub struct Torque {
 }
 impl_inherits!(Torque, Constraint);
 impl_strong_instance_from!(Torque);
+impl Default for Torque {
+    fn default() -> Self {
+        Self {
+            superclass: Constraint::default(),
+            RelativeTo: unimplemented!("convert u32 Enum to precise strong variant"),
+            Torque: Vector3::new(0f32, 0f32, 0f32),
+        }
+    }
+}
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct TorsionSpringConstraint {
@@ -8214,8 +13050,25 @@ pub struct TorsionSpringConstraint {
 }
 impl_inherits!(TorsionSpringConstraint, Constraint);
 impl_strong_instance_from!(TorsionSpringConstraint);
+impl Default for TorsionSpringConstraint {
+    fn default() -> Self {
+        Self {
+            superclass: Constraint::default(),
+            Coils: 8f32,
+            Damping: 0.01f32,
+            LimitEnabled: false,
+            LimitsEnabled: false,
+            MaxAngle: 45f32,
+            MaxTorque: f32::INFINITY,
+            Radius: 0.4f32,
+            Restitution: 0f32,
+            Stiffness: 100f32,
+        }
+    }
+}
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
+#[derive(Default)]
 pub struct TotalCountTimeIntervalItem {
     superclass: StatsItem,
 }
@@ -8223,6 +13076,7 @@ impl_inherits!(TotalCountTimeIntervalItem, StatsItem);
 impl_strong_instance_from!(TotalCountTimeIntervalItem);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
+#[derive(Default)]
 pub struct TouchInputService {
     superclass: Instance,
 }
@@ -8230,6 +13084,7 @@ impl_inherits!(TouchInputService, Instance);
 impl_strong_instance_from!(TouchInputService);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
+#[derive(Default)]
 pub struct TouchTransmitter {
     superclass: Instance,
 }
@@ -8237,6 +13092,7 @@ impl_inherits!(TouchTransmitter, Instance);
 impl_strong_instance_from!(TouchTransmitter);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
+#[derive(Default)]
 pub struct TracerService {
     superclass: Instance,
 }
@@ -8253,8 +13109,20 @@ pub struct TrackerLodController {
 }
 impl_inherits!(TrackerLodController, Instance);
 impl_strong_instance_from!(TrackerLodController);
+impl Default for TrackerLodController {
+    fn default() -> Self {
+        Self {
+            superclass: Instance::default(),
+            AudioMode: unimplemented!("convert u32 Enum to precise strong variant"),
+            VideoExtrapolationMode: unimplemented!("convert u32 Enum to precise strong variant"),
+            VideoLodMode: unimplemented!("convert u32 Enum to precise strong variant"),
+            VideoMode: unimplemented!("convert u32 Enum to precise strong variant"),
+        }
+    }
+}
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
+#[derive(Default)]
 pub struct TrackerStreamAnimation {
     superclass: Instance,
 }
@@ -8283,8 +13151,32 @@ pub struct Trail {
 }
 impl_inherits!(Trail, Instance);
 impl_strong_instance_from!(Trail);
+impl Default for Trail {
+    fn default() -> Self {
+        Self {
+            superclass: Instance::default(),
+            Attachment0: Ref::none(),
+            Attachment1: Ref::none(),
+            Brightness: 1f32,
+            Color: unimplemented!("ColorSequence"),
+            Enabled: true,
+            FaceCamera: false,
+            Lifetime: 2f32,
+            LightEmission: 0f32,
+            LightInfluence: 0f32,
+            MaxLength: 0f32,
+            MinLength: 0.1f32,
+            Texture: "".into(),
+            TextureLength: 1f32,
+            TextureMode: unimplemented!("convert u32 Enum to precise strong variant"),
+            Transparency: unimplemented!("NumberSequence"),
+            WidthScale: unimplemented!("NumberSequence"),
+        }
+    }
+}
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
+#[derive(Default)]
 pub struct Translator {
     superclass: Instance,
 }
@@ -8300,6 +13192,16 @@ pub struct TremoloSoundEffect {
 }
 impl_inherits!(TremoloSoundEffect, SoundEffect);
 impl_strong_instance_from!(TremoloSoundEffect);
+impl Default for TremoloSoundEffect {
+    fn default() -> Self {
+        Self {
+            superclass: SoundEffect::default(),
+            Depth: 1f32,
+            Duty: 0.5f32,
+            Frequency: 5f32,
+        }
+    }
+}
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct TriangleMeshPart {
@@ -8315,6 +13217,21 @@ pub struct TriangleMeshPart {
 }
 impl_inherits!(TriangleMeshPart, BasePart);
 impl_strong_instance_from!(TriangleMeshPart);
+impl Default for TriangleMeshPart {
+    fn default() -> Self {
+        Self {
+            superclass: BasePart::default(),
+            AeroMeshData: SharedString::new(b"".to_vec()),
+            FluidFidelityInternal: unimplemented!("convert u32 Enum to precise strong variant"),
+            InertiaMigrated: false,
+            PhysicalConfigData: SharedString::new(b"".to_vec()),
+            UnscaledCofm: Vector3::new(0f32, 0f32, 0f32),
+            UnscaledVolInertiaDiags: Vector3::new(0f32, 0f32, 0f32),
+            UnscaledVolInertiaOffDiags: Vector3::new(0f32, 0f32, 0f32),
+            UnscaledVolume: 0f32,
+        }
+    }
+}
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct TrussPart {
@@ -8323,8 +13240,17 @@ pub struct TrussPart {
 }
 impl_inherits!(TrussPart, BasePart);
 impl_strong_instance_from!(TrussPart);
+impl Default for TrussPart {
+    fn default() -> Self {
+        Self {
+            superclass: BasePart::default(),
+            Style: unimplemented!("convert u32 Enum to precise strong variant"),
+        }
+    }
+}
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
+#[derive(Default)]
 pub struct TutorialService {
     superclass: Instance,
 }
@@ -8332,6 +13258,7 @@ impl_inherits!(TutorialService, Instance);
 impl_strong_instance_from!(TutorialService);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
+#[derive(Default)]
 pub struct Tween {
     superclass: TweenBase,
 }
@@ -8339,6 +13266,7 @@ impl_inherits!(Tween, TweenBase);
 impl_strong_instance_from!(Tween);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
+#[derive(Default)]
 pub struct TweenBase {
     superclass: Instance,
 }
@@ -8346,6 +13274,7 @@ impl_inherits!(TweenBase, Instance);
 impl_strong_instance_from!(TweenBase);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
+#[derive(Default)]
 pub struct TweenService {
     superclass: Instance,
 }
@@ -8353,6 +13282,7 @@ impl_inherits!(TweenService, Instance);
 impl_strong_instance_from!(TweenService);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
+#[derive(Default)]
 pub struct UGCAvatarService {
     superclass: Instance,
 }
@@ -8360,6 +13290,7 @@ impl_inherits!(UGCAvatarService, Instance);
 impl_strong_instance_from!(UGCAvatarService);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
+#[derive(Default)]
 pub struct UGCValidationService {
     superclass: Instance,
 }
@@ -8375,8 +13306,19 @@ pub struct UIAspectRatioConstraint {
 }
 impl_inherits!(UIAspectRatioConstraint, UIConstraint);
 impl_strong_instance_from!(UIAspectRatioConstraint);
+impl Default for UIAspectRatioConstraint {
+    fn default() -> Self {
+        Self {
+            superclass: UIConstraint::default(),
+            AspectRatio: 1f32,
+            AspectType: unimplemented!("convert u32 Enum to precise strong variant"),
+            DominantAxis: unimplemented!("convert u32 Enum to precise strong variant"),
+        }
+    }
+}
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
+#[derive(Default)]
 pub struct UIBase {
     superclass: Instance,
 }
@@ -8384,6 +13326,7 @@ impl_inherits!(UIBase, Instance);
 impl_strong_instance_from!(UIBase);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
+#[derive(Default)]
 pub struct UIComponent {
     superclass: UIBase,
 }
@@ -8391,6 +13334,7 @@ impl_inherits!(UIComponent, UIBase);
 impl_strong_instance_from!(UIComponent);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
+#[derive(Default)]
 pub struct UIConstraint {
     superclass: UIComponent,
 }
@@ -8404,6 +13348,14 @@ pub struct UICorner {
 }
 impl_inherits!(UICorner, UIComponent);
 impl_strong_instance_from!(UICorner);
+impl Default for UICorner {
+    fn default() -> Self {
+        Self {
+            superclass: UIComponent::default(),
+            CornerRadius: UDim::new(0f32, 8i32),
+        }
+    }
+}
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct UIDragDetector {
@@ -8431,8 +13383,36 @@ pub struct UIDragDetector {
 }
 impl_inherits!(UIDragDetector, UIComponent);
 impl_strong_instance_from!(UIDragDetector);
+impl Default for UIDragDetector {
+    fn default() -> Self {
+        Self {
+            superclass: UIComponent::default(),
+            ActivatedCursorIconContent: Content::none(),
+            BoundingBehavior: unimplemented!("convert u32 Enum to precise strong variant"),
+            BoundingUi: Ref::none(),
+            CursorIconContent: Content::none(),
+            DragAxis: Vector2::new(1f32, 0f32),
+            DragRelativity: unimplemented!("convert u32 Enum to precise strong variant"),
+            DragRotation: 0f32,
+            DragSpace: unimplemented!("convert u32 Enum to precise strong variant"),
+            DragStyle: unimplemented!("convert u32 Enum to precise strong variant"),
+            DragUDim2: UDim2::new(UDim::new(0f32, 0i32), UDim::new(0f32, 0i32)),
+            Enabled: true,
+            MaxDragAngle: 0f32,
+            MaxDragTranslation: UDim2::new(UDim::new(0f32, 0i32), UDim::new(0f32, 0i32)),
+            MinDragAngle: 0f32,
+            MinDragTranslation: UDim2::new(UDim::new(0f32, 0i32), UDim::new(0f32, 0i32)),
+            ReferenceUiInstance: Ref::none(),
+            ResponseStyle: unimplemented!("convert u32 Enum to precise strong variant"),
+            SelectionModeDragSpeed: UDim2::new(UDim::new(0f32, 300i32), UDim::new(0f32, 300i32)),
+            SelectionModeRotateSpeed: 90f32,
+            UiDragSpeedAxisMapping: unimplemented!("convert u32 Enum to precise strong variant"),
+        }
+    }
+}
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
+#[derive(Default)]
 pub struct UIDragDetectorService {
     superclass: Instance,
 }
@@ -8449,6 +13429,17 @@ pub struct UIFlexItem {
 }
 impl_inherits!(UIFlexItem, UIComponent);
 impl_strong_instance_from!(UIFlexItem);
+impl Default for UIFlexItem {
+    fn default() -> Self {
+        Self {
+            superclass: UIComponent::default(),
+            FlexMode: unimplemented!("convert u32 Enum to precise strong variant"),
+            GrowRatio: 0f32,
+            ItemLineAlignment: unimplemented!("convert u32 Enum to precise strong variant"),
+            ShrinkRatio: 0f32,
+        }
+    }
+}
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct UIGradient {
@@ -8461,6 +13452,18 @@ pub struct UIGradient {
 }
 impl_inherits!(UIGradient, UIComponent);
 impl_strong_instance_from!(UIGradient);
+impl Default for UIGradient {
+    fn default() -> Self {
+        Self {
+            superclass: UIComponent::default(),
+            Color: unimplemented!("ColorSequence"),
+            Enabled: true,
+            Offset: Vector2::new(0f32, 0f32),
+            Rotation: 0f32,
+            Transparency: unimplemented!("NumberSequence"),
+        }
+    }
+}
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct UIGridLayout {
@@ -8472,6 +13475,17 @@ pub struct UIGridLayout {
 }
 impl_inherits!(UIGridLayout, UIGridStyleLayout);
 impl_strong_instance_from!(UIGridLayout);
+impl Default for UIGridLayout {
+    fn default() -> Self {
+        Self {
+            superclass: UIGridStyleLayout::default(),
+            CellPadding: UDim2::new(UDim::new(0f32, 5i32), UDim::new(0f32, 5i32)),
+            CellSize: UDim2::new(UDim::new(0f32, 100i32), UDim::new(0f32, 100i32)),
+            FillDirectionMaxCells: 0i32,
+            StartCorner: unimplemented!("convert u32 Enum to precise strong variant"),
+        }
+    }
+}
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct UIGridStyleLayout {
@@ -8483,8 +13497,20 @@ pub struct UIGridStyleLayout {
 }
 impl_inherits!(UIGridStyleLayout, UILayout);
 impl_strong_instance_from!(UIGridStyleLayout);
+impl Default for UIGridStyleLayout {
+    fn default() -> Self {
+        Self {
+            superclass: UILayout::default(),
+            FillDirection: unimplemented!("convert u32 Enum to precise strong variant"),
+            HorizontalAlignment: unimplemented!("convert u32 Enum to precise strong variant"),
+            SortOrder: unimplemented!("convert u32 Enum to precise strong variant"),
+            VerticalAlignment: unimplemented!("convert u32 Enum to precise strong variant"),
+        }
+    }
+}
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
+#[derive(Default)]
 pub struct UILayout {
     superclass: UIComponent,
 }
@@ -8502,6 +13528,18 @@ pub struct UIListLayout {
 }
 impl_inherits!(UIListLayout, UIGridStyleLayout);
 impl_strong_instance_from!(UIListLayout);
+impl Default for UIListLayout {
+    fn default() -> Self {
+        Self {
+            superclass: UIGridStyleLayout::default(),
+            HorizontalFlex: unimplemented!("convert u32 Enum to precise strong variant"),
+            ItemLineAlignment: unimplemented!("convert u32 Enum to precise strong variant"),
+            Padding: UDim::new(0f32, 0i32),
+            VerticalFlex: unimplemented!("convert u32 Enum to precise strong variant"),
+            Wraps: false,
+        }
+    }
+}
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct UIPadding {
@@ -8513,6 +13551,17 @@ pub struct UIPadding {
 }
 impl_inherits!(UIPadding, UIComponent);
 impl_strong_instance_from!(UIPadding);
+impl Default for UIPadding {
+    fn default() -> Self {
+        Self {
+            superclass: UIComponent::default(),
+            PaddingBottom: UDim::new(0f32, 0i32),
+            PaddingLeft: UDim::new(0f32, 0i32),
+            PaddingRight: UDim::new(0f32, 0i32),
+            PaddingTop: UDim::new(0f32, 0i32),
+        }
+    }
+}
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct UIPageLayout {
@@ -8529,6 +13578,22 @@ pub struct UIPageLayout {
 }
 impl_inherits!(UIPageLayout, UIGridStyleLayout);
 impl_strong_instance_from!(UIPageLayout);
+impl Default for UIPageLayout {
+    fn default() -> Self {
+        Self {
+            superclass: UIGridStyleLayout::default(),
+            Animated: true,
+            Circular: false,
+            EasingDirection: unimplemented!("convert u32 Enum to precise strong variant"),
+            EasingStyle: unimplemented!("convert u32 Enum to precise strong variant"),
+            GamepadInputEnabled: true,
+            Padding: UDim::new(0f32, 0i32),
+            ScrollWheelInputEnabled: true,
+            TouchInputEnabled: true,
+            TweenTime: 1f32,
+        }
+    }
+}
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct UIScale {
@@ -8537,6 +13602,14 @@ pub struct UIScale {
 }
 impl_inherits!(UIScale, UIComponent);
 impl_strong_instance_from!(UIScale);
+impl Default for UIScale {
+    fn default() -> Self {
+        Self {
+            superclass: UIComponent::default(),
+            Scale: 1f32,
+        }
+    }
+}
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct UISizeConstraint {
@@ -8546,6 +13619,15 @@ pub struct UISizeConstraint {
 }
 impl_inherits!(UISizeConstraint, UIConstraint);
 impl_strong_instance_from!(UISizeConstraint);
+impl Default for UISizeConstraint {
+    fn default() -> Self {
+        Self {
+            superclass: UIConstraint::default(),
+            MaxSize: Vector2::new(f32::INFINITY, f32::INFINITY),
+            MinSize: Vector2::new(0f32, 0f32),
+        }
+    }
+}
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct UIStroke {
@@ -8563,6 +13645,23 @@ pub struct UIStroke {
 }
 impl_inherits!(UIStroke, UIComponent);
 impl_strong_instance_from!(UIStroke);
+impl Default for UIStroke {
+    fn default() -> Self {
+        Self {
+            superclass: UIComponent::default(),
+            ApplyStrokeMode: unimplemented!("convert u32 Enum to precise strong variant"),
+            BorderOffset: UDim::new(0f32, 0i32),
+            BorderStrokePosition: unimplemented!("convert u32 Enum to precise strong variant"),
+            Color: Color3::new(0f32, 0f32, 0f32),
+            Enabled: true,
+            LineJoinMode: unimplemented!("convert u32 Enum to precise strong variant"),
+            StrokeSizingMode: unimplemented!("convert u32 Enum to precise strong variant"),
+            Thickness: 1f32,
+            Transparency: 0f32,
+            ZIndex: 1i32,
+        }
+    }
+}
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct UITableLayout {
@@ -8574,6 +13673,17 @@ pub struct UITableLayout {
 }
 impl_inherits!(UITableLayout, UIGridStyleLayout);
 impl_strong_instance_from!(UITableLayout);
+impl Default for UITableLayout {
+    fn default() -> Self {
+        Self {
+            superclass: UIGridStyleLayout::default(),
+            FillEmptySpaceColumns: false,
+            FillEmptySpaceRows: false,
+            MajorAxis: unimplemented!("convert u32 Enum to precise strong variant"),
+            Padding: UDim2::new(UDim::new(0f32, 0i32), UDim::new(0f32, 0i32)),
+        }
+    }
+}
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct UITextSizeConstraint {
@@ -8583,8 +13693,18 @@ pub struct UITextSizeConstraint {
 }
 impl_inherits!(UITextSizeConstraint, UIConstraint);
 impl_strong_instance_from!(UITextSizeConstraint);
+impl Default for UITextSizeConstraint {
+    fn default() -> Self {
+        Self {
+            superclass: UIConstraint::default(),
+            MaxTextSize: 100i32,
+            MinTextSize: 1i32,
+        }
+    }
+}
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
+#[derive(Default)]
 pub struct UnionOperation {
     superclass: PartOperation,
 }
@@ -8592,6 +13712,7 @@ impl_inherits!(UnionOperation, PartOperation);
 impl_strong_instance_from!(UnionOperation);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
+#[derive(Default)]
 pub struct UniqueIdLookupService {
     superclass: Instance,
 }
@@ -8608,8 +13729,20 @@ pub struct UniversalConstraint {
 }
 impl_inherits!(UniversalConstraint, Constraint);
 impl_strong_instance_from!(UniversalConstraint);
+impl Default for UniversalConstraint {
+    fn default() -> Self {
+        Self {
+            superclass: Constraint::default(),
+            LimitsEnabled: false,
+            MaxAngle: 45f32,
+            Radius: 0.2f32,
+            Restitution: 0f32,
+        }
+    }
+}
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
+#[derive(Default)]
 pub struct UnreliableRemoteEvent {
     superclass: BaseRemoteEvent,
 }
@@ -8623,6 +13756,15 @@ pub struct UnvalidatedAssetService {
 }
 impl_inherits!(UnvalidatedAssetService, Instance);
 impl_strong_instance_from!(UnvalidatedAssetService);
+impl Default for UnvalidatedAssetService {
+    fn default() -> Self {
+        Self {
+            superclass: Instance::default(),
+            CachedData: "{\"lastSaveTime\":0,\"lastKnownPublishRequest\":0,\"users\":[]}"
+                .to_owned(),
+        }
+    }
+}
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct UserGameSettings {
@@ -8697,6 +13839,82 @@ pub struct UserGameSettings {
 }
 impl_inherits!(UserGameSettings, Instance);
 impl_strong_instance_from!(UserGameSettings);
+impl Default for UserGameSettings {
+    fn default() -> Self {
+        Self {
+            superclass: Instance::default(),
+            AllTutorialsDisabled: false,
+            BadgeVisible: false,
+            CameraMode: unimplemented!("convert u32 Enum to precise strong variant"),
+            CameraYInverted: false,
+            ChatTranslationEnabled: false,
+            ChatTranslationFtuxShown: false,
+            ChatTranslationLocale: "".to_owned(),
+            ChatTranslationToggleEnabled: false,
+            ChatVisible: false,
+            CompletedTutorials: "".to_owned(),
+            ComputerCameraMovementChanged: false,
+            ComputerCameraMovementMode: unimplemented!(
+                "convert u32 Enum to precise strong variant"
+            ),
+            ComputerMovementChanged: false,
+            ComputerMovementMode: unimplemented!("convert u32 Enum to precise strong variant"),
+            ControlMode: unimplemented!("convert u32 Enum to precise strong variant"),
+            DefaultCameraId: "".to_owned(),
+            FramerateCap: 0i32,
+            Fullscreen: false,
+            GaId: "".to_owned(),
+            GamepadCameraSensitivity: 0f32,
+            GraphicsOptimizationMode: unimplemented!("convert u32 Enum to precise strong variant"),
+            GraphicsQualityLevel: 0i32,
+            HapticStrength: 0f32,
+            HasEverUsedVr: false,
+            MasterVolume: 0f32,
+            MasterVolumeStudio: 0f32,
+            MaxQualityEnabled: false,
+            MicroProfilerWebServerEnabled: false,
+            MouseSensitivity: 0f32,
+            MouseSensitivityFirstPerson: Vector2::new(0f32, 0f32),
+            MouseSensitivityThirdPerson: Vector2::new(0f32, 0f32),
+            OnScreenProfilerEnabled: false,
+            PartyVoiceVolume: 0f32,
+            PeoplePageLayout: unimplemented!("convert u32 Enum to precise strong variant"),
+            PerformanceStatsVisible: false,
+            PlayerHeight: 0f32,
+            PlayerListVisible: false,
+            PlayerNamesEnabled: false,
+            PreferredTextSize: unimplemented!("convert u32 Enum to precise strong variant"),
+            PreferredTransparency: 0f32,
+            QualityResetLevel: 0i32,
+            RccProfilerRecordFrameRate: 0i32,
+            RccProfilerRecordTimeFrame: 0i32,
+            ReadAloud: false,
+            ReducedMotion: false,
+            SavedQualityLevel: unimplemented!("convert u32 Enum to precise strong variant"),
+            StartMaximized: false,
+            StartScreenPosition: Vector2::new(0f32, 0f32),
+            StartScreenSize: Vector2::new(0f32, 0f32),
+            TouchCameraMovementChanged: false,
+            TouchCameraMovementMode: unimplemented!("convert u32 Enum to precise strong variant"),
+            TouchMovementChanged: false,
+            TouchMovementMode: unimplemented!("convert u32 Enum to precise strong variant"),
+            UiNavigationKeyBindEnabled: false,
+            UsedCoreGuiIsVisibleToggle: false,
+            UsedCustomGuiIsVisibleToggle: false,
+            UsedHideHudShortcut: false,
+            VignetteEnabled: false,
+            VignetteEnabledCustomOption: false,
+            VrComfortSetting: unimplemented!("convert u32 Enum to precise strong variant"),
+            VrEnabled: false,
+            VrRotationIntensity: 0i32,
+            VrSafetyBubbleMode: unimplemented!("convert u32 Enum to precise strong variant"),
+            VrSmoothRotationEnabled: false,
+            VrSmoothRotationEnabledCustomOption: false,
+            VrThirdPersonFollowCamEnabled: false,
+            VrThirdPersonFollowCamEnabledCustomOption: false,
+        }
+    }
+}
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct UserInputService {
@@ -8708,8 +13926,20 @@ pub struct UserInputService {
 }
 impl_inherits!(UserInputService, Instance);
 impl_strong_instance_from!(UserInputService);
+impl Default for UserInputService {
+    fn default() -> Self {
+        Self {
+            superclass: Instance::default(),
+            LegacyInputEventsEnabled: false,
+            MouseBehavior: unimplemented!("convert u32 Enum to precise strong variant"),
+            MouseIconContent: Content::none(),
+            MouseIconEnabled: false,
+        }
+    }
+}
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
+#[derive(Default)]
 pub struct UserService {
     superclass: Instance,
 }
@@ -8717,6 +13947,7 @@ impl_inherits!(UserService, Instance);
 impl_strong_instance_from!(UserService);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
+#[derive(Default)]
 pub struct UserSettings {
     superclass: GenericSettings,
 }
@@ -8724,6 +13955,7 @@ impl_inherits!(UserSettings, GenericSettings);
 impl_strong_instance_from!(UserSettings);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
+#[derive(Default)]
 pub struct UserStorageService {
     superclass: LocalStorageService,
 }
@@ -8741,8 +13973,21 @@ pub struct VRService {
 }
 impl_inherits!(VRService, Instance);
 impl_strong_instance_from!(VRService);
+impl Default for VRService {
+    fn default() -> Self {
+        Self {
+            superclass: Instance::default(),
+            AutomaticScaling: unimplemented!("convert u32 Enum to precise strong variant"),
+            AvatarGestures: false,
+            ControllerModels: unimplemented!("convert u32 Enum to precise strong variant"),
+            FadeOutViewOnCollision: true,
+            LaserPointer: unimplemented!("convert u32 Enum to precise strong variant"),
+        }
+    }
+}
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
+#[derive(Default)]
 pub struct VRStatusService {
     superclass: Instance,
 }
@@ -8750,6 +13995,7 @@ impl_inherits!(VRStatusService, Instance);
 impl_strong_instance_from!(VRStatusService);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
+#[derive(Default)]
 pub struct ValueBase {
     superclass: Instance,
 }
@@ -8763,8 +14009,17 @@ pub struct ValueCurve {
 }
 impl_inherits!(ValueCurve, Instance);
 impl_strong_instance_from!(ValueCurve);
+impl Default for ValueCurve {
+    fn default() -> Self {
+        Self {
+            superclass: Instance::default(),
+            ValuesAndTimes: b"\x02\0\0\0\0\0\0\0\x01\0\0\0\0\0\0\0".as_slice().into(),
+        }
+    }
+}
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
+#[derive(Default)]
 pub struct Vector3Curve {
     superclass: Instance,
 }
@@ -8778,6 +14033,14 @@ pub struct Vector3Value {
 }
 impl_inherits!(Vector3Value, ValueBase);
 impl_strong_instance_from!(Vector3Value);
+impl Default for Vector3Value {
+    fn default() -> Self {
+        Self {
+            superclass: ValueBase::default(),
+            Value: Vector3::new(0f32, 0f32, 0f32),
+        }
+    }
+}
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct VectorForce {
@@ -8788,8 +14051,19 @@ pub struct VectorForce {
 }
 impl_inherits!(VectorForce, Constraint);
 impl_strong_instance_from!(VectorForce);
+impl Default for VectorForce {
+    fn default() -> Self {
+        Self {
+            superclass: Constraint::default(),
+            ApplyAtCenterOfMass: false,
+            Force: Vector3::new(1000f32, 0f32, 0f32),
+            RelativeTo: unimplemented!("convert u32 Enum to precise strong variant"),
+        }
+    }
+}
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
+#[derive(Default)]
 pub struct VehicleController {
     superclass: Controller,
 }
@@ -8811,6 +14085,22 @@ pub struct VehicleSeat {
 }
 impl_inherits!(VehicleSeat, BasePart);
 impl_strong_instance_from!(VehicleSeat);
+impl Default for VehicleSeat {
+    fn default() -> Self {
+        Self {
+            superclass: BasePart::default(),
+            Disabled: false,
+            HeadsUpDisplay: true,
+            MaxSpeed: 25f32,
+            Steer: 0i32,
+            SteerFloat: 0f32,
+            Throttle: 0i32,
+            ThrottleFloat: 0f32,
+            Torque: 10f32,
+            TurnSpeed: 1f32,
+        }
+    }
+}
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct VelocityMotor {
@@ -8822,8 +14112,20 @@ pub struct VelocityMotor {
 }
 impl_inherits!(VelocityMotor, JointInstance);
 impl_strong_instance_from!(VelocityMotor);
+impl Default for VelocityMotor {
+    fn default() -> Self {
+        Self {
+            superclass: JointInstance::default(),
+            CurrentAngle: 0f32,
+            DesiredAngle: 0f32,
+            Hole: Ref::none(),
+            MaxVelocity: 0f32,
+        }
+    }
+}
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
+#[derive(Default)]
 pub struct VersionControlService {
     superclass: Instance,
 }
@@ -8831,6 +14133,7 @@ impl_inherits!(VersionControlService, Instance);
 impl_strong_instance_from!(VersionControlService);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
+#[derive(Default)]
 pub struct VideoCapture {
     superclass: Capture,
 }
@@ -8838,6 +14141,7 @@ impl_inherits!(VideoCapture, Capture);
 impl_strong_instance_from!(VideoCapture);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
+#[derive(Default)]
 pub struct VideoCaptureService {
     superclass: Instance,
 }
@@ -8853,6 +14157,16 @@ pub struct VideoDeviceInput {
 }
 impl_inherits!(VideoDeviceInput, Instance);
 impl_strong_instance_from!(VideoDeviceInput);
+impl Default for VideoDeviceInput {
+    fn default() -> Self {
+        Self {
+            superclass: Instance::default(),
+            Active: false,
+            CameraId: "".to_owned(),
+            CaptureQuality: unimplemented!("convert u32 Enum to precise strong variant"),
+        }
+    }
+}
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct VideoDisplay {
@@ -8867,6 +14181,20 @@ pub struct VideoDisplay {
 }
 impl_inherits!(VideoDisplay, GuiObject);
 impl_strong_instance_from!(VideoDisplay);
+impl Default for VideoDisplay {
+    fn default() -> Self {
+        Self {
+            superclass: GuiObject::default(),
+            ResampleMode: unimplemented!("convert u32 Enum to precise strong variant"),
+            ScaleType: unimplemented!("convert u32 Enum to precise strong variant"),
+            TileSize: UDim2::new(UDim::new(1f32, 0i32), UDim::new(1f32, 0i32)),
+            VideoColor3: Color3::new(1f32, 1f32, 1f32),
+            VideoRectOffset: Vector2::new(0f32, 0f32),
+            VideoRectSize: Vector2::new(0f32, 0f32),
+            VideoTransparency: 0f32,
+        }
+    }
+}
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct VideoFrame {
@@ -8879,6 +14207,18 @@ pub struct VideoFrame {
 }
 impl_inherits!(VideoFrame, GuiObject);
 impl_strong_instance_from!(VideoFrame);
+impl Default for VideoFrame {
+    fn default() -> Self {
+        Self {
+            superclass: GuiObject::default(),
+            Looped: false,
+            Playing: false,
+            TimePosition: 0f64,
+            VideoContent: Content::none(),
+            Volume: 1f32,
+        }
+    }
+}
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct VideoPlayer {
@@ -8891,8 +14231,21 @@ pub struct VideoPlayer {
 }
 impl_inherits!(VideoPlayer, Instance);
 impl_strong_instance_from!(VideoPlayer);
+impl Default for VideoPlayer {
+    fn default() -> Self {
+        Self {
+            superclass: Instance::default(),
+            Looping: false,
+            PlaybackSpeed: 1f32,
+            TimePosition: 0f64,
+            VideoContent: Content::none(),
+            Volume: 1f32,
+        }
+    }
+}
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
+#[derive(Default)]
 pub struct VideoSampler {
     superclass: Object,
 }
@@ -8900,6 +14253,7 @@ impl_inherits!(VideoSampler, Object);
 impl_strong_instance_from!(VideoSampler);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
+#[derive(Default)]
 pub struct VideoScreenCaptureService {
     superclass: Instance,
 }
@@ -8907,6 +14261,7 @@ impl_inherits!(VideoScreenCaptureService, Instance);
 impl_strong_instance_from!(VideoScreenCaptureService);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
+#[derive(Default)]
 pub struct VideoService {
     superclass: Instance,
 }
@@ -8926,8 +14281,23 @@ pub struct ViewportFrame {
 }
 impl_inherits!(ViewportFrame, GuiObject);
 impl_strong_instance_from!(ViewportFrame);
+impl Default for ViewportFrame {
+    fn default() -> Self {
+        Self {
+            superclass: GuiObject::default(),
+            Ambient: Color3::new(0.78431374f32, 0.78431374f32, 0.78431374f32),
+            CameraCFrame: CFrame::identity(),
+            CameraFieldOfView: 1.2217306f32,
+            ImageColor3: Color3::new(1f32, 1f32, 1f32),
+            ImageTransparency: 0f32,
+            LightColor: Color3::new(0.54901963f32, 0.54901963f32, 0.54901963f32),
+            LightDirection: Vector3::new(-1f32, -1f32, -1f32),
+        }
+    }
+}
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
+#[derive(Default)]
 pub struct VirtualInputManager {
     superclass: Instance,
 }
@@ -8935,6 +14305,7 @@ impl_inherits!(VirtualInputManager, Instance);
 impl_strong_instance_from!(VirtualInputManager);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
+#[derive(Default)]
 pub struct VirtualUser {
     superclass: Instance,
 }
@@ -8942,6 +14313,7 @@ impl_inherits!(VirtualUser, Instance);
 impl_strong_instance_from!(VirtualUser);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
+#[derive(Default)]
 pub struct VisibilityCheckDispatcher {
     superclass: Instance,
 }
@@ -8949,6 +14321,7 @@ impl_inherits!(VisibilityCheckDispatcher, Instance);
 impl_strong_instance_from!(VisibilityCheckDispatcher);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
+#[derive(Default)]
 pub struct Visit {
     superclass: Instance,
 }
@@ -8964,6 +14337,16 @@ pub struct VisualizationMode {
 }
 impl_inherits!(VisualizationMode, Instance);
 impl_strong_instance_from!(VisualizationMode);
+impl Default for VisualizationMode {
+    fn default() -> Self {
+        Self {
+            superclass: Instance::default(),
+            Enabled: false,
+            Title: "".to_owned(),
+            ToolTip: "".to_owned(),
+        }
+    }
+}
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct VisualizationModeCategory {
@@ -8973,8 +14356,18 @@ pub struct VisualizationModeCategory {
 }
 impl_inherits!(VisualizationModeCategory, Instance);
 impl_strong_instance_from!(VisualizationModeCategory);
+impl Default for VisualizationModeCategory {
+    fn default() -> Self {
+        Self {
+            superclass: Instance::default(),
+            Enabled: false,
+            Title: "".to_owned(),
+        }
+    }
+}
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
+#[derive(Default)]
 pub struct VisualizationModeService {
     superclass: Instance,
 }
@@ -8982,6 +14375,7 @@ impl_inherits!(VisualizationModeService, Instance);
 impl_strong_instance_from!(VisualizationModeService);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
+#[derive(Default)]
 pub struct VoiceChatInternal {
     superclass: Instance,
 }
@@ -8997,8 +14391,21 @@ pub struct VoiceChatService {
 }
 impl_inherits!(VoiceChatService, Instance);
 impl_strong_instance_from!(VoiceChatService);
+impl Default for VoiceChatService {
+    fn default() -> Self {
+        Self {
+            superclass: Instance::default(),
+            DefaultDistanceAttenuation: unimplemented!(
+                "convert u32 Enum to precise strong variant"
+            ),
+            EnableDefaultVoice: true,
+            UseAudioApi: unimplemented!("convert u32 Enum to precise strong variant"),
+        }
+    }
+}
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
+#[derive(Default)]
 pub struct WebSocketClient {
     superclass: Instance,
 }
@@ -9006,6 +14413,7 @@ impl_inherits!(WebSocketClient, Instance);
 impl_strong_instance_from!(WebSocketClient);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
+#[derive(Default)]
 pub struct WebSocketService {
     superclass: Instance,
 }
@@ -9013,6 +14421,7 @@ impl_inherits!(WebSocketService, Instance);
 impl_strong_instance_from!(WebSocketService);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
+#[derive(Default)]
 pub struct WebStreamClient {
     superclass: Object,
 }
@@ -9020,6 +14429,7 @@ impl_inherits!(WebStreamClient, Object);
 impl_strong_instance_from!(WebStreamClient);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
+#[derive(Default)]
 pub struct WebViewService {
     superclass: Instance,
 }
@@ -9027,6 +14437,7 @@ impl_inherits!(WebViewService, Instance);
 impl_strong_instance_from!(WebViewService);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
+#[derive(Default)]
 pub struct WedgePart {
     superclass: FormFactorPart,
 }
@@ -9034,6 +14445,7 @@ impl_inherits!(WedgePart, FormFactorPart);
 impl_strong_instance_from!(WedgePart);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
+#[derive(Default)]
 pub struct Weld {
     superclass: JointInstance,
 }
@@ -9048,6 +14460,15 @@ pub struct WeldConstraint {
 }
 impl_inherits!(WeldConstraint, Instance);
 impl_strong_instance_from!(WeldConstraint);
+impl Default for WeldConstraint {
+    fn default() -> Self {
+        Self {
+            superclass: Instance::default(),
+            CFrame0: CFrame::identity(),
+            State: 3i32,
+        }
+    }
+}
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct Wire {
@@ -9059,6 +14480,17 @@ pub struct Wire {
 }
 impl_inherits!(Wire, Instance);
 impl_strong_instance_from!(Wire);
+impl Default for Wire {
+    fn default() -> Self {
+        Self {
+            superclass: Instance::default(),
+            SourceInstance: Ref::none(),
+            SourceName: "Output".to_owned(),
+            TargetInstance: Ref::none(),
+            TargetName: "Input".to_owned(),
+        }
+    }
+}
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct WireframeHandleAdornment {
@@ -9068,6 +14500,15 @@ pub struct WireframeHandleAdornment {
 }
 impl_inherits!(WireframeHandleAdornment, HandleAdornment);
 impl_strong_instance_from!(WireframeHandleAdornment);
+impl Default for WireframeHandleAdornment {
+    fn default() -> Self {
+        Self {
+            superclass: HandleAdornment::default(),
+            Scale: Vector3::new(1f32, 1f32, 1f32),
+            Thickness: 1f32,
+        }
+    }
+}
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct Workspace {
@@ -9115,8 +14556,74 @@ pub struct Workspace {
 }
 impl_inherits!(Workspace, WorldRoot);
 impl_strong_instance_from!(Workspace);
+impl Default for Workspace {
+    fn default() -> Self {
+        Self {
+            superclass: WorldRoot::default(),
+            AirDensity: 0.0012f32,
+            AirTurbulenceIntensity: 0f32,
+            AllowThirdPartySales: false,
+            AuthorityMode: unimplemented!("convert u32 Enum to precise strong variant"),
+            AvatarUnificationMode: unimplemented!("convert u32 Enum to precise strong variant"),
+            ClientAnimatorThrottling: unimplemented!("convert u32 Enum to precise strong variant"),
+            CollisionGroupData: b"\x01\x01\0\x04\xFF\xFF\xFF\xFF\x07Default"
+                .as_slice()
+                .into(),
+            CollisionGroups: "".to_owned(),
+            CurrentCamera: Ref::none(),
+            DistributedGameTime: 0f64,
+            ExplicitAutoJoints: true,
+            FallHeightEnabled: true,
+            FallenPartsDestroyHeight: -500f32,
+            FluidForces: unimplemented!("convert u32 Enum to precise strong variant"),
+            GlobalWind: Vector3::new(0f32, 0f32, 0f32),
+            Gravity: 196.2f32,
+            IkControlConstraintSupport: unimplemented!(
+                "convert u32 Enum to precise strong variant"
+            ),
+            LuauTypeCheckMode: unimplemented!("convert u32 Enum to precise strong variant"),
+            MeshPartHeadsAndAccessories: unimplemented!(
+                "convert u32 Enum to precise strong variant"
+            ),
+            ModelStreamingBehavior: unimplemented!("convert u32 Enum to precise strong variant"),
+            MoverConstraintRootBehavior: unimplemented!(
+                "convert u32 Enum to precise strong variant"
+            ),
+            PathfindingUseImprovedSearch: unimplemented!(
+                "convert u32 Enum to precise strong variant"
+            ),
+            PhysicsImprovedSleep: unimplemented!("convert u32 Enum to precise strong variant"),
+            PhysicsSteppingMethod: unimplemented!("convert u32 Enum to precise strong variant"),
+            PlayerCharacterDestroyBehavior: unimplemented!(
+                "convert u32 Enum to precise strong variant"
+            ),
+            PrimalPhysicsSolver: unimplemented!("convert u32 Enum to precise strong variant"),
+            RejectCharacterDeletions: unimplemented!("convert u32 Enum to precise strong variant"),
+            RenderingCacheOptimizations: unimplemented!(
+                "convert u32 Enum to precise strong variant"
+            ),
+            ReplicateInstanceDestroySetting: unimplemented!(
+                "convert u32 Enum to precise strong variant"
+            ),
+            Retargeting: unimplemented!("convert u32 Enum to precise strong variant"),
+            SandboxedInstanceMode: unimplemented!("convert u32 Enum to precise strong variant"),
+            StreamOutBehavior: unimplemented!("convert u32 Enum to precise strong variant"),
+            StreamingEnabled: false,
+            StreamingIntegrityMode: unimplemented!("convert u32 Enum to precise strong variant"),
+            StreamingMinRadius: 64i32,
+            StreamingTargetRadius: 1024i32,
+            TerrainWeldsFixed: true,
+            TouchEventsUseCollisionGroups: unimplemented!(
+                "convert u32 Enum to precise strong variant"
+            ),
+            TouchesUseCollisionGroups: false,
+            UseNewLuauTypeSolver: unimplemented!("convert u32 Enum to precise strong variant"),
+        }
+    }
+}
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
+#[derive(Default)]
 pub struct WorkspaceAnnotation {
     superclass: Annotation,
 }
@@ -9124,6 +14631,7 @@ impl_inherits!(WorkspaceAnnotation, Annotation);
 impl_strong_instance_from!(WorkspaceAnnotation);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
+#[derive(Default)]
 pub struct WorldModel {
     superclass: WorldRoot,
 }
@@ -9131,6 +14639,7 @@ impl_inherits!(WorldModel, WorldRoot);
 impl_strong_instance_from!(WorldModel);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
+#[derive(Default)]
 pub struct WorldRoot {
     superclass: Model,
 }
@@ -9138,6 +14647,7 @@ impl_inherits!(WorldRoot, Model);
 impl_strong_instance_from!(WorldRoot);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
+#[derive(Default)]
 pub struct WrapDeformer {
     superclass: BaseWrap,
 }
@@ -9159,6 +14669,22 @@ pub struct WrapLayer {
 }
 impl_inherits!(WrapLayer, BaseWrap);
 impl_strong_instance_from!(WrapLayer);
+impl Default for WrapLayer {
+    fn default() -> Self {
+        Self {
+            superclass: BaseWrap::default(),
+            AutoSkin: unimplemented!("convert u32 Enum to precise strong variant"),
+            BindOffset: CFrame::identity(),
+            Enabled: true,
+            Order: 1i32,
+            Puffiness: 1f32,
+            ReferenceMeshContent: Content::none(),
+            ReferenceOrigin: CFrame::identity(),
+            ShrinkFactor: 0f32,
+            TemporaryReferenceId: "".into(),
+        }
+    }
+}
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct WrapTarget {
@@ -9167,6 +14693,14 @@ pub struct WrapTarget {
 }
 impl_inherits!(WrapTarget, BaseWrap);
 impl_strong_instance_from!(WrapTarget);
+impl Default for WrapTarget {
+    fn default() -> Self {
+        Self {
+            superclass: BaseWrap::default(),
+            Stiffness: 0f32,
+        }
+    }
+}
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct WrapTextureTransfer {
@@ -9177,3 +14711,13 @@ pub struct WrapTextureTransfer {
 }
 impl_inherits!(WrapTextureTransfer, Instance);
 impl_strong_instance_from!(WrapTextureTransfer);
+impl Default for WrapTextureTransfer {
+    fn default() -> Self {
+        Self {
+            superclass: Instance::default(),
+            ReferenceCageMeshContent: Content::none(),
+            UvMaxBound: Vector2::new(f32::NEG_INFINITY, f32::NEG_INFINITY),
+            UvMinBound: Vector2::new(f32::INFINITY, f32::INFINITY),
+        }
+    }
+}
