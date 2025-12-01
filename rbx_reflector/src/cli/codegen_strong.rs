@@ -293,7 +293,14 @@ impl quote::ToTokens for WrapToTokens<&Variant> {
                 }
                 None => append(q! {None}),
             },
-            Variant::Tags(value) => append(q! {unimplemented!("Tags")}),
+            Variant::Tags(value) => {
+                if value.is_empty() {
+                    append(q! {Tags::new()});
+                } else {
+                    let values = value.iter();
+                    append(q! {vec![#(#values),*].into() });
+                }
+            }
             Variant::ContentId(value) => {
                 let lit = value.as_str();
                 append(q! {#lit.into()});
