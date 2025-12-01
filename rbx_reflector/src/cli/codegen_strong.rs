@@ -272,7 +272,12 @@ impl quote::ToTokens for WrapToTokens<&Variant> {
                 append(q! {#lit.into()});
             }
             Variant::Attributes(value) => append(q! {unimplemented!("Attributes")}),
-            Variant::UniqueId(value) => append(q! {unimplemented!("UniqueId")}),
+            Variant::UniqueId(value) => {
+                if !value.is_nil() {
+                    panic!("Cannot create default UniqueId");
+                }
+                append(q! {UniqueId::nil()});
+            }
             Variant::Font(value) => append(q! {unimplemented!("Font")}),
             Variant::MaterialColors(value) => append(q! {unimplemented!("MaterialColors")}),
             Variant::SecurityCapabilities(value) => {
