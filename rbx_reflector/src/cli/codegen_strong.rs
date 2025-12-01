@@ -152,7 +152,7 @@ impl quote::ToTokens for WrapToTokens<&Variant> {
             Variant::String(value) => tokens.extend(q! {#value.to_owned()}),
             Variant::BinaryString(value) => {
                 let lit = syn::LitByteStr::new(value.as_ref(), proc_macro2::Span::call_site());
-                append(q! {#lit.into()});
+                append(q! {#lit.as_slice().into()});
             }
             Variant::Bool(value) => append(q! {#value}),
             Variant::Int32(value) => append(q! {#value}),
@@ -184,7 +184,7 @@ impl quote::ToTokens for WrapToTokens<&Variant> {
             Variant::Axes(value) => append(q! {unimplemented!()}),
             Variant::BrickColor(value) => {
                 let number: u16 = *value as u16;
-                append(q! {BrickColor::from_number(#number)});
+                append(q! {BrickColor::from_number(#number).unwrap()});
             }
             Variant::CFrame(value) => {
                 if value == &CFrame::identity() {
@@ -263,7 +263,7 @@ impl quote::ToTokens for WrapToTokens<&Variant> {
             Variant::Int64(value) => append(q! {#value}),
             Variant::SharedString(value) => {
                 let lit = syn::LitByteStr::new(value.data(), proc_macro2::Span::call_site());
-                append(q! {SharedString::new(#lit.to_owned())});
+                append(q! {SharedString::new(#lit.to_vec())});
             }
             Variant::OptionalCFrame(value) => append(q! {unimplemented!()}),
             Variant::Tags(value) => append(q! {unimplemented!()}),
@@ -286,7 +286,7 @@ impl quote::ToTokens for WrapToTokens<&Variant> {
             },
             Variant::NetAssetRef(value) => {
                 let lit = syn::LitByteStr::new(value.data(), proc_macro2::Span::call_site());
-                append(q! {NetAssetRef::new(#lit.to_owned())});
+                append(q! {NetAssetRef::new(#lit.to_vec())});
             }
             variant => unimplemented!("{variant:?}"),
         }
