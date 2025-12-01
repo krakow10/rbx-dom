@@ -265,8 +265,8 @@ impl quote::ToTokens for WrapToTokens<&Variant> {
                 let lit = syn::LitByteStr::new(value.data(), proc_macro2::Span::call_site());
                 append(q! {SharedString::new(#lit.to_vec())});
             }
-            Variant::OptionalCFrame(value) => append(q! {unimplemented!()}),
-            Variant::Tags(value) => append(q! {unimplemented!()}),
+            Variant::OptionalCFrame(value) => append(q! {unimplemented!("OptionalCFrame")}),
+            Variant::Tags(value) => append(q! {unimplemented!("Tags")}),
             Variant::ContentId(value) => {
                 let lit = value.as_str();
                 append(q! {#lit.into()});
