@@ -124,28 +124,29 @@ fn generate_data_type(data_type: &DataType) -> syn::Type {
 struct WrapToTokens<T>(T);
 impl quote::ToTokens for WrapToTokens<Variant> {
     fn to_tokens(&self, tokens: &mut proc_macro2::TokenStream) {
+        use syn::parse_quote as pq;
+        let mut append = |tt: proc_macro2::TokenTree| tokens.append(tt);
         use quote::TokenStreamExt;
         use rbx_types::*;
         match &self.0 {
-            Variant::String(value) => tokens.append(syn::parse_quote! {#value.to_owned()}),
+            Variant::String(value) => append(pq! {#value.to_owned()}),
             Variant::BinaryString(value) => {
                 let lit = syn::LitByteStr::new(value.as_ref(), proc_macro2::Span::call_site());
-                tokens.append(syn::parse_quote! {#lit.into()});
+                append(pq! {#lit.into()});
             }
-            Variant::Bool(value) => tokens.append(syn::parse_quote! {#value}),
-            Variant::Int32(value) => tokens.append(syn::parse_quote! {#value}),
-            Variant::Float32(value) => tokens.append(syn::parse_quote! {#value}),
-            Variant::Float64(value) => tokens.append(syn::parse_quote! {#value}),
+            Variant::Bool(value) => append(pq! {#value}),
+            Variant::Int32(value) => append(pq! {#value}),
+            Variant::Float32(value) => append(pq! {#value}),
+            Variant::Float64(value) => append(pq! {#value}),
             Variant::UDim(UDim { scale, offset }) => {
-                tokens.append(syn::parse_quote! {UDim::new(#scale,#offset)});
+                append(pq! {UDim::new(#scale,#offset)});
             }
             Variant::UDim2(value) => {
                 let sx = value.x.scale;
                 let sy = value.y.scale;
                 let ox = value.x.offset;
                 let oy = value.y.offset;
-                tokens
-                    .append(syn::parse_quote! {UDim2::new(UDim::new(#sx,#ox),UDim::new(#sy,#oy))});
+                append(pq! {UDim2::new(UDim::new(#sx,#ox),UDim::new(#sy,#oy))});
             }
             Variant::Ray(value) => {
                 let ox = value.origin.x;
@@ -154,13 +155,13 @@ impl quote::ToTokens for WrapToTokens<Variant> {
                 let dx = value.direction.x;
                 let dy = value.direction.y;
                 let dz = value.direction.z;
-                tokens.append(syn::parse_quote! {Ray::new(Vector3::new(#ox,#oy,#oz),Vector3::new(#dx,#dy,#dz))});
+                append(pq! {Ray::new(Vector3::new(#ox,#oy,#oz),Vector3::new(#dx,#dy,#dz))});
             }
             Variant::Faces(value) => unimplemented!(),
             Variant::Axes(value) => unimplemented!(),
             Variant::BrickColor(value) => {
                 let number: u16 = *value as u16;
-                tokens.append(syn::parse_quote! {BrickColor::from_number(#number)});
+                append(pq! {BrickColor::from_number(#number)});
             }
             Variant::CFrame(value) => {
                 let px = value.position.x;
@@ -175,69 +176,71 @@ impl quote::ToTokens for WrapToTokens<Variant> {
                 let zx = value.orientation.z.x;
                 let zy = value.orientation.z.y;
                 let zz = value.orientation.z.z;
-                tokens.append(syn::parse_quote! {CFrame::new(Vector3::new(#px,#py,#pz),Matrix3::new(Vector3::new(#xx,#xy,#xz),Vector3::new(#yx,#yy,#yz),Vector3::new(#zx,#zy,#zz)))});
+                append(
+                    pq! {CFrame::new(Vector3::new(#px,#py,#pz),Matrix3::new(Vector3::new(#xx,#xy,#xz),Vector3::new(#yx,#yy,#yz),Vector3::new(#zx,#zy,#zz)))},
+                );
             }
             Variant::Enum(value) => unimplemented!("convert u32 Enum to precise strong variant"),
             Variant::Color3(value) => {
                 let r = value.r;
                 let g = value.g;
                 let b = value.b;
-                tokens.append(syn::parse_quote! {Color3::new(#r,#g,#b)});
+                append(pq! {Color3::new(#r,#g,#b)});
             }
             Variant::Vector2(value) => {
                 let x = value.x;
                 let y = value.y;
-                tokens.append(syn::parse_quote! {Vector2::new(#x,#y)});
+                append(pq! {Vector2::new(#x,#y)});
             }
             Variant::Vector3(value) => {
                 let x = value.x;
                 let y = value.y;
                 let z = value.z;
-                tokens.append(syn::parse_quote! {Vector3::new(#x,#y,#z)});
+                append(pq! {Vector3::new(#x,#y,#z)});
             }
             Variant::Ref(value) => {
                 if value.is_some() {
                     panic!("Cannot create default Ref");
                 }
-                tokens.append(syn::parse_quote! {Ref::none()});
+                append(pq! {Ref::none()});
             }
             Variant::Vector3int16(value) => {
                 let x = value.x;
                 let y = value.y;
                 let z = value.z;
-                tokens.append(syn::parse_quote! {Vector3int16::new(#x,#y,#z)});
+                append(pq! {Vector3int16::new(#x,#y,#z)});
             }
             Variant::NumberSequence(value) => unimplemented!(),
             Variant::ColorSequence(value) => unimplemented!(),
             Variant::NumberRange(value) => {
                 let min = value.min;
                 let max = value.max;
-                tokens.append(syn::parse_quote! {NumberRange::new(#min,#max)});
+                append(pq! {NumberRange::new(#min,#max)});
             }
             Variant::Rect(value) => {
                 let min_x = value.min.x;
                 let min_y = value.min.y;
                 let max_x = value.max.x;
                 let max_y = value.max.y;
-                tokens.append(syn::parse_quote! {Rect::new(Vector2::new(#min_x,#min_y),Vector2::new(#max_x,#max_y))});
+                append(pq! {Rect::new(Vector2::new(#min_x,#min_y),Vector2::new(#max_x,#max_y))});
             }
             Variant::PhysicalProperties(value) => unimplemented!(),
             Variant::Color3uint8(value) => {
                 let r = value.r;
                 let g = value.g;
                 let b = value.b;
-                tokens.append(syn::parse_quote! {Color3uint8::new(#r,#g,#b)});
+                append(pq! {Color3uint8::new(#r,#g,#b)});
             }
-            Variant::Int64(value) => tokens.append(syn::parse_quote! {#value}),
+            Variant::Int64(value) => append(pq! {#value}),
             Variant::SharedString(value) => {
                 let lit = syn::LitByteStr::new(value.data(), proc_macro2::Span::call_site());
-                tokens.append(syn::parse_quote! {SharedString::new(#lit.to_owned())});
+                append(pq! {SharedString::new(#lit.to_owned())});
             }
             Variant::OptionalCFrame(value) => unimplemented!(),
             Variant::Tags(value) => unimplemented!(),
             Variant::ContentId(value) => {
                 let lit = value.as_str();
-                tokens.append(syn::parse_quote! {#lit.into()});
+                append(pq! {#lit.into()});
             }
             Variant::Attributes(value) => unimplemented!(),
             Variant::UniqueId(value) => unimplemented!(),
@@ -245,14 +248,14 @@ impl quote::ToTokens for WrapToTokens<Variant> {
             Variant::MaterialColors(value) => unimplemented!(),
             Variant::SecurityCapabilities(value) => unimplemented!(),
             Variant::Content(value) => match value.value() {
-                ContentType::None => tokens.append(syn::parse_quote! {Content::none()}),
-                ContentType::Uri(uri) => tokens.append(syn::parse_quote! {Content::from_uri(#uri)}),
+                ContentType::None => append(pq! {Content::none()}),
+                ContentType::Uri(uri) => append(pq! {Content::from_uri(#uri)}),
                 ContentType::Object(_) => panic!("Cannot create Object Content"),
                 _ => panic!(),
             },
             Variant::NetAssetRef(value) => {
                 let lit = syn::LitByteStr::new(value.data(), proc_macro2::Span::call_site());
-                tokens.append(syn::parse_quote! {NetAssetRef::new(#lit.to_owned())});
+                append(pq! {NetAssetRef::new(#lit.to_owned())});
             }
             variant => unimplemented!("{variant:?}"),
         }
