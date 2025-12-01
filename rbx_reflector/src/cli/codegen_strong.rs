@@ -122,140 +122,167 @@ fn generate_data_type(data_type: &DataType) -> syn::Type {
 }
 
 struct WrapToTokens<T>(T);
+impl quote::ToTokens for WrapToTokens<f32> {
+    fn to_tokens(&self, tokens: &mut proc_macro2::TokenStream) {
+        let mut append = |tt| tokens.extend(tt);
+        let WrapToTokens(value) = self;
+        match value.classify() {
+            std::num::FpCategory::Nan => {
+                panic!("Brother there is a NaN in Roblox default values")
+            }
+            std::num::FpCategory::Infinite => {
+                if value.is_sign_negative() {
+                    append(quote::quote! {f32::NEG_INFINITY});
+                } else {
+                    append(quote::quote! {f32::INFINITY});
+                }
+            }
+            std::num::FpCategory::Zero
+            | std::num::FpCategory::Subnormal
+            | std::num::FpCategory::Normal => append(quote::quote! {#value}),
+        }
+    }
+}
 impl quote::ToTokens for WrapToTokens<&Variant> {
     fn to_tokens(&self, tokens: &mut proc_macro2::TokenStream) {
-        use syn::parse_quote as pq;
-        let mut append = |tt: proc_macro2::TokenTree| tokens.append(tt);
-        use quote::TokenStreamExt;
+        use quote::quote as q;
+        let mut append = |tt| tokens.extend(tt);
         use rbx_types::*;
         match &self.0 {
-            Variant::String(value) => append(pq! {#value.to_owned()}),
+            Variant::String(value) => tokens.extend(q! {#value.to_owned()}),
             Variant::BinaryString(value) => {
                 let lit = syn::LitByteStr::new(value.as_ref(), proc_macro2::Span::call_site());
-                append(pq! {#lit.into()});
+                append(q! {#lit.into()});
             }
-            Variant::Bool(value) => append(pq! {#value}),
-            Variant::Int32(value) => append(pq! {#value}),
-            Variant::Float32(value) => append(pq! {#value}),
-            Variant::Float64(value) => append(pq! {#value}),
+            Variant::Bool(value) => append(q! {#value}),
+            Variant::Int32(value) => append(q! {#value}),
+            Variant::Float32(value) => {
+                let value = WrapToTokens(*value);
+                append(q! {#value});
+            }
+            Variant::Float64(value) => append(q! {#value}),
             Variant::UDim(UDim { scale, offset }) => {
-                append(pq! {UDim::new(#scale,#offset)});
+                append(q! {UDim::new(#scale,#offset)});
             }
             Variant::UDim2(value) => {
-                let sx = value.x.scale;
-                let sy = value.y.scale;
+                let sx = WrapToTokens(value.x.scale);
+                let sy = WrapToTokens(value.y.scale);
                 let ox = value.x.offset;
                 let oy = value.y.offset;
-                append(pq! {UDim2::new(UDim::new(#sx,#ox),UDim::new(#sy,#oy))});
+                append(q! {UDim2::new(UDim::new(#sx,#ox),UDim::new(#sy,#oy))});
             }
             Variant::Ray(value) => {
-                let ox = value.origin.x;
-                let oy = value.origin.y;
-                let oz = value.origin.z;
-                let dx = value.direction.x;
-                let dy = value.direction.y;
-                let dz = value.direction.z;
-                append(pq! {Ray::new(Vector3::new(#ox,#oy,#oz),Vector3::new(#dx,#dy,#dz))});
+                let ox = WrapToTokens(value.origin.x);
+                let oy = WrapToTokens(value.origin.y);
+                let oz = WrapToTokens(value.origin.z);
+                let dx = WrapToTokens(value.direction.x);
+                let dy = WrapToTokens(value.direction.y);
+                let dz = WrapToTokens(value.direction.z);
+                append(q! {Ray::new(Vector3::new(#ox,#oy,#oz),Vector3::new(#dx,#dy,#dz))});
             }
-            Variant::Faces(value) => unimplemented!(),
-            Variant::Axes(value) => unimplemented!(),
+            Variant::Faces(value) => append(q! {unimplemented!()}),
+            Variant::Axes(value) => append(q! {unimplemented!()}),
             Variant::BrickColor(value) => {
                 let number: u16 = *value as u16;
-                append(pq! {BrickColor::from_number(#number)});
+                append(q! {BrickColor::from_number(#number)});
             }
             Variant::CFrame(value) => {
-                let px = value.position.x;
-                let py = value.position.y;
-                let pz = value.position.z;
-                let xx = value.orientation.x.x;
-                let xy = value.orientation.x.y;
-                let xz = value.orientation.x.z;
-                let yx = value.orientation.y.x;
-                let yy = value.orientation.y.y;
-                let yz = value.orientation.y.z;
-                let zx = value.orientation.z.x;
-                let zy = value.orientation.z.y;
-                let zz = value.orientation.z.z;
+                let px = WrapToTokens(value.position.x);
+                let py = WrapToTokens(value.position.y);
+                let pz = WrapToTokens(value.position.z);
+                let xx = WrapToTokens(value.orientation.x.x);
+                let xy = WrapToTokens(value.orientation.x.y);
+                let xz = WrapToTokens(value.orientation.x.z);
+                let yx = WrapToTokens(value.orientation.y.x);
+                let yy = WrapToTokens(value.orientation.y.y);
+                let yz = WrapToTokens(value.orientation.y.z);
+                let zx = WrapToTokens(value.orientation.z.x);
+                let zy = WrapToTokens(value.orientation.z.y);
+                let zz = WrapToTokens(value.orientation.z.z);
                 append(
-                    pq! {CFrame::new(Vector3::new(#px,#py,#pz),Matrix3::new(Vector3::new(#xx,#xy,#xz),Vector3::new(#yx,#yy,#yz),Vector3::new(#zx,#zy,#zz)))},
+                    q! {CFrame::new(Vector3::new(#px,#py,#pz),Matrix3::new(Vector3::new(#xx,#xy,#xz),Vector3::new(#yx,#yy,#yz),Vector3::new(#zx,#zy,#zz)))},
                 );
             }
-            Variant::Enum(value) => unimplemented!("convert u32 Enum to precise strong variant"),
+            Variant::Enum(value) => {
+                append(q! {unimplemented!("convert u32 Enum to precise strong variant")})
+            }
             Variant::Color3(value) => {
-                let r = value.r;
-                let g = value.g;
-                let b = value.b;
-                append(pq! {Color3::new(#r,#g,#b)});
+                let r = WrapToTokens(value.r);
+                let g = WrapToTokens(value.g);
+                let b = WrapToTokens(value.b);
+                append(q! {Color3::new(#r,#g,#b)});
             }
             Variant::Vector2(value) => {
-                let x = value.x;
-                let y = value.y;
-                append(pq! {Vector2::new(#x,#y)});
+                let x = WrapToTokens(value.x);
+                let y = WrapToTokens(value.y);
+                append(q! {Vector2::new(#x,#y)});
             }
             Variant::Vector3(value) => {
-                let x = value.x;
-                let y = value.y;
-                let z = value.z;
-                append(pq! {Vector3::new(#x,#y,#z)});
+                let x = WrapToTokens(value.x);
+                let y = WrapToTokens(value.y);
+                let z = WrapToTokens(value.z);
+                append(q! {Vector3::new(#x,#y,#z)});
             }
             Variant::Ref(value) => {
                 if value.is_some() {
                     panic!("Cannot create default Ref");
                 }
-                append(pq! {Ref::none()});
+                append(q! {Ref::none()});
             }
             Variant::Vector3int16(value) => {
                 let x = value.x;
                 let y = value.y;
                 let z = value.z;
-                append(pq! {Vector3int16::new(#x,#y,#z)});
+                append(q! {Vector3int16::new(#x,#y,#z)});
             }
-            Variant::NumberSequence(value) => unimplemented!(),
-            Variant::ColorSequence(value) => unimplemented!(),
+            Variant::NumberSequence(value) => append(q! {unimplemented!("NumberSequence")}),
+            Variant::ColorSequence(value) => append(q! {unimplemented!("ColorSequence")}),
             Variant::NumberRange(value) => {
-                let min = value.min;
-                let max = value.max;
-                append(pq! {NumberRange::new(#min,#max)});
+                let min = WrapToTokens(value.min);
+                let max = WrapToTokens(value.max);
+                append(q! {NumberRange::new(#min,#max)});
             }
             Variant::Rect(value) => {
-                let min_x = value.min.x;
-                let min_y = value.min.y;
-                let max_x = value.max.x;
-                let max_y = value.max.y;
-                append(pq! {Rect::new(Vector2::new(#min_x,#min_y),Vector2::new(#max_x,#max_y))});
+                let min_x = WrapToTokens(value.min.x);
+                let min_y = WrapToTokens(value.min.y);
+                let max_x = WrapToTokens(value.max.x);
+                let max_y = WrapToTokens(value.max.y);
+                append(q! {Rect::new(Vector2::new(#min_x,#min_y),Vector2::new(#max_x,#max_y))});
             }
-            Variant::PhysicalProperties(value) => unimplemented!(),
+            Variant::PhysicalProperties(value) => append(q! {unimplemented!("PhysicalProperties")}),
             Variant::Color3uint8(value) => {
                 let r = value.r;
                 let g = value.g;
                 let b = value.b;
-                append(pq! {Color3uint8::new(#r,#g,#b)});
+                append(q! {Color3uint8::new(#r,#g,#b)});
             }
-            Variant::Int64(value) => append(pq! {#value}),
+            Variant::Int64(value) => append(q! {#value}),
             Variant::SharedString(value) => {
                 let lit = syn::LitByteStr::new(value.data(), proc_macro2::Span::call_site());
-                append(pq! {SharedString::new(#lit.to_owned())});
+                append(q! {SharedString::new(#lit.to_owned())});
             }
-            Variant::OptionalCFrame(value) => unimplemented!(),
-            Variant::Tags(value) => unimplemented!(),
+            Variant::OptionalCFrame(value) => append(q! {unimplemented!()}),
+            Variant::Tags(value) => append(q! {unimplemented!()}),
             Variant::ContentId(value) => {
                 let lit = value.as_str();
-                append(pq! {#lit.into()});
+                append(q! {#lit.into()});
             }
-            Variant::Attributes(value) => unimplemented!(),
-            Variant::UniqueId(value) => unimplemented!(),
-            Variant::Font(value) => unimplemented!(),
-            Variant::MaterialColors(value) => unimplemented!(),
-            Variant::SecurityCapabilities(value) => unimplemented!(),
+            Variant::Attributes(value) => append(q! {unimplemented!("Attributes")}),
+            Variant::UniqueId(value) => append(q! {unimplemented!("UniqueId")}),
+            Variant::Font(value) => append(q! {unimplemented!("Font")}),
+            Variant::MaterialColors(value) => append(q! {unimplemented!("MaterialColors")}),
+            Variant::SecurityCapabilities(value) => {
+                append(q! {unimplemented!("SecurityCapabilities")})
+            }
             Variant::Content(value) => match value.value() {
-                ContentType::None => append(pq! {Content::none()}),
-                ContentType::Uri(uri) => append(pq! {Content::from_uri(#uri)}),
+                ContentType::None => append(q! {Content::none()}),
+                ContentType::Uri(uri) => append(q! {Content::from_uri(#uri)}),
                 ContentType::Object(_) => panic!("Cannot create Object Content"),
                 _ => panic!(),
             },
             Variant::NetAssetRef(value) => {
                 let lit = syn::LitByteStr::new(value.data(), proc_macro2::Span::call_site());
-                append(pq! {NetAssetRef::new(#lit.to_owned())});
+                append(q! {NetAssetRef::new(#lit.to_owned())});
             }
             variant => unimplemented!("{variant:?}"),
         }
