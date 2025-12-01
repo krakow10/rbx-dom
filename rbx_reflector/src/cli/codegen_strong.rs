@@ -122,7 +122,7 @@ fn generate_data_type(data_type: &DataType) -> syn::Type {
 }
 
 struct WrapToTokens<T>(T);
-impl quote::ToTokens for WrapToTokens<Variant> {
+impl quote::ToTokens for WrapToTokens<&Variant> {
     fn to_tokens(&self, tokens: &mut proc_macro2::TokenStream) {
         use syn::parse_quote as pq;
         let mut append = |tt: proc_macro2::TokenTree| tokens.append(tt);
@@ -362,7 +362,7 @@ impl StrongInstancesCollector {
                         .default_properties
                         .get(prop.name.as_ref())
                         .unwrap_or_else(|| prop.data_type.ty().fallback_default_value().unwrap());
-                    let value = format!("{value:?}");
+                    let value = WrapToTokens(value);
                     let field: syn::FieldValue = syn::parse_quote! {
                         #ident: #value
                     };
