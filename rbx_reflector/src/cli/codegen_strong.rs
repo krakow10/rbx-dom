@@ -143,6 +143,31 @@ impl quote::ToTokens for WrapToTokens<f32> {
         }
     }
 }
+impl quote::ToTokens for WrapToTokens<&rbx_types::CFrame> {
+    fn to_tokens(&self, tokens: &mut proc_macro2::TokenStream) {
+        let mut append = |tt| tokens.extend(tt);
+        let &WrapToTokens(value) = self;
+        if value == &rbx_types::CFrame::identity() {
+            append(quote::quote! {CFrame::identity()});
+            return;
+        }
+        let px = WrapToTokens(value.position.x);
+        let py = WrapToTokens(value.position.y);
+        let pz = WrapToTokens(value.position.z);
+        let xx = WrapToTokens(value.orientation.x.x);
+        let xy = WrapToTokens(value.orientation.x.y);
+        let xz = WrapToTokens(value.orientation.x.z);
+        let yx = WrapToTokens(value.orientation.y.x);
+        let yy = WrapToTokens(value.orientation.y.y);
+        let yz = WrapToTokens(value.orientation.y.z);
+        let zx = WrapToTokens(value.orientation.z.x);
+        let zy = WrapToTokens(value.orientation.z.y);
+        let zz = WrapToTokens(value.orientation.z.z);
+        append(
+            quote::quote! {CFrame::new(Vector3::new(#px,#py,#pz),Matrix3::new(Vector3::new(#xx,#xy,#xz),Vector3::new(#yx,#yy,#yz),Vector3::new(#zx,#zy,#zz)))},
+        );
+    }
+}
 impl quote::ToTokens for WrapToTokens<&Variant> {
     fn to_tokens(&self, tokens: &mut proc_macro2::TokenStream) {
         use quote::quote as q;
@@ -187,25 +212,8 @@ impl quote::ToTokens for WrapToTokens<&Variant> {
                 append(q! {BrickColor::from_number(#number).unwrap()});
             }
             Variant::CFrame(value) => {
-                if value == &CFrame::identity() {
-                    append(q! {CFrame::identity()});
-                    return;
-                }
-                let px = WrapToTokens(value.position.x);
-                let py = WrapToTokens(value.position.y);
-                let pz = WrapToTokens(value.position.z);
-                let xx = WrapToTokens(value.orientation.x.x);
-                let xy = WrapToTokens(value.orientation.x.y);
-                let xz = WrapToTokens(value.orientation.x.z);
-                let yx = WrapToTokens(value.orientation.y.x);
-                let yy = WrapToTokens(value.orientation.y.y);
-                let yz = WrapToTokens(value.orientation.y.z);
-                let zx = WrapToTokens(value.orientation.z.x);
-                let zy = WrapToTokens(value.orientation.z.y);
-                let zz = WrapToTokens(value.orientation.z.z);
-                append(
-                    q! {CFrame::new(Vector3::new(#px,#py,#pz),Matrix3::new(Vector3::new(#xx,#xy,#xz),Vector3::new(#yx,#yy,#yz),Vector3::new(#zx,#zy,#zz)))},
-                );
+                let value = WrapToTokens(value);
+                append(q! {#value});
             }
             Variant::Enum(value) => {
                 append(q! {unimplemented!("convert u32 Enum to precise strong variant")})
@@ -265,7 +273,13 @@ impl quote::ToTokens for WrapToTokens<&Variant> {
                 let lit = syn::LitByteStr::new(value.data(), proc_macro2::Span::call_site());
                 append(q! {SharedString::new(#lit.to_vec())});
             }
-            Variant::OptionalCFrame(value) => append(q! {unimplemented!("OptionalCFrame")}),
+            Variant::OptionalCFrame(value) => match value {
+                Some(value) => {
+                    let value = WrapToTokens(value);
+                    append(q! {Some(#value)});
+                }
+                None => append(q! {None}),
+            },
             Variant::Tags(value) => append(q! {unimplemented!("Tags")}),
             Variant::ContentId(value) => {
                 let lit = value.as_str();
