@@ -187,6 +187,10 @@ impl quote::ToTokens for WrapToTokens<&Variant> {
                 append(q! {BrickColor::from_number(#number)});
             }
             Variant::CFrame(value) => {
+                if value == &CFrame::identity() {
+                    append(q! {CFrame::identity()});
+                    return;
+                }
                 let px = WrapToTokens(value.position.x);
                 let py = WrapToTokens(value.position.y);
                 let pz = WrapToTokens(value.position.z);
