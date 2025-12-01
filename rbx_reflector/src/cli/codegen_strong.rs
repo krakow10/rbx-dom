@@ -261,7 +261,20 @@ impl quote::ToTokens for WrapToTokens<&Variant> {
                 let max_y = WrapToTokens(value.max.y);
                 append(q! {Rect::new(Vector2::new(#min_x,#min_y),Vector2::new(#max_x,#max_y))});
             }
-            Variant::PhysicalProperties(value) => append(q! {unimplemented!("PhysicalProperties")}),
+            Variant::PhysicalProperties(value) => match value {
+                rbx_types::PhysicalProperties::Custom(value) => {
+                    let density = WrapToTokens(value.density());
+                    let friction = WrapToTokens(value.friction());
+                    let elasticity = WrapToTokens(value.elasticity());
+                    let friction_weight = WrapToTokens(value.friction_weight());
+                    let elasticity_weight = WrapToTokens(value.elasticity_weight());
+                    let acoustic_absorption = WrapToTokens(value.acoustic_absorption());
+                    append(
+                        q! {PhysicalProperties::Custom(CustomPhysicalProperties::new(#density,#friction,#elasticity,#friction_weight,#elasticity_weight,#acoustic_absorption))},
+                    );
+                }
+                rbx_types::PhysicalProperties::Default => append(q! {PhysicalProperties::Default}),
+            },
             Variant::Color3uint8(value) => {
                 let r = value.r;
                 let g = value.g;
