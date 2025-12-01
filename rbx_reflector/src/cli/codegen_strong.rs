@@ -276,7 +276,8 @@ impl quote::ToTokens for WrapToTokens<&Variant> {
             Variant::Font(value) => append(q! {unimplemented!("Font")}),
             Variant::MaterialColors(value) => append(q! {unimplemented!("MaterialColors")}),
             Variant::SecurityCapabilities(value) => {
-                append(q! {unimplemented!("SecurityCapabilities")})
+                let bits = value.bits();
+                append(q! {SecurityCapabilities::from_bits(#bits)})
             }
             Variant::Content(value) => match value.value() {
                 ContentType::None => append(q! {Content::none()}),
