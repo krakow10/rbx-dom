@@ -168,6 +168,17 @@ impl quote::ToTokens for WrapToTokens<&rbx_types::CFrame> {
         );
     }
 }
+
+impl quote::ToTokens for WrapToTokens<&rbx_types::Color3> {
+    fn to_tokens(&self, tokens: &mut proc_macro2::TokenStream) {
+        let mut append = |tt| tokens.extend(tt);
+        let &WrapToTokens(value) = self;
+        let r = WrapToTokens(value.r);
+        let g = WrapToTokens(value.g);
+        let b = WrapToTokens(value.b);
+        append(quote::quote! {Color3::new(#r,#g,#b)});
+    }
+}
 impl quote::ToTokens for WrapToTokens<&Variant> {
     fn to_tokens(&self, tokens: &mut proc_macro2::TokenStream) {
         use quote::quote as q;
@@ -219,10 +230,8 @@ impl quote::ToTokens for WrapToTokens<&Variant> {
                 append(q! {unimplemented!("convert u32 Enum to precise strong variant")})
             }
             Variant::Color3(value) => {
-                let r = WrapToTokens(value.r);
-                let g = WrapToTokens(value.g);
-                let b = WrapToTokens(value.b);
-                append(q! {Color3::new(#r,#g,#b)});
+                let value = WrapToTokens(value);
+                append(q! {#value});
             }
             Variant::Vector2(value) => {
                 let x = WrapToTokens(value.x);
@@ -255,7 +264,16 @@ impl quote::ToTokens for WrapToTokens<&Variant> {
                     q! {NumberSequence{keypoints:vec![#(NumberSequenceKeypoint::new(#times,#values,#envelopes)),*]}},
                 );
             }
-            Variant::ColorSequence(value) => append(q! {unimplemented!("ColorSequence")}),
+            Variant::ColorSequence(value) => {
+                let times = value.keypoints.iter().map(|keypoint| keypoint.time);
+                let colors = value
+                    .keypoints
+                    .iter()
+                    .map(|keypoint| WrapToTokens(&keypoint.color));
+                append(
+                    q! {ColorSequence{keypoints:vec![#(ColorSequenceKeypoint::new(#times,#colors)),*]}},
+                );
+            }
             Variant::NumberRange(value) => {
                 let min = WrapToTokens(value.min);
                 let max = WrapToTokens(value.max);
