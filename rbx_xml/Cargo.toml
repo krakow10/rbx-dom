@@ -31,3 +31,6 @@ heck = "0.4.1"
 rbx_reflection_database = { path = "../rbx_reflection_database", features = [
     "debug_always_use_bundled",
 ] }
+
+[lints]
+workspace = true

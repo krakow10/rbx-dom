@@ -43,3 +43,6 @@ rbx_reflection_database = { path = "../rbx_reflection_database", features = [
 [[bench]]
 name = "suite"
 harness = false
+
+[lints]
+workspace = true

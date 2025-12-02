@@ -26,3 +26,6 @@ serde = "1.0.137"
 rmp-serde = "1.1.1"
 dirs = "5.0.1"
 log = "0.4.20"
+
+[lints]
+workspace = true
