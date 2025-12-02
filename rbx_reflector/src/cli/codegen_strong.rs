@@ -247,7 +247,14 @@ impl quote::ToTokens for WrapToTokens<&Variant> {
                 let z = value.z;
                 append(q! {Vector3int16::new(#x,#y,#z)});
             }
-            Variant::NumberSequence(value) => append(q! {unimplemented!("NumberSequence")}),
+            Variant::NumberSequence(value) => {
+                let times = value.keypoints.iter().map(|keypoint| keypoint.time);
+                let values = value.keypoints.iter().map(|keypoint| keypoint.value);
+                let envelopes = value.keypoints.iter().map(|keypoint| keypoint.envelope);
+                append(
+                    q! {NumberSequence{keypoints:vec![#(NumberSequenceKeypoint::new(#times,#values,#envelopes)),*]}},
+                );
+            }
             Variant::ColorSequence(value) => append(q! {unimplemented!("ColorSequence")}),
             Variant::NumberRange(value) => {
                 let min = WrapToTokens(value.min);
