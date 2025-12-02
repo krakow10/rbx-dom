@@ -2831,7 +2831,12 @@ impl Default for Beam {
             Attachment0: Ref::none(),
             Attachment1: Ref::none(),
             Brightness: 1f32,
-            Color: unimplemented!("ColorSequence"),
+            Color: ColorSequence {
+                keypoints: vec![
+                    ColorSequenceKeypoint::new(0f32, Color3::new(1f32, 1f32, 1f32)),
+                    ColorSequenceKeypoint::new(1f32, Color3::new(1f32, 1f32, 1f32)),
+                ],
+            },
             CurveSize0: 0f32,
             CurveSize1: 0f32,
             Enabled: true,
@@ -2843,7 +2848,12 @@ impl Default for Beam {
             TextureLength: 1f32,
             TextureMode: unimplemented!("convert u32 Enum to precise strong variant"),
             TextureSpeed: 1f32,
-            Transparency: unimplemented!("NumberSequence"),
+            Transparency: NumberSequence {
+                keypoints: vec![
+                    NumberSequenceKeypoint::new(0f32, 0.5f32, 0f32),
+                    NumberSequenceKeypoint::new(1f32, 0.5f32, 0f32),
+                ],
+            },
             Width0: 1f32,
             Width1: 1f32,
             ZOffset: 0f32,
@@ -8659,7 +8669,12 @@ impl Default for ParticleEmitter {
             superclass: Instance::default(),
             Acceleration: Vector3::new(0f32, 0f32, 0f32),
             Brightness: 1f32,
-            Color: unimplemented!("ColorSequence"),
+            Color: ColorSequence {
+                keypoints: vec![
+                    ColorSequenceKeypoint::new(0f32, Color3::new(1f32, 1f32, 1f32)),
+                    ColorSequenceKeypoint::new(1f32, Color3::new(1f32, 1f32, 1f32)),
+                ],
+            },
             Drag: 0f32,
             EmissionDirection: unimplemented!("convert u32 Enum to precise strong variant"),
             Enabled: true,
@@ -8683,13 +8698,28 @@ impl Default for ParticleEmitter {
             ShapeInOut: unimplemented!("convert u32 Enum to precise strong variant"),
             ShapePartial: 1f32,
             ShapeStyle: unimplemented!("convert u32 Enum to precise strong variant"),
-            Size: unimplemented!("NumberSequence"),
+            Size: NumberSequence {
+                keypoints: vec![
+                    NumberSequenceKeypoint::new(0f32, 1f32, 0f32),
+                    NumberSequenceKeypoint::new(1f32, 1f32, 0f32),
+                ],
+            },
             Speed: NumberRange::new(5f32, 5f32),
             SpreadAngle: Vector2::new(0f32, 0f32),
-            Squash: unimplemented!("NumberSequence"),
+            Squash: NumberSequence {
+                keypoints: vec![
+                    NumberSequenceKeypoint::new(0f32, 0f32, 0f32),
+                    NumberSequenceKeypoint::new(1f32, 0f32, 0f32),
+                ],
+            },
             Texture: "rbxasset://textures/particles/sparkles_main.dds".into(),
             TimeScale: 1f32,
-            Transparency: unimplemented!("NumberSequence"),
+            Transparency: NumberSequence {
+                keypoints: vec![
+                    NumberSequenceKeypoint::new(0f32, 0f32, 0f32),
+                    NumberSequenceKeypoint::new(1f32, 0f32, 0f32),
+                ],
+            },
             VelocityInheritance: 0f32,
             WindAffectsDrag: false,
             ZOffset: 0f32,
@@ -13158,7 +13188,12 @@ impl Default for Trail {
             Attachment0: Ref::none(),
             Attachment1: Ref::none(),
             Brightness: 1f32,
-            Color: unimplemented!("ColorSequence"),
+            Color: ColorSequence {
+                keypoints: vec![
+                    ColorSequenceKeypoint::new(0f32, Color3::new(1f32, 1f32, 1f32)),
+                    ColorSequenceKeypoint::new(1f32, Color3::new(1f32, 1f32, 1f32)),
+                ],
+            },
             Enabled: true,
             FaceCamera: false,
             Lifetime: 2f32,
@@ -13169,8 +13204,18 @@ impl Default for Trail {
             Texture: "".into(),
             TextureLength: 1f32,
             TextureMode: unimplemented!("convert u32 Enum to precise strong variant"),
-            Transparency: unimplemented!("NumberSequence"),
-            WidthScale: unimplemented!("NumberSequence"),
+            Transparency: NumberSequence {
+                keypoints: vec![
+                    NumberSequenceKeypoint::new(0f32, 0.5f32, 0f32),
+                    NumberSequenceKeypoint::new(1f32, 0.5f32, 0f32),
+                ],
+            },
+            WidthScale: NumberSequence {
+                keypoints: vec![
+                    NumberSequenceKeypoint::new(0f32, 1f32, 0f32),
+                    NumberSequenceKeypoint::new(1f32, 1f32, 0f32),
+                ],
+            },
         }
     }
 }
@@ -13456,11 +13501,21 @@ impl Default for UIGradient {
     fn default() -> Self {
         Self {
             superclass: UIComponent::default(),
-            Color: unimplemented!("ColorSequence"),
+            Color: ColorSequence {
+                keypoints: vec![
+                    ColorSequenceKeypoint::new(0f32, Color3::new(1f32, 1f32, 1f32)),
+                    ColorSequenceKeypoint::new(1f32, Color3::new(1f32, 1f32, 1f32)),
+                ],
+            },
             Enabled: true,
             Offset: Vector2::new(0f32, 0f32),
             Rotation: 0f32,
-            Transparency: unimplemented!("NumberSequence"),
+            Transparency: NumberSequence {
+                keypoints: vec![
+                    NumberSequenceKeypoint::new(0f32, 0f32, 0f32),
+                    NumberSequenceKeypoint::new(1f32, 0f32, 0f32),
+                ],
+            },
         }
     }
 }
