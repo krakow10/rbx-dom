@@ -1,6 +1,7 @@
 use std::path::PathBuf;
 
 use clap::Parser;
+use quote::ToTokens;
 use rbx_reflection::{ClassDescriptor, DataType, EnumDescriptor};
 use rbx_types::Variant;
 
@@ -13,7 +14,6 @@ pub struct CodegenStrongSubcommand {
 
 impl CodegenStrongSubcommand {
     pub fn run(&self) -> anyhow::Result<()> {
-        use quote::ToTokens;
         let db = rbx_reflection_database::get().unwrap();
 
         let dest_instance = self.output.join("instances.rs");
@@ -25,10 +25,9 @@ impl CodegenStrongSubcommand {
             for descriptor in db.classes.values() {
                 strong_instances.push(descriptor);
             }
-            let complete_file = strong_instances.sort().codegen();
 
             // make a string of the unformatted code
-            let code = complete_file.into_token_stream().to_string();
+            let code = strong_instances.sort().into_token_stream().to_string();
 
             // format via cli
             let code = rustfmt(code.as_bytes())?;
@@ -41,10 +40,9 @@ impl CodegenStrongSubcommand {
             for descriptor in db.enums.values() {
                 strong_enum.push(descriptor);
             }
-            let complete_file = strong_enum.sort().codegen();
 
             // make a string of the unformatted code
-            let code = complete_file.into_token_stream().to_string();
+            let code = strong_enum.sort().into_token_stream().to_string();
 
             // format via cli
             let code = rustfmt(code.as_bytes())?;
@@ -122,7 +120,7 @@ fn generate_data_type(data_type: &DataType) -> syn::Type {
 }
 
 struct WrapToTokens<T>(T);
-impl quote::ToTokens for WrapToTokens<f32> {
+impl ToTokens for WrapToTokens<f32> {
     fn to_tokens(&self, tokens: &mut proc_macro2::TokenStream) {
         let mut append = |tt| tokens.extend(tt);
         let WrapToTokens(value) = self;
@@ -143,7 +141,7 @@ impl quote::ToTokens for WrapToTokens<f32> {
         }
     }
 }
-impl quote::ToTokens for WrapToTokens<&rbx_types::CFrame> {
+impl ToTokens for WrapToTokens<&rbx_types::CFrame> {
     fn to_tokens(&self, tokens: &mut proc_macro2::TokenStream) {
         let mut append = |tt| tokens.extend(tt);
         let &WrapToTokens(value) = self;
@@ -169,7 +167,7 @@ impl quote::ToTokens for WrapToTokens<&rbx_types::CFrame> {
     }
 }
 
-impl quote::ToTokens for WrapToTokens<&rbx_types::Color3> {
+impl ToTokens for WrapToTokens<&rbx_types::Color3> {
     fn to_tokens(&self, tokens: &mut proc_macro2::TokenStream) {
         let mut append = |tt| tokens.extend(tt);
         let &WrapToTokens(value) = self;
@@ -179,7 +177,7 @@ impl quote::ToTokens for WrapToTokens<&rbx_types::Color3> {
         append(quote::quote! {Color3::new(#r,#g,#b)});
     }
 }
-impl quote::ToTokens for WrapToTokens<&Variant> {
+impl ToTokens for WrapToTokens<&Variant> {
     fn to_tokens(&self, tokens: &mut proc_macro2::TokenStream) {
         use quote::quote as q;
         let mut append = |tt| tokens.extend(tt);
@@ -514,8 +512,11 @@ impl StrongInstancesCollector {
         Sorted(self)
     }
 }
-impl Sorted<StrongInstancesCollector> {
-    fn codegen(self) -> syn::File {
+impl ToTokens for Sorted<StrongInstancesCollector> {
+    fn to_tokens(&self, tokens: &mut proc_macro2::TokenStream) {
+        unimplemented!();
+    }
+    fn into_token_stream(self) -> proc_macro2::TokenStream {
         let Sorted(instances) = self;
         // generate StrongInstance enum
         let mut strong_instances_enum: syn::ItemEnum = syn::parse_quote! {
@@ -547,7 +548,7 @@ impl Sorted<StrongInstancesCollector> {
                     }),
             );
 
-        complete_file
+        quote::quote! {#complete_file}
     }
 }
 
@@ -620,8 +621,11 @@ impl EnumCollector {
         Sorted(self)
     }
 }
-impl Sorted<EnumCollector> {
-    fn codegen(self) -> syn::File {
+impl ToTokens for Sorted<EnumCollector> {
+    fn to_tokens(&self, tokens: &mut proc_macro2::TokenStream) {
+        unimplemented!();
+    }
+    fn into_token_stream(self) -> proc_macro2::TokenStream {
         let Sorted(enums) = self;
 
         // generate StrongInstance enum
@@ -640,7 +644,7 @@ impl Sorted<EnumCollector> {
             .items
             .extend(enums.enums.into_iter().map(syn::Item::Enum));
 
-        complete_file
+        quote::quote! {#complete_file}
     }
 }
 
