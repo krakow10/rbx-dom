@@ -162,7 +162,7 @@ mod test {
 
     #[test]
     fn size() {
-        assert_eq!(std::mem::size_of::<Ref>(), std::mem::size_of::<u128>());
+        assert_eq!(size_of::<Ref>(), size_of::<u128>());
     }
 }
 

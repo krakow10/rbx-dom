@@ -31,7 +31,7 @@ pub(crate) enum AttributeError {
     Io(#[from] std::io::Error),
 
     #[error(transparent)]
-    Utf8(#[from] std::string::FromUtf8Error),
+    Utf8(#[from] FromUtf8Error),
 
     #[error(transparent)]
     BadAttributeValue(#[from] crate::Error),

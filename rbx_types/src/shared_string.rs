@@ -173,7 +173,7 @@ pub(crate) mod serde_impl {
     impl Visitor<'_> for SharedStringVisitor {
         type Value = SharedString;
 
-        fn expecting(&self, out: &mut std::fmt::Formatter) -> std::fmt::Result {
+        fn expecting(&self, out: &mut fmt::Formatter) -> fmt::Result {
             write!(out, "a SharedString value")
         }
 
@@ -318,7 +318,7 @@ mod test {
     #[cfg(feature = "serde")]
     #[test]
     fn serde_non_human() {
-        use std::{io::Write, mem};
+        use std::io::Write;
 
         let sstr = SharedString::new(b"a test string".to_vec());
         let data = sstr.data();
@@ -326,7 +326,7 @@ mod test {
 
         // Write the length of the string as little-endian u64 followed by the
         // bytes of the string. This is analoglous to how bincode does.
-        let mut expected = Vec::with_capacity(mem::size_of::<u64>() + data.len());
+        let mut expected = Vec::with_capacity(size_of::<u64>() + data.len());
         expected
             .write_all(&(data.len() as u64).to_le_bytes())
             .unwrap();
