@@ -1511,23 +1511,23 @@ rbx-dom may require changes to fully support this property. Please open an issue
         // Track all the instances we need to construct. Order of construction
         // is important to preserve for both determinism and sometimes
         // functionality of models we handle.
-        let mut instances_to_construct = VecDeque::new();
+        let mut queue = VecDeque::new();
 
         // Any instance with a parent of -1 will be at the top level of the
         // tree. Because of the way rbx_dom_weak generally works, we need to
         // start at the top of the tree to begin construction.
         let root_ref = self.tree.root_ref();
-        for &referent in &self.root_instance_refs {
-            instances_to_construct.push_back((referent, root_ref));
-        }
+        queue.extend(
+            self.root_instance_refs
+                .iter()
+                .map(|&referent| (referent, root_ref)),
+        );
 
-        while let Some((referent, parent_ref)) = instances_to_construct.pop_front() {
+        while let Some((referent, parent_ref)) = queue.pop_front() {
             let instance = self.instances_by_ref.remove(&referent).unwrap();
-            let id = self.tree.insert(parent_ref, instance.builder);
+            let referent = self.tree.insert(parent_ref, instance.builder);
 
-            for referent in instance.children {
-                instances_to_construct.push_back((referent, id));
-            }
+            queue.extend(instance.children.into_iter().map(|id| (id, referent)));
         }
 
         self.tree
