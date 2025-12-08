@@ -29,7 +29,7 @@ impl WeakDom {
             unique_ids: AHashSet::new(),
         };
 
-        dom.insert(OptionalRef::none(), builder);
+        dom.insert(None, builder);
         dom
     }
 
@@ -417,7 +417,7 @@ impl WeakDom {
     pub fn clone_within(&mut self, referent: SomeRef) -> SomeRef {
         let mut ctx = CloneContext::default();
         let root_builder = ctx.clone_ref_as_builder(self, referent);
-        let root_ref = self.insert(OptionalRef::none(), root_builder);
+        let root_ref = self.insert(None, root_builder);
 
         while let Some(PendingClone {
             cloned_parent,
@@ -447,7 +447,7 @@ impl WeakDom {
     pub fn clone_into_external(&self, referent: SomeRef, dest: &mut WeakDom) -> SomeRef {
         let mut ctx = CloneContext::default();
         let root_builder = ctx.clone_ref_as_builder(self, referent);
-        let root_ref = dest.insert(OptionalRef::none(), root_builder);
+        let root_ref = dest.insert(None, root_builder);
 
         while let Some(PendingClone {
             cloned_parent,
@@ -474,7 +474,7 @@ impl WeakDom {
             .iter()
             .map(|referent| {
                 let builder = ctx.clone_ref_as_builder(self, *referent);
-                dest.insert(OptionalRef::none(), builder)
+                dest.insert(None, builder)
             })
             .collect();
 
