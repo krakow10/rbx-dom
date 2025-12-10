@@ -31,17 +31,7 @@ impl Tags {
     /// Decodes tags from a buffer containing `\0`-delimited tag names.
     pub fn decode(buf: &[u8]) -> Result<Self, Utf8Error> {
         let str = str::from_utf8(buf)?;
-        // trim '\0's from beginning and end
-        let trimmed = str.trim_matches('\0');
-        if trimmed.is_empty() {
-            let members = String::new();
-            return Ok(Self { members });
-        }
-        let mut members = String::with_capacity(trimmed.len() + 1);
-        members.push_str(trimmed);
-        // encode expects '\0' postfix
-        members.push('\0');
-        Ok(Self { members })
+        Ok(TagsIter::new(str).collect())
     }
 
     /// Get the encoded representation of the tags
@@ -189,7 +179,7 @@ mod test {
         test!(b"ez", b"ez", ["ez"]);
         test!(b"ez\0", b"ez", ["ez"]);
         test!(b"ez\0pz", b"ez\0pz", ["ez", "pz"]);
-        test!(b"ez\0\0pz", b"ez\0\0pz", ["ez", "pz"]);
-        test!(b"ez\0\0\0pz", b"ez\0\0\0pz", ["ez", "pz"]);
+        test!(b"ez\0\0pz", b"ez\0pz", ["ez", "pz"]);
+        test!(b"ez\0\0\0pz", b"ez\0pz", ["ez", "pz"]);
     }
 }
