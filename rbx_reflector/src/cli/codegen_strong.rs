@@ -521,7 +521,6 @@ impl ToTokens for Sorted<StrongInstancesCollector> {
         // generate StrongInstance enum
         let mut strong_instances_enum: syn::ItemEnum = syn::parse_quote! {
             #[derive(Debug, Clone)]
-            #[non_exhaustive]
             pub enum StrongInstance {
             }
         };
@@ -631,7 +630,6 @@ impl ToTokens for Sorted<EnumCollector> {
         // generate StrongInstance enum
         let mut strong_enum: syn::ItemEnum = syn::parse_quote! {
             #[derive(Debug, Clone)]
-            #[non_exhaustive]
             pub enum StrongEnum {
             }
         };
