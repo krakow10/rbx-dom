@@ -376,10 +376,10 @@ impl StrongInstancesCollector {
         }
     }
     fn push(&mut self, descriptor: &ClassDescriptor) {
-        struct FieldInfo<'a> {
-            prop: &'a rbx_reflection::PropertyDescriptor<'a>,
+        struct FieldInfo {
             ident: syn::Ident,
             field: syn::Field,
+            default_value: syn::FieldValue,
         }
         // generate fields
         let mut fields = Vec::new();
@@ -402,7 +402,21 @@ impl StrongInstancesCollector {
                 colon_token: Some(syn::token::Colon::default()),
                 ty,
             };
-            fields.push(FieldInfo { prop, ident, field });
+
+            let value = descriptor
+                .default_properties
+                .get(prop.name.as_ref())
+                .unwrap_or_else(|| prop.data_type.ty().fallback_default_value().unwrap());
+            let value = WrapToTokens(value);
+            let default_value: syn::FieldValue = syn::parse_quote! {
+                #ident: #value
+            };
+
+            fields.push(FieldInfo {
+                ident,
+                field,
+                default_value,
+            });
         }
         // sort props for consistency
         fields.sort_by(|a, b| a.ident.cmp(&b.ident));
@@ -449,19 +463,12 @@ impl StrongInstancesCollector {
                     superclass: #superclass_ident::default()
                 });
             }
-            default_struct
-                .fields
-                .extend(fields.iter().map(|FieldInfo { prop, ident, .. }| {
-                    let value = descriptor
-                        .default_properties
-                        .get(prop.name.as_ref())
-                        .unwrap_or_else(|| prop.data_type.ty().fallback_default_value().unwrap());
-                    let value = WrapToTokens(value);
-                    let field: syn::FieldValue = syn::parse_quote! {
-                        #ident: #value
-                    };
-                    field
-                }));
+            default_struct.fields.extend(
+                fields
+                    .iter()
+                    .map(|field_info| &field_info.default_value)
+                    .cloned(),
+            );
             let default_impl = syn::parse_quote! {
                 impl Default for #ident{
                     fn default() -> Self {
