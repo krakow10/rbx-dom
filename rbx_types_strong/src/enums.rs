@@ -1,5 +1,4 @@
 #[derive(Debug, Clone)]
-#[non_exhaustive]
 pub enum StrongEnum {
     AccessModifierType(AccessModifierType),
     AccessoryType(AccessoryType),

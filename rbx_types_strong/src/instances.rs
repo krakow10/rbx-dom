@@ -3,7 +3,6 @@ use crate::{impl_inherits, impl_strong_instance_from};
 use core::ops::{Deref, DerefMut};
 use rbx_types::*;
 #[derive(Debug, Clone)]
-#[non_exhaustive]
 pub enum StrongInstance {
     Accessory(Box<Accessory>),
     AccessoryDescription(Box<AccessoryDescription>),
@@ -864,7 +863,7 @@ impl Default for Accessory {
     fn default() -> Self {
         Self {
             superclass: Accoutrement::default(),
-            AccessoryType: unimplemented!("convert u32 Enum to precise strong variant"),
+            AccessoryType: enums::AccessoryType::Unknown,
         }
     }
 }
@@ -888,7 +887,7 @@ impl Default for AccessoryDescription {
     fn default() -> Self {
         Self {
             superclass: Instance::default(),
-            AccessoryType: unimplemented!("convert u32 Enum to precise strong variant"),
+            AccessoryType: enums::AccessoryType::Unknown,
             AssetId: 0i64,
             Instance: Ref::none(),
             IsLayered: false,
@@ -962,7 +961,7 @@ impl Default for AdGui {
     fn default() -> Self {
         Self {
             superclass: SurfaceGuiBase::default(),
-            AdShape: unimplemented!("convert u32 Enum to precise strong variant"),
+            AdShape: enums::AdShape::HorizontalRectangle,
             EnableVideoAds: false,
             FallbackImage: "".into(),
         }
@@ -1040,11 +1039,11 @@ impl Default for AlignOrientation {
     fn default() -> Self {
         Self {
             superclass: Constraint::default(),
-            AlignType: unimplemented!("convert u32 Enum to precise strong variant"),
+            AlignType: enums::AlignType::AllAxes,
             CFrame: CFrame::identity(),
             MaxAngularVelocity: f32::INFINITY,
             MaxTorque: 10000f32,
-            Mode: unimplemented!("convert u32 Enum to precise strong variant"),
+            Mode: enums::OrientationAlignmentMode::TwoAttachment,
             PrimaryAxisOnly: false,
             ReactionTorqueEnabled: false,
             Responsiveness: 10f32,
@@ -1075,12 +1074,12 @@ impl Default for AlignPosition {
         Self {
             superclass: Constraint::default(),
             ApplyAtCenterOfMass: false,
-            ForceLimitMode: unimplemented!("convert u32 Enum to precise strong variant"),
-            ForceRelativeTo: unimplemented!("convert u32 Enum to precise strong variant"),
+            ForceLimitMode: enums::ForceLimitMode::Magnitude,
+            ForceRelativeTo: enums::ActuatorRelativeTo::World,
             MaxAxesForce: Vector3::new(10000f32, 10000f32, 10000f32),
             MaxForce: 10000f32,
             MaxVelocity: f32::INFINITY,
-            Mode: unimplemented!("convert u32 Enum to precise strong variant"),
+            Mode: enums::PositionAlignmentMode::TwoAttachment,
             Position: Vector3::new(0f32, 0f32, 0f32),
             ReactionForceEnabled: false,
             Responsiveness: 10f32,
@@ -1122,7 +1121,7 @@ impl Default for AngularVelocity {
             AngularVelocity: Vector3::new(0f32, 0f32, 0f32),
             MaxTorque: 0f32,
             ReactionTorqueEnabled: false,
-            RelativeTo: unimplemented!("convert u32 Enum to precise strong variant"),
+            RelativeTo: enums::ActuatorRelativeTo::World,
         }
     }
 }
@@ -1158,7 +1157,7 @@ impl Default for AnimationClip {
             superclass: Instance::default(),
             GuidBinaryString: b"".as_slice().into(),
             Loop: false,
-            Priority: unimplemented!("convert u32 Enum to precise strong variant"),
+            Priority: enums::AnimationPriority::Idle,
         }
     }
 }
@@ -1254,7 +1253,7 @@ impl Default for AnimationNodeDefinition {
         Self {
             superclass: Instance::default(),
             InputPinData: b"\x01\0\0\0\0\0\0\0".as_slice().into(),
-            NodeType: unimplemented!("convert u32 Enum to precise strong variant"),
+            NodeType: enums::AnimationNodeType::InvalidNode,
         }
     }
 }
@@ -1296,7 +1295,7 @@ impl Default for AnimationTrack {
     fn default() -> Self {
         Self {
             superclass: Instance::default(),
-            Priority: unimplemented!("convert u32 Enum to precise strong variant"),
+            Priority: enums::AnimationPriority::Idle,
         }
     }
 }
@@ -1542,7 +1541,7 @@ impl Default for AudioAnalyzer {
         Self {
             superclass: Instance::default(),
             SpectrumEnabled: true,
-            WindowSize: unimplemented!("convert u32 Enum to precise strong variant"),
+            WindowSize: enums::AudioWindowSize::Medium,
         }
     }
 }
@@ -1558,7 +1557,7 @@ impl Default for AudioChannelMixer {
     fn default() -> Self {
         Self {
             superclass: Instance::default(),
-            Layout: unimplemented!("convert u32 Enum to precise strong variant"),
+            Layout: enums::AudioChannelLayout::Stereo,
         }
     }
 }
@@ -1574,7 +1573,7 @@ impl Default for AudioChannelSplitter {
     fn default() -> Self {
         Self {
             superclass: Instance::default(),
-            Layout: unimplemented!("convert u32 Enum to precise strong variant"),
+            Layout: enums::AudioChannelLayout::Stereo,
         }
     }
 }
@@ -1642,7 +1641,7 @@ impl Default for AudioDeviceInput {
     fn default() -> Self {
         Self {
             superclass: Instance::default(),
-            AccessType: unimplemented!("convert u32 Enum to precise strong variant"),
+            AccessType: enums::AccessModifierType::Deny,
             Active: true,
             Muted: false,
             Player: Ref::none(),
@@ -1732,7 +1731,7 @@ impl Default for AudioEmitter {
             AudioInteractionGroup: "".to_owned(),
             DistanceAttenuation: b"\0".as_slice().into(),
             PositionOverride: Ref::none(),
-            SimulationFidelity: unimplemented!("convert u32 Enum to precise strong variant"),
+            SimulationFidelity: enums::AudioSimulationFidelity::Automatic,
         }
     }
 }
@@ -1795,7 +1794,7 @@ impl Default for AudioFilter {
         Self {
             superclass: Instance::default(),
             Bypass: false,
-            FilterType: unimplemented!("convert u32 Enum to precise strong variant"),
+            FilterType: enums::AudioFilterType::Peak,
             Frequency: 2000f32,
             Gain: 0f32,
             Q: 0.707f32,
@@ -1896,7 +1895,7 @@ impl Default for AudioListener {
             AudioInteractionGroup: "".to_owned(),
             DistanceAttenuation: b"\0".as_slice().into(),
             PositionOverride: Ref::none(),
-            SimulationFidelity: unimplemented!("convert u32 Enum to precise strong variant"),
+            SimulationFidelity: enums::AudioSimulationFidelity::Automatic,
         }
     }
 }
@@ -1924,7 +1923,7 @@ impl Default for AudioPitchShifter {
             superclass: Instance::default(),
             Bypass: false,
             Pitch: 1.25f32,
-            WindowSize: unimplemented!("convert u32 Enum to precise strong variant"),
+            WindowSize: enums::AudioWindowSize::Medium,
         }
     }
 }
@@ -2039,7 +2038,7 @@ impl Default for AudioSearchParams {
             superclass: Instance::default(),
             Album: "".to_owned(),
             Artist: "".to_owned(),
-            AudioSubType: unimplemented!("convert u32 Enum to precise strong variant"),
+            AudioSubType: enums::AudioSubType::Music,
             MaxDuration: 0i32,
             MinDuration: 0i32,
             SearchKeyword: "".to_owned(),
@@ -2237,8 +2236,8 @@ impl Default for AvatarAccessoryRules {
     fn default() -> Self {
         Self {
             superclass: Instance::default(),
-            AccessoryMode: unimplemented!("convert u32 Enum to precise strong variant"),
-            CustomAccessoryMode: unimplemented!("convert u32 Enum to precise strong variant"),
+            AccessoryMode: enums::AvatarSettingsAccessoryMode::PlayerChoice,
+            CustomAccessoryMode: enums::AvatarSettingsCustomAccessoryMode::PlayerChoice,
             CustomBackAccessoryEnabled: false,
             CustomBackAccessoryId: 0i64,
             CustomFaceAccessoryEnabled: false,
@@ -2258,7 +2257,7 @@ impl Default for AvatarAccessoryRules {
             EnableSound: true,
             EnableVfx: true,
             LimitBounds: Vector3::new(0f32, 0f32, 0f32),
-            LimitMethod: unimplemented!("convert u32 Enum to precise strong variant"),
+            LimitMethod: enums::AvatarSettingsAccessoryLimitMethod::Remove,
         }
     }
 }
@@ -2295,8 +2294,8 @@ impl Default for AvatarAnimationRules {
     fn default() -> Self {
         Self {
             superclass: Instance::default(),
-            AnimationClipsMode: unimplemented!("convert u32 Enum to precise strong variant"),
-            AnimationPacksMode: unimplemented!("convert u32 Enum to precise strong variant"),
+            AnimationClipsMode: enums::AvatarSettingsAnimationClipsMode::PlayerChoice,
+            AnimationPacksMode: enums::AvatarSettingsAnimationPacksMode::PlayerChoice,
             CustomClimbAnimationEnabled: false,
             CustomClimbAnimationId: 0i64,
             CustomFallAnimationEnabled: false,
@@ -2363,10 +2362,10 @@ impl Default for AvatarBodyRules {
     fn default() -> Self {
         Self {
             superclass: Instance::default(),
-            AppearanceMode: unimplemented!("convert u32 Enum to precise strong variant"),
-            BuildMode: unimplemented!("convert u32 Enum to precise strong variant"),
+            AppearanceMode: enums::AvatarSettingsAppearanceMode::PlayerChoice,
+            BuildMode: enums::AvatarSettingsBuildMode::PlayerChoice,
             CustomBodyBundleId: 0i64,
-            CustomBodyType: unimplemented!("convert u32 Enum to precise strong variant"),
+            CustomBodyType: enums::AvatarSettingsCustomBodyType::AvatarReference,
             CustomBodyTypeScale: NumberRange::new(0f32, 1f32),
             CustomEyebrowEnabled: false,
             CustomEyebrowId: 0i64,
@@ -2394,7 +2393,7 @@ impl Default for AvatarBodyRules {
             CustomTorsoId: 0i64,
             CustomWidthScale: NumberRange::new(0.7f32, 1f32),
             KeepPlayerHead: true,
-            ScaleMode: unimplemented!("convert u32 Enum to precise strong variant"),
+            ScaleMode: enums::AvatarSettingsScaleMode::PlayerChoice,
         }
     }
 }
@@ -2444,14 +2443,14 @@ impl Default for AvatarClothingRules {
     fn default() -> Self {
         Self {
             superclass: Instance::default(),
-            ClothingMode: unimplemented!("convert u32 Enum to precise strong variant"),
+            ClothingMode: enums::AvatarSettingsClothingMode::PlayerChoice,
             CustomClassicPantsAccessoryEnabled: false,
             CustomClassicPantsAccessoryId: 0i64,
             CustomClassicShirtsAccessoryEnabled: false,
             CustomClassicShirtsAccessoryId: 0i64,
             CustomClassicTShirtsAccessoryEnabled: false,
             CustomClassicTShirtsAccessoryId: 0i64,
-            CustomClothingMode: unimplemented!("convert u32 Enum to precise strong variant"),
+            CustomClothingMode: enums::AvatarSettingsCustomClothingMode::PlayerChoice,
             CustomDressSkirtAccessoryEnabled: false,
             CustomDressSkirtAccessoryId: 0i64,
             CustomJacketAccessoryEnabled: false,
@@ -2489,9 +2488,9 @@ impl Default for AvatarCollisionRules {
     fn default() -> Self {
         Self {
             superclass: Instance::default(),
-            CollisionMode: unimplemented!("convert u32 Enum to precise strong variant"),
-            HitAndTouchDetectionMode: unimplemented!("convert u32 Enum to precise strong variant"),
-            LegacyCollisionMode: unimplemented!("convert u32 Enum to precise strong variant"),
+            CollisionMode: enums::AvatarSettingsCollisionMode::Default,
+            HitAndTouchDetectionMode: enums::AvatarSettingsHitAndTouchDetectionMode::UseParts,
+            LegacyCollisionMode: enums::AvatarSettingsLegacyCollisionMode::InnerBoxColliders,
             SingleColliderSize: Vector3::new(2f32, 3f32, 1f32),
         }
     }
@@ -2532,7 +2531,7 @@ impl Default for AvatarRules {
     fn default() -> Self {
         Self {
             superclass: Instance::default(),
-            AvatarType: unimplemented!("convert u32 Enum to precise strong variant"),
+            AvatarType: enums::GameAvatarType::R15,
         }
     }
 }
@@ -2691,12 +2690,12 @@ impl Default for BasePart {
             AudioCanCollide: false,
             BackParamA: 0f32,
             BackParamB: 0f32,
-            BackSurface: unimplemented!("convert u32 Enum to precise strong variant"),
-            BackSurfaceInput: unimplemented!("convert u32 Enum to precise strong variant"),
+            BackSurface: enums::SurfaceType::Smooth,
+            BackSurfaceInput: enums::InputType::NoInput,
             BottomParamA: 0f32,
             BottomParamB: 0f32,
-            BottomSurface: unimplemented!("convert u32 Enum to precise strong variant"),
-            BottomSurfaceInput: unimplemented!("convert u32 Enum to precise strong variant"),
+            BottomSurface: enums::SurfaceType::Smooth,
+            BottomSurfaceInput: enums::InputType::NoInput,
             CFrame: CFrame::identity(),
             CanCollide: false,
             CanQuery: false,
@@ -2708,27 +2707,27 @@ impl Default for BasePart {
             EnableFluidForces: false,
             FrontParamA: 0f32,
             FrontParamB: 0f32,
-            FrontSurface: unimplemented!("convert u32 Enum to precise strong variant"),
-            FrontSurfaceInput: unimplemented!("convert u32 Enum to precise strong variant"),
+            FrontSurface: enums::SurfaceType::Smooth,
+            FrontSurfaceInput: enums::InputType::NoInput,
             LeftParamA: 0f32,
             LeftParamB: 0f32,
-            LeftSurface: unimplemented!("convert u32 Enum to precise strong variant"),
-            LeftSurfaceInput: unimplemented!("convert u32 Enum to precise strong variant"),
+            LeftSurface: enums::SurfaceType::Smooth,
+            LeftSurfaceInput: enums::InputType::NoInput,
             Locked: false,
             Massless: false,
-            Material: unimplemented!("convert u32 Enum to precise strong variant"),
+            Material: enums::Material::Plastic,
             PivotOffset: CFrame::identity(),
             Reflectance: 0f32,
             RightParamA: 0f32,
             RightParamB: 0f32,
-            RightSurface: unimplemented!("convert u32 Enum to precise strong variant"),
-            RightSurfaceInput: unimplemented!("convert u32 Enum to precise strong variant"),
+            RightSurface: enums::SurfaceType::Smooth,
+            RightSurfaceInput: enums::InputType::NoInput,
             RootPriority: 0i32,
             RotVelocity: Vector3::new(0f32, 0f32, 0f32),
             TopParamA: 0f32,
             TopParamB: 0f32,
-            TopSurface: unimplemented!("convert u32 Enum to precise strong variant"),
-            TopSurfaceInput: unimplemented!("convert u32 Enum to precise strong variant"),
+            TopSurface: enums::SurfaceType::Smooth,
+            TopSurfaceInput: enums::InputType::NoInput,
             Transparency: 0f32,
             Velocity: Vector3::new(0f32, 0f32, 0f32),
         }
@@ -2766,7 +2765,7 @@ impl Default for BaseScript {
             superclass: LuaSourceContainer::default(),
             Disabled: false,
             LinkedSource: "".into(),
-            RunContext: unimplemented!("convert u32 Enum to precise strong variant"),
+            RunContext: enums::RunContext::Legacy,
         }
     }
 }
@@ -2846,7 +2845,7 @@ impl Default for Beam {
             Segments: 10i32,
             Texture: "".into(),
             TextureLength: 1f32,
-            TextureMode: unimplemented!("convert u32 Enum to precise strong variant"),
+            TextureMode: enums::TextureMode::Stretch,
             TextureSpeed: 1f32,
             Transparency: NumberSequence {
                 keypoints: vec![
@@ -3111,7 +3110,7 @@ impl Default for BodyPartDescription {
         Self {
             superclass: Instance::default(),
             AssetId: 0i64,
-            BodyPart: unimplemented!("convert u32 Enum to precise strong variant"),
+            BodyPart: enums::BodyPart::Head,
             Color: Color3::new(0f32, 0f32, 0f32),
             HeadShape: "".to_owned(),
             Instance: Ref::none(),
@@ -3215,7 +3214,7 @@ impl Default for BoxHandleAdornment {
     fn default() -> Self {
         Self {
             superclass: HandleAdornment::default(),
-            Shading: unimplemented!("convert u32 Enum to precise strong variant"),
+            Shading: enums::AdornShading::Default,
             Size: Vector3::new(1f32, 1f32, 1f32),
         }
     }
@@ -3285,7 +3284,7 @@ impl Default for BubbleChatConfiguration {
             BubbleDuration: 15f32,
             BubblesSpacing: 6f32,
             Enabled: true,
-            Font: unimplemented!("convert u32 Enum to precise strong variant"),
+            Font: enums::Font::GothamMedium,
             FontFace: unimplemented!("Font"),
             LocalPlayerStudsOffset: Vector3::new(0f32, 0f32, 0f32),
             MaxBubbles: 3f32,
@@ -3409,9 +3408,9 @@ impl Default for Camera {
                 ),
             ),
             CameraSubject: Ref::none(),
-            CameraType: unimplemented!("convert u32 Enum to precise strong variant"),
+            CameraType: enums::CameraType::Fixed,
             FieldOfView: 70f32,
-            FieldOfViewMode: unimplemented!("convert u32 Enum to precise strong variant"),
+            FieldOfViewMode: enums::FieldOfViewMode::Vertical,
             Focus: CFrame::new(
                 Vector3::new(0f32, 0f32, -5f32),
                 Matrix3::new(
@@ -3566,7 +3565,7 @@ impl Default for CharacterMesh {
         Self {
             superclass: CharacterAppearance::default(),
             BaseTextureId: 0i64,
-            BodyPart: unimplemented!("convert u32 Enum to precise strong variant"),
+            BodyPart: enums::BodyPart::Head,
             MeshId: 0i64,
             OverlayTextureId: 0i64,
         }
@@ -3620,7 +3619,7 @@ impl Default for ChatInputBarConfiguration {
             BackgroundTransparency: 0.2f64,
             Enabled: true,
             FontFace: unimplemented!("Font"),
-            KeyboardKeyCode: unimplemented!("convert u32 Enum to precise strong variant"),
+            KeyboardKeyCode: enums::KeyCode::Slash,
             PlaceholderColor3: Color3::new(0.69803923f32, 0.69803923f32, 0.69803923f32),
             TargetTextChannel: Ref::none(),
             TextColor3: Color3::new(1f32, 1f32, 1f32),
@@ -3658,12 +3657,12 @@ impl Default for ChatWindowConfiguration {
             Enabled: true,
             FontFace: unimplemented!("Font"),
             HeightScale: 1f32,
-            HorizontalAlignment: unimplemented!("convert u32 Enum to precise strong variant"),
+            HorizontalAlignment: enums::HorizontalAlignment::Left,
             TextColor3: Color3::new(1f32, 1f32, 1f32),
             TextSize: 14i64,
             TextStrokeColor3: Color3::new(0f32, 0f32, 0f32),
             TextStrokeTransparency: 0.5f64,
-            VerticalAlignment: unimplemented!("convert u32 Enum to precise strong variant"),
+            VerticalAlignment: enums::VerticalAlignment::Top,
             WidthScale: 1f32,
         }
     }
@@ -3888,7 +3887,7 @@ impl Default for ColorGradingEffect {
     fn default() -> Self {
         Self {
             superclass: PostEffect::default(),
-            TonemapperPreset: unimplemented!("convert u32 Enum to precise strong variant"),
+            TonemapperPreset: enums::TonemapperPreset::Default,
         }
     }
 }
@@ -3944,7 +3943,7 @@ impl Default for ConeHandleAdornment {
             Height: 2f32,
             Hollow: false,
             Radius: 0.5f32,
-            Shading: unimplemented!("convert u32 Enum to precise strong variant"),
+            Shading: enums::AdornShading::Default,
         }
     }
 }
@@ -4106,7 +4105,7 @@ impl Default for ControllerPartSensor {
             HitNormal: Vector3::new(0f32, 0f32, 0f32),
             SearchDistance: 0f32,
             SensedPart: Ref::none(),
-            SensorMode: unimplemented!("convert u32 Enum to precise strong variant"),
+            SensorMode: enums::SensorMode::Floor,
         }
     }
 }
@@ -4298,7 +4297,7 @@ impl Default for CylinderHandleAdornment {
             Height: 1f32,
             InnerRadius: 0f32,
             Radius: 1f32,
-            Shading: unimplemented!("convert u32 Enum to precise strong variant"),
+            Shading: enums::AdornShading::Default,
         }
     }
 }
@@ -4336,7 +4335,7 @@ impl Default for CylindricalConstraint {
     fn default() -> Self {
         Self {
             superclass: SlidingBallConstraint::default(),
-            AngularActuatorType: unimplemented!("convert u32 Enum to precise strong variant"),
+            AngularActuatorType: enums::ActuatorType::None,
             AngularLimitsEnabled: false,
             AngularResponsiveness: 45f32,
             AngularRestitution: 0f32,
@@ -4568,7 +4567,7 @@ impl Default for DebugSettings {
             superclass: Instance::default(),
             IsScriptStackTracingEnabled: false,
             ReportSoundWarnings: false,
-            TickCountPreciseOverride: unimplemented!("convert u32 Enum to precise strong variant"),
+            TickCountPreciseOverride: enums::TickCountSampleMethod::Fast,
         }
     }
 }
@@ -4764,13 +4763,13 @@ impl Default for Dialog {
     fn default() -> Self {
         Self {
             superclass: Instance::default(),
-            BehaviorType: unimplemented!("convert u32 Enum to precise strong variant"),
+            BehaviorType: enums::DialogBehaviorType::SinglePlayer,
             ConversationDistance: 25f32,
             GoodbyeChoiceActive: true,
             GoodbyeDialog: "".to_owned(),
             InitialPrompt: "".to_owned(),
-            Purpose: unimplemented!("convert u32 Enum to precise strong variant"),
-            Tone: unimplemented!("convert u32 Enum to precise strong variant"),
+            Purpose: enums::DialogPurpose::Help,
+            Tone: enums::DialogTone::Neutral,
             TriggerDistance: 0f32,
             TriggerOffset: Vector3::new(0f32, 0f32, 0f32),
         }
@@ -4886,10 +4885,10 @@ impl Default for DragDetector {
             ActivatedCursorIconContent: Content::none(),
             ApplyAtCenterOfMass: false,
             DragFrame: CFrame::identity(),
-            DragStyle: unimplemented!("convert u32 Enum to precise strong variant"),
+            DragStyle: enums::DragDetectorDragStyle::TranslatePlane,
             Enabled: true,
-            GamepadModeSwitchKeyCode: unimplemented!("convert u32 Enum to precise strong variant"),
-            KeyboardModeSwitchKeyCode: unimplemented!("convert u32 Enum to precise strong variant"),
+            GamepadModeSwitchKeyCode: enums::KeyCode::ButtonR1,
+            KeyboardModeSwitchKeyCode: enums::KeyCode::LeftControl,
             MaxDragAngle: 0f32,
             MaxDragTranslation: Vector3::new(0f32, 0f32, 0f32),
             MaxForce: 10000000f32,
@@ -4897,14 +4896,14 @@ impl Default for DragDetector {
             MinDragAngle: 0f32,
             MinDragTranslation: Vector3::new(0f32, 0f32, 0f32),
             Orientation: Vector3::new(-0f32, 179.99998f32, 90f32),
-            PermissionPolicy: unimplemented!("convert u32 Enum to precise strong variant"),
+            PermissionPolicy: enums::DragDetectorPermissionPolicy::Everybody,
             ReferenceInstance: Ref::none(),
-            ResponseStyle: unimplemented!("convert u32 Enum to precise strong variant"),
+            ResponseStyle: enums::DragDetectorResponseStyle::Physical,
             Responsiveness: 10f32,
             RunLocally: false,
             TrackballRadialPullFactor: 1f32,
             TrackballRollFactor: 1f32,
-            VrSwitchKeyCode: unimplemented!("convert u32 Enum to precise strong variant"),
+            VrSwitchKeyCode: enums::KeyCode::ButtonL2,
         }
     }
 }
@@ -5052,7 +5051,7 @@ impl Default for EulerRotationCurve {
     fn default() -> Self {
         Self {
             superclass: Instance::default(),
-            RotationOrder: unimplemented!("convert u32 Enum to precise strong variant"),
+            RotationOrder: enums::RotationOrder::XYZ,
         }
     }
 }
@@ -5187,7 +5186,7 @@ impl Default for Explosion {
             BlastPressure: 500000f32,
             BlastRadius: 4f32,
             DestroyJointRadiusPercent: 1f32,
-            ExplosionType: unimplemented!("convert u32 Enum to precise strong variant"),
+            ExplosionType: enums::ExplosionType::Craters,
             Position: Vector3::new(0f32, 0f32, 0f32),
             TimeScale: 1f32,
             Visible: true,
@@ -5222,7 +5221,7 @@ impl Default for FaceInstance {
     fn default() -> Self {
         Self {
             superclass: Instance::default(),
-            Face: unimplemented!("convert u32 Enum to precise strong variant"),
+            Face: enums::NormalId::Right,
         }
     }
 }
@@ -5297,10 +5296,10 @@ impl Default for Feature {
     fn default() -> Self {
         Self {
             superclass: Instance::default(),
-            FaceId: unimplemented!("convert u32 Enum to precise strong variant"),
-            InOut: unimplemented!("convert u32 Enum to precise strong variant"),
-            LeftRight: unimplemented!("convert u32 Enum to precise strong variant"),
-            TopBottom: unimplemented!("convert u32 Enum to precise strong variant"),
+            FaceId: enums::NormalId::Right,
+            InOut: enums::InOut::Edge,
+            LeftRight: enums::LeftRight::Left,
+            TopBottom: enums::TopBottom::Top,
         }
     }
 }
@@ -5526,7 +5525,7 @@ impl Default for Frame {
     fn default() -> Self {
         Self {
             superclass: GuiObject::default(),
-            Style: unimplemented!("convert u32 Enum to precise strong variant"),
+            Style: enums::FrameStyle::Custom,
         }
     }
 }
@@ -5798,10 +5797,10 @@ impl Default for GuiBase2d {
             superclass: GuiBase::default(),
             AutoLocalize: false,
             RootLocalizationTable: Ref::none(),
-            SelectionBehaviorDown: unimplemented!("convert u32 Enum to precise strong variant"),
-            SelectionBehaviorLeft: unimplemented!("convert u32 Enum to precise strong variant"),
-            SelectionBehaviorRight: unimplemented!("convert u32 Enum to precise strong variant"),
-            SelectionBehaviorUp: unimplemented!("convert u32 Enum to precise strong variant"),
+            SelectionBehaviorDown: enums::SelectionBehavior::Escape,
+            SelectionBehaviorLeft: enums::SelectionBehavior::Escape,
+            SelectionBehaviorRight: enums::SelectionBehavior::Escape,
+            SelectionBehaviorUp: enums::SelectionBehavior::Escape,
             SelectionGroup: false,
         }
     }
@@ -5848,7 +5847,7 @@ impl Default for GuiButton {
             Modal: false,
             PressHapticEffect: Ref::none(),
             Selected: false,
-            Style: unimplemented!("convert u32 Enum to precise strong variant"),
+            Style: enums::ButtonStyle::Custom,
         }
     }
 }
@@ -5906,11 +5905,11 @@ impl Default for GuiObject {
             superclass: GuiBase2d::default(),
             Active: false,
             AnchorPoint: Vector2::new(0f32, 0f32),
-            AutomaticSize: unimplemented!("convert u32 Enum to precise strong variant"),
+            AutomaticSize: enums::AutomaticSize::None,
             BackgroundColor3: Color3::new(0f32, 0f32, 0f32),
             BackgroundTransparency: 0f32,
             BorderColor3: Color3::new(0f32, 0f32, 0f32),
-            BorderMode: unimplemented!("convert u32 Enum to precise strong variant"),
+            BorderMode: enums::BorderMode::Outline,
             BorderSizePixel: 0i32,
             ClipsDescendants: false,
             Draggable: false,
@@ -5926,7 +5925,7 @@ impl Default for GuiObject {
             SelectionImageObject: Ref::none(),
             SelectionOrder: 0i32,
             Size: UDim2::new(UDim::new(0f32, 0i32), UDim::new(0f32, 0i32)),
-            SizeConstraint: unimplemented!("convert u32 Enum to precise strong variant"),
+            SizeConstraint: enums::SizeConstraint::RelativeXY,
             Visible: false,
             ZIndex: 0i32,
         }
@@ -6052,7 +6051,7 @@ impl Default for HandRigDescription {
             Ring3TposeAdjustment: CFrame::identity(),
             RingRange: Vector3::new(0f32, 0f32, 0f32),
             RingSize: 0f32,
-            Side: unimplemented!("convert u32 Enum to precise strong variant"),
+            Side: enums::HandRigDescriptionSide::None,
             Thumb1: Ref::none(),
             Thumb1TposeAdjustment: CFrame::identity(),
             Thumb2: Ref::none(),
@@ -6080,7 +6079,7 @@ impl Default for HandleAdornment {
     fn default() -> Self {
         Self {
             superclass: PVAdornment::default(),
-            AdornCullingMode: unimplemented!("convert u32 Enum to precise strong variant"),
+            AdornCullingMode: enums::AdornCullingMode::Automatic,
             AlwaysOnTop: false,
             CFrame: CFrame::identity(),
             SizeRelativeOffset: Vector3::new(0f32, 0f32, 0f32),
@@ -6102,7 +6101,7 @@ impl Default for Handles {
         Self {
             superclass: HandlesBase::default(),
             Faces: unimplemented!(),
-            Style: unimplemented!("convert u32 Enum to precise strong variant"),
+            Style: enums::HandlesStyle::Resize,
         }
     }
 }
@@ -6134,7 +6133,7 @@ impl Default for HapticEffect {
             Looped: false,
             Position: Vector3::new(0f32, 0f32, 0f32),
             Radius: 3f32,
-            Type: unimplemented!("convert u32 Enum to precise strong variant"),
+            Type: enums::HapticEffectType::UIClick,
             Waveform: Ref::none(),
             WaveformData: b"".as_slice().into(),
         }
@@ -6225,7 +6224,7 @@ impl Default for Highlight {
         Self {
             superclass: Instance::default(),
             Adornee: Ref::none(),
-            DepthMode: unimplemented!("convert u32 Enum to precise strong variant"),
+            DepthMode: enums::HighlightDepthMode::AlwaysOnTop,
             Enabled: true,
             FillColor: Color3::new(1f32, 0f32, 0f32),
             FillTransparency: 0.5f32,
@@ -6259,7 +6258,7 @@ impl Default for HingeConstraint {
     fn default() -> Self {
         Self {
             superclass: Constraint::default(),
-            ActuatorType: unimplemented!("convert u32 Enum to precise strong variant"),
+            ActuatorType: enums::ActuatorType::None,
             AngularResponsiveness: 45f32,
             AngularSpeed: 0f32,
             AngularVelocity: 0f32,
@@ -6314,7 +6313,7 @@ impl Default for HopperBin {
         Self {
             superclass: BackpackItem::default(),
             Active: false,
-            BinType: unimplemented!("convert u32 Enum to precise strong variant"),
+            BinType: enums::BinType::Script,
         }
     }
 }
@@ -6389,12 +6388,12 @@ impl Default for Humanoid {
             AutoRotate: true,
             AutomaticScalingEnabled: true,
             BreakJointsOnDeath: true,
-            CollisionType: unimplemented!("convert u32 Enum to precise strong variant"),
-            DisplayDistanceType: unimplemented!("convert u32 Enum to precise strong variant"),
+            CollisionType: enums::HumanoidCollisionType::OuterBox,
+            DisplayDistanceType: enums::HumanoidDisplayDistanceType::Viewer,
             DisplayName: "".to_owned(),
             EvaluateStateMachine: true,
             HealthDisplayDistance: 100f32,
-            HealthDisplayType: unimplemented!("convert u32 Enum to precise strong variant"),
+            HealthDisplayType: enums::HumanoidHealthDisplayType::DisplayWhenDamaged,
             HealthXml: 100f32,
             HipHeight: 0f32,
             InternalBodyScale: Vector3::new(1f32, 1f32, 1f32),
@@ -6404,9 +6403,9 @@ impl Default for Humanoid {
             MaxHealth: 100f32,
             MaxSlopeAngle: 89f32,
             NameDisplayDistance: 100f32,
-            NameOcclusion: unimplemented!("convert u32 Enum to precise strong variant"),
+            NameOcclusion: enums::NameOcclusion::OccludeAll,
             RequiresNeck: true,
-            RigType: unimplemented!("convert u32 Enum to precise strong variant"),
+            RigType: enums::HumanoidRigType::R6,
             UseJumpPower: true,
             WalkSpeed: 16f32,
         }
@@ -6741,7 +6740,7 @@ impl Default for IKControl {
             Priority: 0i32,
             SmoothTime: 0.05f32,
             Target: Ref::none(),
-            Type: unimplemented!("convert u32 Enum to precise strong variant"),
+            Type: enums::IKControlType::Transform,
             Weight: 1f32,
         }
     }
@@ -6792,8 +6791,8 @@ impl Default for ImageButton {
             ImageRectSize: Vector2::new(0f32, 0f32),
             ImageTransparency: 0f32,
             PressedImageContent: Content::none(),
-            ResampleMode: unimplemented!("convert u32 Enum to precise strong variant"),
-            ScaleType: unimplemented!("convert u32 Enum to precise strong variant"),
+            ResampleMode: enums::ResamplerMode::Default,
+            ScaleType: enums::ScaleType::Stretch,
             SliceCenter: Rect::new(Vector2::new(0f32, 0f32), Vector2::new(0f32, 0f32)),
             SliceScale: 1f32,
             TileSize: UDim2::new(UDim::new(1f32, 0i32), UDim::new(1f32, 0i32)),
@@ -6844,8 +6843,8 @@ impl Default for ImageLabel {
             ImageRectOffset: Vector2::new(0f32, 0f32),
             ImageRectSize: Vector2::new(0f32, 0f32),
             ImageTransparency: 0f32,
-            ResampleMode: unimplemented!("convert u32 Enum to precise strong variant"),
-            ScaleType: unimplemented!("convert u32 Enum to precise strong variant"),
+            ResampleMode: enums::ResamplerMode::Default,
+            ScaleType: enums::ScaleType::Stretch,
             SliceCenter: Rect::new(Vector2::new(0f32, 0f32), Vector2::new(0f32, 0f32)),
             SliceScale: 1f32,
             TileSize: UDim2::new(UDim::new(1f32, 0i32), UDim::new(1f32, 0i32)),
@@ -6900,7 +6899,7 @@ impl Default for InputAction {
         Self {
             superclass: Instance::default(),
             Enabled: true,
-            Type: unimplemented!("convert u32 Enum to precise strong variant"),
+            Type: enums::InputActionType::Bool,
         }
     }
 }
@@ -6928,18 +6927,18 @@ impl Default for InputBinding {
     fn default() -> Self {
         Self {
             superclass: Instance::default(),
-            Backward: unimplemented!("convert u32 Enum to precise strong variant"),
-            Down: unimplemented!("convert u32 Enum to precise strong variant"),
-            Forward: unimplemented!("convert u32 Enum to precise strong variant"),
-            KeyCode: unimplemented!("convert u32 Enum to precise strong variant"),
-            Left: unimplemented!("convert u32 Enum to precise strong variant"),
+            Backward: enums::KeyCode::Unknown,
+            Down: enums::KeyCode::Unknown,
+            Forward: enums::KeyCode::Unknown,
+            KeyCode: enums::KeyCode::Unknown,
+            Left: enums::KeyCode::Unknown,
             PressedThreshold: 0.5f32,
             ReleasedThreshold: 0.2f32,
             ResponseCurve: 1f32,
-            Right: unimplemented!("convert u32 Enum to precise strong variant"),
+            Right: enums::KeyCode::Unknown,
             Scale: 1f32,
             UiButton: Ref::none(),
-            Up: unimplemented!("convert u32 Enum to precise strong variant"),
+            Up: enums::KeyCode::Unknown,
             Vector2Scale: Vector2::new(1f32, 1f32),
         }
     }
@@ -7256,7 +7255,7 @@ impl Default for LayerCollector {
             superclass: GuiBase2d::default(),
             Enabled: false,
             ResetOnSpawn: false,
-            ZIndexBehavior: unimplemented!("convert u32 Enum to precise strong variant"),
+            ZIndexBehavior: enums::ZIndexBehavior::Global,
         }
     }
 }
@@ -7330,18 +7329,18 @@ impl Default for Lighting {
             EnvironmentDiffuseScale: 0f32,
             EnvironmentSpecularScale: 0f32,
             ExposureCompensation: 0f32,
-            ExtendLightRangeTo120: unimplemented!("convert u32 Enum to precise strong variant"),
+            ExtendLightRangeTo120: enums::RolloutState::Default,
             FogColor: Color3::new(0.75f32, 0.75f32, 0.75f32),
             FogEnd: 100000f32,
             FogStart: 0f32,
             GeographicLatitude: 41.7333f32,
             GlobalShadows: false,
-            LightingStyle: unimplemented!("convert u32 Enum to precise strong variant"),
+            LightingStyle: enums::LightingStyle::Soft,
             OutdoorAmbient: Color3::new(0.5f32, 0.5f32, 0.5f32),
             Outlines: true,
             PrioritizeLightingQuality: false,
             ShadowSoftness: 0.5f32,
-            Technology: unimplemented!("convert u32 Enum to precise strong variant"),
+            Technology: enums::Technology::Voxel,
             TimeOfDay: "14:00:00".to_owned(),
         }
     }
@@ -7413,7 +7412,7 @@ impl Default for LinearVelocity {
     fn default() -> Self {
         Self {
             superclass: Constraint::default(),
-            ForceLimitMode: unimplemented!("convert u32 Enum to precise strong variant"),
+            ForceLimitMode: enums::ForceLimitMode::Magnitude,
             ForceLimitsEnabled: true,
             LineDirection: Vector3::new(1f32, 0f32, 0f32),
             LineVelocity: -0f32,
@@ -7423,10 +7422,10 @@ impl Default for LinearVelocity {
             PlaneVelocity: Vector2::new(0f32, 0f32),
             PrimaryTangentAxis: Vector3::new(1f32, 0f32, 0f32),
             ReactionForceEnabled: true,
-            RelativeTo: unimplemented!("convert u32 Enum to precise strong variant"),
+            RelativeTo: enums::ActuatorRelativeTo::World,
             SecondaryTangentAxis: Vector3::new(0f32, 1f32, 0f32),
             VectorVelocity: Vector3::new(0f32, 0f32, 0f32),
-            VelocityConstraintMode: unimplemented!("convert u32 Enum to precise strong variant"),
+            VelocityConstraintMode: enums::VelocityConstraintMode::Vector,
         }
     }
 }
@@ -7815,13 +7814,13 @@ impl Default for MaterialVariant {
     fn default() -> Self {
         Self {
             superclass: Instance::default(),
-            BaseMaterial: unimplemented!("convert u32 Enum to precise strong variant"),
+            BaseMaterial: enums::Material::Plastic,
             ColorMapContent: Content::none(),
             CustomPhysicalProperties: PhysicalProperties::Default,
             EmissiveMaskContent: Content::none(),
             EmissiveStrength: 1f32,
             EmissiveTint: Color3::new(1f32, 1f32, 1f32),
-            MaterialPattern: unimplemented!("convert u32 Enum to precise strong variant"),
+            MaterialPattern: enums::MaterialPattern::Regular,
             MetalnessMapContent: Content::none(),
             NormalMapContent: Content::none(),
             RoughnessMapContent: Content::none(),
@@ -7958,7 +7957,7 @@ impl Default for MeshPart {
             JointOffset: Vector3::new(0f32, 0f32, 0f32),
             MeshContent: Content::none(),
             PhysicsData: b"".as_slice().into(),
-            RenderFidelity: unimplemented!("convert u32 Enum to precise strong variant"),
+            RenderFidelity: enums::RenderFidelity::Automatic,
             TextureContent: Content::none(),
             VertexCount: 0i32,
         }
@@ -8092,11 +8091,11 @@ impl Default for Model {
     fn default() -> Self {
         Self {
             superclass: PVInstance::default(),
-            LevelOfDetail: unimplemented!("convert u32 Enum to precise strong variant"),
+            LevelOfDetail: enums::ModelLevelOfDetail::Automatic,
             ModelMeshCFrame: CFrame::identity(),
             ModelMeshData: SharedString::new(b"".to_vec()),
             ModelMeshSize: Vector3::new(0f32, 0f32, 0f32),
-            ModelStreamingMode: unimplemented!("convert u32 Enum to precise strong variant"),
+            ModelStreamingMode: enums::ModelStreamingMode::Default,
             NeedsPivotMigration: false,
             PrimaryPart: Ref::none(),
             SlimHash: SharedString::new(b"".to_vec()),
@@ -8210,7 +8209,7 @@ impl Default for NegateOperation {
     fn default() -> Self {
         Self {
             superclass: PartOperation::default(),
-            PreviousOperation: unimplemented!("convert u32 Enum to precise strong variant"),
+            PreviousOperation: enums::NegateOperationHiddenHistory::None,
         }
     }
 }
@@ -8319,7 +8318,7 @@ impl Default for Noise {
     fn default() -> Self {
         Self {
             superclass: Instance::default(),
-            NoiseType: unimplemented!("convert u32 Enum to precise strong variant"),
+            NoiseType: enums::NoiseType::SimplexGabor,
             Seed: 0i32,
         }
     }
@@ -8590,13 +8589,13 @@ impl Default for PartOperation {
             ChildData: b"".as_slice().into(),
             ChildData2: SharedString::new(b"".to_vec()),
             ComponentIndex: -1i32,
-            FormFactor: unimplemented!("convert u32 Enum to precise strong variant"),
+            FormFactor: enums::FormFactor::Custom,
             InitialSize: Vector3::new(1f32, 1f32, 1f32),
             MeshData: b"".as_slice().into(),
             MeshData2: SharedString::new(b"".to_vec()),
             OffCentered: false,
             PhysicsData: b"".as_slice().into(),
-            RenderFidelity: unimplemented!("convert u32 Enum to precise strong variant"),
+            RenderFidelity: enums::RenderFidelity::Automatic,
             SmoothingAngle: 0f32,
             SolidMeshHolder: NetAssetRef::new(b"".to_vec()),
             UsePartColor: false,
@@ -8676,13 +8675,13 @@ impl Default for ParticleEmitter {
                 ],
             },
             Drag: 0f32,
-            EmissionDirection: unimplemented!("convert u32 Enum to precise strong variant"),
+            EmissionDirection: enums::NormalId::Top,
             Enabled: true,
             FlipbookFramerate: NumberRange::new(1f32, 1f32),
             FlipbookIncompatible: "Particle texture must be 1024 by 1024 to use flipbooks."
                 .to_owned(),
-            FlipbookLayout: unimplemented!("convert u32 Enum to precise strong variant"),
-            FlipbookMode: unimplemented!("convert u32 Enum to precise strong variant"),
+            FlipbookLayout: enums::ParticleFlipbookLayout::None,
+            FlipbookMode: enums::ParticleFlipbookMode::Loop,
             FlipbookSizeX: 1i32,
             FlipbookSizeY: 1i32,
             FlipbookStartRandom: false,
@@ -8690,14 +8689,14 @@ impl Default for ParticleEmitter {
             LightEmission: 0f32,
             LightInfluence: 0f32,
             LockedToPart: false,
-            Orientation: unimplemented!("convert u32 Enum to precise strong variant"),
+            Orientation: enums::ParticleOrientation::FacingCamera,
             Rate: 20f32,
             RotSpeed: NumberRange::new(0f32, 0f32),
             Rotation: NumberRange::new(0f32, 0f32),
-            Shape: unimplemented!("convert u32 Enum to precise strong variant"),
-            ShapeInOut: unimplemented!("convert u32 Enum to precise strong variant"),
+            Shape: enums::ParticleEmitterShape::Box,
+            ShapeInOut: enums::ParticleEmitterShapeInOut::Outward,
             ShapePartial: 1f32,
-            ShapeStyle: unimplemented!("convert u32 Enum to precise strong variant"),
+            ShapeStyle: enums::ParticleEmitterShapeStyle::Volume,
             Size: NumberSequence {
                 keypoints: vec![
                     NumberSequenceKeypoint::new(0f32, 1f32, 0f32),
@@ -8992,18 +8991,12 @@ impl Default for PhysicsSettings {
             IsInterpolationThrottleShown: false,
             IsReceiveAgeShown: false,
             IsTreeShown: false,
-            PhysicsEnvironmentalThrottle: unimplemented!(
-                "convert u32 Enum to precise strong variant"
-            ),
+            PhysicsEnvironmentalThrottle: enums::EnviromentalPhysicsThrottle::DefaultAuto,
             ShowDecompositionGeometry: false,
             ShowFluidForcesForSelectedOrHoveredMechanisms: false,
             ShowInstanceNamesForDrawnForcesAndTorques: false,
-            SolverConvergenceMetricType: unimplemented!(
-                "convert u32 Enum to precise strong variant"
-            ),
-            SolverConvergenceVisualizationMode: unimplemented!(
-                "convert u32 Enum to precise strong variant"
-            ),
+            SolverConvergenceMetricType: enums::SolverConvergenceMetricType::IterationBased,
+            SolverConvergenceVisualizationMode: enums::SolverConvergenceVisualizationMode::Disabled,
             ThrottleAdjustTime: 0f64,
             TorqueDrawScale: 0f32,
             UseCsGv2: false,
@@ -9127,16 +9120,16 @@ impl Default for Player {
             AutoJumpEnabled: false,
             CameraMaxZoomDistance: 0f32,
             CameraMinZoomDistance: 0f32,
-            CameraMode: unimplemented!("convert u32 Enum to precise strong variant"),
+            CameraMode: enums::CameraMode::Classic,
             Character: Ref::none(),
             CharacterAppearance: "".to_owned(),
             CharacterAppearanceId: 0i64,
-            DevCameraOcclusionMode: unimplemented!("convert u32 Enum to precise strong variant"),
-            DevComputerCameraMode: unimplemented!("convert u32 Enum to precise strong variant"),
-            DevComputerMovementMode: unimplemented!("convert u32 Enum to precise strong variant"),
+            DevCameraOcclusionMode: enums::DevCameraOcclusionMode::Zoom,
+            DevComputerCameraMode: enums::DevComputerCameraMovementMode::UserChoice,
+            DevComputerMovementMode: enums::DevComputerMovementMode::UserChoice,
             DevEnableMouseLock: false,
-            DevTouchCameraMode: unimplemented!("convert u32 Enum to precise strong variant"),
-            DevTouchMovementMode: unimplemented!("convert u32 Enum to precise strong variant"),
+            DevTouchCameraMode: enums::DevTouchCameraMovementMode::UserChoice,
+            DevTouchMovementMode: enums::DevTouchMovementMode::UserChoice,
             HealthDisplayDistance: 0f32,
             NameDisplayDistance: 0f32,
             Neutral: false,
@@ -9186,7 +9179,7 @@ impl Default for PlayerDataService {
     fn default() -> Self {
         Self {
             superclass: Instance::default(),
-            LoadFailureBehavior: unimplemented!("convert u32 Enum to precise strong variant"),
+            LoadFailureBehavior: enums::PlayerDataLoadFailureBehavior::Failure,
         }
     }
 }
@@ -9231,7 +9224,7 @@ impl Default for PlayerGui {
     fn default() -> Self {
         Self {
             superclass: BasePlayerGui::default(),
-            ScreenOrientation: unimplemented!("convert u32 Enum to precise strong variant"),
+            ScreenOrientation: enums::ScreenOrientation::LandscapeLeft,
             SelectionImageObject: Ref::none(),
         }
     }
@@ -9470,8 +9463,8 @@ impl Default for PolicyService {
     fn default() -> Self {
         Self {
             superclass: Instance::default(),
-            IsLuobuServer: unimplemented!("convert u32 Enum to precise strong variant"),
-            LuobuWhitelisted: unimplemented!("convert u32 Enum to precise strong variant"),
+            IsLuobuServer: enums::TriStateBoolean::Unknown,
+            LuobuWhitelisted: enums::TriStateBoolean::Unknown,
         }
     }
 }
@@ -9505,8 +9498,8 @@ impl Default for PoseBase {
     fn default() -> Self {
         Self {
             superclass: Instance::default(),
-            EasingDirection: unimplemented!("convert u32 Enum to precise strong variant"),
-            EasingStyle: unimplemented!("convert u32 Enum to precise strong variant"),
+            EasingDirection: enums::PoseEasingDirection::In,
+            EasingStyle: enums::PoseEasingStyle::Linear,
             Weight: 0f32,
         }
     }
@@ -9573,16 +9566,16 @@ impl Default for ProximityPrompt {
             AutoLocalize: true,
             ClickablePrompt: true,
             Enabled: true,
-            Exclusivity: unimplemented!("convert u32 Enum to precise strong variant"),
-            GamepadKeyCode: unimplemented!("convert u32 Enum to precise strong variant"),
+            Exclusivity: enums::ProximityPromptExclusivity::OnePerButton,
+            GamepadKeyCode: enums::KeyCode::ButtonX,
             HoldDuration: 0f32,
-            KeyboardKeyCode: unimplemented!("convert u32 Enum to precise strong variant"),
+            KeyboardKeyCode: enums::KeyCode::E,
             MaxActivationDistance: 10f32,
             MaxIndicatorDistance: 0f32,
             ObjectText: "".to_owned(),
             RequiresLineOfSight: true,
             RootLocalizationTable: Ref::none(),
-            Style: unimplemented!("convert u32 Enum to precise strong variant"),
+            Style: enums::ProximityPromptStyle::Default,
             UiOffset: Vector2::new(0f32, 0f32),
         }
     }
@@ -9631,7 +9624,7 @@ impl Default for PyramidHandleAdornment {
         Self {
             superclass: HandleAdornment::default(),
             Height: 2f32,
-            Shading: unimplemented!("convert u32 Enum to precise strong variant"),
+            Shading: enums::AdornShading::Default,
             Sides: 4i32,
             Size: 1f32,
         }
@@ -9732,7 +9725,7 @@ impl Default for ReflectionMetadataClass {
             ExplorerOrder: 2147483647i32,
             Insertable: true,
             PreferredParent: "".to_owned(),
-            ServiceVisibility: unimplemented!("convert u32 Enum to precise strong variant"),
+            ServiceVisibility: enums::ServiceVisibility::Always,
         }
     }
 }
@@ -9937,18 +9930,18 @@ impl Default for RenderSettings {
             superclass: Instance::default(),
             AutoFrmLevel: 0i32,
             EagerBulkExecution: false,
-            EditQualityLevel: unimplemented!("convert u32 Enum to precise strong variant"),
+            EditQualityLevel: enums::QualityLevel::Automatic,
             EnableVrMode: false,
             ExportMergeByMaterial: false,
-            FrameRateManager: unimplemented!("convert u32 Enum to precise strong variant"),
-            GraphicsMode: unimplemented!("convert u32 Enum to precise strong variant"),
+            FrameRateManager: enums::FramerateManagerMode::Automatic,
+            GraphicsMode: enums::GraphicsMode::Automatic,
             MeshCacheSize: 0i32,
-            MeshPartDetailLevel: unimplemented!("convert u32 Enum to precise strong variant"),
-            QualityLevel: unimplemented!("convert u32 Enum to precise strong variant"),
+            MeshPartDetailLevel: enums::MeshPartDetailLevel::DistanceBased,
+            QualityLevel: enums::QualityLevel::Automatic,
             ReloadAssets: false,
             RenderCsgTrianglesDebug: false,
             ShowBoundingBoxes: false,
-            ViewMode: unimplemented!("convert u32 Enum to precise strong variant"),
+            ViewMode: enums::ViewMode::None,
         }
     }
 }
@@ -9978,7 +9971,7 @@ impl Default for RenderingTest {
             superclass: Instance::default(),
             CFrame: CFrame::identity(),
             ComparisonDiffThreshold: 10i32,
-            ComparisonMethod: unimplemented!("convert u32 Enum to precise strong variant"),
+            ComparisonMethod: enums::RenderingTestComparisonMethod::psnr,
             ComparisonPsnrThreshold: 50f32,
             Description: "".to_owned(),
             FieldOfView: 70f32,
@@ -10209,16 +10202,16 @@ impl Default for RootImportData {
             KeepZeroInfluenceBones: false,
             MergeMeshes: false,
             PreferredUploadId: 0i64,
-            RestPose: unimplemented!("convert u32 Enum to precise strong variant"),
-            RigScale: unimplemented!("convert u32 Enum to precise strong variant"),
-            RigType: unimplemented!("convert u32 Enum to precise strong variant"),
+            RestPose: enums::RestPose::Default,
+            RigScale: enums::RigScale::Default,
+            RigType: enums::RigType::R15,
             RigVisualization: false,
-            ScaleUnit: unimplemented!("convert u32 Enum to precise strong variant"),
+            ScaleUnit: enums::MeshScaleUnit::Stud,
             UseSceneOriginAsPivot: false,
             UsesCages: false,
             ValidateUgcBody: false,
-            WorldForward: unimplemented!("convert u32 Enum to precise strong variant"),
-            WorldUp: unimplemented!("convert u32 Enum to precise strong variant"),
+            WorldForward: enums::NormalId::Right,
+            WorldUp: enums::NormalId::Right,
         }
     }
 }
@@ -10381,8 +10374,8 @@ impl Default for ScreenGui {
             superclass: LayerCollector::default(),
             ClipToDeviceSafeArea: true,
             DisplayOrder: 0i32,
-            SafeAreaCompatibility: unimplemented!("convert u32 Enum to precise strong variant"),
-            ScreenInsets: unimplemented!("convert u32 Enum to precise strong variant"),
+            SafeAreaCompatibility: enums::SafeAreaCompatibility::FullscreenExtension,
+            ScreenInsets: enums::ScreenInsets::CoreUISafeInsets,
         }
     }
 }
@@ -10422,7 +10415,7 @@ impl Default for ScreenshotHud {
             ExperienceNameOverlayEnabled: false,
             HideCoreGuiForCaptures: false,
             HidePlayerGuiForCaptures: false,
-            OverlayFont: unimplemented!("convert u32 Enum to precise strong variant"),
+            OverlayFont: enums::Font::Legacy,
             UsernameOverlayEnabled: false,
             Visible: false,
         }
@@ -10584,23 +10577,23 @@ impl Default for ScrollingFrame {
     fn default() -> Self {
         Self {
             superclass: GuiObject::default(),
-            AutomaticCanvasSize: unimplemented!("convert u32 Enum to precise strong variant"),
+            AutomaticCanvasSize: enums::AutomaticSize::None,
             BottomImageContent: Content::from_uri(
                 "rbxasset://textures/ui/Scroll/scroll-bottom.png",
             ),
             CanvasPosition: Vector2::new(0f32, 0f32),
             CanvasSize: UDim2::new(UDim::new(0f32, 0i32), UDim::new(2f32, 0i32)),
-            ElasticBehavior: unimplemented!("convert u32 Enum to precise strong variant"),
-            HorizontalScrollBarInset: unimplemented!("convert u32 Enum to precise strong variant"),
+            ElasticBehavior: enums::ElasticBehavior::WhenScrollable,
+            HorizontalScrollBarInset: enums::ScrollBarInset::None,
             MidImageContent: Content::from_uri("rbxasset://textures/ui/Scroll/scroll-middle.png"),
             ScrollBarImageColor3: Color3::new(1f32, 1f32, 1f32),
             ScrollBarImageTransparency: 0f32,
             ScrollBarThickness: 12i32,
-            ScrollingDirection: unimplemented!("convert u32 Enum to precise strong variant"),
+            ScrollingDirection: enums::ScrollingDirection::XY,
             ScrollingEnabled: true,
             TopImageContent: Content::from_uri("rbxasset://textures/ui/Scroll/scroll-top.png"),
-            VerticalScrollBarInset: unimplemented!("convert u32 Enum to precise strong variant"),
-            VerticalScrollBarPosition: unimplemented!("convert u32 Enum to precise strong variant"),
+            VerticalScrollBarInset: enums::ScrollBarInset::None,
+            VerticalScrollBarPosition: enums::VerticalScrollBarPosition::Right,
         }
     }
 }
@@ -10736,7 +10729,7 @@ impl Default for SensorBase {
     fn default() -> Self {
         Self {
             superclass: Instance::default(),
-            UpdateType: unimplemented!("convert u32 Enum to precise strong variant"),
+            UpdateType: enums::SensorUpdateType::OnRead,
         }
     }
 }
@@ -10973,7 +10966,7 @@ impl Default for SlidingBallConstraint {
     fn default() -> Self {
         Self {
             superclass: Constraint::default(),
-            ActuatorType: unimplemented!("convert u32 Enum to precise strong variant"),
+            ActuatorType: enums::ActuatorType::None,
             LimitsEnabled: false,
             LinearResponsiveness: 0f32,
             LowerLimit: 0f32,
@@ -11099,7 +11092,7 @@ impl Default for Sound {
             PlaybackRegionsEnabled: false,
             PlaybackSpeed: 1f32,
             Playing: false,
-            RollOffMode: unimplemented!("convert u32 Enum to precise strong variant"),
+            RollOffMode: enums::RollOffMode::Inverse,
             SoundGroup: Ref::none(),
             TimePosition: 0f64,
             Volume: 0.5f32,
@@ -11163,16 +11156,16 @@ impl Default for SoundService {
         Self {
             superclass: Instance::default(),
             AcousticSimulationEnabled: false,
-            AmbientReverb: unimplemented!("convert u32 Enum to precise strong variant"),
-            AudioApiByDefault: unimplemented!("convert u32 Enum to precise strong variant"),
-            CharacterSoundsUseNewApi: unimplemented!("convert u32 Enum to precise strong variant"),
-            DefaultListenerLocation: unimplemented!("convert u32 Enum to precise strong variant"),
+            AmbientReverb: enums::ReverbType::NoReverb,
+            AudioApiByDefault: enums::RolloutState::Default,
+            CharacterSoundsUseNewApi: enums::RolloutState::Default,
+            DefaultListenerLocation: enums::ListenerLocation::Default,
             DistanceFactor: 3.33f32,
             DopplerScale: 1f32,
             IsNewExpForAudioApiByDefault: false,
             RespectFilteringEnabled: false,
             RolloffScale: 1f32,
-            VolumetricAudio: unimplemented!("convert u32 Enum to precise strong variant"),
+            VolumetricAudio: enums::VolumetricAudio::Automatic,
         }
     }
 }
@@ -11248,7 +11241,7 @@ impl Default for SpecialMesh {
     fn default() -> Self {
         Self {
             superclass: FileMesh::default(),
-            MeshType: unimplemented!("convert u32 Enum to precise strong variant"),
+            MeshType: enums::MeshType::Head,
         }
     }
 }
@@ -11266,7 +11259,7 @@ impl Default for SphereHandleAdornment {
         Self {
             superclass: HandleAdornment::default(),
             Radius: 1f32,
-            Shading: unimplemented!("convert u32 Enum to precise strong variant"),
+            Shading: enums::AdornShading::Default,
         }
     }
 }
@@ -11285,7 +11278,7 @@ impl Default for SpotLight {
         Self {
             superclass: Light::default(),
             Angle: 90f32,
-            Face: unimplemented!("convert u32 Enum to precise strong variant"),
+            Face: enums::NormalId::Front,
             Range: 16f32,
         }
     }
@@ -11391,12 +11384,12 @@ impl Default for StarterGui {
         Self {
             superclass: BasePlayerGui::default(),
             ResetPlayerGuiOnSpawn: true,
-            RtlTextSupport: unimplemented!("convert u32 Enum to precise strong variant"),
-            ScreenOrientation: unimplemented!("convert u32 Enum to precise strong variant"),
+            RtlTextSupport: enums::RtlTextSupport::Default,
+            ScreenOrientation: enums::ScreenOrientation::LandscapeSensor,
             ShowDevelopmentGui: true,
             StudioDefaultStyleSheet: Ref::none(),
             StudioInsertWidgetLayerCollectorAutoLinkStyleSheet: Ref::none(),
-            VirtualCursorMode: unimplemented!("convert u32 Enum to precise strong variant"),
+            VirtualCursorMode: enums::VirtualCursorMode::Default,
         }
     }
 }
@@ -11465,12 +11458,10 @@ impl Default for StarterPlayer {
             superclass: Instance::default(),
             AllowCustomAnimations: true,
             AutoJumpEnabled: true,
-            AvatarJointUpgradeSerializedRollout: unimplemented!(
-                "convert u32 Enum to precise strong variant"
-            ),
+            AvatarJointUpgradeSerializedRollout: enums::RolloutState::Default,
             CameraMaxZoomDistance: 400f32,
             CameraMinZoomDistance: 0.5f32,
-            CameraMode: unimplemented!("convert u32 Enum to precise strong variant"),
+            CameraMode: enums::CameraMode::Classic,
             CharacterBreakJointsOnDeath: true,
             CharacterJumpHeight: 7.2f32,
             CharacterJumpPower: 50f32,
@@ -11479,16 +11470,12 @@ impl Default for StarterPlayer {
             CharacterWalkSpeed: 16f32,
             ClassicDeath: true,
             CreateDefaultPlayerModule: true,
-            DevCameraOcclusionMode: unimplemented!("convert u32 Enum to precise strong variant"),
-            DevComputerCameraMovementMode: unimplemented!(
-                "convert u32 Enum to precise strong variant"
-            ),
-            DevComputerMovementMode: unimplemented!("convert u32 Enum to precise strong variant"),
-            DevTouchCameraMovementMode: unimplemented!(
-                "convert u32 Enum to precise strong variant"
-            ),
-            DevTouchMovementMode: unimplemented!("convert u32 Enum to precise strong variant"),
-            EnableDynamicHeads: unimplemented!("convert u32 Enum to precise strong variant"),
+            DevCameraOcclusionMode: enums::DevCameraOcclusionMode::Zoom,
+            DevComputerCameraMovementMode: enums::DevComputerCameraMovementMode::UserChoice,
+            DevComputerMovementMode: enums::DevComputerMovementMode::UserChoice,
+            DevTouchCameraMovementMode: enums::DevTouchCameraMovementMode::UserChoice,
+            DevTouchMovementMode: enums::DevTouchMovementMode::UserChoice,
+            EnableDynamicHeads: enums::LoadDynamicHeads::Default,
             EnableMouseLockOption: true,
             GameSettingsAssetIdFace: 0i64,
             GameSettingsAssetIdHead: 0i64,
@@ -11500,8 +11487,8 @@ impl Default for StarterPlayer {
             GameSettingsAssetIdShirt: 0i64,
             GameSettingsAssetIdTeeShirt: 0i64,
             GameSettingsAssetIdTorso: 0i64,
-            GameSettingsAvatar: unimplemented!("convert u32 Enum to precise strong variant"),
-            GameSettingsR15Collision: unimplemented!("convert u32 Enum to precise strong variant"),
+            GameSettingsAvatar: enums::GameAvatarType::R15,
+            GameSettingsR15Collision: enums::R15CollisionType::OuterBox,
             GameSettingsScaleRangeBodyType: NumberRange::new(0f32, 1f32),
             GameSettingsScaleRangeHead: NumberRange::new(0.95f32, 1f32),
             GameSettingsScaleRangeHeight: NumberRange::new(0.9f32, 1.05f32),
@@ -11509,10 +11496,8 @@ impl Default for StarterPlayer {
             GameSettingsScaleRangeWidth: NumberRange::new(0.7f32, 1f32),
             HealthDisplayDistance: 100f32,
             LoadCharacterAppearance: true,
-            LoadCharacterLayeredClothing: unimplemented!(
-                "convert u32 Enum to precise strong variant"
-            ),
-            LuaCharacterController: unimplemented!("convert u32 Enum to precise strong variant"),
+            LoadCharacterLayeredClothing: enums::LoadCharacterLayeredClothing::Default,
+            LuaCharacterController: enums::CharacterControlMode::Default,
             NameDisplayDistance: 100f32,
             UserEmotesEnabled: true,
         }
@@ -11723,8 +11708,8 @@ impl Default for Studio {
     fn default() -> Self {
         Self {
             superclass: Instance::default(),
-            ActionOnAutoResumeSync: unimplemented!("convert u32 Enum to precise strong variant"),
-            ActionOnStopSync: unimplemented!("convert u32 Enum to precise strong variant"),
+            ActionOnAutoResumeSync: enums::ActionOnAutoResumeSync::DontResume,
+            ActionOnStopSync: enums::ActionOnStopSync::AlwaysAsk,
             ActiveColor: Color3::new(0f32, 0f32, 0f32),
             ActiveHoverOverColor: Color3::new(0f32, 0f32, 0f32),
             AlwaysSaveScriptChanges: false,
@@ -11733,16 +11718,14 @@ impl Default for Studio {
             AutoClosingBrackets: false,
             AutoClosingQuotes: false,
             AutoDeleteClosingBracketsAndQuotes: false,
-            AutoIndentRule: unimplemented!("convert u32 Enum to precise strong variant"),
+            AutoIndentRule: enums::AutoIndentRule::Off,
             AutoRecoveryEnabled: false,
             AutoRecoveryIntervalMinutes: 0i32,
             AutoResumeSyncOnPlaceOpen: false,
             AutoUpdateEnabled: false,
-            AutocompleteAcceptanceBehavior: unimplemented!(
-                "convert u32 Enum to precise strong variant"
-            ),
+            AutocompleteAcceptanceBehavior: enums::CompletionAcceptanceBehavior::Insert,
             AutomaticallyTriggerAiCodeCompletion: false,
-            BasicObjectsDisplayMode: unimplemented!("convert u32 Enum to precise strong variant"),
+            BasicObjectsDisplayMode: enums::ListDisplayMode::Horizontal,
             CameraAdaptiveSpeed: false,
             CameraMouseWheelSpeed: 0f32,
             CameraOrbitSensitivity: 0f32,
@@ -11751,14 +11734,14 @@ impl Default for Studio {
             CameraShiftFactor: 0f32,
             CameraShiftSpeed: 0f32,
             CameraSpeed: 0f32,
-            CameraSpeedAdjustBinding: unimplemented!("convert u32 Enum to precise strong variant"),
+            CameraSpeedAdjustBinding: enums::CameraSpeedAdjustBinding::None,
             CameraSpeedLockDefault: false,
             CameraTweenFocus: false,
             CameraZoomSpeed: 0f32,
             CameraZoomToMousePosition: false,
             ClearOutputOnStart: false,
             CommandBarLocalState: false,
-            DefaultScriptSyncFileType: unimplemented!("convert u32 Enum to precise strong variant"),
+            DefaultScriptSyncFileType: enums::DefaultScriptSyncFileType::Lua,
             DeprecatedObjectsShown: false,
             DisplayLanguage: "".to_owned(),
             DraggerActiveColor: Color3::new(0f32, 0f32, 0f32),
@@ -11794,7 +11777,7 @@ impl Default for Studio {
             FormatOnType: false,
             HighlightCurrentLine: false,
             HighlightOccurances: false,
-            HoverAnimateSpeed: unimplemented!("convert u32 Enum to precise strong variant"),
+            HoverAnimateSpeed: enums::HoverAnimateSpeed::VerySlow,
             HoverBoxThickness: 0f32,
             HoverLineThickness: 0i32,
             HoverOverColor: Color3::new(0f32, 0f32, 0f32),
@@ -11810,8 +11793,8 @@ impl Default for Studio {
             MaxFindReplaceAllResults: 0i32,
             MaximumOutputLines: 0i32,
             OnlyPlayAudioFromWindowInFocus: false,
-            OutputLayoutMode: unimplemented!("convert u32 Enum to precise strong variant"),
-            PermissionLevelShown: unimplemented!("convert u32 Enum to precise strong variant"),
+            OutputLayoutMode: enums::OutputLayoutMode::Horizontal,
+            PermissionLevelShown: enums::PermissionLevelShown::Game,
             PhysicalDraggersSelectScopeByDefault: false,
             PivotSnapToGeometryColor: Color3::new(0f32, 0f32, 0f32),
             PluginDebuggingEnabled: false,
@@ -11819,8 +11802,8 @@ impl Default for Studio {
             ReloadLocalPluginsOnChange: false,
             RespectStudioShortcutsWhenGameHasFocus: false,
             Rulers: "".to_owned(),
-            RuntimeUndoBehavior: unimplemented!("convert u32 Enum to precise strong variant"),
-            ScriptEditorColorPreset: unimplemented!("convert u32 Enum to precise strong variant"),
+            RuntimeUndoBehavior: enums::RuntimeUndoBehavior::Aggregate,
+            ScriptEditorColorPreset: enums::StudioScriptEditorColorPresets::RobloxDefault,
             ScriptEditorShouldShowPluginMethods: false,
             ScriptTimeoutLength: 0i32,
             ScrollPastLastLine: false,
@@ -12165,7 +12148,7 @@ impl Default for SurfaceAppearance {
     fn default() -> Self {
         Self {
             superclass: Instance::default(),
-            AlphaMode: unimplemented!("convert u32 Enum to precise strong variant"),
+            AlphaMode: enums::AlphaMode::Overlay,
             Color: Color3::new(1f32, 1f32, 1f32),
             ColorMapContent: Content::none(),
             EmissiveMaskContent: Content::none(),
@@ -12206,7 +12189,7 @@ impl Default for SurfaceGui {
             LightInfluence: 0f32,
             MaxDistance: 0f32,
             PixelsPerStud: 50f32,
-            SizingMode: unimplemented!("convert u32 Enum to precise strong variant"),
+            SizingMode: enums::SurfaceGuiSizingMode::FixedSize,
             ToolPunchThroughDistance: 0f32,
             ZOffset: 0f32,
         }
@@ -12228,7 +12211,7 @@ impl Default for SurfaceGuiBase {
             superclass: LayerCollector::default(),
             Active: false,
             Adornee: Ref::none(),
-            Face: unimplemented!("convert u32 Enum to precise strong variant"),
+            Face: enums::NormalId::Right,
         }
     }
 }
@@ -12247,7 +12230,7 @@ impl Default for SurfaceLight {
         Self {
             superclass: Light::default(),
             Angle: 90f32,
-            Face: unimplemented!("convert u32 Enum to precise strong variant"),
+            Face: enums::NormalId::Front,
             Range: 16f32,
         }
     }
@@ -12264,7 +12247,7 @@ impl Default for SurfaceSelection {
     fn default() -> Self {
         Self {
             superclass: PartAdornment::default(),
-            TargetSurface: unimplemented!("convert u32 Enum to precise strong variant"),
+            TargetSurface: enums::NormalId::Right,
         }
     }
 }
@@ -12308,7 +12291,7 @@ impl Default for SyncScriptBuilder {
     fn default() -> Self {
         Self {
             superclass: ScriptBuilder::default(),
-            CompileTarget: unimplemented!("convert u32 Enum to precise strong variant"),
+            CompileTarget: enums::CompileTarget::Client,
             CoverageInfo: false,
             DebugInfo: false,
             PackAsSource: false,
@@ -12336,7 +12319,7 @@ impl Default for TaskScheduler {
     fn default() -> Self {
         Self {
             superclass: Instance::default(),
-            ThreadPoolConfig: unimplemented!("convert u32 Enum to precise strong variant"),
+            ThreadPoolConfig: enums::ThreadPoolConfig::Auto,
         }
     }
 }
@@ -12473,7 +12456,7 @@ impl Default for Terrain {
     fn default() -> Self {
         Self {
             superclass: BasePart::default(),
-            AcquisitionMethod: unimplemented!("convert u32 Enum to precise strong variant"),
+            AcquisitionMethod: enums::TerrainAcquisitionMethod::None,
             Decoration: false,
             GrassLength: 0.7f32,
             MaterialColors: unimplemented!("MaterialColors"),
@@ -12514,8 +12497,8 @@ impl Default for TerrainDetail {
             EmissiveMaskContent: Content::none(),
             EmissiveStrength: 1f32,
             EmissiveTint: Color3::new(1f32, 1f32, 1f32),
-            Face: unimplemented!("convert u32 Enum to precise strong variant"),
-            MaterialPattern: unimplemented!("convert u32 Enum to precise strong variant"),
+            Face: enums::TerrainFace::Side,
+            MaterialPattern: enums::MaterialPattern::Regular,
             MetalnessMapContent: Content::none(),
             NormalMapContent: Content::none(),
             RoughnessMapContent: Content::none(),
@@ -12658,17 +12641,17 @@ impl Default for TextBox {
             ShowNativeInput: true,
             Text: "TextBox".to_owned(),
             TextColor3: Color3::new(0.10588236f32, 0.16470589f32, 0.20784315f32),
-            TextDirection: unimplemented!("convert u32 Enum to precise strong variant"),
+            TextDirection: enums::TextDirection::Auto,
             TextEditable: true,
             TextScaled: false,
             TextSize: 8f32,
             TextStrokeColor3: Color3::new(0f32, 0f32, 0f32),
             TextStrokeTransparency: 1f32,
             TextTransparency: 0f32,
-            TextTruncate: unimplemented!("convert u32 Enum to precise strong variant"),
+            TextTruncate: enums::TextTruncate::None,
             TextWrapped: false,
-            TextXAlignment: unimplemented!("convert u32 Enum to precise strong variant"),
-            TextYAlignment: unimplemented!("convert u32 Enum to precise strong variant"),
+            TextXAlignment: enums::TextXAlignment::Center,
+            TextYAlignment: enums::TextYAlignment::Center,
         }
     }
 }
@@ -12719,16 +12702,16 @@ impl Default for TextButton {
             RichText: false,
             Text: "Button".to_owned(),
             TextColor3: Color3::new(0.10588236f32, 0.16470589f32, 0.20784315f32),
-            TextDirection: unimplemented!("convert u32 Enum to precise strong variant"),
+            TextDirection: enums::TextDirection::Auto,
             TextScaled: false,
             TextSize: 8f32,
             TextStrokeColor3: Color3::new(0f32, 0f32, 0f32),
             TextStrokeTransparency: 1f32,
             TextTransparency: 0f32,
-            TextTruncate: unimplemented!("convert u32 Enum to precise strong variant"),
+            TextTruncate: enums::TextTruncate::None,
             TextWrapped: false,
-            TextXAlignment: unimplemented!("convert u32 Enum to precise strong variant"),
-            TextYAlignment: unimplemented!("convert u32 Enum to precise strong variant"),
+            TextXAlignment: enums::TextXAlignment::Center,
+            TextYAlignment: enums::TextYAlignment::Center,
         }
     }
 }
@@ -12820,7 +12803,7 @@ impl Default for TextChatService {
             superclass: Instance::default(),
             ChatTranslationFtuxShown: true,
             ChatTranslationToggleEnabled: false,
-            ChatVersion: unimplemented!("convert u32 Enum to precise strong variant"),
+            ChatVersion: enums::ChatVersion::LegacyChatService,
             CreateDefaultCommands: true,
             CreateDefaultTextChannels: true,
             HasSeenDeprecationDialog: false,
@@ -12905,16 +12888,16 @@ impl Default for TextLabel {
             RichText: false,
             Text: "Label".to_owned(),
             TextColor3: Color3::new(0.10588236f32, 0.16470589f32, 0.20784315f32),
-            TextDirection: unimplemented!("convert u32 Enum to precise strong variant"),
+            TextDirection: enums::TextDirection::Auto,
             TextScaled: false,
             TextSize: 8f32,
             TextStrokeColor3: Color3::new(0f32, 0f32, 0f32),
             TextStrokeTransparency: 1f32,
             TextTransparency: 0f32,
-            TextTruncate: unimplemented!("convert u32 Enum to precise strong variant"),
+            TextTruncate: enums::TextTruncate::None,
             TextWrapped: false,
-            TextXAlignment: unimplemented!("convert u32 Enum to precise strong variant"),
-            TextYAlignment: unimplemented!("convert u32 Enum to precise strong variant"),
+            TextXAlignment: enums::TextXAlignment::Center,
+            TextYAlignment: enums::TextYAlignment::Center,
         }
     }
 }
@@ -13059,7 +13042,7 @@ impl Default for Torque {
     fn default() -> Self {
         Self {
             superclass: Constraint::default(),
-            RelativeTo: unimplemented!("convert u32 Enum to precise strong variant"),
+            RelativeTo: enums::ActuatorRelativeTo::Attachment0,
             Torque: Vector3::new(0f32, 0f32, 0f32),
         }
     }
@@ -13143,10 +13126,10 @@ impl Default for TrackerLodController {
     fn default() -> Self {
         Self {
             superclass: Instance::default(),
-            AudioMode: unimplemented!("convert u32 Enum to precise strong variant"),
-            VideoExtrapolationMode: unimplemented!("convert u32 Enum to precise strong variant"),
-            VideoLodMode: unimplemented!("convert u32 Enum to precise strong variant"),
-            VideoMode: unimplemented!("convert u32 Enum to precise strong variant"),
+            AudioMode: enums::TrackerLodFlagMode::ForceFalse,
+            VideoExtrapolationMode: enums::TrackerExtrapolationFlagMode::ForceDisabled,
+            VideoLodMode: enums::TrackerLodValueMode::Force0,
+            VideoMode: enums::TrackerLodFlagMode::ForceFalse,
         }
     }
 }
@@ -13203,7 +13186,7 @@ impl Default for Trail {
             MinLength: 0.1f32,
             Texture: "".into(),
             TextureLength: 1f32,
-            TextureMode: unimplemented!("convert u32 Enum to precise strong variant"),
+            TextureMode: enums::TextureMode::Stretch,
             Transparency: NumberSequence {
                 keypoints: vec![
                     NumberSequenceKeypoint::new(0f32, 0.5f32, 0f32),
@@ -13267,7 +13250,7 @@ impl Default for TriangleMeshPart {
         Self {
             superclass: BasePart::default(),
             AeroMeshData: SharedString::new(b"".to_vec()),
-            FluidFidelityInternal: unimplemented!("convert u32 Enum to precise strong variant"),
+            FluidFidelityInternal: enums::FluidFidelity::Automatic,
             InertiaMigrated: false,
             PhysicalConfigData: SharedString::new(b"".to_vec()),
             UnscaledCofm: Vector3::new(0f32, 0f32, 0f32),
@@ -13289,7 +13272,7 @@ impl Default for TrussPart {
     fn default() -> Self {
         Self {
             superclass: BasePart::default(),
-            Style: unimplemented!("convert u32 Enum to precise strong variant"),
+            Style: enums::Style::AlternatingSupports,
         }
     }
 }
@@ -13356,8 +13339,8 @@ impl Default for UIAspectRatioConstraint {
         Self {
             superclass: UIConstraint::default(),
             AspectRatio: 1f32,
-            AspectType: unimplemented!("convert u32 Enum to precise strong variant"),
-            DominantAxis: unimplemented!("convert u32 Enum to precise strong variant"),
+            AspectType: enums::AspectType::FitWithinMaxSize,
+            DominantAxis: enums::DominantAxis::Width,
         }
     }
 }
@@ -13433,14 +13416,14 @@ impl Default for UIDragDetector {
         Self {
             superclass: UIComponent::default(),
             ActivatedCursorIconContent: Content::none(),
-            BoundingBehavior: unimplemented!("convert u32 Enum to precise strong variant"),
+            BoundingBehavior: enums::UIDragDetectorBoundingBehavior::Automatic,
             BoundingUi: Ref::none(),
             CursorIconContent: Content::none(),
             DragAxis: Vector2::new(1f32, 0f32),
-            DragRelativity: unimplemented!("convert u32 Enum to precise strong variant"),
+            DragRelativity: enums::UIDragDetectorDragRelativity::Absolute,
             DragRotation: 0f32,
-            DragSpace: unimplemented!("convert u32 Enum to precise strong variant"),
-            DragStyle: unimplemented!("convert u32 Enum to precise strong variant"),
+            DragSpace: enums::UIDragDetectorDragSpace::Parent,
+            DragStyle: enums::UIDragDetectorDragStyle::TranslatePlane,
             DragUDim2: UDim2::new(UDim::new(0f32, 0i32), UDim::new(0f32, 0i32)),
             Enabled: true,
             MaxDragAngle: 0f32,
@@ -13448,10 +13431,10 @@ impl Default for UIDragDetector {
             MinDragAngle: 0f32,
             MinDragTranslation: UDim2::new(UDim::new(0f32, 0i32), UDim::new(0f32, 0i32)),
             ReferenceUiInstance: Ref::none(),
-            ResponseStyle: unimplemented!("convert u32 Enum to precise strong variant"),
+            ResponseStyle: enums::UIDragDetectorResponseStyle::Offset,
             SelectionModeDragSpeed: UDim2::new(UDim::new(0f32, 300i32), UDim::new(0f32, 300i32)),
             SelectionModeRotateSpeed: 90f32,
-            UiDragSpeedAxisMapping: unimplemented!("convert u32 Enum to precise strong variant"),
+            UiDragSpeedAxisMapping: enums::UIDragSpeedAxisMapping::XY,
         }
     }
 }
@@ -13478,9 +13461,9 @@ impl Default for UIFlexItem {
     fn default() -> Self {
         Self {
             superclass: UIComponent::default(),
-            FlexMode: unimplemented!("convert u32 Enum to precise strong variant"),
+            FlexMode: enums::UIFlexMode::None,
             GrowRatio: 0f32,
-            ItemLineAlignment: unimplemented!("convert u32 Enum to precise strong variant"),
+            ItemLineAlignment: enums::ItemLineAlignment::Automatic,
             ShrinkRatio: 0f32,
         }
     }
@@ -13537,7 +13520,7 @@ impl Default for UIGridLayout {
             CellPadding: UDim2::new(UDim::new(0f32, 5i32), UDim::new(0f32, 5i32)),
             CellSize: UDim2::new(UDim::new(0f32, 100i32), UDim::new(0f32, 100i32)),
             FillDirectionMaxCells: 0i32,
-            StartCorner: unimplemented!("convert u32 Enum to precise strong variant"),
+            StartCorner: enums::StartCorner::TopLeft,
         }
     }
 }
@@ -13556,10 +13539,10 @@ impl Default for UIGridStyleLayout {
     fn default() -> Self {
         Self {
             superclass: UILayout::default(),
-            FillDirection: unimplemented!("convert u32 Enum to precise strong variant"),
-            HorizontalAlignment: unimplemented!("convert u32 Enum to precise strong variant"),
-            SortOrder: unimplemented!("convert u32 Enum to precise strong variant"),
-            VerticalAlignment: unimplemented!("convert u32 Enum to precise strong variant"),
+            FillDirection: enums::FillDirection::Horizontal,
+            HorizontalAlignment: enums::HorizontalAlignment::Center,
+            SortOrder: enums::SortOrder::Name,
+            VerticalAlignment: enums::VerticalAlignment::Center,
         }
     }
 }
@@ -13587,10 +13570,10 @@ impl Default for UIListLayout {
     fn default() -> Self {
         Self {
             superclass: UIGridStyleLayout::default(),
-            HorizontalFlex: unimplemented!("convert u32 Enum to precise strong variant"),
-            ItemLineAlignment: unimplemented!("convert u32 Enum to precise strong variant"),
+            HorizontalFlex: enums::UIFlexAlignment::None,
+            ItemLineAlignment: enums::ItemLineAlignment::Automatic,
             Padding: UDim::new(0f32, 0i32),
-            VerticalFlex: unimplemented!("convert u32 Enum to precise strong variant"),
+            VerticalFlex: enums::UIFlexAlignment::None,
             Wraps: false,
         }
     }
@@ -13639,8 +13622,8 @@ impl Default for UIPageLayout {
             superclass: UIGridStyleLayout::default(),
             Animated: true,
             Circular: false,
-            EasingDirection: unimplemented!("convert u32 Enum to precise strong variant"),
-            EasingStyle: unimplemented!("convert u32 Enum to precise strong variant"),
+            EasingDirection: enums::EasingDirection::Out,
+            EasingStyle: enums::EasingStyle::Back,
             GamepadInputEnabled: true,
             Padding: UDim::new(0f32, 0i32),
             ScrollWheelInputEnabled: true,
@@ -13704,13 +13687,13 @@ impl Default for UIStroke {
     fn default() -> Self {
         Self {
             superclass: UIComponent::default(),
-            ApplyStrokeMode: unimplemented!("convert u32 Enum to precise strong variant"),
+            ApplyStrokeMode: enums::ApplyStrokeMode::Contextual,
             BorderOffset: UDim::new(0f32, 0i32),
-            BorderStrokePosition: unimplemented!("convert u32 Enum to precise strong variant"),
+            BorderStrokePosition: enums::BorderStrokePosition::Outer,
             Color: Color3::new(0f32, 0f32, 0f32),
             Enabled: true,
-            LineJoinMode: unimplemented!("convert u32 Enum to precise strong variant"),
-            StrokeSizingMode: unimplemented!("convert u32 Enum to precise strong variant"),
+            LineJoinMode: enums::LineJoinMode::Round,
+            StrokeSizingMode: enums::StrokeSizingMode::FixedSize,
             Thickness: 1f32,
             Transparency: 0f32,
             ZIndex: 1i32,
@@ -13734,7 +13717,7 @@ impl Default for UITableLayout {
             superclass: UIGridStyleLayout::default(),
             FillEmptySpaceColumns: false,
             FillEmptySpaceRows: false,
-            MajorAxis: unimplemented!("convert u32 Enum to precise strong variant"),
+            MajorAxis: enums::TableMajorAxis::RowMajor,
             Padding: UDim2::new(UDim::new(0f32, 0i32), UDim::new(0f32, 0i32)),
         }
     }
@@ -13900,7 +13883,7 @@ impl Default for UserGameSettings {
             superclass: Instance::default(),
             AllTutorialsDisabled: false,
             BadgeVisible: false,
-            CameraMode: unimplemented!("convert u32 Enum to precise strong variant"),
+            CameraMode: enums::CustomCameraMode::Default,
             CameraYInverted: false,
             ChatTranslationEnabled: false,
             ChatTranslationFtuxShown: false,
@@ -13909,18 +13892,16 @@ impl Default for UserGameSettings {
             ChatVisible: false,
             CompletedTutorials: "".to_owned(),
             ComputerCameraMovementChanged: false,
-            ComputerCameraMovementMode: unimplemented!(
-                "convert u32 Enum to precise strong variant"
-            ),
+            ComputerCameraMovementMode: enums::ComputerCameraMovementMode::Default,
             ComputerMovementChanged: false,
-            ComputerMovementMode: unimplemented!("convert u32 Enum to precise strong variant"),
-            ControlMode: unimplemented!("convert u32 Enum to precise strong variant"),
+            ComputerMovementMode: enums::ComputerMovementMode::Default,
+            ControlMode: enums::ControlMode::Classic,
             DefaultCameraId: "".to_owned(),
             FramerateCap: 0i32,
             Fullscreen: false,
             GaId: "".to_owned(),
             GamepadCameraSensitivity: 0f32,
-            GraphicsOptimizationMode: unimplemented!("convert u32 Enum to precise strong variant"),
+            GraphicsOptimizationMode: enums::GraphicsOptimizationMode::Performance,
             GraphicsQualityLevel: 0i32,
             HapticStrength: 0f32,
             HasEverUsedVr: false,
@@ -13933,36 +13914,36 @@ impl Default for UserGameSettings {
             MouseSensitivityThirdPerson: Vector2::new(0f32, 0f32),
             OnScreenProfilerEnabled: false,
             PartyVoiceVolume: 0f32,
-            PeoplePageLayout: unimplemented!("convert u32 Enum to precise strong variant"),
+            PeoplePageLayout: enums::PeoplePageLayout::Card,
             PerformanceStatsVisible: false,
             PlayerHeight: 0f32,
             PlayerListVisible: false,
             PlayerNamesEnabled: false,
-            PreferredTextSize: unimplemented!("convert u32 Enum to precise strong variant"),
+            PreferredTextSize: enums::PreferredTextSize::Medium,
             PreferredTransparency: 0f32,
             QualityResetLevel: 0i32,
             RccProfilerRecordFrameRate: 0i32,
             RccProfilerRecordTimeFrame: 0i32,
             ReadAloud: false,
             ReducedMotion: false,
-            SavedQualityLevel: unimplemented!("convert u32 Enum to precise strong variant"),
+            SavedQualityLevel: enums::SavedQualitySetting::Automatic,
             StartMaximized: false,
             StartScreenPosition: Vector2::new(0f32, 0f32),
             StartScreenSize: Vector2::new(0f32, 0f32),
             TouchCameraMovementChanged: false,
-            TouchCameraMovementMode: unimplemented!("convert u32 Enum to precise strong variant"),
+            TouchCameraMovementMode: enums::TouchCameraMovementMode::Default,
             TouchMovementChanged: false,
-            TouchMovementMode: unimplemented!("convert u32 Enum to precise strong variant"),
+            TouchMovementMode: enums::TouchMovementMode::Default,
             UiNavigationKeyBindEnabled: false,
             UsedCoreGuiIsVisibleToggle: false,
             UsedCustomGuiIsVisibleToggle: false,
             UsedHideHudShortcut: false,
             VignetteEnabled: false,
             VignetteEnabledCustomOption: false,
-            VrComfortSetting: unimplemented!("convert u32 Enum to precise strong variant"),
+            VrComfortSetting: enums::VRComfortSetting::Comfort,
             VrEnabled: false,
             VrRotationIntensity: 0i32,
-            VrSafetyBubbleMode: unimplemented!("convert u32 Enum to precise strong variant"),
+            VrSafetyBubbleMode: enums::VRSafetyBubbleMode::NoOne,
             VrSmoothRotationEnabled: false,
             VrSmoothRotationEnabledCustomOption: false,
             VrThirdPersonFollowCamEnabled: false,
@@ -13986,7 +13967,7 @@ impl Default for UserInputService {
         Self {
             superclass: Instance::default(),
             LegacyInputEventsEnabled: false,
-            MouseBehavior: unimplemented!("convert u32 Enum to precise strong variant"),
+            MouseBehavior: enums::MouseBehavior::Default,
             MouseIconContent: Content::none(),
             MouseIconEnabled: false,
         }
@@ -14032,11 +14013,11 @@ impl Default for VRService {
     fn default() -> Self {
         Self {
             superclass: Instance::default(),
-            AutomaticScaling: unimplemented!("convert u32 Enum to precise strong variant"),
+            AutomaticScaling: enums::VRScaling::World,
             AvatarGestures: false,
-            ControllerModels: unimplemented!("convert u32 Enum to precise strong variant"),
+            ControllerModels: enums::VRControllerModelMode::Transparent,
             FadeOutViewOnCollision: true,
-            LaserPointer: unimplemented!("convert u32 Enum to precise strong variant"),
+            LaserPointer: enums::VRLaserPointerMode::Pointer,
         }
     }
 }
@@ -14112,7 +14093,7 @@ impl Default for VectorForce {
             superclass: Constraint::default(),
             ApplyAtCenterOfMass: false,
             Force: Vector3::new(1000f32, 0f32, 0f32),
-            RelativeTo: unimplemented!("convert u32 Enum to precise strong variant"),
+            RelativeTo: enums::ActuatorRelativeTo::Attachment0,
         }
     }
 }
@@ -14218,7 +14199,7 @@ impl Default for VideoDeviceInput {
             superclass: Instance::default(),
             Active: false,
             CameraId: "".to_owned(),
-            CaptureQuality: unimplemented!("convert u32 Enum to precise strong variant"),
+            CaptureQuality: enums::VideoDeviceCaptureQuality::Default,
         }
     }
 }
@@ -14240,8 +14221,8 @@ impl Default for VideoDisplay {
     fn default() -> Self {
         Self {
             superclass: GuiObject::default(),
-            ResampleMode: unimplemented!("convert u32 Enum to precise strong variant"),
-            ScaleType: unimplemented!("convert u32 Enum to precise strong variant"),
+            ResampleMode: enums::ResamplerMode::Default,
+            ScaleType: enums::ScaleType::Stretch,
             TileSize: UDim2::new(UDim::new(1f32, 0i32), UDim::new(1f32, 0i32)),
             VideoColor3: Color3::new(1f32, 1f32, 1f32),
             VideoRectOffset: Vector2::new(0f32, 0f32),
@@ -14450,11 +14431,9 @@ impl Default for VoiceChatService {
     fn default() -> Self {
         Self {
             superclass: Instance::default(),
-            DefaultDistanceAttenuation: unimplemented!(
-                "convert u32 Enum to precise strong variant"
-            ),
+            DefaultDistanceAttenuation: enums::VoiceChatDistanceAttenuationType::Inverse,
             EnableDefaultVoice: true,
-            UseAudioApi: unimplemented!("convert u32 Enum to precise strong variant"),
+            UseAudioApi: enums::AudioApiRollout::Automatic,
         }
     }
 }
@@ -14618,9 +14597,9 @@ impl Default for Workspace {
             AirDensity: 0.0012f32,
             AirTurbulenceIntensity: 0f32,
             AllowThirdPartySales: false,
-            AuthorityMode: unimplemented!("convert u32 Enum to precise strong variant"),
-            AvatarUnificationMode: unimplemented!("convert u32 Enum to precise strong variant"),
-            ClientAnimatorThrottling: unimplemented!("convert u32 Enum to precise strong variant"),
+            AuthorityMode: enums::AuthorityMode::Automatic,
+            AvatarUnificationMode: enums::AvatarUnificationMode::Default,
+            ClientAnimatorThrottling: enums::ClientAnimatorThrottlingMode::Default,
             CollisionGroupData: b"\x01\x01\0\x04\xFF\xFF\xFF\xFF\x07Default"
                 .as_slice()
                 .into(),
@@ -14630,49 +14609,33 @@ impl Default for Workspace {
             ExplicitAutoJoints: true,
             FallHeightEnabled: true,
             FallenPartsDestroyHeight: -500f32,
-            FluidForces: unimplemented!("convert u32 Enum to precise strong variant"),
+            FluidForces: enums::FluidForces::Default,
             GlobalWind: Vector3::new(0f32, 0f32, 0f32),
             Gravity: 196.2f32,
-            IkControlConstraintSupport: unimplemented!(
-                "convert u32 Enum to precise strong variant"
-            ),
-            LuauTypeCheckMode: unimplemented!("convert u32 Enum to precise strong variant"),
-            MeshPartHeadsAndAccessories: unimplemented!(
-                "convert u32 Enum to precise strong variant"
-            ),
-            ModelStreamingBehavior: unimplemented!("convert u32 Enum to precise strong variant"),
-            MoverConstraintRootBehavior: unimplemented!(
-                "convert u32 Enum to precise strong variant"
-            ),
-            PathfindingUseImprovedSearch: unimplemented!(
-                "convert u32 Enum to precise strong variant"
-            ),
-            PhysicsImprovedSleep: unimplemented!("convert u32 Enum to precise strong variant"),
-            PhysicsSteppingMethod: unimplemented!("convert u32 Enum to precise strong variant"),
-            PlayerCharacterDestroyBehavior: unimplemented!(
-                "convert u32 Enum to precise strong variant"
-            ),
-            PrimalPhysicsSolver: unimplemented!("convert u32 Enum to precise strong variant"),
-            RejectCharacterDeletions: unimplemented!("convert u32 Enum to precise strong variant"),
-            RenderingCacheOptimizations: unimplemented!(
-                "convert u32 Enum to precise strong variant"
-            ),
-            ReplicateInstanceDestroySetting: unimplemented!(
-                "convert u32 Enum to precise strong variant"
-            ),
-            Retargeting: unimplemented!("convert u32 Enum to precise strong variant"),
-            SandboxedInstanceMode: unimplemented!("convert u32 Enum to precise strong variant"),
-            StreamOutBehavior: unimplemented!("convert u32 Enum to precise strong variant"),
+            IkControlConstraintSupport: enums::IKControlConstraintSupport::Default,
+            LuauTypeCheckMode: enums::LuauTypeCheckMode::Default,
+            MeshPartHeadsAndAccessories: enums::MeshPartHeadsAndAccessories::Default,
+            ModelStreamingBehavior: enums::ModelStreamingBehavior::Default,
+            MoverConstraintRootBehavior: enums::MoverConstraintRootBehaviorMode::Default,
+            PathfindingUseImprovedSearch: enums::PathfindingUseImprovedSearch::Default,
+            PhysicsImprovedSleep: enums::RolloutState::Default,
+            PhysicsSteppingMethod: enums::PhysicsSteppingMethod::Default,
+            PlayerCharacterDestroyBehavior: enums::PlayerCharacterDestroyBehavior::Default,
+            PrimalPhysicsSolver: enums::PrimalPhysicsSolver::Default,
+            RejectCharacterDeletions: enums::RejectCharacterDeletions::Default,
+            RenderingCacheOptimizations: enums::RenderingCacheOptimizationMode::Default,
+            ReplicateInstanceDestroySetting: enums::ReplicateInstanceDestroySetting::Default,
+            Retargeting: enums::AnimatorRetargetingMode::Default,
+            SandboxedInstanceMode: enums::SandboxedInstanceMode::Default,
+            StreamOutBehavior: enums::StreamOutBehavior::Default,
             StreamingEnabled: false,
-            StreamingIntegrityMode: unimplemented!("convert u32 Enum to precise strong variant"),
+            StreamingIntegrityMode: enums::StreamingIntegrityMode::Default,
             StreamingMinRadius: 64i32,
             StreamingTargetRadius: 1024i32,
             TerrainWeldsFixed: true,
-            TouchEventsUseCollisionGroups: unimplemented!(
-                "convert u32 Enum to precise strong variant"
-            ),
+            TouchEventsUseCollisionGroups: enums::RolloutState::Default,
             TouchesUseCollisionGroups: false,
-            UseNewLuauTypeSolver: unimplemented!("convert u32 Enum to precise strong variant"),
+            UseNewLuauTypeSolver: enums::RolloutState::Enabled,
         }
     }
 }
@@ -14728,7 +14691,7 @@ impl Default for WrapLayer {
     fn default() -> Self {
         Self {
             superclass: BaseWrap::default(),
-            AutoSkin: unimplemented!("convert u32 Enum to precise strong variant"),
+            AutoSkin: enums::WrapLayerAutoSkin::Disabled,
             BindOffset: CFrame::identity(),
             Enabled: true,
             Order: 1i32,
