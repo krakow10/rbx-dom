@@ -565,7 +565,7 @@ impl StrongInstancesCollector {
     }
 }
 impl ToTokens for Sorted<StrongInstancesCollector> {
-    fn to_tokens(&self, tokens: &mut proc_macro2::TokenStream) {
+    fn to_tokens(&self, _tokens: &mut proc_macro2::TokenStream) {
         unimplemented!();
     }
     fn into_token_stream(self) -> proc_macro2::TokenStream {
@@ -673,7 +673,7 @@ impl EnumCollector {
     }
 }
 impl ToTokens for Sorted<EnumCollector> {
-    fn to_tokens(&self, tokens: &mut proc_macro2::TokenStream) {
+    fn to_tokens(&self, _tokens: &mut proc_macro2::TokenStream) {
         unimplemented!();
     }
     fn into_token_stream(self) -> proc_macro2::TokenStream {
