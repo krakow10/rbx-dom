@@ -2,7 +2,7 @@ use std::path::PathBuf;
 
 use clap::Parser;
 use quote::ToTokens;
-use rbx_reflection::{ClassDescriptor, DataType, EnumDescriptor};
+use rbx_reflection::{ClassDescriptor, DataType, EnumDescriptor, ReflectionDatabase};
 use rbx_types::Variant;
 
 /// Generate strong types for all classes and enums.
@@ -23,7 +23,7 @@ impl CodegenStrongSubcommand {
         let instance_code = {
             let mut strong_instances = StrongInstancesCollector::new();
             for descriptor in db.classes.values() {
-                strong_instances.push(descriptor);
+                strong_instances.push(descriptor, db);
             }
 
             // make a string of the unformatted code
@@ -224,8 +224,8 @@ impl ToTokens for WrapToTokens<&Variant> {
                 let value = WrapToTokens(value);
                 append(q! {#value});
             }
-            Variant::Enum(value) => {
-                append(q! {unimplemented!("convert u32 Enum to precise strong variant")})
+            Variant::Enum(_) => {
+                unreachable!("Enums are handled by mathing the DataType");
             }
             Variant::Color3(value) => {
                 let value = WrapToTokens(value);
@@ -375,7 +375,7 @@ impl StrongInstancesCollector {
             variants: Vec::new(),
         }
     }
-    fn push(&mut self, descriptor: &ClassDescriptor) {
+    fn push(&mut self, descriptor: &ClassDescriptor, database: &ReflectionDatabase<'_>) {
         struct FieldInfo {
             ident: syn::Ident,
             field: syn::Field,
@@ -403,13 +403,58 @@ impl StrongInstancesCollector {
                 ty,
             };
 
-            let value = descriptor
+            let default_value_variant = descriptor
                 .default_properties
                 .get(prop.name.as_ref())
                 .unwrap_or_else(|| prop.data_type.ty().fallback_default_value().unwrap());
-            let value = WrapToTokens(value);
-            let default_value: syn::FieldValue = syn::parse_quote! {
-                #ident: #value
+            let default_value: syn::FieldValue = match &prop.data_type {
+                DataType::Value(_) => {
+                    let value = WrapToTokens(default_value_variant);
+                    syn::parse_quote! {
+                        #ident: #value
+                    }
+                }
+                DataType::Enum(enum_name) => {
+                    let Variant::Enum(value) = default_value_variant else {
+                        panic!("Data type is Enum but default value is not Enum");
+                    };
+
+                    let find_value = value.to_u32();
+
+                    let enum_descriptor = database
+                        .enums
+                        .get(enum_name)
+                        .expect("Expected enum name to exist");
+
+                    let enum_variant_name = if let Some((enum_variant_name, _)) = enum_descriptor
+                        .items
+                        .iter()
+                        .find(|&(_, &v)| v == find_value)
+                    {
+                        enum_variant_name
+                    } else {
+                        let (enum_variant_name, &enum_variant_value) = enum_descriptor
+                            .items
+                            .iter()
+                            .min_by_key(|&(_, &v)| v)
+                            .expect("Expected enum to have more than 0 variants");
+                        println!(
+                            "Enum {enum_name} discriminant not found {find_value} for class {}. Inventing a default value: {enum_variant_name} = {enum_variant_value}",
+                            prop.name
+                        );
+                        enum_variant_name
+                    };
+
+                    let fixed_variant_name = fix_enum_ident(enum_variant_name);
+                    let enum_name = syn::Ident::new(enum_name, proc_macro2::Span::call_site());
+                    let variant_name =
+                        syn::Ident::new(fixed_variant_name, proc_macro2::Span::call_site());
+
+                    syn::parse_quote! {
+                        #ident: enums::#enum_name::#variant_name
+                    }
+                }
+                _ => unimplemented!(),
             };
 
             fields.push(FieldInfo {
