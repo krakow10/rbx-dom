@@ -1,6 +1,6 @@
 [package]
 name = "rbx_types_strong"
-version = "0.1.0"
+version = "0.700.0"
 description = "Instances and Enums used to represent Roblox values"
 license = "MIT"
 documentation = "https://docs.rs/rbx_types_strong"

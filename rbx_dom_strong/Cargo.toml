@@ -16,7 +16,7 @@ edition = "2018"
 
 [dependencies]
 rbx_types = { version = "3.1.0", path = "../rbx_types", features = ["serde"] }
-rbx_types_strong = { version = "0.1.0", path = "../rbx_types_strong" }
+rbx_types_strong = { version = "0.700.0", path = "../rbx_types_strong" }
 
 ahash = "0.8.11"
 serde = "1.0.137"
