@@ -399,7 +399,7 @@ impl<'db, R: Read> DeserializerState<'db, R> {
         referent_by_ref: &HashMap<i32, Ref>,
         database: &'db ReflectionDatabase<'db>,
         type_info: &mut TypeInfo<'_>,
-        prop_chunk: &DeferredChunk,
+        prop_chunk: DeferredChunk,
     ) -> Result<(), InnerError> {
         let mut chunk = prop_chunk.rest();
 
@@ -1576,7 +1576,7 @@ rbx-dom may require changes to fully support this property. Please open an issue
         let database = self.deserializer.database;
 
         // Collect instances by type_id
-        let mut type_infos = self
+        let type_infos = self
             .deferred_chunks
             .type_chunks
             .into_iter()
@@ -1593,25 +1593,21 @@ rbx-dom may require changes to fully support this property. Please open an issue
             })
             .collect::<Result<Vec<_>, InnerError>>()?;
 
+        // All of the instances known by the deserializer.
+        let mut instances_by_ref = HashMap::with_capacity(self.num_instances);
+
         // Write properties for each type_id
-        for (type_info, prop_chunks) in &mut type_infos {
+        for (mut type_info, prop_chunks) in type_infos {
             for prop_chunk in prop_chunks {
                 Self::decode_prop_chunk(
                     &mut unknown_type_ids,
                     &self.shared_strings,
                     &referent_by_ref,
                     database,
-                    type_info,
+                    &mut type_info,
                     prop_chunk,
                 )?;
             }
-        }
-
-        // All of the instances known by the deserializer.
-        let mut instances_by_ref = HashMap::with_capacity(self.num_instances);
-
-        // Flatten type_infos.instances
-        for (type_info, _) in type_infos {
             instances_by_ref.extend(type_info.instances);
         }
 
