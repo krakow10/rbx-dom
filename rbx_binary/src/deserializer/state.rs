@@ -60,7 +60,7 @@ struct TypeInfo<'db> {
     type_name: Ustr,
 
     /// A list of the instances described by this file that are this type.
-    instances: indexmap::IndexMap<i32, Instance>,
+    instances: Vec<(i32, Instance)>,
 
     /// A reference to the type's class descriptor from rbx_reflection, if this
     /// is a known class.
@@ -985,13 +985,12 @@ rbx-dom may require changes to fully support this property. Please open an issue
                 VariantType::Ref => {
                     let values = chunk.read_referent_array(type_info.instances.len())?;
 
-                    for (i, value) in values.enumerate() {
+                    for (value, (_, instance)) in values.zip(&mut type_info.instances) {
                         let rbx_value = if let Some(&referent) = referent_by_ref.get(&value) {
                             referent
                         } else {
                             Ref::none()
                         };
-                        let (_, instance) = type_info.instances.get_index_mut(i).unwrap();
                         add_property(instance, &property, rbx_value.into());
                     }
                 }
@@ -1462,7 +1461,7 @@ rbx-dom may require changes to fully support this property. Please open an issue
                     let mut bytes = vec![0; external_count * 4];
                     chunk.read_to_end(&mut bytes)?;
 
-                    for (i, ty) in values.enumerate() {
+                    for (ty, (_, instance)) in values.zip(&mut type_info.instances) {
                         let value = match ty {
                             0 => Content::none(),
                             1 => Content::from_uri(uris.pop_back().unwrap()),
@@ -1476,7 +1475,6 @@ rbx-dom may require changes to fully support this property. Please open an issue
                             }
                             n => return Err(InnerError::BadContentType(n)),
                         };
-                        let (_, instance) = type_info.instances.get_index_mut(i).unwrap();
                         add_property(instance, &property, value.into())
                     }
                 }

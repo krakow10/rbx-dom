@@ -23,7 +23,6 @@ rbx_reflection = { version = "6.1.0", path = "../rbx_reflection" }
 rbx_reflection_database = { version = "2.0.2", path = "../rbx_reflection_database" }
 
 ahash = "0.8.11"
-indexmap = "2.12.1"
 log = "0.4.17"
 lz4_flex = "0.11"
 thiserror = "1.0.31"
