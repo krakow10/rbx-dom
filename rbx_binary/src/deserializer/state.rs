@@ -345,7 +345,7 @@ impl<'db, R: Read> DeserializerState<'db, R> {
             "INST chunk (type ID {type_id}, type name {type_name}, format {object_format}, {number_instances} instances)",
         );
 
-        let instances = chunk
+        let mut instances: Vec<_> = chunk
             .read_referent_array(number_instances as usize)?
             .map(|referent| {
                 (
@@ -360,6 +360,8 @@ impl<'db, R: Read> DeserializerState<'db, R> {
                 )
             })
             .collect();
+
+        instances.sort_by_key(|&(referent, _)| referent);
 
         // TODO: Check object_format and check for service markers if it's 1?
 
