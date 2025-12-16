@@ -816,7 +816,6 @@ rbx-dom may require changes to fully support this property. Please open an issue
                     let values = chunk.read_interleaved_u32_array(type_info.instances.len())?;
 
                     let type_name = type_info.type_name;
-
                     for (value, (_, instance)) in values.zip(&mut type_info.instances) {
                         let color = value
                             .try_into()
@@ -1260,7 +1259,6 @@ rbx-dom may require changes to fully support this property. Please open an issue
                     let values = chunk.read_interleaved_u32_array(type_info.instances.len())?;
 
                     let type_name = type_info.type_name;
-
                     for (value, (_, instance)) in values.zip(&mut type_info.instances) {
                         let shared_string =
                             shared_strings.get(value as usize).ok_or_else(|| {
@@ -1279,7 +1277,6 @@ rbx-dom may require changes to fully support this property. Please open an issue
                     let values = chunk.read_interleaved_u32_array(type_info.instances.len())?;
 
                     let type_name = type_info.type_name;
-
                     for (value, (_, instance)) in values.zip(&mut type_info.instances) {
                         let net_asset = NetAssetRef::from(
                             shared_strings
