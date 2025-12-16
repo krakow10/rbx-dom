@@ -396,7 +396,7 @@ impl<'db, R: Read> DeserializerState<'db, R> {
         shared_strings: &[SharedString],
         database: &'db ReflectionDatabase<'db>,
         type_info: &mut TypeInfo<'_>,
-        prop_chunk: DeferredChunk,
+        prop_chunk: &DeferredChunk,
     ) -> Result<(), InnerError> {
         let mut chunk = prop_chunk.rest();
 
@@ -514,12 +514,13 @@ This may cause unexpected or broken behavior in your final results if you rely o
                     }
                 }
                 VariantType::Tags => {
+                    let type_name = type_info.type_name;
                     for (_, instance) in &mut type_info.instances {
                         let buffer = chunk.read_binary_string()?;
 
                         let value = Tags::decode(buffer.as_ref()).map_err(|_| {
                             InnerError::InvalidPropData {
-                                type_name: type_info.type_name.to_string(),
+                                type_name: type_name.to_string(),
                                 prop_name: prop_name.clone(),
                                 valid_value: "a list of valid null-delimited UTF-8 strings",
                                 actual_value: "invalid UTF-8".to_string(),
@@ -761,11 +762,12 @@ rbx-dom may require changes to fully support this property. Please open an issue
             },
             Type::Faces => match canonical_type {
                 VariantType::Faces => {
+                    let type_name = type_info.type_name;
                     for (_, instance) in &mut type_info.instances {
                         let value = chunk.read_u8()?;
                         let faces =
                             Faces::from_bits(value).ok_or_else(|| InnerError::InvalidPropData {
-                                type_name: type_info.type_name.to_string(),
+                                type_name: type_name.to_string(),
                                 prop_name: prop_name.clone(),
                                 valid_value: "less than 63",
                                 actual_value: value.to_string(),
@@ -785,12 +787,13 @@ rbx-dom may require changes to fully support this property. Please open an issue
             },
             Type::Axes => match canonical_type {
                 VariantType::Axes => {
+                    let type_name = type_info.type_name;
                     for (_, instance) in &mut type_info.instances {
                         let value = chunk.read_u8()?;
 
                         let axes =
                             Axes::from_bits(value).ok_or_else(|| InnerError::InvalidPropData {
-                                type_name: type_info.type_name.to_string(),
+                                type_name: type_name.to_string(),
                                 prop_name: prop_name.clone(),
                                 valid_value: "less than 7",
                                 actual_value: value.to_string(),
@@ -812,13 +815,15 @@ rbx-dom may require changes to fully support this property. Please open an issue
                 VariantType::BrickColor => {
                     let values = chunk.read_interleaved_u32_array(type_info.instances.len())?;
 
+                    let type_name = type_info.type_name;
+
                     for (value, (_, instance)) in values.zip(&mut type_info.instances) {
                         let color = value
                             .try_into()
                             .ok()
                             .and_then(BrickColor::from_number)
                             .ok_or_else(|| InnerError::InvalidPropData {
-                                type_name: type_info.type_name.to_string(),
+                                type_name: type_name.to_string(),
                                 prop_name: prop_name.clone(),
                                 valid_value: "a valid BrickColor",
                                 actual_value: value.to_string(),
@@ -1249,11 +1254,13 @@ rbx-dom may require changes to fully support this property. Please open an issue
                 VariantType::SharedString => {
                     let values = chunk.read_interleaved_u32_array(type_info.instances.len())?;
 
+                    let type_name = type_info.type_name;
+
                     for (value, (_, instance)) in values.zip(&mut type_info.instances) {
                         let shared_string =
                             shared_strings.get(value as usize).ok_or_else(|| {
                                 InnerError::InvalidPropData {
-                                    type_name: type_info.type_name.to_string(),
+                                    type_name: type_name.to_string(),
                                     prop_name: prop_name.clone(),
                                     valid_value: "a valid SharedString",
                                     actual_value: format!("{value:?}"),
@@ -1266,12 +1273,14 @@ rbx-dom may require changes to fully support this property. Please open an issue
                 VariantType::NetAssetRef => {
                     let values = chunk.read_interleaved_u32_array(type_info.instances.len())?;
 
+                    let type_name = type_info.type_name;
+
                     for (value, (_, instance)) in values.zip(&mut type_info.instances) {
                         let net_asset = NetAssetRef::from(
                             shared_strings
                                 .get(value as usize)
                                 .ok_or_else(|| InnerError::InvalidPropData {
-                                    type_name: type_info.type_name.to_string(),
+                                    type_name: type_name.to_string(),
                                     prop_name: prop_name.clone(),
                                     valid_value: "a valid NetAssetRef",
                                     actual_value: format!("{value:?}"),
@@ -1455,17 +1464,19 @@ rbx-dom may require changes to fully support this property. Please open an issue
                             1 => Content::from_uri(uris.pop_back().unwrap()),
                             2 => {
                                 let read_value = objects.pop_back().unwrap();
-                                Content::from_referent(type_info.instances.binary_search
-                                    if let Some(instance) = instances_by_ref.get(&read_value) {
-                                        instance.builder.referent()
-                                    } else {
-                                        Ref::none()
-                                    },
-                                )
+                                let entry = type_info
+                                    .instances
+                                    .binary_search_by_key(&read_value, |&(referent, _)| referent);
+                                Content::from_referent(if let Ok(idx) = entry {
+                                    let (_, instance) = &type_info.instances[idx];
+                                    instance.builder.referent()
+                                } else {
+                                    Ref::none()
+                                })
                             }
                             n => return Err(InnerError::BadContentType(n)),
                         };
-                        let instance = type_info.instances.get_mut(i).unwrap();
+                        let (_, instance) = type_info.instances.get_mut(i).unwrap();
                         add_property(instance, &property, value.into())
                     }
                 }
@@ -1559,13 +1570,12 @@ rbx-dom may require changes to fully support this property. Please open an issue
 
         let database = self.deserializer.database;
 
-        let type_infos = self
+        let mut type_infos = self
             .deferred_chunks
             .type_chunks
             .into_iter()
             .map(|(type_id, type_chunks)| {
                 let type_info = Self::decode_inst_chunk(
-                    &mut instances_by_ref,
                     type_id,
                     type_chunks.type_name,
                     type_chunks.class_descriptor,
@@ -1583,14 +1593,13 @@ rbx-dom may require changes to fully support this property. Please open an issue
         // in the file.
         let root_instance_refs = Self::decode_prnt_chunk(&mut instances_by_ref, prnt_chunk)?;
 
-        for (type_info, prop_chunks) in type_infos {
+        for (type_info, prop_chunks) in &mut type_infos {
             for prop_chunk in prop_chunks {
                 Self::decode_prop_chunk(
-                    &mut instances_by_ref,
                     &mut unknown_type_ids,
                     &self.shared_strings,
                     database,
-                    &type_info,
+                    type_info,
                     prop_chunk,
                 )?;
             }
