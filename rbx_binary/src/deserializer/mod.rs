@@ -80,7 +80,7 @@ impl<'db> Deserializer<'db> {
                 b"SSTR" => deserializer.decode_sstr_chunk(&chunk.data)?,
                 b"INST" => deserializer.decode_inst_chunk(&chunk.data)?,
                 b"PROP" => deserializer.decode_prop_chunk(&chunk.data)?,
-                b"PRNT" => deserializer.decode_prnt_chunk(&chunk.data)?,
+                b"PRNT" => deserializer.ingest_prnt_chunk(chunk.data)?,
                 b"END\0" => {
                     deserializer.decode_end_chunk(&chunk.data)?;
                     break;
@@ -92,7 +92,7 @@ impl<'db> Deserializer<'db> {
             }
         }
 
-        Ok(deserializer.finish())
+        Ok(deserializer.finish()?)
     }
 }
 

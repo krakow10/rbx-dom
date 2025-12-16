@@ -85,4 +85,10 @@ pub(crate) enum InnerError {
 
     #[error("'PhysicalProperties' discriminator {0:b} is not supported")]
     BadPhysicalPropertiesType(u8),
+
+    #[error("Missing PRNT Chunk")]
+    MissingPrntChunk,
+
+    #[error("Duplicate PRNT Chunk")]
+    DuplicatePrntChunk,
 }
