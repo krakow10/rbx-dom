@@ -330,6 +330,7 @@ impl<'db, R: Read> DeserializerState<'db, R> {
 
     #[profiling::function]
     fn decode_inst_chunk(
+        referent_by_ref: &mut HashMap<i32, Ref>,
         type_id: u32,
         type_name: String,
         class_descriptor: Option<&'db ClassDescriptor<'db>>,
@@ -348,13 +349,13 @@ impl<'db, R: Read> DeserializerState<'db, R> {
         let instances = chunk
             .read_referent_array(number_instances as usize)?
             .map(|referent| {
+                let builder =
+                    InstanceBuilder::with_property_capacity(type_name.as_str(), prop_capacity);
+                referent_by_ref.insert(referent, builder.referent());
                 (
                     referent,
                     Instance {
-                        builder: InstanceBuilder::with_property_capacity(
-                            type_name.as_str(),
-                            prop_capacity,
-                        ),
+                        builder,
                         children: Vec::new(),
                     },
                 )
@@ -394,6 +395,7 @@ impl<'db, R: Read> DeserializerState<'db, R> {
     fn decode_prop_chunk(
         unknown_type_ids: &mut HashSet<u8>,
         shared_strings: &[SharedString],
+        referent_by_ref: &HashMap<i32, Ref>,
         database: &'db ReflectionDatabase<'db>,
         type_info: &mut TypeInfo<'_>,
         prop_chunk: &DeferredChunk,
@@ -984,8 +986,8 @@ rbx-dom may require changes to fully support this property. Please open an issue
                     let values = chunk.read_referent_array(type_info.instances.len())?;
 
                     for (i, value) in values.enumerate() {
-                        let rbx_value = if let Some(instance) = type_info.instances.get(&value) {
-                            instance.builder.referent()
+                        let rbx_value = if let Some(&referent) = referent_by_ref.get(&value) {
+                            referent
                         } else {
                             Ref::none()
                         };
@@ -1466,8 +1468,8 @@ rbx-dom may require changes to fully support this property. Please open an issue
                             1 => Content::from_uri(uris.pop_back().unwrap()),
                             2 => {
                                 let read_value = objects.pop_back().unwrap();
-                                if let Some(instance) = type_info.instances.get(&read_value) {
-                                    Content::from_referent(instance.builder.referent())
+                                if let Some(&referent) = referent_by_ref.get(&read_value) {
+                                    Content::from_referent(referent)
                                 } else {
                                     Content::none()
                                 }
@@ -1564,6 +1566,9 @@ rbx-dom may require changes to fully support this property. Please open an issue
             return Err(InnerError::MissingPrntChunk);
         };
 
+        // A map of ref ids to referents.
+        let mut referent_by_ref = HashMap::with_capacity(self.num_instances);
+
         // Contains a set of unknown type IDs that we've encountered so far while
         // deserializing this file. We use this map in order to ensure we only
         // print one warning per unknown type ID when deserializing a file.
@@ -1578,6 +1583,7 @@ rbx-dom may require changes to fully support this property. Please open an issue
             .into_iter()
             .map(|(type_id, type_chunks)| {
                 let type_info = Self::decode_inst_chunk(
+                    &mut referent_by_ref,
                     type_id,
                     type_chunks.type_name,
                     type_chunks.class_descriptor,
@@ -1594,6 +1600,7 @@ rbx-dom may require changes to fully support this property. Please open an issue
                 Self::decode_prop_chunk(
                     &mut unknown_type_ids,
                     &self.shared_strings,
+                    &referent_by_ref,
                     database,
                     type_info,
                     prop_chunk,
