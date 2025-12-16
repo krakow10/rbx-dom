@@ -986,8 +986,17 @@ rbx-dom may require changes to fully support this property. Please open an issue
                 VariantType::Ref => {
                     let values = chunk.read_referent_array(type_info.instances.len())?;
 
-                    for (value, (_, instance)) in values.zip(&mut type_info.instances) {
-                        let rbx_value = instance.builder.referent();
+                    for (i, value) in values.enumerate() {
+                        let entry = type_info
+                            .instances
+                            .binary_search_by_key(&value, |&(referent, _)| referent);
+                        let rbx_value = if let Ok(idx) = entry {
+                            let (_, instance) = &type_info.instances[idx];
+                            instance.builder.referent()
+                        } else {
+                            Ref::none()
+                        };
+                        let (_, instance) = type_info.instances.get_mut(i).unwrap();
                         add_property(instance, &property, rbx_value.into());
                     }
                 }
