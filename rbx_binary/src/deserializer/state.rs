@@ -352,7 +352,9 @@ impl<'db, R: Read> DeserializerState<'db, R> {
                 let builder =
                     InstanceBuilder::with_property_capacity(type_name.as_str(), prop_capacity);
                 // Build a map of i32 -> Ref
-                referent_by_ref.insert(referent, builder.referent());
+                assert!(referent_by_ref
+                    .insert(referent, builder.referent())
+                    .is_none());
                 (
                     referent,
                     Instance {
