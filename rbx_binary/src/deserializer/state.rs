@@ -1610,11 +1610,9 @@ rbx-dom may require changes to fully support this property. Please open an issue
         let mut instances_by_ref = HashMap::with_capacity(self.num_instances);
 
         // flatten type_infos.instances
-        instances_by_ref.extend(
-            type_infos
-                .into_iter()
-                .flat_map(|(type_info, _)| type_info.instances.into_iter()),
-        );
+        for (type_info, _) in type_infos {
+            instances_by_ref.extend(type_info.instances);
+        }
 
         // Referents for all of the instances with no parent, in order they appear
         // in the file.
