@@ -60,7 +60,7 @@ struct TypeInfo<'db> {
     type_name: Ustr,
 
     /// A list of the instances described by this file that are this type.
-    instances: Vec<(i32, Instance)>,
+    instances: indexmap::IndexMap<i32, Instance>,
 
     /// A reference to the type's class descriptor from rbx_reflection, if this
     /// is a known class.
@@ -345,7 +345,7 @@ impl<'db, R: Read> DeserializerState<'db, R> {
             "INST chunk (type ID {type_id}, type name {type_name}, format {object_format}, {number_instances} instances)",
         );
 
-        let mut instances: Vec<_> = chunk
+        let instances = chunk
             .read_referent_array(number_instances as usize)?
             .map(|referent| {
                 (
@@ -360,8 +360,6 @@ impl<'db, R: Read> DeserializerState<'db, R> {
                 )
             })
             .collect();
-
-        instances.sort_by_key(|&(referent, _)| referent);
 
         // TODO: Check object_format and check for service markers if it's 1?
 
@@ -987,16 +985,12 @@ rbx-dom may require changes to fully support this property. Please open an issue
                     let values = chunk.read_referent_array(type_info.instances.len())?;
 
                     for (i, value) in values.enumerate() {
-                        let entry = type_info
-                            .instances
-                            .binary_search_by_key(&value, |&(referent, _)| referent);
-                        let rbx_value = if let Ok(idx) = entry {
-                            let (_, instance) = &type_info.instances[idx];
+                        let rbx_value = if let Some(instance) = type_info.instances.get(&value) {
                             instance.builder.referent()
                         } else {
                             Ref::none()
                         };
-                        let (_, instance) = type_info.instances.get_mut(i).unwrap();
+                        let (_, instance) = type_info.instances.get_index_mut(i).unwrap();
                         add_property(instance, &property, rbx_value.into());
                     }
                 }
@@ -1475,19 +1469,15 @@ rbx-dom may require changes to fully support this property. Please open an issue
                             1 => Content::from_uri(uris.pop_back().unwrap()),
                             2 => {
                                 let read_value = objects.pop_back().unwrap();
-                                let entry = type_info
-                                    .instances
-                                    .binary_search_by_key(&read_value, |&(referent, _)| referent);
-                                Content::from_referent(if let Ok(idx) = entry {
-                                    let (_, instance) = &type_info.instances[idx];
-                                    instance.builder.referent()
+                                if let Some(instance) = type_info.instances.get(&read_value) {
+                                    Content::from_referent(instance.builder.referent())
                                 } else {
-                                    Ref::none()
-                                })
+                                    Content::none()
+                                }
                             }
                             n => return Err(InnerError::BadContentType(n)),
                         };
-                        let (_, instance) = type_info.instances.get_mut(i).unwrap();
+                        let (_, instance) = type_info.instances.get_index_mut(i).unwrap();
                         add_property(instance, &property, value.into())
                     }
                 }
