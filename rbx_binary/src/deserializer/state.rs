@@ -351,6 +351,7 @@ impl<'db, R: Read> DeserializerState<'db, R> {
             .map(|referent| {
                 let builder =
                     InstanceBuilder::with_property_capacity(type_name.as_str(), prop_capacity);
+                // Build a map of i32 -> Ref
                 referent_by_ref.insert(referent, builder.referent());
                 (
                     referent,
@@ -1564,7 +1565,7 @@ rbx-dom may require changes to fully support this property. Please open an issue
             return Err(InnerError::MissingPrntChunk);
         };
 
-        // A map of ref ids to referents.
+        // A map of i32 ref ids to final instance referents.
         let mut referent_by_ref = HashMap::with_capacity(self.num_instances);
 
         // Contains a set of unknown type IDs that we've encountered so far while
