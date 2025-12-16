@@ -1,6 +1,7 @@
 use std::{borrow::Cow, collections::VecDeque, convert::TryInto, io::Read};
 
-use ahash::{HashMap, HashMapExt, HashSet, HashSetExt};
+use ahash::{HashMap, HashMapExt};
+use rayon::iter::{IntoParallelRefMutIterator, ParallelIterator};
 use rbx_dom_weak::{
     types::{
         Attributes, Axes, BinaryString, BrickColor, CFrame, Color3, Color3uint8, ColorSequence,
@@ -394,7 +395,7 @@ impl<'db, R: Read> DeserializerState<'db, R> {
 
     #[profiling::function]
     fn decode_prop_chunk(
-        unknown_type_ids: &mut HashSet<u8>,
+        // unknown_type_ids: &mut HashSet<u8>,
         shared_strings: &[SharedString],
         referent_by_ref: &HashMap<i32, Ref>,
         database: &'db ReflectionDatabase<'db>,
@@ -420,7 +421,8 @@ impl<'db, R: Read> DeserializerState<'db, R> {
         let binary_type: Type = match binary_type_byte.try_into() {
             Ok(ty) => ty,
             Err(_) => {
-                if unknown_type_ids.insert(binary_type_byte) {
+                // if unknown_type_ids.insert(binary_type_byte) {
+                if true {
                     log::warn!(
                         "Unknown value type ID {byte:#04x} ({byte}) in Roblox \
                          binary model file. Found in property {class}.{prop}.",
@@ -1571,7 +1573,7 @@ rbx-dom may require changes to fully support this property. Please open an issue
         // Contains a set of unknown type IDs that we've encountered so far while
         // deserializing this file. We use this map in order to ensure we only
         // print one warning per unknown type ID when deserializing a file.
-        let mut unknown_type_ids = HashSet::new();
+        // let mut unknown_type_ids = HashSet::new();
 
         let database = self.deserializer.database;
 
@@ -1593,19 +1595,23 @@ rbx-dom may require changes to fully support this property. Please open an issue
             })
             .collect::<Result<Vec<_>, InnerError>>()?;
 
+        let shared_strings = &self.shared_strings;
         // write properties for each type_id
-        for (type_info, prop_chunks) in &mut type_infos {
-            for prop_chunk in prop_chunks {
-                Self::decode_prop_chunk(
-                    &mut unknown_type_ids,
-                    &self.shared_strings,
-                    &referent_by_ref,
-                    database,
-                    type_info,
-                    prop_chunk,
-                )?;
-            }
-        }
+        type_infos
+            .par_iter_mut()
+            .try_for_each(|(type_info, prop_chunks)| {
+                for prop_chunk in prop_chunks {
+                    Self::decode_prop_chunk(
+                        // &mut unknown_type_ids,
+                        shared_strings,
+                        &referent_by_ref,
+                        database,
+                        type_info,
+                        prop_chunk,
+                    )?;
+                }
+                Ok::<_, InnerError>(())
+            })?;
 
         // All of the instances known by the deserializer.
         let mut instances_by_ref = HashMap::with_capacity(self.num_instances);
