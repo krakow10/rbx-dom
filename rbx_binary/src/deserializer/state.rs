@@ -1867,12 +1867,12 @@ impl<R> DeserializerState<R, FinishStage, NoChunk> {
         while let Some((referent, parent_ref)) = instances_to_construct.pop_front() {
             // swap_remove swaps the last element into the removed element.
             // We need to keep `instance_key_by_ref` up to date with the swaps as they happen.
-            let &InstanceKey { key, .. } = stage.instance_key_by_ref.get(&referent).unwrap();
+            let instance_key = stage.instance_key_by_ref.get(&referent).unwrap().key;
             if let Some(last) = stage.instances.last() {
                 let last_instance = stage.instance_key_by_ref.get_mut(&last.referent).unwrap();
-                last_instance.key = key;
+                last_instance.key = instance_key;
             }
-            let instance = stage.instances.swap_remove(key);
+            let instance = stage.instances.swap_remove(instance_key);
             let id = stage.tree.insert(parent_ref, instance.builder);
 
             for referent in instance.children {
