@@ -376,6 +376,9 @@ struct InstanceKey {
 /// instance. Incrementally built up by the deserializer as we decode different
 /// chunks.
 struct Instance {
+    /// The referent for this instance
+    referent: i32,
+
     /// A work-in-progress builder that will be used to construct this instance.
     builder: InstanceBuilder,
 
@@ -617,6 +620,7 @@ impl DecodeChunk for InstStage<'_> {
                 },
             );
             self.instances.push(Instance {
+                referent,
                 builder,
                 children: Vec::new(),
             });
@@ -1861,8 +1865,12 @@ impl<R> DeserializerState<R, FinishStage, NoChunk> {
         }
 
         while let Some((referent, parent_ref)) = instances_to_construct.pop_front() {
-            let instance_key = stage.instance_key_by_ref.get(&referent).unwrap();
-            let instance = stage.instances.swap_remove(instance_key.key);
+            let &InstanceKey { key, .. } = stage.instance_key_by_ref.get(&referent).unwrap();
+            if let Some(last) = stage.instances.last() {
+                let last_instance = stage.instance_key_by_ref.get_mut(&last.referent).unwrap();
+                last_instance.key = key;
+            }
+            let instance = stage.instances.swap_remove(key);
             let id = stage.tree.insert(parent_ref, instance.builder);
 
             for referent in instance.children {
