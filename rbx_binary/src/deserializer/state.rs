@@ -580,28 +580,47 @@ impl DecodeChunk for InstStage<'_> {
         // TODO: Check object_format and check for service markers if it's 1?
 
         let start = self.instance_key_by_ref.len();
-        (&mut self.instance_key_by_ref, &mut self.instances).extend(
-            chunk
-                .read_referent_array(number_instances as usize)?
-                .enumerate()
-                .map(|(key, referent)| {
-                    let builder =
-                        InstanceBuilder::with_property_capacity(type_name.as_str(), prop_capacity);
-                    (
-                        (
-                            referent,
-                            InstanceKey {
-                                key: start + key,
-                                referent: builder.referent(),
-                            },
-                        ),
-                        Instance {
-                            builder,
-                            children: Vec::new(),
-                        },
-                    )
-                }),
-        );
+        // Y no work?
+        // (&mut self.instance_key_by_ref, &mut self.instances).extend(
+        //     chunk
+        //         .read_referent_array(number_instances as usize)?
+        //         .enumerate()
+        //         .map(|(key, referent)| {
+        //             let builder =
+        //                 InstanceBuilder::with_property_capacity(type_name.as_str(), prop_capacity);
+        //             (
+        //                 (
+        //                     referent,
+        //                     InstanceKey {
+        //                         key: start + key,
+        //                         referent: builder.referent(),
+        //                     },
+        //                 ),
+        //                 Instance {
+        //                     builder,
+        //                     children: Vec::new(),
+        //                 },
+        //             )
+        //         }),
+        // );
+        for (key, referent) in chunk
+            .read_referent_array(number_instances as usize)?
+            .enumerate()
+        {
+            let builder =
+                InstanceBuilder::with_property_capacity(type_name.as_str(), prop_capacity);
+            self.instance_key_by_ref.insert(
+                referent,
+                InstanceKey {
+                    key: start + key,
+                    referent: builder.referent(),
+                },
+            );
+            self.instances.push(Instance {
+                builder,
+                children: Vec::new(),
+            });
+        }
         let end = self.instance_key_by_ref.len();
 
         self.type_infos.insert(
