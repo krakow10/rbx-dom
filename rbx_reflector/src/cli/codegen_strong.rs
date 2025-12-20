@@ -8,7 +8,7 @@ use rbx_types::Variant;
 /// Generate strong types for all classes and enums.
 #[derive(Debug, Parser)]
 pub struct CodegenStrongSubcommand {
-    /// Where to output the files.  This should be rbx_types_strong/src/
+    /// Where to output the files.  This should be rbx_classes/src/
     pub output: PathBuf,
 }
 

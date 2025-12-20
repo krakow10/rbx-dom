@@ -1,9 +1,9 @@
 [package]
-name = "rbx_types_strong"
+name = "rbx_classes"
 version = "0.700.0"
 description = "Instances and Enums used to represent Roblox values"
 license = "MIT"
-documentation = "https://docs.rs/rbx_types_strong"
+documentation = "https://docs.rs/rbx_classes"
 homepage = "https://github.com/rojo-rbx/rbx-dom"
 repository = "https://github.com/rojo-rbx/rbx-dom.git"
 readme = "README.md"
