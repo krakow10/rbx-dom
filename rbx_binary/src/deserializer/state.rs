@@ -87,10 +87,6 @@ struct InstanceKey {
 /// instance. Incrementally built up by the deserializer as we decode different
 /// chunks.
 struct Instance {
-    /// The ref_id for this instance.  This is only used in one place,
-    /// so may be a good place to look for inspiration for a refactor.
-    referent: i32,
-
     /// A work-in-progress builder that will be used to construct this instance.
     builder: InstanceBuilder,
 
@@ -316,7 +312,6 @@ impl<'db, R: Read> DeserializerState<'db, R> {
                 },
             );
             self.instances.push(Instance {
-                referent,
                 builder,
                 children: Vec::new(),
             });
@@ -1472,6 +1467,7 @@ rbx-dom may require changes to fully support this property. Please open an issue
     /// instances in our tree.
     #[profiling::function]
     pub(super) fn finish(mut self) -> WeakDom {
+        use core::mem::ManuallyDrop;
         log::trace!("Constructing tree from deserialized data");
 
         // Track all the instances we need to construct. Order of construction
@@ -1487,21 +1483,27 @@ rbx-dom may require changes to fully support this property. Please open an issue
             instances_to_construct.push_back((referent, root_ref));
         }
 
+        // SAFETY: ManuallyDrop is transparent
+        // We want to take ownership of each instance of the vec exactly once.
+        // This is tracked by removing the key from `instance_key_by_ref`.
+        let mut instances_no_drop: Vec<ManuallyDrop<Instance>> =
+            unsafe { core::mem::transmute(self.instances) };
+
         while let Some((referent, parent_ref)) = instances_to_construct.pop_front() {
-            // swap_remove swaps the last element into the removed element.
-            // We need to keep `instance_key_by_ref` up to date with the swaps as they happen.
-            let instance_key = self.instance_key_by_ref.get(&referent).unwrap().key;
-            if let Some(last) = self.instances.last() {
-                let last_instance_key = self.instance_key_by_ref.get_mut(&last.referent).unwrap();
-                last_instance_key.key = instance_key;
-            }
-            let instance = self.instances.swap_remove(instance_key);
+            let instance_key = self.instance_key_by_ref.remove(&referent).unwrap().key;
+            // SAFETY: We take each value exactly once, enforced by removing the key from `instance_key_by_ref`.
+            let instance = unsafe { ManuallyDrop::take(&mut instances_no_drop[instance_key]) };
             let id = self.tree.insert(parent_ref, instance.builder);
 
             for referent in instance.children {
                 instances_to_construct.push_back((referent, id));
             }
         }
+
+        assert!(
+            self.instance_key_by_ref.is_empty(),
+            "All instances must be constructed"
+        );
 
         self.tree
     }
