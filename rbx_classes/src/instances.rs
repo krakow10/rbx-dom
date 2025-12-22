@@ -861,10 +861,25 @@ impl_inherits!(Accessory, Accoutrement);
 impl_strong_instance_from!(Accessory);
 impl Default for Accessory {
     fn default() -> Self {
-        Self {
-            superclass: Accoutrement::default(),
+        let superclass = Object {};
+        let superclass = Instance {
+            superclass,
+            Capabilities: SecurityCapabilities::from_bits(0u64),
+            HistoryId: UniqueId::nil(),
+            Name: "".to_owned(),
+            SourceAssetId: 0i64,
+            Tags: Tags::new(),
+            UniqueId: UniqueId::nil(),
+        };
+        let superclass = Accoutrement {
+            superclass,
+            AttachmentPoint: CFrame::identity(),
+        };
+        let superclass = Accessory {
+            superclass,
             AccessoryType: enums::AccessoryType::Unknown,
-        }
+        };
+        superclass
     }
 }
 #[derive(Debug, Clone)]
@@ -885,8 +900,18 @@ impl_inherits!(AccessoryDescription, Instance);
 impl_strong_instance_from!(AccessoryDescription);
 impl Default for AccessoryDescription {
     fn default() -> Self {
-        Self {
-            superclass: Instance::default(),
+        let superclass = Object {};
+        let superclass = Instance {
+            superclass,
+            Capabilities: SecurityCapabilities::from_bits(0u64),
+            HistoryId: UniqueId::nil(),
+            Name: "".to_owned(),
+            SourceAssetId: 0i64,
+            Tags: Tags::new(),
+            UniqueId: UniqueId::nil(),
+        };
+        let superclass = AccessoryDescription {
+            superclass,
             AccessoryType: enums::AccessoryType::Unknown,
             AssetId: 0i64,
             Instance: Ref::none(),
@@ -896,7 +921,8 @@ impl Default for AccessoryDescription {
             Puffiness: 1f32,
             Rotation: Vector3::new(0f32, 0f32, 0f32),
             Scale: Vector3::new(1f32, 1f32, 1f32),
-        }
+        };
+        superclass
     }
 }
 #[derive(Debug, Clone)]
@@ -917,10 +943,21 @@ impl_inherits!(Accoutrement, Instance);
 impl_strong_instance_from!(Accoutrement);
 impl Default for Accoutrement {
     fn default() -> Self {
-        Self {
-            superclass: Instance::default(),
+        let superclass = Object {};
+        let superclass = Instance {
+            superclass,
+            Capabilities: SecurityCapabilities::from_bits(0u64),
+            HistoryId: UniqueId::nil(),
+            Name: "".to_owned(),
+            SourceAssetId: 0i64,
+            Tags: Tags::new(),
+            UniqueId: UniqueId::nil(),
+        };
+        let superclass = Accoutrement {
+            superclass,
             AttachmentPoint: CFrame::identity(),
-        }
+        };
+        superclass
     }
 }
 #[derive(Debug, Clone)]
@@ -959,12 +996,46 @@ impl_inherits!(AdGui, SurfaceGuiBase);
 impl_strong_instance_from!(AdGui);
 impl Default for AdGui {
     fn default() -> Self {
-        Self {
-            superclass: SurfaceGuiBase::default(),
+        let superclass = Object {};
+        let superclass = Instance {
+            superclass,
+            Capabilities: SecurityCapabilities::from_bits(0u64),
+            HistoryId: UniqueId::nil(),
+            Name: "".to_owned(),
+            SourceAssetId: 0i64,
+            Tags: Tags::new(),
+            UniqueId: UniqueId::nil(),
+        };
+        let superclass = GuiBase { superclass };
+        let superclass = GuiBase2d {
+            superclass,
+            AutoLocalize: false,
+            RootLocalizationTable: Ref::none(),
+            SelectionBehaviorDown: enums::SelectionBehavior::Escape,
+            SelectionBehaviorLeft: enums::SelectionBehavior::Escape,
+            SelectionBehaviorRight: enums::SelectionBehavior::Escape,
+            SelectionBehaviorUp: enums::SelectionBehavior::Escape,
+            SelectionGroup: false,
+        };
+        let superclass = LayerCollector {
+            superclass,
+            Enabled: false,
+            ResetOnSpawn: false,
+            ZIndexBehavior: enums::ZIndexBehavior::Global,
+        };
+        let superclass = SurfaceGuiBase {
+            superclass,
+            Active: false,
+            Adornee: Ref::none(),
+            Face: enums::NormalId::Right,
+        };
+        let superclass = AdGui {
+            superclass,
             AdShape: enums::AdShape::HorizontalRectangle,
             EnableVideoAds: false,
             FallbackImage: "".into(),
-        }
+        };
+        superclass
     }
 }
 #[derive(Debug, Clone)]
@@ -1007,8 +1078,23 @@ impl_inherits!(AirController, ControllerBase);
 impl_strong_instance_from!(AirController);
 impl Default for AirController {
     fn default() -> Self {
-        Self {
-            superclass: ControllerBase::default(),
+        let superclass = Object {};
+        let superclass = Instance {
+            superclass,
+            Capabilities: SecurityCapabilities::from_bits(0u64),
+            HistoryId: UniqueId::nil(),
+            Name: "".to_owned(),
+            SourceAssetId: 0i64,
+            Tags: Tags::new(),
+            UniqueId: UniqueId::nil(),
+        };
+        let superclass = ControllerBase {
+            superclass,
+            BalanceRigidityEnabled: false,
+            MoveSpeedFactor: 0f32,
+        };
+        let superclass = AirController {
+            superclass,
             BalanceMaxTorque: 10000f32,
             BalanceSpeed: 100f32,
             MaintainAngularMomentum: true,
@@ -1016,7 +1102,8 @@ impl Default for AirController {
             MoveMaxForce: 1000f32,
             TurnMaxTorque: 10000f32,
             TurnSpeedFactor: 1f32,
-        }
+        };
+        superclass
     }
 }
 #[derive(Debug, Clone)]
@@ -1037,8 +1124,26 @@ impl_inherits!(AlignOrientation, Constraint);
 impl_strong_instance_from!(AlignOrientation);
 impl Default for AlignOrientation {
     fn default() -> Self {
-        Self {
-            superclass: Constraint::default(),
+        let superclass = Object {};
+        let superclass = Instance {
+            superclass,
+            Capabilities: SecurityCapabilities::from_bits(0u64),
+            HistoryId: UniqueId::nil(),
+            Name: "".to_owned(),
+            SourceAssetId: 0i64,
+            Tags: Tags::new(),
+            UniqueId: UniqueId::nil(),
+        };
+        let superclass = Constraint {
+            superclass,
+            Attachment0: Ref::none(),
+            Attachment1: Ref::none(),
+            Color: BrickColor::from_number(194u16).unwrap(),
+            Enabled: false,
+            Visible: false,
+        };
+        let superclass = AlignOrientation {
+            superclass,
             AlignType: enums::AlignType::AllAxes,
             CFrame: CFrame::identity(),
             MaxAngularVelocity: f32::INFINITY,
@@ -1048,7 +1153,8 @@ impl Default for AlignOrientation {
             ReactionTorqueEnabled: false,
             Responsiveness: 10f32,
             RigidityEnabled: false,
-        }
+        };
+        superclass
     }
 }
 #[derive(Debug, Clone)]
@@ -1071,8 +1177,26 @@ impl_inherits!(AlignPosition, Constraint);
 impl_strong_instance_from!(AlignPosition);
 impl Default for AlignPosition {
     fn default() -> Self {
-        Self {
-            superclass: Constraint::default(),
+        let superclass = Object {};
+        let superclass = Instance {
+            superclass,
+            Capabilities: SecurityCapabilities::from_bits(0u64),
+            HistoryId: UniqueId::nil(),
+            Name: "".to_owned(),
+            SourceAssetId: 0i64,
+            Tags: Tags::new(),
+            UniqueId: UniqueId::nil(),
+        };
+        let superclass = Constraint {
+            superclass,
+            Attachment0: Ref::none(),
+            Attachment1: Ref::none(),
+            Color: BrickColor::from_number(194u16).unwrap(),
+            Enabled: false,
+            Visible: false,
+        };
+        let superclass = AlignPosition {
+            superclass,
             ApplyAtCenterOfMass: false,
             ForceLimitMode: enums::ForceLimitMode::Magnitude,
             ForceRelativeTo: enums::ActuatorRelativeTo::World,
@@ -1084,7 +1208,8 @@ impl Default for AlignPosition {
             ReactionForceEnabled: false,
             Responsiveness: 10f32,
             RigidityEnabled: false,
-        }
+        };
+        superclass
     }
 }
 #[derive(Debug, Clone)]
@@ -1097,10 +1222,21 @@ impl_inherits!(AnalyticsService, Instance);
 impl_strong_instance_from!(AnalyticsService);
 impl Default for AnalyticsService {
     fn default() -> Self {
-        Self {
-            superclass: Instance::default(),
+        let superclass = Object {};
+        let superclass = Instance {
+            superclass,
+            Capabilities: SecurityCapabilities::from_bits(0u64),
+            HistoryId: UniqueId::nil(),
+            Name: "".to_owned(),
+            SourceAssetId: 0i64,
+            Tags: Tags::new(),
+            UniqueId: UniqueId::nil(),
+        };
+        let superclass = AnalyticsService {
+            superclass,
             ApiKey: "".to_owned(),
-        }
+        };
+        superclass
     }
 }
 #[derive(Debug, Clone)]
@@ -1116,13 +1252,32 @@ impl_inherits!(AngularVelocity, Constraint);
 impl_strong_instance_from!(AngularVelocity);
 impl Default for AngularVelocity {
     fn default() -> Self {
-        Self {
-            superclass: Constraint::default(),
+        let superclass = Object {};
+        let superclass = Instance {
+            superclass,
+            Capabilities: SecurityCapabilities::from_bits(0u64),
+            HistoryId: UniqueId::nil(),
+            Name: "".to_owned(),
+            SourceAssetId: 0i64,
+            Tags: Tags::new(),
+            UniqueId: UniqueId::nil(),
+        };
+        let superclass = Constraint {
+            superclass,
+            Attachment0: Ref::none(),
+            Attachment1: Ref::none(),
+            Color: BrickColor::from_number(194u16).unwrap(),
+            Enabled: false,
+            Visible: false,
+        };
+        let superclass = AngularVelocity {
+            superclass,
             AngularVelocity: Vector3::new(0f32, 0f32, 0f32),
             MaxTorque: 0f32,
             ReactionTorqueEnabled: false,
             RelativeTo: enums::ActuatorRelativeTo::World,
-        }
+        };
+        superclass
     }
 }
 #[derive(Debug, Clone)]
@@ -1135,10 +1290,21 @@ impl_inherits!(Animation, Instance);
 impl_strong_instance_from!(Animation);
 impl Default for Animation {
     fn default() -> Self {
-        Self {
-            superclass: Instance::default(),
+        let superclass = Object {};
+        let superclass = Instance {
+            superclass,
+            Capabilities: SecurityCapabilities::from_bits(0u64),
+            HistoryId: UniqueId::nil(),
+            Name: "".to_owned(),
+            SourceAssetId: 0i64,
+            Tags: Tags::new(),
+            UniqueId: UniqueId::nil(),
+        };
+        let superclass = Animation {
+            superclass,
             AnimationId: "".into(),
-        }
+        };
+        superclass
     }
 }
 #[derive(Debug, Clone)]
@@ -1153,12 +1319,23 @@ impl_inherits!(AnimationClip, Instance);
 impl_strong_instance_from!(AnimationClip);
 impl Default for AnimationClip {
     fn default() -> Self {
-        Self {
-            superclass: Instance::default(),
+        let superclass = Object {};
+        let superclass = Instance {
+            superclass,
+            Capabilities: SecurityCapabilities::from_bits(0u64),
+            HistoryId: UniqueId::nil(),
+            Name: "".to_owned(),
+            SourceAssetId: 0i64,
+            Tags: Tags::new(),
+            UniqueId: UniqueId::nil(),
+        };
+        let superclass = AnimationClip {
+            superclass,
             GuidBinaryString: b"".as_slice().into(),
             Loop: false,
             Priority: enums::AnimationPriority::Idle,
-        }
+        };
+        superclass
     }
 }
 #[derive(Debug, Clone)]
@@ -1182,13 +1359,32 @@ impl_inherits!(AnimationConstraint, Constraint);
 impl_strong_instance_from!(AnimationConstraint);
 impl Default for AnimationConstraint {
     fn default() -> Self {
-        Self {
-            superclass: Constraint::default(),
+        let superclass = Object {};
+        let superclass = Instance {
+            superclass,
+            Capabilities: SecurityCapabilities::from_bits(0u64),
+            HistoryId: UniqueId::nil(),
+            Name: "".to_owned(),
+            SourceAssetId: 0i64,
+            Tags: Tags::new(),
+            UniqueId: UniqueId::nil(),
+        };
+        let superclass = Constraint {
+            superclass,
+            Attachment0: Ref::none(),
+            Attachment1: Ref::none(),
+            Color: BrickColor::from_number(194u16).unwrap(),
+            Enabled: false,
+            Visible: false,
+        };
+        let superclass = AnimationConstraint {
+            superclass,
             IsKinematic: false,
             MaxForce: 10000f32,
             MaxTorque: 10000f32,
             Transform: CFrame::identity(),
-        }
+        };
+        superclass
     }
 }
 #[derive(Debug, Clone)]
@@ -1250,11 +1446,22 @@ impl_inherits!(AnimationNodeDefinition, Instance);
 impl_strong_instance_from!(AnimationNodeDefinition);
 impl Default for AnimationNodeDefinition {
     fn default() -> Self {
-        Self {
-            superclass: Instance::default(),
+        let superclass = Object {};
+        let superclass = Instance {
+            superclass,
+            Capabilities: SecurityCapabilities::from_bits(0u64),
+            HistoryId: UniqueId::nil(),
+            Name: "".to_owned(),
+            SourceAssetId: 0i64,
+            Tags: Tags::new(),
+            UniqueId: UniqueId::nil(),
+        };
+        let superclass = AnimationNodeDefinition {
+            superclass,
             InputPinData: b"\x01\0\0\0\0\0\0\0".as_slice().into(),
             NodeType: enums::AnimationNodeType::InvalidNode,
-        }
+        };
+        superclass
     }
 }
 #[derive(Debug, Clone)]
@@ -1272,7 +1479,18 @@ impl_inherits!(AnimationRigData, Instance);
 impl_strong_instance_from!(AnimationRigData);
 impl Default for AnimationRigData {
     fn default() -> Self {
-        Self { superclass : Instance :: default () , Label : b"\x01\0\0\0\x01\0\0\0\0\0\0\0" . as_slice () . into () , Name : b"\x01\0\0\0\x01\0\0\0\0\0\0\0" . as_slice () . into () , Parent : b"\x01\0\0\0\x01\0\0\0\0\0" . as_slice () . into () , PostTransform : b"\x01\0\0\0\x01\0\0\0\0\0\x80?\0\0\0\0\0\0\0\0\0\0\0\0\0\0\x80?\0\0\0\0\0\0\0\0\0\0\0\0\0\0\x80?\0\0\0\0\0\0\0\0\0\0\0\0" . as_slice () . into () , PreTransform : b"\x01\0\0\0\x01\0\0\0\0\0\x80?\0\0\0\0\0\0\0\0\0\0\0\0\0\0\x80?\0\0\0\0\0\0\0\0\0\0\0\0\0\0\x80?\0\0\0\0\0\0\0\0\0\0\0\0" . as_slice () . into () , Transform : b"\x01\0\0\0\x01\0\0\0\0\0\x80?\0\0\0\0\0\0\0\0\0\0\0\0\0\0\x80?\0\0\0\0\0\0\0\0\0\0\0\0\0\0\x80?\0\0\0\0\0\0\0\0\0\0\0\0" . as_slice () . into () }
+        let superclass = Object {};
+        let superclass = Instance {
+            superclass,
+            Capabilities: SecurityCapabilities::from_bits(0u64),
+            HistoryId: UniqueId::nil(),
+            Name: "".to_owned(),
+            SourceAssetId: 0i64,
+            Tags: Tags::new(),
+            UniqueId: UniqueId::nil(),
+        };
+        let superclass = AnimationRigData { superclass , Label : b"\x01\0\0\0\x01\0\0\0\0\0\0\0" . as_slice () . into () , Name : b"\x01\0\0\0\x01\0\0\0\0\0\0\0" . as_slice () . into () , Parent : b"\x01\0\0\0\x01\0\0\0\0\0" . as_slice () . into () , PostTransform : b"\x01\0\0\0\x01\0\0\0\0\0\x80?\0\0\0\0\0\0\0\0\0\0\0\0\0\0\x80?\0\0\0\0\0\0\0\0\0\0\0\0\0\0\x80?\0\0\0\0\0\0\0\0\0\0\0\0" . as_slice () . into () , PreTransform : b"\x01\0\0\0\x01\0\0\0\0\0\x80?\0\0\0\0\0\0\0\0\0\0\0\0\0\0\x80?\0\0\0\0\0\0\0\0\0\0\0\0\0\0\x80?\0\0\0\0\0\0\0\0\0\0\0\0" . as_slice () . into () , Transform : b"\x01\0\0\0\x01\0\0\0\0\0\x80?\0\0\0\0\0\0\0\0\0\0\0\0\0\0\x80?\0\0\0\0\0\0\0\0\0\0\0\0\0\0\x80?\0\0\0\0\0\0\0\0\0\0\0\0" . as_slice () . into () } ;
+        superclass
     }
 }
 #[derive(Debug, Clone)]
@@ -1293,10 +1511,21 @@ impl_inherits!(AnimationTrack, Instance);
 impl_strong_instance_from!(AnimationTrack);
 impl Default for AnimationTrack {
     fn default() -> Self {
-        Self {
-            superclass: Instance::default(),
+        let superclass = Object {};
+        let superclass = Instance {
+            superclass,
+            Capabilities: SecurityCapabilities::from_bits(0u64),
+            HistoryId: UniqueId::nil(),
+            Name: "".to_owned(),
+            SourceAssetId: 0i64,
+            Tags: Tags::new(),
+            UniqueId: UniqueId::nil(),
+        };
+        let superclass = AnimationTrack {
+            superclass,
             Priority: enums::AnimationPriority::Idle,
-        }
+        };
+        superclass
     }
 }
 #[derive(Debug, Clone)]
@@ -1309,10 +1538,21 @@ impl_inherits!(Animator, Instance);
 impl_strong_instance_from!(Animator);
 impl Default for Animator {
     fn default() -> Self {
-        Self {
-            superclass: Instance::default(),
+        let superclass = Object {};
+        let superclass = Instance {
+            superclass,
+            Capabilities: SecurityCapabilities::from_bits(0u64),
+            HistoryId: UniqueId::nil(),
+            Name: "".to_owned(),
+            SourceAssetId: 0i64,
+            Tags: Tags::new(),
+            UniqueId: UniqueId::nil(),
+        };
+        let superclass = Animator {
+            superclass,
             PreferLodEnabled: true,
-        }
+        };
+        superclass
     }
 }
 #[derive(Debug, Clone)]
@@ -1373,10 +1613,33 @@ impl_inherits!(ArcHandles, HandlesBase);
 impl_strong_instance_from!(ArcHandles);
 impl Default for ArcHandles {
     fn default() -> Self {
-        Self {
-            superclass: HandlesBase::default(),
+        let superclass = Object {};
+        let superclass = Instance {
+            superclass,
+            Capabilities: SecurityCapabilities::from_bits(0u64),
+            HistoryId: UniqueId::nil(),
+            Name: "".to_owned(),
+            SourceAssetId: 0i64,
+            Tags: Tags::new(),
+            UniqueId: UniqueId::nil(),
+        };
+        let superclass = GuiBase { superclass };
+        let superclass = GuiBase3d {
+            superclass,
+            Color3: Color3::new(0f32, 0f32, 0f32),
+            Transparency: 0f32,
+            Visible: false,
+        };
+        let superclass = PartAdornment {
+            superclass,
+            Adornee: Ref::none(),
+        };
+        let superclass = HandlesBase { superclass };
+        let superclass = ArcHandles {
+            superclass,
             Axes: unimplemented!(),
-        }
+        };
+        superclass
     }
 }
 #[derive(Debug, Clone)]
@@ -1399,12 +1662,23 @@ impl_inherits!(AssetDeliveryProxy, Instance);
 impl_strong_instance_from!(AssetDeliveryProxy);
 impl Default for AssetDeliveryProxy {
     fn default() -> Self {
-        Self {
-            superclass: Instance::default(),
+        let superclass = Object {};
+        let superclass = Instance {
+            superclass,
+            Capabilities: SecurityCapabilities::from_bits(0u64),
+            HistoryId: UniqueId::nil(),
+            Name: "".to_owned(),
+            SourceAssetId: 0i64,
+            Tags: Tags::new(),
+            UniqueId: UniqueId::nil(),
+        };
+        let superclass = AssetDeliveryProxy {
+            superclass,
             Interface: "".to_owned(),
             Port: 0i32,
             StartServer: false,
-        }
+        };
+        superclass
     }
 }
 #[derive(Debug, Clone)]
@@ -1443,12 +1717,23 @@ impl_inherits!(AssetPatchSettings, Instance);
 impl_strong_instance_from!(AssetPatchSettings);
 impl Default for AssetPatchSettings {
     fn default() -> Self {
-        Self {
-            superclass: Instance::default(),
+        let superclass = Object {};
+        let superclass = Instance {
+            superclass,
+            Capabilities: SecurityCapabilities::from_bits(0u64),
+            HistoryId: UniqueId::nil(),
+            Name: "".to_owned(),
+            SourceAssetId: 0i64,
+            Tags: Tags::new(),
+            UniqueId: UniqueId::nil(),
+        };
+        let superclass = AssetPatchSettings {
+            superclass,
             ContentId: "".to_owned(),
             OutputPath: "".to_owned(),
             PatchId: "".to_owned(),
-        }
+        };
+        superclass
     }
 }
 #[derive(Debug, Clone)]
@@ -1461,10 +1746,21 @@ impl_inherits!(AssetService, Instance);
 impl_strong_instance_from!(AssetService);
 impl Default for AssetService {
     fn default() -> Self {
-        Self {
-            superclass: Instance::default(),
+        let superclass = Object {};
+        let superclass = Instance {
+            superclass,
+            Capabilities: SecurityCapabilities::from_bits(0u64),
+            HistoryId: UniqueId::nil(),
+            Name: "".to_owned(),
+            SourceAssetId: 0i64,
+            Tags: Tags::new(),
+            UniqueId: UniqueId::nil(),
+        };
+        let superclass = AssetService {
+            superclass,
             AllowInsertFreeAssets: false,
-        }
+        };
+        superclass
     }
 }
 #[derive(Debug, Clone)]
@@ -1490,15 +1786,26 @@ impl_inherits!(Atmosphere, Instance);
 impl_strong_instance_from!(Atmosphere);
 impl Default for Atmosphere {
     fn default() -> Self {
-        Self {
-            superclass: Instance::default(),
+        let superclass = Object {};
+        let superclass = Instance {
+            superclass,
+            Capabilities: SecurityCapabilities::from_bits(0u64),
+            HistoryId: UniqueId::nil(),
+            Name: "".to_owned(),
+            SourceAssetId: 0i64,
+            Tags: Tags::new(),
+            UniqueId: UniqueId::nil(),
+        };
+        let superclass = Atmosphere {
+            superclass,
             Color: Color3::new(0.7843f32, 0.6667f32, 0.4235f32),
             Decay: Color3::new(0.3608f32, 0.2353f32, 0.0549f32),
             Density: 0.395f32,
             Glare: 0f32,
             Haze: 0f32,
             Offset: 0f32,
-        }
+        };
+        superclass
     }
 }
 #[derive(Debug, Clone)]
@@ -1520,11 +1827,22 @@ impl_inherits!(Attachment, Instance);
 impl_strong_instance_from!(Attachment);
 impl Default for Attachment {
     fn default() -> Self {
-        Self {
-            superclass: Instance::default(),
+        let superclass = Object {};
+        let superclass = Instance {
+            superclass,
+            Capabilities: SecurityCapabilities::from_bits(0u64),
+            HistoryId: UniqueId::nil(),
+            Name: "".to_owned(),
+            SourceAssetId: 0i64,
+            Tags: Tags::new(),
+            UniqueId: UniqueId::nil(),
+        };
+        let superclass = Attachment {
+            superclass,
             CFrame: CFrame::identity(),
             Visible: false,
-        }
+        };
+        superclass
     }
 }
 #[derive(Debug, Clone)]
@@ -1538,11 +1856,22 @@ impl_inherits!(AudioAnalyzer, Instance);
 impl_strong_instance_from!(AudioAnalyzer);
 impl Default for AudioAnalyzer {
     fn default() -> Self {
-        Self {
-            superclass: Instance::default(),
+        let superclass = Object {};
+        let superclass = Instance {
+            superclass,
+            Capabilities: SecurityCapabilities::from_bits(0u64),
+            HistoryId: UniqueId::nil(),
+            Name: "".to_owned(),
+            SourceAssetId: 0i64,
+            Tags: Tags::new(),
+            UniqueId: UniqueId::nil(),
+        };
+        let superclass = AudioAnalyzer {
+            superclass,
             SpectrumEnabled: true,
             WindowSize: enums::AudioWindowSize::Medium,
-        }
+        };
+        superclass
     }
 }
 #[derive(Debug, Clone)]
@@ -1555,10 +1884,21 @@ impl_inherits!(AudioChannelMixer, Instance);
 impl_strong_instance_from!(AudioChannelMixer);
 impl Default for AudioChannelMixer {
     fn default() -> Self {
-        Self {
-            superclass: Instance::default(),
+        let superclass = Object {};
+        let superclass = Instance {
+            superclass,
+            Capabilities: SecurityCapabilities::from_bits(0u64),
+            HistoryId: UniqueId::nil(),
+            Name: "".to_owned(),
+            SourceAssetId: 0i64,
+            Tags: Tags::new(),
+            UniqueId: UniqueId::nil(),
+        };
+        let superclass = AudioChannelMixer {
+            superclass,
             Layout: enums::AudioChannelLayout::Stereo,
-        }
+        };
+        superclass
     }
 }
 #[derive(Debug, Clone)]
@@ -1571,10 +1911,21 @@ impl_inherits!(AudioChannelSplitter, Instance);
 impl_strong_instance_from!(AudioChannelSplitter);
 impl Default for AudioChannelSplitter {
     fn default() -> Self {
-        Self {
-            superclass: Instance::default(),
+        let superclass = Object {};
+        let superclass = Instance {
+            superclass,
+            Capabilities: SecurityCapabilities::from_bits(0u64),
+            HistoryId: UniqueId::nil(),
+            Name: "".to_owned(),
+            SourceAssetId: 0i64,
+            Tags: Tags::new(),
+            UniqueId: UniqueId::nil(),
+        };
+        let superclass = AudioChannelSplitter {
+            superclass,
             Layout: enums::AudioChannelLayout::Stereo,
-        }
+        };
+        superclass
     }
 }
 #[derive(Debug, Clone)]
@@ -1590,13 +1941,24 @@ impl_inherits!(AudioChorus, Instance);
 impl_strong_instance_from!(AudioChorus);
 impl Default for AudioChorus {
     fn default() -> Self {
-        Self {
-            superclass: Instance::default(),
+        let superclass = Object {};
+        let superclass = Instance {
+            superclass,
+            Capabilities: SecurityCapabilities::from_bits(0u64),
+            HistoryId: UniqueId::nil(),
+            Name: "".to_owned(),
+            SourceAssetId: 0i64,
+            Tags: Tags::new(),
+            UniqueId: UniqueId::nil(),
+        };
+        let superclass = AudioChorus {
+            superclass,
             Bypass: false,
             Depth: 0.45f32,
             Mix: 0.85f32,
             Rate: 5f32,
-        }
+        };
+        superclass
     }
 }
 #[derive(Debug, Clone)]
@@ -1614,15 +1976,26 @@ impl_inherits!(AudioCompressor, Instance);
 impl_strong_instance_from!(AudioCompressor);
 impl Default for AudioCompressor {
     fn default() -> Self {
-        Self {
-            superclass: Instance::default(),
+        let superclass = Object {};
+        let superclass = Instance {
+            superclass,
+            Capabilities: SecurityCapabilities::from_bits(0u64),
+            HistoryId: UniqueId::nil(),
+            Name: "".to_owned(),
+            SourceAssetId: 0i64,
+            Tags: Tags::new(),
+            UniqueId: UniqueId::nil(),
+        };
+        let superclass = AudioCompressor {
+            superclass,
             Attack: 0.1f32,
             Bypass: false,
             MakeupGain: 0f32,
             Ratio: 40f32,
             Release: 0.1f32,
             Threshold: -40f32,
-        }
+        };
+        superclass
     }
 }
 #[derive(Debug, Clone)]
@@ -1639,14 +2012,25 @@ impl_inherits!(AudioDeviceInput, Instance);
 impl_strong_instance_from!(AudioDeviceInput);
 impl Default for AudioDeviceInput {
     fn default() -> Self {
-        Self {
-            superclass: Instance::default(),
+        let superclass = Object {};
+        let superclass = Instance {
+            superclass,
+            Capabilities: SecurityCapabilities::from_bits(0u64),
+            HistoryId: UniqueId::nil(),
+            Name: "".to_owned(),
+            SourceAssetId: 0i64,
+            Tags: Tags::new(),
+            UniqueId: UniqueId::nil(),
+        };
+        let superclass = AudioDeviceInput {
+            superclass,
             AccessType: enums::AccessModifierType::Deny,
             Active: true,
             Muted: false,
             Player: Ref::none(),
             Volume: 1f32,
-        }
+        };
+        superclass
     }
 }
 #[derive(Debug, Clone)]
@@ -1659,10 +2043,21 @@ impl_inherits!(AudioDeviceOutput, Instance);
 impl_strong_instance_from!(AudioDeviceOutput);
 impl Default for AudioDeviceOutput {
     fn default() -> Self {
-        Self {
-            superclass: Instance::default(),
+        let superclass = Object {};
+        let superclass = Instance {
+            superclass,
+            Capabilities: SecurityCapabilities::from_bits(0u64),
+            HistoryId: UniqueId::nil(),
+            Name: "".to_owned(),
+            SourceAssetId: 0i64,
+            Tags: Tags::new(),
+            UniqueId: UniqueId::nil(),
+        };
+        let superclass = AudioDeviceOutput {
+            superclass,
             Player: Ref::none(),
-        }
+        };
+        superclass
     }
 }
 #[derive(Debug, Clone)]
@@ -1676,11 +2071,22 @@ impl_inherits!(AudioDistortion, Instance);
 impl_strong_instance_from!(AudioDistortion);
 impl Default for AudioDistortion {
     fn default() -> Self {
-        Self {
-            superclass: Instance::default(),
+        let superclass = Object {};
+        let superclass = Instance {
+            superclass,
+            Capabilities: SecurityCapabilities::from_bits(0u64),
+            HistoryId: UniqueId::nil(),
+            Name: "".to_owned(),
+            SourceAssetId: 0i64,
+            Tags: Tags::new(),
+            UniqueId: UniqueId::nil(),
+        };
+        let superclass = AudioDistortion {
+            superclass,
             Bypass: false,
             Level: 0.5f32,
-        }
+        };
+        superclass
     }
 }
 #[derive(Debug, Clone)]
@@ -1698,15 +2104,26 @@ impl_inherits!(AudioEcho, Instance);
 impl_strong_instance_from!(AudioEcho);
 impl Default for AudioEcho {
     fn default() -> Self {
-        Self {
-            superclass: Instance::default(),
+        let superclass = Object {};
+        let superclass = Instance {
+            superclass,
+            Capabilities: SecurityCapabilities::from_bits(0u64),
+            HistoryId: UniqueId::nil(),
+            Name: "".to_owned(),
+            SourceAssetId: 0i64,
+            Tags: Tags::new(),
+            UniqueId: UniqueId::nil(),
+        };
+        let superclass = AudioEcho {
+            superclass,
             Bypass: false,
             DelayTime: 1f32,
             DryLevel: 0f32,
             Feedback: 0.5f32,
             RampTime: 0f32,
             WetLevel: 0f32,
-        }
+        };
+        superclass
     }
 }
 #[derive(Debug, Clone)]
@@ -1724,15 +2141,26 @@ impl_inherits!(AudioEmitter, Instance);
 impl_strong_instance_from!(AudioEmitter);
 impl Default for AudioEmitter {
     fn default() -> Self {
-        Self {
-            superclass: Instance::default(),
+        let superclass = Object {};
+        let superclass = Instance {
+            superclass,
+            Capabilities: SecurityCapabilities::from_bits(0u64),
+            HistoryId: UniqueId::nil(),
+            Name: "".to_owned(),
+            SourceAssetId: 0i64,
+            Tags: Tags::new(),
+            UniqueId: UniqueId::nil(),
+        };
+        let superclass = AudioEmitter {
+            superclass,
             AcousticSimulationEnabled: true,
             AngleAttenuation: b"\0".as_slice().into(),
             AudioInteractionGroup: "".to_owned(),
             DistanceAttenuation: b"\0".as_slice().into(),
             PositionOverride: Ref::none(),
             SimulationFidelity: enums::AudioSimulationFidelity::Automatic,
-        }
+        };
+        superclass
     }
 }
 #[derive(Debug, Clone)]
@@ -1749,14 +2177,25 @@ impl_inherits!(AudioEqualizer, Instance);
 impl_strong_instance_from!(AudioEqualizer);
 impl Default for AudioEqualizer {
     fn default() -> Self {
-        Self {
-            superclass: Instance::default(),
+        let superclass = Object {};
+        let superclass = Instance {
+            superclass,
+            Capabilities: SecurityCapabilities::from_bits(0u64),
+            HistoryId: UniqueId::nil(),
+            Name: "".to_owned(),
+            SourceAssetId: 0i64,
+            Tags: Tags::new(),
+            UniqueId: UniqueId::nil(),
+        };
+        let superclass = AudioEqualizer {
+            superclass,
             Bypass: false,
             HighGain: 0f32,
             LowGain: 0f32,
             MidGain: 0f32,
             MidRange: NumberRange::new(400f32, 4000f32),
-        }
+        };
+        superclass
     }
 }
 #[derive(Debug, Clone)]
@@ -1770,11 +2209,22 @@ impl_inherits!(AudioFader, Instance);
 impl_strong_instance_from!(AudioFader);
 impl Default for AudioFader {
     fn default() -> Self {
-        Self {
-            superclass: Instance::default(),
+        let superclass = Object {};
+        let superclass = Instance {
+            superclass,
+            Capabilities: SecurityCapabilities::from_bits(0u64),
+            HistoryId: UniqueId::nil(),
+            Name: "".to_owned(),
+            SourceAssetId: 0i64,
+            Tags: Tags::new(),
+            UniqueId: UniqueId::nil(),
+        };
+        let superclass = AudioFader {
+            superclass,
             Bypass: false,
             Volume: 1f32,
-        }
+        };
+        superclass
     }
 }
 #[derive(Debug, Clone)]
@@ -1791,14 +2241,25 @@ impl_inherits!(AudioFilter, Instance);
 impl_strong_instance_from!(AudioFilter);
 impl Default for AudioFilter {
     fn default() -> Self {
-        Self {
-            superclass: Instance::default(),
+        let superclass = Object {};
+        let superclass = Instance {
+            superclass,
+            Capabilities: SecurityCapabilities::from_bits(0u64),
+            HistoryId: UniqueId::nil(),
+            Name: "".to_owned(),
+            SourceAssetId: 0i64,
+            Tags: Tags::new(),
+            UniqueId: UniqueId::nil(),
+        };
+        let superclass = AudioFilter {
+            superclass,
             Bypass: false,
             FilterType: enums::AudioFilterType::Peak,
             Frequency: 2000f32,
             Gain: 0f32,
             Q: 0.707f32,
-        }
+        };
+        superclass
     }
 }
 #[derive(Debug, Clone)]
@@ -1814,13 +2275,24 @@ impl_inherits!(AudioFlanger, Instance);
 impl_strong_instance_from!(AudioFlanger);
 impl Default for AudioFlanger {
     fn default() -> Self {
-        Self {
-            superclass: Instance::default(),
+        let superclass = Object {};
+        let superclass = Instance {
+            superclass,
+            Capabilities: SecurityCapabilities::from_bits(0u64),
+            HistoryId: UniqueId::nil(),
+            Name: "".to_owned(),
+            SourceAssetId: 0i64,
+            Tags: Tags::new(),
+            UniqueId: UniqueId::nil(),
+        };
+        let superclass = AudioFlanger {
+            superclass,
             Bypass: false,
             Depth: 0.45f32,
             Mix: 0.85f32,
             Rate: 5f32,
-        }
+        };
+        superclass
     }
 }
 #[derive(Debug, Clone)]
@@ -1844,13 +2316,24 @@ impl_inherits!(AudioGate, Instance);
 impl_strong_instance_from!(AudioGate);
 impl Default for AudioGate {
     fn default() -> Self {
-        Self {
-            superclass: Instance::default(),
+        let superclass = Object {};
+        let superclass = Instance {
+            superclass,
+            Capabilities: SecurityCapabilities::from_bits(0u64),
+            HistoryId: UniqueId::nil(),
+            Name: "".to_owned(),
+            SourceAssetId: 0i64,
+            Tags: Tags::new(),
+            UniqueId: UniqueId::nil(),
+        };
+        let superclass = AudioGate {
+            superclass,
             Attack: 0.01f32,
             Bypass: false,
             Release: 0.1f32,
             Threshold: NumberRange::new(-36f32, -24f32),
-        }
+        };
+        superclass
     }
 }
 #[derive(Debug, Clone)]
@@ -1865,12 +2348,23 @@ impl_inherits!(AudioLimiter, Instance);
 impl_strong_instance_from!(AudioLimiter);
 impl Default for AudioLimiter {
     fn default() -> Self {
-        Self {
-            superclass: Instance::default(),
+        let superclass = Object {};
+        let superclass = Instance {
+            superclass,
+            Capabilities: SecurityCapabilities::from_bits(0u64),
+            HistoryId: UniqueId::nil(),
+            Name: "".to_owned(),
+            SourceAssetId: 0i64,
+            Tags: Tags::new(),
+            UniqueId: UniqueId::nil(),
+        };
+        let superclass = AudioLimiter {
+            superclass,
             Bypass: false,
             MaxLevel: 0f32,
             Release: 0.01f32,
-        }
+        };
+        superclass
     }
 }
 #[derive(Debug, Clone)]
@@ -1888,15 +2382,26 @@ impl_inherits!(AudioListener, Instance);
 impl_strong_instance_from!(AudioListener);
 impl Default for AudioListener {
     fn default() -> Self {
-        Self {
-            superclass: Instance::default(),
+        let superclass = Object {};
+        let superclass = Instance {
+            superclass,
+            Capabilities: SecurityCapabilities::from_bits(0u64),
+            HistoryId: UniqueId::nil(),
+            Name: "".to_owned(),
+            SourceAssetId: 0i64,
+            Tags: Tags::new(),
+            UniqueId: UniqueId::nil(),
+        };
+        let superclass = AudioListener {
+            superclass,
             AcousticSimulationEnabled: true,
             AngleAttenuation: b"\0".as_slice().into(),
             AudioInteractionGroup: "".to_owned(),
             DistanceAttenuation: b"\0".as_slice().into(),
             PositionOverride: Ref::none(),
             SimulationFidelity: enums::AudioSimulationFidelity::Automatic,
-        }
+        };
+        superclass
     }
 }
 #[derive(Debug, Clone)]
@@ -1919,12 +2424,23 @@ impl_inherits!(AudioPitchShifter, Instance);
 impl_strong_instance_from!(AudioPitchShifter);
 impl Default for AudioPitchShifter {
     fn default() -> Self {
-        Self {
-            superclass: Instance::default(),
+        let superclass = Object {};
+        let superclass = Instance {
+            superclass,
+            Capabilities: SecurityCapabilities::from_bits(0u64),
+            HistoryId: UniqueId::nil(),
+            Name: "".to_owned(),
+            SourceAssetId: 0i64,
+            Tags: Tags::new(),
+            UniqueId: UniqueId::nil(),
+        };
+        let superclass = AudioPitchShifter {
+            superclass,
             Bypass: false,
             Pitch: 1.25f32,
             WindowSize: enums::AudioWindowSize::Medium,
-        }
+        };
+        superclass
     }
 }
 #[derive(Debug, Clone)]
@@ -1946,8 +2462,18 @@ impl_inherits!(AudioPlayer, Instance);
 impl_strong_instance_from!(AudioPlayer);
 impl Default for AudioPlayer {
     fn default() -> Self {
-        Self {
-            superclass: Instance::default(),
+        let superclass = Object {};
+        let superclass = Instance {
+            superclass,
+            Capabilities: SecurityCapabilities::from_bits(0u64),
+            HistoryId: UniqueId::nil(),
+            Name: "".to_owned(),
+            SourceAssetId: 0i64,
+            Tags: Tags::new(),
+            UniqueId: UniqueId::nil(),
+        };
+        let superclass = AudioPlayer {
+            superclass,
             AudioContent: Content::none(),
             AutoLoad: true,
             AutoPlay: false,
@@ -1958,7 +2484,8 @@ impl Default for AudioPlayer {
             PlaybackSpeed: 1f64,
             TimePosition: 0f64,
             Volume: 1f32,
-        }
+        };
+        superclass
     }
 }
 #[derive(Debug, Clone)]
@@ -1971,10 +2498,21 @@ impl_inherits!(AudioRecorder, Instance);
 impl_strong_instance_from!(AudioRecorder);
 impl Default for AudioRecorder {
     fn default() -> Self {
-        Self {
-            superclass: Instance::default(),
+        let superclass = Object {};
+        let superclass = Instance {
+            superclass,
+            Capabilities: SecurityCapabilities::from_bits(0u64),
+            HistoryId: UniqueId::nil(),
+            Name: "".to_owned(),
+            SourceAssetId: 0i64,
+            Tags: Tags::new(),
+            UniqueId: UniqueId::nil(),
+        };
+        let superclass = AudioRecorder {
+            superclass,
             IsRecording: false,
-        }
+        };
+        superclass
     }
 }
 #[derive(Debug, Clone)]
@@ -1999,8 +2537,18 @@ impl_inherits!(AudioReverb, Instance);
 impl_strong_instance_from!(AudioReverb);
 impl Default for AudioReverb {
     fn default() -> Self {
-        Self {
-            superclass: Instance::default(),
+        let superclass = Object {};
+        let superclass = Instance {
+            superclass,
+            Capabilities: SecurityCapabilities::from_bits(0u64),
+            HistoryId: UniqueId::nil(),
+            Name: "".to_owned(),
+            SourceAssetId: 0i64,
+            Tags: Tags::new(),
+            UniqueId: UniqueId::nil(),
+        };
+        let superclass = AudioReverb {
+            superclass,
             Bypass: false,
             DecayRatio: 0.5f32,
             DecayTime: 1.5f32,
@@ -2014,7 +2562,8 @@ impl Default for AudioReverb {
             LowShelfGain: 0f32,
             ReferenceFrequency: 5000f32,
             WetLevel: -6f32,
-        }
+        };
+        superclass
     }
 }
 #[derive(Debug, Clone)]
@@ -2034,8 +2583,18 @@ impl_inherits!(AudioSearchParams, Instance);
 impl_strong_instance_from!(AudioSearchParams);
 impl Default for AudioSearchParams {
     fn default() -> Self {
-        Self {
-            superclass: Instance::default(),
+        let superclass = Object {};
+        let superclass = Instance {
+            superclass,
+            Capabilities: SecurityCapabilities::from_bits(0u64),
+            HistoryId: UniqueId::nil(),
+            Name: "".to_owned(),
+            SourceAssetId: 0i64,
+            Tags: Tags::new(),
+            UniqueId: UniqueId::nil(),
+        };
+        let superclass = AudioSearchParams {
+            superclass,
             Album: "".to_owned(),
             Artist: "".to_owned(),
             AudioSubType: enums::AudioSubType::Music,
@@ -2044,7 +2603,8 @@ impl Default for AudioSearchParams {
             SearchKeyword: "".to_owned(),
             Tag: "".to_owned(),
             Title: "".to_owned(),
-        }
+        };
+        superclass
     }
 }
 #[derive(Debug, Clone)]
@@ -2058,11 +2618,22 @@ impl_inherits!(AudioSpeechToText, Instance);
 impl_strong_instance_from!(AudioSpeechToText);
 impl Default for AudioSpeechToText {
     fn default() -> Self {
-        Self {
-            superclass: Instance::default(),
+        let superclass = Object {};
+        let superclass = Instance {
+            superclass,
+            Capabilities: SecurityCapabilities::from_bits(0u64),
+            HistoryId: UniqueId::nil(),
+            Name: "".to_owned(),
+            SourceAssetId: 0i64,
+            Tags: Tags::new(),
+            UniqueId: UniqueId::nil(),
+        };
+        let superclass = AudioSpeechToText {
+            superclass,
             Enabled: false,
             Text: "".to_owned(),
-        }
+        };
+        superclass
     }
 }
 #[derive(Debug, Clone)]
@@ -2082,8 +2653,18 @@ impl_inherits!(AudioTextToSpeech, Instance);
 impl_strong_instance_from!(AudioTextToSpeech);
 impl Default for AudioTextToSpeech {
     fn default() -> Self {
-        Self {
-            superclass: Instance::default(),
+        let superclass = Object {};
+        let superclass = Instance {
+            superclass,
+            Capabilities: SecurityCapabilities::from_bits(0u64),
+            HistoryId: UniqueId::nil(),
+            Name: "".to_owned(),
+            SourceAssetId: 0i64,
+            Tags: Tags::new(),
+            UniqueId: UniqueId::nil(),
+        };
+        let superclass = AudioTextToSpeech {
+            superclass,
             Looping: false,
             Pitch: 0f32,
             PlaybackSpeed: 1f32,
@@ -2092,7 +2673,8 @@ impl Default for AudioTextToSpeech {
             TimePosition: 0f64,
             VoiceId: "".to_owned(),
             Volume: 1f32,
-        }
+        };
+        superclass
     }
 }
 #[derive(Debug, Clone)]
@@ -2111,8 +2693,18 @@ impl_inherits!(AudioTremolo, Instance);
 impl_strong_instance_from!(AudioTremolo);
 impl Default for AudioTremolo {
     fn default() -> Self {
-        Self {
-            superclass: Instance::default(),
+        let superclass = Object {};
+        let superclass = Instance {
+            superclass,
+            Capabilities: SecurityCapabilities::from_bits(0u64),
+            HistoryId: UniqueId::nil(),
+            Name: "".to_owned(),
+            SourceAssetId: 0i64,
+            Tags: Tags::new(),
+            UniqueId: UniqueId::nil(),
+        };
+        let superclass = AudioTremolo {
+            superclass,
             Bypass: false,
             Depth: 1f32,
             Duty: 0.5f32,
@@ -2120,7 +2712,8 @@ impl Default for AudioTremolo {
             Shape: 0f32,
             Skew: 0f32,
             Square: 0f32,
-        }
+        };
+        superclass
     }
 }
 #[derive(Debug, Clone)]
@@ -2138,15 +2731,30 @@ impl_inherits!(AuroraScript, LuaSourceContainer);
 impl_strong_instance_from!(AuroraScript);
 impl Default for AuroraScript {
     fn default() -> Self {
-        Self {
-            superclass: LuaSourceContainer::default(),
+        let superclass = Object {};
+        let superclass = Instance {
+            superclass,
+            Capabilities: SecurityCapabilities::from_bits(0u64),
+            HistoryId: UniqueId::nil(),
+            Name: "".to_owned(),
+            SourceAssetId: 0i64,
+            Tags: Tags::new(),
+            UniqueId: UniqueId::nil(),
+        };
+        let superclass = LuaSourceContainer {
+            superclass,
+            ScriptGuid: "".to_owned(),
+        };
+        let superclass = AuroraScript {
+            superclass,
             AuroraScriptBindingsSerialize: b"".as_slice().into(),
             EnableCulling: false,
             EnableLod: false,
             LodCriticality: 0i32,
             Priority: 0i32,
             Source: "".to_owned(),
-        }
+        };
+        superclass
     }
 }
 #[derive(Debug, Clone)]
@@ -2163,14 +2771,25 @@ impl_inherits!(AuroraScriptObject, Instance);
 impl_strong_instance_from!(AuroraScriptObject);
 impl Default for AuroraScriptObject {
     fn default() -> Self {
-        Self {
-            superclass: Instance::default(),
+        let superclass = Object {};
+        let superclass = Instance {
+            superclass,
+            Capabilities: SecurityCapabilities::from_bits(0u64),
+            HistoryId: UniqueId::nil(),
+            Name: "".to_owned(),
+            SourceAssetId: 0i64,
+            Tags: Tags::new(),
+            UniqueId: UniqueId::nil(),
+        };
+        let superclass = AuroraScriptObject {
+            superclass,
             BehaviorWeak: Ref::none(),
             BoundInstanceWeak: Ref::none(),
             FrameId: 0i32,
             LodLevel: 0i32,
             PriorFrameInvoked: 0i32,
-        }
+        };
+        superclass
     }
 }
 #[derive(Debug, Clone)]
@@ -2194,13 +2813,24 @@ impl_inherits!(AuroraService, Instance);
 impl_strong_instance_from!(AuroraService);
 impl Default for AuroraService {
     fn default() -> Self {
-        Self {
-            superclass: Instance::default(),
+        let superclass = Object {};
+        let superclass = Instance {
+            superclass,
+            Capabilities: SecurityCapabilities::from_bits(0u64),
+            HistoryId: UniqueId::nil(),
+            Name: "".to_owned(),
+            SourceAssetId: 0i64,
+            Tags: Tags::new(),
+            UniqueId: UniqueId::nil(),
+        };
+        let superclass = AuroraService {
+            superclass,
             HashRoundingPoint: 0f64,
             IgnoreRotation: false,
             LockStepIdOffset: false,
             RollbackOffset: 0i32,
-        }
+        };
+        superclass
     }
 }
 #[derive(Debug, Clone)]
@@ -2234,8 +2864,18 @@ impl_inherits!(AvatarAccessoryRules, Instance);
 impl_strong_instance_from!(AvatarAccessoryRules);
 impl Default for AvatarAccessoryRules {
     fn default() -> Self {
-        Self {
-            superclass: Instance::default(),
+        let superclass = Object {};
+        let superclass = Instance {
+            superclass,
+            Capabilities: SecurityCapabilities::from_bits(0u64),
+            HistoryId: UniqueId::nil(),
+            Name: "".to_owned(),
+            SourceAssetId: 0i64,
+            Tags: Tags::new(),
+            UniqueId: UniqueId::nil(),
+        };
+        let superclass = AvatarAccessoryRules {
+            superclass,
             AccessoryMode: enums::AvatarSettingsAccessoryMode::PlayerChoice,
             CustomAccessoryMode: enums::AvatarSettingsCustomAccessoryMode::PlayerChoice,
             CustomBackAccessoryEnabled: false,
@@ -2258,7 +2898,8 @@ impl Default for AvatarAccessoryRules {
             EnableVfx: true,
             LimitBounds: Vector3::new(0f32, 0f32, 0f32),
             LimitMethod: enums::AvatarSettingsAccessoryLimitMethod::Remove,
-        }
+        };
+        superclass
     }
 }
 #[derive(Debug, Clone)]
@@ -2292,8 +2933,18 @@ impl_inherits!(AvatarAnimationRules, Instance);
 impl_strong_instance_from!(AvatarAnimationRules);
 impl Default for AvatarAnimationRules {
     fn default() -> Self {
-        Self {
-            superclass: Instance::default(),
+        let superclass = Object {};
+        let superclass = Instance {
+            superclass,
+            Capabilities: SecurityCapabilities::from_bits(0u64),
+            HistoryId: UniqueId::nil(),
+            Name: "".to_owned(),
+            SourceAssetId: 0i64,
+            Tags: Tags::new(),
+            UniqueId: UniqueId::nil(),
+        };
+        let superclass = AvatarAnimationRules {
+            superclass,
             AnimationClipsMode: enums::AvatarSettingsAnimationClipsMode::PlayerChoice,
             AnimationPacksMode: enums::AvatarSettingsAnimationPacksMode::PlayerChoice,
             CustomClimbAnimationEnabled: false,
@@ -2316,7 +2967,8 @@ impl Default for AvatarAnimationRules {
             CustomSwimIdleAnimationId: 0i64,
             CustomWalkAnimationEnabled: false,
             CustomWalkAnimationId: 0i64,
-        }
+        };
+        superclass
     }
 }
 #[derive(Debug, Clone)]
@@ -2360,8 +3012,18 @@ impl_inherits!(AvatarBodyRules, Instance);
 impl_strong_instance_from!(AvatarBodyRules);
 impl Default for AvatarBodyRules {
     fn default() -> Self {
-        Self {
-            superclass: Instance::default(),
+        let superclass = Object {};
+        let superclass = Instance {
+            superclass,
+            Capabilities: SecurityCapabilities::from_bits(0u64),
+            HistoryId: UniqueId::nil(),
+            Name: "".to_owned(),
+            SourceAssetId: 0i64,
+            Tags: Tags::new(),
+            UniqueId: UniqueId::nil(),
+        };
+        let superclass = AvatarBodyRules {
+            superclass,
             AppearanceMode: enums::AvatarSettingsAppearanceMode::PlayerChoice,
             BuildMode: enums::AvatarSettingsBuildMode::PlayerChoice,
             CustomBodyBundleId: 0i64,
@@ -2394,7 +3056,8 @@ impl Default for AvatarBodyRules {
             CustomWidthScale: NumberRange::new(0.7f32, 1f32),
             KeepPlayerHead: true,
             ScaleMode: enums::AvatarSettingsScaleMode::PlayerChoice,
-        }
+        };
+        superclass
     }
 }
 #[derive(Debug, Clone)]
@@ -2441,8 +3104,18 @@ impl_inherits!(AvatarClothingRules, Instance);
 impl_strong_instance_from!(AvatarClothingRules);
 impl Default for AvatarClothingRules {
     fn default() -> Self {
-        Self {
-            superclass: Instance::default(),
+        let superclass = Object {};
+        let superclass = Instance {
+            superclass,
+            Capabilities: SecurityCapabilities::from_bits(0u64),
+            HistoryId: UniqueId::nil(),
+            Name: "".to_owned(),
+            SourceAssetId: 0i64,
+            Tags: Tags::new(),
+            UniqueId: UniqueId::nil(),
+        };
+        let superclass = AvatarClothingRules {
+            superclass,
             ClothingMode: enums::AvatarSettingsClothingMode::PlayerChoice,
             CustomClassicPantsAccessoryEnabled: false,
             CustomClassicPantsAccessoryId: 0i64,
@@ -2470,7 +3143,8 @@ impl Default for AvatarClothingRules {
             CustomTShirtAccessoryEnabled: false,
             CustomTShirtAccessoryId: 0i64,
             LimitBounds: Vector3::new(0f32, 0f32, 0f32),
-        }
+        };
+        superclass
     }
 }
 #[derive(Debug, Clone)]
@@ -2486,13 +3160,24 @@ impl_inherits!(AvatarCollisionRules, Instance);
 impl_strong_instance_from!(AvatarCollisionRules);
 impl Default for AvatarCollisionRules {
     fn default() -> Self {
-        Self {
-            superclass: Instance::default(),
+        let superclass = Object {};
+        let superclass = Instance {
+            superclass,
+            Capabilities: SecurityCapabilities::from_bits(0u64),
+            HistoryId: UniqueId::nil(),
+            Name: "".to_owned(),
+            SourceAssetId: 0i64,
+            Tags: Tags::new(),
+            UniqueId: UniqueId::nil(),
+        };
+        let superclass = AvatarCollisionRules {
+            superclass,
             CollisionMode: enums::AvatarSettingsCollisionMode::Default,
             HitAndTouchDetectionMode: enums::AvatarSettingsHitAndTouchDetectionMode::UseParts,
             LegacyCollisionMode: enums::AvatarSettingsLegacyCollisionMode::InnerBoxColliders,
             SingleColliderSize: Vector3::new(2f32, 3f32, 1f32),
-        }
+        };
+        superclass
     }
 }
 #[derive(Debug, Clone)]
@@ -2529,10 +3214,21 @@ impl_inherits!(AvatarRules, Instance);
 impl_strong_instance_from!(AvatarRules);
 impl Default for AvatarRules {
     fn default() -> Self {
-        Self {
-            superclass: Instance::default(),
+        let superclass = Object {};
+        let superclass = Instance {
+            superclass,
+            Capabilities: SecurityCapabilities::from_bits(0u64),
+            HistoryId: UniqueId::nil(),
+            Name: "".to_owned(),
+            SourceAssetId: 0i64,
+            Tags: Tags::new(),
+            UniqueId: UniqueId::nil(),
+        };
+        let superclass = AvatarRules {
+            superclass,
             AvatarType: enums::GameAvatarType::R15,
-        }
+        };
+        superclass
     }
 }
 #[derive(Debug, Clone)]
@@ -2561,10 +3257,34 @@ impl_inherits!(BackpackItem, Model);
 impl_strong_instance_from!(BackpackItem);
 impl Default for BackpackItem {
     fn default() -> Self {
-        Self {
-            superclass: Model::default(),
+        let superclass = Object {};
+        let superclass = Instance {
+            superclass,
+            Capabilities: SecurityCapabilities::from_bits(0u64),
+            HistoryId: UniqueId::nil(),
+            Name: "".to_owned(),
+            SourceAssetId: 0i64,
+            Tags: Tags::new(),
+            UniqueId: UniqueId::nil(),
+        };
+        let superclass = PVInstance { superclass };
+        let superclass = Model {
+            superclass,
+            LevelOfDetail: enums::ModelLevelOfDetail::Automatic,
+            ModelMeshCFrame: CFrame::identity(),
+            ModelMeshData: SharedString::new(b"".to_vec()),
+            ModelMeshSize: Vector3::new(0f32, 0f32, 0f32),
+            ModelStreamingMode: enums::ModelStreamingMode::Default,
+            NeedsPivotMigration: false,
+            PrimaryPart: Ref::none(),
+            SlimHash: SharedString::new(b"".to_vec()),
+            WorldPivotData: None,
+        };
+        let superclass = BackpackItem {
+            superclass,
             TextureContent: Content::none(),
-        }
+        };
+        superclass
     }
 }
 #[derive(Debug, Clone)]
@@ -2592,8 +3312,26 @@ impl_inherits!(BallSocketConstraint, Constraint);
 impl_strong_instance_from!(BallSocketConstraint);
 impl Default for BallSocketConstraint {
     fn default() -> Self {
-        Self {
-            superclass: Constraint::default(),
+        let superclass = Object {};
+        let superclass = Instance {
+            superclass,
+            Capabilities: SecurityCapabilities::from_bits(0u64),
+            HistoryId: UniqueId::nil(),
+            Name: "".to_owned(),
+            SourceAssetId: 0i64,
+            Tags: Tags::new(),
+            UniqueId: UniqueId::nil(),
+        };
+        let superclass = Constraint {
+            superclass,
+            Attachment0: Ref::none(),
+            Attachment1: Ref::none(),
+            Color: BrickColor::from_number(194u16).unwrap(),
+            Enabled: false,
+            Visible: false,
+        };
+        let superclass = BallSocketConstraint {
+            superclass,
             LimitsEnabled: false,
             MaxFrictionTorqueXml: 0f32,
             Radius: 0.15f32,
@@ -2602,7 +3340,8 @@ impl Default for BallSocketConstraint {
             TwistLowerAngle: -45f32,
             TwistUpperAngle: 45f32,
             UpperAngle: 45f32,
-        }
+        };
+        superclass
     }
 }
 #[derive(Debug, Clone)]
@@ -2624,11 +3363,22 @@ impl_inherits!(BaseImportData, Instance);
 impl_strong_instance_from!(BaseImportData);
 impl Default for BaseImportData {
     fn default() -> Self {
-        Self {
-            superclass: Instance::default(),
+        let superclass = Object {};
+        let superclass = Instance {
+            superclass,
+            Capabilities: SecurityCapabilities::from_bits(0u64),
+            HistoryId: UniqueId::nil(),
+            Name: "".to_owned(),
+            SourceAssetId: 0i64,
+            Tags: Tags::new(),
+            UniqueId: UniqueId::nil(),
+        };
+        let superclass = BaseImportData {
+            superclass,
             ImportName: "".to_owned(),
             ShouldImport: false,
-        }
+        };
+        superclass
     }
 }
 #[derive(Debug, Clone)]
@@ -2684,8 +3434,19 @@ impl_inherits!(BasePart, PVInstance);
 impl_strong_instance_from!(BasePart);
 impl Default for BasePart {
     fn default() -> Self {
-        Self {
-            superclass: PVInstance::default(),
+        let superclass = Object {};
+        let superclass = Instance {
+            superclass,
+            Capabilities: SecurityCapabilities::from_bits(0u64),
+            HistoryId: UniqueId::nil(),
+            Name: "".to_owned(),
+            SourceAssetId: 0i64,
+            Tags: Tags::new(),
+            UniqueId: UniqueId::nil(),
+        };
+        let superclass = PVInstance { superclass };
+        let superclass = BasePart {
+            superclass,
             Anchored: false,
             AudioCanCollide: false,
             BackParamA: 0f32,
@@ -2730,7 +3491,8 @@ impl Default for BasePart {
             TopSurfaceInput: enums::InputType::NoInput,
             Transparency: 0f32,
             Velocity: Vector3::new(0f32, 0f32, 0f32),
-        }
+        };
+        superclass
     }
 }
 #[derive(Debug, Clone)]
@@ -2761,12 +3523,27 @@ impl_inherits!(BaseScript, LuaSourceContainer);
 impl_strong_instance_from!(BaseScript);
 impl Default for BaseScript {
     fn default() -> Self {
-        Self {
-            superclass: LuaSourceContainer::default(),
+        let superclass = Object {};
+        let superclass = Instance {
+            superclass,
+            Capabilities: SecurityCapabilities::from_bits(0u64),
+            HistoryId: UniqueId::nil(),
+            Name: "".to_owned(),
+            SourceAssetId: 0i64,
+            Tags: Tags::new(),
+            UniqueId: UniqueId::nil(),
+        };
+        let superclass = LuaSourceContainer {
+            superclass,
+            ScriptGuid: "".to_owned(),
+        };
+        let superclass = BaseScript {
+            superclass,
             Disabled: false,
             LinkedSource: "".into(),
             RunContext: enums::RunContext::Legacy,
-        }
+        };
+        superclass
     }
 }
 #[derive(Debug, Clone)]
@@ -2785,8 +3562,18 @@ impl_inherits!(BaseWrap, Instance);
 impl_strong_instance_from!(BaseWrap);
 impl Default for BaseWrap {
     fn default() -> Self {
-        Self {
-            superclass: Instance::default(),
+        let superclass = Object {};
+        let superclass = Instance {
+            superclass,
+            Capabilities: SecurityCapabilities::from_bits(0u64),
+            HistoryId: UniqueId::nil(),
+            Name: "".to_owned(),
+            SourceAssetId: 0i64,
+            Tags: Tags::new(),
+            UniqueId: UniqueId::nil(),
+        };
+        let superclass = BaseWrap {
+            superclass,
             CageMeshContent: Content::none(),
             CageOrigin: CFrame::identity(),
             HsrAssetId: "".into(),
@@ -2794,7 +3581,8 @@ impl Default for BaseWrap {
             HsrMeshIdData: SharedString::new(b"".to_vec()),
             ImportOrigin: CFrame::identity(),
             TemporaryCageMeshId: "".into(),
-        }
+        };
+        superclass
     }
 }
 #[derive(Debug, Clone)]
@@ -2825,8 +3613,18 @@ impl_inherits!(Beam, Instance);
 impl_strong_instance_from!(Beam);
 impl Default for Beam {
     fn default() -> Self {
-        Self {
-            superclass: Instance::default(),
+        let superclass = Object {};
+        let superclass = Instance {
+            superclass,
+            Capabilities: SecurityCapabilities::from_bits(0u64),
+            HistoryId: UniqueId::nil(),
+            Name: "".to_owned(),
+            SourceAssetId: 0i64,
+            Tags: Tags::new(),
+            UniqueId: UniqueId::nil(),
+        };
+        let superclass = Beam {
+            superclass,
             Attachment0: Ref::none(),
             Attachment1: Ref::none(),
             Brightness: 1f32,
@@ -2856,7 +3654,8 @@ impl Default for Beam {
             Width0: 1f32,
             Width1: 1f32,
             ZOffset: 0f32,
-        }
+        };
+        superclass
     }
 }
 #[derive(Debug, Clone)]
@@ -2871,12 +3670,29 @@ impl_inherits!(BevelMesh, DataModelMesh);
 impl_strong_instance_from!(BevelMesh);
 impl Default for BevelMesh {
     fn default() -> Self {
-        Self {
-            superclass: DataModelMesh::default(),
+        let superclass = Object {};
+        let superclass = Instance {
+            superclass,
+            Capabilities: SecurityCapabilities::from_bits(0u64),
+            HistoryId: UniqueId::nil(),
+            Name: "".to_owned(),
+            SourceAssetId: 0i64,
+            Tags: Tags::new(),
+            UniqueId: UniqueId::nil(),
+        };
+        let superclass = DataModelMesh {
+            superclass,
+            Offset: Vector3::new(0f32, 0f32, 0f32),
+            Scale: Vector3::new(0f32, 0f32, 0f32),
+            VertexColor: Vector3::new(0f32, 0f32, 0f32),
+        };
+        let superclass = BevelMesh {
+            superclass,
             Bevel: 0f32,
             BevelRoundness: 0f32,
             Bulge: 0f32,
-        }
+        };
+        superclass
     }
 }
 #[derive(Debug, Clone)]
@@ -2904,8 +3720,35 @@ impl_inherits!(BillboardGui, LayerCollector);
 impl_strong_instance_from!(BillboardGui);
 impl Default for BillboardGui {
     fn default() -> Self {
-        Self {
-            superclass: LayerCollector::default(),
+        let superclass = Object {};
+        let superclass = Instance {
+            superclass,
+            Capabilities: SecurityCapabilities::from_bits(0u64),
+            HistoryId: UniqueId::nil(),
+            Name: "".to_owned(),
+            SourceAssetId: 0i64,
+            Tags: Tags::new(),
+            UniqueId: UniqueId::nil(),
+        };
+        let superclass = GuiBase { superclass };
+        let superclass = GuiBase2d {
+            superclass,
+            AutoLocalize: false,
+            RootLocalizationTable: Ref::none(),
+            SelectionBehaviorDown: enums::SelectionBehavior::Escape,
+            SelectionBehaviorLeft: enums::SelectionBehavior::Escape,
+            SelectionBehaviorRight: enums::SelectionBehavior::Escape,
+            SelectionBehaviorUp: enums::SelectionBehavior::Escape,
+            SelectionGroup: false,
+        };
+        let superclass = LayerCollector {
+            superclass,
+            Enabled: false,
+            ResetOnSpawn: false,
+            ZIndexBehavior: enums::ZIndexBehavior::Global,
+        };
+        let superclass = BillboardGui {
+            superclass,
             Active: false,
             Adornee: Ref::none(),
             AlwaysOnTop: false,
@@ -2922,7 +3765,8 @@ impl Default for BillboardGui {
             SizeOffset: Vector2::new(0f32, 0f32),
             StudsOffset: Vector3::new(0f32, 0f32, 0f32),
             StudsOffsetWorldSpace: Vector3::new(0f32, 0f32, 0f32),
-        }
+        };
+        superclass
     }
 }
 #[derive(Debug, Clone)]
@@ -2935,10 +3779,22 @@ impl_inherits!(BinaryStringValue, ValueBase);
 impl_strong_instance_from!(BinaryStringValue);
 impl Default for BinaryStringValue {
     fn default() -> Self {
-        Self {
-            superclass: ValueBase::default(),
+        let superclass = Object {};
+        let superclass = Instance {
+            superclass,
+            Capabilities: SecurityCapabilities::from_bits(0u64),
+            HistoryId: UniqueId::nil(),
+            Name: "".to_owned(),
+            SourceAssetId: 0i64,
+            Tags: Tags::new(),
+            UniqueId: UniqueId::nil(),
+        };
+        let superclass = ValueBase { superclass };
+        let superclass = BinaryStringValue {
+            superclass,
             Value: b"".as_slice().into(),
-        }
+        };
+        superclass
     }
 }
 #[derive(Debug, Clone)]
@@ -2977,12 +3833,27 @@ impl_inherits!(BloomEffect, PostEffect);
 impl_strong_instance_from!(BloomEffect);
 impl Default for BloomEffect {
     fn default() -> Self {
-        Self {
-            superclass: PostEffect::default(),
+        let superclass = Object {};
+        let superclass = Instance {
+            superclass,
+            Capabilities: SecurityCapabilities::from_bits(0u64),
+            HistoryId: UniqueId::nil(),
+            Name: "".to_owned(),
+            SourceAssetId: 0i64,
+            Tags: Tags::new(),
+            UniqueId: UniqueId::nil(),
+        };
+        let superclass = PostEffect {
+            superclass,
+            Enabled: false,
+        };
+        let superclass = BloomEffect {
+            superclass,
             Intensity: 0.4f32,
             Size: 24f32,
             Threshold: 0.95f32,
-        }
+        };
+        superclass
     }
 }
 #[derive(Debug, Clone)]
@@ -2995,10 +3866,25 @@ impl_inherits!(BlurEffect, PostEffect);
 impl_strong_instance_from!(BlurEffect);
 impl Default for BlurEffect {
     fn default() -> Self {
-        Self {
-            superclass: PostEffect::default(),
+        let superclass = Object {};
+        let superclass = Instance {
+            superclass,
+            Capabilities: SecurityCapabilities::from_bits(0u64),
+            HistoryId: UniqueId::nil(),
+            Name: "".to_owned(),
+            SourceAssetId: 0i64,
+            Tags: Tags::new(),
+            UniqueId: UniqueId::nil(),
+        };
+        let superclass = PostEffect {
+            superclass,
+            Enabled: false,
+        };
+        let superclass = BlurEffect {
+            superclass,
             Size: 24f32,
-        }
+        };
+        superclass
     }
 }
 #[derive(Debug, Clone)]
@@ -3013,12 +3899,24 @@ impl_inherits!(BodyAngularVelocity, BodyMover);
 impl_strong_instance_from!(BodyAngularVelocity);
 impl Default for BodyAngularVelocity {
     fn default() -> Self {
-        Self {
-            superclass: BodyMover::default(),
+        let superclass = Object {};
+        let superclass = Instance {
+            superclass,
+            Capabilities: SecurityCapabilities::from_bits(0u64),
+            HistoryId: UniqueId::nil(),
+            Name: "".to_owned(),
+            SourceAssetId: 0i64,
+            Tags: Tags::new(),
+            UniqueId: UniqueId::nil(),
+        };
+        let superclass = BodyMover { superclass };
+        let superclass = BodyAngularVelocity {
+            superclass,
             AngularVelocity: Vector3::new(0f32, 2f32, 0f32),
             MaxTorque: Vector3::new(4000f32, 4000f32, 4000f32),
             P: 1250f32,
-        }
+        };
+        superclass
     }
 }
 #[derive(Debug, Clone)]
@@ -3036,15 +3934,27 @@ impl_inherits!(BodyColors, CharacterAppearance);
 impl_strong_instance_from!(BodyColors);
 impl Default for BodyColors {
     fn default() -> Self {
-        Self {
-            superclass: CharacterAppearance::default(),
+        let superclass = Object {};
+        let superclass = Instance {
+            superclass,
+            Capabilities: SecurityCapabilities::from_bits(0u64),
+            HistoryId: UniqueId::nil(),
+            Name: "".to_owned(),
+            SourceAssetId: 0i64,
+            Tags: Tags::new(),
+            UniqueId: UniqueId::nil(),
+        };
+        let superclass = CharacterAppearance { superclass };
+        let superclass = BodyColors {
+            superclass,
             HeadColor3: Color3::new(0.9921569f32, 0.9176471f32, 0.5529412f32),
             LeftArmColor3: Color3::new(0.9921569f32, 0.9176471f32, 0.5529412f32),
             LeftLegColor3: Color3::new(0.050980397f32, 0.41176474f32, 0.6745098f32),
             RightArmColor3: Color3::new(0.9921569f32, 0.9176471f32, 0.5529412f32),
             RightLegColor3: Color3::new(0.050980397f32, 0.41176474f32, 0.6745098f32),
             TorsoColor3: Color3::new(0.15686275f32, 0.49803925f32, 0.2784314f32),
-        }
+        };
+        superclass
     }
 }
 #[derive(Debug, Clone)]
@@ -3057,10 +3967,22 @@ impl_inherits!(BodyForce, BodyMover);
 impl_strong_instance_from!(BodyForce);
 impl Default for BodyForce {
     fn default() -> Self {
-        Self {
-            superclass: BodyMover::default(),
+        let superclass = Object {};
+        let superclass = Instance {
+            superclass,
+            Capabilities: SecurityCapabilities::from_bits(0u64),
+            HistoryId: UniqueId::nil(),
+            Name: "".to_owned(),
+            SourceAssetId: 0i64,
+            Tags: Tags::new(),
+            UniqueId: UniqueId::nil(),
+        };
+        let superclass = BodyMover { superclass };
+        let superclass = BodyForce {
+            superclass,
             Force: Vector3::new(0f32, 1f32, 0f32),
-        }
+        };
+        superclass
     }
 }
 #[derive(Debug, Clone)]
@@ -3076,13 +3998,25 @@ impl_inherits!(BodyGyro, BodyMover);
 impl_strong_instance_from!(BodyGyro);
 impl Default for BodyGyro {
     fn default() -> Self {
-        Self {
-            superclass: BodyMover::default(),
+        let superclass = Object {};
+        let superclass = Instance {
+            superclass,
+            Capabilities: SecurityCapabilities::from_bits(0u64),
+            HistoryId: UniqueId::nil(),
+            Name: "".to_owned(),
+            SourceAssetId: 0i64,
+            Tags: Tags::new(),
+            UniqueId: UniqueId::nil(),
+        };
+        let superclass = BodyMover { superclass };
+        let superclass = BodyGyro {
+            superclass,
             CFrame: CFrame::identity(),
             D: 500f32,
             MaxTorque: Vector3::new(400000f32, 0f32, 400000f32),
             P: 3000f32,
-        }
+        };
+        superclass
     }
 }
 #[derive(Debug, Clone)]
@@ -3107,14 +4041,25 @@ impl_inherits!(BodyPartDescription, Instance);
 impl_strong_instance_from!(BodyPartDescription);
 impl Default for BodyPartDescription {
     fn default() -> Self {
-        Self {
-            superclass: Instance::default(),
+        let superclass = Object {};
+        let superclass = Instance {
+            superclass,
+            Capabilities: SecurityCapabilities::from_bits(0u64),
+            HistoryId: UniqueId::nil(),
+            Name: "".to_owned(),
+            SourceAssetId: 0i64,
+            Tags: Tags::new(),
+            UniqueId: UniqueId::nil(),
+        };
+        let superclass = BodyPartDescription {
+            superclass,
             AssetId: 0i64,
             BodyPart: enums::BodyPart::Head,
             Color: Color3::new(0f32, 0f32, 0f32),
             HeadShape: "".to_owned(),
             Instance: Ref::none(),
-        }
+        };
+        superclass
     }
 }
 #[derive(Debug, Clone)]
@@ -3130,13 +4075,25 @@ impl_inherits!(BodyPosition, BodyMover);
 impl_strong_instance_from!(BodyPosition);
 impl Default for BodyPosition {
     fn default() -> Self {
-        Self {
-            superclass: BodyMover::default(),
+        let superclass = Object {};
+        let superclass = Instance {
+            superclass,
+            Capabilities: SecurityCapabilities::from_bits(0u64),
+            HistoryId: UniqueId::nil(),
+            Name: "".to_owned(),
+            SourceAssetId: 0i64,
+            Tags: Tags::new(),
+            UniqueId: UniqueId::nil(),
+        };
+        let superclass = BodyMover { superclass };
+        let superclass = BodyPosition {
+            superclass,
             D: 1250f32,
             MaxForce: Vector3::new(4000f32, 4000f32, 4000f32),
             P: 10000f32,
             Position: Vector3::new(0f32, 50f32, 0f32),
-        }
+        };
+        superclass
     }
 }
 #[derive(Debug, Clone)]
@@ -3150,11 +4107,23 @@ impl_inherits!(BodyThrust, BodyMover);
 impl_strong_instance_from!(BodyThrust);
 impl Default for BodyThrust {
     fn default() -> Self {
-        Self {
-            superclass: BodyMover::default(),
+        let superclass = Object {};
+        let superclass = Instance {
+            superclass,
+            Capabilities: SecurityCapabilities::from_bits(0u64),
+            HistoryId: UniqueId::nil(),
+            Name: "".to_owned(),
+            SourceAssetId: 0i64,
+            Tags: Tags::new(),
+            UniqueId: UniqueId::nil(),
+        };
+        let superclass = BodyMover { superclass };
+        let superclass = BodyThrust {
+            superclass,
             Force: Vector3::new(0f32, 1f32, 0f32),
             Location: Vector3::new(0f32, 0f32, 0f32),
-        }
+        };
+        superclass
     }
 }
 #[derive(Debug, Clone)]
@@ -3169,12 +4138,24 @@ impl_inherits!(BodyVelocity, BodyMover);
 impl_strong_instance_from!(BodyVelocity);
 impl Default for BodyVelocity {
     fn default() -> Self {
-        Self {
-            superclass: BodyMover::default(),
+        let superclass = Object {};
+        let superclass = Instance {
+            superclass,
+            Capabilities: SecurityCapabilities::from_bits(0u64),
+            HistoryId: UniqueId::nil(),
+            Name: "".to_owned(),
+            SourceAssetId: 0i64,
+            Tags: Tags::new(),
+            UniqueId: UniqueId::nil(),
+        };
+        let superclass = BodyMover { superclass };
+        let superclass = BodyVelocity {
+            superclass,
             MaxForce: Vector3::new(4000f32, 4000f32, 4000f32),
             P: 1250f32,
             Velocity: Vector3::new(0f32, 2f32, 0f32),
-        }
+        };
+        superclass
     }
 }
 #[derive(Debug, Clone)]
@@ -3195,10 +4176,22 @@ impl_inherits!(BoolValue, ValueBase);
 impl_strong_instance_from!(BoolValue);
 impl Default for BoolValue {
     fn default() -> Self {
-        Self {
-            superclass: ValueBase::default(),
+        let superclass = Object {};
+        let superclass = Instance {
+            superclass,
+            Capabilities: SecurityCapabilities::from_bits(0u64),
+            HistoryId: UniqueId::nil(),
+            Name: "".to_owned(),
+            SourceAssetId: 0i64,
+            Tags: Tags::new(),
+            UniqueId: UniqueId::nil(),
+        };
+        let superclass = ValueBase { superclass };
+        let superclass = BoolValue {
+            superclass,
             Value: false,
-        }
+        };
+        superclass
     }
 }
 #[derive(Debug, Clone)]
@@ -3212,11 +4205,41 @@ impl_inherits!(BoxHandleAdornment, HandleAdornment);
 impl_strong_instance_from!(BoxHandleAdornment);
 impl Default for BoxHandleAdornment {
     fn default() -> Self {
-        Self {
-            superclass: HandleAdornment::default(),
+        let superclass = Object {};
+        let superclass = Instance {
+            superclass,
+            Capabilities: SecurityCapabilities::from_bits(0u64),
+            HistoryId: UniqueId::nil(),
+            Name: "".to_owned(),
+            SourceAssetId: 0i64,
+            Tags: Tags::new(),
+            UniqueId: UniqueId::nil(),
+        };
+        let superclass = GuiBase { superclass };
+        let superclass = GuiBase3d {
+            superclass,
+            Color3: Color3::new(0f32, 0f32, 0f32),
+            Transparency: 0f32,
+            Visible: false,
+        };
+        let superclass = PVAdornment {
+            superclass,
+            Adornee: Ref::none(),
+        };
+        let superclass = HandleAdornment {
+            superclass,
+            AdornCullingMode: enums::AdornCullingMode::Automatic,
+            AlwaysOnTop: false,
+            CFrame: CFrame::identity(),
+            SizeRelativeOffset: Vector3::new(0f32, 0f32, 0f32),
+            ZIndex: 0i32,
+        };
+        let superclass = BoxHandleAdornment {
+            superclass,
             Shading: enums::AdornShading::Default,
             Size: Vector3::new(1f32, 1f32, 1f32),
-        }
+        };
+        superclass
     }
 }
 #[derive(Debug, Clone)]
@@ -3237,10 +4260,22 @@ impl_inherits!(BrickColorValue, ValueBase);
 impl_strong_instance_from!(BrickColorValue);
 impl Default for BrickColorValue {
     fn default() -> Self {
-        Self {
-            superclass: ValueBase::default(),
+        let superclass = Object {};
+        let superclass = Instance {
+            superclass,
+            Capabilities: SecurityCapabilities::from_bits(0u64),
+            HistoryId: UniqueId::nil(),
+            Name: "".to_owned(),
+            SourceAssetId: 0i64,
+            Tags: Tags::new(),
+            UniqueId: UniqueId::nil(),
+        };
+        let superclass = ValueBase { superclass };
+        let superclass = BrickColorValue {
+            superclass,
             Value: BrickColor::from_number(194u16).unwrap(),
-        }
+        };
+        superclass
     }
 }
 #[derive(Debug, Clone)]
@@ -3276,8 +4311,19 @@ impl_inherits!(BubbleChatConfiguration, TextChatConfigurations);
 impl_strong_instance_from!(BubbleChatConfiguration);
 impl Default for BubbleChatConfiguration {
     fn default() -> Self {
-        Self {
-            superclass: TextChatConfigurations::default(),
+        let superclass = Object {};
+        let superclass = Instance {
+            superclass,
+            Capabilities: SecurityCapabilities::from_bits(0u64),
+            HistoryId: UniqueId::nil(),
+            Name: "".to_owned(),
+            SourceAssetId: 0i64,
+            Tags: Tags::new(),
+            UniqueId: UniqueId::nil(),
+        };
+        let superclass = TextChatConfigurations { superclass };
+        let superclass = BubbleChatConfiguration {
+            superclass,
             AdorneeName: "HumanoidRootPart".to_owned(),
             BackgroundColor3: Color3::new(0.98039216f32, 0.98039216f32, 0.98039216f32),
             BackgroundTransparency: 0.1f64,
@@ -3294,7 +4340,8 @@ impl Default for BubbleChatConfiguration {
             TextColor3: Color3::new(0.22352941f32, 0.23137255f32, 0.23921569f32),
             TextSize: 16i64,
             VerticalStudsOffset: 0f32,
-        }
+        };
+        superclass
     }
 }
 #[derive(Debug, Clone)]
@@ -3332,11 +4379,26 @@ impl_inherits!(BuoyancySensor, SensorBase);
 impl_strong_instance_from!(BuoyancySensor);
 impl Default for BuoyancySensor {
     fn default() -> Self {
-        Self {
-            superclass: SensorBase::default(),
+        let superclass = Object {};
+        let superclass = Instance {
+            superclass,
+            Capabilities: SecurityCapabilities::from_bits(0u64),
+            HistoryId: UniqueId::nil(),
+            Name: "".to_owned(),
+            SourceAssetId: 0i64,
+            Tags: Tags::new(),
+            UniqueId: UniqueId::nil(),
+        };
+        let superclass = SensorBase {
+            superclass,
+            UpdateType: enums::SensorUpdateType::OnRead,
+        };
+        let superclass = BuoyancySensor {
+            superclass,
             FullySubmerged: false,
             TouchingSurface: false,
-        }
+        };
+        superclass
     }
 }
 #[derive(Debug, Clone)]
@@ -3349,10 +4411,22 @@ impl_inherits!(CFrameValue, ValueBase);
 impl_strong_instance_from!(CFrameValue);
 impl Default for CFrameValue {
     fn default() -> Self {
-        Self {
-            superclass: ValueBase::default(),
+        let superclass = Object {};
+        let superclass = Instance {
+            superclass,
+            Capabilities: SecurityCapabilities::from_bits(0u64),
+            HistoryId: UniqueId::nil(),
+            Name: "".to_owned(),
+            SourceAssetId: 0i64,
+            Tags: Tags::new(),
+            UniqueId: UniqueId::nil(),
+        };
+        let superclass = ValueBase { superclass };
+        let superclass = CFrameValue {
+            superclass,
             Value: CFrame::identity(),
-        }
+        };
+        superclass
     }
 }
 #[derive(Debug, Clone)]
@@ -3397,8 +4471,19 @@ impl_inherits!(Camera, PVInstance);
 impl_strong_instance_from!(Camera);
 impl Default for Camera {
     fn default() -> Self {
-        Self {
-            superclass: PVInstance::default(),
+        let superclass = Object {};
+        let superclass = Instance {
+            superclass,
+            Capabilities: SecurityCapabilities::from_bits(0u64),
+            HistoryId: UniqueId::nil(),
+            Name: "".to_owned(),
+            SourceAssetId: 0i64,
+            Tags: Tags::new(),
+            UniqueId: UniqueId::nil(),
+        };
+        let superclass = PVInstance { superclass };
+        let superclass = Camera {
+            superclass,
             CFrame: CFrame::new(
                 Vector3::new(0f32, 20f32, 20f32),
                 Matrix3::new(
@@ -3422,7 +4507,8 @@ impl Default for Camera {
             HeadLocked: true,
             HeadScale: 1f32,
             VrTiltAndRollEnabled: false,
-        }
+        };
+        superclass
     }
 }
 #[derive(Debug, Clone)]
@@ -3436,11 +4522,61 @@ impl_inherits!(CanvasGroup, GuiObject);
 impl_strong_instance_from!(CanvasGroup);
 impl Default for CanvasGroup {
     fn default() -> Self {
-        Self {
-            superclass: GuiObject::default(),
+        let superclass = Object {};
+        let superclass = Instance {
+            superclass,
+            Capabilities: SecurityCapabilities::from_bits(0u64),
+            HistoryId: UniqueId::nil(),
+            Name: "".to_owned(),
+            SourceAssetId: 0i64,
+            Tags: Tags::new(),
+            UniqueId: UniqueId::nil(),
+        };
+        let superclass = GuiBase { superclass };
+        let superclass = GuiBase2d {
+            superclass,
+            AutoLocalize: false,
+            RootLocalizationTable: Ref::none(),
+            SelectionBehaviorDown: enums::SelectionBehavior::Escape,
+            SelectionBehaviorLeft: enums::SelectionBehavior::Escape,
+            SelectionBehaviorRight: enums::SelectionBehavior::Escape,
+            SelectionBehaviorUp: enums::SelectionBehavior::Escape,
+            SelectionGroup: false,
+        };
+        let superclass = GuiObject {
+            superclass,
+            Active: false,
+            AnchorPoint: Vector2::new(0f32, 0f32),
+            AutomaticSize: enums::AutomaticSize::None,
+            BackgroundColor3: Color3::new(0f32, 0f32, 0f32),
+            BackgroundTransparency: 0f32,
+            BorderColor3: Color3::new(0f32, 0f32, 0f32),
+            BorderMode: enums::BorderMode::Outline,
+            BorderSizePixel: 0i32,
+            ClipsDescendants: false,
+            Draggable: false,
+            Interactable: false,
+            LayoutOrder: 0i32,
+            NextSelectionDown: Ref::none(),
+            NextSelectionLeft: Ref::none(),
+            NextSelectionRight: Ref::none(),
+            NextSelectionUp: Ref::none(),
+            Position: UDim2::new(UDim::new(0f32, 0i32), UDim::new(0f32, 0i32)),
+            Rotation: 0f32,
+            Selectable: false,
+            SelectionImageObject: Ref::none(),
+            SelectionOrder: 0i32,
+            Size: UDim2::new(UDim::new(0f32, 0i32), UDim::new(0f32, 0i32)),
+            SizeConstraint: enums::SizeConstraint::RelativeXY,
+            Visible: false,
+            ZIndex: 0i32,
+        };
+        let superclass = CanvasGroup {
+            superclass,
             GroupColor3: Color3::new(1f32, 1f32, 1f32),
             GroupTransparency: 0f32,
-        }
+        };
+        superclass
     }
 }
 #[derive(Debug, Clone)]
@@ -3501,10 +4637,27 @@ impl_inherits!(ChannelSelectorSoundEffect, CustomSoundEffect);
 impl_strong_instance_from!(ChannelSelectorSoundEffect);
 impl Default for ChannelSelectorSoundEffect {
     fn default() -> Self {
-        Self {
-            superclass: CustomSoundEffect::default(),
+        let superclass = Object {};
+        let superclass = Instance {
+            superclass,
+            Capabilities: SecurityCapabilities::from_bits(0u64),
+            HistoryId: UniqueId::nil(),
+            Name: "".to_owned(),
+            SourceAssetId: 0i64,
+            Tags: Tags::new(),
+            UniqueId: UniqueId::nil(),
+        };
+        let superclass = SoundEffect {
+            superclass,
+            Enabled: false,
+            Priority: 0i32,
+        };
+        let superclass = CustomSoundEffect { superclass };
+        let superclass = ChannelSelectorSoundEffect {
+            superclass,
             Channel: 1i32,
-        }
+        };
+        superclass
     }
 }
 #[derive(Debug, Clone)]
@@ -3526,8 +4679,19 @@ impl_inherits!(ChannelTabsConfiguration, TextChatConfigurations);
 impl_strong_instance_from!(ChannelTabsConfiguration);
 impl Default for ChannelTabsConfiguration {
     fn default() -> Self {
-        Self {
-            superclass: TextChatConfigurations::default(),
+        let superclass = Object {};
+        let superclass = Instance {
+            superclass,
+            Capabilities: SecurityCapabilities::from_bits(0u64),
+            HistoryId: UniqueId::nil(),
+            Name: "".to_owned(),
+            SourceAssetId: 0i64,
+            Tags: Tags::new(),
+            UniqueId: UniqueId::nil(),
+        };
+        let superclass = TextChatConfigurations { superclass };
+        let superclass = ChannelTabsConfiguration {
+            superclass,
             BackgroundColor3: Color3::new(0.09803922f32, 0.105882354f32, 0.11372549f32),
             BackgroundTransparency: 0f64,
             Enabled: false,
@@ -3538,7 +4702,8 @@ impl Default for ChannelTabsConfiguration {
             TextSize: 18i64,
             TextStrokeColor3: Color3::new(0f32, 0f32, 0f32),
             TextStrokeTransparency: 1f64,
-        }
+        };
+        superclass
     }
 }
 #[derive(Debug, Clone)]
@@ -3562,13 +4727,25 @@ impl_inherits!(CharacterMesh, CharacterAppearance);
 impl_strong_instance_from!(CharacterMesh);
 impl Default for CharacterMesh {
     fn default() -> Self {
-        Self {
-            superclass: CharacterAppearance::default(),
+        let superclass = Object {};
+        let superclass = Instance {
+            superclass,
+            Capabilities: SecurityCapabilities::from_bits(0u64),
+            HistoryId: UniqueId::nil(),
+            Name: "".to_owned(),
+            SourceAssetId: 0i64,
+            Tags: Tags::new(),
+            UniqueId: UniqueId::nil(),
+        };
+        let superclass = CharacterAppearance { superclass };
+        let superclass = CharacterMesh {
+            superclass,
             BaseTextureId: 0i64,
             BodyPart: enums::BodyPart::Head,
             MeshId: 0i64,
             OverlayTextureId: 0i64,
-        }
+        };
+        superclass
     }
 }
 #[derive(Debug, Clone)]
@@ -3583,12 +4760,23 @@ impl_inherits!(Chat, Instance);
 impl_strong_instance_from!(Chat);
 impl Default for Chat {
     fn default() -> Self {
-        Self {
-            superclass: Instance::default(),
+        let superclass = Object {};
+        let superclass = Instance {
+            superclass,
+            Capabilities: SecurityCapabilities::from_bits(0u64),
+            HistoryId: UniqueId::nil(),
+            Name: "".to_owned(),
+            SourceAssetId: 0i64,
+            Tags: Tags::new(),
+            UniqueId: UniqueId::nil(),
+        };
+        let superclass = Chat {
+            superclass,
             BubbleChatEnabled: false,
             IsAutoMigrated: false,
             LoadDefaultChat: true,
-        }
+        };
+        superclass
     }
 }
 #[derive(Debug, Clone)]
@@ -3612,8 +4800,19 @@ impl_inherits!(ChatInputBarConfiguration, TextChatConfigurations);
 impl_strong_instance_from!(ChatInputBarConfiguration);
 impl Default for ChatInputBarConfiguration {
     fn default() -> Self {
-        Self {
-            superclass: TextChatConfigurations::default(),
+        let superclass = Object {};
+        let superclass = Instance {
+            superclass,
+            Capabilities: SecurityCapabilities::from_bits(0u64),
+            HistoryId: UniqueId::nil(),
+            Name: "".to_owned(),
+            SourceAssetId: 0i64,
+            Tags: Tags::new(),
+            UniqueId: UniqueId::nil(),
+        };
+        let superclass = TextChatConfigurations { superclass };
+        let superclass = ChatInputBarConfiguration {
+            superclass,
             AutocompleteEnabled: true,
             BackgroundColor3: Color3::new(0.09803922f32, 0.105882354f32, 0.11372549f32),
             BackgroundTransparency: 0.2f64,
@@ -3626,7 +4825,8 @@ impl Default for ChatInputBarConfiguration {
             TextSize: 14i64,
             TextStrokeColor3: Color3::new(0f32, 0f32, 0f32),
             TextStrokeTransparency: 0.5f64,
-        }
+        };
+        superclass
     }
 }
 #[derive(Debug, Clone)]
@@ -3650,8 +4850,19 @@ impl_inherits!(ChatWindowConfiguration, TextChatConfigurations);
 impl_strong_instance_from!(ChatWindowConfiguration);
 impl Default for ChatWindowConfiguration {
     fn default() -> Self {
-        Self {
-            superclass: TextChatConfigurations::default(),
+        let superclass = Object {};
+        let superclass = Instance {
+            superclass,
+            Capabilities: SecurityCapabilities::from_bits(0u64),
+            HistoryId: UniqueId::nil(),
+            Name: "".to_owned(),
+            SourceAssetId: 0i64,
+            Tags: Tags::new(),
+            UniqueId: UniqueId::nil(),
+        };
+        let superclass = TextChatConfigurations { superclass };
+        let superclass = ChatWindowConfiguration {
+            superclass,
             BackgroundColor3: Color3::new(0.09803922f32, 0.105882354f32, 0.11372549f32),
             BackgroundTransparency: 0.3f64,
             Enabled: true,
@@ -3664,7 +4875,8 @@ impl Default for ChatWindowConfiguration {
             TextStrokeTransparency: 0.5f64,
             VerticalAlignment: enums::VerticalAlignment::Top,
             WidthScale: 1f32,
-        }
+        };
+        superclass
     }
 }
 #[derive(Debug, Clone)]
@@ -3695,12 +4907,28 @@ impl_inherits!(ChorusSoundEffect, SoundEffect);
 impl_strong_instance_from!(ChorusSoundEffect);
 impl Default for ChorusSoundEffect {
     fn default() -> Self {
-        Self {
-            superclass: SoundEffect::default(),
+        let superclass = Object {};
+        let superclass = Instance {
+            superclass,
+            Capabilities: SecurityCapabilities::from_bits(0u64),
+            HistoryId: UniqueId::nil(),
+            Name: "".to_owned(),
+            SourceAssetId: 0i64,
+            Tags: Tags::new(),
+            UniqueId: UniqueId::nil(),
+        };
+        let superclass = SoundEffect {
+            superclass,
+            Enabled: false,
+            Priority: 0i32,
+        };
+        let superclass = ChorusSoundEffect {
+            superclass,
             Depth: 0.15f32,
             Mix: 0.5f32,
             Rate: 0.5f32,
-        }
+        };
+        superclass
     }
 }
 #[derive(Debug, Clone)]
@@ -3714,11 +4942,22 @@ impl_inherits!(ClickDetector, Instance);
 impl_strong_instance_from!(ClickDetector);
 impl Default for ClickDetector {
     fn default() -> Self {
-        Self {
-            superclass: Instance::default(),
+        let superclass = Object {};
+        let superclass = Instance {
+            superclass,
+            Capabilities: SecurityCapabilities::from_bits(0u64),
+            HistoryId: UniqueId::nil(),
+            Name: "".to_owned(),
+            SourceAssetId: 0i64,
+            Tags: Tags::new(),
+            UniqueId: UniqueId::nil(),
+        };
+        let superclass = ClickDetector {
+            superclass,
             CursorIconContent: Content::none(),
             MaxActivationDistance: 32f32,
-        }
+        };
+        superclass
     }
 }
 #[derive(Debug, Clone)]
@@ -3742,13 +4981,29 @@ impl_inherits!(ClimbController, ControllerBase);
 impl_strong_instance_from!(ClimbController);
 impl Default for ClimbController {
     fn default() -> Self {
-        Self {
-            superclass: ControllerBase::default(),
+        let superclass = Object {};
+        let superclass = Instance {
+            superclass,
+            Capabilities: SecurityCapabilities::from_bits(0u64),
+            HistoryId: UniqueId::nil(),
+            Name: "".to_owned(),
+            SourceAssetId: 0i64,
+            Tags: Tags::new(),
+            UniqueId: UniqueId::nil(),
+        };
+        let superclass = ControllerBase {
+            superclass,
+            BalanceRigidityEnabled: false,
+            MoveSpeedFactor: 0f32,
+        };
+        let superclass = ClimbController {
+            superclass,
             AccelerationTime: 0f32,
             BalanceMaxTorque: 10000f32,
             BalanceSpeed: 100f32,
             MoveMaxForce: 10000f32,
-        }
+        };
+        superclass
     }
 }
 #[derive(Debug, Clone)]
@@ -3761,10 +5016,22 @@ impl_inherits!(Clothing, CharacterAppearance);
 impl_strong_instance_from!(Clothing);
 impl Default for Clothing {
     fn default() -> Self {
-        Self {
-            superclass: CharacterAppearance::default(),
+        let superclass = Object {};
+        let superclass = Instance {
+            superclass,
+            Capabilities: SecurityCapabilities::from_bits(0u64),
+            HistoryId: UniqueId::nil(),
+            Name: "".to_owned(),
+            SourceAssetId: 0i64,
+            Tags: Tags::new(),
+            UniqueId: UniqueId::nil(),
+        };
+        let superclass = CharacterAppearance { superclass };
+        let superclass = Clothing {
+            superclass,
             Color3: Color3::new(0f32, 0f32, 0f32),
-        }
+        };
+        superclass
     }
 }
 #[derive(Debug, Clone)]
@@ -3796,13 +5063,24 @@ impl_inherits!(Clouds, Instance);
 impl_strong_instance_from!(Clouds);
 impl Default for Clouds {
     fn default() -> Self {
-        Self {
-            superclass: Instance::default(),
+        let superclass = Object {};
+        let superclass = Instance {
+            superclass,
+            Capabilities: SecurityCapabilities::from_bits(0u64),
+            HistoryId: UniqueId::nil(),
+            Name: "".to_owned(),
+            SourceAssetId: 0i64,
+            Tags: Tags::new(),
+            UniqueId: UniqueId::nil(),
+        };
+        let superclass = Clouds {
+            superclass,
             Color: Color3::new(1f32, 1f32, 1f32),
             Cover: 0.5f32,
             Density: 0.7f32,
             Enabled: true,
-        }
+        };
+        superclass
     }
 }
 #[derive(Debug, Clone)]
@@ -3847,10 +5125,22 @@ impl_inherits!(Color3Value, ValueBase);
 impl_strong_instance_from!(Color3Value);
 impl Default for Color3Value {
     fn default() -> Self {
-        Self {
-            superclass: ValueBase::default(),
+        let superclass = Object {};
+        let superclass = Instance {
+            superclass,
+            Capabilities: SecurityCapabilities::from_bits(0u64),
+            HistoryId: UniqueId::nil(),
+            Name: "".to_owned(),
+            SourceAssetId: 0i64,
+            Tags: Tags::new(),
+            UniqueId: UniqueId::nil(),
+        };
+        let superclass = ValueBase { superclass };
+        let superclass = Color3Value {
+            superclass,
             Value: Color3::new(0f32, 0f32, 0f32),
-        }
+        };
+        superclass
     }
 }
 #[derive(Debug, Clone)]
@@ -3866,13 +5156,28 @@ impl_inherits!(ColorCorrectionEffect, PostEffect);
 impl_strong_instance_from!(ColorCorrectionEffect);
 impl Default for ColorCorrectionEffect {
     fn default() -> Self {
-        Self {
-            superclass: PostEffect::default(),
+        let superclass = Object {};
+        let superclass = Instance {
+            superclass,
+            Capabilities: SecurityCapabilities::from_bits(0u64),
+            HistoryId: UniqueId::nil(),
+            Name: "".to_owned(),
+            SourceAssetId: 0i64,
+            Tags: Tags::new(),
+            UniqueId: UniqueId::nil(),
+        };
+        let superclass = PostEffect {
+            superclass,
+            Enabled: false,
+        };
+        let superclass = ColorCorrectionEffect {
+            superclass,
             Brightness: 0f32,
             Contrast: 0f32,
             Saturation: 0f32,
             TintColor: Color3::new(1f32, 1f32, 1f32),
-        }
+        };
+        superclass
     }
 }
 #[derive(Debug, Clone)]
@@ -3885,10 +5190,25 @@ impl_inherits!(ColorGradingEffect, PostEffect);
 impl_strong_instance_from!(ColorGradingEffect);
 impl Default for ColorGradingEffect {
     fn default() -> Self {
-        Self {
-            superclass: PostEffect::default(),
+        let superclass = Object {};
+        let superclass = Instance {
+            superclass,
+            Capabilities: SecurityCapabilities::from_bits(0u64),
+            HistoryId: UniqueId::nil(),
+            Name: "".to_owned(),
+            SourceAssetId: 0i64,
+            Tags: Tags::new(),
+            UniqueId: UniqueId::nil(),
+        };
+        let superclass = PostEffect {
+            superclass,
+            Enabled: false,
+        };
+        let superclass = ColorGradingEffect {
+            superclass,
             TonemapperPreset: enums::TonemapperPreset::Default,
-        }
+        };
+        superclass
     }
 }
 #[derive(Debug, Clone)]
@@ -3914,15 +5234,31 @@ impl_inherits!(CompressorSoundEffect, SoundEffect);
 impl_strong_instance_from!(CompressorSoundEffect);
 impl Default for CompressorSoundEffect {
     fn default() -> Self {
-        Self {
-            superclass: SoundEffect::default(),
+        let superclass = Object {};
+        let superclass = Instance {
+            superclass,
+            Capabilities: SecurityCapabilities::from_bits(0u64),
+            HistoryId: UniqueId::nil(),
+            Name: "".to_owned(),
+            SourceAssetId: 0i64,
+            Tags: Tags::new(),
+            UniqueId: UniqueId::nil(),
+        };
+        let superclass = SoundEffect {
+            superclass,
+            Enabled: false,
+            Priority: 0i32,
+        };
+        let superclass = CompressorSoundEffect {
+            superclass,
             Attack: 0.1f32,
             GainMakeup: 0f32,
             Ratio: 40f32,
             Release: 0.1f32,
             SideChain: Ref::none(),
             Threshold: -40f32,
-        }
+        };
+        superclass
     }
 }
 #[derive(Debug, Clone)]
@@ -3938,13 +5274,43 @@ impl_inherits!(ConeHandleAdornment, HandleAdornment);
 impl_strong_instance_from!(ConeHandleAdornment);
 impl Default for ConeHandleAdornment {
     fn default() -> Self {
-        Self {
-            superclass: HandleAdornment::default(),
+        let superclass = Object {};
+        let superclass = Instance {
+            superclass,
+            Capabilities: SecurityCapabilities::from_bits(0u64),
+            HistoryId: UniqueId::nil(),
+            Name: "".to_owned(),
+            SourceAssetId: 0i64,
+            Tags: Tags::new(),
+            UniqueId: UniqueId::nil(),
+        };
+        let superclass = GuiBase { superclass };
+        let superclass = GuiBase3d {
+            superclass,
+            Color3: Color3::new(0f32, 0f32, 0f32),
+            Transparency: 0f32,
+            Visible: false,
+        };
+        let superclass = PVAdornment {
+            superclass,
+            Adornee: Ref::none(),
+        };
+        let superclass = HandleAdornment {
+            superclass,
+            AdornCullingMode: enums::AdornCullingMode::Automatic,
+            AlwaysOnTop: false,
+            CFrame: CFrame::identity(),
+            SizeRelativeOffset: Vector3::new(0f32, 0f32, 0f32),
+            ZIndex: 0i32,
+        };
+        let superclass = ConeHandleAdornment {
+            superclass,
             Height: 2f32,
             Hollow: false,
             Radius: 0.5f32,
             Shading: enums::AdornShading::Default,
-        }
+        };
+        superclass
     }
 }
 #[derive(Debug, Clone)]
@@ -4001,14 +5367,25 @@ impl_inherits!(Constraint, Instance);
 impl_strong_instance_from!(Constraint);
 impl Default for Constraint {
     fn default() -> Self {
-        Self {
-            superclass: Instance::default(),
+        let superclass = Object {};
+        let superclass = Instance {
+            superclass,
+            Capabilities: SecurityCapabilities::from_bits(0u64),
+            HistoryId: UniqueId::nil(),
+            Name: "".to_owned(),
+            SourceAssetId: 0i64,
+            Tags: Tags::new(),
+            UniqueId: UniqueId::nil(),
+        };
+        let superclass = Constraint {
+            superclass,
             Attachment0: Ref::none(),
             Attachment1: Ref::none(),
             Color: BrickColor::from_number(194u16).unwrap(),
             Enabled: false,
             Visible: false,
-        }
+        };
+        superclass
     }
 }
 #[derive(Debug, Clone)]
@@ -4046,11 +5423,22 @@ impl_inherits!(ControllerBase, Instance);
 impl_strong_instance_from!(ControllerBase);
 impl Default for ControllerBase {
     fn default() -> Self {
-        Self {
-            superclass: Instance::default(),
+        let superclass = Object {};
+        let superclass = Instance {
+            superclass,
+            Capabilities: SecurityCapabilities::from_bits(0u64),
+            HistoryId: UniqueId::nil(),
+            Name: "".to_owned(),
+            SourceAssetId: 0i64,
+            Tags: Tags::new(),
+            UniqueId: UniqueId::nil(),
+        };
+        let superclass = ControllerBase {
+            superclass,
             BalanceRigidityEnabled: false,
             MoveSpeedFactor: 0f32,
-        }
+        };
+        superclass
     }
 }
 #[derive(Debug, Clone)]
@@ -4071,8 +5459,18 @@ impl_inherits!(ControllerManager, Instance);
 impl_strong_instance_from!(ControllerManager);
 impl Default for ControllerManager {
     fn default() -> Self {
-        Self {
-            superclass: Instance::default(),
+        let superclass = Object {};
+        let superclass = Instance {
+            superclass,
+            Capabilities: SecurityCapabilities::from_bits(0u64),
+            HistoryId: UniqueId::nil(),
+            Name: "".to_owned(),
+            SourceAssetId: 0i64,
+            Tags: Tags::new(),
+            UniqueId: UniqueId::nil(),
+        };
+        let superclass = ControllerManager {
+            superclass,
             ActiveController: Ref::none(),
             BaseMoveSpeed: 16f32,
             BaseTurnSpeed: 8f32,
@@ -4082,7 +5480,8 @@ impl Default for ControllerManager {
             MovingDirection: Vector3::new(0f32, 0f32, 0f32),
             RootPart: Ref::none(),
             UpDirection: Vector3::new(0f32, 1f32, 0f32),
-        }
+        };
+        superclass
     }
 }
 #[derive(Debug, Clone)]
@@ -4099,14 +5498,30 @@ impl_inherits!(ControllerPartSensor, ControllerSensor);
 impl_strong_instance_from!(ControllerPartSensor);
 impl Default for ControllerPartSensor {
     fn default() -> Self {
-        Self {
-            superclass: ControllerSensor::default(),
+        let superclass = Object {};
+        let superclass = Instance {
+            superclass,
+            Capabilities: SecurityCapabilities::from_bits(0u64),
+            HistoryId: UniqueId::nil(),
+            Name: "".to_owned(),
+            SourceAssetId: 0i64,
+            Tags: Tags::new(),
+            UniqueId: UniqueId::nil(),
+        };
+        let superclass = SensorBase {
+            superclass,
+            UpdateType: enums::SensorUpdateType::OnRead,
+        };
+        let superclass = ControllerSensor { superclass };
+        let superclass = ControllerPartSensor {
+            superclass,
             HitFrame: CFrame::identity(),
             HitNormal: Vector3::new(0f32, 0f32, 0f32),
             SearchDistance: 0f32,
             SensedPart: Ref::none(),
             SensorMode: enums::SensorMode::Floor,
-        }
+        };
+        superclass
     }
 }
 #[derive(Debug, Clone)]
@@ -4151,10 +5566,22 @@ impl_inherits!(CoreGui, BasePlayerGui);
 impl_strong_instance_from!(CoreGui);
 impl Default for CoreGui {
     fn default() -> Self {
-        Self {
-            superclass: BasePlayerGui::default(),
+        let superclass = Object {};
+        let superclass = Instance {
+            superclass,
+            Capabilities: SecurityCapabilities::from_bits(0u64),
+            HistoryId: UniqueId::nil(),
+            Name: "".to_owned(),
+            SourceAssetId: 0i64,
+            Tags: Tags::new(),
+            UniqueId: UniqueId::nil(),
+        };
+        let superclass = BasePlayerGui { superclass };
+        let superclass = CoreGui {
+            superclass,
             SelectionImageObject: Ref::none(),
-        }
+        };
+        superclass
     }
 }
 #[derive(Debug, Clone)]
@@ -4239,10 +5666,21 @@ impl_inherits!(CustomEvent, Instance);
 impl_strong_instance_from!(CustomEvent);
 impl Default for CustomEvent {
     fn default() -> Self {
-        Self {
-            superclass: Instance::default(),
+        let superclass = Object {};
+        let superclass = Instance {
+            superclass,
+            Capabilities: SecurityCapabilities::from_bits(0u64),
+            HistoryId: UniqueId::nil(),
+            Name: "".to_owned(),
+            SourceAssetId: 0i64,
+            Tags: Tags::new(),
+            UniqueId: UniqueId::nil(),
+        };
+        let superclass = CustomEvent {
+            superclass,
             PersistedCurrentValue: 0f32,
-        }
+        };
+        superclass
     }
 }
 #[derive(Debug, Clone)]
@@ -4255,10 +5693,21 @@ impl_inherits!(CustomEventReceiver, Instance);
 impl_strong_instance_from!(CustomEventReceiver);
 impl Default for CustomEventReceiver {
     fn default() -> Self {
-        Self {
-            superclass: Instance::default(),
+        let superclass = Object {};
+        let superclass = Instance {
+            superclass,
+            Capabilities: SecurityCapabilities::from_bits(0u64),
+            HistoryId: UniqueId::nil(),
+            Name: "".to_owned(),
+            SourceAssetId: 0i64,
+            Tags: Tags::new(),
+            UniqueId: UniqueId::nil(),
+        };
+        let superclass = CustomEventReceiver {
+            superclass,
             Source: Ref::none(),
-        }
+        };
+        superclass
     }
 }
 #[derive(Debug, Clone)]
@@ -4291,14 +5740,44 @@ impl_inherits!(CylinderHandleAdornment, HandleAdornment);
 impl_strong_instance_from!(CylinderHandleAdornment);
 impl Default for CylinderHandleAdornment {
     fn default() -> Self {
-        Self {
-            superclass: HandleAdornment::default(),
+        let superclass = Object {};
+        let superclass = Instance {
+            superclass,
+            Capabilities: SecurityCapabilities::from_bits(0u64),
+            HistoryId: UniqueId::nil(),
+            Name: "".to_owned(),
+            SourceAssetId: 0i64,
+            Tags: Tags::new(),
+            UniqueId: UniqueId::nil(),
+        };
+        let superclass = GuiBase { superclass };
+        let superclass = GuiBase3d {
+            superclass,
+            Color3: Color3::new(0f32, 0f32, 0f32),
+            Transparency: 0f32,
+            Visible: false,
+        };
+        let superclass = PVAdornment {
+            superclass,
+            Adornee: Ref::none(),
+        };
+        let superclass = HandleAdornment {
+            superclass,
+            AdornCullingMode: enums::AdornCullingMode::Automatic,
+            AlwaysOnTop: false,
+            CFrame: CFrame::identity(),
+            SizeRelativeOffset: Vector3::new(0f32, 0f32, 0f32),
+            ZIndex: 0i32,
+        };
+        let superclass = CylinderHandleAdornment {
+            superclass,
             Angle: 360f32,
             Height: 1f32,
             InnerRadius: 0f32,
             Radius: 1f32,
             Shading: enums::AdornShading::Default,
-        }
+        };
+        superclass
     }
 }
 #[derive(Debug, Clone)]
@@ -4333,8 +5812,43 @@ impl_inherits!(CylindricalConstraint, SlidingBallConstraint);
 impl_strong_instance_from!(CylindricalConstraint);
 impl Default for CylindricalConstraint {
     fn default() -> Self {
-        Self {
-            superclass: SlidingBallConstraint::default(),
+        let superclass = Object {};
+        let superclass = Instance {
+            superclass,
+            Capabilities: SecurityCapabilities::from_bits(0u64),
+            HistoryId: UniqueId::nil(),
+            Name: "".to_owned(),
+            SourceAssetId: 0i64,
+            Tags: Tags::new(),
+            UniqueId: UniqueId::nil(),
+        };
+        let superclass = Constraint {
+            superclass,
+            Attachment0: Ref::none(),
+            Attachment1: Ref::none(),
+            Color: BrickColor::from_number(194u16).unwrap(),
+            Enabled: false,
+            Visible: false,
+        };
+        let superclass = SlidingBallConstraint {
+            superclass,
+            ActuatorType: enums::ActuatorType::None,
+            LimitsEnabled: false,
+            LinearResponsiveness: 0f32,
+            LowerLimit: 0f32,
+            MotorMaxAcceleration: 0f32,
+            MotorMaxForce: 0f32,
+            Restitution: 0f32,
+            ServoMaxForce: 0f32,
+            Size: 0f32,
+            SoftlockServoUponReachingTarget: false,
+            Speed: 0f32,
+            TargetPosition: 0f32,
+            UpperLimit: 0f32,
+            Velocity: 0f32,
+        };
+        let superclass = CylindricalConstraint {
+            superclass,
             AngularActuatorType: enums::ActuatorType::None,
             AngularLimitsEnabled: false,
             AngularResponsiveness: 45f32,
@@ -4350,7 +5864,8 @@ impl Default for CylindricalConstraint {
             SoftlockAngularServoUponReachingTarget: false,
             TargetAngle: 0f32,
             UpperAngle: 45f32,
-        }
+        };
+        superclass
     }
 }
 #[derive(Debug, Clone)]
@@ -4373,12 +5888,23 @@ impl_inherits!(DataModelMesh, Instance);
 impl_strong_instance_from!(DataModelMesh);
 impl Default for DataModelMesh {
     fn default() -> Self {
-        Self {
-            superclass: Instance::default(),
+        let superclass = Object {};
+        let superclass = Instance {
+            superclass,
+            Capabilities: SecurityCapabilities::from_bits(0u64),
+            HistoryId: UniqueId::nil(),
+            Name: "".to_owned(),
+            SourceAssetId: 0i64,
+            Tags: Tags::new(),
+            UniqueId: UniqueId::nil(),
+        };
+        let superclass = DataModelMesh {
+            superclass,
             Offset: Vector3::new(0f32, 0f32, 0f32),
             Scale: Vector3::new(0f32, 0f32, 0f32),
             VertexColor: Vector3::new(0f32, 0f32, 0f32),
-        }
+        };
+        superclass
     }
 }
 #[derive(Debug, Clone)]
@@ -4415,10 +5941,21 @@ impl_inherits!(DataStoreGetOptions, Instance);
 impl_strong_instance_from!(DataStoreGetOptions);
 impl Default for DataStoreGetOptions {
     fn default() -> Self {
-        Self {
-            superclass: Instance::default(),
+        let superclass = Object {};
+        let superclass = Instance {
+            superclass,
+            Capabilities: SecurityCapabilities::from_bits(0u64),
+            HistoryId: UniqueId::nil(),
+            Name: "".to_owned(),
+            SourceAssetId: 0i64,
+            Tags: Tags::new(),
+            UniqueId: UniqueId::nil(),
+        };
+        let superclass = DataStoreGetOptions {
+            superclass,
             UseCache: false,
-        }
+        };
+        superclass
     }
 }
 #[derive(Debug, Clone)]
@@ -4487,10 +6024,21 @@ impl_inherits!(DataStoreOptions, Instance);
 impl_strong_instance_from!(DataStoreOptions);
 impl Default for DataStoreOptions {
     fn default() -> Self {
-        Self {
-            superclass: Instance::default(),
+        let superclass = Object {};
+        let superclass = Instance {
+            superclass,
+            Capabilities: SecurityCapabilities::from_bits(0u64),
+            HistoryId: UniqueId::nil(),
+            Name: "".to_owned(),
+            SourceAssetId: 0i64,
+            Tags: Tags::new(),
+            UniqueId: UniqueId::nil(),
+        };
+        let superclass = DataStoreOptions {
+            superclass,
             AllScopes: false,
-        }
+        };
+        superclass
     }
 }
 #[derive(Debug, Clone)]
@@ -4512,11 +6060,22 @@ impl_inherits!(DataStoreService, Instance);
 impl_strong_instance_from!(DataStoreService);
 impl Default for DataStoreService {
     fn default() -> Self {
-        Self {
-            superclass: Instance::default(),
+        let superclass = Object {};
+        let superclass = Instance {
+            superclass,
+            Capabilities: SecurityCapabilities::from_bits(0u64),
+            HistoryId: UniqueId::nil(),
+            Name: "".to_owned(),
+            SourceAssetId: 0i64,
+            Tags: Tags::new(),
+            UniqueId: UniqueId::nil(),
+        };
+        let superclass = DataStoreService {
+            superclass,
             AutomaticRetry: true,
             LegacyNamingScheme: false,
-        }
+        };
+        superclass
     }
 }
 #[derive(Debug, Clone)]
@@ -4545,10 +6104,21 @@ impl_inherits!(Debris, Instance);
 impl_strong_instance_from!(Debris);
 impl Default for Debris {
     fn default() -> Self {
-        Self {
-            superclass: Instance::default(),
+        let superclass = Object {};
+        let superclass = Instance {
+            superclass,
+            Capabilities: SecurityCapabilities::from_bits(0u64),
+            HistoryId: UniqueId::nil(),
+            Name: "".to_owned(),
+            SourceAssetId: 0i64,
+            Tags: Tags::new(),
+            UniqueId: UniqueId::nil(),
+        };
+        let superclass = Debris {
+            superclass,
             MaxItems: 1000i32,
-        }
+        };
+        superclass
     }
 }
 #[derive(Debug, Clone)]
@@ -4563,12 +6133,23 @@ impl_inherits!(DebugSettings, Instance);
 impl_strong_instance_from!(DebugSettings);
 impl Default for DebugSettings {
     fn default() -> Self {
-        Self {
-            superclass: Instance::default(),
+        let superclass = Object {};
+        let superclass = Instance {
+            superclass,
+            Capabilities: SecurityCapabilities::from_bits(0u64),
+            HistoryId: UniqueId::nil(),
+            Name: "".to_owned(),
+            SourceAssetId: 0i64,
+            Tags: Tags::new(),
+            UniqueId: UniqueId::nil(),
+        };
+        let superclass = DebugSettings {
+            superclass,
             IsScriptStackTracingEnabled: false,
             ReportSoundWarnings: false,
             TickCountPreciseOverride: enums::TickCountSampleMethod::Fast,
-        }
+        };
+        superclass
     }
 }
 #[derive(Debug, Clone)]
@@ -4594,15 +6175,26 @@ impl_inherits!(DebuggerBreakpoint, Instance);
 impl_strong_instance_from!(DebuggerBreakpoint);
 impl Default for DebuggerBreakpoint {
     fn default() -> Self {
-        Self {
-            superclass: Instance::default(),
+        let superclass = Object {};
+        let superclass = Instance {
+            superclass,
+            Capabilities: SecurityCapabilities::from_bits(0u64),
+            HistoryId: UniqueId::nil(),
+            Name: "".to_owned(),
+            SourceAssetId: 0i64,
+            Tags: Tags::new(),
+            UniqueId: UniqueId::nil(),
+        };
+        let superclass = DebuggerBreakpoint {
+            superclass,
             Condition: "".to_owned(),
             ContinueExecution: false,
             IsContextDependentBreakpoint: false,
             IsEnabled: false,
             Line: 0i32,
             LogExpression: "".to_owned(),
-        }
+        };
+        superclass
     }
 }
 #[derive(Debug, Clone)]
@@ -4623,10 +6215,21 @@ impl_inherits!(DebuggerConnectionManager, Instance);
 impl_strong_instance_from!(DebuggerConnectionManager);
 impl Default for DebuggerConnectionManager {
     fn default() -> Self {
-        Self {
-            superclass: Instance::default(),
+        let superclass = Object {};
+        let superclass = Instance {
+            superclass,
+            Capabilities: SecurityCapabilities::from_bits(0u64),
+            HistoryId: UniqueId::nil(),
+            Name: "".to_owned(),
+            SourceAssetId: 0i64,
+            Tags: Tags::new(),
+            UniqueId: UniqueId::nil(),
+        };
+        let superclass = DebuggerConnectionManager {
+            superclass,
             Timeout: 0f64,
-        }
+        };
+        superclass
     }
 }
 #[derive(Debug, Clone)]
@@ -4671,10 +6274,21 @@ impl_inherits!(DebuggerWatch, Instance);
 impl_strong_instance_from!(DebuggerWatch);
 impl Default for DebuggerWatch {
     fn default() -> Self {
-        Self {
-            superclass: Instance::default(),
+        let superclass = Object {};
+        let superclass = Instance {
+            superclass,
+            Capabilities: SecurityCapabilities::from_bits(0u64),
+            HistoryId: UniqueId::nil(),
+            Name: "".to_owned(),
+            SourceAssetId: 0i64,
+            Tags: Tags::new(),
+            UniqueId: UniqueId::nil(),
+        };
+        let superclass = DebuggerWatch {
+            superclass,
             Expression: "".to_owned(),
-        }
+        };
+        superclass
     }
 }
 #[derive(Debug, Clone)]
@@ -4697,8 +6311,22 @@ impl_inherits!(Decal, FaceInstance);
 impl_strong_instance_from!(Decal);
 impl Default for Decal {
     fn default() -> Self {
-        Self {
-            superclass: FaceInstance::default(),
+        let superclass = Object {};
+        let superclass = Instance {
+            superclass,
+            Capabilities: SecurityCapabilities::from_bits(0u64),
+            HistoryId: UniqueId::nil(),
+            Name: "".to_owned(),
+            SourceAssetId: 0i64,
+            Tags: Tags::new(),
+            UniqueId: UniqueId::nil(),
+        };
+        let superclass = FaceInstance {
+            superclass,
+            Face: enums::NormalId::Right,
+        };
+        let superclass = Decal {
+            superclass,
             Color3: Color3::new(1f32, 1f32, 1f32),
             MetalnessMapContent: Content::none(),
             NormalMapContent: Content::none(),
@@ -4710,7 +6338,8 @@ impl Default for Decal {
             UvOffset: Vector2::new(0f32, 0f32),
             UvScale: Vector2::new(1f32, 1f32),
             ZIndex: 1i32,
-        }
+        };
+        superclass
     }
 }
 #[derive(Debug, Clone)]
@@ -4726,13 +6355,28 @@ impl_inherits!(DepthOfFieldEffect, PostEffect);
 impl_strong_instance_from!(DepthOfFieldEffect);
 impl Default for DepthOfFieldEffect {
     fn default() -> Self {
-        Self {
-            superclass: PostEffect::default(),
+        let superclass = Object {};
+        let superclass = Instance {
+            superclass,
+            Capabilities: SecurityCapabilities::from_bits(0u64),
+            HistoryId: UniqueId::nil(),
+            Name: "".to_owned(),
+            SourceAssetId: 0i64,
+            Tags: Tags::new(),
+            UniqueId: UniqueId::nil(),
+        };
+        let superclass = PostEffect {
+            superclass,
+            Enabled: false,
+        };
+        let superclass = DepthOfFieldEffect {
+            superclass,
             FarIntensity: 0.75f32,
             FocusDistance: 0.05f32,
             InFocusRadius: 10f32,
             NearIntensity: 0.75f32,
-        }
+        };
+        superclass
     }
 }
 #[derive(Debug, Clone)]
@@ -4761,8 +6405,18 @@ impl_inherits!(Dialog, Instance);
 impl_strong_instance_from!(Dialog);
 impl Default for Dialog {
     fn default() -> Self {
-        Self {
-            superclass: Instance::default(),
+        let superclass = Object {};
+        let superclass = Instance {
+            superclass,
+            Capabilities: SecurityCapabilities::from_bits(0u64),
+            HistoryId: UniqueId::nil(),
+            Name: "".to_owned(),
+            SourceAssetId: 0i64,
+            Tags: Tags::new(),
+            UniqueId: UniqueId::nil(),
+        };
+        let superclass = Dialog {
+            superclass,
             BehaviorType: enums::DialogBehaviorType::SinglePlayer,
             ConversationDistance: 25f32,
             GoodbyeChoiceActive: true,
@@ -4772,7 +6426,8 @@ impl Default for Dialog {
             Tone: enums::DialogTone::Neutral,
             TriggerDistance: 0f32,
             TriggerOffset: Vector3::new(0f32, 0f32, 0f32),
-        }
+        };
+        superclass
     }
 }
 #[derive(Debug, Clone)]
@@ -4788,13 +6443,24 @@ impl_inherits!(DialogChoice, Instance);
 impl_strong_instance_from!(DialogChoice);
 impl Default for DialogChoice {
     fn default() -> Self {
-        Self {
-            superclass: Instance::default(),
+        let superclass = Object {};
+        let superclass = Instance {
+            superclass,
+            Capabilities: SecurityCapabilities::from_bits(0u64),
+            HistoryId: UniqueId::nil(),
+            Name: "".to_owned(),
+            SourceAssetId: 0i64,
+            Tags: Tags::new(),
+            UniqueId: UniqueId::nil(),
+        };
+        let superclass = DialogChoice {
+            superclass,
             GoodbyeChoiceActive: true,
             GoodbyeDialog: "".to_owned(),
             ResponseDialog: "".to_owned(),
             UserDialog: "".to_owned(),
-        }
+        };
+        superclass
     }
 }
 #[derive(Debug, Clone)]
@@ -4807,10 +6473,26 @@ impl_inherits!(DistortionSoundEffect, SoundEffect);
 impl_strong_instance_from!(DistortionSoundEffect);
 impl Default for DistortionSoundEffect {
     fn default() -> Self {
-        Self {
-            superclass: SoundEffect::default(),
+        let superclass = Object {};
+        let superclass = Instance {
+            superclass,
+            Capabilities: SecurityCapabilities::from_bits(0u64),
+            HistoryId: UniqueId::nil(),
+            Name: "".to_owned(),
+            SourceAssetId: 0i64,
+            Tags: Tags::new(),
+            UniqueId: UniqueId::nil(),
+        };
+        let superclass = SoundEffect {
+            superclass,
+            Enabled: false,
+            Priority: 0i32,
+        };
+        let superclass = DistortionSoundEffect {
+            superclass,
             Level: 0.75f32,
-        }
+        };
+        superclass
     }
 }
 #[derive(Debug, Clone)]
@@ -4833,12 +6515,24 @@ impl_inherits!(DoubleConstrainedValue, ValueBase);
 impl_strong_instance_from!(DoubleConstrainedValue);
 impl Default for DoubleConstrainedValue {
     fn default() -> Self {
-        Self {
-            superclass: ValueBase::default(),
+        let superclass = Object {};
+        let superclass = Instance {
+            superclass,
+            Capabilities: SecurityCapabilities::from_bits(0u64),
+            HistoryId: UniqueId::nil(),
+            Name: "".to_owned(),
+            SourceAssetId: 0i64,
+            Tags: Tags::new(),
+            UniqueId: UniqueId::nil(),
+        };
+        let superclass = ValueBase { superclass };
+        let superclass = DoubleConstrainedValue {
+            superclass,
             MaxValue: 1f64,
             MinValue: 0f64,
             Value: 0f64,
-        }
+        };
+        superclass
     }
 }
 #[derive(Debug, Clone)]
@@ -4880,8 +6574,23 @@ impl_inherits!(DragDetector, ClickDetector);
 impl_strong_instance_from!(DragDetector);
 impl Default for DragDetector {
     fn default() -> Self {
-        Self {
-            superclass: ClickDetector::default(),
+        let superclass = Object {};
+        let superclass = Instance {
+            superclass,
+            Capabilities: SecurityCapabilities::from_bits(0u64),
+            HistoryId: UniqueId::nil(),
+            Name: "".to_owned(),
+            SourceAssetId: 0i64,
+            Tags: Tags::new(),
+            UniqueId: UniqueId::nil(),
+        };
+        let superclass = ClickDetector {
+            superclass,
+            CursorIconContent: Content::none(),
+            MaxActivationDistance: 32f32,
+        };
+        let superclass = DragDetector {
+            superclass,
             ActivatedCursorIconContent: Content::none(),
             ApplyAtCenterOfMass: false,
             DragFrame: CFrame::identity(),
@@ -4904,7 +6613,8 @@ impl Default for DragDetector {
             TrackballRadialPullFactor: 1f32,
             TrackballRollFactor: 1f32,
             VrSwitchKeyCode: enums::KeyCode::ButtonL2,
-        }
+        };
+        superclass
     }
 }
 #[derive(Debug, Clone)]
@@ -4933,10 +6643,29 @@ impl_inherits!(DynamicRotate, JointInstance);
 impl_strong_instance_from!(DynamicRotate);
 impl Default for DynamicRotate {
     fn default() -> Self {
-        Self {
-            superclass: JointInstance::default(),
+        let superclass = Object {};
+        let superclass = Instance {
+            superclass,
+            Capabilities: SecurityCapabilities::from_bits(0u64),
+            HistoryId: UniqueId::nil(),
+            Name: "".to_owned(),
+            SourceAssetId: 0i64,
+            Tags: Tags::new(),
+            UniqueId: UniqueId::nil(),
+        };
+        let superclass = JointInstance {
+            superclass,
+            C0: CFrame::identity(),
+            C1: CFrame::identity(),
+            Enabled: false,
+            Part0: Ref::none(),
+            Part1: Ref::none(),
+        };
+        let superclass = DynamicRotate {
+            superclass,
             BaseAngle: 0f32,
-        }
+        };
+        superclass
     }
 }
 #[derive(Debug, Clone)]
@@ -4952,13 +6681,29 @@ impl_inherits!(EchoSoundEffect, SoundEffect);
 impl_strong_instance_from!(EchoSoundEffect);
 impl Default for EchoSoundEffect {
     fn default() -> Self {
-        Self {
-            superclass: SoundEffect::default(),
+        let superclass = Object {};
+        let superclass = Instance {
+            superclass,
+            Capabilities: SecurityCapabilities::from_bits(0u64),
+            HistoryId: UniqueId::nil(),
+            Name: "".to_owned(),
+            SourceAssetId: 0i64,
+            Tags: Tags::new(),
+            UniqueId: UniqueId::nil(),
+        };
+        let superclass = SoundEffect {
+            superclass,
+            Enabled: false,
+            Priority: 0i32,
+        };
+        let superclass = EchoSoundEffect {
+            superclass,
             Delay: 1f32,
             DryLevel: 0f32,
             Feedback: 0.5f32,
             WetLevel: 0f32,
-        }
+        };
+        superclass
     }
 }
 #[derive(Debug, Clone)]
@@ -4971,10 +6716,12 @@ impl_inherits!(EditableImage, Object);
 impl_strong_instance_from!(EditableImage);
 impl Default for EditableImage {
     fn default() -> Self {
-        Self {
-            superclass: Object::default(),
+        let superclass = Object {};
+        let superclass = EditableImage {
+            superclass,
             ImageData: b"".as_slice().into(),
-        }
+        };
+        superclass
     }
 }
 #[derive(Debug, Clone)]
@@ -4988,11 +6735,13 @@ impl_inherits!(EditableMesh, Object);
 impl_strong_instance_from!(EditableMesh);
 impl Default for EditableMesh {
     fn default() -> Self {
-        Self {
-            superclass: Object::default(),
+        let superclass = Object {};
+        let superclass = EditableMesh {
+            superclass,
             MeshData: SharedString::new(b"".to_vec()),
             SkinningEnabled: false,
-        }
+        };
+        superclass
     }
 }
 #[derive(Debug, Clone)]
@@ -5031,12 +6780,28 @@ impl_inherits!(EqualizerSoundEffect, SoundEffect);
 impl_strong_instance_from!(EqualizerSoundEffect);
 impl Default for EqualizerSoundEffect {
     fn default() -> Self {
-        Self {
-            superclass: SoundEffect::default(),
+        let superclass = Object {};
+        let superclass = Instance {
+            superclass,
+            Capabilities: SecurityCapabilities::from_bits(0u64),
+            HistoryId: UniqueId::nil(),
+            Name: "".to_owned(),
+            SourceAssetId: 0i64,
+            Tags: Tags::new(),
+            UniqueId: UniqueId::nil(),
+        };
+        let superclass = SoundEffect {
+            superclass,
+            Enabled: false,
+            Priority: 0i32,
+        };
+        let superclass = EqualizerSoundEffect {
+            superclass,
             HighGain: 0f32,
             LowGain: -20f32,
             MidGain: -10f32,
-        }
+        };
+        superclass
     }
 }
 #[derive(Debug, Clone)]
@@ -5049,10 +6814,21 @@ impl_inherits!(EulerRotationCurve, Instance);
 impl_strong_instance_from!(EulerRotationCurve);
 impl Default for EulerRotationCurve {
     fn default() -> Self {
-        Self {
-            superclass: Instance::default(),
+        let superclass = Object {};
+        let superclass = Instance {
+            superclass,
+            Capabilities: SecurityCapabilities::from_bits(0u64),
+            HistoryId: UniqueId::nil(),
+            Name: "".to_owned(),
+            SourceAssetId: 0i64,
+            Tags: Tags::new(),
+            UniqueId: UniqueId::nil(),
+        };
+        let superclass = EulerRotationCurve {
+            superclass,
             RotationOrder: enums::RotationOrder::XYZ,
-        }
+        };
+        superclass
     }
 }
 #[derive(Debug, Clone)]
@@ -5100,13 +6876,24 @@ impl_inherits!(ExperienceInviteOptions, Instance);
 impl_strong_instance_from!(ExperienceInviteOptions);
 impl Default for ExperienceInviteOptions {
     fn default() -> Self {
-        Self {
-            superclass: Instance::default(),
+        let superclass = Object {};
+        let superclass = Instance {
+            superclass,
+            Capabilities: SecurityCapabilities::from_bits(0u64),
+            HistoryId: UniqueId::nil(),
+            Name: "".to_owned(),
+            SourceAssetId: 0i64,
+            Tags: Tags::new(),
+            UniqueId: UniqueId::nil(),
+        };
+        let superclass = ExperienceInviteOptions {
+            superclass,
             InviteMessageId: "".to_owned(),
             InviteUser: 0i64,
             LaunchData: "".to_owned(),
             PromptMessage: "".to_owned(),
-        }
+        };
+        superclass
     }
 }
 #[derive(Debug, Clone)]
@@ -5181,8 +6968,18 @@ impl_inherits!(Explosion, Instance);
 impl_strong_instance_from!(Explosion);
 impl Default for Explosion {
     fn default() -> Self {
-        Self {
-            superclass: Instance::default(),
+        let superclass = Object {};
+        let superclass = Instance {
+            superclass,
+            Capabilities: SecurityCapabilities::from_bits(0u64),
+            HistoryId: UniqueId::nil(),
+            Name: "".to_owned(),
+            SourceAssetId: 0i64,
+            Tags: Tags::new(),
+            UniqueId: UniqueId::nil(),
+        };
+        let superclass = Explosion {
+            superclass,
             BlastPressure: 500000f32,
             BlastRadius: 4f32,
             DestroyJointRadiusPercent: 1f32,
@@ -5190,7 +6987,8 @@ impl Default for Explosion {
             Position: Vector3::new(0f32, 0f32, 0f32),
             TimeScale: 1f32,
             Visible: true,
-        }
+        };
+        superclass
     }
 }
 #[derive(Debug, Clone)]
@@ -5219,10 +7017,21 @@ impl_inherits!(FaceInstance, Instance);
 impl_strong_instance_from!(FaceInstance);
 impl Default for FaceInstance {
     fn default() -> Self {
-        Self {
-            superclass: Instance::default(),
+        let superclass = Object {};
+        let superclass = Instance {
+            superclass,
+            Capabilities: SecurityCapabilities::from_bits(0u64),
+            HistoryId: UniqueId::nil(),
+            Name: "".to_owned(),
+            SourceAssetId: 0i64,
+            Tags: Tags::new(),
+            UniqueId: UniqueId::nil(),
+        };
+        let superclass = FaceInstance {
+            superclass,
             Face: enums::NormalId::Right,
-        }
+        };
+        superclass
     }
 }
 #[derive(Debug, Clone)]
@@ -5259,10 +7068,21 @@ impl_inherits!(FacialAnimationStreamingServiceV2, Instance);
 impl_strong_instance_from!(FacialAnimationStreamingServiceV2);
 impl Default for FacialAnimationStreamingServiceV2 {
     fn default() -> Self {
-        Self {
-            superclass: Instance::default(),
+        let superclass = Object {};
+        let superclass = Instance {
+            superclass,
+            Capabilities: SecurityCapabilities::from_bits(0u64),
+            HistoryId: UniqueId::nil(),
+            Name: "".to_owned(),
+            SourceAssetId: 0i64,
+            Tags: Tags::new(),
+            UniqueId: UniqueId::nil(),
+        };
+        let superclass = FacialAnimationStreamingServiceV2 {
+            superclass,
             ServiceState: 0i32,
-        }
+        };
+        superclass
     }
 }
 #[derive(Debug, Clone)]
@@ -5294,13 +7114,24 @@ impl_inherits!(Feature, Instance);
 impl_strong_instance_from!(Feature);
 impl Default for Feature {
     fn default() -> Self {
-        Self {
-            superclass: Instance::default(),
+        let superclass = Object {};
+        let superclass = Instance {
+            superclass,
+            Capabilities: SecurityCapabilities::from_bits(0u64),
+            HistoryId: UniqueId::nil(),
+            Name: "".to_owned(),
+            SourceAssetId: 0i64,
+            Tags: Tags::new(),
+            UniqueId: UniqueId::nil(),
+        };
+        let superclass = Feature {
+            superclass,
             FaceId: enums::NormalId::Right,
             InOut: enums::InOut::Edge,
             LeftRight: enums::LeftRight::Left,
             TopBottom: enums::TopBottom::Top,
-        }
+        };
+        superclass
     }
 }
 #[derive(Debug, Clone)]
@@ -5330,11 +7161,28 @@ impl_inherits!(FileMesh, DataModelMesh);
 impl_strong_instance_from!(FileMesh);
 impl Default for FileMesh {
     fn default() -> Self {
-        Self {
-            superclass: DataModelMesh::default(),
+        let superclass = Object {};
+        let superclass = Instance {
+            superclass,
+            Capabilities: SecurityCapabilities::from_bits(0u64),
+            HistoryId: UniqueId::nil(),
+            Name: "".to_owned(),
+            SourceAssetId: 0i64,
+            Tags: Tags::new(),
+            UniqueId: UniqueId::nil(),
+        };
+        let superclass = DataModelMesh {
+            superclass,
+            Offset: Vector3::new(0f32, 0f32, 0f32),
+            Scale: Vector3::new(0f32, 0f32, 0f32),
+            VertexColor: Vector3::new(0f32, 0f32, 0f32),
+        };
+        let superclass = FileMesh {
+            superclass,
             MeshId: "".into(),
             TextureId: "".into(),
-        }
+        };
+        superclass
     }
 }
 #[derive(Debug, Clone)]
@@ -5350,13 +7198,24 @@ impl_inherits!(Fire, Instance);
 impl_strong_instance_from!(Fire);
 impl Default for Fire {
     fn default() -> Self {
-        Self {
-            superclass: Instance::default(),
+        let superclass = Object {};
+        let superclass = Instance {
+            superclass,
+            Capabilities: SecurityCapabilities::from_bits(0u64),
+            HistoryId: UniqueId::nil(),
+            Name: "".to_owned(),
+            SourceAssetId: 0i64,
+            Tags: Tags::new(),
+            UniqueId: UniqueId::nil(),
+        };
+        let superclass = Fire {
+            superclass,
             Color: Color3::new(0.92549026f32, 0.54509807f32, 0.27450982f32),
             Enabled: true,
             SecondaryColor: Color3::new(0.54509807f32, 0.3137255f32, 0.21568629f32),
             TimeScale: 1f32,
-        }
+        };
+        superclass
     }
 }
 #[derive(Debug, Clone)]
@@ -5369,10 +7228,47 @@ impl_inherits!(Flag, Tool);
 impl_strong_instance_from!(Flag);
 impl Default for Flag {
     fn default() -> Self {
-        Self {
-            superclass: Tool::default(),
+        let superclass = Object {};
+        let superclass = Instance {
+            superclass,
+            Capabilities: SecurityCapabilities::from_bits(0u64),
+            HistoryId: UniqueId::nil(),
+            Name: "".to_owned(),
+            SourceAssetId: 0i64,
+            Tags: Tags::new(),
+            UniqueId: UniqueId::nil(),
+        };
+        let superclass = PVInstance { superclass };
+        let superclass = Model {
+            superclass,
+            LevelOfDetail: enums::ModelLevelOfDetail::Automatic,
+            ModelMeshCFrame: CFrame::identity(),
+            ModelMeshData: SharedString::new(b"".to_vec()),
+            ModelMeshSize: Vector3::new(0f32, 0f32, 0f32),
+            ModelStreamingMode: enums::ModelStreamingMode::Default,
+            NeedsPivotMigration: false,
+            PrimaryPart: Ref::none(),
+            SlimHash: SharedString::new(b"".to_vec()),
+            WorldPivotData: None,
+        };
+        let superclass = BackpackItem {
+            superclass,
+            TextureContent: Content::none(),
+        };
+        let superclass = Tool {
+            superclass,
+            CanBeDropped: true,
+            Enabled: true,
+            Grip: CFrame::identity(),
+            ManualActivationOnly: false,
+            RequiresHandle: true,
+            ToolTip: "".to_owned(),
+        };
+        let superclass = Flag {
+            superclass,
             TeamColor: BrickColor::from_number(194u16).unwrap(),
-        }
+        };
+        superclass
     }
 }
 #[derive(Debug, Clone)]
@@ -5385,10 +7281,71 @@ impl_inherits!(FlagStand, Part);
 impl_strong_instance_from!(FlagStand);
 impl Default for FlagStand {
     fn default() -> Self {
-        Self {
-            superclass: Part::default(),
+        let superclass = Object {};
+        let superclass = Instance {
+            superclass,
+            Capabilities: SecurityCapabilities::from_bits(0u64),
+            HistoryId: UniqueId::nil(),
+            Name: "".to_owned(),
+            SourceAssetId: 0i64,
+            Tags: Tags::new(),
+            UniqueId: UniqueId::nil(),
+        };
+        let superclass = PVInstance { superclass };
+        let superclass = BasePart {
+            superclass,
+            Anchored: false,
+            AudioCanCollide: false,
+            BackParamA: 0f32,
+            BackParamB: 0f32,
+            BackSurface: enums::SurfaceType::Smooth,
+            BackSurfaceInput: enums::InputType::NoInput,
+            BottomParamA: 0f32,
+            BottomParamB: 0f32,
+            BottomSurface: enums::SurfaceType::Smooth,
+            BottomSurfaceInput: enums::InputType::NoInput,
+            CFrame: CFrame::identity(),
+            CanCollide: false,
+            CanQuery: false,
+            CanTouch: false,
+            CastShadow: false,
+            CollisionGroup: "".to_owned(),
+            CollisionGroupId: 0i32,
+            CustomPhysicalProperties: PhysicalProperties::Default,
+            EnableFluidForces: false,
+            FrontParamA: 0f32,
+            FrontParamB: 0f32,
+            FrontSurface: enums::SurfaceType::Smooth,
+            FrontSurfaceInput: enums::InputType::NoInput,
+            LeftParamA: 0f32,
+            LeftParamB: 0f32,
+            LeftSurface: enums::SurfaceType::Smooth,
+            LeftSurfaceInput: enums::InputType::NoInput,
+            Locked: false,
+            Massless: false,
+            Material: enums::Material::Plastic,
+            PivotOffset: CFrame::identity(),
+            Reflectance: 0f32,
+            RightParamA: 0f32,
+            RightParamB: 0f32,
+            RightSurface: enums::SurfaceType::Smooth,
+            RightSurfaceInput: enums::InputType::NoInput,
+            RootPriority: 0i32,
+            RotVelocity: Vector3::new(0f32, 0f32, 0f32),
+            TopParamA: 0f32,
+            TopParamB: 0f32,
+            TopSurface: enums::SurfaceType::Smooth,
+            TopSurfaceInput: enums::InputType::NoInput,
+            Transparency: 0f32,
+            Velocity: Vector3::new(0f32, 0f32, 0f32),
+        };
+        let superclass = FormFactorPart { superclass };
+        let superclass = Part { superclass };
+        let superclass = FlagStand {
+            superclass,
             TeamColor: BrickColor::from_number(194u16).unwrap(),
-        }
+        };
+        superclass
     }
 }
 #[derive(Debug, Clone)]
@@ -5411,12 +7368,28 @@ impl_inherits!(FlangeSoundEffect, SoundEffect);
 impl_strong_instance_from!(FlangeSoundEffect);
 impl Default for FlangeSoundEffect {
     fn default() -> Self {
-        Self {
-            superclass: SoundEffect::default(),
+        let superclass = Object {};
+        let superclass = Instance {
+            superclass,
+            Capabilities: SecurityCapabilities::from_bits(0u64),
+            HistoryId: UniqueId::nil(),
+            Name: "".to_owned(),
+            SourceAssetId: 0i64,
+            Tags: Tags::new(),
+            UniqueId: UniqueId::nil(),
+        };
+        let superclass = SoundEffect {
+            superclass,
+            Enabled: false,
+            Priority: 0i32,
+        };
+        let superclass = FlangeSoundEffect {
+            superclass,
             Depth: 0.45f32,
             Mix: 0.85f32,
             Rate: 5f32,
-        }
+        };
+        superclass
     }
 }
 #[derive(Debug, Clone)]
@@ -5429,10 +7402,21 @@ impl_inherits!(FloatCurve, Instance);
 impl_strong_instance_from!(FloatCurve);
 impl Default for FloatCurve {
     fn default() -> Self {
-        Self {
-            superclass: Instance::default(),
+        let superclass = Object {};
+        let superclass = Instance {
+            superclass,
+            Capabilities: SecurityCapabilities::from_bits(0u64),
+            HistoryId: UniqueId::nil(),
+            Name: "".to_owned(),
+            SourceAssetId: 0i64,
+            Tags: Tags::new(),
+            UniqueId: UniqueId::nil(),
+        };
+        let superclass = FloatCurve {
+            superclass,
             ValuesAndTimes: b"\x02\0\0\0\0\0\0\0\x01\0\0\0\0\0\0\0".as_slice().into(),
-        }
+        };
+        superclass
     }
 }
 #[derive(Debug, Clone)]
@@ -5452,8 +7436,25 @@ impl_inherits!(FloorWire, GuiBase3d);
 impl_strong_instance_from!(FloorWire);
 impl Default for FloorWire {
     fn default() -> Self {
-        Self {
-            superclass: GuiBase3d::default(),
+        let superclass = Object {};
+        let superclass = Instance {
+            superclass,
+            Capabilities: SecurityCapabilities::from_bits(0u64),
+            HistoryId: UniqueId::nil(),
+            Name: "".to_owned(),
+            SourceAssetId: 0i64,
+            Tags: Tags::new(),
+            UniqueId: UniqueId::nil(),
+        };
+        let superclass = GuiBase { superclass };
+        let superclass = GuiBase3d {
+            superclass,
+            Color3: Color3::new(0f32, 0f32, 0f32),
+            Transparency: 0f32,
+            Visible: false,
+        };
+        let superclass = FloorWire {
+            superclass,
             CycleOffset: 0f32,
             From: Ref::none(),
             StudsBetweenTextures: 4f32,
@@ -5462,7 +7463,8 @@ impl Default for FloorWire {
             To: Ref::none(),
             Velocity: 2f32,
             WireRadius: 0.0625f32,
-        }
+        };
+        superclass
     }
 }
 #[derive(Debug, Clone)]
@@ -5499,10 +7501,21 @@ impl_inherits!(ForceField, Instance);
 impl_strong_instance_from!(ForceField);
 impl Default for ForceField {
     fn default() -> Self {
-        Self {
-            superclass: Instance::default(),
+        let superclass = Object {};
+        let superclass = Instance {
+            superclass,
+            Capabilities: SecurityCapabilities::from_bits(0u64),
+            HistoryId: UniqueId::nil(),
+            Name: "".to_owned(),
+            SourceAssetId: 0i64,
+            Tags: Tags::new(),
+            UniqueId: UniqueId::nil(),
+        };
+        let superclass = ForceField {
+            superclass,
             Visible: true,
-        }
+        };
+        superclass
     }
 }
 #[derive(Debug, Clone)]
@@ -5523,10 +7536,60 @@ impl_inherits!(Frame, GuiObject);
 impl_strong_instance_from!(Frame);
 impl Default for Frame {
     fn default() -> Self {
-        Self {
-            superclass: GuiObject::default(),
+        let superclass = Object {};
+        let superclass = Instance {
+            superclass,
+            Capabilities: SecurityCapabilities::from_bits(0u64),
+            HistoryId: UniqueId::nil(),
+            Name: "".to_owned(),
+            SourceAssetId: 0i64,
+            Tags: Tags::new(),
+            UniqueId: UniqueId::nil(),
+        };
+        let superclass = GuiBase { superclass };
+        let superclass = GuiBase2d {
+            superclass,
+            AutoLocalize: false,
+            RootLocalizationTable: Ref::none(),
+            SelectionBehaviorDown: enums::SelectionBehavior::Escape,
+            SelectionBehaviorLeft: enums::SelectionBehavior::Escape,
+            SelectionBehaviorRight: enums::SelectionBehavior::Escape,
+            SelectionBehaviorUp: enums::SelectionBehavior::Escape,
+            SelectionGroup: false,
+        };
+        let superclass = GuiObject {
+            superclass,
+            Active: false,
+            AnchorPoint: Vector2::new(0f32, 0f32),
+            AutomaticSize: enums::AutomaticSize::None,
+            BackgroundColor3: Color3::new(0f32, 0f32, 0f32),
+            BackgroundTransparency: 0f32,
+            BorderColor3: Color3::new(0f32, 0f32, 0f32),
+            BorderMode: enums::BorderMode::Outline,
+            BorderSizePixel: 0i32,
+            ClipsDescendants: false,
+            Draggable: false,
+            Interactable: false,
+            LayoutOrder: 0i32,
+            NextSelectionDown: Ref::none(),
+            NextSelectionLeft: Ref::none(),
+            NextSelectionRight: Ref::none(),
+            NextSelectionUp: Ref::none(),
+            Position: UDim2::new(UDim::new(0f32, 0i32), UDim::new(0f32, 0i32)),
+            Rotation: 0f32,
+            Selectable: false,
+            SelectionImageObject: Ref::none(),
+            SelectionOrder: 0i32,
+            Size: UDim2::new(UDim::new(0f32, 0i32), UDim::new(0f32, 0i32)),
+            SizeConstraint: enums::SizeConstraint::RelativeXY,
+            Visible: false,
+            ZIndex: 0i32,
+        };
+        let superclass = Frame {
+            superclass,
             Style: enums::FrameStyle::Custom,
-        }
+        };
+        superclass
     }
 }
 #[derive(Debug, Clone)]
@@ -5556,11 +7619,22 @@ impl_inherits!(FunctionalTest, Instance);
 impl_strong_instance_from!(FunctionalTest);
 impl Default for FunctionalTest {
     fn default() -> Self {
-        Self {
-            superclass: Instance::default(),
+        let superclass = Object {};
+        let superclass = Instance {
+            superclass,
+            Capabilities: SecurityCapabilities::from_bits(0u64),
+            HistoryId: UniqueId::nil(),
+            Name: "".to_owned(),
+            SourceAssetId: 0i64,
+            Tags: Tags::new(),
+            UniqueId: UniqueId::nil(),
+        };
+        let superclass = FunctionalTest {
+            superclass,
             Description: "?".to_owned(),
             HasMigratedSettingsToTestService: false,
-        }
+        };
+        superclass
     }
 }
 #[derive(Debug, Clone)]
@@ -5581,10 +7655,21 @@ impl_inherits!(GameSettings, Instance);
 impl_strong_instance_from!(GameSettings);
 impl Default for GameSettings {
     fn default() -> Self {
-        Self {
-            superclass: Instance::default(),
+        let superclass = Object {};
+        let superclass = Instance {
+            superclass,
+            Capabilities: SecurityCapabilities::from_bits(0u64),
+            HistoryId: UniqueId::nil(),
+            Name: "".to_owned(),
+            SourceAssetId: 0i64,
+            Tags: Tags::new(),
+            UniqueId: UniqueId::nil(),
+        };
+        let superclass = GameSettings {
+            superclass,
             VideoCaptureEnabled: false,
-        }
+        };
+        superclass
     }
 }
 #[derive(Debug, Clone)]
@@ -5597,10 +7682,21 @@ impl_inherits!(GamepadService, Instance);
 impl_strong_instance_from!(GamepadService);
 impl Default for GamepadService {
     fn default() -> Self {
-        Self {
-            superclass: Instance::default(),
+        let superclass = Object {};
+        let superclass = Instance {
+            superclass,
+            Capabilities: SecurityCapabilities::from_bits(0u64),
+            HistoryId: UniqueId::nil(),
+            Name: "".to_owned(),
+            SourceAssetId: 0i64,
+            Tags: Tags::new(),
+            UniqueId: UniqueId::nil(),
+        };
+        let superclass = GamepadService {
+            superclass,
             GamepadCursorEnabled: false,
-        }
+        };
+        superclass
     }
 }
 #[derive(Debug, Clone)]
@@ -5657,14 +7753,25 @@ impl_inherits!(GetTextBoundsParams, Instance);
 impl_strong_instance_from!(GetTextBoundsParams);
 impl Default for GetTextBoundsParams {
     fn default() -> Self {
-        Self {
-            superclass: Instance::default(),
+        let superclass = Object {};
+        let superclass = Instance {
+            superclass,
+            Capabilities: SecurityCapabilities::from_bits(0u64),
+            HistoryId: UniqueId::nil(),
+            Name: "".to_owned(),
+            SourceAssetId: 0i64,
+            Tags: Tags::new(),
+            UniqueId: UniqueId::nil(),
+        };
+        let superclass = GetTextBoundsParams {
+            superclass,
             Font: unimplemented!("Font"),
             RichText: false,
             Size: 0f32,
             Text: "".to_owned(),
             Width: 0f32,
-        }
+        };
+        superclass
     }
 }
 #[derive(Debug, Clone)]
@@ -5696,13 +7803,32 @@ impl_inherits!(Glue, JointInstance);
 impl_strong_instance_from!(Glue);
 impl Default for Glue {
     fn default() -> Self {
-        Self {
-            superclass: JointInstance::default(),
+        let superclass = Object {};
+        let superclass = Instance {
+            superclass,
+            Capabilities: SecurityCapabilities::from_bits(0u64),
+            HistoryId: UniqueId::nil(),
+            Name: "".to_owned(),
+            SourceAssetId: 0i64,
+            Tags: Tags::new(),
+            UniqueId: UniqueId::nil(),
+        };
+        let superclass = JointInstance {
+            superclass,
+            C0: CFrame::identity(),
+            C1: CFrame::identity(),
+            Enabled: false,
+            Part0: Ref::none(),
+            Part1: Ref::none(),
+        };
+        let superclass = Glue {
+            superclass,
             F0: Vector3::new(0f32, 0f32, 0f32),
             F1: Vector3::new(0f32, 0f32, 0f32),
             F2: Vector3::new(0f32, 0f32, 0f32),
             F3: Vector3::new(0f32, 0f32, 0f32),
-        }
+        };
+        superclass
     }
 }
 #[derive(Debug, Clone)]
@@ -5725,8 +7851,23 @@ impl_inherits!(GroundController, ControllerBase);
 impl_strong_instance_from!(GroundController);
 impl Default for GroundController {
     fn default() -> Self {
-        Self {
-            superclass: ControllerBase::default(),
+        let superclass = Object {};
+        let superclass = Instance {
+            superclass,
+            Capabilities: SecurityCapabilities::from_bits(0u64),
+            HistoryId: UniqueId::nil(),
+            Name: "".to_owned(),
+            SourceAssetId: 0i64,
+            Tags: Tags::new(),
+            UniqueId: UniqueId::nil(),
+        };
+        let superclass = ControllerBase {
+            superclass,
+            BalanceRigidityEnabled: false,
+            MoveSpeedFactor: 0f32,
+        };
+        let superclass = GroundController {
+            superclass,
             AccelerationLean: 1f32,
             AccelerationTime: 0f32,
             BalanceMaxTorque: 10000f32,
@@ -5738,7 +7879,8 @@ impl Default for GroundController {
             StandForce: 10000f32,
             StandSpeed: 100f32,
             TurnSpeedFactor: 1f32,
-        }
+        };
+        superclass
     }
 }
 #[derive(Debug, Clone)]
@@ -5753,12 +7895,28 @@ impl_inherits!(GroupImportData, BaseImportData);
 impl_strong_instance_from!(GroupImportData);
 impl Default for GroupImportData {
     fn default() -> Self {
-        Self {
-            superclass: BaseImportData::default(),
+        let superclass = Object {};
+        let superclass = Instance {
+            superclass,
+            Capabilities: SecurityCapabilities::from_bits(0u64),
+            HistoryId: UniqueId::nil(),
+            Name: "".to_owned(),
+            SourceAssetId: 0i64,
+            Tags: Tags::new(),
+            UniqueId: UniqueId::nil(),
+        };
+        let superclass = BaseImportData {
+            superclass,
+            ImportName: "".to_owned(),
+            ShouldImport: false,
+        };
+        let superclass = GroupImportData {
+            superclass,
             Anchored: false,
             ImportAsModelAsset: false,
             InsertInWorkspace: false,
-        }
+        };
+        superclass
     }
 }
 #[derive(Debug, Clone)]
@@ -5793,8 +7951,19 @@ impl_inherits!(GuiBase2d, GuiBase);
 impl_strong_instance_from!(GuiBase2d);
 impl Default for GuiBase2d {
     fn default() -> Self {
-        Self {
-            superclass: GuiBase::default(),
+        let superclass = Object {};
+        let superclass = Instance {
+            superclass,
+            Capabilities: SecurityCapabilities::from_bits(0u64),
+            HistoryId: UniqueId::nil(),
+            Name: "".to_owned(),
+            SourceAssetId: 0i64,
+            Tags: Tags::new(),
+            UniqueId: UniqueId::nil(),
+        };
+        let superclass = GuiBase { superclass };
+        let superclass = GuiBase2d {
+            superclass,
             AutoLocalize: false,
             RootLocalizationTable: Ref::none(),
             SelectionBehaviorDown: enums::SelectionBehavior::Escape,
@@ -5802,7 +7971,8 @@ impl Default for GuiBase2d {
             SelectionBehaviorRight: enums::SelectionBehavior::Escape,
             SelectionBehaviorUp: enums::SelectionBehavior::Escape,
             SelectionGroup: false,
-        }
+        };
+        superclass
     }
 }
 #[derive(Debug, Clone)]
@@ -5817,12 +7987,24 @@ impl_inherits!(GuiBase3d, GuiBase);
 impl_strong_instance_from!(GuiBase3d);
 impl Default for GuiBase3d {
     fn default() -> Self {
-        Self {
-            superclass: GuiBase::default(),
+        let superclass = Object {};
+        let superclass = Instance {
+            superclass,
+            Capabilities: SecurityCapabilities::from_bits(0u64),
+            HistoryId: UniqueId::nil(),
+            Name: "".to_owned(),
+            SourceAssetId: 0i64,
+            Tags: Tags::new(),
+            UniqueId: UniqueId::nil(),
+        };
+        let superclass = GuiBase { superclass };
+        let superclass = GuiBase3d {
+            superclass,
             Color3: Color3::new(0f32, 0f32, 0f32),
             Transparency: 0f32,
             Visible: false,
-        }
+        };
+        superclass
     }
 }
 #[derive(Debug, Clone)]
@@ -5840,15 +8022,65 @@ impl_inherits!(GuiButton, GuiObject);
 impl_strong_instance_from!(GuiButton);
 impl Default for GuiButton {
     fn default() -> Self {
-        Self {
-            superclass: GuiObject::default(),
+        let superclass = Object {};
+        let superclass = Instance {
+            superclass,
+            Capabilities: SecurityCapabilities::from_bits(0u64),
+            HistoryId: UniqueId::nil(),
+            Name: "".to_owned(),
+            SourceAssetId: 0i64,
+            Tags: Tags::new(),
+            UniqueId: UniqueId::nil(),
+        };
+        let superclass = GuiBase { superclass };
+        let superclass = GuiBase2d {
+            superclass,
+            AutoLocalize: false,
+            RootLocalizationTable: Ref::none(),
+            SelectionBehaviorDown: enums::SelectionBehavior::Escape,
+            SelectionBehaviorLeft: enums::SelectionBehavior::Escape,
+            SelectionBehaviorRight: enums::SelectionBehavior::Escape,
+            SelectionBehaviorUp: enums::SelectionBehavior::Escape,
+            SelectionGroup: false,
+        };
+        let superclass = GuiObject {
+            superclass,
+            Active: false,
+            AnchorPoint: Vector2::new(0f32, 0f32),
+            AutomaticSize: enums::AutomaticSize::None,
+            BackgroundColor3: Color3::new(0f32, 0f32, 0f32),
+            BackgroundTransparency: 0f32,
+            BorderColor3: Color3::new(0f32, 0f32, 0f32),
+            BorderMode: enums::BorderMode::Outline,
+            BorderSizePixel: 0i32,
+            ClipsDescendants: false,
+            Draggable: false,
+            Interactable: false,
+            LayoutOrder: 0i32,
+            NextSelectionDown: Ref::none(),
+            NextSelectionLeft: Ref::none(),
+            NextSelectionRight: Ref::none(),
+            NextSelectionUp: Ref::none(),
+            Position: UDim2::new(UDim::new(0f32, 0i32), UDim::new(0f32, 0i32)),
+            Rotation: 0f32,
+            Selectable: false,
+            SelectionImageObject: Ref::none(),
+            SelectionOrder: 0i32,
+            Size: UDim2::new(UDim::new(0f32, 0i32), UDim::new(0f32, 0i32)),
+            SizeConstraint: enums::SizeConstraint::RelativeXY,
+            Visible: false,
+            ZIndex: 0i32,
+        };
+        let superclass = GuiButton {
+            superclass,
             AutoButtonColor: false,
             HoverHapticEffect: Ref::none(),
             Modal: false,
             PressHapticEffect: Ref::none(),
             Selected: false,
             Style: enums::ButtonStyle::Custom,
-        }
+        };
+        superclass
     }
 }
 #[derive(Debug, Clone)]
@@ -5901,8 +8133,29 @@ impl_inherits!(GuiObject, GuiBase2d);
 impl_strong_instance_from!(GuiObject);
 impl Default for GuiObject {
     fn default() -> Self {
-        Self {
-            superclass: GuiBase2d::default(),
+        let superclass = Object {};
+        let superclass = Instance {
+            superclass,
+            Capabilities: SecurityCapabilities::from_bits(0u64),
+            HistoryId: UniqueId::nil(),
+            Name: "".to_owned(),
+            SourceAssetId: 0i64,
+            Tags: Tags::new(),
+            UniqueId: UniqueId::nil(),
+        };
+        let superclass = GuiBase { superclass };
+        let superclass = GuiBase2d {
+            superclass,
+            AutoLocalize: false,
+            RootLocalizationTable: Ref::none(),
+            SelectionBehaviorDown: enums::SelectionBehavior::Escape,
+            SelectionBehaviorLeft: enums::SelectionBehavior::Escape,
+            SelectionBehaviorRight: enums::SelectionBehavior::Escape,
+            SelectionBehaviorUp: enums::SelectionBehavior::Escape,
+            SelectionGroup: false,
+        };
+        let superclass = GuiObject {
+            superclass,
             Active: false,
             AnchorPoint: Vector2::new(0f32, 0f32),
             AutomaticSize: enums::AutomaticSize::None,
@@ -5928,7 +8181,8 @@ impl Default for GuiObject {
             SizeConstraint: enums::SizeConstraint::RelativeXY,
             Visible: false,
             ZIndex: 0i32,
-        }
+        };
+        superclass
     }
 }
 #[derive(Debug, Clone)]
@@ -5943,12 +8197,23 @@ impl_inherits!(GuiService, Instance);
 impl_strong_instance_from!(GuiService);
 impl Default for GuiService {
     fn default() -> Self {
-        Self {
-            superclass: Instance::default(),
+        let superclass = Object {};
+        let superclass = Instance {
+            superclass,
+            Capabilities: SecurityCapabilities::from_bits(0u64),
+            HistoryId: UniqueId::nil(),
+            Name: "".to_owned(),
+            SourceAssetId: 0i64,
+            Tags: Tags::new(),
+            UniqueId: UniqueId::nil(),
+        };
+        let superclass = GuiService {
+            superclass,
             AutoSelectGuiEnabled: false,
             GuiNavigationEnabled: false,
             SelectedObject: Ref::none(),
-        }
+        };
+        superclass
     }
 }
 #[derive(Debug, Clone)]
@@ -6017,8 +8282,18 @@ impl_inherits!(HandRigDescription, Instance);
 impl_strong_instance_from!(HandRigDescription);
 impl Default for HandRigDescription {
     fn default() -> Self {
-        Self {
-            superclass: Instance::default(),
+        let superclass = Object {};
+        let superclass = Instance {
+            superclass,
+            Capabilities: SecurityCapabilities::from_bits(0u64),
+            HistoryId: UniqueId::nil(),
+            Name: "".to_owned(),
+            SourceAssetId: 0i64,
+            Tags: Tags::new(),
+            UniqueId: UniqueId::nil(),
+        };
+        let superclass = HandRigDescription {
+            superclass,
             Index1: Ref::none(),
             Index1TposeAdjustment: CFrame::identity(),
             Index2: Ref::none(),
@@ -6060,7 +8335,8 @@ impl Default for HandRigDescription {
             Thumb3TposeAdjustment: CFrame::identity(),
             ThumbRange: Vector3::new(0f32, 0f32, 0f32),
             ThumbSize: 0f32,
-        }
+        };
+        superclass
     }
 }
 #[derive(Debug, Clone)]
@@ -6077,14 +8353,36 @@ impl_inherits!(HandleAdornment, PVAdornment);
 impl_strong_instance_from!(HandleAdornment);
 impl Default for HandleAdornment {
     fn default() -> Self {
-        Self {
-            superclass: PVAdornment::default(),
+        let superclass = Object {};
+        let superclass = Instance {
+            superclass,
+            Capabilities: SecurityCapabilities::from_bits(0u64),
+            HistoryId: UniqueId::nil(),
+            Name: "".to_owned(),
+            SourceAssetId: 0i64,
+            Tags: Tags::new(),
+            UniqueId: UniqueId::nil(),
+        };
+        let superclass = GuiBase { superclass };
+        let superclass = GuiBase3d {
+            superclass,
+            Color3: Color3::new(0f32, 0f32, 0f32),
+            Transparency: 0f32,
+            Visible: false,
+        };
+        let superclass = PVAdornment {
+            superclass,
+            Adornee: Ref::none(),
+        };
+        let superclass = HandleAdornment {
+            superclass,
             AdornCullingMode: enums::AdornCullingMode::Automatic,
             AlwaysOnTop: false,
             CFrame: CFrame::identity(),
             SizeRelativeOffset: Vector3::new(0f32, 0f32, 0f32),
             ZIndex: 0i32,
-        }
+        };
+        superclass
     }
 }
 #[derive(Debug, Clone)]
@@ -6098,11 +8396,34 @@ impl_inherits!(Handles, HandlesBase);
 impl_strong_instance_from!(Handles);
 impl Default for Handles {
     fn default() -> Self {
-        Self {
-            superclass: HandlesBase::default(),
+        let superclass = Object {};
+        let superclass = Instance {
+            superclass,
+            Capabilities: SecurityCapabilities::from_bits(0u64),
+            HistoryId: UniqueId::nil(),
+            Name: "".to_owned(),
+            SourceAssetId: 0i64,
+            Tags: Tags::new(),
+            UniqueId: UniqueId::nil(),
+        };
+        let superclass = GuiBase { superclass };
+        let superclass = GuiBase3d {
+            superclass,
+            Color3: Color3::new(0f32, 0f32, 0f32),
+            Transparency: 0f32,
+            Visible: false,
+        };
+        let superclass = PartAdornment {
+            superclass,
+            Adornee: Ref::none(),
+        };
+        let superclass = HandlesBase { superclass };
+        let superclass = Handles {
+            superclass,
             Faces: unimplemented!(),
             Style: enums::HandlesStyle::Resize,
-        }
+        };
+        superclass
     }
 }
 #[derive(Debug, Clone)]
@@ -6128,15 +8449,26 @@ impl_inherits!(HapticEffect, Instance);
 impl_strong_instance_from!(HapticEffect);
 impl Default for HapticEffect {
     fn default() -> Self {
-        Self {
-            superclass: Instance::default(),
+        let superclass = Object {};
+        let superclass = Instance {
+            superclass,
+            Capabilities: SecurityCapabilities::from_bits(0u64),
+            HistoryId: UniqueId::nil(),
+            Name: "".to_owned(),
+            SourceAssetId: 0i64,
+            Tags: Tags::new(),
+            UniqueId: UniqueId::nil(),
+        };
+        let superclass = HapticEffect {
+            superclass,
             Looped: false,
             Position: Vector3::new(0f32, 0f32, 0f32),
             Radius: 3f32,
             Type: enums::HapticEffectType::UIClick,
             Waveform: Ref::none(),
             WaveformData: b"".as_slice().into(),
-        }
+        };
+        superclass
     }
 }
 #[derive(Debug, Clone)]
@@ -6198,11 +8530,22 @@ impl_inherits!(HiddenSurfaceRemovalAsset, Instance);
 impl_strong_instance_from!(HiddenSurfaceRemovalAsset);
 impl Default for HiddenSurfaceRemovalAsset {
     fn default() -> Self {
-        Self {
-            superclass: Instance::default(),
+        let superclass = Object {};
+        let superclass = Instance {
+            superclass,
+            Capabilities: SecurityCapabilities::from_bits(0u64),
+            HistoryId: UniqueId::nil(),
+            Name: "".to_owned(),
+            SourceAssetId: 0i64,
+            Tags: Tags::new(),
+            UniqueId: UniqueId::nil(),
+        };
+        let superclass = HiddenSurfaceRemovalAsset {
+            superclass,
             HsrData: b"".as_slice().into(),
             HsrMeshIdData: b"".as_slice().into(),
-        }
+        };
+        superclass
     }
 }
 #[derive(Debug, Clone)]
@@ -6221,8 +8564,18 @@ impl_inherits!(Highlight, Instance);
 impl_strong_instance_from!(Highlight);
 impl Default for Highlight {
     fn default() -> Self {
-        Self {
-            superclass: Instance::default(),
+        let superclass = Object {};
+        let superclass = Instance {
+            superclass,
+            Capabilities: SecurityCapabilities::from_bits(0u64),
+            HistoryId: UniqueId::nil(),
+            Name: "".to_owned(),
+            SourceAssetId: 0i64,
+            Tags: Tags::new(),
+            UniqueId: UniqueId::nil(),
+        };
+        let superclass = Highlight {
+            superclass,
             Adornee: Ref::none(),
             DepthMode: enums::HighlightDepthMode::AlwaysOnTop,
             Enabled: true,
@@ -6230,7 +8583,8 @@ impl Default for Highlight {
             FillTransparency: 0.5f32,
             OutlineColor: Color3::new(1f32, 1f32, 1f32),
             OutlineTransparency: 0f32,
-        }
+        };
+        superclass
     }
 }
 #[derive(Debug, Clone)]
@@ -6256,8 +8610,26 @@ impl_inherits!(HingeConstraint, Constraint);
 impl_strong_instance_from!(HingeConstraint);
 impl Default for HingeConstraint {
     fn default() -> Self {
-        Self {
-            superclass: Constraint::default(),
+        let superclass = Object {};
+        let superclass = Instance {
+            superclass,
+            Capabilities: SecurityCapabilities::from_bits(0u64),
+            HistoryId: UniqueId::nil(),
+            Name: "".to_owned(),
+            SourceAssetId: 0i64,
+            Tags: Tags::new(),
+            UniqueId: UniqueId::nil(),
+        };
+        let superclass = Constraint {
+            superclass,
+            Attachment0: Ref::none(),
+            Attachment1: Ref::none(),
+            Color: BrickColor::from_number(194u16).unwrap(),
+            Enabled: false,
+            Visible: false,
+        };
+        let superclass = HingeConstraint {
+            superclass,
             ActuatorType: enums::ActuatorType::None,
             AngularResponsiveness: 45f32,
             AngularSpeed: 0f32,
@@ -6272,7 +8644,8 @@ impl Default for HingeConstraint {
             SoftlockServoUponReachingTarget: false,
             TargetAngle: 0f32,
             UpperAngle: 45f32,
-        }
+        };
+        superclass
     }
 }
 #[derive(Debug, Clone)]
@@ -6310,11 +8683,39 @@ impl_inherits!(HopperBin, BackpackItem);
 impl_strong_instance_from!(HopperBin);
 impl Default for HopperBin {
     fn default() -> Self {
-        Self {
-            superclass: BackpackItem::default(),
+        let superclass = Object {};
+        let superclass = Instance {
+            superclass,
+            Capabilities: SecurityCapabilities::from_bits(0u64),
+            HistoryId: UniqueId::nil(),
+            Name: "".to_owned(),
+            SourceAssetId: 0i64,
+            Tags: Tags::new(),
+            UniqueId: UniqueId::nil(),
+        };
+        let superclass = PVInstance { superclass };
+        let superclass = Model {
+            superclass,
+            LevelOfDetail: enums::ModelLevelOfDetail::Automatic,
+            ModelMeshCFrame: CFrame::identity(),
+            ModelMeshData: SharedString::new(b"".to_vec()),
+            ModelMeshSize: Vector3::new(0f32, 0f32, 0f32),
+            ModelStreamingMode: enums::ModelStreamingMode::Default,
+            NeedsPivotMigration: false,
+            PrimaryPart: Ref::none(),
+            SlimHash: SharedString::new(b"".to_vec()),
+            WorldPivotData: None,
+        };
+        let superclass = BackpackItem {
+            superclass,
+            TextureContent: Content::none(),
+        };
+        let superclass = HopperBin {
+            superclass,
             Active: false,
             BinType: enums::BinType::Script,
-        }
+        };
+        superclass
     }
 }
 #[derive(Debug, Clone)]
@@ -6343,10 +8744,21 @@ impl_inherits!(HttpService, Instance);
 impl_strong_instance_from!(HttpService);
 impl Default for HttpService {
     fn default() -> Self {
-        Self {
-            superclass: Instance::default(),
+        let superclass = Object {};
+        let superclass = Instance {
+            superclass,
+            Capabilities: SecurityCapabilities::from_bits(0u64),
+            HistoryId: UniqueId::nil(),
+            Name: "".to_owned(),
+            SourceAssetId: 0i64,
+            Tags: Tags::new(),
+            UniqueId: UniqueId::nil(),
+        };
+        let superclass = HttpService {
+            superclass,
             HttpEnabled: false,
-        }
+        };
+        superclass
     }
 }
 #[derive(Debug, Clone)]
@@ -6382,8 +8794,18 @@ impl_inherits!(Humanoid, Instance);
 impl_strong_instance_from!(Humanoid);
 impl Default for Humanoid {
     fn default() -> Self {
-        Self {
-            superclass: Instance::default(),
+        let superclass = Object {};
+        let superclass = Instance {
+            superclass,
+            Capabilities: SecurityCapabilities::from_bits(0u64),
+            HistoryId: UniqueId::nil(),
+            Name: "".to_owned(),
+            SourceAssetId: 0i64,
+            Tags: Tags::new(),
+            UniqueId: UniqueId::nil(),
+        };
+        let superclass = Humanoid {
+            superclass,
             AutoJumpEnabled: true,
             AutoRotate: true,
             AutomaticScalingEnabled: true,
@@ -6408,7 +8830,8 @@ impl Default for Humanoid {
             RigType: enums::HumanoidRigType::R6,
             UseJumpPower: true,
             WalkSpeed: 16f32,
-        }
+        };
+        superclass
     }
 }
 #[derive(Debug, Clone)]
@@ -6448,8 +8871,18 @@ impl_inherits!(HumanoidDescription, Instance);
 impl_strong_instance_from!(HumanoidDescription);
 impl Default for HumanoidDescription {
     fn default() -> Self {
-        Self {
-            superclass: Instance::default(),
+        let superclass = Object {};
+        let superclass = Instance {
+            superclass,
+            Capabilities: SecurityCapabilities::from_bits(0u64),
+            HistoryId: UniqueId::nil(),
+            Name: "".to_owned(),
+            SourceAssetId: 0i64,
+            Tags: Tags::new(),
+            UniqueId: UniqueId::nil(),
+        };
+        let superclass = HumanoidDescription {
+            superclass,
             BodyTypeScale: 0.3f32,
             ClimbAnimation: 0i64,
             DepthScale: 1f32,
@@ -6470,7 +8903,8 @@ impl Default for HumanoidDescription {
             SwimAnimation: 0i64,
             WalkAnimation: 0i64,
             WidthScale: 1f32,
-        }
+        };
+        superclass
     }
 }
 #[derive(Debug, Clone)]
@@ -6593,8 +9027,18 @@ impl_inherits!(HumanoidRigDescription, Instance);
 impl_strong_instance_from!(HumanoidRigDescription);
 impl Default for HumanoidRigDescription {
     fn default() -> Self {
-        Self {
-            superclass: Instance::default(),
+        let superclass = Object {};
+        let superclass = Instance {
+            superclass,
+            Capabilities: SecurityCapabilities::from_bits(0u64),
+            HistoryId: UniqueId::nil(),
+            Name: "".to_owned(),
+            SourceAssetId: 0i64,
+            Tags: Tags::new(),
+            UniqueId: UniqueId::nil(),
+        };
+        let superclass = HumanoidRigDescription {
+            superclass,
             Chest: Ref::none(),
             ChestRangeMax: Vector3::new(0f32, 0f32, 0f32),
             ChestRangeMin: Vector3::new(0f32, 0f32, 0f32),
@@ -6706,7 +9150,8 @@ impl Default for HumanoidRigDescription {
             WaistRangeMin: Vector3::new(0f32, 0f32, 0f32),
             WaistSize: 0f32,
             WaistTposeAdjustment: CFrame::identity(),
-        }
+        };
+        superclass
     }
 }
 #[derive(Debug, Clone)]
@@ -6729,8 +9174,18 @@ impl_inherits!(IKControl, Instance);
 impl_strong_instance_from!(IKControl);
 impl Default for IKControl {
     fn default() -> Self {
-        Self {
-            superclass: Instance::default(),
+        let superclass = Object {};
+        let superclass = Instance {
+            superclass,
+            Capabilities: SecurityCapabilities::from_bits(0u64),
+            HistoryId: UniqueId::nil(),
+            Name: "".to_owned(),
+            SourceAssetId: 0i64,
+            Tags: Tags::new(),
+            UniqueId: UniqueId::nil(),
+        };
+        let superclass = IKControl {
+            superclass,
             ChainRoot: Ref::none(),
             Enabled: true,
             EndEffector: Ref::none(),
@@ -6742,7 +9197,8 @@ impl Default for IKControl {
             Target: Ref::none(),
             Type: enums::IKControlType::Transform,
             Weight: 1f32,
-        }
+        };
+        superclass
     }
 }
 #[derive(Debug, Clone)]
@@ -6782,8 +9238,66 @@ impl_inherits!(ImageButton, GuiButton);
 impl_strong_instance_from!(ImageButton);
 impl Default for ImageButton {
     fn default() -> Self {
-        Self {
-            superclass: GuiButton::default(),
+        let superclass = Object {};
+        let superclass = Instance {
+            superclass,
+            Capabilities: SecurityCapabilities::from_bits(0u64),
+            HistoryId: UniqueId::nil(),
+            Name: "".to_owned(),
+            SourceAssetId: 0i64,
+            Tags: Tags::new(),
+            UniqueId: UniqueId::nil(),
+        };
+        let superclass = GuiBase { superclass };
+        let superclass = GuiBase2d {
+            superclass,
+            AutoLocalize: false,
+            RootLocalizationTable: Ref::none(),
+            SelectionBehaviorDown: enums::SelectionBehavior::Escape,
+            SelectionBehaviorLeft: enums::SelectionBehavior::Escape,
+            SelectionBehaviorRight: enums::SelectionBehavior::Escape,
+            SelectionBehaviorUp: enums::SelectionBehavior::Escape,
+            SelectionGroup: false,
+        };
+        let superclass = GuiObject {
+            superclass,
+            Active: false,
+            AnchorPoint: Vector2::new(0f32, 0f32),
+            AutomaticSize: enums::AutomaticSize::None,
+            BackgroundColor3: Color3::new(0f32, 0f32, 0f32),
+            BackgroundTransparency: 0f32,
+            BorderColor3: Color3::new(0f32, 0f32, 0f32),
+            BorderMode: enums::BorderMode::Outline,
+            BorderSizePixel: 0i32,
+            ClipsDescendants: false,
+            Draggable: false,
+            Interactable: false,
+            LayoutOrder: 0i32,
+            NextSelectionDown: Ref::none(),
+            NextSelectionLeft: Ref::none(),
+            NextSelectionRight: Ref::none(),
+            NextSelectionUp: Ref::none(),
+            Position: UDim2::new(UDim::new(0f32, 0i32), UDim::new(0f32, 0i32)),
+            Rotation: 0f32,
+            Selectable: false,
+            SelectionImageObject: Ref::none(),
+            SelectionOrder: 0i32,
+            Size: UDim2::new(UDim::new(0f32, 0i32), UDim::new(0f32, 0i32)),
+            SizeConstraint: enums::SizeConstraint::RelativeXY,
+            Visible: false,
+            ZIndex: 0i32,
+        };
+        let superclass = GuiButton {
+            superclass,
+            AutoButtonColor: false,
+            HoverHapticEffect: Ref::none(),
+            Modal: false,
+            PressHapticEffect: Ref::none(),
+            Selected: false,
+            Style: enums::ButtonStyle::Custom,
+        };
+        let superclass = ImageButton {
+            superclass,
             HoverImageContent: Content::none(),
             ImageColor3: Color3::new(1f32, 1f32, 1f32),
             ImageContent: Content::none(),
@@ -6796,7 +9310,8 @@ impl Default for ImageButton {
             SliceCenter: Rect::new(Vector2::new(0f32, 0f32), Vector2::new(0f32, 0f32)),
             SliceScale: 1f32,
             TileSize: UDim2::new(UDim::new(1f32, 0i32), UDim::new(1f32, 0i32)),
-        }
+        };
+        superclass
     }
 }
 #[derive(Debug, Clone)]
@@ -6810,11 +9325,41 @@ impl_inherits!(ImageHandleAdornment, HandleAdornment);
 impl_strong_instance_from!(ImageHandleAdornment);
 impl Default for ImageHandleAdornment {
     fn default() -> Self {
-        Self {
-            superclass: HandleAdornment::default(),
+        let superclass = Object {};
+        let superclass = Instance {
+            superclass,
+            Capabilities: SecurityCapabilities::from_bits(0u64),
+            HistoryId: UniqueId::nil(),
+            Name: "".to_owned(),
+            SourceAssetId: 0i64,
+            Tags: Tags::new(),
+            UniqueId: UniqueId::nil(),
+        };
+        let superclass = GuiBase { superclass };
+        let superclass = GuiBase3d {
+            superclass,
+            Color3: Color3::new(0f32, 0f32, 0f32),
+            Transparency: 0f32,
+            Visible: false,
+        };
+        let superclass = PVAdornment {
+            superclass,
+            Adornee: Ref::none(),
+        };
+        let superclass = HandleAdornment {
+            superclass,
+            AdornCullingMode: enums::AdornCullingMode::Automatic,
+            AlwaysOnTop: false,
+            CFrame: CFrame::identity(),
+            SizeRelativeOffset: Vector3::new(0f32, 0f32, 0f32),
+            ZIndex: 0i32,
+        };
+        let superclass = ImageHandleAdornment {
+            superclass,
             Image: "rbxasset://textures/SurfacesDefault.png".into(),
             Size: Vector2::new(1f32, 1f32),
-        }
+        };
+        superclass
     }
 }
 #[derive(Debug, Clone)]
@@ -6836,8 +9381,58 @@ impl_inherits!(ImageLabel, GuiLabel);
 impl_strong_instance_from!(ImageLabel);
 impl Default for ImageLabel {
     fn default() -> Self {
-        Self {
-            superclass: GuiLabel::default(),
+        let superclass = Object {};
+        let superclass = Instance {
+            superclass,
+            Capabilities: SecurityCapabilities::from_bits(0u64),
+            HistoryId: UniqueId::nil(),
+            Name: "".to_owned(),
+            SourceAssetId: 0i64,
+            Tags: Tags::new(),
+            UniqueId: UniqueId::nil(),
+        };
+        let superclass = GuiBase { superclass };
+        let superclass = GuiBase2d {
+            superclass,
+            AutoLocalize: false,
+            RootLocalizationTable: Ref::none(),
+            SelectionBehaviorDown: enums::SelectionBehavior::Escape,
+            SelectionBehaviorLeft: enums::SelectionBehavior::Escape,
+            SelectionBehaviorRight: enums::SelectionBehavior::Escape,
+            SelectionBehaviorUp: enums::SelectionBehavior::Escape,
+            SelectionGroup: false,
+        };
+        let superclass = GuiObject {
+            superclass,
+            Active: false,
+            AnchorPoint: Vector2::new(0f32, 0f32),
+            AutomaticSize: enums::AutomaticSize::None,
+            BackgroundColor3: Color3::new(0f32, 0f32, 0f32),
+            BackgroundTransparency: 0f32,
+            BorderColor3: Color3::new(0f32, 0f32, 0f32),
+            BorderMode: enums::BorderMode::Outline,
+            BorderSizePixel: 0i32,
+            ClipsDescendants: false,
+            Draggable: false,
+            Interactable: false,
+            LayoutOrder: 0i32,
+            NextSelectionDown: Ref::none(),
+            NextSelectionLeft: Ref::none(),
+            NextSelectionRight: Ref::none(),
+            NextSelectionUp: Ref::none(),
+            Position: UDim2::new(UDim::new(0f32, 0i32), UDim::new(0f32, 0i32)),
+            Rotation: 0f32,
+            Selectable: false,
+            SelectionImageObject: Ref::none(),
+            SelectionOrder: 0i32,
+            Size: UDim2::new(UDim::new(0f32, 0i32), UDim::new(0f32, 0i32)),
+            SizeConstraint: enums::SizeConstraint::RelativeXY,
+            Visible: false,
+            ZIndex: 0i32,
+        };
+        let superclass = GuiLabel { superclass };
+        let superclass = ImageLabel {
+            superclass,
             ImageColor3: Color3::new(1f32, 1f32, 1f32),
             ImageContent: Content::none(),
             ImageRectOffset: Vector2::new(0f32, 0f32),
@@ -6848,7 +9443,8 @@ impl Default for ImageLabel {
             SliceCenter: Rect::new(Vector2::new(0f32, 0f32), Vector2::new(0f32, 0f32)),
             SliceScale: 1f32,
             TileSize: UDim2::new(UDim::new(1f32, 0i32), UDim::new(1f32, 0i32)),
-        }
+        };
+        superclass
     }
 }
 #[derive(Debug, Clone)]
@@ -6874,15 +9470,26 @@ impl_inherits!(IncrementalPatchBuilder, Instance);
 impl_strong_instance_from!(IncrementalPatchBuilder);
 impl Default for IncrementalPatchBuilder {
     fn default() -> Self {
-        Self {
-            superclass: Instance::default(),
+        let superclass = Object {};
+        let superclass = Instance {
+            superclass,
+            Capabilities: SecurityCapabilities::from_bits(0u64),
+            HistoryId: UniqueId::nil(),
+            Name: "".to_owned(),
+            SourceAssetId: 0i64,
+            Tags: Tags::new(),
+            UniqueId: UniqueId::nil(),
+        };
+        let superclass = IncrementalPatchBuilder {
+            superclass,
             AddPathsToBundle: false,
             BuildDebouncePeriod: 0f64,
             HighCompression: false,
             SerializePatch: false,
             UseFileLevelCompressionInsteadOfChunk: false,
             ZstdCompression: false,
-        }
+        };
+        superclass
     }
 }
 #[derive(Debug, Clone)]
@@ -6896,11 +9503,22 @@ impl_inherits!(InputAction, Instance);
 impl_strong_instance_from!(InputAction);
 impl Default for InputAction {
     fn default() -> Self {
-        Self {
-            superclass: Instance::default(),
+        let superclass = Object {};
+        let superclass = Instance {
+            superclass,
+            Capabilities: SecurityCapabilities::from_bits(0u64),
+            HistoryId: UniqueId::nil(),
+            Name: "".to_owned(),
+            SourceAssetId: 0i64,
+            Tags: Tags::new(),
+            UniqueId: UniqueId::nil(),
+        };
+        let superclass = InputAction {
+            superclass,
             Enabled: true,
             Type: enums::InputActionType::Bool,
-        }
+        };
+        superclass
     }
 }
 #[derive(Debug, Clone)]
@@ -6925,8 +9543,18 @@ impl_inherits!(InputBinding, Instance);
 impl_strong_instance_from!(InputBinding);
 impl Default for InputBinding {
     fn default() -> Self {
-        Self {
-            superclass: Instance::default(),
+        let superclass = Object {};
+        let superclass = Instance {
+            superclass,
+            Capabilities: SecurityCapabilities::from_bits(0u64),
+            HistoryId: UniqueId::nil(),
+            Name: "".to_owned(),
+            SourceAssetId: 0i64,
+            Tags: Tags::new(),
+            UniqueId: UniqueId::nil(),
+        };
+        let superclass = InputBinding {
+            superclass,
             Backward: enums::KeyCode::Unknown,
             Down: enums::KeyCode::Unknown,
             Forward: enums::KeyCode::Unknown,
@@ -6940,7 +9568,8 @@ impl Default for InputBinding {
             UiButton: Ref::none(),
             Up: enums::KeyCode::Unknown,
             Vector2Scale: Vector2::new(1f32, 1f32),
-        }
+        };
+        superclass
     }
 }
 #[derive(Debug, Clone)]
@@ -6955,12 +9584,23 @@ impl_inherits!(InputContext, Instance);
 impl_strong_instance_from!(InputContext);
 impl Default for InputContext {
     fn default() -> Self {
-        Self {
-            superclass: Instance::default(),
+        let superclass = Object {};
+        let superclass = Instance {
+            superclass,
+            Capabilities: SecurityCapabilities::from_bits(0u64),
+            HistoryId: UniqueId::nil(),
+            Name: "".to_owned(),
+            SourceAssetId: 0i64,
+            Tags: Tags::new(),
+            UniqueId: UniqueId::nil(),
+        };
+        let superclass = InputContext {
+            superclass,
             Enabled: true,
             Priority: 1000i32,
             Sink: false,
-        }
+        };
+        superclass
     }
 }
 #[derive(Debug, Clone)]
@@ -6982,11 +9622,22 @@ impl_inherits!(InsertService, Instance);
 impl_strong_instance_from!(InsertService);
 impl Default for InsertService {
     fn default() -> Self {
-        Self {
-            superclass: Instance::default(),
+        let superclass = Object {};
+        let superclass = Instance {
+            superclass,
+            Capabilities: SecurityCapabilities::from_bits(0u64),
+            HistoryId: UniqueId::nil(),
+            Name: "".to_owned(),
+            SourceAssetId: 0i64,
+            Tags: Tags::new(),
+            UniqueId: UniqueId::nil(),
+        };
+        let superclass = InsertService {
+            superclass,
             AllowClientInsertModels: false,
             AllowInsertFreeModels: false,
-        }
+        };
+        superclass
     }
 }
 #[derive(Debug, Clone)]
@@ -7004,15 +9655,17 @@ impl_inherits!(Instance, Object);
 impl_strong_instance_from!(Instance);
 impl Default for Instance {
     fn default() -> Self {
-        Self {
-            superclass: Object::default(),
+        let superclass = Object {};
+        let superclass = Instance {
+            superclass,
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
             SourceAssetId: 0i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
-        }
+        };
+        superclass
     }
 }
 #[derive(Debug, Clone)]
@@ -7025,10 +9678,28 @@ impl_inherits!(InstanceAdornment, GuiBase3d);
 impl_strong_instance_from!(InstanceAdornment);
 impl Default for InstanceAdornment {
     fn default() -> Self {
-        Self {
-            superclass: GuiBase3d::default(),
+        let superclass = Object {};
+        let superclass = Instance {
+            superclass,
+            Capabilities: SecurityCapabilities::from_bits(0u64),
+            HistoryId: UniqueId::nil(),
+            Name: "".to_owned(),
+            SourceAssetId: 0i64,
+            Tags: Tags::new(),
+            UniqueId: UniqueId::nil(),
+        };
+        let superclass = GuiBase { superclass };
+        let superclass = GuiBase3d {
+            superclass,
+            Color3: Color3::new(0f32, 0f32, 0f32),
+            Transparency: 0f32,
+            Visible: false,
+        };
+        let superclass = InstanceAdornment {
+            superclass,
             Adornee: Ref::none(),
-        }
+        };
+        superclass
     }
 }
 #[derive(Debug, Clone)]
@@ -7051,12 +9722,24 @@ impl_inherits!(IntConstrainedValue, ValueBase);
 impl_strong_instance_from!(IntConstrainedValue);
 impl Default for IntConstrainedValue {
     fn default() -> Self {
-        Self {
-            superclass: ValueBase::default(),
+        let superclass = Object {};
+        let superclass = Instance {
+            superclass,
+            Capabilities: SecurityCapabilities::from_bits(0u64),
+            HistoryId: UniqueId::nil(),
+            Name: "".to_owned(),
+            SourceAssetId: 0i64,
+            Tags: Tags::new(),
+            UniqueId: UniqueId::nil(),
+        };
+        let superclass = ValueBase { superclass };
+        let superclass = IntConstrainedValue {
+            superclass,
             MaxValue: 10i64,
             MinValue: 0i64,
             Value: 0i64,
-        }
+        };
+        superclass
     }
 }
 #[derive(Debug, Clone)]
@@ -7069,10 +9752,22 @@ impl_inherits!(IntValue, ValueBase);
 impl_strong_instance_from!(IntValue);
 impl Default for IntValue {
     fn default() -> Self {
-        Self {
-            superclass: ValueBase::default(),
+        let superclass = Object {};
+        let superclass = Instance {
+            superclass,
+            Capabilities: SecurityCapabilities::from_bits(0u64),
+            HistoryId: UniqueId::nil(),
+            Name: "".to_owned(),
+            SourceAssetId: 0i64,
+            Tags: Tags::new(),
+            UniqueId: UniqueId::nil(),
+        };
+        let superclass = ValueBase { superclass };
+        let superclass = IntValue {
+            superclass,
             Value: 0i64,
-        }
+        };
+        superclass
     }
 }
 #[derive(Debug, Clone)]
@@ -7087,12 +9782,23 @@ impl_inherits!(InternalSyncItem, Instance);
 impl_strong_instance_from!(InternalSyncItem);
 impl Default for InternalSyncItem {
     fn default() -> Self {
-        Self {
-            superclass: Instance::default(),
+        let superclass = Object {};
+        let superclass = Instance {
+            superclass,
+            Capabilities: SecurityCapabilities::from_bits(0u64),
+            HistoryId: UniqueId::nil(),
+            Name: "".to_owned(),
+            SourceAssetId: 0i64,
+            Tags: Tags::new(),
+            UniqueId: UniqueId::nil(),
+        };
+        let superclass = InternalSyncItem {
+            superclass,
             AutoSync: false,
             Enabled: false,
             Path: "".to_owned(),
-        }
+        };
+        superclass
     }
 }
 #[derive(Debug, Clone)]
@@ -7141,14 +9847,25 @@ impl_inherits!(JointInstance, Instance);
 impl_strong_instance_from!(JointInstance);
 impl Default for JointInstance {
     fn default() -> Self {
-        Self {
-            superclass: Instance::default(),
+        let superclass = Object {};
+        let superclass = Instance {
+            superclass,
+            Capabilities: SecurityCapabilities::from_bits(0u64),
+            HistoryId: UniqueId::nil(),
+            Name: "".to_owned(),
+            SourceAssetId: 0i64,
+            Tags: Tags::new(),
+            UniqueId: UniqueId::nil(),
+        };
+        let superclass = JointInstance {
+            superclass,
             C0: CFrame::identity(),
             C1: CFrame::identity(),
             Enabled: false,
             Part0: Ref::none(),
             Part1: Ref::none(),
-        }
+        };
+        superclass
     }
 }
 #[derive(Debug, Clone)]
@@ -7177,10 +9894,21 @@ impl_inherits!(Keyframe, Instance);
 impl_strong_instance_from!(Keyframe);
 impl Default for Keyframe {
     fn default() -> Self {
-        Self {
-            superclass: Instance::default(),
+        let superclass = Object {};
+        let superclass = Instance {
+            superclass,
+            Capabilities: SecurityCapabilities::from_bits(0u64),
+            HistoryId: UniqueId::nil(),
+            Name: "".to_owned(),
+            SourceAssetId: 0i64,
+            Tags: Tags::new(),
+            UniqueId: UniqueId::nil(),
+        };
+        let superclass = Keyframe {
+            superclass,
             Time: 0f32,
-        }
+        };
+        superclass
     }
 }
 #[derive(Debug, Clone)]
@@ -7193,10 +9921,21 @@ impl_inherits!(KeyframeMarker, Instance);
 impl_strong_instance_from!(KeyframeMarker);
 impl Default for KeyframeMarker {
     fn default() -> Self {
-        Self {
-            superclass: Instance::default(),
+        let superclass = Object {};
+        let superclass = Instance {
+            superclass,
+            Capabilities: SecurityCapabilities::from_bits(0u64),
+            HistoryId: UniqueId::nil(),
+            Name: "".to_owned(),
+            SourceAssetId: 0i64,
+            Tags: Tags::new(),
+            UniqueId: UniqueId::nil(),
+        };
+        let superclass = KeyframeMarker {
+            superclass,
             Value: "".to_owned(),
-        }
+        };
+        superclass
     }
 }
 #[derive(Debug, Clone)]
@@ -7209,10 +9948,27 @@ impl_inherits!(KeyframeSequence, AnimationClip);
 impl_strong_instance_from!(KeyframeSequence);
 impl Default for KeyframeSequence {
     fn default() -> Self {
-        Self {
-            superclass: AnimationClip::default(),
+        let superclass = Object {};
+        let superclass = Instance {
+            superclass,
+            Capabilities: SecurityCapabilities::from_bits(0u64),
+            HistoryId: UniqueId::nil(),
+            Name: "".to_owned(),
+            SourceAssetId: 0i64,
+            Tags: Tags::new(),
+            UniqueId: UniqueId::nil(),
+        };
+        let superclass = AnimationClip {
+            superclass,
+            GuidBinaryString: b"".as_slice().into(),
+            Loop: false,
+            Priority: enums::AnimationPriority::Idle,
+        };
+        let superclass = KeyframeSequence {
+            superclass,
             AuthoredHipHeight: 2f32,
-        }
+        };
+        superclass
     }
 }
 #[derive(Debug, Clone)]
@@ -7251,12 +10007,34 @@ impl_inherits!(LayerCollector, GuiBase2d);
 impl_strong_instance_from!(LayerCollector);
 impl Default for LayerCollector {
     fn default() -> Self {
-        Self {
-            superclass: GuiBase2d::default(),
+        let superclass = Object {};
+        let superclass = Instance {
+            superclass,
+            Capabilities: SecurityCapabilities::from_bits(0u64),
+            HistoryId: UniqueId::nil(),
+            Name: "".to_owned(),
+            SourceAssetId: 0i64,
+            Tags: Tags::new(),
+            UniqueId: UniqueId::nil(),
+        };
+        let superclass = GuiBase { superclass };
+        let superclass = GuiBase2d {
+            superclass,
+            AutoLocalize: false,
+            RootLocalizationTable: Ref::none(),
+            SelectionBehaviorDown: enums::SelectionBehavior::Escape,
+            SelectionBehaviorLeft: enums::SelectionBehavior::Escape,
+            SelectionBehaviorRight: enums::SelectionBehavior::Escape,
+            SelectionBehaviorUp: enums::SelectionBehavior::Escape,
+            SelectionGroup: false,
+        };
+        let superclass = LayerCollector {
+            superclass,
             Enabled: false,
             ResetOnSpawn: false,
             ZIndexBehavior: enums::ZIndexBehavior::Global,
-        }
+        };
+        superclass
     }
 }
 #[derive(Debug, Clone)]
@@ -7280,13 +10058,24 @@ impl_inherits!(Light, Instance);
 impl_strong_instance_from!(Light);
 impl Default for Light {
     fn default() -> Self {
-        Self {
-            superclass: Instance::default(),
+        let superclass = Object {};
+        let superclass = Instance {
+            superclass,
+            Capabilities: SecurityCapabilities::from_bits(0u64),
+            HistoryId: UniqueId::nil(),
+            Name: "".to_owned(),
+            SourceAssetId: 0i64,
+            Tags: Tags::new(),
+            UniqueId: UniqueId::nil(),
+        };
+        let superclass = Light {
+            superclass,
             Brightness: 0f32,
             Color: Color3::new(0f32, 0f32, 0f32),
             Enabled: false,
             Shadows: false,
-        }
+        };
+        superclass
     }
 }
 #[derive(Debug, Clone)]
@@ -7319,8 +10108,18 @@ impl_inherits!(Lighting, Instance);
 impl_strong_instance_from!(Lighting);
 impl Default for Lighting {
     fn default() -> Self {
-        Self {
-            superclass: Instance::default(),
+        let superclass = Object {};
+        let superclass = Instance {
+            superclass,
+            Capabilities: SecurityCapabilities::from_bits(0u64),
+            HistoryId: UniqueId::nil(),
+            Name: "".to_owned(),
+            SourceAssetId: 0i64,
+            Tags: Tags::new(),
+            UniqueId: UniqueId::nil(),
+        };
+        let superclass = Lighting {
+            superclass,
             Ambient: Color3::new(0.5f32, 0.5f32, 0.5f32),
             Brightness: 1.9812492f32,
             ClockTime: 0f32,
@@ -7342,7 +10141,8 @@ impl Default for Lighting {
             ShadowSoftness: 0.5f32,
             Technology: enums::Technology::Voxel,
             TimeOfDay: "14:00:00".to_owned(),
-        }
+        };
+        superclass
     }
 }
 #[derive(Debug, Clone)]
@@ -7359,14 +10159,33 @@ impl_inherits!(LineForce, Constraint);
 impl_strong_instance_from!(LineForce);
 impl Default for LineForce {
     fn default() -> Self {
-        Self {
-            superclass: Constraint::default(),
+        let superclass = Object {};
+        let superclass = Instance {
+            superclass,
+            Capabilities: SecurityCapabilities::from_bits(0u64),
+            HistoryId: UniqueId::nil(),
+            Name: "".to_owned(),
+            SourceAssetId: 0i64,
+            Tags: Tags::new(),
+            UniqueId: UniqueId::nil(),
+        };
+        let superclass = Constraint {
+            superclass,
+            Attachment0: Ref::none(),
+            Attachment1: Ref::none(),
+            Color: BrickColor::from_number(194u16).unwrap(),
+            Enabled: false,
+            Visible: false,
+        };
+        let superclass = LineForce {
+            superclass,
             ApplyAtCenterOfMass: false,
             InverseSquareLaw: false,
             Magnitude: 1000f32,
             MaxForce: f32::INFINITY,
             ReactionForceEnabled: false,
-        }
+        };
+        superclass
     }
 }
 #[derive(Debug, Clone)]
@@ -7380,11 +10199,41 @@ impl_inherits!(LineHandleAdornment, HandleAdornment);
 impl_strong_instance_from!(LineHandleAdornment);
 impl Default for LineHandleAdornment {
     fn default() -> Self {
-        Self {
-            superclass: HandleAdornment::default(),
+        let superclass = Object {};
+        let superclass = Instance {
+            superclass,
+            Capabilities: SecurityCapabilities::from_bits(0u64),
+            HistoryId: UniqueId::nil(),
+            Name: "".to_owned(),
+            SourceAssetId: 0i64,
+            Tags: Tags::new(),
+            UniqueId: UniqueId::nil(),
+        };
+        let superclass = GuiBase { superclass };
+        let superclass = GuiBase3d {
+            superclass,
+            Color3: Color3::new(0f32, 0f32, 0f32),
+            Transparency: 0f32,
+            Visible: false,
+        };
+        let superclass = PVAdornment {
+            superclass,
+            Adornee: Ref::none(),
+        };
+        let superclass = HandleAdornment {
+            superclass,
+            AdornCullingMode: enums::AdornCullingMode::Automatic,
+            AlwaysOnTop: false,
+            CFrame: CFrame::identity(),
+            SizeRelativeOffset: Vector3::new(0f32, 0f32, 0f32),
+            ZIndex: 0i32,
+        };
+        let superclass = LineHandleAdornment {
+            superclass,
             Length: 5f32,
             Thickness: 1f32,
-        }
+        };
+        superclass
     }
 }
 #[derive(Debug, Clone)]
@@ -7410,8 +10259,26 @@ impl_inherits!(LinearVelocity, Constraint);
 impl_strong_instance_from!(LinearVelocity);
 impl Default for LinearVelocity {
     fn default() -> Self {
-        Self {
-            superclass: Constraint::default(),
+        let superclass = Object {};
+        let superclass = Instance {
+            superclass,
+            Capabilities: SecurityCapabilities::from_bits(0u64),
+            HistoryId: UniqueId::nil(),
+            Name: "".to_owned(),
+            SourceAssetId: 0i64,
+            Tags: Tags::new(),
+            UniqueId: UniqueId::nil(),
+        };
+        let superclass = Constraint {
+            superclass,
+            Attachment0: Ref::none(),
+            Attachment1: Ref::none(),
+            Color: BrickColor::from_number(194u16).unwrap(),
+            Enabled: false,
+            Visible: false,
+        };
+        let superclass = LinearVelocity {
+            superclass,
             ForceLimitMode: enums::ForceLimitMode::Magnitude,
             ForceLimitsEnabled: true,
             LineDirection: Vector3::new(1f32, 0f32, 0f32),
@@ -7426,7 +10293,8 @@ impl Default for LinearVelocity {
             SecondaryTangentAxis: Vector3::new(0f32, 1f32, 0f32),
             VectorVelocity: Vector3::new(0f32, 0f32, 0f32),
             VelocityConstraintMode: enums::VelocityConstraintMode::Vector,
-        }
+        };
+        superclass
     }
 }
 #[derive(Debug, Clone)]
@@ -7496,11 +10364,22 @@ impl_inherits!(LocalizationTable, Instance);
 impl_strong_instance_from!(LocalizationTable);
 impl Default for LocalizationTable {
     fn default() -> Self {
-        Self {
-            superclass: Instance::default(),
+        let superclass = Object {};
+        let superclass = Instance {
+            superclass,
+            Capabilities: SecurityCapabilities::from_bits(0u64),
+            HistoryId: UniqueId::nil(),
+            Name: "".to_owned(),
+            SourceAssetId: 0i64,
+            Tags: Tags::new(),
+            UniqueId: UniqueId::nil(),
+        };
+        let superclass = LocalizationTable {
+            superclass,
             Contents: "[]".to_owned(),
             SourceLocaleId: "en-us".to_owned(),
-        }
+        };
+        superclass
     }
 }
 #[derive(Debug, Clone)]
@@ -7561,10 +10440,21 @@ impl_inherits!(LuaSourceContainer, Instance);
 impl_strong_instance_from!(LuaSourceContainer);
 impl Default for LuaSourceContainer {
     fn default() -> Self {
-        Self {
-            superclass: Instance::default(),
+        let superclass = Object {};
+        let superclass = Instance {
+            superclass,
+            Capabilities: SecurityCapabilities::from_bits(0u64),
+            HistoryId: UniqueId::nil(),
+            Name: "".to_owned(),
+            SourceAssetId: 0i64,
+            Tags: Tags::new(),
+            UniqueId: UniqueId::nil(),
+        };
+        let superclass = LuaSourceContainer {
+            superclass,
             ScriptGuid: "".to_owned(),
-        }
+        };
+        superclass
     }
 }
 #[derive(Debug, Clone)]
@@ -7641,10 +10531,21 @@ impl_inherits!(MarkerCurve, Instance);
 impl_strong_instance_from!(MarkerCurve);
 impl Default for MarkerCurve {
     fn default() -> Self {
-        Self {
-            superclass: Instance::default(),
+        let superclass = Object {};
+        let superclass = Instance {
+            superclass,
+            Capabilities: SecurityCapabilities::from_bits(0u64),
+            HistoryId: UniqueId::nil(),
+            Name: "".to_owned(),
+            SourceAssetId: 0i64,
+            Tags: Tags::new(),
+            UniqueId: UniqueId::nil(),
+        };
+        let superclass = MarkerCurve {
+            superclass,
             ValuesAndTimes: b"\x02\0\0\0\0\0\0\0\x01\0\0\0\0\0\0\0".as_slice().into(),
-        }
+        };
+        superclass
     }
 }
 #[derive(Debug, Clone)]
@@ -7685,14 +10586,30 @@ impl_inherits!(MaterialImportData, BaseImportData);
 impl_strong_instance_from!(MaterialImportData);
 impl Default for MaterialImportData {
     fn default() -> Self {
-        Self {
-            superclass: BaseImportData::default(),
+        let superclass = Object {};
+        let superclass = Instance {
+            superclass,
+            Capabilities: SecurityCapabilities::from_bits(0u64),
+            HistoryId: UniqueId::nil(),
+            Name: "".to_owned(),
+            SourceAssetId: 0i64,
+            Tags: Tags::new(),
+            UniqueId: UniqueId::nil(),
+        };
+        let superclass = BaseImportData {
+            superclass,
+            ImportName: "".to_owned(),
+            ShouldImport: false,
+        };
+        let superclass = MaterialImportData {
+            superclass,
             DiffuseFilePath: "".to_owned(),
             EmissiveFilePath: "".to_owned(),
             MetalnessFilePath: "".to_owned(),
             NormalFilePath: "".to_owned(),
             RoughnessFilePath: "".to_owned(),
-        }
+        };
+        superclass
     }
 }
 #[derive(Debug, Clone)]
@@ -7745,8 +10662,18 @@ impl_inherits!(MaterialService, Instance);
 impl_strong_instance_from!(MaterialService);
 impl Default for MaterialService {
     fn default() -> Self {
-        Self {
-            superclass: Instance::default(),
+        let superclass = Object {};
+        let superclass = Instance {
+            superclass,
+            Capabilities: SecurityCapabilities::from_bits(0u64),
+            HistoryId: UniqueId::nil(),
+            Name: "".to_owned(),
+            SourceAssetId: 0i64,
+            Tags: Tags::new(),
+            UniqueId: UniqueId::nil(),
+        };
+        let superclass = MaterialService {
+            superclass,
             AsphaltName: "Asphalt".to_owned(),
             BasaltName: "Basalt".to_owned(),
             BrickName: "Brick".to_owned(),
@@ -7788,7 +10715,8 @@ impl Default for MaterialService {
             Use2022MaterialsXml: false,
             WoodName: "Wood".to_owned(),
             WoodPlanksName: "WoodPlanks".to_owned(),
-        }
+        };
+        superclass
     }
 }
 #[derive(Debug, Clone)]
@@ -7812,8 +10740,18 @@ impl_inherits!(MaterialVariant, Instance);
 impl_strong_instance_from!(MaterialVariant);
 impl Default for MaterialVariant {
     fn default() -> Self {
-        Self {
-            superclass: Instance::default(),
+        let superclass = Object {};
+        let superclass = Instance {
+            superclass,
+            Capabilities: SecurityCapabilities::from_bits(0u64),
+            HistoryId: UniqueId::nil(),
+            Name: "".to_owned(),
+            SourceAssetId: 0i64,
+            Tags: Tags::new(),
+            UniqueId: UniqueId::nil(),
+        };
+        let superclass = MaterialVariant {
+            superclass,
             BaseMaterial: enums::Material::Plastic,
             ColorMapContent: Content::none(),
             CustomPhysicalProperties: PhysicalProperties::Default,
@@ -7826,7 +10764,8 @@ impl Default for MaterialVariant {
             RoughnessMapContent: Content::none(),
             StudsPerTile: 10f32,
             TexturePack: "".into(),
-        }
+        };
+        superclass
     }
 }
 #[derive(Debug, Clone)]
@@ -7913,8 +10852,23 @@ impl_inherits!(MeshImportData, BaseImportData);
 impl_strong_instance_from!(MeshImportData);
 impl Default for MeshImportData {
     fn default() -> Self {
-        Self {
-            superclass: BaseImportData::default(),
+        let superclass = Object {};
+        let superclass = Instance {
+            superclass,
+            Capabilities: SecurityCapabilities::from_bits(0u64),
+            HistoryId: UniqueId::nil(),
+            Name: "".to_owned(),
+            SourceAssetId: 0i64,
+            Tags: Tags::new(),
+            UniqueId: UniqueId::nil(),
+        };
+        let superclass = BaseImportData {
+            superclass,
+            ImportName: "".to_owned(),
+            ShouldImport: false,
+        };
+        let superclass = MeshImportData {
+            superclass,
             Anchored: false,
             CageMeshIntersectedPreview: false,
             CageNonManifoldPreview: false,
@@ -7926,7 +10880,8 @@ impl Default for MeshImportData {
             MeshHoleDetectedPreview: false,
             OuterCageFarExtendedFromMeshPreview: false,
             UseImportedPivot: false,
-        }
+        };
+        superclass
     }
 }
 #[derive(Debug, Clone)]
@@ -7948,8 +10903,77 @@ impl_inherits!(MeshPart, TriangleMeshPart);
 impl_strong_instance_from!(MeshPart);
 impl Default for MeshPart {
     fn default() -> Self {
-        Self {
-            superclass: TriangleMeshPart::default(),
+        let superclass = Object {};
+        let superclass = Instance {
+            superclass,
+            Capabilities: SecurityCapabilities::from_bits(0u64),
+            HistoryId: UniqueId::nil(),
+            Name: "".to_owned(),
+            SourceAssetId: 0i64,
+            Tags: Tags::new(),
+            UniqueId: UniqueId::nil(),
+        };
+        let superclass = PVInstance { superclass };
+        let superclass = BasePart {
+            superclass,
+            Anchored: false,
+            AudioCanCollide: false,
+            BackParamA: 0f32,
+            BackParamB: 0f32,
+            BackSurface: enums::SurfaceType::Smooth,
+            BackSurfaceInput: enums::InputType::NoInput,
+            BottomParamA: 0f32,
+            BottomParamB: 0f32,
+            BottomSurface: enums::SurfaceType::Smooth,
+            BottomSurfaceInput: enums::InputType::NoInput,
+            CFrame: CFrame::identity(),
+            CanCollide: false,
+            CanQuery: false,
+            CanTouch: false,
+            CastShadow: false,
+            CollisionGroup: "".to_owned(),
+            CollisionGroupId: 0i32,
+            CustomPhysicalProperties: PhysicalProperties::Default,
+            EnableFluidForces: false,
+            FrontParamA: 0f32,
+            FrontParamB: 0f32,
+            FrontSurface: enums::SurfaceType::Smooth,
+            FrontSurfaceInput: enums::InputType::NoInput,
+            LeftParamA: 0f32,
+            LeftParamB: 0f32,
+            LeftSurface: enums::SurfaceType::Smooth,
+            LeftSurfaceInput: enums::InputType::NoInput,
+            Locked: false,
+            Massless: false,
+            Material: enums::Material::Plastic,
+            PivotOffset: CFrame::identity(),
+            Reflectance: 0f32,
+            RightParamA: 0f32,
+            RightParamB: 0f32,
+            RightSurface: enums::SurfaceType::Smooth,
+            RightSurfaceInput: enums::InputType::NoInput,
+            RootPriority: 0i32,
+            RotVelocity: Vector3::new(0f32, 0f32, 0f32),
+            TopParamA: 0f32,
+            TopParamB: 0f32,
+            TopSurface: enums::SurfaceType::Smooth,
+            TopSurfaceInput: enums::InputType::NoInput,
+            Transparency: 0f32,
+            Velocity: Vector3::new(0f32, 0f32, 0f32),
+        };
+        let superclass = TriangleMeshPart {
+            superclass,
+            AeroMeshData: SharedString::new(b"".to_vec()),
+            FluidFidelityInternal: enums::FluidFidelity::Automatic,
+            InertiaMigrated: false,
+            PhysicalConfigData: SharedString::new(b"".to_vec()),
+            UnscaledCofm: Vector3::new(0f32, 0f32, 0f32),
+            UnscaledVolInertiaDiags: Vector3::new(0f32, 0f32, 0f32),
+            UnscaledVolInertiaOffDiags: Vector3::new(0f32, 0f32, 0f32),
+            UnscaledVolume: 0f32,
+        };
+        let superclass = MeshPart {
+            superclass,
             DoubleSided: false,
             HasJointOffset: false,
             HasSkinnedMesh: false,
@@ -7960,7 +10984,8 @@ impl Default for MeshPart {
             RenderFidelity: enums::RenderFidelity::Automatic,
             TextureContent: Content::none(),
             VertexCount: 0i32,
-        }
+        };
+        superclass
     }
 }
 #[derive(Debug, Clone)]
@@ -7973,10 +10998,21 @@ impl_inherits!(Message, Instance);
 impl_strong_instance_from!(Message);
 impl Default for Message {
     fn default() -> Self {
-        Self {
-            superclass: Instance::default(),
+        let superclass = Object {};
+        let superclass = Instance {
+            superclass,
+            Capabilities: SecurityCapabilities::from_bits(0u64),
+            HistoryId: UniqueId::nil(),
+            Name: "".to_owned(),
+            SourceAssetId: 0i64,
+            Tags: Tags::new(),
+            UniqueId: UniqueId::nil(),
+        };
+        let superclass = Message {
+            superclass,
             Text: "".to_owned(),
-        }
+        };
+        superclass
     }
 }
 #[derive(Debug, Clone)]
@@ -8019,8 +11055,18 @@ impl_inherits!(MetaBreakpoint, Instance);
 impl_strong_instance_from!(MetaBreakpoint);
 impl Default for MetaBreakpoint {
     fn default() -> Self {
-        Self {
-            superclass: Instance::default(),
+        let superclass = Object {};
+        let superclass = Instance {
+            superclass,
+            Capabilities: SecurityCapabilities::from_bits(0u64),
+            HistoryId: UniqueId::nil(),
+            Name: "".to_owned(),
+            SourceAssetId: 0i64,
+            Tags: Tags::new(),
+            UniqueId: UniqueId::nil(),
+        };
+        let superclass = MetaBreakpoint {
+            superclass,
             Condition: "".to_owned(),
             ContinueExecution: false,
             Enabled: true,
@@ -8028,7 +11074,8 @@ impl Default for MetaBreakpoint {
             LogMessage: "".to_owned(),
             RemoveOnHit: false,
             Script: "".to_owned(),
-        }
+        };
+        superclass
     }
 }
 #[derive(Debug, Clone)]
@@ -8041,10 +11088,21 @@ impl_inherits!(MetaBreakpointContext, Instance);
 impl_strong_instance_from!(MetaBreakpointContext);
 impl Default for MetaBreakpointContext {
     fn default() -> Self {
-        Self {
-            superclass: Instance::default(),
+        let superclass = Object {};
+        let superclass = Instance {
+            superclass,
+            Capabilities: SecurityCapabilities::from_bits(0u64),
+            HistoryId: UniqueId::nil(),
+            Name: "".to_owned(),
+            SourceAssetId: 0i64,
+            Tags: Tags::new(),
+            UniqueId: UniqueId::nil(),
+        };
+        let superclass = MetaBreakpointContext {
+            superclass,
             ContextDataInternal: "0 1 2 ".to_owned(),
-        }
+        };
+        superclass
     }
 }
 #[derive(Debug, Clone)]
@@ -8065,10 +11123,21 @@ impl_inherits!(MicroProfilerService, Instance);
 impl_strong_instance_from!(MicroProfilerService);
 impl Default for MicroProfilerService {
     fn default() -> Self {
-        Self {
-            superclass: Instance::default(),
+        let superclass = Object {};
+        let superclass = Instance {
+            superclass,
+            Capabilities: SecurityCapabilities::from_bits(0u64),
+            HistoryId: UniqueId::nil(),
+            Name: "".to_owned(),
+            SourceAssetId: 0i64,
+            Tags: Tags::new(),
+            UniqueId: UniqueId::nil(),
+        };
+        let superclass = MicroProfilerService {
+            superclass,
             ContextLabel: "".to_owned(),
-        }
+        };
+        superclass
     }
 }
 #[derive(Debug, Clone)]
@@ -8089,8 +11158,19 @@ impl_inherits!(Model, PVInstance);
 impl_strong_instance_from!(Model);
 impl Default for Model {
     fn default() -> Self {
-        Self {
-            superclass: PVInstance::default(),
+        let superclass = Object {};
+        let superclass = Instance {
+            superclass,
+            Capabilities: SecurityCapabilities::from_bits(0u64),
+            HistoryId: UniqueId::nil(),
+            Name: "".to_owned(),
+            SourceAssetId: 0i64,
+            Tags: Tags::new(),
+            UniqueId: UniqueId::nil(),
+        };
+        let superclass = PVInstance { superclass };
+        let superclass = Model {
+            superclass,
             LevelOfDetail: enums::ModelLevelOfDetail::Automatic,
             ModelMeshCFrame: CFrame::identity(),
             ModelMeshData: SharedString::new(b"".to_vec()),
@@ -8100,7 +11180,8 @@ impl Default for Model {
             PrimaryPart: Ref::none(),
             SlimHash: SharedString::new(b"".to_vec()),
             WorldPivotData: None,
-        }
+        };
+        superclass
     }
 }
 #[derive(Debug, Clone)]
@@ -8122,11 +11203,26 @@ impl_inherits!(ModuleScript, LuaSourceContainer);
 impl_strong_instance_from!(ModuleScript);
 impl Default for ModuleScript {
     fn default() -> Self {
-        Self {
-            superclass: LuaSourceContainer::default(),
+        let superclass = Object {};
+        let superclass = Instance {
+            superclass,
+            Capabilities: SecurityCapabilities::from_bits(0u64),
+            HistoryId: UniqueId::nil(),
+            Name: "".to_owned(),
+            SourceAssetId: 0i64,
+            Tags: Tags::new(),
+            UniqueId: UniqueId::nil(),
+        };
+        let superclass = LuaSourceContainer {
+            superclass,
+            ScriptGuid: "".to_owned(),
+        };
+        let superclass = ModuleScript {
+            superclass,
             LinkedSource: "".into(),
             Source: "".to_owned(),
-        }
+        };
+        superclass
     }
 }
 #[derive(Debug, Clone)]
@@ -8140,11 +11236,30 @@ impl_inherits!(Motor, JointInstance);
 impl_strong_instance_from!(Motor);
 impl Default for Motor {
     fn default() -> Self {
-        Self {
-            superclass: JointInstance::default(),
+        let superclass = Object {};
+        let superclass = Instance {
+            superclass,
+            Capabilities: SecurityCapabilities::from_bits(0u64),
+            HistoryId: UniqueId::nil(),
+            Name: "".to_owned(),
+            SourceAssetId: 0i64,
+            Tags: Tags::new(),
+            UniqueId: UniqueId::nil(),
+        };
+        let superclass = JointInstance {
+            superclass,
+            C0: CFrame::identity(),
+            C1: CFrame::identity(),
+            Enabled: false,
+            Part0: Ref::none(),
+            Part1: Ref::none(),
+        };
+        let superclass = Motor {
+            superclass,
             DesiredAngle: 0f32,
             MaxVelocity: 0f32,
-        }
+        };
+        superclass
     }
 }
 #[derive(Debug, Clone)]
@@ -8174,11 +11289,22 @@ impl_inherits!(Mouse, Instance);
 impl_strong_instance_from!(Mouse);
 impl Default for Mouse {
     fn default() -> Self {
-        Self {
-            superclass: Instance::default(),
+        let superclass = Object {};
+        let superclass = Instance {
+            superclass,
+            Capabilities: SecurityCapabilities::from_bits(0u64),
+            HistoryId: UniqueId::nil(),
+            Name: "".to_owned(),
+            SourceAssetId: 0i64,
+            Tags: Tags::new(),
+            UniqueId: UniqueId::nil(),
+        };
+        let superclass = Mouse {
+            superclass,
             IconContent: Content::none(),
             TargetFilter: Ref::none(),
-        }
+        };
+        superclass
     }
 }
 #[derive(Debug, Clone)]
@@ -8207,10 +11333,97 @@ impl_inherits!(NegateOperation, PartOperation);
 impl_strong_instance_from!(NegateOperation);
 impl Default for NegateOperation {
     fn default() -> Self {
-        Self {
-            superclass: PartOperation::default(),
+        let superclass = Object {};
+        let superclass = Instance {
+            superclass,
+            Capabilities: SecurityCapabilities::from_bits(0u64),
+            HistoryId: UniqueId::nil(),
+            Name: "".to_owned(),
+            SourceAssetId: 0i64,
+            Tags: Tags::new(),
+            UniqueId: UniqueId::nil(),
+        };
+        let superclass = PVInstance { superclass };
+        let superclass = BasePart {
+            superclass,
+            Anchored: false,
+            AudioCanCollide: false,
+            BackParamA: 0f32,
+            BackParamB: 0f32,
+            BackSurface: enums::SurfaceType::Smooth,
+            BackSurfaceInput: enums::InputType::NoInput,
+            BottomParamA: 0f32,
+            BottomParamB: 0f32,
+            BottomSurface: enums::SurfaceType::Smooth,
+            BottomSurfaceInput: enums::InputType::NoInput,
+            CFrame: CFrame::identity(),
+            CanCollide: false,
+            CanQuery: false,
+            CanTouch: false,
+            CastShadow: false,
+            CollisionGroup: "".to_owned(),
+            CollisionGroupId: 0i32,
+            CustomPhysicalProperties: PhysicalProperties::Default,
+            EnableFluidForces: false,
+            FrontParamA: 0f32,
+            FrontParamB: 0f32,
+            FrontSurface: enums::SurfaceType::Smooth,
+            FrontSurfaceInput: enums::InputType::NoInput,
+            LeftParamA: 0f32,
+            LeftParamB: 0f32,
+            LeftSurface: enums::SurfaceType::Smooth,
+            LeftSurfaceInput: enums::InputType::NoInput,
+            Locked: false,
+            Massless: false,
+            Material: enums::Material::Plastic,
+            PivotOffset: CFrame::identity(),
+            Reflectance: 0f32,
+            RightParamA: 0f32,
+            RightParamB: 0f32,
+            RightSurface: enums::SurfaceType::Smooth,
+            RightSurfaceInput: enums::InputType::NoInput,
+            RootPriority: 0i32,
+            RotVelocity: Vector3::new(0f32, 0f32, 0f32),
+            TopParamA: 0f32,
+            TopParamB: 0f32,
+            TopSurface: enums::SurfaceType::Smooth,
+            TopSurfaceInput: enums::InputType::NoInput,
+            Transparency: 0f32,
+            Velocity: Vector3::new(0f32, 0f32, 0f32),
+        };
+        let superclass = TriangleMeshPart {
+            superclass,
+            AeroMeshData: SharedString::new(b"".to_vec()),
+            FluidFidelityInternal: enums::FluidFidelity::Automatic,
+            InertiaMigrated: false,
+            PhysicalConfigData: SharedString::new(b"".to_vec()),
+            UnscaledCofm: Vector3::new(0f32, 0f32, 0f32),
+            UnscaledVolInertiaDiags: Vector3::new(0f32, 0f32, 0f32),
+            UnscaledVolInertiaOffDiags: Vector3::new(0f32, 0f32, 0f32),
+            UnscaledVolume: 0f32,
+        };
+        let superclass = PartOperation {
+            superclass,
+            AssetId: "".into(),
+            ChildData: b"".as_slice().into(),
+            ChildData2: SharedString::new(b"".to_vec()),
+            ComponentIndex: -1i32,
+            FormFactor: enums::FormFactor::Custom,
+            InitialSize: Vector3::new(1f32, 1f32, 1f32),
+            MeshData: b"".as_slice().into(),
+            MeshData2: SharedString::new(b"".to_vec()),
+            OffCentered: false,
+            PhysicsData: b"".as_slice().into(),
+            RenderFidelity: enums::RenderFidelity::Automatic,
+            SmoothingAngle: 0f32,
+            SolidMeshHolder: NetAssetRef::new(b"".to_vec()),
+            UsePartColor: false,
+        };
+        let superclass = NegateOperation {
+            superclass,
             PreviousOperation: enums::NegateOperationHiddenHistory::None,
-        }
+        };
+        superclass
     }
 }
 #[derive(Debug, Clone)]
@@ -8271,8 +11484,18 @@ impl_inherits!(NetworkSettings, Instance);
 impl_strong_instance_from!(NetworkSettings);
 impl Default for NetworkSettings {
     fn default() -> Self {
-        Self {
-            superclass: Instance::default(),
+        let superclass = Object {};
+        let superclass = Instance {
+            superclass,
+            Capabilities: SecurityCapabilities::from_bits(0u64),
+            HistoryId: UniqueId::nil(),
+            Name: "".to_owned(),
+            SourceAssetId: 0i64,
+            Tags: Tags::new(),
+            UniqueId: UniqueId::nil(),
+        };
+        let superclass = NetworkSettings {
+            superclass,
             HttpProxyEnabled: false,
             HttpProxyUrl: "".to_owned(),
             IncomingReplicationLag: 0f64,
@@ -8282,7 +11505,8 @@ impl Default for NetworkSettings {
             RandomizeJoinInstanceOrder: false,
             RenderStreamedRegions: false,
             ShowActiveAnimationAsset: false,
-        }
+        };
+        superclass
     }
 }
 #[derive(Debug, Clone)]
@@ -8297,12 +11521,23 @@ impl_inherits!(NoCollisionConstraint, Instance);
 impl_strong_instance_from!(NoCollisionConstraint);
 impl Default for NoCollisionConstraint {
     fn default() -> Self {
-        Self {
-            superclass: Instance::default(),
+        let superclass = Object {};
+        let superclass = Instance {
+            superclass,
+            Capabilities: SecurityCapabilities::from_bits(0u64),
+            HistoryId: UniqueId::nil(),
+            Name: "".to_owned(),
+            SourceAssetId: 0i64,
+            Tags: Tags::new(),
+            UniqueId: UniqueId::nil(),
+        };
+        let superclass = NoCollisionConstraint {
+            superclass,
             Enabled: true,
             Part0: Ref::none(),
             Part1: Ref::none(),
-        }
+        };
+        superclass
     }
 }
 #[derive(Debug, Clone)]
@@ -8316,11 +11551,22 @@ impl_inherits!(Noise, Instance);
 impl_strong_instance_from!(Noise);
 impl Default for Noise {
     fn default() -> Self {
-        Self {
-            superclass: Instance::default(),
+        let superclass = Object {};
+        let superclass = Instance {
+            superclass,
+            Capabilities: SecurityCapabilities::from_bits(0u64),
+            HistoryId: UniqueId::nil(),
+            Name: "".to_owned(),
+            SourceAssetId: 0i64,
+            Tags: Tags::new(),
+            UniqueId: UniqueId::nil(),
+        };
+        let superclass = Noise {
+            superclass,
             NoiseType: enums::NoiseType::SimplexGabor,
             Seed: 0i32,
-        }
+        };
+        superclass
     }
 }
 #[derive(Debug, Clone)]
@@ -8349,10 +11595,27 @@ impl_inherits!(NumberPose, PoseBase);
 impl_strong_instance_from!(NumberPose);
 impl Default for NumberPose {
     fn default() -> Self {
-        Self {
-            superclass: PoseBase::default(),
+        let superclass = Object {};
+        let superclass = Instance {
+            superclass,
+            Capabilities: SecurityCapabilities::from_bits(0u64),
+            HistoryId: UniqueId::nil(),
+            Name: "".to_owned(),
+            SourceAssetId: 0i64,
+            Tags: Tags::new(),
+            UniqueId: UniqueId::nil(),
+        };
+        let superclass = PoseBase {
+            superclass,
+            EasingDirection: enums::PoseEasingDirection::In,
+            EasingStyle: enums::PoseEasingStyle::Linear,
+            Weight: 0f32,
+        };
+        let superclass = NumberPose {
+            superclass,
             Value: 0f64,
-        }
+        };
+        superclass
     }
 }
 #[derive(Debug, Clone)]
@@ -8365,10 +11628,22 @@ impl_inherits!(NumberValue, ValueBase);
 impl_strong_instance_from!(NumberValue);
 impl Default for NumberValue {
     fn default() -> Self {
-        Self {
-            superclass: ValueBase::default(),
+        let superclass = Object {};
+        let superclass = Instance {
+            superclass,
+            Capabilities: SecurityCapabilities::from_bits(0u64),
+            HistoryId: UniqueId::nil(),
+            Name: "".to_owned(),
+            SourceAssetId: 0i64,
+            Tags: Tags::new(),
+            UniqueId: UniqueId::nil(),
+        };
+        let superclass = ValueBase { superclass };
+        let superclass = NumberValue {
+            superclass,
             Value: 0f64,
-        }
+        };
+        superclass
     }
 }
 #[derive(Debug, Clone)]
@@ -8386,10 +11661,22 @@ impl_inherits!(ObjectValue, ValueBase);
 impl_strong_instance_from!(ObjectValue);
 impl Default for ObjectValue {
     fn default() -> Self {
-        Self {
-            superclass: ValueBase::default(),
+        let superclass = Object {};
+        let superclass = Instance {
+            superclass,
+            Capabilities: SecurityCapabilities::from_bits(0u64),
+            HistoryId: UniqueId::nil(),
+            Name: "".to_owned(),
+            SourceAssetId: 0i64,
+            Tags: Tags::new(),
+            UniqueId: UniqueId::nil(),
+        };
+        let superclass = ValueBase { superclass };
+        let superclass = ObjectValue {
+            superclass,
             Value: Ref::none(),
-        }
+        };
+        superclass
     }
 }
 #[derive(Debug, Clone)]
@@ -8450,10 +11737,28 @@ impl_inherits!(PVAdornment, GuiBase3d);
 impl_strong_instance_from!(PVAdornment);
 impl Default for PVAdornment {
     fn default() -> Self {
-        Self {
-            superclass: GuiBase3d::default(),
+        let superclass = Object {};
+        let superclass = Instance {
+            superclass,
+            Capabilities: SecurityCapabilities::from_bits(0u64),
+            HistoryId: UniqueId::nil(),
+            Name: "".to_owned(),
+            SourceAssetId: 0i64,
+            Tags: Tags::new(),
+            UniqueId: UniqueId::nil(),
+        };
+        let superclass = GuiBase { superclass };
+        let superclass = GuiBase3d {
+            superclass,
+            Color3: Color3::new(0f32, 0f32, 0f32),
+            Transparency: 0f32,
+            Visible: false,
+        };
+        let superclass = PVAdornment {
+            superclass,
             Adornee: Ref::none(),
-        }
+        };
+        superclass
     }
 }
 #[derive(Debug, Clone)]
@@ -8478,14 +11783,25 @@ impl_inherits!(PackageLink, Instance);
 impl_strong_instance_from!(PackageLink);
 impl Default for PackageLink {
     fn default() -> Self {
-        Self {
-            superclass: Instance::default(),
+        let superclass = Object {};
+        let superclass = Instance {
+            superclass,
+            Capabilities: SecurityCapabilities::from_bits(0u64),
+            HistoryId: UniqueId::nil(),
+            Name: "".to_owned(),
+            SourceAssetId: 0i64,
+            Tags: Tags::new(),
+            UniqueId: UniqueId::nil(),
+        };
+        let superclass = PackageLink {
+            superclass,
             AutoUpdate: false,
             DefaultName: "".to_owned(),
             ModifiedState: 0i32,
             SerializedDefaultAttributes: b"".as_slice().into(),
             VersionIdSerialize: 0i64,
-        }
+        };
+        superclass
     }
 }
 #[derive(Debug, Clone)]
@@ -8522,10 +11838,26 @@ impl_inherits!(Pants, Clothing);
 impl_strong_instance_from!(Pants);
 impl Default for Pants {
     fn default() -> Self {
-        Self {
-            superclass: Clothing::default(),
+        let superclass = Object {};
+        let superclass = Instance {
+            superclass,
+            Capabilities: SecurityCapabilities::from_bits(0u64),
+            HistoryId: UniqueId::nil(),
+            Name: "".to_owned(),
+            SourceAssetId: 0i64,
+            Tags: Tags::new(),
+            UniqueId: UniqueId::nil(),
+        };
+        let superclass = CharacterAppearance { superclass };
+        let superclass = Clothing {
+            superclass,
+            Color3: Color3::new(0f32, 0f32, 0f32),
+        };
+        let superclass = Pants {
+            superclass,
             PantsTemplate: "".into(),
-        }
+        };
+        superclass
     }
 }
 #[derive(Debug, Clone)]
@@ -8554,10 +11886,28 @@ impl_inherits!(PartAdornment, GuiBase3d);
 impl_strong_instance_from!(PartAdornment);
 impl Default for PartAdornment {
     fn default() -> Self {
-        Self {
-            superclass: GuiBase3d::default(),
+        let superclass = Object {};
+        let superclass = Instance {
+            superclass,
+            Capabilities: SecurityCapabilities::from_bits(0u64),
+            HistoryId: UniqueId::nil(),
+            Name: "".to_owned(),
+            SourceAssetId: 0i64,
+            Tags: Tags::new(),
+            UniqueId: UniqueId::nil(),
+        };
+        let superclass = GuiBase { superclass };
+        let superclass = GuiBase3d {
+            superclass,
+            Color3: Color3::new(0f32, 0f32, 0f32),
+            Transparency: 0f32,
+            Visible: false,
+        };
+        let superclass = PartAdornment {
+            superclass,
             Adornee: Ref::none(),
-        }
+        };
+        superclass
     }
 }
 #[derive(Debug, Clone)]
@@ -8583,8 +11933,77 @@ impl_inherits!(PartOperation, TriangleMeshPart);
 impl_strong_instance_from!(PartOperation);
 impl Default for PartOperation {
     fn default() -> Self {
-        Self {
-            superclass: TriangleMeshPart::default(),
+        let superclass = Object {};
+        let superclass = Instance {
+            superclass,
+            Capabilities: SecurityCapabilities::from_bits(0u64),
+            HistoryId: UniqueId::nil(),
+            Name: "".to_owned(),
+            SourceAssetId: 0i64,
+            Tags: Tags::new(),
+            UniqueId: UniqueId::nil(),
+        };
+        let superclass = PVInstance { superclass };
+        let superclass = BasePart {
+            superclass,
+            Anchored: false,
+            AudioCanCollide: false,
+            BackParamA: 0f32,
+            BackParamB: 0f32,
+            BackSurface: enums::SurfaceType::Smooth,
+            BackSurfaceInput: enums::InputType::NoInput,
+            BottomParamA: 0f32,
+            BottomParamB: 0f32,
+            BottomSurface: enums::SurfaceType::Smooth,
+            BottomSurfaceInput: enums::InputType::NoInput,
+            CFrame: CFrame::identity(),
+            CanCollide: false,
+            CanQuery: false,
+            CanTouch: false,
+            CastShadow: false,
+            CollisionGroup: "".to_owned(),
+            CollisionGroupId: 0i32,
+            CustomPhysicalProperties: PhysicalProperties::Default,
+            EnableFluidForces: false,
+            FrontParamA: 0f32,
+            FrontParamB: 0f32,
+            FrontSurface: enums::SurfaceType::Smooth,
+            FrontSurfaceInput: enums::InputType::NoInput,
+            LeftParamA: 0f32,
+            LeftParamB: 0f32,
+            LeftSurface: enums::SurfaceType::Smooth,
+            LeftSurfaceInput: enums::InputType::NoInput,
+            Locked: false,
+            Massless: false,
+            Material: enums::Material::Plastic,
+            PivotOffset: CFrame::identity(),
+            Reflectance: 0f32,
+            RightParamA: 0f32,
+            RightParamB: 0f32,
+            RightSurface: enums::SurfaceType::Smooth,
+            RightSurfaceInput: enums::InputType::NoInput,
+            RootPriority: 0i32,
+            RotVelocity: Vector3::new(0f32, 0f32, 0f32),
+            TopParamA: 0f32,
+            TopParamB: 0f32,
+            TopSurface: enums::SurfaceType::Smooth,
+            TopSurfaceInput: enums::InputType::NoInput,
+            Transparency: 0f32,
+            Velocity: Vector3::new(0f32, 0f32, 0f32),
+        };
+        let superclass = TriangleMeshPart {
+            superclass,
+            AeroMeshData: SharedString::new(b"".to_vec()),
+            FluidFidelityInternal: enums::FluidFidelity::Automatic,
+            InertiaMigrated: false,
+            PhysicalConfigData: SharedString::new(b"".to_vec()),
+            UnscaledCofm: Vector3::new(0f32, 0f32, 0f32),
+            UnscaledVolInertiaDiags: Vector3::new(0f32, 0f32, 0f32),
+            UnscaledVolInertiaOffDiags: Vector3::new(0f32, 0f32, 0f32),
+            UnscaledVolume: 0f32,
+        };
+        let superclass = PartOperation {
+            superclass,
             AssetId: "".into(),
             ChildData: b"".as_slice().into(),
             ChildData2: SharedString::new(b"".to_vec()),
@@ -8599,7 +12018,8 @@ impl Default for PartOperation {
             SmoothingAngle: 0f32,
             SolidMeshHolder: NetAssetRef::new(b"".to_vec()),
             UsePartColor: false,
-        }
+        };
+        superclass
     }
 }
 #[derive(Debug, Clone)]
@@ -8613,11 +12033,22 @@ impl_inherits!(PartOperationAsset, Instance);
 impl_strong_instance_from!(PartOperationAsset);
 impl Default for PartOperationAsset {
     fn default() -> Self {
-        Self {
-            superclass: Instance::default(),
+        let superclass = Object {};
+        let superclass = Instance {
+            superclass,
+            Capabilities: SecurityCapabilities::from_bits(0u64),
+            HistoryId: UniqueId::nil(),
+            Name: "".to_owned(),
+            SourceAssetId: 0i64,
+            Tags: Tags::new(),
+            UniqueId: UniqueId::nil(),
+        };
+        let superclass = PartOperationAsset {
+            superclass,
             ChildData: b"".as_slice().into(),
             MeshData: b"".as_slice().into(),
-        }
+        };
+        superclass
     }
 }
 #[derive(Debug, Clone)]
@@ -8664,8 +12095,18 @@ impl_inherits!(ParticleEmitter, Instance);
 impl_strong_instance_from!(ParticleEmitter);
 impl Default for ParticleEmitter {
     fn default() -> Self {
-        Self {
-            superclass: Instance::default(),
+        let superclass = Object {};
+        let superclass = Instance {
+            superclass,
+            Capabilities: SecurityCapabilities::from_bits(0u64),
+            HistoryId: UniqueId::nil(),
+            Name: "".to_owned(),
+            SourceAssetId: 0i64,
+            Tags: Tags::new(),
+            UniqueId: UniqueId::nil(),
+        };
+        let superclass = ParticleEmitter {
+            superclass,
             Acceleration: Vector3::new(0f32, 0f32, 0f32),
             Brightness: 1f32,
             Color: ColorSequence {
@@ -8722,7 +12163,8 @@ impl Default for ParticleEmitter {
             VelocityInheritance: 0f32,
             WindAffectsDrag: false,
             ZOffset: 0f32,
-        }
+        };
+        superclass
     }
 }
 #[derive(Debug, Clone)]
@@ -8753,12 +12195,23 @@ impl_inherits!(PatchMapping, Instance);
 impl_strong_instance_from!(PatchMapping);
 impl Default for PatchMapping {
     fn default() -> Self {
-        Self {
-            superclass: Instance::default(),
+        let superclass = Object {};
+        let superclass = Instance {
+            superclass,
+            Capabilities: SecurityCapabilities::from_bits(0u64),
+            HistoryId: UniqueId::nil(),
+            Name: "".to_owned(),
+            SourceAssetId: 0i64,
+            Tags: Tags::new(),
+            UniqueId: UniqueId::nil(),
+        };
+        let superclass = PatchMapping {
+            superclass,
             FlattenTree: false,
             PatchId: "".to_owned(),
             TargetPath: "".to_owned(),
-        }
+        };
+        superclass
     }
 }
 #[derive(Debug, Clone)]
@@ -8785,8 +12238,19 @@ impl_inherits!(Path2D, GuiBase);
 impl_strong_instance_from!(Path2D);
 impl Default for Path2D {
     fn default() -> Self {
-        Self {
-            superclass: GuiBase::default(),
+        let superclass = Object {};
+        let superclass = Instance {
+            superclass,
+            Capabilities: SecurityCapabilities::from_bits(0u64),
+            HistoryId: UniqueId::nil(),
+            Name: "".to_owned(),
+            SourceAssetId: 0i64,
+            Tags: Tags::new(),
+            UniqueId: UniqueId::nil(),
+        };
+        let superclass = GuiBase { superclass };
+        let superclass = Path2D {
+            superclass,
             Closed: false,
             Color3: Color3::new(0f32, 0f32, 0f32),
             PropertiesSerialize: b"\0\0\0\0".as_slice().into(),
@@ -8794,7 +12258,8 @@ impl Default for Path2D {
             Transparency: 0f32,
             Visible: true,
             ZIndex: 1i32,
-        }
+        };
+        superclass
     }
 }
 #[derive(Debug, Clone)]
@@ -8810,13 +12275,24 @@ impl_inherits!(PathfindingLink, Instance);
 impl_strong_instance_from!(PathfindingLink);
 impl Default for PathfindingLink {
     fn default() -> Self {
-        Self {
-            superclass: Instance::default(),
+        let superclass = Object {};
+        let superclass = Instance {
+            superclass,
+            Capabilities: SecurityCapabilities::from_bits(0u64),
+            HistoryId: UniqueId::nil(),
+            Name: "".to_owned(),
+            SourceAssetId: 0i64,
+            Tags: Tags::new(),
+            UniqueId: UniqueId::nil(),
+        };
+        let superclass = PathfindingLink {
+            superclass,
             Attachment0: Ref::none(),
             Attachment1: Ref::none(),
             IsBidirectional: true,
             Label: "".to_owned(),
-        }
+        };
+        superclass
     }
 }
 #[derive(Debug, Clone)]
@@ -8830,11 +12306,22 @@ impl_inherits!(PathfindingModifier, Instance);
 impl_strong_instance_from!(PathfindingModifier);
 impl Default for PathfindingModifier {
     fn default() -> Self {
-        Self {
-            superclass: Instance::default(),
+        let superclass = Object {};
+        let superclass = Instance {
+            superclass,
+            Capabilities: SecurityCapabilities::from_bits(0u64),
+            HistoryId: UniqueId::nil(),
+            Name: "".to_owned(),
+            SourceAssetId: 0i64,
+            Tags: Tags::new(),
+            UniqueId: UniqueId::nil(),
+        };
+        let superclass = PathfindingModifier {
+            superclass,
             Label: "".to_owned(),
             PassThrough: false,
-        }
+        };
+        superclass
     }
 }
 #[derive(Debug, Clone)]
@@ -8950,8 +12437,18 @@ impl_inherits!(PhysicsSettings, Instance);
 impl_strong_instance_from!(PhysicsSettings);
 impl Default for PhysicsSettings {
     fn default() -> Self {
-        Self {
-            superclass: Instance::default(),
+        let superclass = Object {};
+        let superclass = Instance {
+            superclass,
+            Capabilities: SecurityCapabilities::from_bits(0u64),
+            HistoryId: UniqueId::nil(),
+            Name: "".to_owned(),
+            SourceAssetId: 0i64,
+            Tags: Tags::new(),
+            UniqueId: UniqueId::nil(),
+        };
+        let superclass = PhysicsSettings {
+            superclass,
             AllowSleep: false,
             AreAnchorsShown: false,
             AreAssembliesShown: false,
@@ -9000,7 +12497,8 @@ impl Default for PhysicsSettings {
             ThrottleAdjustTime: 0f64,
             TorqueDrawScale: 0f32,
             UseCsGv2: false,
-        }
+        };
+        superclass
     }
 }
 #[derive(Debug, Clone)]
@@ -9013,10 +12511,26 @@ impl_inherits!(PitchShiftSoundEffect, SoundEffect);
 impl_strong_instance_from!(PitchShiftSoundEffect);
 impl Default for PitchShiftSoundEffect {
     fn default() -> Self {
-        Self {
-            superclass: SoundEffect::default(),
+        let superclass = Object {};
+        let superclass = Instance {
+            superclass,
+            Capabilities: SecurityCapabilities::from_bits(0u64),
+            HistoryId: UniqueId::nil(),
+            Name: "".to_owned(),
+            SourceAssetId: 0i64,
+            Tags: Tags::new(),
+            UniqueId: UniqueId::nil(),
+        };
+        let superclass = SoundEffect {
+            superclass,
+            Enabled: false,
+            Priority: 0i32,
+        };
+        let superclass = PitchShiftSoundEffect {
+            superclass,
             Octave: 1.25f32,
-        }
+        };
+        superclass
     }
 }
 #[derive(Debug, Clone)]
@@ -9115,8 +12629,18 @@ impl_inherits!(Player, Instance);
 impl_strong_instance_from!(Player);
 impl Default for Player {
     fn default() -> Self {
-        Self {
-            superclass: Instance::default(),
+        let superclass = Object {};
+        let superclass = Instance {
+            superclass,
+            Capabilities: SecurityCapabilities::from_bits(0u64),
+            HistoryId: UniqueId::nil(),
+            Name: "".to_owned(),
+            SourceAssetId: 0i64,
+            Tags: Tags::new(),
+            UniqueId: UniqueId::nil(),
+        };
+        let superclass = Player {
+            superclass,
             AutoJumpEnabled: false,
             CameraMaxZoomDistance: 0f32,
             CameraMinZoomDistance: 0f32,
@@ -9140,7 +12664,8 @@ impl Default for Player {
             Team: Ref::none(),
             TeamColor: BrickColor::from_number(194u16).unwrap(),
             TeleportedIn: false,
-        }
+        };
+        superclass
     }
 }
 #[derive(Debug, Clone)]
@@ -9177,10 +12702,21 @@ impl_inherits!(PlayerDataService, Instance);
 impl_strong_instance_from!(PlayerDataService);
 impl Default for PlayerDataService {
     fn default() -> Self {
-        Self {
-            superclass: Instance::default(),
+        let superclass = Object {};
+        let superclass = Instance {
+            superclass,
+            Capabilities: SecurityCapabilities::from_bits(0u64),
+            HistoryId: UniqueId::nil(),
+            Name: "".to_owned(),
+            SourceAssetId: 0i64,
+            Tags: Tags::new(),
+            UniqueId: UniqueId::nil(),
+        };
+        let superclass = PlayerDataService {
+            superclass,
             LoadFailureBehavior: enums::PlayerDataLoadFailureBehavior::Failure,
-        }
+        };
+        superclass
     }
 }
 #[derive(Debug, Clone)]
@@ -9199,8 +12735,18 @@ impl_inherits!(PlayerEmulatorService, Instance);
 impl_strong_instance_from!(PlayerEmulatorService);
 impl Default for PlayerEmulatorService {
     fn default() -> Self {
-        Self {
-            superclass: Instance::default(),
+        let superclass = Object {};
+        let superclass = Instance {
+            superclass,
+            Capabilities: SecurityCapabilities::from_bits(0u64),
+            HistoryId: UniqueId::nil(),
+            Name: "".to_owned(),
+            SourceAssetId: 0i64,
+            Tags: Tags::new(),
+            UniqueId: UniqueId::nil(),
+        };
+        let superclass = PlayerEmulatorService {
+            superclass,
             CustomPoliciesEnabled: false,
             EmulatedCountryCode: "".to_owned(),
             EmulatedGameLocale: "".to_owned(),
@@ -9208,7 +12754,8 @@ impl Default for PlayerEmulatorService {
             PseudolocalizationEnabled: false,
             SerializedEmulatedPolicyInfo: b"".as_slice().into(),
             TextElongationFactor: 0i32,
-        }
+        };
+        superclass
     }
 }
 #[derive(Debug, Clone)]
@@ -9222,11 +12769,23 @@ impl_inherits!(PlayerGui, BasePlayerGui);
 impl_strong_instance_from!(PlayerGui);
 impl Default for PlayerGui {
     fn default() -> Self {
-        Self {
-            superclass: BasePlayerGui::default(),
+        let superclass = Object {};
+        let superclass = Instance {
+            superclass,
+            Capabilities: SecurityCapabilities::from_bits(0u64),
+            HistoryId: UniqueId::nil(),
+            Name: "".to_owned(),
+            SourceAssetId: 0i64,
+            Tags: Tags::new(),
+            UniqueId: UniqueId::nil(),
+        };
+        let superclass = BasePlayerGui { superclass };
+        let superclass = PlayerGui {
+            superclass,
             ScreenOrientation: enums::ScreenOrientation::LandscapeLeft,
             SelectionImageObject: Ref::none(),
-        }
+        };
+        superclass
     }
 }
 #[derive(Debug, Clone)]
@@ -9274,13 +12833,24 @@ impl_inherits!(Players, Instance);
 impl_strong_instance_from!(Players);
 impl Default for Players {
     fn default() -> Self {
-        Self {
-            superclass: Instance::default(),
+        let superclass = Object {};
+        let superclass = Instance {
+            superclass,
+            Capabilities: SecurityCapabilities::from_bits(0u64),
+            HistoryId: UniqueId::nil(),
+            Name: "".to_owned(),
+            SourceAssetId: 0i64,
+            Tags: Tags::new(),
+            UniqueId: UniqueId::nil(),
+        };
+        let superclass = Players {
+            superclass,
             BanningEnabled: true,
             CharacterAutoLoads: true,
             RespawnTime: 5f32,
             UseStrafingAnimations: false,
-        }
+        };
+        superclass
     }
 }
 #[derive(Debug, Clone)]
@@ -9294,11 +12864,22 @@ impl_inherits!(Plugin, Instance);
 impl_strong_instance_from!(Plugin);
 impl Default for Plugin {
     fn default() -> Self {
-        Self {
-            superclass: Instance::default(),
+        let superclass = Object {};
+        let superclass = Instance {
+            superclass,
+            Capabilities: SecurityCapabilities::from_bits(0u64),
+            HistoryId: UniqueId::nil(),
+            Name: "".to_owned(),
+            SourceAssetId: 0i64,
+            Tags: Tags::new(),
+            UniqueId: UniqueId::nil(),
+        };
+        let superclass = Plugin {
+            superclass,
             DisableUiDragDetectorDrags: false,
             IsDebuggable: false,
-        }
+        };
+        superclass
     }
 }
 #[derive(Debug, Clone)]
@@ -9319,7 +12900,18 @@ impl_inherits!(PluginCapabilities, Instance);
 impl_strong_instance_from!(PluginCapabilities);
 impl Default for PluginCapabilities {
     fn default() -> Self {
-        Self { superclass : Instance :: default () , Manifest : "{\"Metadata\":{\"TargetDataModels\": [\"Edit\", \"Server\", \"Client\"]},\"Permissions\":{}}" . to_owned () }
+        let superclass = Object {};
+        let superclass = Instance {
+            superclass,
+            Capabilities: SecurityCapabilities::from_bits(0u64),
+            HistoryId: UniqueId::nil(),
+            Name: "".to_owned(),
+            SourceAssetId: 0i64,
+            Tags: Tags::new(),
+            UniqueId: UniqueId::nil(),
+        };
+        let superclass = PluginCapabilities { superclass , Manifest : "{\"Metadata\":{\"TargetDataModels\": [\"Edit\", \"Server\", \"Client\"]},\"Permissions\":{}}" . to_owned () } ;
+        superclass
     }
 }
 #[derive(Debug, Clone)]
@@ -9348,10 +12940,38 @@ impl_inherits!(PluginGui, LayerCollector);
 impl_strong_instance_from!(PluginGui);
 impl Default for PluginGui {
     fn default() -> Self {
-        Self {
-            superclass: LayerCollector::default(),
+        let superclass = Object {};
+        let superclass = Instance {
+            superclass,
+            Capabilities: SecurityCapabilities::from_bits(0u64),
+            HistoryId: UniqueId::nil(),
+            Name: "".to_owned(),
+            SourceAssetId: 0i64,
+            Tags: Tags::new(),
+            UniqueId: UniqueId::nil(),
+        };
+        let superclass = GuiBase { superclass };
+        let superclass = GuiBase2d {
+            superclass,
+            AutoLocalize: false,
+            RootLocalizationTable: Ref::none(),
+            SelectionBehaviorDown: enums::SelectionBehavior::Escape,
+            SelectionBehaviorLeft: enums::SelectionBehavior::Escape,
+            SelectionBehaviorRight: enums::SelectionBehavior::Escape,
+            SelectionBehaviorUp: enums::SelectionBehavior::Escape,
+            SelectionGroup: false,
+        };
+        let superclass = LayerCollector {
+            superclass,
+            Enabled: false,
+            ResetOnSpawn: false,
+            ZIndexBehavior: enums::ZIndexBehavior::Global,
+        };
+        let superclass = PluginGui {
+            superclass,
             Title: "".to_owned(),
-        }
+        };
+        superclass
     }
 }
 #[derive(Debug, Clone)]
@@ -9436,10 +13056,28 @@ impl_inherits!(PointLight, Light);
 impl_strong_instance_from!(PointLight);
 impl Default for PointLight {
     fn default() -> Self {
-        Self {
-            superclass: Light::default(),
+        let superclass = Object {};
+        let superclass = Instance {
+            superclass,
+            Capabilities: SecurityCapabilities::from_bits(0u64),
+            HistoryId: UniqueId::nil(),
+            Name: "".to_owned(),
+            SourceAssetId: 0i64,
+            Tags: Tags::new(),
+            UniqueId: UniqueId::nil(),
+        };
+        let superclass = Light {
+            superclass,
+            Brightness: 0f32,
+            Color: Color3::new(0f32, 0f32, 0f32),
+            Enabled: false,
+            Shadows: false,
+        };
+        let superclass = PointLight {
+            superclass,
             Range: 8f32,
-        }
+        };
+        superclass
     }
 }
 #[derive(Debug, Clone)]
@@ -9461,11 +13099,22 @@ impl_inherits!(PolicyService, Instance);
 impl_strong_instance_from!(PolicyService);
 impl Default for PolicyService {
     fn default() -> Self {
-        Self {
-            superclass: Instance::default(),
+        let superclass = Object {};
+        let superclass = Instance {
+            superclass,
+            Capabilities: SecurityCapabilities::from_bits(0u64),
+            HistoryId: UniqueId::nil(),
+            Name: "".to_owned(),
+            SourceAssetId: 0i64,
+            Tags: Tags::new(),
+            UniqueId: UniqueId::nil(),
+        };
+        let superclass = PolicyService {
+            superclass,
             IsLuobuServer: enums::TriStateBoolean::Unknown,
             LuobuWhitelisted: enums::TriStateBoolean::Unknown,
-        }
+        };
+        superclass
     }
 }
 #[derive(Debug, Clone)]
@@ -9478,10 +13127,27 @@ impl_inherits!(Pose, PoseBase);
 impl_strong_instance_from!(Pose);
 impl Default for Pose {
     fn default() -> Self {
-        Self {
-            superclass: PoseBase::default(),
+        let superclass = Object {};
+        let superclass = Instance {
+            superclass,
+            Capabilities: SecurityCapabilities::from_bits(0u64),
+            HistoryId: UniqueId::nil(),
+            Name: "".to_owned(),
+            SourceAssetId: 0i64,
+            Tags: Tags::new(),
+            UniqueId: UniqueId::nil(),
+        };
+        let superclass = PoseBase {
+            superclass,
+            EasingDirection: enums::PoseEasingDirection::In,
+            EasingStyle: enums::PoseEasingStyle::Linear,
+            Weight: 0f32,
+        };
+        let superclass = Pose {
+            superclass,
             CFrame: CFrame::identity(),
-        }
+        };
+        superclass
     }
 }
 #[derive(Debug, Clone)]
@@ -9496,12 +13162,23 @@ impl_inherits!(PoseBase, Instance);
 impl_strong_instance_from!(PoseBase);
 impl Default for PoseBase {
     fn default() -> Self {
-        Self {
-            superclass: Instance::default(),
+        let superclass = Object {};
+        let superclass = Instance {
+            superclass,
+            Capabilities: SecurityCapabilities::from_bits(0u64),
+            HistoryId: UniqueId::nil(),
+            Name: "".to_owned(),
+            SourceAssetId: 0i64,
+            Tags: Tags::new(),
+            UniqueId: UniqueId::nil(),
+        };
+        let superclass = PoseBase {
+            superclass,
             EasingDirection: enums::PoseEasingDirection::In,
             EasingStyle: enums::PoseEasingStyle::Linear,
             Weight: 0f32,
-        }
+        };
+        superclass
     }
 }
 #[derive(Debug, Clone)]
@@ -9514,10 +13191,21 @@ impl_inherits!(PostEffect, Instance);
 impl_strong_instance_from!(PostEffect);
 impl Default for PostEffect {
     fn default() -> Self {
-        Self {
-            superclass: Instance::default(),
+        let superclass = Object {};
+        let superclass = Instance {
+            superclass,
+            Capabilities: SecurityCapabilities::from_bits(0u64),
+            HistoryId: UniqueId::nil(),
+            Name: "".to_owned(),
+            SourceAssetId: 0i64,
+            Tags: Tags::new(),
+            UniqueId: UniqueId::nil(),
+        };
+        let superclass = PostEffect {
+            superclass,
             Enabled: false,
-        }
+        };
+        superclass
     }
 }
 #[derive(Debug, Clone)]
@@ -9560,8 +13248,18 @@ impl_inherits!(ProximityPrompt, Instance);
 impl_strong_instance_from!(ProximityPrompt);
 impl Default for ProximityPrompt {
     fn default() -> Self {
-        Self {
-            superclass: Instance::default(),
+        let superclass = Object {};
+        let superclass = Instance {
+            superclass,
+            Capabilities: SecurityCapabilities::from_bits(0u64),
+            HistoryId: UniqueId::nil(),
+            Name: "".to_owned(),
+            SourceAssetId: 0i64,
+            Tags: Tags::new(),
+            UniqueId: UniqueId::nil(),
+        };
+        let superclass = ProximityPrompt {
+            superclass,
             ActionText: "Interact".to_owned(),
             AutoLocalize: true,
             ClickablePrompt: true,
@@ -9577,7 +13275,8 @@ impl Default for ProximityPrompt {
             RootLocalizationTable: Ref::none(),
             Style: enums::ProximityPromptStyle::Default,
             UiOffset: Vector2::new(0f32, 0f32),
-        }
+        };
+        superclass
     }
 }
 #[derive(Debug, Clone)]
@@ -9592,12 +13291,23 @@ impl_inherits!(ProximityPromptService, Instance);
 impl_strong_instance_from!(ProximityPromptService);
 impl Default for ProximityPromptService {
     fn default() -> Self {
-        Self {
-            superclass: Instance::default(),
+        let superclass = Object {};
+        let superclass = Instance {
+            superclass,
+            Capabilities: SecurityCapabilities::from_bits(0u64),
+            HistoryId: UniqueId::nil(),
+            Name: "".to_owned(),
+            SourceAssetId: 0i64,
+            Tags: Tags::new(),
+            UniqueId: UniqueId::nil(),
+        };
+        let superclass = ProximityPromptService {
+            superclass,
             Enabled: true,
             MaxIndicatorsVisible: 16i32,
             MaxPromptsVisible: 16i32,
-        }
+        };
+        superclass
     }
 }
 #[derive(Debug, Clone)]
@@ -9621,13 +13331,43 @@ impl_inherits!(PyramidHandleAdornment, HandleAdornment);
 impl_strong_instance_from!(PyramidHandleAdornment);
 impl Default for PyramidHandleAdornment {
     fn default() -> Self {
-        Self {
-            superclass: HandleAdornment::default(),
+        let superclass = Object {};
+        let superclass = Instance {
+            superclass,
+            Capabilities: SecurityCapabilities::from_bits(0u64),
+            HistoryId: UniqueId::nil(),
+            Name: "".to_owned(),
+            SourceAssetId: 0i64,
+            Tags: Tags::new(),
+            UniqueId: UniqueId::nil(),
+        };
+        let superclass = GuiBase { superclass };
+        let superclass = GuiBase3d {
+            superclass,
+            Color3: Color3::new(0f32, 0f32, 0f32),
+            Transparency: 0f32,
+            Visible: false,
+        };
+        let superclass = PVAdornment {
+            superclass,
+            Adornee: Ref::none(),
+        };
+        let superclass = HandleAdornment {
+            superclass,
+            AdornCullingMode: enums::AdornCullingMode::Automatic,
+            AlwaysOnTop: false,
+            CFrame: CFrame::identity(),
+            SizeRelativeOffset: Vector3::new(0f32, 0f32, 0f32),
+            ZIndex: 0i32,
+        };
+        let superclass = PyramidHandleAdornment {
+            superclass,
             Height: 2f32,
             Shading: enums::AdornShading::Default,
             Sides: 4i32,
             Size: 1f32,
-        }
+        };
+        superclass
     }
 }
 #[derive(Debug, Clone)]
@@ -9656,13 +13396,25 @@ impl_inherits!(RayValue, ValueBase);
 impl_strong_instance_from!(RayValue);
 impl Default for RayValue {
     fn default() -> Self {
-        Self {
-            superclass: ValueBase::default(),
+        let superclass = Object {};
+        let superclass = Instance {
+            superclass,
+            Capabilities: SecurityCapabilities::from_bits(0u64),
+            HistoryId: UniqueId::nil(),
+            Name: "".to_owned(),
+            SourceAssetId: 0i64,
+            Tags: Tags::new(),
+            UniqueId: UniqueId::nil(),
+        };
+        let superclass = ValueBase { superclass };
+        let superclass = RayValue {
+            superclass,
             Value: Ray::new(
                 Vector3::new(0f32, 0f32, 0f32),
                 Vector3::new(0f32, 0f32, 0f32),
             ),
-        }
+        };
+        superclass
     }
 }
 #[derive(Debug, Clone)]
@@ -9719,14 +13471,44 @@ impl_inherits!(ReflectionMetadataClass, ReflectionMetadataItem);
 impl_strong_instance_from!(ReflectionMetadataClass);
 impl Default for ReflectionMetadataClass {
     fn default() -> Self {
-        Self {
-            superclass: ReflectionMetadataItem::default(),
+        let superclass = Object {};
+        let superclass = Instance {
+            superclass,
+            Capabilities: SecurityCapabilities::from_bits(0u64),
+            HistoryId: UniqueId::nil(),
+            Name: "".to_owned(),
+            SourceAssetId: 0i64,
+            Tags: Tags::new(),
+            UniqueId: UniqueId::nil(),
+        };
+        let superclass = ReflectionMetadataItem {
+            superclass,
+            Browsable: false,
+            ClassCategory: "".to_owned(),
+            ClientOnly: false,
+            Constraint: "".to_owned(),
+            Deprecated: false,
+            EditingDisabled: false,
+            EditorType: "".to_owned(),
+            FFlag: "".to_owned(),
+            IsBackend: false,
+            PropertyOrder: 0i32,
+            ScriptContext: "".to_owned(),
+            ServerOnly: false,
+            SliderScaling: "".to_owned(),
+            UiMaximum: 0f64,
+            UiMinimum: 0f64,
+            UiNumTicks: 0f64,
+        };
+        let superclass = ReflectionMetadataClass {
+            superclass,
             ExplorerImageIndex: 0i32,
             ExplorerOrder: 2147483647i32,
             Insertable: true,
             PreferredParent: "".to_owned(),
             ServiceVisibility: enums::ServiceVisibility::Always,
-        }
+        };
+        superclass
     }
 }
 #[derive(Debug, Clone)]
@@ -9802,8 +13584,18 @@ impl_inherits!(ReflectionMetadataItem, Instance);
 impl_strong_instance_from!(ReflectionMetadataItem);
 impl Default for ReflectionMetadataItem {
     fn default() -> Self {
-        Self {
-            superclass: Instance::default(),
+        let superclass = Object {};
+        let superclass = Instance {
+            superclass,
+            Capabilities: SecurityCapabilities::from_bits(0u64),
+            HistoryId: UniqueId::nil(),
+            Name: "".to_owned(),
+            SourceAssetId: 0i64,
+            Tags: Tags::new(),
+            UniqueId: UniqueId::nil(),
+        };
+        let superclass = ReflectionMetadataItem {
+            superclass,
             Browsable: false,
             ClassCategory: "".to_owned(),
             ClientOnly: false,
@@ -9820,7 +13612,8 @@ impl Default for ReflectionMetadataItem {
             UiMaximum: 0f64,
             UiMinimum: 0f64,
             UiNumTicks: 0f64,
-        }
+        };
+        superclass
     }
 }
 #[derive(Debug, Clone)]
@@ -9926,8 +13719,18 @@ impl_inherits!(RenderSettings, Instance);
 impl_strong_instance_from!(RenderSettings);
 impl Default for RenderSettings {
     fn default() -> Self {
-        Self {
-            superclass: Instance::default(),
+        let superclass = Object {};
+        let superclass = Instance {
+            superclass,
+            Capabilities: SecurityCapabilities::from_bits(0u64),
+            HistoryId: UniqueId::nil(),
+            Name: "".to_owned(),
+            SourceAssetId: 0i64,
+            Tags: Tags::new(),
+            UniqueId: UniqueId::nil(),
+        };
+        let superclass = RenderSettings {
+            superclass,
             AutoFrmLevel: 0i32,
             EagerBulkExecution: false,
             EditQualityLevel: enums::QualityLevel::Automatic,
@@ -9942,7 +13745,8 @@ impl Default for RenderSettings {
             RenderCsgTrianglesDebug: false,
             ShowBoundingBoxes: false,
             ViewMode: enums::ViewMode::None,
-        }
+        };
+        superclass
     }
 }
 #[derive(Debug, Clone)]
@@ -9967,8 +13771,18 @@ impl_inherits!(RenderingTest, Instance);
 impl_strong_instance_from!(RenderingTest);
 impl Default for RenderingTest {
     fn default() -> Self {
-        Self {
-            superclass: Instance::default(),
+        let superclass = Object {};
+        let superclass = Instance {
+            superclass,
+            Capabilities: SecurityCapabilities::from_bits(0u64),
+            HistoryId: UniqueId::nil(),
+            Name: "".to_owned(),
+            SourceAssetId: 0i64,
+            Tags: Tags::new(),
+            UniqueId: UniqueId::nil(),
+        };
+        let superclass = RenderingTest {
+            superclass,
             CFrame: CFrame::identity(),
             ComparisonDiffThreshold: 10i32,
             ComparisonMethod: enums::RenderingTestComparisonMethod::psnr,
@@ -9982,7 +13796,8 @@ impl Default for RenderingTest {
             ShouldSkip: false,
             Ticket: "".to_owned(),
             Timeout: 30i32,
-        }
+        };
+        superclass
     }
 }
 #[derive(Debug, Clone)]
@@ -10015,14 +13830,30 @@ impl_inherits!(ReverbSoundEffect, SoundEffect);
 impl_strong_instance_from!(ReverbSoundEffect);
 impl Default for ReverbSoundEffect {
     fn default() -> Self {
-        Self {
-            superclass: SoundEffect::default(),
+        let superclass = Object {};
+        let superclass = Instance {
+            superclass,
+            Capabilities: SecurityCapabilities::from_bits(0u64),
+            HistoryId: UniqueId::nil(),
+            Name: "".to_owned(),
+            SourceAssetId: 0i64,
+            Tags: Tags::new(),
+            UniqueId: UniqueId::nil(),
+        };
+        let superclass = SoundEffect {
+            superclass,
+            Enabled: false,
+            Priority: 0i32,
+        };
+        let superclass = ReverbSoundEffect {
+            superclass,
             DecayTime: 1.5f32,
             Density: 1f32,
             Diffusion: 1f32,
             DryLevel: -6f32,
             WetLevel: 0f32,
-        }
+        };
+        superclass
     }
 }
 #[derive(Debug, Clone)]
@@ -10067,10 +13898,21 @@ impl_inherits!(RobloxSerializableInstance, Instance);
 impl_strong_instance_from!(RobloxSerializableInstance);
 impl Default for RobloxSerializableInstance {
     fn default() -> Self {
-        Self {
-            superclass: Instance::default(),
+        let superclass = Object {};
+        let superclass = Instance {
+            superclass,
+            Capabilities: SecurityCapabilities::from_bits(0u64),
+            HistoryId: UniqueId::nil(),
+            Name: "".to_owned(),
+            SourceAssetId: 0i64,
+            Tags: Tags::new(),
+            UniqueId: UniqueId::nil(),
+        };
+        let superclass = RobloxSerializableInstance {
+            superclass,
             Data: b"".as_slice().into(),
-        }
+        };
+        superclass
     }
 }
 #[derive(Debug, Clone)]
@@ -10101,8 +13943,19 @@ impl_inherits!(RocketPropulsion, BodyMover);
 impl_strong_instance_from!(RocketPropulsion);
 impl Default for RocketPropulsion {
     fn default() -> Self {
-        Self {
-            superclass: BodyMover::default(),
+        let superclass = Object {};
+        let superclass = Instance {
+            superclass,
+            Capabilities: SecurityCapabilities::from_bits(0u64),
+            HistoryId: UniqueId::nil(),
+            Name: "".to_owned(),
+            SourceAssetId: 0i64,
+            Tags: Tags::new(),
+            UniqueId: UniqueId::nil(),
+        };
+        let superclass = BodyMover { superclass };
+        let superclass = RocketPropulsion {
+            superclass,
             CartoonFactor: 0.7f32,
             MaxSpeed: 30f32,
             MaxThrust: 4000f32,
@@ -10114,7 +13967,8 @@ impl Default for RocketPropulsion {
             ThrustP: 5f32,
             TurnD: 500f32,
             TurnP: 3000f32,
-        }
+        };
+        superclass
     }
 }
 #[derive(Debug, Clone)]
@@ -10131,14 +13985,33 @@ impl_inherits!(RodConstraint, Constraint);
 impl_strong_instance_from!(RodConstraint);
 impl Default for RodConstraint {
     fn default() -> Self {
-        Self {
-            superclass: Constraint::default(),
+        let superclass = Object {};
+        let superclass = Instance {
+            superclass,
+            Capabilities: SecurityCapabilities::from_bits(0u64),
+            HistoryId: UniqueId::nil(),
+            Name: "".to_owned(),
+            SourceAssetId: 0i64,
+            Tags: Tags::new(),
+            UniqueId: UniqueId::nil(),
+        };
+        let superclass = Constraint {
+            superclass,
+            Attachment0: Ref::none(),
+            Attachment1: Ref::none(),
+            Color: BrickColor::from_number(194u16).unwrap(),
+            Enabled: false,
+            Visible: false,
+        };
+        let superclass = RodConstraint {
+            superclass,
             Length: 5f32,
             LimitAngle0: 90f32,
             LimitAngle1: 90f32,
             LimitsEnabled: false,
             Thickness: 0.1f32,
-        }
+        };
+        superclass
     }
 }
 #[derive(Debug, Clone)]
@@ -10188,8 +14061,23 @@ impl_inherits!(RootImportData, BaseImportData);
 impl_strong_instance_from!(RootImportData);
 impl Default for RootImportData {
     fn default() -> Self {
-        Self {
-            superclass: BaseImportData::default(),
+        let superclass = Object {};
+        let superclass = Instance {
+            superclass,
+            Capabilities: SecurityCapabilities::from_bits(0u64),
+            HistoryId: UniqueId::nil(),
+            Name: "".to_owned(),
+            SourceAssetId: 0i64,
+            Tags: Tags::new(),
+            UniqueId: UniqueId::nil(),
+        };
+        let superclass = BaseImportData {
+            superclass,
+            ImportName: "".to_owned(),
+            ShouldImport: false,
+        };
+        let superclass = RootImportData {
+            superclass,
             AddModelToInventory: false,
             Anchored: false,
             AnimationIdForRestPose: 0f32,
@@ -10212,7 +14100,8 @@ impl Default for RootImportData {
             ValidateUgcBody: false,
             WorldForward: enums::NormalId::Right,
             WorldUp: enums::NormalId::Right,
-        }
+        };
+        superclass
     }
 }
 #[derive(Debug, Clone)]
@@ -10232,8 +14121,26 @@ impl_inherits!(RopeConstraint, Constraint);
 impl_strong_instance_from!(RopeConstraint);
 impl Default for RopeConstraint {
     fn default() -> Self {
-        Self {
-            superclass: Constraint::default(),
+        let superclass = Object {};
+        let superclass = Instance {
+            superclass,
+            Capabilities: SecurityCapabilities::from_bits(0u64),
+            HistoryId: UniqueId::nil(),
+            Name: "".to_owned(),
+            SourceAssetId: 0i64,
+            Tags: Tags::new(),
+            UniqueId: UniqueId::nil(),
+        };
+        let superclass = Constraint {
+            superclass,
+            Attachment0: Ref::none(),
+            Attachment1: Ref::none(),
+            Color: BrickColor::from_number(194u16).unwrap(),
+            Enabled: false,
+            Visible: false,
+        };
+        let superclass = RopeConstraint {
+            superclass,
             Length: 5f32,
             Restitution: 0f32,
             Thickness: 0.1f32,
@@ -10242,7 +14149,8 @@ impl Default for RopeConstraint {
             WinchResponsiveness: 45f32,
             WinchSpeed: 2f32,
             WinchTarget: 5f32,
-        }
+        };
+        superclass
     }
 }
 #[derive(Debug, Clone)]
@@ -10279,10 +14187,21 @@ impl_inherits!(RotationCurve, Instance);
 impl_strong_instance_from!(RotationCurve);
 impl Default for RotationCurve {
     fn default() -> Self {
-        Self {
-            superclass: Instance::default(),
+        let superclass = Object {};
+        let superclass = Instance {
+            superclass,
+            Capabilities: SecurityCapabilities::from_bits(0u64),
+            HistoryId: UniqueId::nil(),
+            Name: "".to_owned(),
+            SourceAssetId: 0i64,
+            Tags: Tags::new(),
+            UniqueId: UniqueId::nil(),
+        };
+        let superclass = RotationCurve {
+            superclass,
             ValuesAndTimes: b"\x01\0\0\0\0\0\0\0\x01\0\0\0\0\0\0\0".as_slice().into(),
-        }
+        };
+        superclass
     }
 }
 #[derive(Debug, Clone)]
@@ -10351,10 +14270,21 @@ impl_inherits!(SafetyService, Instance);
 impl_strong_instance_from!(SafetyService);
 impl Default for SafetyService {
     fn default() -> Self {
-        Self {
-            superclass: Instance::default(),
+        let superclass = Object {};
+        let superclass = Instance {
+            superclass,
+            Capabilities: SecurityCapabilities::from_bits(0u64),
+            HistoryId: UniqueId::nil(),
+            Name: "".to_owned(),
+            SourceAssetId: 0i64,
+            Tags: Tags::new(),
+            UniqueId: UniqueId::nil(),
+        };
+        let superclass = SafetyService {
+            superclass,
             IsCaptureModeForReport: false,
-        }
+        };
+        superclass
     }
 }
 #[derive(Debug, Clone)]
@@ -10370,13 +14300,41 @@ impl_inherits!(ScreenGui, LayerCollector);
 impl_strong_instance_from!(ScreenGui);
 impl Default for ScreenGui {
     fn default() -> Self {
-        Self {
-            superclass: LayerCollector::default(),
+        let superclass = Object {};
+        let superclass = Instance {
+            superclass,
+            Capabilities: SecurityCapabilities::from_bits(0u64),
+            HistoryId: UniqueId::nil(),
+            Name: "".to_owned(),
+            SourceAssetId: 0i64,
+            Tags: Tags::new(),
+            UniqueId: UniqueId::nil(),
+        };
+        let superclass = GuiBase { superclass };
+        let superclass = GuiBase2d {
+            superclass,
+            AutoLocalize: false,
+            RootLocalizationTable: Ref::none(),
+            SelectionBehaviorDown: enums::SelectionBehavior::Escape,
+            SelectionBehaviorLeft: enums::SelectionBehavior::Escape,
+            SelectionBehaviorRight: enums::SelectionBehavior::Escape,
+            SelectionBehaviorUp: enums::SelectionBehavior::Escape,
+            SelectionGroup: false,
+        };
+        let superclass = LayerCollector {
+            superclass,
+            Enabled: false,
+            ResetOnSpawn: false,
+            ZIndexBehavior: enums::ZIndexBehavior::Global,
+        };
+        let superclass = ScreenGui {
+            superclass,
             ClipToDeviceSafeArea: true,
             DisplayOrder: 0i32,
             SafeAreaCompatibility: enums::SafeAreaCompatibility::FullscreenExtension,
             ScreenInsets: enums::ScreenInsets::CoreUISafeInsets,
-        }
+        };
+        superclass
     }
 }
 #[derive(Debug, Clone)]
@@ -10406,8 +14364,18 @@ impl_inherits!(ScreenshotHud, Instance);
 impl_strong_instance_from!(ScreenshotHud);
 impl Default for ScreenshotHud {
     fn default() -> Self {
-        Self {
-            superclass: Instance::default(),
+        let superclass = Object {};
+        let superclass = Instance {
+            superclass,
+            Capabilities: SecurityCapabilities::from_bits(0u64),
+            HistoryId: UniqueId::nil(),
+            Name: "".to_owned(),
+            SourceAssetId: 0i64,
+            Tags: Tags::new(),
+            UniqueId: UniqueId::nil(),
+        };
+        let superclass = ScreenshotHud {
+            superclass,
             CameraButtonIcon: "".into(),
             CameraButtonPosition: UDim2::new(UDim::new(0f32, 0i32), UDim::new(0f32, 0i32)),
             CloseButtonPosition: UDim2::new(UDim::new(0f32, 0i32), UDim::new(0f32, 0i32)),
@@ -10418,7 +14386,8 @@ impl Default for ScreenshotHud {
             OverlayFont: enums::Font::Legacy,
             UsernameOverlayEnabled: false,
             Visible: false,
-        }
+        };
+        superclass
     }
 }
 #[derive(Debug, Clone)]
@@ -10431,10 +14400,31 @@ impl_inherits!(Script, BaseScript);
 impl_strong_instance_from!(Script);
 impl Default for Script {
     fn default() -> Self {
-        Self {
-            superclass: BaseScript::default(),
+        let superclass = Object {};
+        let superclass = Instance {
+            superclass,
+            Capabilities: SecurityCapabilities::from_bits(0u64),
+            HistoryId: UniqueId::nil(),
+            Name: "".to_owned(),
+            SourceAssetId: 0i64,
+            Tags: Tags::new(),
+            UniqueId: UniqueId::nil(),
+        };
+        let superclass = LuaSourceContainer {
+            superclass,
+            ScriptGuid: "".to_owned(),
+        };
+        let superclass = BaseScript {
+            superclass,
+            Disabled: false,
+            LinkedSource: "".into(),
+            RunContext: enums::RunContext::Legacy,
+        };
+        let superclass = Script {
+            superclass,
             Source: "".to_owned(),
-        }
+        };
+        superclass
     }
 }
 #[derive(Debug, Clone)]
@@ -10496,11 +14486,22 @@ impl_inherits!(ScriptDebugger, Instance);
 impl_strong_instance_from!(ScriptDebugger);
 impl Default for ScriptDebugger {
     fn default() -> Self {
-        Self {
-            superclass: Instance::default(),
+        let superclass = Object {};
+        let superclass = Instance {
+            superclass,
+            Capabilities: SecurityCapabilities::from_bits(0u64),
+            HistoryId: UniqueId::nil(),
+            Name: "".to_owned(),
+            SourceAssetId: 0i64,
+            Tags: Tags::new(),
+            UniqueId: UniqueId::nil(),
+        };
+        let superclass = ScriptDebugger {
+            superclass,
             CoreScriptIdentifier: "".to_owned(),
             ScriptGuid: "".to_owned(),
-        }
+        };
+        superclass
     }
 }
 #[derive(Debug, Clone)]
@@ -10575,8 +14576,57 @@ impl_inherits!(ScrollingFrame, GuiObject);
 impl_strong_instance_from!(ScrollingFrame);
 impl Default for ScrollingFrame {
     fn default() -> Self {
-        Self {
-            superclass: GuiObject::default(),
+        let superclass = Object {};
+        let superclass = Instance {
+            superclass,
+            Capabilities: SecurityCapabilities::from_bits(0u64),
+            HistoryId: UniqueId::nil(),
+            Name: "".to_owned(),
+            SourceAssetId: 0i64,
+            Tags: Tags::new(),
+            UniqueId: UniqueId::nil(),
+        };
+        let superclass = GuiBase { superclass };
+        let superclass = GuiBase2d {
+            superclass,
+            AutoLocalize: false,
+            RootLocalizationTable: Ref::none(),
+            SelectionBehaviorDown: enums::SelectionBehavior::Escape,
+            SelectionBehaviorLeft: enums::SelectionBehavior::Escape,
+            SelectionBehaviorRight: enums::SelectionBehavior::Escape,
+            SelectionBehaviorUp: enums::SelectionBehavior::Escape,
+            SelectionGroup: false,
+        };
+        let superclass = GuiObject {
+            superclass,
+            Active: false,
+            AnchorPoint: Vector2::new(0f32, 0f32),
+            AutomaticSize: enums::AutomaticSize::None,
+            BackgroundColor3: Color3::new(0f32, 0f32, 0f32),
+            BackgroundTransparency: 0f32,
+            BorderColor3: Color3::new(0f32, 0f32, 0f32),
+            BorderMode: enums::BorderMode::Outline,
+            BorderSizePixel: 0i32,
+            ClipsDescendants: false,
+            Draggable: false,
+            Interactable: false,
+            LayoutOrder: 0i32,
+            NextSelectionDown: Ref::none(),
+            NextSelectionLeft: Ref::none(),
+            NextSelectionRight: Ref::none(),
+            NextSelectionUp: Ref::none(),
+            Position: UDim2::new(UDim::new(0f32, 0i32), UDim::new(0f32, 0i32)),
+            Rotation: 0f32,
+            Selectable: false,
+            SelectionImageObject: Ref::none(),
+            SelectionOrder: 0i32,
+            Size: UDim2::new(UDim::new(0f32, 0i32), UDim::new(0f32, 0i32)),
+            SizeConstraint: enums::SizeConstraint::RelativeXY,
+            Visible: false,
+            ZIndex: 0i32,
+        };
+        let superclass = ScrollingFrame {
+            superclass,
             AutomaticCanvasSize: enums::AutomaticSize::None,
             BottomImageContent: Content::from_uri(
                 "rbxasset://textures/ui/Scroll/scroll-bottom.png",
@@ -10594,7 +14644,8 @@ impl Default for ScrollingFrame {
             TopImageContent: Content::from_uri("rbxasset://textures/ui/Scroll/scroll-top.png"),
             VerticalScrollBarInset: enums::ScrollBarInset::None,
             VerticalScrollBarPosition: enums::VerticalScrollBarPosition::Right,
-        }
+        };
+        superclass
     }
 }
 #[derive(Debug, Clone)]
@@ -10607,10 +14658,71 @@ impl_inherits!(Seat, Part);
 impl_strong_instance_from!(Seat);
 impl Default for Seat {
     fn default() -> Self {
-        Self {
-            superclass: Part::default(),
+        let superclass = Object {};
+        let superclass = Instance {
+            superclass,
+            Capabilities: SecurityCapabilities::from_bits(0u64),
+            HistoryId: UniqueId::nil(),
+            Name: "".to_owned(),
+            SourceAssetId: 0i64,
+            Tags: Tags::new(),
+            UniqueId: UniqueId::nil(),
+        };
+        let superclass = PVInstance { superclass };
+        let superclass = BasePart {
+            superclass,
+            Anchored: false,
+            AudioCanCollide: false,
+            BackParamA: 0f32,
+            BackParamB: 0f32,
+            BackSurface: enums::SurfaceType::Smooth,
+            BackSurfaceInput: enums::InputType::NoInput,
+            BottomParamA: 0f32,
+            BottomParamB: 0f32,
+            BottomSurface: enums::SurfaceType::Smooth,
+            BottomSurfaceInput: enums::InputType::NoInput,
+            CFrame: CFrame::identity(),
+            CanCollide: false,
+            CanQuery: false,
+            CanTouch: false,
+            CastShadow: false,
+            CollisionGroup: "".to_owned(),
+            CollisionGroupId: 0i32,
+            CustomPhysicalProperties: PhysicalProperties::Default,
+            EnableFluidForces: false,
+            FrontParamA: 0f32,
+            FrontParamB: 0f32,
+            FrontSurface: enums::SurfaceType::Smooth,
+            FrontSurfaceInput: enums::InputType::NoInput,
+            LeftParamA: 0f32,
+            LeftParamB: 0f32,
+            LeftSurface: enums::SurfaceType::Smooth,
+            LeftSurfaceInput: enums::InputType::NoInput,
+            Locked: false,
+            Massless: false,
+            Material: enums::Material::Plastic,
+            PivotOffset: CFrame::identity(),
+            Reflectance: 0f32,
+            RightParamA: 0f32,
+            RightParamB: 0f32,
+            RightSurface: enums::SurfaceType::Smooth,
+            RightSurfaceInput: enums::InputType::NoInput,
+            RootPriority: 0i32,
+            RotVelocity: Vector3::new(0f32, 0f32, 0f32),
+            TopParamA: 0f32,
+            TopParamB: 0f32,
+            TopSurface: enums::SurfaceType::Smooth,
+            TopSurfaceInput: enums::InputType::NoInput,
+            Transparency: 0f32,
+            Velocity: Vector3::new(0f32, 0f32, 0f32),
+        };
+        let superclass = FormFactorPart { superclass };
+        let superclass = Part { superclass };
+        let superclass = Seat {
+            superclass,
             Disabled: false,
-        }
+        };
+        superclass
     }
 }
 #[derive(Debug, Clone)]
@@ -10634,13 +14746,35 @@ impl_inherits!(SelectionBox, InstanceAdornment);
 impl_strong_instance_from!(SelectionBox);
 impl Default for SelectionBox {
     fn default() -> Self {
-        Self {
-            superclass: InstanceAdornment::default(),
+        let superclass = Object {};
+        let superclass = Instance {
+            superclass,
+            Capabilities: SecurityCapabilities::from_bits(0u64),
+            HistoryId: UniqueId::nil(),
+            Name: "".to_owned(),
+            SourceAssetId: 0i64,
+            Tags: Tags::new(),
+            UniqueId: UniqueId::nil(),
+        };
+        let superclass = GuiBase { superclass };
+        let superclass = GuiBase3d {
+            superclass,
+            Color3: Color3::new(0f32, 0f32, 0f32),
+            Transparency: 0f32,
+            Visible: false,
+        };
+        let superclass = InstanceAdornment {
+            superclass,
+            Adornee: Ref::none(),
+        };
+        let superclass = SelectionBox {
+            superclass,
             LineThickness: 0.15f32,
             StudioSelectionBox: false,
             SurfaceColor3: Color3::new(0.050980397f32, 0.41176474f32, 0.6745098f32),
             SurfaceTransparency: 1f32,
-        }
+        };
+        superclass
     }
 }
 #[derive(Debug, Clone)]
@@ -10661,10 +14795,28 @@ impl_inherits!(SelectionLasso, GuiBase3d);
 impl_strong_instance_from!(SelectionLasso);
 impl Default for SelectionLasso {
     fn default() -> Self {
-        Self {
-            superclass: GuiBase3d::default(),
+        let superclass = Object {};
+        let superclass = Instance {
+            superclass,
+            Capabilities: SecurityCapabilities::from_bits(0u64),
+            HistoryId: UniqueId::nil(),
+            Name: "".to_owned(),
+            SourceAssetId: 0i64,
+            Tags: Tags::new(),
+            UniqueId: UniqueId::nil(),
+        };
+        let superclass = GuiBase { superclass };
+        let superclass = GuiBase3d {
+            superclass,
+            Color3: Color3::new(0f32, 0f32, 0f32),
+            Transparency: 0f32,
+            Visible: false,
+        };
+        let superclass = SelectionLasso {
+            superclass,
             Humanoid: Ref::none(),
-        }
+        };
+        superclass
     }
 }
 #[derive(Debug, Clone)]
@@ -10677,10 +14829,32 @@ impl_inherits!(SelectionPartLasso, SelectionLasso);
 impl_strong_instance_from!(SelectionPartLasso);
 impl Default for SelectionPartLasso {
     fn default() -> Self {
-        Self {
-            superclass: SelectionLasso::default(),
+        let superclass = Object {};
+        let superclass = Instance {
+            superclass,
+            Capabilities: SecurityCapabilities::from_bits(0u64),
+            HistoryId: UniqueId::nil(),
+            Name: "".to_owned(),
+            SourceAssetId: 0i64,
+            Tags: Tags::new(),
+            UniqueId: UniqueId::nil(),
+        };
+        let superclass = GuiBase { superclass };
+        let superclass = GuiBase3d {
+            superclass,
+            Color3: Color3::new(0f32, 0f32, 0f32),
+            Transparency: 0f32,
+            Visible: false,
+        };
+        let superclass = SelectionLasso {
+            superclass,
+            Humanoid: Ref::none(),
+        };
+        let superclass = SelectionPartLasso {
+            superclass,
             Part: Ref::none(),
-        }
+        };
+        superclass
     }
 }
 #[derive(Debug, Clone)]
@@ -10693,10 +14867,32 @@ impl_inherits!(SelectionPointLasso, SelectionLasso);
 impl_strong_instance_from!(SelectionPointLasso);
 impl Default for SelectionPointLasso {
     fn default() -> Self {
-        Self {
-            superclass: SelectionLasso::default(),
+        let superclass = Object {};
+        let superclass = Instance {
+            superclass,
+            Capabilities: SecurityCapabilities::from_bits(0u64),
+            HistoryId: UniqueId::nil(),
+            Name: "".to_owned(),
+            SourceAssetId: 0i64,
+            Tags: Tags::new(),
+            UniqueId: UniqueId::nil(),
+        };
+        let superclass = GuiBase { superclass };
+        let superclass = GuiBase3d {
+            superclass,
+            Color3: Color3::new(0f32, 0f32, 0f32),
+            Transparency: 0f32,
+            Visible: false,
+        };
+        let superclass = SelectionLasso {
+            superclass,
+            Humanoid: Ref::none(),
+        };
+        let superclass = SelectionPointLasso {
+            superclass,
             Point: Vector3::new(0f32, 0f32, 0f32),
-        }
+        };
+        superclass
     }
 }
 #[derive(Debug, Clone)]
@@ -10710,11 +14906,33 @@ impl_inherits!(SelectionSphere, PVAdornment);
 impl_strong_instance_from!(SelectionSphere);
 impl Default for SelectionSphere {
     fn default() -> Self {
-        Self {
-            superclass: PVAdornment::default(),
+        let superclass = Object {};
+        let superclass = Instance {
+            superclass,
+            Capabilities: SecurityCapabilities::from_bits(0u64),
+            HistoryId: UniqueId::nil(),
+            Name: "".to_owned(),
+            SourceAssetId: 0i64,
+            Tags: Tags::new(),
+            UniqueId: UniqueId::nil(),
+        };
+        let superclass = GuiBase { superclass };
+        let superclass = GuiBase3d {
+            superclass,
+            Color3: Color3::new(0f32, 0f32, 0f32),
+            Transparency: 0f32,
+            Visible: false,
+        };
+        let superclass = PVAdornment {
+            superclass,
+            Adornee: Ref::none(),
+        };
+        let superclass = SelectionSphere {
+            superclass,
             SurfaceColor3: Color3::new(0.050980397f32, 0.41176474f32, 0.6745098f32),
             SurfaceTransparency: 1f32,
-        }
+        };
+        superclass
     }
 }
 #[derive(Debug, Clone)]
@@ -10727,10 +14945,21 @@ impl_inherits!(SensorBase, Instance);
 impl_strong_instance_from!(SensorBase);
 impl Default for SensorBase {
     fn default() -> Self {
-        Self {
-            superclass: Instance::default(),
+        let superclass = Object {};
+        let superclass = Instance {
+            superclass,
+            Capabilities: SecurityCapabilities::from_bits(0u64),
+            HistoryId: UniqueId::nil(),
+            Name: "".to_owned(),
+            SourceAssetId: 0i64,
+            Tags: Tags::new(),
+            UniqueId: UniqueId::nil(),
+        };
+        let superclass = SensorBase {
+            superclass,
             UpdateType: enums::SensorUpdateType::OnRead,
-        }
+        };
+        superclass
     }
 }
 #[derive(Debug, Clone)]
@@ -10759,10 +14988,21 @@ impl_inherits!(ServerScriptService, Instance);
 impl_strong_instance_from!(ServerScriptService);
 impl Default for ServerScriptService {
     fn default() -> Self {
-        Self {
-            superclass: Instance::default(),
+        let superclass = Object {};
+        let superclass = Instance {
+            superclass,
+            Capabilities: SecurityCapabilities::from_bits(0u64),
+            HistoryId: UniqueId::nil(),
+            Name: "".to_owned(),
+            SourceAssetId: 0i64,
+            Tags: Tags::new(),
+            UniqueId: UniqueId::nil(),
+        };
+        let superclass = ServerScriptService {
+            superclass,
             LoadStringEnabled: false,
-        }
+        };
+        superclass
     }
 }
 #[derive(Debug, Clone)]
@@ -10792,11 +15032,22 @@ impl_inherits!(ServiceVisibilityService, Instance);
 impl_strong_instance_from!(ServiceVisibilityService);
 impl Default for ServiceVisibilityService {
     fn default() -> Self {
-        Self {
-            superclass: Instance::default(),
+        let superclass = Object {};
+        let superclass = Instance {
+            superclass,
+            Capabilities: SecurityCapabilities::from_bits(0u64),
+            HistoryId: UniqueId::nil(),
+            Name: "".to_owned(),
+            SourceAssetId: 0i64,
+            Tags: Tags::new(),
+            UniqueId: UniqueId::nil(),
+        };
+        let superclass = ServiceVisibilityService {
+            superclass,
             HiddenServices: b"\0\0\0\0".as_slice().into(),
             VisibleServices: b"\0\0\0\0".as_slice().into(),
-        }
+        };
+        superclass
     }
 }
 #[derive(Debug, Clone)]
@@ -10833,10 +15084,26 @@ impl_inherits!(Shirt, Clothing);
 impl_strong_instance_from!(Shirt);
 impl Default for Shirt {
     fn default() -> Self {
-        Self {
-            superclass: Clothing::default(),
+        let superclass = Object {};
+        let superclass = Instance {
+            superclass,
+            Capabilities: SecurityCapabilities::from_bits(0u64),
+            HistoryId: UniqueId::nil(),
+            Name: "".to_owned(),
+            SourceAssetId: 0i64,
+            Tags: Tags::new(),
+            UniqueId: UniqueId::nil(),
+        };
+        let superclass = CharacterAppearance { superclass };
+        let superclass = Clothing {
+            superclass,
+            Color3: Color3::new(0f32, 0f32, 0f32),
+        };
+        let superclass = Shirt {
+            superclass,
             ShirtTemplate: "".into(),
-        }
+        };
+        superclass
     }
 }
 #[derive(Debug, Clone)]
@@ -10850,11 +15117,23 @@ impl_inherits!(ShirtGraphic, CharacterAppearance);
 impl_strong_instance_from!(ShirtGraphic);
 impl Default for ShirtGraphic {
     fn default() -> Self {
-        Self {
-            superclass: CharacterAppearance::default(),
+        let superclass = Object {};
+        let superclass = Instance {
+            superclass,
+            Capabilities: SecurityCapabilities::from_bits(0u64),
+            HistoryId: UniqueId::nil(),
+            Name: "".to_owned(),
+            SourceAssetId: 0i64,
+            Tags: Tags::new(),
+            UniqueId: UniqueId::nil(),
+        };
+        let superclass = CharacterAppearance { superclass };
+        let superclass = ShirtGraphic {
+            superclass,
             Color3: Color3::new(1f32, 1f32, 1f32),
             Graphic: "".into(),
-        }
+        };
+        superclass
     }
 }
 #[derive(Debug, Clone)]
@@ -10877,12 +15156,73 @@ impl_inherits!(SkateboardPlatform, Part);
 impl_strong_instance_from!(SkateboardPlatform);
 impl Default for SkateboardPlatform {
     fn default() -> Self {
-        Self {
-            superclass: Part::default(),
+        let superclass = Object {};
+        let superclass = Instance {
+            superclass,
+            Capabilities: SecurityCapabilities::from_bits(0u64),
+            HistoryId: UniqueId::nil(),
+            Name: "".to_owned(),
+            SourceAssetId: 0i64,
+            Tags: Tags::new(),
+            UniqueId: UniqueId::nil(),
+        };
+        let superclass = PVInstance { superclass };
+        let superclass = BasePart {
+            superclass,
+            Anchored: false,
+            AudioCanCollide: false,
+            BackParamA: 0f32,
+            BackParamB: 0f32,
+            BackSurface: enums::SurfaceType::Smooth,
+            BackSurfaceInput: enums::InputType::NoInput,
+            BottomParamA: 0f32,
+            BottomParamB: 0f32,
+            BottomSurface: enums::SurfaceType::Smooth,
+            BottomSurfaceInput: enums::InputType::NoInput,
+            CFrame: CFrame::identity(),
+            CanCollide: false,
+            CanQuery: false,
+            CanTouch: false,
+            CastShadow: false,
+            CollisionGroup: "".to_owned(),
+            CollisionGroupId: 0i32,
+            CustomPhysicalProperties: PhysicalProperties::Default,
+            EnableFluidForces: false,
+            FrontParamA: 0f32,
+            FrontParamB: 0f32,
+            FrontSurface: enums::SurfaceType::Smooth,
+            FrontSurfaceInput: enums::InputType::NoInput,
+            LeftParamA: 0f32,
+            LeftParamB: 0f32,
+            LeftSurface: enums::SurfaceType::Smooth,
+            LeftSurfaceInput: enums::InputType::NoInput,
+            Locked: false,
+            Massless: false,
+            Material: enums::Material::Plastic,
+            PivotOffset: CFrame::identity(),
+            Reflectance: 0f32,
+            RightParamA: 0f32,
+            RightParamB: 0f32,
+            RightSurface: enums::SurfaceType::Smooth,
+            RightSurfaceInput: enums::InputType::NoInput,
+            RootPriority: 0i32,
+            RotVelocity: Vector3::new(0f32, 0f32, 0f32),
+            TopParamA: 0f32,
+            TopParamB: 0f32,
+            TopSurface: enums::SurfaceType::Smooth,
+            TopSurfaceInput: enums::InputType::NoInput,
+            Transparency: 0f32,
+            Velocity: Vector3::new(0f32, 0f32, 0f32),
+        };
+        let superclass = FormFactorPart { superclass };
+        let superclass = Part { superclass };
+        let superclass = SkateboardPlatform {
+            superclass,
             Steer: 0i32,
             StickyWheels: true,
             Throttle: 0i32,
-        }
+        };
+        superclass
     }
 }
 #[derive(Debug, Clone)]
@@ -10895,10 +15235,22 @@ impl_inherits!(Skin, CharacterAppearance);
 impl_strong_instance_from!(Skin);
 impl Default for Skin {
     fn default() -> Self {
-        Self {
-            superclass: CharacterAppearance::default(),
+        let superclass = Object {};
+        let superclass = Instance {
+            superclass,
+            Capabilities: SecurityCapabilities::from_bits(0u64),
+            HistoryId: UniqueId::nil(),
+            Name: "".to_owned(),
+            SourceAssetId: 0i64,
+            Tags: Tags::new(),
+            UniqueId: UniqueId::nil(),
+        };
+        let superclass = CharacterAppearance { superclass };
+        let superclass = Skin {
+            superclass,
             SkinColor: BrickColor::from_number(226u16).unwrap(),
-        }
+        };
+        superclass
     }
 }
 #[derive(Debug, Clone)]
@@ -10923,8 +15275,18 @@ impl_inherits!(Sky, Instance);
 impl_strong_instance_from!(Sky);
 impl Default for Sky {
     fn default() -> Self {
-        Self {
-            superclass: Instance::default(),
+        let superclass = Object {};
+        let superclass = Instance {
+            superclass,
+            Capabilities: SecurityCapabilities::from_bits(0u64),
+            HistoryId: UniqueId::nil(),
+            Name: "".to_owned(),
+            SourceAssetId: 0i64,
+            Tags: Tags::new(),
+            UniqueId: UniqueId::nil(),
+        };
+        let superclass = Sky {
+            superclass,
             CelestialBodiesShown: true,
             MoonAngularSize: 11f32,
             MoonTextureId: "rbxasset://sky/moon.jpg".into(),
@@ -10938,7 +15300,8 @@ impl Default for Sky {
             StarCount: 3000i32,
             SunAngularSize: 21f32,
             SunTextureId: "rbxasset://sky/sun.jpg".into(),
-        }
+        };
+        superclass
     }
 }
 #[derive(Debug, Clone)]
@@ -10964,8 +15327,26 @@ impl_inherits!(SlidingBallConstraint, Constraint);
 impl_strong_instance_from!(SlidingBallConstraint);
 impl Default for SlidingBallConstraint {
     fn default() -> Self {
-        Self {
-            superclass: Constraint::default(),
+        let superclass = Object {};
+        let superclass = Instance {
+            superclass,
+            Capabilities: SecurityCapabilities::from_bits(0u64),
+            HistoryId: UniqueId::nil(),
+            Name: "".to_owned(),
+            SourceAssetId: 0i64,
+            Tags: Tags::new(),
+            UniqueId: UniqueId::nil(),
+        };
+        let superclass = Constraint {
+            superclass,
+            Attachment0: Ref::none(),
+            Attachment1: Ref::none(),
+            Color: BrickColor::from_number(194u16).unwrap(),
+            Enabled: false,
+            Visible: false,
+        };
+        let superclass = SlidingBallConstraint {
+            superclass,
             ActuatorType: enums::ActuatorType::None,
             LimitsEnabled: false,
             LinearResponsiveness: 0f32,
@@ -10980,7 +15361,8 @@ impl Default for SlidingBallConstraint {
             TargetPosition: 0f32,
             UpperLimit: 0f32,
             Velocity: 0f32,
-        }
+        };
+        superclass
     }
 }
 #[derive(Debug, Clone)]
@@ -11011,12 +15393,23 @@ impl_inherits!(Smoke, Instance);
 impl_strong_instance_from!(Smoke);
 impl Default for Smoke {
     fn default() -> Self {
-        Self {
-            superclass: Instance::default(),
+        let superclass = Object {};
+        let superclass = Instance {
+            superclass,
+            Capabilities: SecurityCapabilities::from_bits(0u64),
+            HistoryId: UniqueId::nil(),
+            Name: "".to_owned(),
+            SourceAssetId: 0i64,
+            Tags: Tags::new(),
+            UniqueId: UniqueId::nil(),
+        };
+        let superclass = Smoke {
+            superclass,
             Color: Color3::new(1f32, 1f32, 1f32),
             Enabled: true,
             TimeScale: 1f32,
-        }
+        };
+        superclass
     }
 }
 #[derive(Debug, Clone)]
@@ -11081,8 +15474,18 @@ impl_inherits!(Sound, Instance);
 impl_strong_instance_from!(Sound);
 impl Default for Sound {
     fn default() -> Self {
-        Self {
-            superclass: Instance::default(),
+        let superclass = Object {};
+        let superclass = Instance {
+            superclass,
+            Capabilities: SecurityCapabilities::from_bits(0u64),
+            HistoryId: UniqueId::nil(),
+            Name: "".to_owned(),
+            SourceAssetId: 0i64,
+            Tags: Tags::new(),
+            UniqueId: UniqueId::nil(),
+        };
+        let superclass = Sound {
+            superclass,
             AudioContent: Content::none(),
             IsMutedForCapture: false,
             LoopRegion: NumberRange::new(0f32, 60000f32),
@@ -11096,7 +15499,8 @@ impl Default for Sound {
             SoundGroup: Ref::none(),
             TimePosition: 0f64,
             Volume: 0.5f32,
-        }
+        };
+        superclass
     }
 }
 #[derive(Debug, Clone)]
@@ -11110,11 +15514,22 @@ impl_inherits!(SoundEffect, Instance);
 impl_strong_instance_from!(SoundEffect);
 impl Default for SoundEffect {
     fn default() -> Self {
-        Self {
-            superclass: Instance::default(),
+        let superclass = Object {};
+        let superclass = Instance {
+            superclass,
+            Capabilities: SecurityCapabilities::from_bits(0u64),
+            HistoryId: UniqueId::nil(),
+            Name: "".to_owned(),
+            SourceAssetId: 0i64,
+            Tags: Tags::new(),
+            UniqueId: UniqueId::nil(),
+        };
+        let superclass = SoundEffect {
+            superclass,
             Enabled: false,
             Priority: 0i32,
-        }
+        };
+        superclass
     }
 }
 #[derive(Debug, Clone)]
@@ -11127,10 +15542,21 @@ impl_inherits!(SoundGroup, Instance);
 impl_strong_instance_from!(SoundGroup);
 impl Default for SoundGroup {
     fn default() -> Self {
-        Self {
-            superclass: Instance::default(),
+        let superclass = Object {};
+        let superclass = Instance {
+            superclass,
+            Capabilities: SecurityCapabilities::from_bits(0u64),
+            HistoryId: UniqueId::nil(),
+            Name: "".to_owned(),
+            SourceAssetId: 0i64,
+            Tags: Tags::new(),
+            UniqueId: UniqueId::nil(),
+        };
+        let superclass = SoundGroup {
+            superclass,
             Volume: 0.5f32,
-        }
+        };
+        superclass
     }
 }
 #[derive(Debug, Clone)]
@@ -11153,8 +15579,18 @@ impl_inherits!(SoundService, Instance);
 impl_strong_instance_from!(SoundService);
 impl Default for SoundService {
     fn default() -> Self {
-        Self {
-            superclass: Instance::default(),
+        let superclass = Object {};
+        let superclass = Instance {
+            superclass,
+            Capabilities: SecurityCapabilities::from_bits(0u64),
+            HistoryId: UniqueId::nil(),
+            Name: "".to_owned(),
+            SourceAssetId: 0i64,
+            Tags: Tags::new(),
+            UniqueId: UniqueId::nil(),
+        };
+        let superclass = SoundService {
+            superclass,
             AcousticSimulationEnabled: false,
             AmbientReverb: enums::ReverbType::NoReverb,
             AudioApiByDefault: enums::RolloutState::Default,
@@ -11166,7 +15602,8 @@ impl Default for SoundService {
             RespectFilteringEnabled: false,
             RolloffScale: 1f32,
             VolumetricAudio: enums::VolumetricAudio::Automatic,
-        }
+        };
+        superclass
     }
 }
 #[derive(Debug, Clone)]
@@ -11189,12 +15626,23 @@ impl_inherits!(Sparkles, Instance);
 impl_strong_instance_from!(Sparkles);
 impl Default for Sparkles {
     fn default() -> Self {
-        Self {
-            superclass: Instance::default(),
+        let superclass = Object {};
+        let superclass = Instance {
+            superclass,
+            Capabilities: SecurityCapabilities::from_bits(0u64),
+            HistoryId: UniqueId::nil(),
+            Name: "".to_owned(),
+            SourceAssetId: 0i64,
+            Tags: Tags::new(),
+            UniqueId: UniqueId::nil(),
+        };
+        let superclass = Sparkles {
+            superclass,
             Enabled: true,
             SparkleColor: Color3::new(0.5647059f32, 0.098039225f32, 1f32),
             TimeScale: 1f32,
-        }
+        };
+        superclass
     }
 }
 #[derive(Debug, Clone)]
@@ -11211,14 +15659,75 @@ impl_inherits!(SpawnLocation, Part);
 impl_strong_instance_from!(SpawnLocation);
 impl Default for SpawnLocation {
     fn default() -> Self {
-        Self {
-            superclass: Part::default(),
+        let superclass = Object {};
+        let superclass = Instance {
+            superclass,
+            Capabilities: SecurityCapabilities::from_bits(0u64),
+            HistoryId: UniqueId::nil(),
+            Name: "".to_owned(),
+            SourceAssetId: 0i64,
+            Tags: Tags::new(),
+            UniqueId: UniqueId::nil(),
+        };
+        let superclass = PVInstance { superclass };
+        let superclass = BasePart {
+            superclass,
+            Anchored: false,
+            AudioCanCollide: false,
+            BackParamA: 0f32,
+            BackParamB: 0f32,
+            BackSurface: enums::SurfaceType::Smooth,
+            BackSurfaceInput: enums::InputType::NoInput,
+            BottomParamA: 0f32,
+            BottomParamB: 0f32,
+            BottomSurface: enums::SurfaceType::Smooth,
+            BottomSurfaceInput: enums::InputType::NoInput,
+            CFrame: CFrame::identity(),
+            CanCollide: false,
+            CanQuery: false,
+            CanTouch: false,
+            CastShadow: false,
+            CollisionGroup: "".to_owned(),
+            CollisionGroupId: 0i32,
+            CustomPhysicalProperties: PhysicalProperties::Default,
+            EnableFluidForces: false,
+            FrontParamA: 0f32,
+            FrontParamB: 0f32,
+            FrontSurface: enums::SurfaceType::Smooth,
+            FrontSurfaceInput: enums::InputType::NoInput,
+            LeftParamA: 0f32,
+            LeftParamB: 0f32,
+            LeftSurface: enums::SurfaceType::Smooth,
+            LeftSurfaceInput: enums::InputType::NoInput,
+            Locked: false,
+            Massless: false,
+            Material: enums::Material::Plastic,
+            PivotOffset: CFrame::identity(),
+            Reflectance: 0f32,
+            RightParamA: 0f32,
+            RightParamB: 0f32,
+            RightSurface: enums::SurfaceType::Smooth,
+            RightSurfaceInput: enums::InputType::NoInput,
+            RootPriority: 0i32,
+            RotVelocity: Vector3::new(0f32, 0f32, 0f32),
+            TopParamA: 0f32,
+            TopParamB: 0f32,
+            TopSurface: enums::SurfaceType::Smooth,
+            TopSurfaceInput: enums::InputType::NoInput,
+            Transparency: 0f32,
+            Velocity: Vector3::new(0f32, 0f32, 0f32),
+        };
+        let superclass = FormFactorPart { superclass };
+        let superclass = Part { superclass };
+        let superclass = SpawnLocation {
+            superclass,
             AllowTeamChangeOnTouch: false,
             Duration: 10i32,
             Enabled: true,
             Neutral: true,
             TeamColor: BrickColor::from_number(194u16).unwrap(),
-        }
+        };
+        superclass
     }
 }
 #[derive(Debug, Clone)]
@@ -11239,10 +15748,32 @@ impl_inherits!(SpecialMesh, FileMesh);
 impl_strong_instance_from!(SpecialMesh);
 impl Default for SpecialMesh {
     fn default() -> Self {
-        Self {
-            superclass: FileMesh::default(),
+        let superclass = Object {};
+        let superclass = Instance {
+            superclass,
+            Capabilities: SecurityCapabilities::from_bits(0u64),
+            HistoryId: UniqueId::nil(),
+            Name: "".to_owned(),
+            SourceAssetId: 0i64,
+            Tags: Tags::new(),
+            UniqueId: UniqueId::nil(),
+        };
+        let superclass = DataModelMesh {
+            superclass,
+            Offset: Vector3::new(0f32, 0f32, 0f32),
+            Scale: Vector3::new(0f32, 0f32, 0f32),
+            VertexColor: Vector3::new(0f32, 0f32, 0f32),
+        };
+        let superclass = FileMesh {
+            superclass,
+            MeshId: "".into(),
+            TextureId: "".into(),
+        };
+        let superclass = SpecialMesh {
+            superclass,
             MeshType: enums::MeshType::Head,
-        }
+        };
+        superclass
     }
 }
 #[derive(Debug, Clone)]
@@ -11256,11 +15787,41 @@ impl_inherits!(SphereHandleAdornment, HandleAdornment);
 impl_strong_instance_from!(SphereHandleAdornment);
 impl Default for SphereHandleAdornment {
     fn default() -> Self {
-        Self {
-            superclass: HandleAdornment::default(),
+        let superclass = Object {};
+        let superclass = Instance {
+            superclass,
+            Capabilities: SecurityCapabilities::from_bits(0u64),
+            HistoryId: UniqueId::nil(),
+            Name: "".to_owned(),
+            SourceAssetId: 0i64,
+            Tags: Tags::new(),
+            UniqueId: UniqueId::nil(),
+        };
+        let superclass = GuiBase { superclass };
+        let superclass = GuiBase3d {
+            superclass,
+            Color3: Color3::new(0f32, 0f32, 0f32),
+            Transparency: 0f32,
+            Visible: false,
+        };
+        let superclass = PVAdornment {
+            superclass,
+            Adornee: Ref::none(),
+        };
+        let superclass = HandleAdornment {
+            superclass,
+            AdornCullingMode: enums::AdornCullingMode::Automatic,
+            AlwaysOnTop: false,
+            CFrame: CFrame::identity(),
+            SizeRelativeOffset: Vector3::new(0f32, 0f32, 0f32),
+            ZIndex: 0i32,
+        };
+        let superclass = SphereHandleAdornment {
+            superclass,
             Radius: 1f32,
             Shading: enums::AdornShading::Default,
-        }
+        };
+        superclass
     }
 }
 #[derive(Debug, Clone)]
@@ -11275,12 +15836,30 @@ impl_inherits!(SpotLight, Light);
 impl_strong_instance_from!(SpotLight);
 impl Default for SpotLight {
     fn default() -> Self {
-        Self {
-            superclass: Light::default(),
+        let superclass = Object {};
+        let superclass = Instance {
+            superclass,
+            Capabilities: SecurityCapabilities::from_bits(0u64),
+            HistoryId: UniqueId::nil(),
+            Name: "".to_owned(),
+            SourceAssetId: 0i64,
+            Tags: Tags::new(),
+            UniqueId: UniqueId::nil(),
+        };
+        let superclass = Light {
+            superclass,
+            Brightness: 0f32,
+            Color: Color3::new(0f32, 0f32, 0f32),
+            Enabled: false,
+            Shadows: false,
+        };
+        let superclass = SpotLight {
+            superclass,
             Angle: 90f32,
             Face: enums::NormalId::Front,
             Range: 16f32,
-        }
+        };
+        superclass
     }
 }
 #[derive(Debug, Clone)]
@@ -11302,8 +15881,26 @@ impl_inherits!(SpringConstraint, Constraint);
 impl_strong_instance_from!(SpringConstraint);
 impl Default for SpringConstraint {
     fn default() -> Self {
-        Self {
-            superclass: Constraint::default(),
+        let superclass = Object {};
+        let superclass = Instance {
+            superclass,
+            Capabilities: SecurityCapabilities::from_bits(0u64),
+            HistoryId: UniqueId::nil(),
+            Name: "".to_owned(),
+            SourceAssetId: 0i64,
+            Tags: Tags::new(),
+            UniqueId: UniqueId::nil(),
+        };
+        let superclass = Constraint {
+            superclass,
+            Attachment0: Ref::none(),
+            Attachment1: Ref::none(),
+            Color: BrickColor::from_number(194u16).unwrap(),
+            Enabled: false,
+            Visible: false,
+        };
+        let superclass = SpringConstraint {
+            superclass,
             Coils: 3f32,
             Damping: 0f32,
             FreeLength: 1f32,
@@ -11314,7 +15911,8 @@ impl Default for SpringConstraint {
             Radius: 0.4f32,
             Stiffness: 0f32,
             Thickness: 0.1f32,
-        }
+        };
+        superclass
     }
 }
 #[derive(Debug, Clone)]
@@ -11381,8 +15979,19 @@ impl_inherits!(StarterGui, BasePlayerGui);
 impl_strong_instance_from!(StarterGui);
 impl Default for StarterGui {
     fn default() -> Self {
-        Self {
-            superclass: BasePlayerGui::default(),
+        let superclass = Object {};
+        let superclass = Instance {
+            superclass,
+            Capabilities: SecurityCapabilities::from_bits(0u64),
+            HistoryId: UniqueId::nil(),
+            Name: "".to_owned(),
+            SourceAssetId: 0i64,
+            Tags: Tags::new(),
+            UniqueId: UniqueId::nil(),
+        };
+        let superclass = BasePlayerGui { superclass };
+        let superclass = StarterGui {
+            superclass,
             ResetPlayerGuiOnSpawn: true,
             RtlTextSupport: enums::RtlTextSupport::Default,
             ScreenOrientation: enums::ScreenOrientation::LandscapeSensor,
@@ -11390,7 +15999,8 @@ impl Default for StarterGui {
             StudioDefaultStyleSheet: Ref::none(),
             StudioInsertWidgetLayerCollectorAutoLinkStyleSheet: Ref::none(),
             VirtualCursorMode: enums::VirtualCursorMode::Default,
-        }
+        };
+        superclass
     }
 }
 #[derive(Debug, Clone)]
@@ -11454,8 +16064,18 @@ impl_inherits!(StarterPlayer, Instance);
 impl_strong_instance_from!(StarterPlayer);
 impl Default for StarterPlayer {
     fn default() -> Self {
-        Self {
-            superclass: Instance::default(),
+        let superclass = Object {};
+        let superclass = Instance {
+            superclass,
+            Capabilities: SecurityCapabilities::from_bits(0u64),
+            HistoryId: UniqueId::nil(),
+            Name: "".to_owned(),
+            SourceAssetId: 0i64,
+            Tags: Tags::new(),
+            UniqueId: UniqueId::nil(),
+        };
+        let superclass = StarterPlayer {
+            superclass,
             AllowCustomAnimations: true,
             AutoJumpEnabled: true,
             AvatarJointUpgradeSerializedRollout: enums::RolloutState::Default,
@@ -11500,7 +16120,8 @@ impl Default for StarterPlayer {
             LuaCharacterController: enums::CharacterControlMode::Default,
             NameDisplayDistance: 100f32,
             UserEmotesEnabled: true,
-        }
+        };
+        superclass
     }
 }
 #[derive(Debug, Clone)]
@@ -11569,10 +16190,22 @@ impl_inherits!(StringValue, ValueBase);
 impl_strong_instance_from!(StringValue);
 impl Default for StringValue {
     fn default() -> Self {
-        Self {
-            superclass: ValueBase::default(),
+        let superclass = Object {};
+        let superclass = Instance {
+            superclass,
+            Capabilities: SecurityCapabilities::from_bits(0u64),
+            HistoryId: UniqueId::nil(),
+            Name: "".to_owned(),
+            SourceAssetId: 0i64,
+            Tags: Tags::new(),
+            UniqueId: UniqueId::nil(),
+        };
+        let superclass = ValueBase { superclass };
+        let superclass = StringValue {
+            superclass,
             Value: "".to_owned(),
-        }
+        };
+        superclass
     }
 }
 #[derive(Debug, Clone)]
@@ -11706,8 +16339,18 @@ impl_inherits!(Studio, Instance);
 impl_strong_instance_from!(Studio);
 impl Default for Studio {
     fn default() -> Self {
-        Self {
-            superclass: Instance::default(),
+        let superclass = Object {};
+        let superclass = Instance {
+            superclass,
+            Capabilities: SecurityCapabilities::from_bits(0u64),
+            HistoryId: UniqueId::nil(),
+            Name: "".to_owned(),
+            SourceAssetId: 0i64,
+            Tags: Tags::new(),
+            UniqueId: UniqueId::nil(),
+        };
+        let superclass = Studio {
+            superclass,
             ActionOnAutoResumeSync: enums::ActionOnAutoResumeSync::DontResume,
             ActionOnStopSync: enums::ActionOnStopSync::AlwaysAsk,
             ActiveColor: Color3::new(0f32, 0f32, 0f32),
@@ -11830,7 +16473,8 @@ impl Default for Studio {
             TabWidth: 0i32,
             TextWrapping: false,
             UseBoundingBoxMoveHandles: false,
-        }
+        };
+        superclass
     }
 }
 #[derive(Debug, Clone)]
@@ -11855,14 +16499,25 @@ impl_inherits!(StudioAttachment, Instance);
 impl_strong_instance_from!(StudioAttachment);
 impl Default for StudioAttachment {
     fn default() -> Self {
-        Self {
-            superclass: Instance::default(),
+        let superclass = Object {};
+        let superclass = Instance {
+            superclass,
+            Capabilities: SecurityCapabilities::from_bits(0u64),
+            HistoryId: UniqueId::nil(),
+            Name: "".to_owned(),
+            SourceAssetId: 0i64,
+            Tags: Tags::new(),
+            UniqueId: UniqueId::nil(),
+        };
+        let superclass = StudioAttachment {
+            superclass,
             AutoHideParent: false,
             IsArrowVisible: false,
             Offset: Vector2::new(0f32, 0f32),
             SourceAnchorPoint: Vector2::new(0f32, 0f32),
             TargetAnchorPoint: Vector2::new(0f32, 0f32),
-        }
+        };
+        superclass
     }
 }
 #[derive(Debug, Clone)]
@@ -11884,11 +16539,22 @@ impl_inherits!(StudioCameraService, Instance);
 impl_strong_instance_from!(StudioCameraService);
 impl Default for StudioCameraService {
     fn default() -> Self {
-        Self {
-            superclass: Instance::default(),
+        let superclass = Object {};
+        let superclass = Instance {
+            superclass,
+            Capabilities: SecurityCapabilities::from_bits(0u64),
+            HistoryId: UniqueId::nil(),
+            Name: "".to_owned(),
+            SourceAssetId: 0i64,
+            Tags: Tags::new(),
+            UniqueId: UniqueId::nil(),
+        };
+        let superclass = StudioCameraService {
+            superclass,
             LockCameraSpeed: false,
             LoggingEnabled: false,
-        }
+        };
+        superclass
     }
 }
 #[derive(Debug, Clone)]
@@ -11901,10 +16567,21 @@ impl_inherits!(StudioData, Instance);
 impl_strong_instance_from!(StudioData);
 impl Default for StudioData {
     fn default() -> Self {
-        Self {
-            superclass: Instance::default(),
+        let superclass = Object {};
+        let superclass = Instance {
+            superclass,
+            Capabilities: SecurityCapabilities::from_bits(0u64),
+            HistoryId: UniqueId::nil(),
+            Name: "".to_owned(),
+            SourceAssetId: 0i64,
+            Tags: Tags::new(),
+            UniqueId: UniqueId::nil(),
+        };
+        let superclass = StudioData {
+            superclass,
             EnableScriptCollabByDefaultOnLoad: false,
-        }
+        };
+        superclass
     }
 }
 #[derive(Debug, Clone)]
@@ -11933,10 +16610,21 @@ impl_inherits!(StudioPublishService, Instance);
 impl_strong_instance_from!(StudioPublishService);
 impl Default for StudioPublishService {
     fn default() -> Self {
-        Self {
-            superclass: Instance::default(),
+        let superclass = Object {};
+        let superclass = Instance {
+            superclass,
+            Capabilities: SecurityCapabilities::from_bits(0u64),
+            HistoryId: UniqueId::nil(),
+            Name: "".to_owned(),
+            SourceAssetId: 0i64,
+            Tags: Tags::new(),
+            UniqueId: UniqueId::nil(),
+        };
+        let superclass = StudioPublishService {
+            superclass,
             PublishLocked: false,
-        }
+        };
+        superclass
     }
 }
 #[derive(Debug, Clone)]
@@ -11965,10 +16653,21 @@ impl_inherits!(StudioService, Instance);
 impl_strong_instance_from!(StudioService);
 impl Default for StudioService {
     fn default() -> Self {
-        Self {
-            superclass: Instance::default(),
+        let superclass = Object {};
+        let superclass = Instance {
+            superclass,
+            Capabilities: SecurityCapabilities::from_bits(0u64),
+            HistoryId: UniqueId::nil(),
+            Name: "".to_owned(),
+            SourceAssetId: 0i64,
+            Tags: Tags::new(),
+            UniqueId: UniqueId::nil(),
+        };
+        let superclass = StudioService {
+            superclass,
             Secrets: "".to_owned(),
-        }
+        };
+        superclass
     }
 }
 #[derive(Debug, Clone)]
@@ -12030,11 +16729,22 @@ impl_inherits!(StyleDerive, Instance);
 impl_strong_instance_from!(StyleDerive);
 impl Default for StyleDerive {
     fn default() -> Self {
-        Self {
-            superclass: Instance::default(),
+        let superclass = Object {};
+        let superclass = Instance {
+            superclass,
+            Capabilities: SecurityCapabilities::from_bits(0u64),
+            HistoryId: UniqueId::nil(),
+            Name: "".to_owned(),
+            SourceAssetId: 0i64,
+            Tags: Tags::new(),
+            UniqueId: UniqueId::nil(),
+        };
+        let superclass = StyleDerive {
+            superclass,
             Priority: 0i32,
             StyleSheet: Ref::none(),
-        }
+        };
+        superclass
     }
 }
 #[derive(Debug, Clone)]
@@ -12047,10 +16757,21 @@ impl_inherits!(StyleLink, Instance);
 impl_strong_instance_from!(StyleLink);
 impl Default for StyleLink {
     fn default() -> Self {
-        Self {
-            superclass: Instance::default(),
+        let superclass = Object {};
+        let superclass = Instance {
+            superclass,
+            Capabilities: SecurityCapabilities::from_bits(0u64),
+            HistoryId: UniqueId::nil(),
+            Name: "".to_owned(),
+            SourceAssetId: 0i64,
+            Tags: Tags::new(),
+            UniqueId: UniqueId::nil(),
+        };
+        let superclass = StyleLink {
+            superclass,
             StyleSheet: Ref::none(),
-        }
+        };
+        superclass
     }
 }
 #[derive(Debug, Clone)]
@@ -12066,13 +16787,24 @@ impl_inherits!(StyleQuery, Instance);
 impl_strong_instance_from!(StyleQuery);
 impl Default for StyleQuery {
     fn default() -> Self {
-        Self {
-            superclass: Instance::default(),
+        let superclass = Object {};
+        let superclass = Instance {
+            superclass,
+            Capabilities: SecurityCapabilities::from_bits(0u64),
+            HistoryId: UniqueId::nil(),
+            Name: "".to_owned(),
+            SourceAssetId: 0i64,
+            Tags: Tags::new(),
+            UniqueId: UniqueId::nil(),
+        };
+        let superclass = StyleQuery {
+            superclass,
             AspectRatioRange: NumberRange::new(0f32, 0f32),
             ConditionsSerialize: b"".as_slice().into(),
             MaxSize: Vector2::new(0f32, 0f32),
             MinSize: Vector2::new(0f32, 0f32),
-        }
+        };
+        superclass
     }
 }
 #[derive(Debug, Clone)]
@@ -12086,11 +16818,23 @@ impl_inherits!(StyleRule, StyleBase);
 impl_strong_instance_from!(StyleRule);
 impl Default for StyleRule {
     fn default() -> Self {
-        Self {
-            superclass: StyleBase::default(),
+        let superclass = Object {};
+        let superclass = Instance {
+            superclass,
+            Capabilities: SecurityCapabilities::from_bits(0u64),
+            HistoryId: UniqueId::nil(),
+            Name: "".to_owned(),
+            SourceAssetId: 0i64,
+            Tags: Tags::new(),
+            UniqueId: UniqueId::nil(),
+        };
+        let superclass = StyleBase { superclass };
+        let superclass = StyleRule {
+            superclass,
             Priority: 0i32,
             Selector: "".to_owned(),
-        }
+        };
+        superclass
     }
 }
 #[derive(Debug, Clone)]
@@ -12120,11 +16864,26 @@ impl_inherits!(SunRaysEffect, PostEffect);
 impl_strong_instance_from!(SunRaysEffect);
 impl Default for SunRaysEffect {
     fn default() -> Self {
-        Self {
-            superclass: PostEffect::default(),
+        let superclass = Object {};
+        let superclass = Instance {
+            superclass,
+            Capabilities: SecurityCapabilities::from_bits(0u64),
+            HistoryId: UniqueId::nil(),
+            Name: "".to_owned(),
+            SourceAssetId: 0i64,
+            Tags: Tags::new(),
+            UniqueId: UniqueId::nil(),
+        };
+        let superclass = PostEffect {
+            superclass,
+            Enabled: false,
+        };
+        let superclass = SunRaysEffect {
+            superclass,
             Intensity: 0.25f32,
             Spread: 1f32,
-        }
+        };
+        superclass
     }
 }
 #[derive(Debug, Clone)]
@@ -12146,8 +16905,18 @@ impl_inherits!(SurfaceAppearance, Instance);
 impl_strong_instance_from!(SurfaceAppearance);
 impl Default for SurfaceAppearance {
     fn default() -> Self {
-        Self {
-            superclass: Instance::default(),
+        let superclass = Object {};
+        let superclass = Instance {
+            superclass,
+            Capabilities: SecurityCapabilities::from_bits(0u64),
+            HistoryId: UniqueId::nil(),
+            Name: "".to_owned(),
+            SourceAssetId: 0i64,
+            Tags: Tags::new(),
+            UniqueId: UniqueId::nil(),
+        };
+        let superclass = SurfaceAppearance {
+            superclass,
             AlphaMode: enums::AlphaMode::Overlay,
             Color: Color3::new(1f32, 1f32, 1f32),
             ColorMapContent: Content::none(),
@@ -12158,7 +16927,8 @@ impl Default for SurfaceAppearance {
             NormalMapContent: Content::none(),
             RoughnessMapContent: Content::none(),
             TexturePack: "".into(),
-        }
+        };
+        superclass
     }
 }
 #[derive(Debug, Clone)]
@@ -12180,8 +16950,41 @@ impl_inherits!(SurfaceGui, SurfaceGuiBase);
 impl_strong_instance_from!(SurfaceGui);
 impl Default for SurfaceGui {
     fn default() -> Self {
-        Self {
-            superclass: SurfaceGuiBase::default(),
+        let superclass = Object {};
+        let superclass = Instance {
+            superclass,
+            Capabilities: SecurityCapabilities::from_bits(0u64),
+            HistoryId: UniqueId::nil(),
+            Name: "".to_owned(),
+            SourceAssetId: 0i64,
+            Tags: Tags::new(),
+            UniqueId: UniqueId::nil(),
+        };
+        let superclass = GuiBase { superclass };
+        let superclass = GuiBase2d {
+            superclass,
+            AutoLocalize: false,
+            RootLocalizationTable: Ref::none(),
+            SelectionBehaviorDown: enums::SelectionBehavior::Escape,
+            SelectionBehaviorLeft: enums::SelectionBehavior::Escape,
+            SelectionBehaviorRight: enums::SelectionBehavior::Escape,
+            SelectionBehaviorUp: enums::SelectionBehavior::Escape,
+            SelectionGroup: false,
+        };
+        let superclass = LayerCollector {
+            superclass,
+            Enabled: false,
+            ResetOnSpawn: false,
+            ZIndexBehavior: enums::ZIndexBehavior::Global,
+        };
+        let superclass = SurfaceGuiBase {
+            superclass,
+            Active: false,
+            Adornee: Ref::none(),
+            Face: enums::NormalId::Right,
+        };
+        let superclass = SurfaceGui {
+            superclass,
             AlwaysOnTop: false,
             Brightness: 1f32,
             CanvasSize: Vector2::new(800f32, 600f32),
@@ -12192,7 +16995,8 @@ impl Default for SurfaceGui {
             SizingMode: enums::SurfaceGuiSizingMode::FixedSize,
             ToolPunchThroughDistance: 0f32,
             ZOffset: 0f32,
-        }
+        };
+        superclass
     }
 }
 #[derive(Debug, Clone)]
@@ -12207,12 +17011,40 @@ impl_inherits!(SurfaceGuiBase, LayerCollector);
 impl_strong_instance_from!(SurfaceGuiBase);
 impl Default for SurfaceGuiBase {
     fn default() -> Self {
-        Self {
-            superclass: LayerCollector::default(),
+        let superclass = Object {};
+        let superclass = Instance {
+            superclass,
+            Capabilities: SecurityCapabilities::from_bits(0u64),
+            HistoryId: UniqueId::nil(),
+            Name: "".to_owned(),
+            SourceAssetId: 0i64,
+            Tags: Tags::new(),
+            UniqueId: UniqueId::nil(),
+        };
+        let superclass = GuiBase { superclass };
+        let superclass = GuiBase2d {
+            superclass,
+            AutoLocalize: false,
+            RootLocalizationTable: Ref::none(),
+            SelectionBehaviorDown: enums::SelectionBehavior::Escape,
+            SelectionBehaviorLeft: enums::SelectionBehavior::Escape,
+            SelectionBehaviorRight: enums::SelectionBehavior::Escape,
+            SelectionBehaviorUp: enums::SelectionBehavior::Escape,
+            SelectionGroup: false,
+        };
+        let superclass = LayerCollector {
+            superclass,
+            Enabled: false,
+            ResetOnSpawn: false,
+            ZIndexBehavior: enums::ZIndexBehavior::Global,
+        };
+        let superclass = SurfaceGuiBase {
+            superclass,
             Active: false,
             Adornee: Ref::none(),
             Face: enums::NormalId::Right,
-        }
+        };
+        superclass
     }
 }
 #[derive(Debug, Clone)]
@@ -12227,12 +17059,30 @@ impl_inherits!(SurfaceLight, Light);
 impl_strong_instance_from!(SurfaceLight);
 impl Default for SurfaceLight {
     fn default() -> Self {
-        Self {
-            superclass: Light::default(),
+        let superclass = Object {};
+        let superclass = Instance {
+            superclass,
+            Capabilities: SecurityCapabilities::from_bits(0u64),
+            HistoryId: UniqueId::nil(),
+            Name: "".to_owned(),
+            SourceAssetId: 0i64,
+            Tags: Tags::new(),
+            UniqueId: UniqueId::nil(),
+        };
+        let superclass = Light {
+            superclass,
+            Brightness: 0f32,
+            Color: Color3::new(0f32, 0f32, 0f32),
+            Enabled: false,
+            Shadows: false,
+        };
+        let superclass = SurfaceLight {
+            superclass,
             Angle: 90f32,
             Face: enums::NormalId::Front,
             Range: 16f32,
-        }
+        };
+        superclass
     }
 }
 #[derive(Debug, Clone)]
@@ -12245,10 +17095,32 @@ impl_inherits!(SurfaceSelection, PartAdornment);
 impl_strong_instance_from!(SurfaceSelection);
 impl Default for SurfaceSelection {
     fn default() -> Self {
-        Self {
-            superclass: PartAdornment::default(),
+        let superclass = Object {};
+        let superclass = Instance {
+            superclass,
+            Capabilities: SecurityCapabilities::from_bits(0u64),
+            HistoryId: UniqueId::nil(),
+            Name: "".to_owned(),
+            SourceAssetId: 0i64,
+            Tags: Tags::new(),
+            UniqueId: UniqueId::nil(),
+        };
+        let superclass = GuiBase { superclass };
+        let superclass = GuiBase3d {
+            superclass,
+            Color3: Color3::new(0f32, 0f32, 0f32),
+            Transparency: 0f32,
+            Visible: false,
+        };
+        let superclass = PartAdornment {
+            superclass,
+            Adornee: Ref::none(),
+        };
+        let superclass = SurfaceSelection {
+            superclass,
             TargetSurface: enums::NormalId::Right,
-        }
+        };
+        superclass
     }
 }
 #[derive(Debug, Clone)]
@@ -12265,14 +17137,30 @@ impl_inherits!(SwimController, ControllerBase);
 impl_strong_instance_from!(SwimController);
 impl Default for SwimController {
     fn default() -> Self {
-        Self {
-            superclass: ControllerBase::default(),
+        let superclass = Object {};
+        let superclass = Instance {
+            superclass,
+            Capabilities: SecurityCapabilities::from_bits(0u64),
+            HistoryId: UniqueId::nil(),
+            Name: "".to_owned(),
+            SourceAssetId: 0i64,
+            Tags: Tags::new(),
+            UniqueId: UniqueId::nil(),
+        };
+        let superclass = ControllerBase {
+            superclass,
+            BalanceRigidityEnabled: false,
+            MoveSpeedFactor: 0f32,
+        };
+        let superclass = SwimController {
+            superclass,
             AccelerationTime: 0f32,
             PitchMaxTorque: 10000f32,
             PitchSpeedFactor: 1f32,
             RollMaxTorque: 10000f32,
             RollSpeedFactor: 1f32,
-        }
+        };
+        superclass
     }
 }
 #[derive(Debug, Clone)]
@@ -12289,14 +17177,26 @@ impl_inherits!(SyncScriptBuilder, ScriptBuilder);
 impl_strong_instance_from!(SyncScriptBuilder);
 impl Default for SyncScriptBuilder {
     fn default() -> Self {
-        Self {
-            superclass: ScriptBuilder::default(),
+        let superclass = Object {};
+        let superclass = Instance {
+            superclass,
+            Capabilities: SecurityCapabilities::from_bits(0u64),
+            HistoryId: UniqueId::nil(),
+            Name: "".to_owned(),
+            SourceAssetId: 0i64,
+            Tags: Tags::new(),
+            UniqueId: UniqueId::nil(),
+        };
+        let superclass = ScriptBuilder { superclass };
+        let superclass = SyncScriptBuilder {
+            superclass,
             CompileTarget: enums::CompileTarget::Client,
             CoverageInfo: false,
             DebugInfo: false,
             PackAsSource: false,
             RawBytecode: false,
-        }
+        };
+        superclass
     }
 }
 #[derive(Debug, Clone)]
@@ -12317,10 +17217,21 @@ impl_inherits!(TaskScheduler, Instance);
 impl_strong_instance_from!(TaskScheduler);
 impl Default for TaskScheduler {
     fn default() -> Self {
-        Self {
-            superclass: Instance::default(),
+        let superclass = Object {};
+        let superclass = Instance {
+            superclass,
+            Capabilities: SecurityCapabilities::from_bits(0u64),
+            HistoryId: UniqueId::nil(),
+            Name: "".to_owned(),
+            SourceAssetId: 0i64,
+            Tags: Tags::new(),
+            UniqueId: UniqueId::nil(),
+        };
+        let superclass = TaskScheduler {
+            superclass,
             ThreadPoolConfig: enums::ThreadPoolConfig::Auto,
-        }
+        };
+        superclass
     }
 }
 #[derive(Debug, Clone)]
@@ -12334,11 +17245,22 @@ impl_inherits!(Team, Instance);
 impl_strong_instance_from!(Team);
 impl Default for Team {
     fn default() -> Self {
-        Self {
-            superclass: Instance::default(),
+        let superclass = Object {};
+        let superclass = Instance {
+            superclass,
+            Capabilities: SecurityCapabilities::from_bits(0u64),
+            HistoryId: UniqueId::nil(),
+            Name: "".to_owned(),
+            SourceAssetId: 0i64,
+            Tags: Tags::new(),
+            UniqueId: UniqueId::nil(),
+        };
+        let superclass = Team {
+            superclass,
             AutoAssignable: true,
             TeamColor: BrickColor::from_number(1u16).unwrap(),
-        }
+        };
+        superclass
     }
 }
 #[derive(Debug, Clone)]
@@ -12401,12 +17323,23 @@ impl_inherits!(TeleportOptions, Instance);
 impl_strong_instance_from!(TeleportOptions);
 impl Default for TeleportOptions {
     fn default() -> Self {
-        Self {
-            superclass: Instance::default(),
+        let superclass = Object {};
+        let superclass = Instance {
+            superclass,
+            Capabilities: SecurityCapabilities::from_bits(0u64),
+            HistoryId: UniqueId::nil(),
+            Name: "".to_owned(),
+            SourceAssetId: 0i64,
+            Tags: Tags::new(),
+            UniqueId: UniqueId::nil(),
+        };
+        let superclass = TeleportOptions {
+            superclass,
             ReservedServerAccessCode: "".to_owned(),
             ServerInstanceId: "".to_owned(),
             ShouldReserveServer: false,
-        }
+        };
+        superclass
     }
 }
 #[derive(Debug, Clone)]
@@ -12454,8 +17387,66 @@ impl_inherits!(Terrain, BasePart);
 impl_strong_instance_from!(Terrain);
 impl Default for Terrain {
     fn default() -> Self {
-        Self {
-            superclass: BasePart::default(),
+        let superclass = Object {};
+        let superclass = Instance {
+            superclass,
+            Capabilities: SecurityCapabilities::from_bits(0u64),
+            HistoryId: UniqueId::nil(),
+            Name: "".to_owned(),
+            SourceAssetId: 0i64,
+            Tags: Tags::new(),
+            UniqueId: UniqueId::nil(),
+        };
+        let superclass = PVInstance { superclass };
+        let superclass = BasePart {
+            superclass,
+            Anchored: false,
+            AudioCanCollide: false,
+            BackParamA: 0f32,
+            BackParamB: 0f32,
+            BackSurface: enums::SurfaceType::Smooth,
+            BackSurfaceInput: enums::InputType::NoInput,
+            BottomParamA: 0f32,
+            BottomParamB: 0f32,
+            BottomSurface: enums::SurfaceType::Smooth,
+            BottomSurfaceInput: enums::InputType::NoInput,
+            CFrame: CFrame::identity(),
+            CanCollide: false,
+            CanQuery: false,
+            CanTouch: false,
+            CastShadow: false,
+            CollisionGroup: "".to_owned(),
+            CollisionGroupId: 0i32,
+            CustomPhysicalProperties: PhysicalProperties::Default,
+            EnableFluidForces: false,
+            FrontParamA: 0f32,
+            FrontParamB: 0f32,
+            FrontSurface: enums::SurfaceType::Smooth,
+            FrontSurfaceInput: enums::InputType::NoInput,
+            LeftParamA: 0f32,
+            LeftParamB: 0f32,
+            LeftSurface: enums::SurfaceType::Smooth,
+            LeftSurfaceInput: enums::InputType::NoInput,
+            Locked: false,
+            Massless: false,
+            Material: enums::Material::Plastic,
+            PivotOffset: CFrame::identity(),
+            Reflectance: 0f32,
+            RightParamA: 0f32,
+            RightParamB: 0f32,
+            RightSurface: enums::SurfaceType::Smooth,
+            RightSurfaceInput: enums::InputType::NoInput,
+            RootPriority: 0i32,
+            RotVelocity: Vector3::new(0f32, 0f32, 0f32),
+            TopParamA: 0f32,
+            TopParamB: 0f32,
+            TopSurface: enums::SurfaceType::Smooth,
+            TopSurfaceInput: enums::InputType::NoInput,
+            Transparency: 0f32,
+            Velocity: Vector3::new(0f32, 0f32, 0f32),
+        };
+        let superclass = Terrain {
+            superclass,
             AcquisitionMethod: enums::TerrainAcquisitionMethod::None,
             Decoration: false,
             GrassLength: 0.7f32,
@@ -12468,7 +17459,8 @@ impl Default for Terrain {
             WaterTransparency: 0.3f32,
             WaterWaveSize: 0.15f32,
             WaterWaveSpeed: 10f32,
-        }
+        };
+        superclass
     }
 }
 #[derive(Debug, Clone)]
@@ -12491,8 +17483,18 @@ impl_inherits!(TerrainDetail, Instance);
 impl_strong_instance_from!(TerrainDetail);
 impl Default for TerrainDetail {
     fn default() -> Self {
-        Self {
-            superclass: Instance::default(),
+        let superclass = Object {};
+        let superclass = Instance {
+            superclass,
+            Capabilities: SecurityCapabilities::from_bits(0u64),
+            HistoryId: UniqueId::nil(),
+            Name: "".to_owned(),
+            SourceAssetId: 0i64,
+            Tags: Tags::new(),
+            UniqueId: UniqueId::nil(),
+        };
+        let superclass = TerrainDetail {
+            superclass,
             ColorMapContent: Content::none(),
             EmissiveMaskContent: Content::none(),
             EmissiveStrength: 1f32,
@@ -12504,7 +17506,8 @@ impl Default for TerrainDetail {
             RoughnessMapContent: Content::none(),
             StudsPerTile: 10f32,
             TexturePack: "".into(),
-        }
+        };
+        superclass
     }
 }
 #[derive(Debug, Clone)]
@@ -12543,12 +17546,23 @@ impl_inherits!(TerrainRegion, Instance);
 impl_strong_instance_from!(TerrainRegion);
 impl Default for TerrainRegion {
     fn default() -> Self {
-        Self {
-            superclass: Instance::default(),
+        let superclass = Object {};
+        let superclass = Instance {
+            superclass,
+            Capabilities: SecurityCapabilities::from_bits(0u64),
+            HistoryId: UniqueId::nil(),
+            Name: "".to_owned(),
+            SourceAssetId: 0i64,
+            Tags: Tags::new(),
+            UniqueId: UniqueId::nil(),
+        };
+        let superclass = TerrainRegion {
+            superclass,
             ExtentsMax: Vector3int16::new(0i16, 0i16, 0i16),
             ExtentsMin: Vector3int16::new(0i16, 0i16, 0i16),
             SmoothGrid: b"\x01\x05".as_slice().into(),
-        }
+        };
+        superclass
     }
 }
 #[derive(Debug, Clone)]
@@ -12577,8 +17591,18 @@ impl_inherits!(TestService, Instance);
 impl_strong_instance_from!(TestService);
 impl Default for TestService {
     fn default() -> Self {
-        Self {
-            superclass: Instance::default(),
+        let superclass = Object {};
+        let superclass = Instance {
+            superclass,
+            Capabilities: SecurityCapabilities::from_bits(0u64),
+            HistoryId: UniqueId::nil(),
+            Name: "".to_owned(),
+            SourceAssetId: 0i64,
+            Tags: Tags::new(),
+            UniqueId: UniqueId::nil(),
+        };
+        let superclass = TestService {
+            superclass,
             AutoRuns: true,
             Description: "".to_owned(),
             ExecuteWithStudioRun: false,
@@ -12588,7 +17612,8 @@ impl Default for TestService {
             SimulateSecondsLag: 0f64,
             ThrottlePhysicsToRealtime: true,
             Timeout: 10f64,
-        }
+        };
+        superclass
     }
 }
 #[derive(Debug, Clone)]
@@ -12625,8 +17650,57 @@ impl_inherits!(TextBox, GuiObject);
 impl_strong_instance_from!(TextBox);
 impl Default for TextBox {
     fn default() -> Self {
-        Self {
-            superclass: GuiObject::default(),
+        let superclass = Object {};
+        let superclass = Instance {
+            superclass,
+            Capabilities: SecurityCapabilities::from_bits(0u64),
+            HistoryId: UniqueId::nil(),
+            Name: "".to_owned(),
+            SourceAssetId: 0i64,
+            Tags: Tags::new(),
+            UniqueId: UniqueId::nil(),
+        };
+        let superclass = GuiBase { superclass };
+        let superclass = GuiBase2d {
+            superclass,
+            AutoLocalize: false,
+            RootLocalizationTable: Ref::none(),
+            SelectionBehaviorDown: enums::SelectionBehavior::Escape,
+            SelectionBehaviorLeft: enums::SelectionBehavior::Escape,
+            SelectionBehaviorRight: enums::SelectionBehavior::Escape,
+            SelectionBehaviorUp: enums::SelectionBehavior::Escape,
+            SelectionGroup: false,
+        };
+        let superclass = GuiObject {
+            superclass,
+            Active: false,
+            AnchorPoint: Vector2::new(0f32, 0f32),
+            AutomaticSize: enums::AutomaticSize::None,
+            BackgroundColor3: Color3::new(0f32, 0f32, 0f32),
+            BackgroundTransparency: 0f32,
+            BorderColor3: Color3::new(0f32, 0f32, 0f32),
+            BorderMode: enums::BorderMode::Outline,
+            BorderSizePixel: 0i32,
+            ClipsDescendants: false,
+            Draggable: false,
+            Interactable: false,
+            LayoutOrder: 0i32,
+            NextSelectionDown: Ref::none(),
+            NextSelectionLeft: Ref::none(),
+            NextSelectionRight: Ref::none(),
+            NextSelectionUp: Ref::none(),
+            Position: UDim2::new(UDim::new(0f32, 0i32), UDim::new(0f32, 0i32)),
+            Rotation: 0f32,
+            Selectable: false,
+            SelectionImageObject: Ref::none(),
+            SelectionOrder: 0i32,
+            Size: UDim2::new(UDim::new(0f32, 0i32), UDim::new(0f32, 0i32)),
+            SizeConstraint: enums::SizeConstraint::RelativeXY,
+            Visible: false,
+            ZIndex: 0i32,
+        };
+        let superclass = TextBox {
+            superclass,
             ClearTextOnFocus: true,
             FontFace: unimplemented!("Font"),
             LineHeight: 1f32,
@@ -12652,7 +17726,8 @@ impl Default for TextBox {
             TextWrapped: false,
             TextXAlignment: enums::TextXAlignment::Center,
             TextYAlignment: enums::TextYAlignment::Center,
-        }
+        };
+        superclass
     }
 }
 #[derive(Debug, Clone)]
@@ -12691,8 +17766,66 @@ impl_inherits!(TextButton, GuiButton);
 impl_strong_instance_from!(TextButton);
 impl Default for TextButton {
     fn default() -> Self {
-        Self {
-            superclass: GuiButton::default(),
+        let superclass = Object {};
+        let superclass = Instance {
+            superclass,
+            Capabilities: SecurityCapabilities::from_bits(0u64),
+            HistoryId: UniqueId::nil(),
+            Name: "".to_owned(),
+            SourceAssetId: 0i64,
+            Tags: Tags::new(),
+            UniqueId: UniqueId::nil(),
+        };
+        let superclass = GuiBase { superclass };
+        let superclass = GuiBase2d {
+            superclass,
+            AutoLocalize: false,
+            RootLocalizationTable: Ref::none(),
+            SelectionBehaviorDown: enums::SelectionBehavior::Escape,
+            SelectionBehaviorLeft: enums::SelectionBehavior::Escape,
+            SelectionBehaviorRight: enums::SelectionBehavior::Escape,
+            SelectionBehaviorUp: enums::SelectionBehavior::Escape,
+            SelectionGroup: false,
+        };
+        let superclass = GuiObject {
+            superclass,
+            Active: false,
+            AnchorPoint: Vector2::new(0f32, 0f32),
+            AutomaticSize: enums::AutomaticSize::None,
+            BackgroundColor3: Color3::new(0f32, 0f32, 0f32),
+            BackgroundTransparency: 0f32,
+            BorderColor3: Color3::new(0f32, 0f32, 0f32),
+            BorderMode: enums::BorderMode::Outline,
+            BorderSizePixel: 0i32,
+            ClipsDescendants: false,
+            Draggable: false,
+            Interactable: false,
+            LayoutOrder: 0i32,
+            NextSelectionDown: Ref::none(),
+            NextSelectionLeft: Ref::none(),
+            NextSelectionRight: Ref::none(),
+            NextSelectionUp: Ref::none(),
+            Position: UDim2::new(UDim::new(0f32, 0i32), UDim::new(0f32, 0i32)),
+            Rotation: 0f32,
+            Selectable: false,
+            SelectionImageObject: Ref::none(),
+            SelectionOrder: 0i32,
+            Size: UDim2::new(UDim::new(0f32, 0i32), UDim::new(0f32, 0i32)),
+            SizeConstraint: enums::SizeConstraint::RelativeXY,
+            Visible: false,
+            ZIndex: 0i32,
+        };
+        let superclass = GuiButton {
+            superclass,
+            AutoButtonColor: false,
+            HoverHapticEffect: Ref::none(),
+            Modal: false,
+            PressHapticEffect: Ref::none(),
+            Selected: false,
+            Style: enums::ButtonStyle::Custom,
+        };
+        let superclass = TextButton {
+            superclass,
             FontFace: unimplemented!("Font"),
             LineHeight: 1f32,
             LocalizationMatchIdentifier: "".to_owned(),
@@ -12712,7 +17845,8 @@ impl Default for TextButton {
             TextWrapped: false,
             TextXAlignment: enums::TextXAlignment::Center,
             TextYAlignment: enums::TextYAlignment::Center,
-        }
+        };
+        superclass
     }
 }
 #[derive(Debug, Clone)]
@@ -12736,13 +17870,24 @@ impl_inherits!(TextChatCommand, Instance);
 impl_strong_instance_from!(TextChatCommand);
 impl Default for TextChatCommand {
     fn default() -> Self {
-        Self {
-            superclass: Instance::default(),
+        let superclass = Object {};
+        let superclass = Instance {
+            superclass,
+            Capabilities: SecurityCapabilities::from_bits(0u64),
+            HistoryId: UniqueId::nil(),
+            Name: "".to_owned(),
+            SourceAssetId: 0i64,
+            Tags: Tags::new(),
+            UniqueId: UniqueId::nil(),
+        };
+        let superclass = TextChatCommand {
+            superclass,
             AutocompleteVisible: true,
             Enabled: true,
             PrimaryAlias: "".to_owned(),
             SecondaryAlias: "".to_owned(),
-        }
+        };
+        superclass
     }
 }
 #[derive(Debug, Clone)]
@@ -12766,13 +17911,24 @@ impl_inherits!(TextChatMessage, Instance);
 impl_strong_instance_from!(TextChatMessage);
 impl Default for TextChatMessage {
     fn default() -> Self {
-        Self {
-            superclass: Instance::default(),
+        let superclass = Object {};
+        let superclass = Instance {
+            superclass,
+            Capabilities: SecurityCapabilities::from_bits(0u64),
+            HistoryId: UniqueId::nil(),
+            Name: "".to_owned(),
+            SourceAssetId: 0i64,
+            Tags: Tags::new(),
+            UniqueId: UniqueId::nil(),
+        };
+        let superclass = TextChatMessage {
+            superclass,
             BubbleChatMessageProperties: Ref::none(),
             ChatWindowMessageProperties: Ref::none(),
             TextChannel: Ref::none(),
             TextSource: Ref::none(),
-        }
+        };
+        superclass
     }
 }
 #[derive(Debug, Clone)]
@@ -12799,8 +17955,18 @@ impl_inherits!(TextChatService, Instance);
 impl_strong_instance_from!(TextChatService);
 impl Default for TextChatService {
     fn default() -> Self {
-        Self {
-            superclass: Instance::default(),
+        let superclass = Object {};
+        let superclass = Instance {
+            superclass,
+            Capabilities: SecurityCapabilities::from_bits(0u64),
+            HistoryId: UniqueId::nil(),
+            Name: "".to_owned(),
+            SourceAssetId: 0i64,
+            Tags: Tags::new(),
+            UniqueId: UniqueId::nil(),
+        };
+        let superclass = TextChatService {
+            superclass,
             ChatTranslationFtuxShown: true,
             ChatTranslationToggleEnabled: false,
             ChatVersion: enums::ChatVersion::LegacyChatService,
@@ -12808,7 +17974,8 @@ impl Default for TextChatService {
             CreateDefaultTextChannels: true,
             HasSeenDeprecationDialog: false,
             IsLegacyChatDisabled: false,
-        }
+        };
+        superclass
     }
 }
 #[derive(Debug, Clone)]
@@ -12840,13 +18007,24 @@ impl_inherits!(TextGenerator, Instance);
 impl_strong_instance_from!(TextGenerator);
 impl Default for TextGenerator {
     fn default() -> Self {
-        Self {
-            superclass: Instance::default(),
+        let superclass = Object {};
+        let superclass = Instance {
+            superclass,
+            Capabilities: SecurityCapabilities::from_bits(0u64),
+            HistoryId: UniqueId::nil(),
+            Name: "".to_owned(),
+            SourceAssetId: 0i64,
+            Tags: Tags::new(),
+            UniqueId: UniqueId::nil(),
+        };
+        let superclass = TextGenerator {
+            superclass,
             Seed: 0i32,
             SystemPrompt: "".to_owned(),
             Temperature: 0.7f32,
             TopP: 0.9f32,
-        }
+        };
+        superclass
     }
 }
 #[derive(Debug, Clone)]
@@ -12877,8 +18055,58 @@ impl_inherits!(TextLabel, GuiLabel);
 impl_strong_instance_from!(TextLabel);
 impl Default for TextLabel {
     fn default() -> Self {
-        Self {
-            superclass: GuiLabel::default(),
+        let superclass = Object {};
+        let superclass = Instance {
+            superclass,
+            Capabilities: SecurityCapabilities::from_bits(0u64),
+            HistoryId: UniqueId::nil(),
+            Name: "".to_owned(),
+            SourceAssetId: 0i64,
+            Tags: Tags::new(),
+            UniqueId: UniqueId::nil(),
+        };
+        let superclass = GuiBase { superclass };
+        let superclass = GuiBase2d {
+            superclass,
+            AutoLocalize: false,
+            RootLocalizationTable: Ref::none(),
+            SelectionBehaviorDown: enums::SelectionBehavior::Escape,
+            SelectionBehaviorLeft: enums::SelectionBehavior::Escape,
+            SelectionBehaviorRight: enums::SelectionBehavior::Escape,
+            SelectionBehaviorUp: enums::SelectionBehavior::Escape,
+            SelectionGroup: false,
+        };
+        let superclass = GuiObject {
+            superclass,
+            Active: false,
+            AnchorPoint: Vector2::new(0f32, 0f32),
+            AutomaticSize: enums::AutomaticSize::None,
+            BackgroundColor3: Color3::new(0f32, 0f32, 0f32),
+            BackgroundTransparency: 0f32,
+            BorderColor3: Color3::new(0f32, 0f32, 0f32),
+            BorderMode: enums::BorderMode::Outline,
+            BorderSizePixel: 0i32,
+            ClipsDescendants: false,
+            Draggable: false,
+            Interactable: false,
+            LayoutOrder: 0i32,
+            NextSelectionDown: Ref::none(),
+            NextSelectionLeft: Ref::none(),
+            NextSelectionRight: Ref::none(),
+            NextSelectionUp: Ref::none(),
+            Position: UDim2::new(UDim::new(0f32, 0i32), UDim::new(0f32, 0i32)),
+            Rotation: 0f32,
+            Selectable: false,
+            SelectionImageObject: Ref::none(),
+            SelectionOrder: 0i32,
+            Size: UDim2::new(UDim::new(0f32, 0i32), UDim::new(0f32, 0i32)),
+            SizeConstraint: enums::SizeConstraint::RelativeXY,
+            Visible: false,
+            ZIndex: 0i32,
+        };
+        let superclass = GuiLabel { superclass };
+        let superclass = TextLabel {
+            superclass,
             FontFace: unimplemented!("Font"),
             LineHeight: 1f32,
             LocalizationMatchIdentifier: "".to_owned(),
@@ -12898,7 +18126,8 @@ impl Default for TextLabel {
             TextWrapped: false,
             TextXAlignment: enums::TextXAlignment::Center,
             TextYAlignment: enums::TextYAlignment::Center,
-        }
+        };
+        superclass
     }
 }
 #[derive(Debug, Clone)]
@@ -12919,10 +18148,21 @@ impl_inherits!(TextSource, Instance);
 impl_strong_instance_from!(TextSource);
 impl Default for TextSource {
     fn default() -> Self {
-        Self {
-            superclass: Instance::default(),
+        let superclass = Object {};
+        let superclass = Instance {
+            superclass,
+            Capabilities: SecurityCapabilities::from_bits(0u64),
+            HistoryId: UniqueId::nil(),
+            Name: "".to_owned(),
+            SourceAssetId: 0i64,
+            Tags: Tags::new(),
+            UniqueId: UniqueId::nil(),
+        };
+        let superclass = TextSource {
+            superclass,
             CanSend: false,
-        }
+        };
+        superclass
     }
 }
 #[derive(Debug, Clone)]
@@ -12938,13 +18178,42 @@ impl_inherits!(Texture, Decal);
 impl_strong_instance_from!(Texture);
 impl Default for Texture {
     fn default() -> Self {
-        Self {
-            superclass: Decal::default(),
+        let superclass = Object {};
+        let superclass = Instance {
+            superclass,
+            Capabilities: SecurityCapabilities::from_bits(0u64),
+            HistoryId: UniqueId::nil(),
+            Name: "".to_owned(),
+            SourceAssetId: 0i64,
+            Tags: Tags::new(),
+            UniqueId: UniqueId::nil(),
+        };
+        let superclass = FaceInstance {
+            superclass,
+            Face: enums::NormalId::Right,
+        };
+        let superclass = Decal {
+            superclass,
+            Color3: Color3::new(1f32, 1f32, 1f32),
+            MetalnessMapContent: Content::none(),
+            NormalMapContent: Content::none(),
+            RoughnessMapContent: Content::none(),
+            TextureContent: Content::none(),
+            TexturePack: "".into(),
+            TexturePackMetadata: "".to_owned(),
+            Transparency: 0f32,
+            UvOffset: Vector2::new(0f32, 0f32),
+            UvScale: Vector2::new(1f32, 1f32),
+            ZIndex: 1i32,
+        };
+        let superclass = Texture {
+            superclass,
             OffsetStudsU: 0f32,
             OffsetStudsV: 0f32,
             StudsPerTileU: 2f32,
             StudsPerTileV: 2f32,
-        }
+        };
+        superclass
     }
 }
 #[derive(Debug, Clone)]
@@ -13018,15 +18287,43 @@ impl_inherits!(Tool, BackpackItem);
 impl_strong_instance_from!(Tool);
 impl Default for Tool {
     fn default() -> Self {
-        Self {
-            superclass: BackpackItem::default(),
+        let superclass = Object {};
+        let superclass = Instance {
+            superclass,
+            Capabilities: SecurityCapabilities::from_bits(0u64),
+            HistoryId: UniqueId::nil(),
+            Name: "".to_owned(),
+            SourceAssetId: 0i64,
+            Tags: Tags::new(),
+            UniqueId: UniqueId::nil(),
+        };
+        let superclass = PVInstance { superclass };
+        let superclass = Model {
+            superclass,
+            LevelOfDetail: enums::ModelLevelOfDetail::Automatic,
+            ModelMeshCFrame: CFrame::identity(),
+            ModelMeshData: SharedString::new(b"".to_vec()),
+            ModelMeshSize: Vector3::new(0f32, 0f32, 0f32),
+            ModelStreamingMode: enums::ModelStreamingMode::Default,
+            NeedsPivotMigration: false,
+            PrimaryPart: Ref::none(),
+            SlimHash: SharedString::new(b"".to_vec()),
+            WorldPivotData: None,
+        };
+        let superclass = BackpackItem {
+            superclass,
+            TextureContent: Content::none(),
+        };
+        let superclass = Tool {
+            superclass,
             CanBeDropped: true,
             Enabled: true,
             Grip: CFrame::identity(),
             ManualActivationOnly: false,
             RequiresHandle: true,
             ToolTip: "".to_owned(),
-        }
+        };
+        superclass
     }
 }
 #[derive(Debug, Clone)]
@@ -13040,11 +18337,30 @@ impl_inherits!(Torque, Constraint);
 impl_strong_instance_from!(Torque);
 impl Default for Torque {
     fn default() -> Self {
-        Self {
-            superclass: Constraint::default(),
+        let superclass = Object {};
+        let superclass = Instance {
+            superclass,
+            Capabilities: SecurityCapabilities::from_bits(0u64),
+            HistoryId: UniqueId::nil(),
+            Name: "".to_owned(),
+            SourceAssetId: 0i64,
+            Tags: Tags::new(),
+            UniqueId: UniqueId::nil(),
+        };
+        let superclass = Constraint {
+            superclass,
+            Attachment0: Ref::none(),
+            Attachment1: Ref::none(),
+            Color: BrickColor::from_number(194u16).unwrap(),
+            Enabled: false,
+            Visible: false,
+        };
+        let superclass = Torque {
+            superclass,
             RelativeTo: enums::ActuatorRelativeTo::Attachment0,
             Torque: Vector3::new(0f32, 0f32, 0f32),
-        }
+        };
+        superclass
     }
 }
 #[derive(Debug, Clone)]
@@ -13065,8 +18381,26 @@ impl_inherits!(TorsionSpringConstraint, Constraint);
 impl_strong_instance_from!(TorsionSpringConstraint);
 impl Default for TorsionSpringConstraint {
     fn default() -> Self {
-        Self {
-            superclass: Constraint::default(),
+        let superclass = Object {};
+        let superclass = Instance {
+            superclass,
+            Capabilities: SecurityCapabilities::from_bits(0u64),
+            HistoryId: UniqueId::nil(),
+            Name: "".to_owned(),
+            SourceAssetId: 0i64,
+            Tags: Tags::new(),
+            UniqueId: UniqueId::nil(),
+        };
+        let superclass = Constraint {
+            superclass,
+            Attachment0: Ref::none(),
+            Attachment1: Ref::none(),
+            Color: BrickColor::from_number(194u16).unwrap(),
+            Enabled: false,
+            Visible: false,
+        };
+        let superclass = TorsionSpringConstraint {
+            superclass,
             Coils: 8f32,
             Damping: 0.01f32,
             LimitEnabled: false,
@@ -13076,7 +18410,8 @@ impl Default for TorsionSpringConstraint {
             Radius: 0.4f32,
             Restitution: 0f32,
             Stiffness: 100f32,
-        }
+        };
+        superclass
     }
 }
 #[derive(Debug, Clone)]
@@ -13124,13 +18459,24 @@ impl_inherits!(TrackerLodController, Instance);
 impl_strong_instance_from!(TrackerLodController);
 impl Default for TrackerLodController {
     fn default() -> Self {
-        Self {
-            superclass: Instance::default(),
+        let superclass = Object {};
+        let superclass = Instance {
+            superclass,
+            Capabilities: SecurityCapabilities::from_bits(0u64),
+            HistoryId: UniqueId::nil(),
+            Name: "".to_owned(),
+            SourceAssetId: 0i64,
+            Tags: Tags::new(),
+            UniqueId: UniqueId::nil(),
+        };
+        let superclass = TrackerLodController {
+            superclass,
             AudioMode: enums::TrackerLodFlagMode::ForceFalse,
             VideoExtrapolationMode: enums::TrackerExtrapolationFlagMode::ForceDisabled,
             VideoLodMode: enums::TrackerLodValueMode::Force0,
             VideoMode: enums::TrackerLodFlagMode::ForceFalse,
-        }
+        };
+        superclass
     }
 }
 #[derive(Debug, Clone)]
@@ -13166,8 +18512,18 @@ impl_inherits!(Trail, Instance);
 impl_strong_instance_from!(Trail);
 impl Default for Trail {
     fn default() -> Self {
-        Self {
-            superclass: Instance::default(),
+        let superclass = Object {};
+        let superclass = Instance {
+            superclass,
+            Capabilities: SecurityCapabilities::from_bits(0u64),
+            HistoryId: UniqueId::nil(),
+            Name: "".to_owned(),
+            SourceAssetId: 0i64,
+            Tags: Tags::new(),
+            UniqueId: UniqueId::nil(),
+        };
+        let superclass = Trail {
+            superclass,
             Attachment0: Ref::none(),
             Attachment1: Ref::none(),
             Brightness: 1f32,
@@ -13199,7 +18555,8 @@ impl Default for Trail {
                     NumberSequenceKeypoint::new(1f32, 1f32, 0f32),
                 ],
             },
-        }
+        };
+        superclass
     }
 }
 #[derive(Debug, Clone)]
@@ -13222,12 +18579,28 @@ impl_inherits!(TremoloSoundEffect, SoundEffect);
 impl_strong_instance_from!(TremoloSoundEffect);
 impl Default for TremoloSoundEffect {
     fn default() -> Self {
-        Self {
-            superclass: SoundEffect::default(),
+        let superclass = Object {};
+        let superclass = Instance {
+            superclass,
+            Capabilities: SecurityCapabilities::from_bits(0u64),
+            HistoryId: UniqueId::nil(),
+            Name: "".to_owned(),
+            SourceAssetId: 0i64,
+            Tags: Tags::new(),
+            UniqueId: UniqueId::nil(),
+        };
+        let superclass = SoundEffect {
+            superclass,
+            Enabled: false,
+            Priority: 0i32,
+        };
+        let superclass = TremoloSoundEffect {
+            superclass,
             Depth: 1f32,
             Duty: 0.5f32,
             Frequency: 5f32,
-        }
+        };
+        superclass
     }
 }
 #[derive(Debug, Clone)]
@@ -13247,8 +18620,66 @@ impl_inherits!(TriangleMeshPart, BasePart);
 impl_strong_instance_from!(TriangleMeshPart);
 impl Default for TriangleMeshPart {
     fn default() -> Self {
-        Self {
-            superclass: BasePart::default(),
+        let superclass = Object {};
+        let superclass = Instance {
+            superclass,
+            Capabilities: SecurityCapabilities::from_bits(0u64),
+            HistoryId: UniqueId::nil(),
+            Name: "".to_owned(),
+            SourceAssetId: 0i64,
+            Tags: Tags::new(),
+            UniqueId: UniqueId::nil(),
+        };
+        let superclass = PVInstance { superclass };
+        let superclass = BasePart {
+            superclass,
+            Anchored: false,
+            AudioCanCollide: false,
+            BackParamA: 0f32,
+            BackParamB: 0f32,
+            BackSurface: enums::SurfaceType::Smooth,
+            BackSurfaceInput: enums::InputType::NoInput,
+            BottomParamA: 0f32,
+            BottomParamB: 0f32,
+            BottomSurface: enums::SurfaceType::Smooth,
+            BottomSurfaceInput: enums::InputType::NoInput,
+            CFrame: CFrame::identity(),
+            CanCollide: false,
+            CanQuery: false,
+            CanTouch: false,
+            CastShadow: false,
+            CollisionGroup: "".to_owned(),
+            CollisionGroupId: 0i32,
+            CustomPhysicalProperties: PhysicalProperties::Default,
+            EnableFluidForces: false,
+            FrontParamA: 0f32,
+            FrontParamB: 0f32,
+            FrontSurface: enums::SurfaceType::Smooth,
+            FrontSurfaceInput: enums::InputType::NoInput,
+            LeftParamA: 0f32,
+            LeftParamB: 0f32,
+            LeftSurface: enums::SurfaceType::Smooth,
+            LeftSurfaceInput: enums::InputType::NoInput,
+            Locked: false,
+            Massless: false,
+            Material: enums::Material::Plastic,
+            PivotOffset: CFrame::identity(),
+            Reflectance: 0f32,
+            RightParamA: 0f32,
+            RightParamB: 0f32,
+            RightSurface: enums::SurfaceType::Smooth,
+            RightSurfaceInput: enums::InputType::NoInput,
+            RootPriority: 0i32,
+            RotVelocity: Vector3::new(0f32, 0f32, 0f32),
+            TopParamA: 0f32,
+            TopParamB: 0f32,
+            TopSurface: enums::SurfaceType::Smooth,
+            TopSurfaceInput: enums::InputType::NoInput,
+            Transparency: 0f32,
+            Velocity: Vector3::new(0f32, 0f32, 0f32),
+        };
+        let superclass = TriangleMeshPart {
+            superclass,
             AeroMeshData: SharedString::new(b"".to_vec()),
             FluidFidelityInternal: enums::FluidFidelity::Automatic,
             InertiaMigrated: false,
@@ -13257,7 +18688,8 @@ impl Default for TriangleMeshPart {
             UnscaledVolInertiaDiags: Vector3::new(0f32, 0f32, 0f32),
             UnscaledVolInertiaOffDiags: Vector3::new(0f32, 0f32, 0f32),
             UnscaledVolume: 0f32,
-        }
+        };
+        superclass
     }
 }
 #[derive(Debug, Clone)]
@@ -13270,10 +18702,69 @@ impl_inherits!(TrussPart, BasePart);
 impl_strong_instance_from!(TrussPart);
 impl Default for TrussPart {
     fn default() -> Self {
-        Self {
-            superclass: BasePart::default(),
+        let superclass = Object {};
+        let superclass = Instance {
+            superclass,
+            Capabilities: SecurityCapabilities::from_bits(0u64),
+            HistoryId: UniqueId::nil(),
+            Name: "".to_owned(),
+            SourceAssetId: 0i64,
+            Tags: Tags::new(),
+            UniqueId: UniqueId::nil(),
+        };
+        let superclass = PVInstance { superclass };
+        let superclass = BasePart {
+            superclass,
+            Anchored: false,
+            AudioCanCollide: false,
+            BackParamA: 0f32,
+            BackParamB: 0f32,
+            BackSurface: enums::SurfaceType::Smooth,
+            BackSurfaceInput: enums::InputType::NoInput,
+            BottomParamA: 0f32,
+            BottomParamB: 0f32,
+            BottomSurface: enums::SurfaceType::Smooth,
+            BottomSurfaceInput: enums::InputType::NoInput,
+            CFrame: CFrame::identity(),
+            CanCollide: false,
+            CanQuery: false,
+            CanTouch: false,
+            CastShadow: false,
+            CollisionGroup: "".to_owned(),
+            CollisionGroupId: 0i32,
+            CustomPhysicalProperties: PhysicalProperties::Default,
+            EnableFluidForces: false,
+            FrontParamA: 0f32,
+            FrontParamB: 0f32,
+            FrontSurface: enums::SurfaceType::Smooth,
+            FrontSurfaceInput: enums::InputType::NoInput,
+            LeftParamA: 0f32,
+            LeftParamB: 0f32,
+            LeftSurface: enums::SurfaceType::Smooth,
+            LeftSurfaceInput: enums::InputType::NoInput,
+            Locked: false,
+            Massless: false,
+            Material: enums::Material::Plastic,
+            PivotOffset: CFrame::identity(),
+            Reflectance: 0f32,
+            RightParamA: 0f32,
+            RightParamB: 0f32,
+            RightSurface: enums::SurfaceType::Smooth,
+            RightSurfaceInput: enums::InputType::NoInput,
+            RootPriority: 0i32,
+            RotVelocity: Vector3::new(0f32, 0f32, 0f32),
+            TopParamA: 0f32,
+            TopParamB: 0f32,
+            TopSurface: enums::SurfaceType::Smooth,
+            TopSurfaceInput: enums::InputType::NoInput,
+            Transparency: 0f32,
+            Velocity: Vector3::new(0f32, 0f32, 0f32),
+        };
+        let superclass = TrussPart {
+            superclass,
             Style: enums::Style::AlternatingSupports,
-        }
+        };
+        superclass
     }
 }
 #[derive(Debug, Clone)]
@@ -13336,12 +18827,26 @@ impl_inherits!(UIAspectRatioConstraint, UIConstraint);
 impl_strong_instance_from!(UIAspectRatioConstraint);
 impl Default for UIAspectRatioConstraint {
     fn default() -> Self {
-        Self {
-            superclass: UIConstraint::default(),
+        let superclass = Object {};
+        let superclass = Instance {
+            superclass,
+            Capabilities: SecurityCapabilities::from_bits(0u64),
+            HistoryId: UniqueId::nil(),
+            Name: "".to_owned(),
+            SourceAssetId: 0i64,
+            Tags: Tags::new(),
+            UniqueId: UniqueId::nil(),
+        };
+        let superclass = UIBase { superclass };
+        let superclass = UIComponent { superclass };
+        let superclass = UIConstraint { superclass };
+        let superclass = UIAspectRatioConstraint {
+            superclass,
             AspectRatio: 1f32,
             AspectType: enums::AspectType::FitWithinMaxSize,
             DominantAxis: enums::DominantAxis::Width,
-        }
+        };
+        superclass
     }
 }
 #[derive(Debug, Clone)]
@@ -13378,10 +18883,23 @@ impl_inherits!(UICorner, UIComponent);
 impl_strong_instance_from!(UICorner);
 impl Default for UICorner {
     fn default() -> Self {
-        Self {
-            superclass: UIComponent::default(),
+        let superclass = Object {};
+        let superclass = Instance {
+            superclass,
+            Capabilities: SecurityCapabilities::from_bits(0u64),
+            HistoryId: UniqueId::nil(),
+            Name: "".to_owned(),
+            SourceAssetId: 0i64,
+            Tags: Tags::new(),
+            UniqueId: UniqueId::nil(),
+        };
+        let superclass = UIBase { superclass };
+        let superclass = UIComponent { superclass };
+        let superclass = UICorner {
+            superclass,
             CornerRadius: UDim::new(0f32, 8i32),
-        }
+        };
+        superclass
     }
 }
 #[derive(Debug, Clone)]
@@ -13413,8 +18931,20 @@ impl_inherits!(UIDragDetector, UIComponent);
 impl_strong_instance_from!(UIDragDetector);
 impl Default for UIDragDetector {
     fn default() -> Self {
-        Self {
-            superclass: UIComponent::default(),
+        let superclass = Object {};
+        let superclass = Instance {
+            superclass,
+            Capabilities: SecurityCapabilities::from_bits(0u64),
+            HistoryId: UniqueId::nil(),
+            Name: "".to_owned(),
+            SourceAssetId: 0i64,
+            Tags: Tags::new(),
+            UniqueId: UniqueId::nil(),
+        };
+        let superclass = UIBase { superclass };
+        let superclass = UIComponent { superclass };
+        let superclass = UIDragDetector {
+            superclass,
             ActivatedCursorIconContent: Content::none(),
             BoundingBehavior: enums::UIDragDetectorBoundingBehavior::Automatic,
             BoundingUi: Ref::none(),
@@ -13435,7 +18965,8 @@ impl Default for UIDragDetector {
             SelectionModeDragSpeed: UDim2::new(UDim::new(0f32, 300i32), UDim::new(0f32, 300i32)),
             SelectionModeRotateSpeed: 90f32,
             UiDragSpeedAxisMapping: enums::UIDragSpeedAxisMapping::XY,
-        }
+        };
+        superclass
     }
 }
 #[derive(Debug, Clone)]
@@ -13459,13 +18990,26 @@ impl_inherits!(UIFlexItem, UIComponent);
 impl_strong_instance_from!(UIFlexItem);
 impl Default for UIFlexItem {
     fn default() -> Self {
-        Self {
-            superclass: UIComponent::default(),
+        let superclass = Object {};
+        let superclass = Instance {
+            superclass,
+            Capabilities: SecurityCapabilities::from_bits(0u64),
+            HistoryId: UniqueId::nil(),
+            Name: "".to_owned(),
+            SourceAssetId: 0i64,
+            Tags: Tags::new(),
+            UniqueId: UniqueId::nil(),
+        };
+        let superclass = UIBase { superclass };
+        let superclass = UIComponent { superclass };
+        let superclass = UIFlexItem {
+            superclass,
             FlexMode: enums::UIFlexMode::None,
             GrowRatio: 0f32,
             ItemLineAlignment: enums::ItemLineAlignment::Automatic,
             ShrinkRatio: 0f32,
-        }
+        };
+        superclass
     }
 }
 #[derive(Debug, Clone)]
@@ -13482,8 +19026,20 @@ impl_inherits!(UIGradient, UIComponent);
 impl_strong_instance_from!(UIGradient);
 impl Default for UIGradient {
     fn default() -> Self {
-        Self {
-            superclass: UIComponent::default(),
+        let superclass = Object {};
+        let superclass = Instance {
+            superclass,
+            Capabilities: SecurityCapabilities::from_bits(0u64),
+            HistoryId: UniqueId::nil(),
+            Name: "".to_owned(),
+            SourceAssetId: 0i64,
+            Tags: Tags::new(),
+            UniqueId: UniqueId::nil(),
+        };
+        let superclass = UIBase { superclass };
+        let superclass = UIComponent { superclass };
+        let superclass = UIGradient {
+            superclass,
             Color: ColorSequence {
                 keypoints: vec![
                     ColorSequenceKeypoint::new(0f32, Color3::new(1f32, 1f32, 1f32)),
@@ -13499,7 +19055,8 @@ impl Default for UIGradient {
                     NumberSequenceKeypoint::new(1f32, 0f32, 0f32),
                 ],
             },
-        }
+        };
+        superclass
     }
 }
 #[derive(Debug, Clone)]
@@ -13515,13 +19072,34 @@ impl_inherits!(UIGridLayout, UIGridStyleLayout);
 impl_strong_instance_from!(UIGridLayout);
 impl Default for UIGridLayout {
     fn default() -> Self {
-        Self {
-            superclass: UIGridStyleLayout::default(),
+        let superclass = Object {};
+        let superclass = Instance {
+            superclass,
+            Capabilities: SecurityCapabilities::from_bits(0u64),
+            HistoryId: UniqueId::nil(),
+            Name: "".to_owned(),
+            SourceAssetId: 0i64,
+            Tags: Tags::new(),
+            UniqueId: UniqueId::nil(),
+        };
+        let superclass = UIBase { superclass };
+        let superclass = UIComponent { superclass };
+        let superclass = UILayout { superclass };
+        let superclass = UIGridStyleLayout {
+            superclass,
+            FillDirection: enums::FillDirection::Horizontal,
+            HorizontalAlignment: enums::HorizontalAlignment::Center,
+            SortOrder: enums::SortOrder::Name,
+            VerticalAlignment: enums::VerticalAlignment::Center,
+        };
+        let superclass = UIGridLayout {
+            superclass,
             CellPadding: UDim2::new(UDim::new(0f32, 5i32), UDim::new(0f32, 5i32)),
             CellSize: UDim2::new(UDim::new(0f32, 100i32), UDim::new(0f32, 100i32)),
             FillDirectionMaxCells: 0i32,
             StartCorner: enums::StartCorner::TopLeft,
-        }
+        };
+        superclass
     }
 }
 #[derive(Debug, Clone)]
@@ -13537,13 +19115,27 @@ impl_inherits!(UIGridStyleLayout, UILayout);
 impl_strong_instance_from!(UIGridStyleLayout);
 impl Default for UIGridStyleLayout {
     fn default() -> Self {
-        Self {
-            superclass: UILayout::default(),
+        let superclass = Object {};
+        let superclass = Instance {
+            superclass,
+            Capabilities: SecurityCapabilities::from_bits(0u64),
+            HistoryId: UniqueId::nil(),
+            Name: "".to_owned(),
+            SourceAssetId: 0i64,
+            Tags: Tags::new(),
+            UniqueId: UniqueId::nil(),
+        };
+        let superclass = UIBase { superclass };
+        let superclass = UIComponent { superclass };
+        let superclass = UILayout { superclass };
+        let superclass = UIGridStyleLayout {
+            superclass,
             FillDirection: enums::FillDirection::Horizontal,
             HorizontalAlignment: enums::HorizontalAlignment::Center,
             SortOrder: enums::SortOrder::Name,
             VerticalAlignment: enums::VerticalAlignment::Center,
-        }
+        };
+        superclass
     }
 }
 #[derive(Debug, Clone)]
@@ -13568,14 +19160,35 @@ impl_inherits!(UIListLayout, UIGridStyleLayout);
 impl_strong_instance_from!(UIListLayout);
 impl Default for UIListLayout {
     fn default() -> Self {
-        Self {
-            superclass: UIGridStyleLayout::default(),
+        let superclass = Object {};
+        let superclass = Instance {
+            superclass,
+            Capabilities: SecurityCapabilities::from_bits(0u64),
+            HistoryId: UniqueId::nil(),
+            Name: "".to_owned(),
+            SourceAssetId: 0i64,
+            Tags: Tags::new(),
+            UniqueId: UniqueId::nil(),
+        };
+        let superclass = UIBase { superclass };
+        let superclass = UIComponent { superclass };
+        let superclass = UILayout { superclass };
+        let superclass = UIGridStyleLayout {
+            superclass,
+            FillDirection: enums::FillDirection::Horizontal,
+            HorizontalAlignment: enums::HorizontalAlignment::Center,
+            SortOrder: enums::SortOrder::Name,
+            VerticalAlignment: enums::VerticalAlignment::Center,
+        };
+        let superclass = UIListLayout {
+            superclass,
             HorizontalFlex: enums::UIFlexAlignment::None,
             ItemLineAlignment: enums::ItemLineAlignment::Automatic,
             Padding: UDim::new(0f32, 0i32),
             VerticalFlex: enums::UIFlexAlignment::None,
             Wraps: false,
-        }
+        };
+        superclass
     }
 }
 #[derive(Debug, Clone)]
@@ -13591,13 +19204,26 @@ impl_inherits!(UIPadding, UIComponent);
 impl_strong_instance_from!(UIPadding);
 impl Default for UIPadding {
     fn default() -> Self {
-        Self {
-            superclass: UIComponent::default(),
+        let superclass = Object {};
+        let superclass = Instance {
+            superclass,
+            Capabilities: SecurityCapabilities::from_bits(0u64),
+            HistoryId: UniqueId::nil(),
+            Name: "".to_owned(),
+            SourceAssetId: 0i64,
+            Tags: Tags::new(),
+            UniqueId: UniqueId::nil(),
+        };
+        let superclass = UIBase { superclass };
+        let superclass = UIComponent { superclass };
+        let superclass = UIPadding {
+            superclass,
             PaddingBottom: UDim::new(0f32, 0i32),
             PaddingLeft: UDim::new(0f32, 0i32),
             PaddingRight: UDim::new(0f32, 0i32),
             PaddingTop: UDim::new(0f32, 0i32),
-        }
+        };
+        superclass
     }
 }
 #[derive(Debug, Clone)]
@@ -13618,8 +19244,28 @@ impl_inherits!(UIPageLayout, UIGridStyleLayout);
 impl_strong_instance_from!(UIPageLayout);
 impl Default for UIPageLayout {
     fn default() -> Self {
-        Self {
-            superclass: UIGridStyleLayout::default(),
+        let superclass = Object {};
+        let superclass = Instance {
+            superclass,
+            Capabilities: SecurityCapabilities::from_bits(0u64),
+            HistoryId: UniqueId::nil(),
+            Name: "".to_owned(),
+            SourceAssetId: 0i64,
+            Tags: Tags::new(),
+            UniqueId: UniqueId::nil(),
+        };
+        let superclass = UIBase { superclass };
+        let superclass = UIComponent { superclass };
+        let superclass = UILayout { superclass };
+        let superclass = UIGridStyleLayout {
+            superclass,
+            FillDirection: enums::FillDirection::Horizontal,
+            HorizontalAlignment: enums::HorizontalAlignment::Center,
+            SortOrder: enums::SortOrder::Name,
+            VerticalAlignment: enums::VerticalAlignment::Center,
+        };
+        let superclass = UIPageLayout {
+            superclass,
             Animated: true,
             Circular: false,
             EasingDirection: enums::EasingDirection::Out,
@@ -13629,7 +19275,8 @@ impl Default for UIPageLayout {
             ScrollWheelInputEnabled: true,
             TouchInputEnabled: true,
             TweenTime: 1f32,
-        }
+        };
+        superclass
     }
 }
 #[derive(Debug, Clone)]
@@ -13642,10 +19289,23 @@ impl_inherits!(UIScale, UIComponent);
 impl_strong_instance_from!(UIScale);
 impl Default for UIScale {
     fn default() -> Self {
-        Self {
-            superclass: UIComponent::default(),
+        let superclass = Object {};
+        let superclass = Instance {
+            superclass,
+            Capabilities: SecurityCapabilities::from_bits(0u64),
+            HistoryId: UniqueId::nil(),
+            Name: "".to_owned(),
+            SourceAssetId: 0i64,
+            Tags: Tags::new(),
+            UniqueId: UniqueId::nil(),
+        };
+        let superclass = UIBase { superclass };
+        let superclass = UIComponent { superclass };
+        let superclass = UIScale {
+            superclass,
             Scale: 1f32,
-        }
+        };
+        superclass
     }
 }
 #[derive(Debug, Clone)]
@@ -13659,11 +19319,25 @@ impl_inherits!(UISizeConstraint, UIConstraint);
 impl_strong_instance_from!(UISizeConstraint);
 impl Default for UISizeConstraint {
     fn default() -> Self {
-        Self {
-            superclass: UIConstraint::default(),
+        let superclass = Object {};
+        let superclass = Instance {
+            superclass,
+            Capabilities: SecurityCapabilities::from_bits(0u64),
+            HistoryId: UniqueId::nil(),
+            Name: "".to_owned(),
+            SourceAssetId: 0i64,
+            Tags: Tags::new(),
+            UniqueId: UniqueId::nil(),
+        };
+        let superclass = UIBase { superclass };
+        let superclass = UIComponent { superclass };
+        let superclass = UIConstraint { superclass };
+        let superclass = UISizeConstraint {
+            superclass,
             MaxSize: Vector2::new(f32::INFINITY, f32::INFINITY),
             MinSize: Vector2::new(0f32, 0f32),
-        }
+        };
+        superclass
     }
 }
 #[derive(Debug, Clone)]
@@ -13685,8 +19359,20 @@ impl_inherits!(UIStroke, UIComponent);
 impl_strong_instance_from!(UIStroke);
 impl Default for UIStroke {
     fn default() -> Self {
-        Self {
-            superclass: UIComponent::default(),
+        let superclass = Object {};
+        let superclass = Instance {
+            superclass,
+            Capabilities: SecurityCapabilities::from_bits(0u64),
+            HistoryId: UniqueId::nil(),
+            Name: "".to_owned(),
+            SourceAssetId: 0i64,
+            Tags: Tags::new(),
+            UniqueId: UniqueId::nil(),
+        };
+        let superclass = UIBase { superclass };
+        let superclass = UIComponent { superclass };
+        let superclass = UIStroke {
+            superclass,
             ApplyStrokeMode: enums::ApplyStrokeMode::Contextual,
             BorderOffset: UDim::new(0f32, 0i32),
             BorderStrokePosition: enums::BorderStrokePosition::Outer,
@@ -13697,7 +19383,8 @@ impl Default for UIStroke {
             Thickness: 1f32,
             Transparency: 0f32,
             ZIndex: 1i32,
-        }
+        };
+        superclass
     }
 }
 #[derive(Debug, Clone)]
@@ -13713,13 +19400,34 @@ impl_inherits!(UITableLayout, UIGridStyleLayout);
 impl_strong_instance_from!(UITableLayout);
 impl Default for UITableLayout {
     fn default() -> Self {
-        Self {
-            superclass: UIGridStyleLayout::default(),
+        let superclass = Object {};
+        let superclass = Instance {
+            superclass,
+            Capabilities: SecurityCapabilities::from_bits(0u64),
+            HistoryId: UniqueId::nil(),
+            Name: "".to_owned(),
+            SourceAssetId: 0i64,
+            Tags: Tags::new(),
+            UniqueId: UniqueId::nil(),
+        };
+        let superclass = UIBase { superclass };
+        let superclass = UIComponent { superclass };
+        let superclass = UILayout { superclass };
+        let superclass = UIGridStyleLayout {
+            superclass,
+            FillDirection: enums::FillDirection::Horizontal,
+            HorizontalAlignment: enums::HorizontalAlignment::Center,
+            SortOrder: enums::SortOrder::Name,
+            VerticalAlignment: enums::VerticalAlignment::Center,
+        };
+        let superclass = UITableLayout {
+            superclass,
             FillEmptySpaceColumns: false,
             FillEmptySpaceRows: false,
             MajorAxis: enums::TableMajorAxis::RowMajor,
             Padding: UDim2::new(UDim::new(0f32, 0i32), UDim::new(0f32, 0i32)),
-        }
+        };
+        superclass
     }
 }
 #[derive(Debug, Clone)]
@@ -13733,11 +19441,25 @@ impl_inherits!(UITextSizeConstraint, UIConstraint);
 impl_strong_instance_from!(UITextSizeConstraint);
 impl Default for UITextSizeConstraint {
     fn default() -> Self {
-        Self {
-            superclass: UIConstraint::default(),
+        let superclass = Object {};
+        let superclass = Instance {
+            superclass,
+            Capabilities: SecurityCapabilities::from_bits(0u64),
+            HistoryId: UniqueId::nil(),
+            Name: "".to_owned(),
+            SourceAssetId: 0i64,
+            Tags: Tags::new(),
+            UniqueId: UniqueId::nil(),
+        };
+        let superclass = UIBase { superclass };
+        let superclass = UIComponent { superclass };
+        let superclass = UIConstraint { superclass };
+        let superclass = UITextSizeConstraint {
+            superclass,
             MaxTextSize: 100i32,
             MinTextSize: 1i32,
-        }
+        };
+        superclass
     }
 }
 #[derive(Debug, Clone)]
@@ -13769,13 +19491,32 @@ impl_inherits!(UniversalConstraint, Constraint);
 impl_strong_instance_from!(UniversalConstraint);
 impl Default for UniversalConstraint {
     fn default() -> Self {
-        Self {
-            superclass: Constraint::default(),
+        let superclass = Object {};
+        let superclass = Instance {
+            superclass,
+            Capabilities: SecurityCapabilities::from_bits(0u64),
+            HistoryId: UniqueId::nil(),
+            Name: "".to_owned(),
+            SourceAssetId: 0i64,
+            Tags: Tags::new(),
+            UniqueId: UniqueId::nil(),
+        };
+        let superclass = Constraint {
+            superclass,
+            Attachment0: Ref::none(),
+            Attachment1: Ref::none(),
+            Color: BrickColor::from_number(194u16).unwrap(),
+            Enabled: false,
+            Visible: false,
+        };
+        let superclass = UniversalConstraint {
+            superclass,
             LimitsEnabled: false,
             MaxAngle: 45f32,
             Radius: 0.2f32,
             Restitution: 0f32,
-        }
+        };
+        superclass
     }
 }
 #[derive(Debug, Clone)]
@@ -13796,11 +19537,22 @@ impl_inherits!(UnvalidatedAssetService, Instance);
 impl_strong_instance_from!(UnvalidatedAssetService);
 impl Default for UnvalidatedAssetService {
     fn default() -> Self {
-        Self {
-            superclass: Instance::default(),
+        let superclass = Object {};
+        let superclass = Instance {
+            superclass,
+            Capabilities: SecurityCapabilities::from_bits(0u64),
+            HistoryId: UniqueId::nil(),
+            Name: "".to_owned(),
+            SourceAssetId: 0i64,
+            Tags: Tags::new(),
+            UniqueId: UniqueId::nil(),
+        };
+        let superclass = UnvalidatedAssetService {
+            superclass,
             CachedData: "{\"lastSaveTime\":0,\"lastKnownPublishRequest\":0,\"users\":[]}"
                 .to_owned(),
-        }
+        };
+        superclass
     }
 }
 #[derive(Debug, Clone)]
@@ -13879,8 +19631,18 @@ impl_inherits!(UserGameSettings, Instance);
 impl_strong_instance_from!(UserGameSettings);
 impl Default for UserGameSettings {
     fn default() -> Self {
-        Self {
-            superclass: Instance::default(),
+        let superclass = Object {};
+        let superclass = Instance {
+            superclass,
+            Capabilities: SecurityCapabilities::from_bits(0u64),
+            HistoryId: UniqueId::nil(),
+            Name: "".to_owned(),
+            SourceAssetId: 0i64,
+            Tags: Tags::new(),
+            UniqueId: UniqueId::nil(),
+        };
+        let superclass = UserGameSettings {
+            superclass,
             AllTutorialsDisabled: false,
             BadgeVisible: false,
             CameraMode: enums::CustomCameraMode::Default,
@@ -13948,7 +19710,8 @@ impl Default for UserGameSettings {
             VrSmoothRotationEnabledCustomOption: false,
             VrThirdPersonFollowCamEnabled: false,
             VrThirdPersonFollowCamEnabledCustomOption: false,
-        }
+        };
+        superclass
     }
 }
 #[derive(Debug, Clone)]
@@ -13964,13 +19727,24 @@ impl_inherits!(UserInputService, Instance);
 impl_strong_instance_from!(UserInputService);
 impl Default for UserInputService {
     fn default() -> Self {
-        Self {
-            superclass: Instance::default(),
+        let superclass = Object {};
+        let superclass = Instance {
+            superclass,
+            Capabilities: SecurityCapabilities::from_bits(0u64),
+            HistoryId: UniqueId::nil(),
+            Name: "".to_owned(),
+            SourceAssetId: 0i64,
+            Tags: Tags::new(),
+            UniqueId: UniqueId::nil(),
+        };
+        let superclass = UserInputService {
+            superclass,
             LegacyInputEventsEnabled: false,
             MouseBehavior: enums::MouseBehavior::Default,
             MouseIconContent: Content::none(),
             MouseIconEnabled: false,
-        }
+        };
+        superclass
     }
 }
 #[derive(Debug, Clone)]
@@ -14011,14 +19785,25 @@ impl_inherits!(VRService, Instance);
 impl_strong_instance_from!(VRService);
 impl Default for VRService {
     fn default() -> Self {
-        Self {
-            superclass: Instance::default(),
+        let superclass = Object {};
+        let superclass = Instance {
+            superclass,
+            Capabilities: SecurityCapabilities::from_bits(0u64),
+            HistoryId: UniqueId::nil(),
+            Name: "".to_owned(),
+            SourceAssetId: 0i64,
+            Tags: Tags::new(),
+            UniqueId: UniqueId::nil(),
+        };
+        let superclass = VRService {
+            superclass,
             AutomaticScaling: enums::VRScaling::World,
             AvatarGestures: false,
             ControllerModels: enums::VRControllerModelMode::Transparent,
             FadeOutViewOnCollision: true,
             LaserPointer: enums::VRLaserPointerMode::Pointer,
-        }
+        };
+        superclass
     }
 }
 #[derive(Debug, Clone)]
@@ -14047,10 +19832,21 @@ impl_inherits!(ValueCurve, Instance);
 impl_strong_instance_from!(ValueCurve);
 impl Default for ValueCurve {
     fn default() -> Self {
-        Self {
-            superclass: Instance::default(),
+        let superclass = Object {};
+        let superclass = Instance {
+            superclass,
+            Capabilities: SecurityCapabilities::from_bits(0u64),
+            HistoryId: UniqueId::nil(),
+            Name: "".to_owned(),
+            SourceAssetId: 0i64,
+            Tags: Tags::new(),
+            UniqueId: UniqueId::nil(),
+        };
+        let superclass = ValueCurve {
+            superclass,
             ValuesAndTimes: b"\x02\0\0\0\0\0\0\0\x01\0\0\0\0\0\0\0".as_slice().into(),
-        }
+        };
+        superclass
     }
 }
 #[derive(Debug, Clone)]
@@ -14071,10 +19867,22 @@ impl_inherits!(Vector3Value, ValueBase);
 impl_strong_instance_from!(Vector3Value);
 impl Default for Vector3Value {
     fn default() -> Self {
-        Self {
-            superclass: ValueBase::default(),
+        let superclass = Object {};
+        let superclass = Instance {
+            superclass,
+            Capabilities: SecurityCapabilities::from_bits(0u64),
+            HistoryId: UniqueId::nil(),
+            Name: "".to_owned(),
+            SourceAssetId: 0i64,
+            Tags: Tags::new(),
+            UniqueId: UniqueId::nil(),
+        };
+        let superclass = ValueBase { superclass };
+        let superclass = Vector3Value {
+            superclass,
             Value: Vector3::new(0f32, 0f32, 0f32),
-        }
+        };
+        superclass
     }
 }
 #[derive(Debug, Clone)]
@@ -14089,12 +19897,31 @@ impl_inherits!(VectorForce, Constraint);
 impl_strong_instance_from!(VectorForce);
 impl Default for VectorForce {
     fn default() -> Self {
-        Self {
-            superclass: Constraint::default(),
+        let superclass = Object {};
+        let superclass = Instance {
+            superclass,
+            Capabilities: SecurityCapabilities::from_bits(0u64),
+            HistoryId: UniqueId::nil(),
+            Name: "".to_owned(),
+            SourceAssetId: 0i64,
+            Tags: Tags::new(),
+            UniqueId: UniqueId::nil(),
+        };
+        let superclass = Constraint {
+            superclass,
+            Attachment0: Ref::none(),
+            Attachment1: Ref::none(),
+            Color: BrickColor::from_number(194u16).unwrap(),
+            Enabled: false,
+            Visible: false,
+        };
+        let superclass = VectorForce {
+            superclass,
             ApplyAtCenterOfMass: false,
             Force: Vector3::new(1000f32, 0f32, 0f32),
             RelativeTo: enums::ActuatorRelativeTo::Attachment0,
-        }
+        };
+        superclass
     }
 }
 #[derive(Debug, Clone)]
@@ -14123,8 +19950,66 @@ impl_inherits!(VehicleSeat, BasePart);
 impl_strong_instance_from!(VehicleSeat);
 impl Default for VehicleSeat {
     fn default() -> Self {
-        Self {
-            superclass: BasePart::default(),
+        let superclass = Object {};
+        let superclass = Instance {
+            superclass,
+            Capabilities: SecurityCapabilities::from_bits(0u64),
+            HistoryId: UniqueId::nil(),
+            Name: "".to_owned(),
+            SourceAssetId: 0i64,
+            Tags: Tags::new(),
+            UniqueId: UniqueId::nil(),
+        };
+        let superclass = PVInstance { superclass };
+        let superclass = BasePart {
+            superclass,
+            Anchored: false,
+            AudioCanCollide: false,
+            BackParamA: 0f32,
+            BackParamB: 0f32,
+            BackSurface: enums::SurfaceType::Smooth,
+            BackSurfaceInput: enums::InputType::NoInput,
+            BottomParamA: 0f32,
+            BottomParamB: 0f32,
+            BottomSurface: enums::SurfaceType::Smooth,
+            BottomSurfaceInput: enums::InputType::NoInput,
+            CFrame: CFrame::identity(),
+            CanCollide: false,
+            CanQuery: false,
+            CanTouch: false,
+            CastShadow: false,
+            CollisionGroup: "".to_owned(),
+            CollisionGroupId: 0i32,
+            CustomPhysicalProperties: PhysicalProperties::Default,
+            EnableFluidForces: false,
+            FrontParamA: 0f32,
+            FrontParamB: 0f32,
+            FrontSurface: enums::SurfaceType::Smooth,
+            FrontSurfaceInput: enums::InputType::NoInput,
+            LeftParamA: 0f32,
+            LeftParamB: 0f32,
+            LeftSurface: enums::SurfaceType::Smooth,
+            LeftSurfaceInput: enums::InputType::NoInput,
+            Locked: false,
+            Massless: false,
+            Material: enums::Material::Plastic,
+            PivotOffset: CFrame::identity(),
+            Reflectance: 0f32,
+            RightParamA: 0f32,
+            RightParamB: 0f32,
+            RightSurface: enums::SurfaceType::Smooth,
+            RightSurfaceInput: enums::InputType::NoInput,
+            RootPriority: 0i32,
+            RotVelocity: Vector3::new(0f32, 0f32, 0f32),
+            TopParamA: 0f32,
+            TopParamB: 0f32,
+            TopSurface: enums::SurfaceType::Smooth,
+            TopSurfaceInput: enums::InputType::NoInput,
+            Transparency: 0f32,
+            Velocity: Vector3::new(0f32, 0f32, 0f32),
+        };
+        let superclass = VehicleSeat {
+            superclass,
             Disabled: false,
             HeadsUpDisplay: true,
             MaxSpeed: 25f32,
@@ -14134,7 +20019,8 @@ impl Default for VehicleSeat {
             ThrottleFloat: 0f32,
             Torque: 10f32,
             TurnSpeed: 1f32,
-        }
+        };
+        superclass
     }
 }
 #[derive(Debug, Clone)]
@@ -14150,13 +20036,32 @@ impl_inherits!(VelocityMotor, JointInstance);
 impl_strong_instance_from!(VelocityMotor);
 impl Default for VelocityMotor {
     fn default() -> Self {
-        Self {
-            superclass: JointInstance::default(),
+        let superclass = Object {};
+        let superclass = Instance {
+            superclass,
+            Capabilities: SecurityCapabilities::from_bits(0u64),
+            HistoryId: UniqueId::nil(),
+            Name: "".to_owned(),
+            SourceAssetId: 0i64,
+            Tags: Tags::new(),
+            UniqueId: UniqueId::nil(),
+        };
+        let superclass = JointInstance {
+            superclass,
+            C0: CFrame::identity(),
+            C1: CFrame::identity(),
+            Enabled: false,
+            Part0: Ref::none(),
+            Part1: Ref::none(),
+        };
+        let superclass = VelocityMotor {
+            superclass,
             CurrentAngle: 0f32,
             DesiredAngle: 0f32,
             Hole: Ref::none(),
             MaxVelocity: 0f32,
-        }
+        };
+        superclass
     }
 }
 #[derive(Debug, Clone)]
@@ -14195,12 +20100,23 @@ impl_inherits!(VideoDeviceInput, Instance);
 impl_strong_instance_from!(VideoDeviceInput);
 impl Default for VideoDeviceInput {
     fn default() -> Self {
-        Self {
-            superclass: Instance::default(),
+        let superclass = Object {};
+        let superclass = Instance {
+            superclass,
+            Capabilities: SecurityCapabilities::from_bits(0u64),
+            HistoryId: UniqueId::nil(),
+            Name: "".to_owned(),
+            SourceAssetId: 0i64,
+            Tags: Tags::new(),
+            UniqueId: UniqueId::nil(),
+        };
+        let superclass = VideoDeviceInput {
+            superclass,
             Active: false,
             CameraId: "".to_owned(),
             CaptureQuality: enums::VideoDeviceCaptureQuality::Default,
-        }
+        };
+        superclass
     }
 }
 #[derive(Debug, Clone)]
@@ -14219,8 +20135,57 @@ impl_inherits!(VideoDisplay, GuiObject);
 impl_strong_instance_from!(VideoDisplay);
 impl Default for VideoDisplay {
     fn default() -> Self {
-        Self {
-            superclass: GuiObject::default(),
+        let superclass = Object {};
+        let superclass = Instance {
+            superclass,
+            Capabilities: SecurityCapabilities::from_bits(0u64),
+            HistoryId: UniqueId::nil(),
+            Name: "".to_owned(),
+            SourceAssetId: 0i64,
+            Tags: Tags::new(),
+            UniqueId: UniqueId::nil(),
+        };
+        let superclass = GuiBase { superclass };
+        let superclass = GuiBase2d {
+            superclass,
+            AutoLocalize: false,
+            RootLocalizationTable: Ref::none(),
+            SelectionBehaviorDown: enums::SelectionBehavior::Escape,
+            SelectionBehaviorLeft: enums::SelectionBehavior::Escape,
+            SelectionBehaviorRight: enums::SelectionBehavior::Escape,
+            SelectionBehaviorUp: enums::SelectionBehavior::Escape,
+            SelectionGroup: false,
+        };
+        let superclass = GuiObject {
+            superclass,
+            Active: false,
+            AnchorPoint: Vector2::new(0f32, 0f32),
+            AutomaticSize: enums::AutomaticSize::None,
+            BackgroundColor3: Color3::new(0f32, 0f32, 0f32),
+            BackgroundTransparency: 0f32,
+            BorderColor3: Color3::new(0f32, 0f32, 0f32),
+            BorderMode: enums::BorderMode::Outline,
+            BorderSizePixel: 0i32,
+            ClipsDescendants: false,
+            Draggable: false,
+            Interactable: false,
+            LayoutOrder: 0i32,
+            NextSelectionDown: Ref::none(),
+            NextSelectionLeft: Ref::none(),
+            NextSelectionRight: Ref::none(),
+            NextSelectionUp: Ref::none(),
+            Position: UDim2::new(UDim::new(0f32, 0i32), UDim::new(0f32, 0i32)),
+            Rotation: 0f32,
+            Selectable: false,
+            SelectionImageObject: Ref::none(),
+            SelectionOrder: 0i32,
+            Size: UDim2::new(UDim::new(0f32, 0i32), UDim::new(0f32, 0i32)),
+            SizeConstraint: enums::SizeConstraint::RelativeXY,
+            Visible: false,
+            ZIndex: 0i32,
+        };
+        let superclass = VideoDisplay {
+            superclass,
             ResampleMode: enums::ResamplerMode::Default,
             ScaleType: enums::ScaleType::Stretch,
             TileSize: UDim2::new(UDim::new(1f32, 0i32), UDim::new(1f32, 0i32)),
@@ -14228,7 +20193,8 @@ impl Default for VideoDisplay {
             VideoRectOffset: Vector2::new(0f32, 0f32),
             VideoRectSize: Vector2::new(0f32, 0f32),
             VideoTransparency: 0f32,
-        }
+        };
+        superclass
     }
 }
 #[derive(Debug, Clone)]
@@ -14245,14 +20211,64 @@ impl_inherits!(VideoFrame, GuiObject);
 impl_strong_instance_from!(VideoFrame);
 impl Default for VideoFrame {
     fn default() -> Self {
-        Self {
-            superclass: GuiObject::default(),
+        let superclass = Object {};
+        let superclass = Instance {
+            superclass,
+            Capabilities: SecurityCapabilities::from_bits(0u64),
+            HistoryId: UniqueId::nil(),
+            Name: "".to_owned(),
+            SourceAssetId: 0i64,
+            Tags: Tags::new(),
+            UniqueId: UniqueId::nil(),
+        };
+        let superclass = GuiBase { superclass };
+        let superclass = GuiBase2d {
+            superclass,
+            AutoLocalize: false,
+            RootLocalizationTable: Ref::none(),
+            SelectionBehaviorDown: enums::SelectionBehavior::Escape,
+            SelectionBehaviorLeft: enums::SelectionBehavior::Escape,
+            SelectionBehaviorRight: enums::SelectionBehavior::Escape,
+            SelectionBehaviorUp: enums::SelectionBehavior::Escape,
+            SelectionGroup: false,
+        };
+        let superclass = GuiObject {
+            superclass,
+            Active: false,
+            AnchorPoint: Vector2::new(0f32, 0f32),
+            AutomaticSize: enums::AutomaticSize::None,
+            BackgroundColor3: Color3::new(0f32, 0f32, 0f32),
+            BackgroundTransparency: 0f32,
+            BorderColor3: Color3::new(0f32, 0f32, 0f32),
+            BorderMode: enums::BorderMode::Outline,
+            BorderSizePixel: 0i32,
+            ClipsDescendants: false,
+            Draggable: false,
+            Interactable: false,
+            LayoutOrder: 0i32,
+            NextSelectionDown: Ref::none(),
+            NextSelectionLeft: Ref::none(),
+            NextSelectionRight: Ref::none(),
+            NextSelectionUp: Ref::none(),
+            Position: UDim2::new(UDim::new(0f32, 0i32), UDim::new(0f32, 0i32)),
+            Rotation: 0f32,
+            Selectable: false,
+            SelectionImageObject: Ref::none(),
+            SelectionOrder: 0i32,
+            Size: UDim2::new(UDim::new(0f32, 0i32), UDim::new(0f32, 0i32)),
+            SizeConstraint: enums::SizeConstraint::RelativeXY,
+            Visible: false,
+            ZIndex: 0i32,
+        };
+        let superclass = VideoFrame {
+            superclass,
             Looped: false,
             Playing: false,
             TimePosition: 0f64,
             VideoContent: Content::none(),
             Volume: 1f32,
-        }
+        };
+        superclass
     }
 }
 #[derive(Debug, Clone)]
@@ -14269,14 +20285,25 @@ impl_inherits!(VideoPlayer, Instance);
 impl_strong_instance_from!(VideoPlayer);
 impl Default for VideoPlayer {
     fn default() -> Self {
-        Self {
-            superclass: Instance::default(),
+        let superclass = Object {};
+        let superclass = Instance {
+            superclass,
+            Capabilities: SecurityCapabilities::from_bits(0u64),
+            HistoryId: UniqueId::nil(),
+            Name: "".to_owned(),
+            SourceAssetId: 0i64,
+            Tags: Tags::new(),
+            UniqueId: UniqueId::nil(),
+        };
+        let superclass = VideoPlayer {
+            superclass,
             Looping: false,
             PlaybackSpeed: 1f32,
             TimePosition: 0f64,
             VideoContent: Content::none(),
             Volume: 1f32,
-        }
+        };
+        superclass
     }
 }
 #[derive(Debug, Clone)]
@@ -14319,8 +20346,57 @@ impl_inherits!(ViewportFrame, GuiObject);
 impl_strong_instance_from!(ViewportFrame);
 impl Default for ViewportFrame {
     fn default() -> Self {
-        Self {
-            superclass: GuiObject::default(),
+        let superclass = Object {};
+        let superclass = Instance {
+            superclass,
+            Capabilities: SecurityCapabilities::from_bits(0u64),
+            HistoryId: UniqueId::nil(),
+            Name: "".to_owned(),
+            SourceAssetId: 0i64,
+            Tags: Tags::new(),
+            UniqueId: UniqueId::nil(),
+        };
+        let superclass = GuiBase { superclass };
+        let superclass = GuiBase2d {
+            superclass,
+            AutoLocalize: false,
+            RootLocalizationTable: Ref::none(),
+            SelectionBehaviorDown: enums::SelectionBehavior::Escape,
+            SelectionBehaviorLeft: enums::SelectionBehavior::Escape,
+            SelectionBehaviorRight: enums::SelectionBehavior::Escape,
+            SelectionBehaviorUp: enums::SelectionBehavior::Escape,
+            SelectionGroup: false,
+        };
+        let superclass = GuiObject {
+            superclass,
+            Active: false,
+            AnchorPoint: Vector2::new(0f32, 0f32),
+            AutomaticSize: enums::AutomaticSize::None,
+            BackgroundColor3: Color3::new(0f32, 0f32, 0f32),
+            BackgroundTransparency: 0f32,
+            BorderColor3: Color3::new(0f32, 0f32, 0f32),
+            BorderMode: enums::BorderMode::Outline,
+            BorderSizePixel: 0i32,
+            ClipsDescendants: false,
+            Draggable: false,
+            Interactable: false,
+            LayoutOrder: 0i32,
+            NextSelectionDown: Ref::none(),
+            NextSelectionLeft: Ref::none(),
+            NextSelectionRight: Ref::none(),
+            NextSelectionUp: Ref::none(),
+            Position: UDim2::new(UDim::new(0f32, 0i32), UDim::new(0f32, 0i32)),
+            Rotation: 0f32,
+            Selectable: false,
+            SelectionImageObject: Ref::none(),
+            SelectionOrder: 0i32,
+            Size: UDim2::new(UDim::new(0f32, 0i32), UDim::new(0f32, 0i32)),
+            SizeConstraint: enums::SizeConstraint::RelativeXY,
+            Visible: false,
+            ZIndex: 0i32,
+        };
+        let superclass = ViewportFrame {
+            superclass,
             Ambient: Color3::new(0.78431374f32, 0.78431374f32, 0.78431374f32),
             CameraCFrame: CFrame::identity(),
             CameraFieldOfView: 1.2217306f32,
@@ -14328,7 +20404,8 @@ impl Default for ViewportFrame {
             ImageTransparency: 0f32,
             LightColor: Color3::new(0.54901963f32, 0.54901963f32, 0.54901963f32),
             LightDirection: Vector3::new(-1f32, -1f32, -1f32),
-        }
+        };
+        superclass
     }
 }
 #[derive(Debug, Clone)]
@@ -14375,12 +20452,23 @@ impl_inherits!(VisualizationMode, Instance);
 impl_strong_instance_from!(VisualizationMode);
 impl Default for VisualizationMode {
     fn default() -> Self {
-        Self {
-            superclass: Instance::default(),
+        let superclass = Object {};
+        let superclass = Instance {
+            superclass,
+            Capabilities: SecurityCapabilities::from_bits(0u64),
+            HistoryId: UniqueId::nil(),
+            Name: "".to_owned(),
+            SourceAssetId: 0i64,
+            Tags: Tags::new(),
+            UniqueId: UniqueId::nil(),
+        };
+        let superclass = VisualizationMode {
+            superclass,
             Enabled: false,
             Title: "".to_owned(),
             ToolTip: "".to_owned(),
-        }
+        };
+        superclass
     }
 }
 #[derive(Debug, Clone)]
@@ -14394,11 +20482,22 @@ impl_inherits!(VisualizationModeCategory, Instance);
 impl_strong_instance_from!(VisualizationModeCategory);
 impl Default for VisualizationModeCategory {
     fn default() -> Self {
-        Self {
-            superclass: Instance::default(),
+        let superclass = Object {};
+        let superclass = Instance {
+            superclass,
+            Capabilities: SecurityCapabilities::from_bits(0u64),
+            HistoryId: UniqueId::nil(),
+            Name: "".to_owned(),
+            SourceAssetId: 0i64,
+            Tags: Tags::new(),
+            UniqueId: UniqueId::nil(),
+        };
+        let superclass = VisualizationModeCategory {
+            superclass,
             Enabled: false,
             Title: "".to_owned(),
-        }
+        };
+        superclass
     }
 }
 #[derive(Debug, Clone)]
@@ -14429,12 +20528,23 @@ impl_inherits!(VoiceChatService, Instance);
 impl_strong_instance_from!(VoiceChatService);
 impl Default for VoiceChatService {
     fn default() -> Self {
-        Self {
-            superclass: Instance::default(),
+        let superclass = Object {};
+        let superclass = Instance {
+            superclass,
+            Capabilities: SecurityCapabilities::from_bits(0u64),
+            HistoryId: UniqueId::nil(),
+            Name: "".to_owned(),
+            SourceAssetId: 0i64,
+            Tags: Tags::new(),
+            UniqueId: UniqueId::nil(),
+        };
+        let superclass = VoiceChatService {
+            superclass,
             DefaultDistanceAttenuation: enums::VoiceChatDistanceAttenuationType::Inverse,
             EnableDefaultVoice: true,
             UseAudioApi: enums::AudioApiRollout::Automatic,
-        }
+        };
+        superclass
     }
 }
 #[derive(Debug, Clone)]
@@ -14496,11 +20606,22 @@ impl_inherits!(WeldConstraint, Instance);
 impl_strong_instance_from!(WeldConstraint);
 impl Default for WeldConstraint {
     fn default() -> Self {
-        Self {
-            superclass: Instance::default(),
+        let superclass = Object {};
+        let superclass = Instance {
+            superclass,
+            Capabilities: SecurityCapabilities::from_bits(0u64),
+            HistoryId: UniqueId::nil(),
+            Name: "".to_owned(),
+            SourceAssetId: 0i64,
+            Tags: Tags::new(),
+            UniqueId: UniqueId::nil(),
+        };
+        let superclass = WeldConstraint {
+            superclass,
             CFrame0: CFrame::identity(),
             State: 3i32,
-        }
+        };
+        superclass
     }
 }
 #[derive(Debug, Clone)]
@@ -14516,13 +20637,24 @@ impl_inherits!(Wire, Instance);
 impl_strong_instance_from!(Wire);
 impl Default for Wire {
     fn default() -> Self {
-        Self {
-            superclass: Instance::default(),
+        let superclass = Object {};
+        let superclass = Instance {
+            superclass,
+            Capabilities: SecurityCapabilities::from_bits(0u64),
+            HistoryId: UniqueId::nil(),
+            Name: "".to_owned(),
+            SourceAssetId: 0i64,
+            Tags: Tags::new(),
+            UniqueId: UniqueId::nil(),
+        };
+        let superclass = Wire {
+            superclass,
             SourceInstance: Ref::none(),
             SourceName: "Output".to_owned(),
             TargetInstance: Ref::none(),
             TargetName: "Input".to_owned(),
-        }
+        };
+        superclass
     }
 }
 #[derive(Debug, Clone)]
@@ -14536,11 +20668,41 @@ impl_inherits!(WireframeHandleAdornment, HandleAdornment);
 impl_strong_instance_from!(WireframeHandleAdornment);
 impl Default for WireframeHandleAdornment {
     fn default() -> Self {
-        Self {
-            superclass: HandleAdornment::default(),
+        let superclass = Object {};
+        let superclass = Instance {
+            superclass,
+            Capabilities: SecurityCapabilities::from_bits(0u64),
+            HistoryId: UniqueId::nil(),
+            Name: "".to_owned(),
+            SourceAssetId: 0i64,
+            Tags: Tags::new(),
+            UniqueId: UniqueId::nil(),
+        };
+        let superclass = GuiBase { superclass };
+        let superclass = GuiBase3d {
+            superclass,
+            Color3: Color3::new(0f32, 0f32, 0f32),
+            Transparency: 0f32,
+            Visible: false,
+        };
+        let superclass = PVAdornment {
+            superclass,
+            Adornee: Ref::none(),
+        };
+        let superclass = HandleAdornment {
+            superclass,
+            AdornCullingMode: enums::AdornCullingMode::Automatic,
+            AlwaysOnTop: false,
+            CFrame: CFrame::identity(),
+            SizeRelativeOffset: Vector3::new(0f32, 0f32, 0f32),
+            ZIndex: 0i32,
+        };
+        let superclass = WireframeHandleAdornment {
+            superclass,
             Scale: Vector3::new(1f32, 1f32, 1f32),
             Thickness: 1f32,
-        }
+        };
+        superclass
     }
 }
 #[derive(Debug, Clone)]
@@ -14592,8 +20754,32 @@ impl_inherits!(Workspace, WorldRoot);
 impl_strong_instance_from!(Workspace);
 impl Default for Workspace {
     fn default() -> Self {
-        Self {
-            superclass: WorldRoot::default(),
+        let superclass = Object {};
+        let superclass = Instance {
+            superclass,
+            Capabilities: SecurityCapabilities::from_bits(0u64),
+            HistoryId: UniqueId::nil(),
+            Name: "".to_owned(),
+            SourceAssetId: 0i64,
+            Tags: Tags::new(),
+            UniqueId: UniqueId::nil(),
+        };
+        let superclass = PVInstance { superclass };
+        let superclass = Model {
+            superclass,
+            LevelOfDetail: enums::ModelLevelOfDetail::Automatic,
+            ModelMeshCFrame: CFrame::identity(),
+            ModelMeshData: SharedString::new(b"".to_vec()),
+            ModelMeshSize: Vector3::new(0f32, 0f32, 0f32),
+            ModelStreamingMode: enums::ModelStreamingMode::Default,
+            NeedsPivotMigration: false,
+            PrimaryPart: Ref::none(),
+            SlimHash: SharedString::new(b"".to_vec()),
+            WorldPivotData: None,
+        };
+        let superclass = WorldRoot { superclass };
+        let superclass = Workspace {
+            superclass,
             AirDensity: 0.0012f32,
             AirTurbulenceIntensity: 0f32,
             AllowThirdPartySales: false,
@@ -14636,7 +20822,8 @@ impl Default for Workspace {
             TouchEventsUseCollisionGroups: enums::RolloutState::Default,
             TouchesUseCollisionGroups: false,
             UseNewLuauTypeSolver: enums::RolloutState::Enabled,
-        }
+        };
+        superclass
     }
 }
 #[derive(Debug, Clone)]
@@ -14689,8 +20876,28 @@ impl_inherits!(WrapLayer, BaseWrap);
 impl_strong_instance_from!(WrapLayer);
 impl Default for WrapLayer {
     fn default() -> Self {
-        Self {
-            superclass: BaseWrap::default(),
+        let superclass = Object {};
+        let superclass = Instance {
+            superclass,
+            Capabilities: SecurityCapabilities::from_bits(0u64),
+            HistoryId: UniqueId::nil(),
+            Name: "".to_owned(),
+            SourceAssetId: 0i64,
+            Tags: Tags::new(),
+            UniqueId: UniqueId::nil(),
+        };
+        let superclass = BaseWrap {
+            superclass,
+            CageMeshContent: Content::none(),
+            CageOrigin: CFrame::identity(),
+            HsrAssetId: "".into(),
+            HsrData: SharedString::new(b"".to_vec()),
+            HsrMeshIdData: SharedString::new(b"".to_vec()),
+            ImportOrigin: CFrame::identity(),
+            TemporaryCageMeshId: "".into(),
+        };
+        let superclass = WrapLayer {
+            superclass,
             AutoSkin: enums::WrapLayerAutoSkin::Disabled,
             BindOffset: CFrame::identity(),
             Enabled: true,
@@ -14700,7 +20907,8 @@ impl Default for WrapLayer {
             ReferenceOrigin: CFrame::identity(),
             ShrinkFactor: 0f32,
             TemporaryReferenceId: "".into(),
-        }
+        };
+        superclass
     }
 }
 #[derive(Debug, Clone)]
@@ -14713,10 +20921,31 @@ impl_inherits!(WrapTarget, BaseWrap);
 impl_strong_instance_from!(WrapTarget);
 impl Default for WrapTarget {
     fn default() -> Self {
-        Self {
-            superclass: BaseWrap::default(),
+        let superclass = Object {};
+        let superclass = Instance {
+            superclass,
+            Capabilities: SecurityCapabilities::from_bits(0u64),
+            HistoryId: UniqueId::nil(),
+            Name: "".to_owned(),
+            SourceAssetId: 0i64,
+            Tags: Tags::new(),
+            UniqueId: UniqueId::nil(),
+        };
+        let superclass = BaseWrap {
+            superclass,
+            CageMeshContent: Content::none(),
+            CageOrigin: CFrame::identity(),
+            HsrAssetId: "".into(),
+            HsrData: SharedString::new(b"".to_vec()),
+            HsrMeshIdData: SharedString::new(b"".to_vec()),
+            ImportOrigin: CFrame::identity(),
+            TemporaryCageMeshId: "".into(),
+        };
+        let superclass = WrapTarget {
+            superclass,
             Stiffness: 0f32,
-        }
+        };
+        superclass
     }
 }
 #[derive(Debug, Clone)]
@@ -14731,11 +20960,22 @@ impl_inherits!(WrapTextureTransfer, Instance);
 impl_strong_instance_from!(WrapTextureTransfer);
 impl Default for WrapTextureTransfer {
     fn default() -> Self {
-        Self {
-            superclass: Instance::default(),
+        let superclass = Object {};
+        let superclass = Instance {
+            superclass,
+            Capabilities: SecurityCapabilities::from_bits(0u64),
+            HistoryId: UniqueId::nil(),
+            Name: "".to_owned(),
+            SourceAssetId: 0i64,
+            Tags: Tags::new(),
+            UniqueId: UniqueId::nil(),
+        };
+        let superclass = WrapTextureTransfer {
+            superclass,
             ReferenceCageMeshContent: Content::none(),
             UvMaxBound: Vector2::new(f32::NEG_INFINITY, f32::NEG_INFINITY),
             UvMinBound: Vector2::new(f32::INFINITY, f32::INFINITY),
-        }
+        };
+        superclass
     }
 }
