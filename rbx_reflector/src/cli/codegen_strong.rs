@@ -507,26 +507,40 @@ impl StrongInstancesCollector {
         if fields.is_empty() {
             attrs.push(syn::parse_quote!(#[derive(Default)]));
         } else {
-            let mut default_struct: syn::ExprStruct = syn::parse_quote! {
-                Self{
-                }
-            };
-            // superclass default value
-            if let Some(superclass_ident) = &superclass_ident {
+            // generate impl Default
+            let mut superclasses: Vec<_> = database.superclasses_iter(descriptor).collect();
+            superclasses.reverse();
+            let mut iter = superclasses.iter().map(|class| {
+                let ident: syn::Ident = syn::parse_str(&class.name).unwrap();
+                let default_struct: syn::ExprStruct = syn::parse_quote! {
+                    #ident{
+                    }
+                };
+                (default_struct, class)
+            });
+            // root superclass has no superclass (and is assumed to have no fields)
+            let (root, _) = iter.next().unwrap();
+            // all others
+            let iter = iter.map(|(mut default_struct, class)| {
                 default_struct.fields.push(syn::parse_quote! {
-                    superclass: #superclass_ident::default()
+                    superclass
                 });
-            }
-            default_struct.fields.extend(
-                fields
-                    .iter()
-                    .map(|field_info| &field_info.default_value)
-                    .cloned(),
-            );
+                // this is duplicating a lot of work, but whatever
+                let fields = get_fields_info(class, database);
+                default_struct.fields.extend(
+                    fields
+                        .iter()
+                        .map(|field_info| &field_info.default_value)
+                        .cloned(),
+                );
+                default_struct
+            });
             let default_impl = syn::parse_quote! {
                 impl Default for #ident{
                     fn default() -> Self {
-                        #default_struct
+                        let superclass = #root;
+                        #(let superclass = #iter;)*
+                        superclass
                     }
                 }
             };
