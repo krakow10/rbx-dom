@@ -17165,7 +17165,7 @@ impl Default for Terrain {
             AcquisitionMethod: enums::TerrainAcquisitionMethod::None,
             Decoration: false,
             GrassLength: 0.7f32,
-            MaterialColors: unimplemented!("MaterialColors"),
+            MaterialColors: MaterialColors::new(),
             PhysicsGrid: b"\x02\x03\0\0\0\0\0\0\0\0\0\0\0\0".as_slice().into(),
             SmoothGrid: b"\x01\x05".as_slice().into(),
             SmoothVoxelsUpgraded: false,
