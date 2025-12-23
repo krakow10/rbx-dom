@@ -443,7 +443,13 @@ impl ToTokens for WrapToTokens<&Variant> {
                     None => append(q! {Font::new(#family,#weight,#style)}),
                 }
             }
-            Variant::MaterialColors(value) => append(q! {unimplemented!("MaterialColors")}),
+            Variant::MaterialColors(value) => {
+                if value.is_empty() {
+                    append(q! {MaterialColors::new()});
+                } else {
+                    unimplemented!("non-default MaterialColors");
+                }
+            }
             Variant::SecurityCapabilities(value) => {
                 let bits = value.bits();
                 append(q! {SecurityCapabilities::from_bits(#bits)})
