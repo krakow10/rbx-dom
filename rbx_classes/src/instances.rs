@@ -867,7 +867,7 @@ impl Default for Accessory {
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
-            SourceAssetId: 0i64,
+            SourceAssetId: -1i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
         };
@@ -905,7 +905,7 @@ impl Default for AccessoryDescription {
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
-            SourceAssetId: 0i64,
+            SourceAssetId: -1i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
         };
@@ -947,7 +947,7 @@ impl Default for Accoutrement {
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
-            SourceAssetId: 0i64,
+            SourceAssetId: -1i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
         };
@@ -1080,14 +1080,14 @@ impl Default for AirController {
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
-            SourceAssetId: 0i64,
+            SourceAssetId: -1i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
         };
         let superclass = ControllerBase {
             superclass,
             BalanceRigidityEnabled: false,
-            MoveSpeedFactor: 0f32,
+            MoveSpeedFactor: 1f32,
         };
         Self {
             superclass,
@@ -1125,7 +1125,7 @@ impl Default for AlignOrientation {
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
-            SourceAssetId: 0i64,
+            SourceAssetId: -1i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
         };
@@ -1133,8 +1133,8 @@ impl Default for AlignOrientation {
             superclass,
             Attachment0: Ref::none(),
             Attachment1: Ref::none(),
-            Color: BrickColor::from_number(194u16).unwrap(),
-            Enabled: false,
+            Color: BrickColor::from_number(23u16).unwrap(),
+            Enabled: true,
             Visible: false,
         };
         Self {
@@ -1177,7 +1177,7 @@ impl Default for AlignPosition {
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
-            SourceAssetId: 0i64,
+            SourceAssetId: -1i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
         };
@@ -1186,7 +1186,7 @@ impl Default for AlignPosition {
             Attachment0: Ref::none(),
             Attachment1: Ref::none(),
             Color: BrickColor::from_number(194u16).unwrap(),
-            Enabled: false,
+            Enabled: true,
             Visible: false,
         };
         Self {
@@ -1250,7 +1250,7 @@ impl Default for AngularVelocity {
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
-            SourceAssetId: 0i64,
+            SourceAssetId: -1i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
         };
@@ -1258,8 +1258,8 @@ impl Default for AngularVelocity {
             superclass,
             Attachment0: Ref::none(),
             Attachment1: Ref::none(),
-            Color: BrickColor::from_number(194u16).unwrap(),
-            Enabled: false,
+            Color: BrickColor::from_number(23u16).unwrap(),
+            Enabled: true,
             Visible: false,
         };
         Self {
@@ -1287,7 +1287,7 @@ impl Default for Animation {
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
-            SourceAssetId: 0i64,
+            SourceAssetId: -1i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
         };
@@ -1354,7 +1354,7 @@ impl Default for AnimationConstraint {
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
-            SourceAssetId: 0i64,
+            SourceAssetId: -1i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
         };
@@ -1362,8 +1362,8 @@ impl Default for AnimationConstraint {
             superclass,
             Attachment0: Ref::none(),
             Attachment1: Ref::none(),
-            Color: BrickColor::from_number(194u16).unwrap(),
-            Enabled: false,
+            Color: BrickColor::from_number(23u16).unwrap(),
+            Enabled: true,
             Visible: false,
         };
         Self {
@@ -1440,7 +1440,7 @@ impl Default for AnimationNodeDefinition {
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
-            SourceAssetId: 0i64,
+            SourceAssetId: -1i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
         };
@@ -1472,7 +1472,7 @@ impl Default for AnimationRigData {
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
-            SourceAssetId: 0i64,
+            SourceAssetId: -1i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
         };
@@ -1529,7 +1529,7 @@ impl Default for Animator {
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
-            SourceAssetId: 0i64,
+            SourceAssetId: -1i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
         };
@@ -1603,16 +1603,16 @@ impl Default for ArcHandles {
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
-            SourceAssetId: 0i64,
+            SourceAssetId: -1i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
         };
         let superclass = GuiBase { superclass };
         let superclass = GuiBase3d {
             superclass,
-            Color3: Color3::new(0f32, 0f32, 0f32),
+            Color3: Color3::new(0.050980393f32, 0.4117647f32, 0.6745098f32),
             Transparency: 0f32,
-            Visible: false,
+            Visible: true,
         };
         let superclass = PartAdornment {
             superclass,
@@ -1733,7 +1733,7 @@ impl Default for AssetService {
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
-            SourceAssetId: 0i64,
+            SourceAssetId: -1i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
         };
@@ -1772,7 +1772,7 @@ impl Default for Atmosphere {
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
-            SourceAssetId: 0i64,
+            SourceAssetId: -1i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
         };
@@ -1812,7 +1812,7 @@ impl Default for Attachment {
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
-            SourceAssetId: 0i64,
+            SourceAssetId: -1i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
         };
@@ -1840,7 +1840,7 @@ impl Default for AudioAnalyzer {
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
-            SourceAssetId: 0i64,
+            SourceAssetId: -1i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
         };
@@ -1867,7 +1867,7 @@ impl Default for AudioChannelMixer {
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
-            SourceAssetId: 0i64,
+            SourceAssetId: -1i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
         };
@@ -1893,7 +1893,7 @@ impl Default for AudioChannelSplitter {
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
-            SourceAssetId: 0i64,
+            SourceAssetId: -1i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
         };
@@ -1922,7 +1922,7 @@ impl Default for AudioChorus {
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
-            SourceAssetId: 0i64,
+            SourceAssetId: -1i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
         };
@@ -1956,7 +1956,7 @@ impl Default for AudioCompressor {
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
-            SourceAssetId: 0i64,
+            SourceAssetId: -1i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
         };
@@ -1991,7 +1991,7 @@ impl Default for AudioDeviceInput {
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
-            SourceAssetId: 0i64,
+            SourceAssetId: -1i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
         };
@@ -2021,7 +2021,7 @@ impl Default for AudioDeviceOutput {
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
-            SourceAssetId: 0i64,
+            SourceAssetId: -1i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
         };
@@ -2048,7 +2048,7 @@ impl Default for AudioDistortion {
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
-            SourceAssetId: 0i64,
+            SourceAssetId: -1i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
         };
@@ -2080,7 +2080,7 @@ impl Default for AudioEcho {
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
-            SourceAssetId: 0i64,
+            SourceAssetId: -1i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
         };
@@ -2116,7 +2116,7 @@ impl Default for AudioEmitter {
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
-            SourceAssetId: 0i64,
+            SourceAssetId: -1i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
         };
@@ -2151,7 +2151,7 @@ impl Default for AudioEqualizer {
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
-            SourceAssetId: 0i64,
+            SourceAssetId: -1i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
         };
@@ -2182,7 +2182,7 @@ impl Default for AudioFader {
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
-            SourceAssetId: 0i64,
+            SourceAssetId: -1i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
         };
@@ -2213,7 +2213,7 @@ impl Default for AudioFilter {
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
-            SourceAssetId: 0i64,
+            SourceAssetId: -1i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
         };
@@ -2246,7 +2246,7 @@ impl Default for AudioFlanger {
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
-            SourceAssetId: 0i64,
+            SourceAssetId: -1i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
         };
@@ -2286,7 +2286,7 @@ impl Default for AudioGate {
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
-            SourceAssetId: 0i64,
+            SourceAssetId: -1i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
         };
@@ -2317,7 +2317,7 @@ impl Default for AudioLimiter {
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
-            SourceAssetId: 0i64,
+            SourceAssetId: -1i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
         };
@@ -2350,7 +2350,7 @@ impl Default for AudioListener {
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
-            SourceAssetId: 0i64,
+            SourceAssetId: -1i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
         };
@@ -2391,7 +2391,7 @@ impl Default for AudioPitchShifter {
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
-            SourceAssetId: 0i64,
+            SourceAssetId: -1i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
         };
@@ -2428,7 +2428,7 @@ impl Default for AudioPlayer {
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
-            SourceAssetId: 0i64,
+            SourceAssetId: -1i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
         };
@@ -2463,7 +2463,7 @@ impl Default for AudioRecorder {
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
-            SourceAssetId: 0i64,
+            SourceAssetId: -1i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
         };
@@ -2501,7 +2501,7 @@ impl Default for AudioReverb {
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
-            SourceAssetId: 0i64,
+            SourceAssetId: -1i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
         };
@@ -2580,7 +2580,7 @@ impl Default for AudioSpeechToText {
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
-            SourceAssetId: 0i64,
+            SourceAssetId: -1i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
         };
@@ -2614,7 +2614,7 @@ impl Default for AudioTextToSpeech {
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
-            SourceAssetId: 0i64,
+            SourceAssetId: -1i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
         };
@@ -2653,7 +2653,7 @@ impl Default for AudioTremolo {
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
-            SourceAssetId: 0i64,
+            SourceAssetId: -1i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
         };
@@ -2820,7 +2820,7 @@ impl Default for AvatarAccessoryRules {
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
-            SourceAssetId: 0i64,
+            SourceAssetId: -1i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
         };
@@ -2888,7 +2888,7 @@ impl Default for AvatarAnimationRules {
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
-            SourceAssetId: 0i64,
+            SourceAssetId: -1i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
         };
@@ -2966,7 +2966,7 @@ impl Default for AvatarBodyRules {
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
-            SourceAssetId: 0i64,
+            SourceAssetId: -1i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
         };
@@ -3057,7 +3057,7 @@ impl Default for AvatarClothingRules {
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
-            SourceAssetId: 0i64,
+            SourceAssetId: -1i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
         };
@@ -3112,7 +3112,7 @@ impl Default for AvatarCollisionRules {
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
-            SourceAssetId: 0i64,
+            SourceAssetId: -1i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
         };
@@ -3165,7 +3165,7 @@ impl Default for AvatarRules {
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
-            SourceAssetId: 0i64,
+            SourceAssetId: -1i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
         };
@@ -3261,7 +3261,7 @@ impl Default for BallSocketConstraint {
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
-            SourceAssetId: 0i64,
+            SourceAssetId: -1i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
         };
@@ -3269,8 +3269,8 @@ impl Default for BallSocketConstraint {
             superclass,
             Attachment0: Ref::none(),
             Attachment1: Ref::none(),
-            Color: BrickColor::from_number(194u16).unwrap(),
-            Enabled: false,
+            Color: BrickColor::from_number(1009u16).unwrap(),
+            Enabled: true,
             Visible: false,
         };
         Self {
@@ -3557,7 +3557,7 @@ impl Default for Beam {
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
-            SourceAssetId: 0i64,
+            SourceAssetId: -1i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
         };
@@ -3662,14 +3662,14 @@ impl Default for BillboardGui {
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
-            SourceAssetId: 0i64,
+            SourceAssetId: -1i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
         };
         let superclass = GuiBase { superclass };
         let superclass = GuiBase2d {
             superclass,
-            AutoLocalize: false,
+            AutoLocalize: true,
             RootLocalizationTable: Ref::none(),
             SelectionBehaviorDown: enums::SelectionBehavior::Escape,
             SelectionBehaviorLeft: enums::SelectionBehavior::Escape,
@@ -3679,8 +3679,8 @@ impl Default for BillboardGui {
         };
         let superclass = LayerCollector {
             superclass,
-            Enabled: false,
-            ResetOnSpawn: false,
+            Enabled: true,
+            ResetOnSpawn: true,
             ZIndexBehavior: enums::ZIndexBehavior::Global,
         };
         Self {
@@ -3720,7 +3720,7 @@ impl Default for BinaryStringValue {
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
-            SourceAssetId: 0i64,
+            SourceAssetId: -1i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
         };
@@ -3773,13 +3773,13 @@ impl Default for BloomEffect {
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
-            SourceAssetId: 0i64,
+            SourceAssetId: -1i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
         };
         let superclass = PostEffect {
             superclass,
-            Enabled: false,
+            Enabled: true,
         };
         Self {
             superclass,
@@ -3805,13 +3805,13 @@ impl Default for BlurEffect {
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
-            SourceAssetId: 0i64,
+            SourceAssetId: -1i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
         };
         let superclass = PostEffect {
             superclass,
-            Enabled: false,
+            Enabled: true,
         };
         Self {
             superclass,
@@ -3837,7 +3837,7 @@ impl Default for BodyAngularVelocity {
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
-            SourceAssetId: 0i64,
+            SourceAssetId: -1i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
         };
@@ -3871,7 +3871,7 @@ impl Default for BodyColors {
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
-            SourceAssetId: 0i64,
+            SourceAssetId: -1i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
         };
@@ -3903,7 +3903,7 @@ impl Default for BodyForce {
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
-            SourceAssetId: 0i64,
+            SourceAssetId: -1i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
         };
@@ -3933,7 +3933,7 @@ impl Default for BodyGyro {
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
-            SourceAssetId: 0i64,
+            SourceAssetId: -1i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
         };
@@ -3975,7 +3975,7 @@ impl Default for BodyPartDescription {
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
-            SourceAssetId: 0i64,
+            SourceAssetId: -1i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
         };
@@ -4008,7 +4008,7 @@ impl Default for BodyPosition {
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
-            SourceAssetId: 0i64,
+            SourceAssetId: -1i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
         };
@@ -4039,7 +4039,7 @@ impl Default for BodyThrust {
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
-            SourceAssetId: 0i64,
+            SourceAssetId: -1i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
         };
@@ -4069,7 +4069,7 @@ impl Default for BodyVelocity {
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
-            SourceAssetId: 0i64,
+            SourceAssetId: -1i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
         };
@@ -4106,7 +4106,7 @@ impl Default for BoolValue {
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
-            SourceAssetId: 0i64,
+            SourceAssetId: -1i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
         };
@@ -4134,16 +4134,16 @@ impl Default for BoxHandleAdornment {
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
-            SourceAssetId: 0i64,
+            SourceAssetId: -1i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
         };
         let superclass = GuiBase { superclass };
         let superclass = GuiBase3d {
             superclass,
-            Color3: Color3::new(0f32, 0f32, 0f32),
+            Color3: Color3::new(0.050980393f32, 0.4117647f32, 0.6745098f32),
             Transparency: 0f32,
-            Visible: false,
+            Visible: true,
         };
         let superclass = PVAdornment {
             superclass,
@@ -4155,7 +4155,7 @@ impl Default for BoxHandleAdornment {
             AlwaysOnTop: false,
             CFrame: CFrame::identity(),
             SizeRelativeOffset: Vector3::new(0f32, 0f32, 0f32),
-            ZIndex: 0i32,
+            ZIndex: -1i32,
         };
         Self {
             superclass,
@@ -4188,7 +4188,7 @@ impl Default for BrickColorValue {
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
-            SourceAssetId: 0i64,
+            SourceAssetId: -1i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
         };
@@ -4238,7 +4238,7 @@ impl Default for BubbleChatConfiguration {
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
-            SourceAssetId: 0i64,
+            SourceAssetId: -1i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
         };
@@ -4305,7 +4305,7 @@ impl Default for BuoyancySensor {
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
-            SourceAssetId: 0i64,
+            SourceAssetId: -1i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
         };
@@ -4336,7 +4336,7 @@ impl Default for CFrameValue {
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
-            SourceAssetId: 0i64,
+            SourceAssetId: -1i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
         };
@@ -4395,7 +4395,7 @@ impl Default for Camera {
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
-            SourceAssetId: 0i64,
+            SourceAssetId: -1i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
         };
@@ -4445,14 +4445,14 @@ impl Default for CanvasGroup {
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
-            SourceAssetId: 0i64,
+            SourceAssetId: -1i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
         };
         let superclass = GuiBase { superclass };
         let superclass = GuiBase2d {
             superclass,
-            AutoLocalize: false,
+            AutoLocalize: true,
             RootLocalizationTable: Ref::none(),
             SelectionBehaviorDown: enums::SelectionBehavior::Escape,
             SelectionBehaviorLeft: enums::SelectionBehavior::Escape,
@@ -4465,14 +4465,14 @@ impl Default for CanvasGroup {
             Active: false,
             AnchorPoint: Vector2::new(0f32, 0f32),
             AutomaticSize: enums::AutomaticSize::None,
-            BackgroundColor3: Color3::new(0f32, 0f32, 0f32),
+            BackgroundColor3: Color3::new(0.6392157f32, 0.63529414f32, 0.64705884f32),
             BackgroundTransparency: 0f32,
-            BorderColor3: Color3::new(0f32, 0f32, 0f32),
+            BorderColor3: Color3::new(0.105882354f32, 0.16470589f32, 0.20784314f32),
             BorderMode: enums::BorderMode::Outline,
-            BorderSizePixel: 0i32,
-            ClipsDescendants: false,
+            BorderSizePixel: 1i32,
+            ClipsDescendants: true,
             Draggable: false,
-            Interactable: false,
+            Interactable: true,
             LayoutOrder: 0i32,
             NextSelectionDown: Ref::none(),
             NextSelectionLeft: Ref::none(),
@@ -4485,8 +4485,8 @@ impl Default for CanvasGroup {
             SelectionOrder: 0i32,
             Size: UDim2::new(UDim::new(0f32, 0i32), UDim::new(0f32, 0i32)),
             SizeConstraint: enums::SizeConstraint::RelativeXY,
-            Visible: false,
-            ZIndex: 0i32,
+            Visible: true,
+            ZIndex: 1i32,
         };
         Self {
             superclass,
@@ -4559,13 +4559,13 @@ impl Default for ChannelSelectorSoundEffect {
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
-            SourceAssetId: 0i64,
+            SourceAssetId: -1i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
         };
         let superclass = SoundEffect {
             superclass,
-            Enabled: false,
+            Enabled: true,
             Priority: 0i32,
         };
         let superclass = CustomSoundEffect { superclass };
@@ -4600,7 +4600,7 @@ impl Default for ChannelTabsConfiguration {
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
-            SourceAssetId: 0i64,
+            SourceAssetId: -1i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
         };
@@ -4647,7 +4647,7 @@ impl Default for CharacterMesh {
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
-            SourceAssetId: 0i64,
+            SourceAssetId: -1i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
         };
@@ -4679,7 +4679,7 @@ impl Default for Chat {
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
-            SourceAssetId: 0i64,
+            SourceAssetId: -1i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
         };
@@ -4718,7 +4718,7 @@ impl Default for ChatInputBarConfiguration {
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
-            SourceAssetId: 0i64,
+            SourceAssetId: -1i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
         };
@@ -4767,7 +4767,7 @@ impl Default for ChatWindowConfiguration {
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
-            SourceAssetId: 0i64,
+            SourceAssetId: -1i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
         };
@@ -4823,13 +4823,13 @@ impl Default for ChorusSoundEffect {
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
-            SourceAssetId: 0i64,
+            SourceAssetId: -1i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
         };
         let superclass = SoundEffect {
             superclass,
-            Enabled: false,
+            Enabled: true,
             Priority: 0i32,
         };
         Self {
@@ -4857,7 +4857,7 @@ impl Default for ClickDetector {
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
-            SourceAssetId: 0i64,
+            SourceAssetId: -1i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
         };
@@ -4895,14 +4895,14 @@ impl Default for ClimbController {
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
-            SourceAssetId: 0i64,
+            SourceAssetId: -1i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
         };
         let superclass = ControllerBase {
             superclass,
             BalanceRigidityEnabled: false,
-            MoveSpeedFactor: 0f32,
+            MoveSpeedFactor: 1f32,
         };
         Self {
             superclass,
@@ -4975,7 +4975,7 @@ impl Default for Clouds {
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
-            SourceAssetId: 0i64,
+            SourceAssetId: -1i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
         };
@@ -5036,7 +5036,7 @@ impl Default for Color3Value {
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
-            SourceAssetId: 0i64,
+            SourceAssetId: -1i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
         };
@@ -5066,13 +5066,13 @@ impl Default for ColorCorrectionEffect {
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
-            SourceAssetId: 0i64,
+            SourceAssetId: -1i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
         };
         let superclass = PostEffect {
             superclass,
-            Enabled: false,
+            Enabled: true,
         };
         Self {
             superclass,
@@ -5099,13 +5099,13 @@ impl Default for ColorGradingEffect {
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
-            SourceAssetId: 0i64,
+            SourceAssetId: -1i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
         };
         let superclass = PostEffect {
             superclass,
-            Enabled: false,
+            Enabled: true,
         };
         Self {
             superclass,
@@ -5142,13 +5142,13 @@ impl Default for CompressorSoundEffect {
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
-            SourceAssetId: 0i64,
+            SourceAssetId: -1i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
         };
         let superclass = SoundEffect {
             superclass,
-            Enabled: false,
+            Enabled: true,
             Priority: 0i32,
         };
         Self {
@@ -5181,16 +5181,16 @@ impl Default for ConeHandleAdornment {
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
-            SourceAssetId: 0i64,
+            SourceAssetId: -1i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
         };
         let superclass = GuiBase { superclass };
         let superclass = GuiBase3d {
             superclass,
-            Color3: Color3::new(0f32, 0f32, 0f32),
+            Color3: Color3::new(0.050980393f32, 0.4117647f32, 0.6745098f32),
             Transparency: 0f32,
-            Visible: false,
+            Visible: true,
         };
         let superclass = PVAdornment {
             superclass,
@@ -5202,7 +5202,7 @@ impl Default for ConeHandleAdornment {
             AlwaysOnTop: false,
             CFrame: CFrame::identity(),
             SizeRelativeOffset: Vector3::new(0f32, 0f32, 0f32),
-            ZIndex: 0i32,
+            ZIndex: -1i32,
         };
         Self {
             superclass,
@@ -5363,7 +5363,7 @@ impl Default for ControllerManager {
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
-            SourceAssetId: 0i64,
+            SourceAssetId: -1i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
         };
@@ -5401,7 +5401,7 @@ impl Default for ControllerPartSensor {
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
-            SourceAssetId: 0i64,
+            SourceAssetId: -1i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
         };
@@ -5567,7 +5567,7 @@ impl Default for CustomEvent {
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
-            SourceAssetId: 0i64,
+            SourceAssetId: -1i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
         };
@@ -5593,7 +5593,7 @@ impl Default for CustomEventReceiver {
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
-            SourceAssetId: 0i64,
+            SourceAssetId: -1i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
         };
@@ -5639,16 +5639,16 @@ impl Default for CylinderHandleAdornment {
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
-            SourceAssetId: 0i64,
+            SourceAssetId: -1i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
         };
         let superclass = GuiBase { superclass };
         let superclass = GuiBase3d {
             superclass,
-            Color3: Color3::new(0f32, 0f32, 0f32),
+            Color3: Color3::new(0.050980393f32, 0.4117647f32, 0.6745098f32),
             Transparency: 0f32,
-            Visible: false,
+            Visible: true,
         };
         let superclass = PVAdornment {
             superclass,
@@ -5660,7 +5660,7 @@ impl Default for CylinderHandleAdornment {
             AlwaysOnTop: false,
             CFrame: CFrame::identity(),
             SizeRelativeOffset: Vector3::new(0f32, 0f32, 0f32),
-            ZIndex: 0i32,
+            ZIndex: -1i32,
         };
         Self {
             superclass,
@@ -5710,7 +5710,7 @@ impl Default for CylindricalConstraint {
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
-            SourceAssetId: 0i64,
+            SourceAssetId: -1i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
         };
@@ -5718,25 +5718,25 @@ impl Default for CylindricalConstraint {
             superclass,
             Attachment0: Ref::none(),
             Attachment1: Ref::none(),
-            Color: BrickColor::from_number(194u16).unwrap(),
-            Enabled: false,
+            Color: BrickColor::from_number(1009u16).unwrap(),
+            Enabled: true,
             Visible: false,
         };
         let superclass = SlidingBallConstraint {
             superclass,
             ActuatorType: enums::ActuatorType::None,
             LimitsEnabled: false,
-            LinearResponsiveness: 0f32,
+            LinearResponsiveness: 45f32,
             LowerLimit: 0f32,
-            MotorMaxAcceleration: 0f32,
+            MotorMaxAcceleration: f32::INFINITY,
             MotorMaxForce: 0f32,
             Restitution: 0f32,
             ServoMaxForce: 0f32,
-            Size: 0f32,
+            Size: 0.15f32,
             SoftlockServoUponReachingTarget: false,
             Speed: 0f32,
             TargetPosition: 0f32,
-            UpperLimit: 0f32,
+            UpperLimit: 5f32,
             Velocity: 0f32,
         };
         Self {
@@ -5954,7 +5954,7 @@ impl Default for DataStoreService {
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
-            SourceAssetId: 0i64,
+            SourceAssetId: -1i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
         };
@@ -5997,7 +5997,7 @@ impl Default for Debris {
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
-            SourceAssetId: 0i64,
+            SourceAssetId: -1i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
         };
@@ -6199,13 +6199,13 @@ impl Default for Decal {
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
-            SourceAssetId: 0i64,
+            SourceAssetId: -1i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
         };
         let superclass = FaceInstance {
             superclass,
-            Face: enums::NormalId::Right,
+            Face: enums::NormalId::Front,
         };
         Self {
             superclass,
@@ -6242,13 +6242,13 @@ impl Default for DepthOfFieldEffect {
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
-            SourceAssetId: 0i64,
+            SourceAssetId: -1i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
         };
         let superclass = PostEffect {
             superclass,
-            Enabled: false,
+            Enabled: true,
         };
         Self {
             superclass,
@@ -6291,7 +6291,7 @@ impl Default for Dialog {
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
-            SourceAssetId: 0i64,
+            SourceAssetId: -1i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
         };
@@ -6328,7 +6328,7 @@ impl Default for DialogChoice {
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
-            SourceAssetId: 0i64,
+            SourceAssetId: -1i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
         };
@@ -6357,13 +6357,13 @@ impl Default for DistortionSoundEffect {
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
-            SourceAssetId: 0i64,
+            SourceAssetId: -1i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
         };
         let superclass = SoundEffect {
             superclass,
-            Enabled: false,
+            Enabled: true,
             Priority: 0i32,
         };
         Self {
@@ -6398,7 +6398,7 @@ impl Default for DoubleConstrainedValue {
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
-            SourceAssetId: 0i64,
+            SourceAssetId: -1i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
         };
@@ -6456,7 +6456,7 @@ impl Default for DragDetector {
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
-            SourceAssetId: 0i64,
+            SourceAssetId: -1i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
         };
@@ -6561,13 +6561,13 @@ impl Default for EchoSoundEffect {
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
-            SourceAssetId: 0i64,
+            SourceAssetId: -1i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
         };
         let superclass = SoundEffect {
             superclass,
-            Enabled: false,
+            Enabled: true,
             Priority: 0i32,
         };
         Self {
@@ -6657,13 +6657,13 @@ impl Default for EqualizerSoundEffect {
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
-            SourceAssetId: 0i64,
+            SourceAssetId: -1i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
         };
         let superclass = SoundEffect {
             superclass,
-            Enabled: false,
+            Enabled: true,
             Priority: 0i32,
         };
         Self {
@@ -6690,7 +6690,7 @@ impl Default for EulerRotationCurve {
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
-            SourceAssetId: 0i64,
+            SourceAssetId: -1i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
         };
@@ -6842,7 +6842,7 @@ impl Default for Explosion {
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
-            SourceAssetId: 0i64,
+            SourceAssetId: -1i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
         };
@@ -7031,15 +7031,15 @@ impl Default for FileMesh {
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
-            SourceAssetId: 0i64,
+            SourceAssetId: -1i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
         };
         let superclass = DataModelMesh {
             superclass,
             Offset: Vector3::new(0f32, 0f32, 0f32),
-            Scale: Vector3::new(0f32, 0f32, 0f32),
-            VertexColor: Vector3::new(0f32, 0f32, 0f32),
+            Scale: Vector3::new(1f32, 1f32, 1f32),
+            VertexColor: Vector3::new(1f32, 1f32, 1f32),
         };
         Self {
             superclass,
@@ -7067,7 +7067,7 @@ impl Default for Fire {
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
-            SourceAssetId: 0i64,
+            SourceAssetId: -1i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
         };
@@ -7096,7 +7096,7 @@ impl Default for Flag {
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
-            SourceAssetId: 0i64,
+            SourceAssetId: -1i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
         };
@@ -7148,7 +7148,7 @@ impl Default for FlagStand {
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
-            SourceAssetId: 0i64,
+            SourceAssetId: -1i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
         };
@@ -7156,30 +7156,30 @@ impl Default for FlagStand {
         let superclass = BasePart {
             superclass,
             Anchored: false,
-            AudioCanCollide: false,
-            BackParamA: 0f32,
-            BackParamB: 0f32,
+            AudioCanCollide: true,
+            BackParamA: -0.5f32,
+            BackParamB: 0.5f32,
             BackSurface: enums::SurfaceType::Smooth,
             BackSurfaceInput: enums::InputType::NoInput,
-            BottomParamA: 0f32,
-            BottomParamB: 0f32,
-            BottomSurface: enums::SurfaceType::Smooth,
+            BottomParamA: -0.5f32,
+            BottomParamB: 0.5f32,
+            BottomSurface: enums::SurfaceType::Inlet,
             BottomSurfaceInput: enums::InputType::NoInput,
             CFrame: CFrame::identity(),
-            CanCollide: false,
-            CanQuery: false,
-            CanTouch: false,
-            CastShadow: false,
-            CollisionGroup: "".to_owned(),
+            CanCollide: true,
+            CanQuery: true,
+            CanTouch: true,
+            CastShadow: true,
+            CollisionGroup: "Default".to_owned(),
             CollisionGroupId: 0i32,
             CustomPhysicalProperties: PhysicalProperties::Default,
-            EnableFluidForces: false,
-            FrontParamA: 0f32,
-            FrontParamB: 0f32,
+            EnableFluidForces: true,
+            FrontParamA: -0.5f32,
+            FrontParamB: 0.5f32,
             FrontSurface: enums::SurfaceType::Smooth,
             FrontSurfaceInput: enums::InputType::NoInput,
-            LeftParamA: 0f32,
-            LeftParamB: 0f32,
+            LeftParamA: -0.5f32,
+            LeftParamB: 0.5f32,
             LeftSurface: enums::SurfaceType::Smooth,
             LeftSurfaceInput: enums::InputType::NoInput,
             Locked: false,
@@ -7187,15 +7187,15 @@ impl Default for FlagStand {
             Material: enums::Material::Plastic,
             PivotOffset: CFrame::identity(),
             Reflectance: 0f32,
-            RightParamA: 0f32,
-            RightParamB: 0f32,
+            RightParamA: -0.5f32,
+            RightParamB: 0.5f32,
             RightSurface: enums::SurfaceType::Smooth,
             RightSurfaceInput: enums::InputType::NoInput,
             RootPriority: 0i32,
             RotVelocity: Vector3::new(0f32, 0f32, 0f32),
-            TopParamA: 0f32,
-            TopParamB: 0f32,
-            TopSurface: enums::SurfaceType::Smooth,
+            TopParamA: -0.5f32,
+            TopParamB: 0.5f32,
+            TopSurface: enums::SurfaceType::Studs,
             TopSurfaceInput: enums::InputType::NoInput,
             Transparency: 0f32,
             Velocity: Vector3::new(0f32, 0f32, 0f32),
@@ -7234,13 +7234,13 @@ impl Default for FlangeSoundEffect {
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
-            SourceAssetId: 0i64,
+            SourceAssetId: -1i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
         };
         let superclass = SoundEffect {
             superclass,
-            Enabled: false,
+            Enabled: true,
             Priority: 0i32,
         };
         Self {
@@ -7267,7 +7267,7 @@ impl Default for FloatCurve {
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
-            SourceAssetId: 0i64,
+            SourceAssetId: -1i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
         };
@@ -7300,16 +7300,16 @@ impl Default for FloorWire {
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
-            SourceAssetId: 0i64,
+            SourceAssetId: -1i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
         };
         let superclass = GuiBase { superclass };
         let superclass = GuiBase3d {
             superclass,
-            Color3: Color3::new(0f32, 0f32, 0f32),
+            Color3: Color3::new(0.050980393f32, 0.4117647f32, 0.6745098f32),
             Transparency: 0f32,
-            Visible: false,
+            Visible: true,
         };
         Self {
             superclass,
@@ -7364,7 +7364,7 @@ impl Default for ForceField {
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
-            SourceAssetId: 0i64,
+            SourceAssetId: -1i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
         };
@@ -7398,14 +7398,14 @@ impl Default for Frame {
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
-            SourceAssetId: 0i64,
+            SourceAssetId: -1i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
         };
         let superclass = GuiBase { superclass };
         let superclass = GuiBase2d {
             superclass,
-            AutoLocalize: false,
+            AutoLocalize: true,
             RootLocalizationTable: Ref::none(),
             SelectionBehaviorDown: enums::SelectionBehavior::Escape,
             SelectionBehaviorLeft: enums::SelectionBehavior::Escape,
@@ -7418,14 +7418,14 @@ impl Default for Frame {
             Active: false,
             AnchorPoint: Vector2::new(0f32, 0f32),
             AutomaticSize: enums::AutomaticSize::None,
-            BackgroundColor3: Color3::new(0f32, 0f32, 0f32),
+            BackgroundColor3: Color3::new(0.6392157f32, 0.63529414f32, 0.64705884f32),
             BackgroundTransparency: 0f32,
-            BorderColor3: Color3::new(0f32, 0f32, 0f32),
+            BorderColor3: Color3::new(0.105882354f32, 0.16470589f32, 0.20784314f32),
             BorderMode: enums::BorderMode::Outline,
-            BorderSizePixel: 0i32,
+            BorderSizePixel: 1i32,
             ClipsDescendants: false,
             Draggable: false,
-            Interactable: false,
+            Interactable: true,
             LayoutOrder: 0i32,
             NextSelectionDown: Ref::none(),
             NextSelectionLeft: Ref::none(),
@@ -7438,8 +7438,8 @@ impl Default for Frame {
             SelectionOrder: 0i32,
             Size: UDim2::new(UDim::new(0f32, 0i32), UDim::new(0f32, 0i32)),
             SizeConstraint: enums::SizeConstraint::RelativeXY,
-            Visible: false,
-            ZIndex: 0i32,
+            Visible: true,
+            ZIndex: 1i32,
         };
         Self {
             superclass,
@@ -7480,7 +7480,7 @@ impl Default for FunctionalTest {
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
-            SourceAssetId: 0i64,
+            SourceAssetId: -1i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
         };
@@ -7660,7 +7660,7 @@ impl Default for Glue {
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
-            SourceAssetId: 0i64,
+            SourceAssetId: -1i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
         };
@@ -7668,7 +7668,7 @@ impl Default for Glue {
             superclass,
             C0: CFrame::identity(),
             C1: CFrame::identity(),
-            Enabled: false,
+            Enabled: true,
             Part0: Ref::none(),
             Part1: Ref::none(),
         };
@@ -7707,14 +7707,14 @@ impl Default for GroundController {
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
-            SourceAssetId: 0i64,
+            SourceAssetId: -1i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
         };
         let superclass = ControllerBase {
             superclass,
             BalanceRigidityEnabled: false,
-            MoveSpeedFactor: 0f32,
+            MoveSpeedFactor: 1f32,
         };
         Self {
             superclass,
@@ -8131,7 +8131,7 @@ impl Default for HandRigDescription {
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
-            SourceAssetId: 0i64,
+            SourceAssetId: -1i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
         };
@@ -8243,16 +8243,16 @@ impl Default for Handles {
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
-            SourceAssetId: 0i64,
+            SourceAssetId: -1i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
         };
         let superclass = GuiBase { superclass };
         let superclass = GuiBase3d {
             superclass,
-            Color3: Color3::new(0f32, 0f32, 0f32),
+            Color3: Color3::new(0.050980393f32, 0.4117647f32, 0.6745098f32),
             Transparency: 0f32,
-            Visible: false,
+            Visible: true,
         };
         let superclass = PartAdornment {
             superclass,
@@ -8295,7 +8295,7 @@ impl Default for HapticEffect {
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
-            SourceAssetId: 0i64,
+            SourceAssetId: -1i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
         };
@@ -8375,7 +8375,7 @@ impl Default for HiddenSurfaceRemovalAsset {
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
-            SourceAssetId: 0i64,
+            SourceAssetId: -1i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
         };
@@ -8408,7 +8408,7 @@ impl Default for Highlight {
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
-            SourceAssetId: 0i64,
+            SourceAssetId: -1i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
         };
@@ -8453,7 +8453,7 @@ impl Default for HingeConstraint {
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
-            SourceAssetId: 0i64,
+            SourceAssetId: -1i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
         };
@@ -8461,8 +8461,8 @@ impl Default for HingeConstraint {
             superclass,
             Attachment0: Ref::none(),
             Attachment1: Ref::none(),
-            Color: BrickColor::from_number(194u16).unwrap(),
-            Enabled: false,
+            Color: BrickColor::from_number(1009u16).unwrap(),
+            Enabled: true,
             Visible: false,
         };
         Self {
@@ -8525,7 +8525,7 @@ impl Default for HopperBin {
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
-            SourceAssetId: 0i64,
+            SourceAssetId: -1i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
         };
@@ -8585,7 +8585,7 @@ impl Default for HttpService {
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
-            SourceAssetId: 0i64,
+            SourceAssetId: -1i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
         };
@@ -8634,7 +8634,7 @@ impl Default for Humanoid {
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
-            SourceAssetId: 0i64,
+            SourceAssetId: -1i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
         };
@@ -8710,7 +8710,7 @@ impl Default for HumanoidDescription {
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
-            SourceAssetId: 0i64,
+            SourceAssetId: -1i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
         };
@@ -8865,7 +8865,7 @@ impl Default for HumanoidRigDescription {
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
-            SourceAssetId: 0i64,
+            SourceAssetId: -1i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
         };
@@ -9011,7 +9011,7 @@ impl Default for IKControl {
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
-            SourceAssetId: 0i64,
+            SourceAssetId: -1i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
         };
@@ -9074,14 +9074,14 @@ impl Default for ImageButton {
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
-            SourceAssetId: 0i64,
+            SourceAssetId: -1i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
         };
         let superclass = GuiBase { superclass };
         let superclass = GuiBase2d {
             superclass,
-            AutoLocalize: false,
+            AutoLocalize: true,
             RootLocalizationTable: Ref::none(),
             SelectionBehaviorDown: enums::SelectionBehavior::Escape,
             SelectionBehaviorLeft: enums::SelectionBehavior::Escape,
@@ -9091,17 +9091,17 @@ impl Default for ImageButton {
         };
         let superclass = GuiObject {
             superclass,
-            Active: false,
+            Active: true,
             AnchorPoint: Vector2::new(0f32, 0f32),
             AutomaticSize: enums::AutomaticSize::None,
-            BackgroundColor3: Color3::new(0f32, 0f32, 0f32),
+            BackgroundColor3: Color3::new(0.6392157f32, 0.63529414f32, 0.64705884f32),
             BackgroundTransparency: 0f32,
-            BorderColor3: Color3::new(0f32, 0f32, 0f32),
+            BorderColor3: Color3::new(0.105882354f32, 0.16470589f32, 0.20784314f32),
             BorderMode: enums::BorderMode::Outline,
-            BorderSizePixel: 0i32,
+            BorderSizePixel: 1i32,
             ClipsDescendants: false,
             Draggable: false,
-            Interactable: false,
+            Interactable: true,
             LayoutOrder: 0i32,
             NextSelectionDown: Ref::none(),
             NextSelectionLeft: Ref::none(),
@@ -9109,17 +9109,17 @@ impl Default for ImageButton {
             NextSelectionUp: Ref::none(),
             Position: UDim2::new(UDim::new(0f32, 0i32), UDim::new(0f32, 0i32)),
             Rotation: 0f32,
-            Selectable: false,
+            Selectable: true,
             SelectionImageObject: Ref::none(),
             SelectionOrder: 0i32,
             Size: UDim2::new(UDim::new(0f32, 0i32), UDim::new(0f32, 0i32)),
             SizeConstraint: enums::SizeConstraint::RelativeXY,
-            Visible: false,
-            ZIndex: 0i32,
+            Visible: true,
+            ZIndex: 1i32,
         };
         let superclass = GuiButton {
             superclass,
-            AutoButtonColor: false,
+            AutoButtonColor: true,
             HoverHapticEffect: Ref::none(),
             Modal: false,
             PressHapticEffect: Ref::none(),
@@ -9160,16 +9160,16 @@ impl Default for ImageHandleAdornment {
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
-            SourceAssetId: 0i64,
+            SourceAssetId: -1i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
         };
         let superclass = GuiBase { superclass };
         let superclass = GuiBase3d {
             superclass,
-            Color3: Color3::new(0f32, 0f32, 0f32),
+            Color3: Color3::new(0.9490197f32, 0.95294124f32, 0.95294124f32),
             Transparency: 0f32,
-            Visible: false,
+            Visible: true,
         };
         let superclass = PVAdornment {
             superclass,
@@ -9181,7 +9181,7 @@ impl Default for ImageHandleAdornment {
             AlwaysOnTop: false,
             CFrame: CFrame::identity(),
             SizeRelativeOffset: Vector3::new(0f32, 0f32, 0f32),
-            ZIndex: 0i32,
+            ZIndex: -1i32,
         };
         Self {
             superclass,
@@ -9215,14 +9215,14 @@ impl Default for ImageLabel {
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
-            SourceAssetId: 0i64,
+            SourceAssetId: -1i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
         };
         let superclass = GuiBase { superclass };
         let superclass = GuiBase2d {
             superclass,
-            AutoLocalize: false,
+            AutoLocalize: true,
             RootLocalizationTable: Ref::none(),
             SelectionBehaviorDown: enums::SelectionBehavior::Escape,
             SelectionBehaviorLeft: enums::SelectionBehavior::Escape,
@@ -9235,14 +9235,14 @@ impl Default for ImageLabel {
             Active: false,
             AnchorPoint: Vector2::new(0f32, 0f32),
             AutomaticSize: enums::AutomaticSize::None,
-            BackgroundColor3: Color3::new(0f32, 0f32, 0f32),
+            BackgroundColor3: Color3::new(0.6392157f32, 0.63529414f32, 0.64705884f32),
             BackgroundTransparency: 0f32,
-            BorderColor3: Color3::new(0f32, 0f32, 0f32),
+            BorderColor3: Color3::new(0.105882354f32, 0.16470589f32, 0.20784314f32),
             BorderMode: enums::BorderMode::Outline,
-            BorderSizePixel: 0i32,
+            BorderSizePixel: 1i32,
             ClipsDescendants: false,
             Draggable: false,
-            Interactable: false,
+            Interactable: true,
             LayoutOrder: 0i32,
             NextSelectionDown: Ref::none(),
             NextSelectionLeft: Ref::none(),
@@ -9255,8 +9255,8 @@ impl Default for ImageLabel {
             SelectionOrder: 0i32,
             Size: UDim2::new(UDim::new(0f32, 0i32), UDim::new(0f32, 0i32)),
             SizeConstraint: enums::SizeConstraint::RelativeXY,
-            Visible: false,
-            ZIndex: 0i32,
+            Visible: true,
+            ZIndex: 1i32,
         };
         let superclass = GuiLabel { superclass };
         Self {
@@ -9335,7 +9335,7 @@ impl Default for InputAction {
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
-            SourceAssetId: 0i64,
+            SourceAssetId: -1i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
         };
@@ -9374,7 +9374,7 @@ impl Default for InputBinding {
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
-            SourceAssetId: 0i64,
+            SourceAssetId: -1i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
         };
@@ -9414,7 +9414,7 @@ impl Default for InputContext {
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
-            SourceAssetId: 0i64,
+            SourceAssetId: -1i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
         };
@@ -9451,7 +9451,7 @@ impl Default for InsertService {
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
-            SourceAssetId: 0i64,
+            SourceAssetId: -1i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
         };
@@ -9548,7 +9548,7 @@ impl Default for IntConstrainedValue {
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
-            SourceAssetId: 0i64,
+            SourceAssetId: -1i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
         };
@@ -9577,7 +9577,7 @@ impl Default for IntValue {
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
-            SourceAssetId: 0i64,
+            SourceAssetId: -1i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
         };
@@ -9716,7 +9716,7 @@ impl Default for Keyframe {
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
-            SourceAssetId: 0i64,
+            SourceAssetId: -1i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
         };
@@ -9742,7 +9742,7 @@ impl Default for KeyframeMarker {
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
-            SourceAssetId: 0i64,
+            SourceAssetId: -1i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
         };
@@ -9768,15 +9768,15 @@ impl Default for KeyframeSequence {
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
-            SourceAssetId: 0i64,
+            SourceAssetId: -1i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
         };
         let superclass = AnimationClip {
             superclass,
-            GuidBinaryString: b"".as_slice().into(),
-            Loop: false,
-            Priority: enums::AnimationPriority::Idle,
+            GuidBinaryString: b"\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0".as_slice().into(),
+            Loop: true,
+            Priority: enums::AnimationPriority::Action,
         };
         Self {
             superclass,
@@ -9925,7 +9925,7 @@ impl Default for Lighting {
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
-            SourceAssetId: 0i64,
+            SourceAssetId: -1i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
         };
@@ -9975,7 +9975,7 @@ impl Default for LineForce {
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
-            SourceAssetId: 0i64,
+            SourceAssetId: -1i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
         };
@@ -9983,8 +9983,8 @@ impl Default for LineForce {
             superclass,
             Attachment0: Ref::none(),
             Attachment1: Ref::none(),
-            Color: BrickColor::from_number(194u16).unwrap(),
-            Enabled: false,
+            Color: BrickColor::from_number(23u16).unwrap(),
+            Enabled: true,
             Visible: false,
         };
         Self {
@@ -10014,16 +10014,16 @@ impl Default for LineHandleAdornment {
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
-            SourceAssetId: 0i64,
+            SourceAssetId: -1i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
         };
         let superclass = GuiBase { superclass };
         let superclass = GuiBase3d {
             superclass,
-            Color3: Color3::new(0f32, 0f32, 0f32),
+            Color3: Color3::new(0.050980393f32, 0.4117647f32, 0.6745098f32),
             Transparency: 0f32,
-            Visible: false,
+            Visible: true,
         };
         let superclass = PVAdornment {
             superclass,
@@ -10035,7 +10035,7 @@ impl Default for LineHandleAdornment {
             AlwaysOnTop: false,
             CFrame: CFrame::identity(),
             SizeRelativeOffset: Vector3::new(0f32, 0f32, 0f32),
-            ZIndex: 0i32,
+            ZIndex: -1i32,
         };
         Self {
             superclass,
@@ -10073,7 +10073,7 @@ impl Default for LinearVelocity {
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
-            SourceAssetId: 0i64,
+            SourceAssetId: -1i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
         };
@@ -10081,8 +10081,8 @@ impl Default for LinearVelocity {
             superclass,
             Attachment0: Ref::none(),
             Attachment1: Ref::none(),
-            Color: BrickColor::from_number(194u16).unwrap(),
-            Enabled: false,
+            Color: BrickColor::from_number(26u16).unwrap(),
+            Enabled: true,
             Visible: false,
         };
         Self {
@@ -10177,7 +10177,7 @@ impl Default for LocalizationTable {
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
-            SourceAssetId: 0i64,
+            SourceAssetId: -1i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
         };
@@ -10342,7 +10342,7 @@ impl Default for MarkerCurve {
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
-            SourceAssetId: 0i64,
+            SourceAssetId: -1i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
         };
@@ -10471,7 +10471,7 @@ impl Default for MaterialService {
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
-            SourceAssetId: 0i64,
+            SourceAssetId: -1i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
         };
@@ -10548,7 +10548,7 @@ impl Default for MaterialVariant {
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
-            SourceAssetId: 0i64,
+            SourceAssetId: -1i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
         };
@@ -10709,7 +10709,7 @@ impl Default for MeshPart {
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
-            SourceAssetId: 0i64,
+            SourceAssetId: -1i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
         };
@@ -10717,30 +10717,30 @@ impl Default for MeshPart {
         let superclass = BasePart {
             superclass,
             Anchored: false,
-            AudioCanCollide: false,
-            BackParamA: 0f32,
-            BackParamB: 0f32,
+            AudioCanCollide: true,
+            BackParamA: -0.5f32,
+            BackParamB: 0.5f32,
             BackSurface: enums::SurfaceType::Smooth,
             BackSurfaceInput: enums::InputType::NoInput,
-            BottomParamA: 0f32,
-            BottomParamB: 0f32,
+            BottomParamA: -0.5f32,
+            BottomParamB: 0.5f32,
             BottomSurface: enums::SurfaceType::Smooth,
             BottomSurfaceInput: enums::InputType::NoInput,
             CFrame: CFrame::identity(),
-            CanCollide: false,
-            CanQuery: false,
-            CanTouch: false,
-            CastShadow: false,
-            CollisionGroup: "".to_owned(),
+            CanCollide: true,
+            CanQuery: true,
+            CanTouch: true,
+            CastShadow: true,
+            CollisionGroup: "Default".to_owned(),
             CollisionGroupId: 0i32,
             CustomPhysicalProperties: PhysicalProperties::Default,
-            EnableFluidForces: false,
-            FrontParamA: 0f32,
-            FrontParamB: 0f32,
+            EnableFluidForces: true,
+            FrontParamA: -0.5f32,
+            FrontParamB: 0.5f32,
             FrontSurface: enums::SurfaceType::Smooth,
             FrontSurfaceInput: enums::InputType::NoInput,
-            LeftParamA: 0f32,
-            LeftParamB: 0f32,
+            LeftParamA: -0.5f32,
+            LeftParamB: 0.5f32,
             LeftSurface: enums::SurfaceType::Smooth,
             LeftSurfaceInput: enums::InputType::NoInput,
             Locked: false,
@@ -10748,14 +10748,14 @@ impl Default for MeshPart {
             Material: enums::Material::Plastic,
             PivotOffset: CFrame::identity(),
             Reflectance: 0f32,
-            RightParamA: 0f32,
-            RightParamB: 0f32,
+            RightParamA: -0.5f32,
+            RightParamB: 0.5f32,
             RightSurface: enums::SurfaceType::Smooth,
             RightSurfaceInput: enums::InputType::NoInput,
             RootPriority: 0i32,
             RotVelocity: Vector3::new(0f32, 0f32, 0f32),
-            TopParamA: 0f32,
-            TopParamB: 0f32,
+            TopParamA: -0.5f32,
+            TopParamB: 0.5f32,
             TopSurface: enums::SurfaceType::Smooth,
             TopSurfaceInput: enums::InputType::NoInput,
             Transparency: 0f32,
@@ -10765,12 +10765,16 @@ impl Default for MeshPart {
             superclass,
             AeroMeshData: SharedString::new(b"".to_vec()),
             FluidFidelityInternal: enums::FluidFidelity::Automatic,
-            InertiaMigrated: false,
+            InertiaMigrated: true,
             PhysicalConfigData: SharedString::new(b"".to_vec()),
             UnscaledCofm: Vector3::new(0f32, 0f32, 0f32),
-            UnscaledVolInertiaDiags: Vector3::new(0f32, 0f32, 0f32),
+            UnscaledVolInertiaDiags: Vector3::new(
+                0.00000000000000000000000000000016666664f32,
+                0.00000000000000000000000000000016666664f32,
+                0.00000000000000000000000000000016666664f32,
+            ),
             UnscaledVolInertiaOffDiags: Vector3::new(0f32, 0f32, 0f32),
-            UnscaledVolume: 0f32,
+            UnscaledVolume: 0.0000000000000000009999999f32,
         };
         Self {
             superclass,
@@ -10803,7 +10807,7 @@ impl Default for Message {
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
-            SourceAssetId: 0i64,
+            SourceAssetId: -1i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
         };
@@ -10859,7 +10863,7 @@ impl Default for MetaBreakpoint {
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
-            SourceAssetId: 0i64,
+            SourceAssetId: -1i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
         };
@@ -10891,7 +10895,7 @@ impl Default for MetaBreakpointContext {
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
-            SourceAssetId: 0i64,
+            SourceAssetId: -1i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
         };
@@ -10959,7 +10963,7 @@ impl Default for Model {
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
-            SourceAssetId: 0i64,
+            SourceAssetId: -1i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
         };
@@ -11003,7 +11007,7 @@ impl Default for ModuleScript {
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
-            SourceAssetId: 0i64,
+            SourceAssetId: -1i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
         };
@@ -11035,7 +11039,7 @@ impl Default for Motor {
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
-            SourceAssetId: 0i64,
+            SourceAssetId: -1i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
         };
@@ -11043,7 +11047,7 @@ impl Default for Motor {
             superclass,
             C0: CFrame::identity(),
             C1: CFrame::identity(),
-            Enabled: false,
+            Enabled: true,
             Part0: Ref::none(),
             Part1: Ref::none(),
         };
@@ -11130,38 +11134,38 @@ impl Default for NegateOperation {
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
-            SourceAssetId: 0i64,
+            SourceAssetId: -1i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
         };
         let superclass = PVInstance { superclass };
         let superclass = BasePart {
             superclass,
-            Anchored: false,
-            AudioCanCollide: false,
-            BackParamA: 0f32,
-            BackParamB: 0f32,
+            Anchored: true,
+            AudioCanCollide: true,
+            BackParamA: -0.5f32,
+            BackParamB: 0.5f32,
             BackSurface: enums::SurfaceType::Smooth,
             BackSurfaceInput: enums::InputType::NoInput,
-            BottomParamA: 0f32,
-            BottomParamB: 0f32,
+            BottomParamA: -0.5f32,
+            BottomParamB: 0.5f32,
             BottomSurface: enums::SurfaceType::Smooth,
             BottomSurfaceInput: enums::InputType::NoInput,
             CFrame: CFrame::identity(),
             CanCollide: false,
-            CanQuery: false,
-            CanTouch: false,
-            CastShadow: false,
-            CollisionGroup: "".to_owned(),
+            CanQuery: true,
+            CanTouch: true,
+            CastShadow: true,
+            CollisionGroup: "Default".to_owned(),
             CollisionGroupId: 0i32,
             CustomPhysicalProperties: PhysicalProperties::Default,
-            EnableFluidForces: false,
-            FrontParamA: 0f32,
-            FrontParamB: 0f32,
+            EnableFluidForces: true,
+            FrontParamA: -0.5f32,
+            FrontParamB: 0.5f32,
             FrontSurface: enums::SurfaceType::Smooth,
             FrontSurfaceInput: enums::InputType::NoInput,
-            LeftParamA: 0f32,
-            LeftParamB: 0f32,
+            LeftParamA: -0.5f32,
+            LeftParamB: 0.5f32,
             LeftSurface: enums::SurfaceType::Smooth,
             LeftSurfaceInput: enums::InputType::NoInput,
             Locked: false,
@@ -11169,29 +11173,29 @@ impl Default for NegateOperation {
             Material: enums::Material::Plastic,
             PivotOffset: CFrame::identity(),
             Reflectance: 0f32,
-            RightParamA: 0f32,
-            RightParamB: 0f32,
+            RightParamA: -0.5f32,
+            RightParamB: 0.5f32,
             RightSurface: enums::SurfaceType::Smooth,
             RightSurfaceInput: enums::InputType::NoInput,
             RootPriority: 0i32,
             RotVelocity: Vector3::new(0f32, 0f32, 0f32),
-            TopParamA: 0f32,
-            TopParamB: 0f32,
+            TopParamA: -0.5f32,
+            TopParamB: 0.5f32,
             TopSurface: enums::SurfaceType::Smooth,
             TopSurfaceInput: enums::InputType::NoInput,
-            Transparency: 0f32,
+            Transparency: 0.1f32,
             Velocity: Vector3::new(0f32, 0f32, 0f32),
         };
         let superclass = TriangleMeshPart {
             superclass,
             AeroMeshData: SharedString::new(b"".to_vec()),
             FluidFidelityInternal: enums::FluidFidelity::Automatic,
-            InertiaMigrated: false,
+            InertiaMigrated: true,
             PhysicalConfigData: SharedString::new(b"".to_vec()),
             UnscaledCofm: Vector3::new(0f32, 0f32, 0f32),
-            UnscaledVolInertiaDiags: Vector3::new(0f32, 0f32, 0f32),
+            UnscaledVolInertiaDiags: Vector3::new(0.16666666f32, 0.16666666f32, 0.16666666f32),
             UnscaledVolInertiaOffDiags: Vector3::new(0f32, 0f32, 0f32),
-            UnscaledVolume: 0f32,
+            UnscaledVolume: 1f32,
         };
         let superclass = PartOperation {
             superclass,
@@ -11316,7 +11320,7 @@ impl Default for NoCollisionConstraint {
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
-            SourceAssetId: 0i64,
+            SourceAssetId: -1i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
         };
@@ -11388,7 +11392,7 @@ impl Default for NumberPose {
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
-            SourceAssetId: 0i64,
+            SourceAssetId: -1i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
         };
@@ -11396,7 +11400,7 @@ impl Default for NumberPose {
             superclass,
             EasingDirection: enums::PoseEasingDirection::In,
             EasingStyle: enums::PoseEasingStyle::Linear,
-            Weight: 0f32,
+            Weight: 1f32,
         };
         Self {
             superclass,
@@ -11420,7 +11424,7 @@ impl Default for NumberValue {
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
-            SourceAssetId: 0i64,
+            SourceAssetId: -1i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
         };
@@ -11452,7 +11456,7 @@ impl Default for ObjectValue {
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
-            SourceAssetId: 0i64,
+            SourceAssetId: -1i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
         };
@@ -11626,14 +11630,14 @@ impl Default for Pants {
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
-            SourceAssetId: 0i64,
+            SourceAssetId: -1i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
         };
         let superclass = CharacterAppearance { superclass };
         let superclass = Clothing {
             superclass,
-            Color3: Color3::new(0f32, 0f32, 0f32),
+            Color3: Color3::new(1f32, 1f32, 1f32),
         };
         Self {
             superclass,
@@ -11719,7 +11723,7 @@ impl Default for PartOperation {
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
-            SourceAssetId: 0i64,
+            SourceAssetId: -1i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
         };
@@ -11727,30 +11731,30 @@ impl Default for PartOperation {
         let superclass = BasePart {
             superclass,
             Anchored: false,
-            AudioCanCollide: false,
-            BackParamA: 0f32,
-            BackParamB: 0f32,
+            AudioCanCollide: true,
+            BackParamA: -0.5f32,
+            BackParamB: 0.5f32,
             BackSurface: enums::SurfaceType::Smooth,
             BackSurfaceInput: enums::InputType::NoInput,
-            BottomParamA: 0f32,
-            BottomParamB: 0f32,
+            BottomParamA: -0.5f32,
+            BottomParamB: 0.5f32,
             BottomSurface: enums::SurfaceType::Smooth,
             BottomSurfaceInput: enums::InputType::NoInput,
             CFrame: CFrame::identity(),
-            CanCollide: false,
-            CanQuery: false,
-            CanTouch: false,
-            CastShadow: false,
-            CollisionGroup: "".to_owned(),
+            CanCollide: true,
+            CanQuery: true,
+            CanTouch: true,
+            CastShadow: true,
+            CollisionGroup: "Default".to_owned(),
             CollisionGroupId: 0i32,
             CustomPhysicalProperties: PhysicalProperties::Default,
-            EnableFluidForces: false,
-            FrontParamA: 0f32,
-            FrontParamB: 0f32,
+            EnableFluidForces: true,
+            FrontParamA: -0.5f32,
+            FrontParamB: 0.5f32,
             FrontSurface: enums::SurfaceType::Smooth,
             FrontSurfaceInput: enums::InputType::NoInput,
-            LeftParamA: 0f32,
-            LeftParamB: 0f32,
+            LeftParamA: -0.5f32,
+            LeftParamB: 0.5f32,
             LeftSurface: enums::SurfaceType::Smooth,
             LeftSurfaceInput: enums::InputType::NoInput,
             Locked: false,
@@ -11758,14 +11762,14 @@ impl Default for PartOperation {
             Material: enums::Material::Plastic,
             PivotOffset: CFrame::identity(),
             Reflectance: 0f32,
-            RightParamA: 0f32,
-            RightParamB: 0f32,
+            RightParamA: -0.5f32,
+            RightParamB: 0.5f32,
             RightSurface: enums::SurfaceType::Smooth,
             RightSurfaceInput: enums::InputType::NoInput,
             RootPriority: 0i32,
             RotVelocity: Vector3::new(0f32, 0f32, 0f32),
-            TopParamA: 0f32,
-            TopParamB: 0f32,
+            TopParamA: -0.5f32,
+            TopParamB: 0.5f32,
             TopSurface: enums::SurfaceType::Smooth,
             TopSurfaceInput: enums::InputType::NoInput,
             Transparency: 0f32,
@@ -11775,12 +11779,12 @@ impl Default for PartOperation {
             superclass,
             AeroMeshData: SharedString::new(b"".to_vec()),
             FluidFidelityInternal: enums::FluidFidelity::Automatic,
-            InertiaMigrated: false,
+            InertiaMigrated: true,
             PhysicalConfigData: SharedString::new(b"".to_vec()),
             UnscaledCofm: Vector3::new(0f32, 0f32, 0f32),
-            UnscaledVolInertiaDiags: Vector3::new(0f32, 0f32, 0f32),
+            UnscaledVolInertiaDiags: Vector3::new(0.16666666f32, 0.16666666f32, 0.16666666f32),
             UnscaledVolInertiaOffDiags: Vector3::new(0f32, 0f32, 0f32),
-            UnscaledVolume: 0f32,
+            UnscaledVolume: 1f32,
         };
         Self {
             superclass,
@@ -11818,7 +11822,7 @@ impl Default for PartOperationAsset {
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
-            SourceAssetId: 0i64,
+            SourceAssetId: -1i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
         };
@@ -11879,7 +11883,7 @@ impl Default for ParticleEmitter {
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
-            SourceAssetId: 0i64,
+            SourceAssetId: -1i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
         };
@@ -12020,7 +12024,7 @@ impl Default for Path2D {
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
-            SourceAssetId: 0i64,
+            SourceAssetId: -1i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
         };
@@ -12056,7 +12060,7 @@ impl Default for PathfindingLink {
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
-            SourceAssetId: 0i64,
+            SourceAssetId: -1i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
         };
@@ -12086,7 +12090,7 @@ impl Default for PathfindingModifier {
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
-            SourceAssetId: 0i64,
+            SourceAssetId: -1i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
         };
@@ -12289,13 +12293,13 @@ impl Default for PitchShiftSoundEffect {
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
-            SourceAssetId: 0i64,
+            SourceAssetId: -1i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
         };
         let superclass = SoundEffect {
             superclass,
-            Enabled: false,
+            Enabled: true,
             Priority: 0i32,
         };
         Self {
@@ -12478,7 +12482,7 @@ impl Default for PlayerDataService {
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
-            SourceAssetId: 0i64,
+            SourceAssetId: -1i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
         };
@@ -12510,7 +12514,7 @@ impl Default for PlayerEmulatorService {
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
-            SourceAssetId: 0i64,
+            SourceAssetId: -1i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
         };
@@ -12606,7 +12610,7 @@ impl Default for Players {
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
-            SourceAssetId: 0i64,
+            SourceAssetId: -1i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
         };
@@ -12671,7 +12675,7 @@ impl Default for PluginCapabilities {
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
-            SourceAssetId: 0i64,
+            SourceAssetId: -1i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
         };
@@ -12825,15 +12829,15 @@ impl Default for PointLight {
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
-            SourceAssetId: 0i64,
+            SourceAssetId: -1i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
         };
         let superclass = Light {
             superclass,
-            Brightness: 0f32,
-            Color: Color3::new(0f32, 0f32, 0f32),
-            Enabled: false,
+            Brightness: 1f32,
+            Color: Color3::new(1f32, 1f32, 1f32),
+            Enabled: true,
             Shadows: false,
         };
         Self {
@@ -12894,7 +12898,7 @@ impl Default for Pose {
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
-            SourceAssetId: 0i64,
+            SourceAssetId: -1i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
         };
@@ -12902,7 +12906,7 @@ impl Default for Pose {
             superclass,
             EasingDirection: enums::PoseEasingDirection::In,
             EasingStyle: enums::PoseEasingStyle::Linear,
-            Weight: 0f32,
+            Weight: 1f32,
         };
         Self {
             superclass,
@@ -13012,7 +13016,7 @@ impl Default for ProximityPrompt {
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
-            SourceAssetId: 0i64,
+            SourceAssetId: -1i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
         };
@@ -13054,7 +13058,7 @@ impl Default for ProximityPromptService {
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
-            SourceAssetId: 0i64,
+            SourceAssetId: -1i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
         };
@@ -13093,16 +13097,16 @@ impl Default for PyramidHandleAdornment {
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
-            SourceAssetId: 0i64,
+            SourceAssetId: -1i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
         };
         let superclass = GuiBase { superclass };
         let superclass = GuiBase3d {
             superclass,
-            Color3: Color3::new(0f32, 0f32, 0f32),
+            Color3: Color3::new(0.050980393f32, 0.4117647f32, 0.6745098f32),
             Transparency: 0f32,
-            Visible: false,
+            Visible: true,
         };
         let superclass = PVAdornment {
             superclass,
@@ -13114,7 +13118,7 @@ impl Default for PyramidHandleAdornment {
             AlwaysOnTop: false,
             CFrame: CFrame::identity(),
             SizeRelativeOffset: Vector3::new(0f32, 0f32, 0f32),
-            ZIndex: 0i32,
+            ZIndex: -1i32,
         };
         Self {
             superclass,
@@ -13157,7 +13161,7 @@ impl Default for RayValue {
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
-            SourceAssetId: 0i64,
+            SourceAssetId: -1i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
         };
@@ -13231,13 +13235,13 @@ impl Default for ReflectionMetadataClass {
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
-            SourceAssetId: 0i64,
+            SourceAssetId: -1i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
         };
         let superclass = ReflectionMetadataItem {
             superclass,
-            Browsable: false,
+            Browsable: true,
             ClassCategory: "".to_owned(),
             ClientOnly: false,
             Constraint: "".to_owned(),
@@ -13246,7 +13250,7 @@ impl Default for ReflectionMetadataClass {
             EditorType: "".to_owned(),
             FFlag: "".to_owned(),
             IsBackend: false,
-            PropertyOrder: 0i32,
+            PropertyOrder: 5000i32,
             ScriptContext: "".to_owned(),
             ServerOnly: false,
             SliderScaling: "".to_owned(),
@@ -13528,7 +13532,7 @@ impl Default for RenderingTest {
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
-            SourceAssetId: 0i64,
+            SourceAssetId: -1i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
         };
@@ -13586,13 +13590,13 @@ impl Default for ReverbSoundEffect {
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
-            SourceAssetId: 0i64,
+            SourceAssetId: -1i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
         };
         let superclass = SoundEffect {
             superclass,
-            Enabled: false,
+            Enabled: true,
             Priority: 0i32,
         };
         Self {
@@ -13653,7 +13657,7 @@ impl Default for RobloxSerializableInstance {
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
-            SourceAssetId: 0i64,
+            SourceAssetId: -1i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
         };
@@ -13697,7 +13701,7 @@ impl Default for RocketPropulsion {
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
-            SourceAssetId: 0i64,
+            SourceAssetId: -1i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
         };
@@ -13738,7 +13742,7 @@ impl Default for RodConstraint {
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
-            SourceAssetId: 0i64,
+            SourceAssetId: -1i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
         };
@@ -13746,8 +13750,8 @@ impl Default for RodConstraint {
             superclass,
             Attachment0: Ref::none(),
             Attachment1: Ref::none(),
-            Color: BrickColor::from_number(194u16).unwrap(),
-            Enabled: false,
+            Color: BrickColor::from_number(26u16).unwrap(),
+            Enabled: true,
             Visible: false,
         };
         Self {
@@ -13872,7 +13876,7 @@ impl Default for RopeConstraint {
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
-            SourceAssetId: 0i64,
+            SourceAssetId: -1i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
         };
@@ -13880,8 +13884,8 @@ impl Default for RopeConstraint {
             superclass,
             Attachment0: Ref::none(),
             Attachment1: Ref::none(),
-            Color: BrickColor::from_number(194u16).unwrap(),
-            Enabled: false,
+            Color: BrickColor::from_number(25u16).unwrap(),
+            Enabled: true,
             Visible: false,
         };
         Self {
@@ -13937,7 +13941,7 @@ impl Default for RotationCurve {
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
-            SourceAssetId: 0i64,
+            SourceAssetId: -1i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
         };
@@ -14048,14 +14052,14 @@ impl Default for ScreenGui {
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
-            SourceAssetId: 0i64,
+            SourceAssetId: -1i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
         };
         let superclass = GuiBase { superclass };
         let superclass = GuiBase2d {
             superclass,
-            AutoLocalize: false,
+            AutoLocalize: true,
             RootLocalizationTable: Ref::none(),
             SelectionBehaviorDown: enums::SelectionBehavior::Escape,
             SelectionBehaviorLeft: enums::SelectionBehavior::Escape,
@@ -14065,8 +14069,8 @@ impl Default for ScreenGui {
         };
         let superclass = LayerCollector {
             superclass,
-            Enabled: false,
-            ResetOnSpawn: false,
+            Enabled: true,
+            ResetOnSpawn: true,
             ZIndexBehavior: enums::ZIndexBehavior::Global,
         };
         Self {
@@ -14146,7 +14150,7 @@ impl Default for Script {
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
-            SourceAssetId: 0i64,
+            SourceAssetId: -1i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
         };
@@ -14320,34 +14324,34 @@ impl Default for ScrollingFrame {
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
-            SourceAssetId: 0i64,
+            SourceAssetId: -1i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
         };
         let superclass = GuiBase { superclass };
         let superclass = GuiBase2d {
             superclass,
-            AutoLocalize: false,
+            AutoLocalize: true,
             RootLocalizationTable: Ref::none(),
             SelectionBehaviorDown: enums::SelectionBehavior::Escape,
             SelectionBehaviorLeft: enums::SelectionBehavior::Escape,
             SelectionBehaviorRight: enums::SelectionBehavior::Escape,
             SelectionBehaviorUp: enums::SelectionBehavior::Escape,
-            SelectionGroup: false,
+            SelectionGroup: true,
         };
         let superclass = GuiObject {
             superclass,
             Active: false,
             AnchorPoint: Vector2::new(0f32, 0f32),
             AutomaticSize: enums::AutomaticSize::None,
-            BackgroundColor3: Color3::new(0f32, 0f32, 0f32),
+            BackgroundColor3: Color3::new(0.6392157f32, 0.63529414f32, 0.64705884f32),
             BackgroundTransparency: 0f32,
-            BorderColor3: Color3::new(0f32, 0f32, 0f32),
+            BorderColor3: Color3::new(0.105882354f32, 0.16470589f32, 0.20784314f32),
             BorderMode: enums::BorderMode::Outline,
-            BorderSizePixel: 0i32,
-            ClipsDescendants: false,
+            BorderSizePixel: 1i32,
+            ClipsDescendants: true,
             Draggable: false,
-            Interactable: false,
+            Interactable: true,
             LayoutOrder: 0i32,
             NextSelectionDown: Ref::none(),
             NextSelectionLeft: Ref::none(),
@@ -14355,13 +14359,13 @@ impl Default for ScrollingFrame {
             NextSelectionUp: Ref::none(),
             Position: UDim2::new(UDim::new(0f32, 0i32), UDim::new(0f32, 0i32)),
             Rotation: 0f32,
-            Selectable: false,
+            Selectable: true,
             SelectionImageObject: Ref::none(),
             SelectionOrder: 0i32,
             Size: UDim2::new(UDim::new(0f32, 0i32), UDim::new(0f32, 0i32)),
             SizeConstraint: enums::SizeConstraint::RelativeXY,
-            Visible: false,
-            ZIndex: 0i32,
+            Visible: true,
+            ZIndex: 1i32,
         };
         Self {
             superclass,
@@ -14401,7 +14405,7 @@ impl Default for Seat {
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
-            SourceAssetId: 0i64,
+            SourceAssetId: -1i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
         };
@@ -14409,30 +14413,30 @@ impl Default for Seat {
         let superclass = BasePart {
             superclass,
             Anchored: false,
-            AudioCanCollide: false,
-            BackParamA: 0f32,
-            BackParamB: 0f32,
+            AudioCanCollide: true,
+            BackParamA: -0.5f32,
+            BackParamB: 0.5f32,
             BackSurface: enums::SurfaceType::Smooth,
             BackSurfaceInput: enums::InputType::NoInput,
-            BottomParamA: 0f32,
-            BottomParamB: 0f32,
-            BottomSurface: enums::SurfaceType::Smooth,
+            BottomParamA: -0.5f32,
+            BottomParamB: 0.5f32,
+            BottomSurface: enums::SurfaceType::Inlet,
             BottomSurfaceInput: enums::InputType::NoInput,
             CFrame: CFrame::identity(),
-            CanCollide: false,
-            CanQuery: false,
-            CanTouch: false,
-            CastShadow: false,
-            CollisionGroup: "".to_owned(),
+            CanCollide: true,
+            CanQuery: true,
+            CanTouch: true,
+            CastShadow: true,
+            CollisionGroup: "Default".to_owned(),
             CollisionGroupId: 0i32,
             CustomPhysicalProperties: PhysicalProperties::Default,
-            EnableFluidForces: false,
-            FrontParamA: 0f32,
-            FrontParamB: 0f32,
+            EnableFluidForces: true,
+            FrontParamA: -0.5f32,
+            FrontParamB: 0.5f32,
             FrontSurface: enums::SurfaceType::Smooth,
             FrontSurfaceInput: enums::InputType::NoInput,
-            LeftParamA: 0f32,
-            LeftParamB: 0f32,
+            LeftParamA: -0.5f32,
+            LeftParamB: 0.5f32,
             LeftSurface: enums::SurfaceType::Smooth,
             LeftSurfaceInput: enums::InputType::NoInput,
             Locked: false,
@@ -14440,15 +14444,15 @@ impl Default for Seat {
             Material: enums::Material::Plastic,
             PivotOffset: CFrame::identity(),
             Reflectance: 0f32,
-            RightParamA: 0f32,
-            RightParamB: 0f32,
+            RightParamA: -0.5f32,
+            RightParamB: 0.5f32,
             RightSurface: enums::SurfaceType::Smooth,
             RightSurfaceInput: enums::InputType::NoInput,
             RootPriority: 0i32,
             RotVelocity: Vector3::new(0f32, 0f32, 0f32),
-            TopParamA: 0f32,
-            TopParamB: 0f32,
-            TopSurface: enums::SurfaceType::Smooth,
+            TopParamA: -0.5f32,
+            TopParamB: 0.5f32,
+            TopSurface: enums::SurfaceType::Studs,
             TopSurfaceInput: enums::InputType::NoInput,
             Transparency: 0f32,
             Velocity: Vector3::new(0f32, 0f32, 0f32),
@@ -14488,16 +14492,16 @@ impl Default for SelectionBox {
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
-            SourceAssetId: 0i64,
+            SourceAssetId: -1i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
         };
         let superclass = GuiBase { superclass };
         let superclass = GuiBase3d {
             superclass,
-            Color3: Color3::new(0f32, 0f32, 0f32),
+            Color3: Color3::new(0.050980393f32, 0.4117647f32, 0.6745098f32),
             Transparency: 0f32,
-            Visible: false,
+            Visible: true,
         };
         let superclass = InstanceAdornment {
             superclass,
@@ -14569,16 +14573,16 @@ impl Default for SelectionPartLasso {
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
-            SourceAssetId: 0i64,
+            SourceAssetId: -1i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
         };
         let superclass = GuiBase { superclass };
         let superclass = GuiBase3d {
             superclass,
-            Color3: Color3::new(0f32, 0f32, 0f32),
+            Color3: Color3::new(0.050980393f32, 0.4117647f32, 0.6745098f32),
             Transparency: 0f32,
-            Visible: false,
+            Visible: true,
         };
         let superclass = SelectionLasso {
             superclass,
@@ -14606,16 +14610,16 @@ impl Default for SelectionPointLasso {
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
-            SourceAssetId: 0i64,
+            SourceAssetId: -1i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
         };
         let superclass = GuiBase { superclass };
         let superclass = GuiBase3d {
             superclass,
-            Color3: Color3::new(0f32, 0f32, 0f32),
+            Color3: Color3::new(0.050980393f32, 0.4117647f32, 0.6745098f32),
             Transparency: 0f32,
-            Visible: false,
+            Visible: true,
         };
         let superclass = SelectionLasso {
             superclass,
@@ -14644,16 +14648,16 @@ impl Default for SelectionSphere {
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
-            SourceAssetId: 0i64,
+            SourceAssetId: -1i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
         };
         let superclass = GuiBase { superclass };
         let superclass = GuiBase3d {
             superclass,
-            Color3: Color3::new(0f32, 0f32, 0f32),
+            Color3: Color3::new(0.050980393f32, 0.4117647f32, 0.6745098f32),
             Transparency: 0f32,
-            Visible: false,
+            Visible: true,
         };
         let superclass = PVAdornment {
             superclass,
@@ -14724,7 +14728,7 @@ impl Default for ServerScriptService {
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
-            SourceAssetId: 0i64,
+            SourceAssetId: -1i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
         };
@@ -14767,7 +14771,7 @@ impl Default for ServiceVisibilityService {
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
-            SourceAssetId: 0i64,
+            SourceAssetId: -1i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
         };
@@ -14818,14 +14822,14 @@ impl Default for Shirt {
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
-            SourceAssetId: 0i64,
+            SourceAssetId: -1i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
         };
         let superclass = CharacterAppearance { superclass };
         let superclass = Clothing {
             superclass,
-            Color3: Color3::new(0f32, 0f32, 0f32),
+            Color3: Color3::new(1f32, 1f32, 1f32),
         };
         Self {
             superclass,
@@ -14850,7 +14854,7 @@ impl Default for ShirtGraphic {
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
-            SourceAssetId: 0i64,
+            SourceAssetId: -1i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
         };
@@ -14888,7 +14892,7 @@ impl Default for SkateboardPlatform {
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
-            SourceAssetId: 0i64,
+            SourceAssetId: -1i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
         };
@@ -14896,30 +14900,30 @@ impl Default for SkateboardPlatform {
         let superclass = BasePart {
             superclass,
             Anchored: false,
-            AudioCanCollide: false,
-            BackParamA: 0f32,
-            BackParamB: 0f32,
+            AudioCanCollide: true,
+            BackParamA: -0.5f32,
+            BackParamB: 0.5f32,
             BackSurface: enums::SurfaceType::Smooth,
             BackSurfaceInput: enums::InputType::NoInput,
-            BottomParamA: 0f32,
-            BottomParamB: 0f32,
-            BottomSurface: enums::SurfaceType::Smooth,
+            BottomParamA: -0.5f32,
+            BottomParamB: 0.5f32,
+            BottomSurface: enums::SurfaceType::Inlet,
             BottomSurfaceInput: enums::InputType::NoInput,
             CFrame: CFrame::identity(),
-            CanCollide: false,
-            CanQuery: false,
-            CanTouch: false,
-            CastShadow: false,
-            CollisionGroup: "".to_owned(),
+            CanCollide: true,
+            CanQuery: true,
+            CanTouch: true,
+            CastShadow: true,
+            CollisionGroup: "Default".to_owned(),
             CollisionGroupId: 0i32,
             CustomPhysicalProperties: PhysicalProperties::Default,
-            EnableFluidForces: false,
-            FrontParamA: 0f32,
-            FrontParamB: 0f32,
+            EnableFluidForces: true,
+            FrontParamA: -0.5f32,
+            FrontParamB: 0.5f32,
             FrontSurface: enums::SurfaceType::Smooth,
             FrontSurfaceInput: enums::InputType::NoInput,
-            LeftParamA: 0f32,
-            LeftParamB: 0f32,
+            LeftParamA: -0.5f32,
+            LeftParamB: 0.5f32,
             LeftSurface: enums::SurfaceType::Smooth,
             LeftSurfaceInput: enums::InputType::NoInput,
             Locked: false,
@@ -14927,15 +14931,15 @@ impl Default for SkateboardPlatform {
             Material: enums::Material::Plastic,
             PivotOffset: CFrame::identity(),
             Reflectance: 0f32,
-            RightParamA: 0f32,
-            RightParamB: 0f32,
+            RightParamA: -0.5f32,
+            RightParamB: 0.5f32,
             RightSurface: enums::SurfaceType::Smooth,
             RightSurfaceInput: enums::InputType::NoInput,
             RootPriority: 0i32,
             RotVelocity: Vector3::new(0f32, 0f32, 0f32),
-            TopParamA: 0f32,
-            TopParamB: 0f32,
-            TopSurface: enums::SurfaceType::Smooth,
+            TopParamA: -0.5f32,
+            TopParamB: 0.5f32,
+            TopSurface: enums::SurfaceType::Studs,
             TopSurfaceInput: enums::InputType::NoInput,
             Transparency: 0f32,
             Velocity: Vector3::new(0f32, 0f32, 0f32),
@@ -14966,7 +14970,7 @@ impl Default for Skin {
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
-            SourceAssetId: 0i64,
+            SourceAssetId: -1i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
         };
@@ -15005,7 +15009,7 @@ impl Default for Sky {
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
-            SourceAssetId: 0i64,
+            SourceAssetId: -1i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
         };
@@ -15121,7 +15125,7 @@ impl Default for Smoke {
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
-            SourceAssetId: 0i64,
+            SourceAssetId: -1i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
         };
@@ -15201,7 +15205,7 @@ impl Default for Sound {
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
-            SourceAssetId: 0i64,
+            SourceAssetId: -1i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
         };
@@ -15267,7 +15271,7 @@ impl Default for SoundGroup {
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
-            SourceAssetId: 0i64,
+            SourceAssetId: -1i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
         };
@@ -15303,7 +15307,7 @@ impl Default for SoundService {
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
-            SourceAssetId: 0i64,
+            SourceAssetId: -1i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
         };
@@ -15349,7 +15353,7 @@ impl Default for Sparkles {
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
-            SourceAssetId: 0i64,
+            SourceAssetId: -1i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
         };
@@ -15381,7 +15385,7 @@ impl Default for SpawnLocation {
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
-            SourceAssetId: 0i64,
+            SourceAssetId: -1i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
         };
@@ -15389,30 +15393,30 @@ impl Default for SpawnLocation {
         let superclass = BasePart {
             superclass,
             Anchored: false,
-            AudioCanCollide: false,
-            BackParamA: 0f32,
-            BackParamB: 0f32,
+            AudioCanCollide: true,
+            BackParamA: -0.5f32,
+            BackParamB: 0.5f32,
             BackSurface: enums::SurfaceType::Smooth,
             BackSurfaceInput: enums::InputType::NoInput,
-            BottomParamA: 0f32,
-            BottomParamB: 0f32,
-            BottomSurface: enums::SurfaceType::Smooth,
+            BottomParamA: -0.5f32,
+            BottomParamB: 0.5f32,
+            BottomSurface: enums::SurfaceType::Inlet,
             BottomSurfaceInput: enums::InputType::NoInput,
             CFrame: CFrame::identity(),
-            CanCollide: false,
-            CanQuery: false,
-            CanTouch: false,
-            CastShadow: false,
-            CollisionGroup: "".to_owned(),
+            CanCollide: true,
+            CanQuery: true,
+            CanTouch: true,
+            CastShadow: true,
+            CollisionGroup: "Default".to_owned(),
             CollisionGroupId: 0i32,
             CustomPhysicalProperties: PhysicalProperties::Default,
-            EnableFluidForces: false,
-            FrontParamA: 0f32,
-            FrontParamB: 0f32,
+            EnableFluidForces: true,
+            FrontParamA: -0.5f32,
+            FrontParamB: 0.5f32,
             FrontSurface: enums::SurfaceType::Smooth,
             FrontSurfaceInput: enums::InputType::NoInput,
-            LeftParamA: 0f32,
-            LeftParamB: 0f32,
+            LeftParamA: -0.5f32,
+            LeftParamB: 0.5f32,
             LeftSurface: enums::SurfaceType::Smooth,
             LeftSurfaceInput: enums::InputType::NoInput,
             Locked: false,
@@ -15420,15 +15424,15 @@ impl Default for SpawnLocation {
             Material: enums::Material::Plastic,
             PivotOffset: CFrame::identity(),
             Reflectance: 0f32,
-            RightParamA: 0f32,
-            RightParamB: 0f32,
+            RightParamA: -0.5f32,
+            RightParamB: 0.5f32,
             RightSurface: enums::SurfaceType::Smooth,
             RightSurfaceInput: enums::InputType::NoInput,
             RootPriority: 0i32,
             RotVelocity: Vector3::new(0f32, 0f32, 0f32),
-            TopParamA: 0f32,
-            TopParamB: 0f32,
-            TopSurface: enums::SurfaceType::Smooth,
+            TopParamA: -0.5f32,
+            TopParamB: 0.5f32,
+            TopSurface: enums::SurfaceType::Studs,
             TopSurfaceInput: enums::InputType::NoInput,
             Transparency: 0f32,
             Velocity: Vector3::new(0f32, 0f32, 0f32),
@@ -15469,15 +15473,15 @@ impl Default for SpecialMesh {
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
-            SourceAssetId: 0i64,
+            SourceAssetId: -1i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
         };
         let superclass = DataModelMesh {
             superclass,
             Offset: Vector3::new(0f32, 0f32, 0f32),
-            Scale: Vector3::new(0f32, 0f32, 0f32),
-            VertexColor: Vector3::new(0f32, 0f32, 0f32),
+            Scale: Vector3::new(1f32, 1f32, 1f32),
+            VertexColor: Vector3::new(1f32, 1f32, 1f32),
         };
         let superclass = FileMesh {
             superclass,
@@ -15507,16 +15511,16 @@ impl Default for SphereHandleAdornment {
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
-            SourceAssetId: 0i64,
+            SourceAssetId: -1i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
         };
         let superclass = GuiBase { superclass };
         let superclass = GuiBase3d {
             superclass,
-            Color3: Color3::new(0f32, 0f32, 0f32),
+            Color3: Color3::new(0.050980393f32, 0.4117647f32, 0.6745098f32),
             Transparency: 0f32,
-            Visible: false,
+            Visible: true,
         };
         let superclass = PVAdornment {
             superclass,
@@ -15528,7 +15532,7 @@ impl Default for SphereHandleAdornment {
             AlwaysOnTop: false,
             CFrame: CFrame::identity(),
             SizeRelativeOffset: Vector3::new(0f32, 0f32, 0f32),
-            ZIndex: 0i32,
+            ZIndex: -1i32,
         };
         Self {
             superclass,
@@ -15555,15 +15559,15 @@ impl Default for SpotLight {
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
-            SourceAssetId: 0i64,
+            SourceAssetId: -1i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
         };
         let superclass = Light {
             superclass,
-            Brightness: 0f32,
-            Color: Color3::new(0f32, 0f32, 0f32),
-            Enabled: false,
+            Brightness: 1f32,
+            Color: Color3::new(1f32, 1f32, 1f32),
+            Enabled: true,
             Shadows: false,
         };
         Self {
@@ -15599,7 +15603,7 @@ impl Default for SpringConstraint {
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
-            SourceAssetId: 0i64,
+            SourceAssetId: -1i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
         };
@@ -15607,8 +15611,8 @@ impl Default for SpringConstraint {
             superclass,
             Attachment0: Ref::none(),
             Attachment1: Ref::none(),
-            Color: BrickColor::from_number(194u16).unwrap(),
-            Enabled: false,
+            Color: BrickColor::from_number(200u16).unwrap(),
+            Enabled: true,
             Visible: false,
         };
         Self {
@@ -15696,7 +15700,7 @@ impl Default for StarterGui {
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
-            SourceAssetId: 0i64,
+            SourceAssetId: -1i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
         };
@@ -15780,7 +15784,7 @@ impl Default for StarterPlayer {
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
-            SourceAssetId: 0i64,
+            SourceAssetId: -1i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
         };
@@ -15905,7 +15909,7 @@ impl Default for StringValue {
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
-            SourceAssetId: 0i64,
+            SourceAssetId: -1i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
         };
@@ -16278,7 +16282,7 @@ impl Default for StudioData {
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
-            SourceAssetId: 0i64,
+            SourceAssetId: -1i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
         };
@@ -16437,7 +16441,7 @@ impl Default for StyleDerive {
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
-            SourceAssetId: 0i64,
+            SourceAssetId: -1i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
         };
@@ -16464,7 +16468,7 @@ impl Default for StyleLink {
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
-            SourceAssetId: 0i64,
+            SourceAssetId: -1i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
         };
@@ -16523,7 +16527,7 @@ impl Default for StyleRule {
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
-            SourceAssetId: 0i64,
+            SourceAssetId: -1i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
         };
@@ -16568,13 +16572,13 @@ impl Default for SunRaysEffect {
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
-            SourceAssetId: 0i64,
+            SourceAssetId: -1i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
         };
         let superclass = PostEffect {
             superclass,
-            Enabled: false,
+            Enabled: true,
         };
         Self {
             superclass,
@@ -16608,7 +16612,7 @@ impl Default for SurfaceAppearance {
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
-            SourceAssetId: 0i64,
+            SourceAssetId: -1i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
         };
@@ -16652,14 +16656,14 @@ impl Default for SurfaceGui {
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
-            SourceAssetId: 0i64,
+            SourceAssetId: -1i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
         };
         let superclass = GuiBase { superclass };
         let superclass = GuiBase2d {
             superclass,
-            AutoLocalize: false,
+            AutoLocalize: true,
             RootLocalizationTable: Ref::none(),
             SelectionBehaviorDown: enums::SelectionBehavior::Escape,
             SelectionBehaviorLeft: enums::SelectionBehavior::Escape,
@@ -16669,15 +16673,15 @@ impl Default for SurfaceGui {
         };
         let superclass = LayerCollector {
             superclass,
-            Enabled: false,
-            ResetOnSpawn: false,
+            Enabled: true,
+            ResetOnSpawn: true,
             ZIndexBehavior: enums::ZIndexBehavior::Global,
         };
         let superclass = SurfaceGuiBase {
             superclass,
-            Active: false,
+            Active: true,
             Adornee: Ref::none(),
-            Face: enums::NormalId::Right,
+            Face: enums::NormalId::Front,
         };
         Self {
             superclass,
@@ -16759,15 +16763,15 @@ impl Default for SurfaceLight {
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
-            SourceAssetId: 0i64,
+            SourceAssetId: -1i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
         };
         let superclass = Light {
             superclass,
-            Brightness: 0f32,
-            Color: Color3::new(0f32, 0f32, 0f32),
-            Enabled: false,
+            Brightness: 1f32,
+            Color: Color3::new(1f32, 1f32, 1f32),
+            Enabled: true,
             Shadows: false,
         };
         Self {
@@ -16794,16 +16798,16 @@ impl Default for SurfaceSelection {
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
-            SourceAssetId: 0i64,
+            SourceAssetId: -1i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
         };
         let superclass = GuiBase { superclass };
         let superclass = GuiBase3d {
             superclass,
-            Color3: Color3::new(0f32, 0f32, 0f32),
+            Color3: Color3::new(0.050980393f32, 0.4117647f32, 0.6745098f32),
             Transparency: 0f32,
-            Visible: false,
+            Visible: true,
         };
         let superclass = PartAdornment {
             superclass,
@@ -16835,14 +16839,14 @@ impl Default for SwimController {
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
-            SourceAssetId: 0i64,
+            SourceAssetId: -1i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
         };
         let superclass = ControllerBase {
             superclass,
             BalanceRigidityEnabled: false,
-            MoveSpeedFactor: 0f32,
+            MoveSpeedFactor: 1f32,
         };
         Self {
             superclass,
@@ -16940,7 +16944,7 @@ impl Default for Team {
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
-            SourceAssetId: 0i64,
+            SourceAssetId: -1i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
         };
@@ -17017,7 +17021,7 @@ impl Default for TeleportOptions {
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
-            SourceAssetId: 0i64,
+            SourceAssetId: -1i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
         };
@@ -17080,54 +17084,54 @@ impl Default for Terrain {
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
-            SourceAssetId: 0i64,
+            SourceAssetId: -1i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
         };
         let superclass = PVInstance { superclass };
         let superclass = BasePart {
             superclass,
-            Anchored: false,
-            AudioCanCollide: false,
-            BackParamA: 0f32,
-            BackParamB: 0f32,
+            Anchored: true,
+            AudioCanCollide: true,
+            BackParamA: -0.5f32,
+            BackParamB: 0.5f32,
             BackSurface: enums::SurfaceType::Smooth,
             BackSurfaceInput: enums::InputType::NoInput,
-            BottomParamA: 0f32,
-            BottomParamB: 0f32,
-            BottomSurface: enums::SurfaceType::Smooth,
+            BottomParamA: -0.5f32,
+            BottomParamB: 0.5f32,
+            BottomSurface: enums::SurfaceType::Inlet,
             BottomSurfaceInput: enums::InputType::NoInput,
             CFrame: CFrame::identity(),
-            CanCollide: false,
-            CanQuery: false,
-            CanTouch: false,
-            CastShadow: false,
-            CollisionGroup: "".to_owned(),
+            CanCollide: true,
+            CanQuery: true,
+            CanTouch: true,
+            CastShadow: true,
+            CollisionGroup: "Default".to_owned(),
             CollisionGroupId: 0i32,
             CustomPhysicalProperties: PhysicalProperties::Default,
-            EnableFluidForces: false,
-            FrontParamA: 0f32,
-            FrontParamB: 0f32,
+            EnableFluidForces: true,
+            FrontParamA: -0.5f32,
+            FrontParamB: 0.5f32,
             FrontSurface: enums::SurfaceType::Smooth,
             FrontSurfaceInput: enums::InputType::NoInput,
-            LeftParamA: 0f32,
-            LeftParamB: 0f32,
+            LeftParamA: -0.5f32,
+            LeftParamB: 0.5f32,
             LeftSurface: enums::SurfaceType::Smooth,
             LeftSurfaceInput: enums::InputType::NoInput,
-            Locked: false,
+            Locked: true,
             Massless: false,
             Material: enums::Material::Plastic,
             PivotOffset: CFrame::identity(),
             Reflectance: 0f32,
-            RightParamA: 0f32,
-            RightParamB: 0f32,
+            RightParamA: -0.5f32,
+            RightParamB: 0.5f32,
             RightSurface: enums::SurfaceType::Smooth,
             RightSurfaceInput: enums::InputType::NoInput,
             RootPriority: 0i32,
             RotVelocity: Vector3::new(0f32, 0f32, 0f32),
-            TopParamA: 0f32,
-            TopParamB: 0f32,
-            TopSurface: enums::SurfaceType::Smooth,
+            TopParamA: -0.5f32,
+            TopParamB: 0.5f32,
+            TopSurface: enums::SurfaceType::Studs,
             TopSurfaceInput: enums::InputType::NoInput,
             Transparency: 0f32,
             Velocity: Vector3::new(0f32, 0f32, 0f32),
@@ -17175,7 +17179,7 @@ impl Default for TerrainDetail {
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
-            SourceAssetId: 0i64,
+            SourceAssetId: -1i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
         };
@@ -17237,7 +17241,7 @@ impl Default for TerrainRegion {
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
-            SourceAssetId: 0i64,
+            SourceAssetId: -1i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
         };
@@ -17281,7 +17285,7 @@ impl Default for TestService {
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
-            SourceAssetId: 0i64,
+            SourceAssetId: -1i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
         };
@@ -17339,14 +17343,14 @@ impl Default for TextBox {
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
-            SourceAssetId: 0i64,
+            SourceAssetId: -1i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
         };
         let superclass = GuiBase { superclass };
         let superclass = GuiBase2d {
             superclass,
-            AutoLocalize: false,
+            AutoLocalize: true,
             RootLocalizationTable: Ref::none(),
             SelectionBehaviorDown: enums::SelectionBehavior::Escape,
             SelectionBehaviorLeft: enums::SelectionBehavior::Escape,
@@ -17356,17 +17360,17 @@ impl Default for TextBox {
         };
         let superclass = GuiObject {
             superclass,
-            Active: false,
+            Active: true,
             AnchorPoint: Vector2::new(0f32, 0f32),
             AutomaticSize: enums::AutomaticSize::None,
-            BackgroundColor3: Color3::new(0f32, 0f32, 0f32),
+            BackgroundColor3: Color3::new(0.6392157f32, 0.63529414f32, 0.64705884f32),
             BackgroundTransparency: 0f32,
-            BorderColor3: Color3::new(0f32, 0f32, 0f32),
+            BorderColor3: Color3::new(0.105882354f32, 0.16470589f32, 0.20784314f32),
             BorderMode: enums::BorderMode::Outline,
-            BorderSizePixel: 0i32,
+            BorderSizePixel: 1i32,
             ClipsDescendants: false,
             Draggable: false,
-            Interactable: false,
+            Interactable: true,
             LayoutOrder: 0i32,
             NextSelectionDown: Ref::none(),
             NextSelectionLeft: Ref::none(),
@@ -17374,13 +17378,13 @@ impl Default for TextBox {
             NextSelectionUp: Ref::none(),
             Position: UDim2::new(UDim::new(0f32, 0i32), UDim::new(0f32, 0i32)),
             Rotation: 0f32,
-            Selectable: false,
+            Selectable: true,
             SelectionImageObject: Ref::none(),
             SelectionOrder: 0i32,
             Size: UDim2::new(UDim::new(0f32, 0i32), UDim::new(0f32, 0i32)),
             SizeConstraint: enums::SizeConstraint::RelativeXY,
-            Visible: false,
-            ZIndex: 0i32,
+            Visible: true,
+            ZIndex: 1i32,
         };
         Self {
             superclass,
@@ -17454,14 +17458,14 @@ impl Default for TextButton {
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
-            SourceAssetId: 0i64,
+            SourceAssetId: -1i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
         };
         let superclass = GuiBase { superclass };
         let superclass = GuiBase2d {
             superclass,
-            AutoLocalize: false,
+            AutoLocalize: true,
             RootLocalizationTable: Ref::none(),
             SelectionBehaviorDown: enums::SelectionBehavior::Escape,
             SelectionBehaviorLeft: enums::SelectionBehavior::Escape,
@@ -17471,17 +17475,17 @@ impl Default for TextButton {
         };
         let superclass = GuiObject {
             superclass,
-            Active: false,
+            Active: true,
             AnchorPoint: Vector2::new(0f32, 0f32),
             AutomaticSize: enums::AutomaticSize::None,
-            BackgroundColor3: Color3::new(0f32, 0f32, 0f32),
+            BackgroundColor3: Color3::new(0.6392157f32, 0.63529414f32, 0.64705884f32),
             BackgroundTransparency: 0f32,
-            BorderColor3: Color3::new(0f32, 0f32, 0f32),
+            BorderColor3: Color3::new(0.105882354f32, 0.16470589f32, 0.20784314f32),
             BorderMode: enums::BorderMode::Outline,
-            BorderSizePixel: 0i32,
+            BorderSizePixel: 1i32,
             ClipsDescendants: false,
             Draggable: false,
-            Interactable: false,
+            Interactable: true,
             LayoutOrder: 0i32,
             NextSelectionDown: Ref::none(),
             NextSelectionLeft: Ref::none(),
@@ -17489,17 +17493,17 @@ impl Default for TextButton {
             NextSelectionUp: Ref::none(),
             Position: UDim2::new(UDim::new(0f32, 0i32), UDim::new(0f32, 0i32)),
             Rotation: 0f32,
-            Selectable: false,
+            Selectable: true,
             SelectionImageObject: Ref::none(),
             SelectionOrder: 0i32,
             Size: UDim2::new(UDim::new(0f32, 0i32), UDim::new(0f32, 0i32)),
             SizeConstraint: enums::SizeConstraint::RelativeXY,
-            Visible: false,
-            ZIndex: 0i32,
+            Visible: true,
+            ZIndex: 1i32,
         };
         let superclass = GuiButton {
             superclass,
-            AutoButtonColor: false,
+            AutoButtonColor: true,
             HoverHapticEffect: Ref::none(),
             Modal: false,
             PressHapticEffect: Ref::none(),
@@ -17557,7 +17561,7 @@ impl Default for TextChatCommand {
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
-            SourceAssetId: 0i64,
+            SourceAssetId: -1i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
         };
@@ -17640,7 +17644,7 @@ impl Default for TextChatService {
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
-            SourceAssetId: 0i64,
+            SourceAssetId: -1i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
         };
@@ -17691,7 +17695,7 @@ impl Default for TextGenerator {
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
-            SourceAssetId: 0i64,
+            SourceAssetId: -1i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
         };
@@ -17738,14 +17742,14 @@ impl Default for TextLabel {
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
-            SourceAssetId: 0i64,
+            SourceAssetId: -1i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
         };
         let superclass = GuiBase { superclass };
         let superclass = GuiBase2d {
             superclass,
-            AutoLocalize: false,
+            AutoLocalize: true,
             RootLocalizationTable: Ref::none(),
             SelectionBehaviorDown: enums::SelectionBehavior::Escape,
             SelectionBehaviorLeft: enums::SelectionBehavior::Escape,
@@ -17758,14 +17762,14 @@ impl Default for TextLabel {
             Active: false,
             AnchorPoint: Vector2::new(0f32, 0f32),
             AutomaticSize: enums::AutomaticSize::None,
-            BackgroundColor3: Color3::new(0f32, 0f32, 0f32),
+            BackgroundColor3: Color3::new(0.6392157f32, 0.63529414f32, 0.64705884f32),
             BackgroundTransparency: 0f32,
-            BorderColor3: Color3::new(0f32, 0f32, 0f32),
+            BorderColor3: Color3::new(0.105882354f32, 0.16470589f32, 0.20784314f32),
             BorderMode: enums::BorderMode::Outline,
-            BorderSizePixel: 0i32,
+            BorderSizePixel: 1i32,
             ClipsDescendants: false,
             Draggable: false,
-            Interactable: false,
+            Interactable: true,
             LayoutOrder: 0i32,
             NextSelectionDown: Ref::none(),
             NextSelectionLeft: Ref::none(),
@@ -17778,8 +17782,8 @@ impl Default for TextLabel {
             SelectionOrder: 0i32,
             Size: UDim2::new(UDim::new(0f32, 0i32), UDim::new(0f32, 0i32)),
             SizeConstraint: enums::SizeConstraint::RelativeXY,
-            Visible: false,
-            ZIndex: 0i32,
+            Visible: true,
+            ZIndex: 1i32,
         };
         let superclass = GuiLabel { superclass };
         Self {
@@ -17859,13 +17863,13 @@ impl Default for Texture {
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
-            SourceAssetId: 0i64,
+            SourceAssetId: -1i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
         };
         let superclass = FaceInstance {
             superclass,
-            Face: enums::NormalId::Right,
+            Face: enums::NormalId::Front,
         };
         let superclass = Decal {
             superclass,
@@ -17967,7 +17971,7 @@ impl Default for Tool {
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
-            SourceAssetId: 0i64,
+            SourceAssetId: -1i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
         };
@@ -18016,7 +18020,7 @@ impl Default for Torque {
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
-            SourceAssetId: 0i64,
+            SourceAssetId: -1i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
         };
@@ -18024,8 +18028,8 @@ impl Default for Torque {
             superclass,
             Attachment0: Ref::none(),
             Attachment1: Ref::none(),
-            Color: BrickColor::from_number(194u16).unwrap(),
-            Enabled: false,
+            Color: BrickColor::from_number(23u16).unwrap(),
+            Enabled: true,
             Visible: false,
         };
         Self {
@@ -18059,7 +18063,7 @@ impl Default for TorsionSpringConstraint {
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
-            SourceAssetId: 0i64,
+            SourceAssetId: -1i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
         };
@@ -18067,8 +18071,8 @@ impl Default for TorsionSpringConstraint {
             superclass,
             Attachment0: Ref::none(),
             Attachment1: Ref::none(),
-            Color: BrickColor::from_number(194u16).unwrap(),
-            Enabled: false,
+            Color: BrickColor::from_number(200u16).unwrap(),
+            Enabled: true,
             Visible: false,
         };
         Self {
@@ -18188,7 +18192,7 @@ impl Default for Trail {
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
-            SourceAssetId: 0i64,
+            SourceAssetId: -1i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
         };
@@ -18254,13 +18258,13 @@ impl Default for TremoloSoundEffect {
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
-            SourceAssetId: 0i64,
+            SourceAssetId: -1i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
         };
         let superclass = SoundEffect {
             superclass,
-            Enabled: false,
+            Enabled: true,
             Priority: 0i32,
         };
         Self {
@@ -18375,7 +18379,7 @@ impl Default for TrussPart {
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
-            SourceAssetId: 0i64,
+            SourceAssetId: -1i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
         };
@@ -18383,46 +18387,46 @@ impl Default for TrussPart {
         let superclass = BasePart {
             superclass,
             Anchored: false,
-            AudioCanCollide: false,
-            BackParamA: 0f32,
-            BackParamB: 0f32,
-            BackSurface: enums::SurfaceType::Smooth,
+            AudioCanCollide: true,
+            BackParamA: -0.5f32,
+            BackParamB: 0.5f32,
+            BackSurface: enums::SurfaceType::Universal,
             BackSurfaceInput: enums::InputType::NoInput,
-            BottomParamA: 0f32,
-            BottomParamB: 0f32,
-            BottomSurface: enums::SurfaceType::Smooth,
+            BottomParamA: -0.5f32,
+            BottomParamB: 0.5f32,
+            BottomSurface: enums::SurfaceType::Universal,
             BottomSurfaceInput: enums::InputType::NoInput,
             CFrame: CFrame::identity(),
-            CanCollide: false,
-            CanQuery: false,
-            CanTouch: false,
-            CastShadow: false,
-            CollisionGroup: "".to_owned(),
+            CanCollide: true,
+            CanQuery: true,
+            CanTouch: true,
+            CastShadow: true,
+            CollisionGroup: "Default".to_owned(),
             CollisionGroupId: 0i32,
             CustomPhysicalProperties: PhysicalProperties::Default,
-            EnableFluidForces: false,
-            FrontParamA: 0f32,
-            FrontParamB: 0f32,
-            FrontSurface: enums::SurfaceType::Smooth,
+            EnableFluidForces: true,
+            FrontParamA: -0.5f32,
+            FrontParamB: 0.5f32,
+            FrontSurface: enums::SurfaceType::Universal,
             FrontSurfaceInput: enums::InputType::NoInput,
-            LeftParamA: 0f32,
-            LeftParamB: 0f32,
-            LeftSurface: enums::SurfaceType::Smooth,
+            LeftParamA: -0.5f32,
+            LeftParamB: 0.5f32,
+            LeftSurface: enums::SurfaceType::Universal,
             LeftSurfaceInput: enums::InputType::NoInput,
             Locked: false,
             Massless: false,
             Material: enums::Material::Plastic,
             PivotOffset: CFrame::identity(),
             Reflectance: 0f32,
-            RightParamA: 0f32,
-            RightParamB: 0f32,
-            RightSurface: enums::SurfaceType::Smooth,
+            RightParamA: -0.5f32,
+            RightParamB: 0.5f32,
+            RightSurface: enums::SurfaceType::Universal,
             RightSurfaceInput: enums::InputType::NoInput,
             RootPriority: 0i32,
             RotVelocity: Vector3::new(0f32, 0f32, 0f32),
-            TopParamA: 0f32,
-            TopParamB: 0f32,
-            TopSurface: enums::SurfaceType::Smooth,
+            TopParamA: -0.5f32,
+            TopParamB: 0.5f32,
+            TopSurface: enums::SurfaceType::Universal,
             TopSurfaceInput: enums::InputType::NoInput,
             Transparency: 0f32,
             Velocity: Vector3::new(0f32, 0f32, 0f32),
@@ -18499,7 +18503,7 @@ impl Default for UIAspectRatioConstraint {
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
-            SourceAssetId: 0i64,
+            SourceAssetId: -1i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
         };
@@ -18554,7 +18558,7 @@ impl Default for UICorner {
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
-            SourceAssetId: 0i64,
+            SourceAssetId: -1i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
         };
@@ -18601,7 +18605,7 @@ impl Default for UIDragDetector {
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
-            SourceAssetId: 0i64,
+            SourceAssetId: -1i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
         };
@@ -18659,7 +18663,7 @@ impl Default for UIFlexItem {
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
-            SourceAssetId: 0i64,
+            SourceAssetId: -1i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
         };
@@ -18694,7 +18698,7 @@ impl Default for UIGradient {
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
-            SourceAssetId: 0i64,
+            SourceAssetId: -1i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
         };
@@ -18739,7 +18743,7 @@ impl Default for UIGridLayout {
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
-            SourceAssetId: 0i64,
+            SourceAssetId: -1i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
         };
@@ -18749,9 +18753,9 @@ impl Default for UIGridLayout {
         let superclass = UIGridStyleLayout {
             superclass,
             FillDirection: enums::FillDirection::Horizontal,
-            HorizontalAlignment: enums::HorizontalAlignment::Center,
+            HorizontalAlignment: enums::HorizontalAlignment::Left,
             SortOrder: enums::SortOrder::Name,
-            VerticalAlignment: enums::VerticalAlignment::Center,
+            VerticalAlignment: enums::VerticalAlignment::Top,
         };
         Self {
             superclass,
@@ -18825,7 +18829,7 @@ impl Default for UIListLayout {
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
-            SourceAssetId: 0i64,
+            SourceAssetId: -1i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
         };
@@ -18834,10 +18838,10 @@ impl Default for UIListLayout {
         let superclass = UILayout { superclass };
         let superclass = UIGridStyleLayout {
             superclass,
-            FillDirection: enums::FillDirection::Horizontal,
-            HorizontalAlignment: enums::HorizontalAlignment::Center,
+            FillDirection: enums::FillDirection::Vertical,
+            HorizontalAlignment: enums::HorizontalAlignment::Left,
             SortOrder: enums::SortOrder::Name,
-            VerticalAlignment: enums::VerticalAlignment::Center,
+            VerticalAlignment: enums::VerticalAlignment::Top,
         };
         Self {
             superclass,
@@ -18868,7 +18872,7 @@ impl Default for UIPadding {
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
-            SourceAssetId: 0i64,
+            SourceAssetId: -1i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
         };
@@ -18907,7 +18911,7 @@ impl Default for UIPageLayout {
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
-            SourceAssetId: 0i64,
+            SourceAssetId: -1i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
         };
@@ -18917,9 +18921,9 @@ impl Default for UIPageLayout {
         let superclass = UIGridStyleLayout {
             superclass,
             FillDirection: enums::FillDirection::Horizontal,
-            HorizontalAlignment: enums::HorizontalAlignment::Center,
+            HorizontalAlignment: enums::HorizontalAlignment::Left,
             SortOrder: enums::SortOrder::Name,
-            VerticalAlignment: enums::VerticalAlignment::Center,
+            VerticalAlignment: enums::VerticalAlignment::Top,
         };
         Self {
             superclass,
@@ -18951,7 +18955,7 @@ impl Default for UIScale {
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
-            SourceAssetId: 0i64,
+            SourceAssetId: -1i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
         };
@@ -18980,7 +18984,7 @@ impl Default for UISizeConstraint {
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
-            SourceAssetId: 0i64,
+            SourceAssetId: -1i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
         };
@@ -19019,7 +19023,7 @@ impl Default for UIStroke {
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
-            SourceAssetId: 0i64,
+            SourceAssetId: -1i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
         };
@@ -19059,7 +19063,7 @@ impl Default for UITableLayout {
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
-            SourceAssetId: 0i64,
+            SourceAssetId: -1i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
         };
@@ -19068,10 +19072,10 @@ impl Default for UITableLayout {
         let superclass = UILayout { superclass };
         let superclass = UIGridStyleLayout {
             superclass,
-            FillDirection: enums::FillDirection::Horizontal,
-            HorizontalAlignment: enums::HorizontalAlignment::Center,
+            FillDirection: enums::FillDirection::Vertical,
+            HorizontalAlignment: enums::HorizontalAlignment::Left,
             SortOrder: enums::SortOrder::Name,
-            VerticalAlignment: enums::VerticalAlignment::Center,
+            VerticalAlignment: enums::VerticalAlignment::Top,
         };
         Self {
             superclass,
@@ -19099,7 +19103,7 @@ impl Default for UITextSizeConstraint {
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
-            SourceAssetId: 0i64,
+            SourceAssetId: -1i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
         };
@@ -19148,7 +19152,7 @@ impl Default for UniversalConstraint {
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
-            SourceAssetId: 0i64,
+            SourceAssetId: -1i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
         };
@@ -19156,8 +19160,8 @@ impl Default for UniversalConstraint {
             superclass,
             Attachment0: Ref::none(),
             Attachment1: Ref::none(),
-            Color: BrickColor::from_number(194u16).unwrap(),
-            Enabled: false,
+            Color: BrickColor::from_number(1009u16).unwrap(),
+            Enabled: true,
             Visible: false,
         };
         Self {
@@ -19193,7 +19197,7 @@ impl Default for UnvalidatedAssetService {
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
-            SourceAssetId: 0i64,
+            SourceAssetId: -1i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
         };
@@ -19438,7 +19442,7 @@ impl Default for VRService {
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
-            SourceAssetId: 0i64,
+            SourceAssetId: -1i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
         };
@@ -19484,7 +19488,7 @@ impl Default for ValueCurve {
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
-            SourceAssetId: 0i64,
+            SourceAssetId: -1i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
         };
@@ -19518,7 +19522,7 @@ impl Default for Vector3Value {
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
-            SourceAssetId: 0i64,
+            SourceAssetId: -1i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
         };
@@ -19547,7 +19551,7 @@ impl Default for VectorForce {
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
-            SourceAssetId: 0i64,
+            SourceAssetId: -1i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
         };
@@ -19555,8 +19559,8 @@ impl Default for VectorForce {
             superclass,
             Attachment0: Ref::none(),
             Attachment1: Ref::none(),
-            Color: BrickColor::from_number(194u16).unwrap(),
-            Enabled: false,
+            Color: BrickColor::from_number(23u16).unwrap(),
+            Enabled: true,
             Visible: false,
         };
         Self {
@@ -19599,7 +19603,7 @@ impl Default for VehicleSeat {
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
-            SourceAssetId: 0i64,
+            SourceAssetId: -1i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
         };
@@ -19607,30 +19611,30 @@ impl Default for VehicleSeat {
         let superclass = BasePart {
             superclass,
             Anchored: false,
-            AudioCanCollide: false,
-            BackParamA: 0f32,
-            BackParamB: 0f32,
+            AudioCanCollide: true,
+            BackParamA: -0.5f32,
+            BackParamB: 0.5f32,
             BackSurface: enums::SurfaceType::Smooth,
             BackSurfaceInput: enums::InputType::NoInput,
-            BottomParamA: 0f32,
-            BottomParamB: 0f32,
-            BottomSurface: enums::SurfaceType::Smooth,
+            BottomParamA: -0.5f32,
+            BottomParamB: 0.5f32,
+            BottomSurface: enums::SurfaceType::Inlet,
             BottomSurfaceInput: enums::InputType::NoInput,
             CFrame: CFrame::identity(),
-            CanCollide: false,
-            CanQuery: false,
-            CanTouch: false,
-            CastShadow: false,
-            CollisionGroup: "".to_owned(),
+            CanCollide: true,
+            CanQuery: true,
+            CanTouch: true,
+            CastShadow: true,
+            CollisionGroup: "Default".to_owned(),
             CollisionGroupId: 0i32,
             CustomPhysicalProperties: PhysicalProperties::Default,
-            EnableFluidForces: false,
-            FrontParamA: 0f32,
-            FrontParamB: 0f32,
+            EnableFluidForces: true,
+            FrontParamA: -0.5f32,
+            FrontParamB: 0.5f32,
             FrontSurface: enums::SurfaceType::Smooth,
             FrontSurfaceInput: enums::InputType::NoInput,
-            LeftParamA: 0f32,
-            LeftParamB: 0f32,
+            LeftParamA: -0.5f32,
+            LeftParamB: 0.5f32,
             LeftSurface: enums::SurfaceType::Smooth,
             LeftSurfaceInput: enums::InputType::NoInput,
             Locked: false,
@@ -19638,15 +19642,15 @@ impl Default for VehicleSeat {
             Material: enums::Material::Plastic,
             PivotOffset: CFrame::identity(),
             Reflectance: 0f32,
-            RightParamA: 0f32,
-            RightParamB: 0f32,
+            RightParamA: -0.5f32,
+            RightParamB: 0.5f32,
             RightSurface: enums::SurfaceType::Smooth,
             RightSurfaceInput: enums::InputType::NoInput,
             RootPriority: 0i32,
             RotVelocity: Vector3::new(0f32, 0f32, 0f32),
-            TopParamA: 0f32,
-            TopParamB: 0f32,
-            TopSurface: enums::SurfaceType::Smooth,
+            TopParamA: -0.5f32,
+            TopParamB: 0.5f32,
+            TopSurface: enums::SurfaceType::Studs,
             TopSurfaceInput: enums::InputType::NoInput,
             Transparency: 0f32,
             Velocity: Vector3::new(0f32, 0f32, 0f32),
@@ -19684,7 +19688,7 @@ impl Default for VelocityMotor {
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
-            SourceAssetId: 0i64,
+            SourceAssetId: -1i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
         };
@@ -19692,7 +19696,7 @@ impl Default for VelocityMotor {
             superclass,
             C0: CFrame::identity(),
             C1: CFrame::identity(),
-            Enabled: false,
+            Enabled: true,
             Part0: Ref::none(),
             Part1: Ref::none(),
         };
@@ -19781,14 +19785,14 @@ impl Default for VideoDisplay {
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
-            SourceAssetId: 0i64,
+            SourceAssetId: -1i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
         };
         let superclass = GuiBase { superclass };
         let superclass = GuiBase2d {
             superclass,
-            AutoLocalize: false,
+            AutoLocalize: true,
             RootLocalizationTable: Ref::none(),
             SelectionBehaviorDown: enums::SelectionBehavior::Escape,
             SelectionBehaviorLeft: enums::SelectionBehavior::Escape,
@@ -19801,14 +19805,14 @@ impl Default for VideoDisplay {
             Active: false,
             AnchorPoint: Vector2::new(0f32, 0f32),
             AutomaticSize: enums::AutomaticSize::None,
-            BackgroundColor3: Color3::new(0f32, 0f32, 0f32),
+            BackgroundColor3: Color3::new(0.6392157f32, 0.63529414f32, 0.64705884f32),
             BackgroundTransparency: 0f32,
-            BorderColor3: Color3::new(0f32, 0f32, 0f32),
+            BorderColor3: Color3::new(0.105882354f32, 0.16470589f32, 0.20784314f32),
             BorderMode: enums::BorderMode::Outline,
-            BorderSizePixel: 0i32,
+            BorderSizePixel: 1i32,
             ClipsDescendants: false,
             Draggable: false,
-            Interactable: false,
+            Interactable: true,
             LayoutOrder: 0i32,
             NextSelectionDown: Ref::none(),
             NextSelectionLeft: Ref::none(),
@@ -19821,8 +19825,8 @@ impl Default for VideoDisplay {
             SelectionOrder: 0i32,
             Size: UDim2::new(UDim::new(0f32, 0i32), UDim::new(0f32, 0i32)),
             SizeConstraint: enums::SizeConstraint::RelativeXY,
-            Visible: false,
-            ZIndex: 0i32,
+            Visible: true,
+            ZIndex: 1i32,
         };
         Self {
             superclass,
@@ -19856,14 +19860,14 @@ impl Default for VideoFrame {
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
-            SourceAssetId: 0i64,
+            SourceAssetId: -1i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
         };
         let superclass = GuiBase { superclass };
         let superclass = GuiBase2d {
             superclass,
-            AutoLocalize: false,
+            AutoLocalize: true,
             RootLocalizationTable: Ref::none(),
             SelectionBehaviorDown: enums::SelectionBehavior::Escape,
             SelectionBehaviorLeft: enums::SelectionBehavior::Escape,
@@ -19876,14 +19880,14 @@ impl Default for VideoFrame {
             Active: false,
             AnchorPoint: Vector2::new(0f32, 0f32),
             AutomaticSize: enums::AutomaticSize::None,
-            BackgroundColor3: Color3::new(0f32, 0f32, 0f32),
+            BackgroundColor3: Color3::new(0.6392157f32, 0.63529414f32, 0.64705884f32),
             BackgroundTransparency: 0f32,
-            BorderColor3: Color3::new(0f32, 0f32, 0f32),
+            BorderColor3: Color3::new(0.105882354f32, 0.16470589f32, 0.20784314f32),
             BorderMode: enums::BorderMode::Outline,
-            BorderSizePixel: 0i32,
+            BorderSizePixel: 1i32,
             ClipsDescendants: false,
             Draggable: false,
-            Interactable: false,
+            Interactable: true,
             LayoutOrder: 0i32,
             NextSelectionDown: Ref::none(),
             NextSelectionLeft: Ref::none(),
@@ -19896,8 +19900,8 @@ impl Default for VideoFrame {
             SelectionOrder: 0i32,
             Size: UDim2::new(UDim::new(0f32, 0i32), UDim::new(0f32, 0i32)),
             SizeConstraint: enums::SizeConstraint::RelativeXY,
-            Visible: false,
-            ZIndex: 0i32,
+            Visible: true,
+            ZIndex: 1i32,
         };
         Self {
             superclass,
@@ -19929,7 +19933,7 @@ impl Default for VideoPlayer {
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
-            SourceAssetId: 0i64,
+            SourceAssetId: -1i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
         };
@@ -19989,14 +19993,14 @@ impl Default for ViewportFrame {
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
-            SourceAssetId: 0i64,
+            SourceAssetId: -1i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
         };
         let superclass = GuiBase { superclass };
         let superclass = GuiBase2d {
             superclass,
-            AutoLocalize: false,
+            AutoLocalize: true,
             RootLocalizationTable: Ref::none(),
             SelectionBehaviorDown: enums::SelectionBehavior::Escape,
             SelectionBehaviorLeft: enums::SelectionBehavior::Escape,
@@ -20009,14 +20013,14 @@ impl Default for ViewportFrame {
             Active: false,
             AnchorPoint: Vector2::new(0f32, 0f32),
             AutomaticSize: enums::AutomaticSize::None,
-            BackgroundColor3: Color3::new(0f32, 0f32, 0f32),
+            BackgroundColor3: Color3::new(0.6392157f32, 0.63529414f32, 0.64705884f32),
             BackgroundTransparency: 0f32,
-            BorderColor3: Color3::new(0f32, 0f32, 0f32),
+            BorderColor3: Color3::new(0.105882354f32, 0.16470589f32, 0.20784314f32),
             BorderMode: enums::BorderMode::Outline,
-            BorderSizePixel: 0i32,
+            BorderSizePixel: 1i32,
             ClipsDescendants: false,
             Draggable: false,
-            Interactable: false,
+            Interactable: true,
             LayoutOrder: 0i32,
             NextSelectionDown: Ref::none(),
             NextSelectionLeft: Ref::none(),
@@ -20029,8 +20033,8 @@ impl Default for ViewportFrame {
             SelectionOrder: 0i32,
             Size: UDim2::new(UDim::new(0f32, 0i32), UDim::new(0f32, 0i32)),
             SizeConstraint: enums::SizeConstraint::RelativeXY,
-            Visible: false,
-            ZIndex: 0i32,
+            Visible: true,
+            ZIndex: 1i32,
         };
         Self {
             superclass,
@@ -20094,7 +20098,7 @@ impl Default for VisualizationMode {
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
-            SourceAssetId: 0i64,
+            SourceAssetId: -1i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
         };
@@ -20123,7 +20127,7 @@ impl Default for VisualizationModeCategory {
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
-            SourceAssetId: 0i64,
+            SourceAssetId: -1i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
         };
@@ -20168,7 +20172,7 @@ impl Default for VoiceChatService {
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
-            SourceAssetId: 0i64,
+            SourceAssetId: -1i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
         };
@@ -20245,7 +20249,7 @@ impl Default for WeldConstraint {
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
-            SourceAssetId: 0i64,
+            SourceAssetId: -1i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
         };
@@ -20275,7 +20279,7 @@ impl Default for Wire {
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
-            SourceAssetId: 0i64,
+            SourceAssetId: -1i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
         };
@@ -20305,16 +20309,16 @@ impl Default for WireframeHandleAdornment {
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
-            SourceAssetId: 0i64,
+            SourceAssetId: -1i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
         };
         let superclass = GuiBase { superclass };
         let superclass = GuiBase3d {
             superclass,
-            Color3: Color3::new(0f32, 0f32, 0f32),
+            Color3: Color3::new(0.050980393f32, 0.4117647f32, 0.6745098f32),
             Transparency: 0f32,
-            Visible: false,
+            Visible: true,
         };
         let superclass = PVAdornment {
             superclass,
@@ -20326,7 +20330,7 @@ impl Default for WireframeHandleAdornment {
             AlwaysOnTop: false,
             CFrame: CFrame::identity(),
             SizeRelativeOffset: Vector3::new(0f32, 0f32, 0f32),
-            ZIndex: 0i32,
+            ZIndex: -1i32,
         };
         Self {
             superclass,
@@ -20390,7 +20394,7 @@ impl Default for Workspace {
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
-            SourceAssetId: 0i64,
+            SourceAssetId: -1i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
         };
@@ -20511,7 +20515,7 @@ impl Default for WrapLayer {
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
-            SourceAssetId: 0i64,
+            SourceAssetId: -1i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
         };
@@ -20555,7 +20559,7 @@ impl Default for WrapTarget {
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
-            SourceAssetId: 0i64,
+            SourceAssetId: -1i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
         };
@@ -20593,7 +20597,7 @@ impl Default for WrapTextureTransfer {
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
-            SourceAssetId: 0i64,
+            SourceAssetId: -1i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
         };
