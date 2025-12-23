@@ -4252,7 +4252,12 @@ impl Default for BubbleChatConfiguration {
             BubblesSpacing: 6f32,
             Enabled: true,
             Font: enums::Font::GothamMedium,
-            FontFace: unimplemented!("Font"),
+            FontFace: Font {
+                family: "rbxasset://fonts/families/GothamSSm.json".to_owned(),
+                weight: FontWeight::Medium,
+                style: FontStyle::Normal,
+                cached_face_id: Some("rbxasset://fonts/Montserrat-Medium.ttf".to_owned()),
+            },
             LocalPlayerStudsOffset: Vector3::new(0f32, 0f32, 0f32),
             MaxBubbles: 3f32,
             MaxDistance: 100f32,
@@ -4610,7 +4615,12 @@ impl Default for ChannelTabsConfiguration {
             BackgroundColor3: Color3::new(0.09803922f32, 0.105882354f32, 0.11372549f32),
             BackgroundTransparency: 0f64,
             Enabled: false,
-            FontFace: unimplemented!("Font"),
+            FontFace: Font {
+                family: "rbxasset://fonts/families/BuilderSans.json".to_owned(),
+                weight: FontWeight::Bold,
+                style: FontStyle::Normal,
+                cached_face_id: Some("rbxasset://fonts/BuilderSans-Bold.otf".to_owned()),
+            },
             HoverBackgroundColor3: Color3::new(0.49019608f32, 0.49019608f32, 0.49019608f32),
             SelectedTabTextColor3: Color3::new(1f32, 1f32, 1f32),
             TextColor3: Color3::new(0.6862745f32, 0.6862745f32, 0.6862745f32),
@@ -4729,7 +4739,12 @@ impl Default for ChatInputBarConfiguration {
             BackgroundColor3: Color3::new(0.09803922f32, 0.105882354f32, 0.11372549f32),
             BackgroundTransparency: 0.2f64,
             Enabled: true,
-            FontFace: unimplemented!("Font"),
+            FontFace: Font {
+                family: "rbxasset://fonts/families/GothamSSm.json".to_owned(),
+                weight: FontWeight::Medium,
+                style: FontStyle::Normal,
+                cached_face_id: Some("rbxasset://fonts/Montserrat-Medium.ttf".to_owned()),
+            },
             KeyboardKeyCode: enums::KeyCode::Slash,
             PlaceholderColor3: Color3::new(0.69803923f32, 0.69803923f32, 0.69803923f32),
             TargetTextChannel: Ref::none(),
@@ -4777,7 +4792,12 @@ impl Default for ChatWindowConfiguration {
             BackgroundColor3: Color3::new(0.09803922f32, 0.105882354f32, 0.11372549f32),
             BackgroundTransparency: 0.3f64,
             Enabled: true,
-            FontFace: unimplemented!("Font"),
+            FontFace: Font {
+                family: "rbxasset://fonts/families/GothamSSm.json".to_owned(),
+                weight: FontWeight::Medium,
+                style: FontStyle::Normal,
+                cached_face_id: Some("rbxasset://fonts/Montserrat-Medium.ttf".to_owned()),
+            },
             HeightScale: 1f32,
             HorizontalAlignment: enums::HorizontalAlignment::Left,
             TextColor3: Color3::new(1f32, 1f32, 1f32),
@@ -7617,7 +7637,11 @@ impl Default for GetTextBoundsParams {
         };
         Self {
             superclass,
-            Font: unimplemented!("Font"),
+            Font: Font::new(
+                "rbxasset://fonts/families/SourceSansPro.json",
+                FontWeight::Regular,
+                FontStyle::Normal,
+            ),
             RichText: false,
             Size: 0f32,
             Text: "".to_owned(),
@@ -17389,7 +17413,12 @@ impl Default for TextBox {
         Self {
             superclass,
             ClearTextOnFocus: true,
-            FontFace: unimplemented!("Font"),
+            FontFace: Font {
+                family: "rbxasset://fonts/families/LegacyArial.json".to_owned(),
+                weight: FontWeight::Regular,
+                style: FontStyle::Normal,
+                cached_face_id: Some("rbxasset://fonts/Arimo-Regular.ttf".to_owned()),
+            },
             LineHeight: 1f32,
             LocalizationMatchIdentifier: "".to_owned(),
             LocalizationMatchedSourceText: "".to_owned(),
@@ -17512,7 +17541,12 @@ impl Default for TextButton {
         };
         Self {
             superclass,
-            FontFace: unimplemented!("Font"),
+            FontFace: Font {
+                family: "rbxasset://fonts/families/LegacyArial.json".to_owned(),
+                weight: FontWeight::Regular,
+                style: FontStyle::Normal,
+                cached_face_id: Some("rbxasset://fonts/Arimo-Regular.ttf".to_owned()),
+            },
             LineHeight: 1f32,
             LocalizationMatchIdentifier: "".to_owned(),
             LocalizationMatchedSourceText: "".to_owned(),
@@ -17788,7 +17822,12 @@ impl Default for TextLabel {
         let superclass = GuiLabel { superclass };
         Self {
             superclass,
-            FontFace: unimplemented!("Font"),
+            FontFace: Font {
+                family: "rbxasset://fonts/families/LegacyArial.json".to_owned(),
+                weight: FontWeight::Regular,
+                style: FontStyle::Normal,
+                cached_face_id: Some("rbxasset://fonts/Arimo-Regular.ttf".to_owned()),
+            },
             LineHeight: 1f32,
             LocalizationMatchIdentifier: "".to_owned(),
             LocalizationMatchedSourceText: "".to_owned(),
