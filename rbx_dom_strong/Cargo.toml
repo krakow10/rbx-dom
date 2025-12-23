@@ -11,8 +11,9 @@ authors = [
     "Lucien Greathouse <me@lpghatguy.com>",
     "Micah Reid <git@dekkonot.com>",
     "Ken Loeffler <kenloef@gmail.com>",
+    "Rhys Lloyd <krakow20@gmail.com>",
 ]
-edition = "2018"
+edition = "2024"
 
 [dependencies]
 rbx_types = { version = "3.1.0", path = "../rbx_types", features = ["serde"] }
