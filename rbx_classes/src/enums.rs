@@ -9,7 +9,7 @@
 #[doc = r" ```"]
 #[macro_export]
 macro_rules! for_each_enum {
-    ($ my_macro : ident) => {
+    ($my_macro : ident) => {
         $my_macro!(
             AccessModifierType,
             AccessoryType,
