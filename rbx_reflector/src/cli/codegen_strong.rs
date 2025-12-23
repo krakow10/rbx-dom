@@ -363,6 +363,7 @@ struct FieldInfo {
 }
 fn get_fields_info(
     descriptor: &ClassDescriptor,
+    default_properties: &std::collections::HashMap<std::borrow::Cow<'_, str>, Variant>,
     database: &ReflectionDatabase<'_>,
 ) -> Vec<FieldInfo> {
     // generate fields
@@ -387,8 +388,7 @@ fn get_fields_info(
             ty,
         };
 
-        let default_value_variant = descriptor
-            .default_properties
+        let default_value_variant = default_properties
             .get(prop.name.as_ref())
             .unwrap_or_else(|| prop.data_type.ty().fallback_default_value().unwrap());
         let default_value: syn::FieldValue = match &prop.data_type {
@@ -473,7 +473,7 @@ impl StrongInstancesCollector {
         }
     }
     fn push(&mut self, descriptor: &ClassDescriptor, database: &ReflectionDatabase<'_>) {
-        let fields = get_fields_info(descriptor, database);
+        let fields = get_fields_info(descriptor, &descriptor.default_properties, database);
 
         // struct ident
         let ident = syn::Ident::new(&descriptor.name, proc_macro2::Span::call_site());
@@ -515,7 +515,7 @@ impl StrongInstancesCollector {
                 let ident: syn::Ident = syn::parse_str(&class.name).unwrap();
                 let default_struct = syn::parse_quote! {#ident{}};
                 // this is duplicating a lot of work, but whatever
-                let fields = get_fields_info(class, database);
+                let fields = get_fields_info(class, &descriptor.default_properties, database);
                 (default_struct, fields)
             });
 
