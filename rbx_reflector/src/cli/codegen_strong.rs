@@ -244,8 +244,57 @@ impl ToTokens for WrapToTokens<&Variant> {
                 let dz = WrapToTokens(value.direction.z);
                 append(q! {Ray::new(Vector3::new(#ox,#oy,#oz),Vector3::new(#dx,#dy,#dz))});
             }
-            Variant::Faces(value) => append(q! {unimplemented!()}),
-            Variant::Axes(value) => append(q! {unimplemented!()}),
+            Variant::Faces(value) => {
+                if value == &Faces::all() {
+                    append(q! {Faces::all()});
+                } else if value == &Faces::empty() {
+                    append(q! {Faces::empty()});
+                } else {
+                    // TODO: use iter_names()
+                    let mut faces: Vec<syn::Ident> = Vec::with_capacity(6);
+                    if value.contains(Faces::RIGHT) {
+                        faces.push(syn::parse_str("RIGHT").unwrap());
+                    }
+                    if value.contains(Faces::TOP) {
+                        faces.push(syn::parse_str("TOP").unwrap());
+                    }
+                    if value.contains(Faces::BACK) {
+                        faces.push(syn::parse_str("BACK").unwrap());
+                    }
+                    if value.contains(Faces::LEFT) {
+                        faces.push(syn::parse_str("LEFT").unwrap());
+                    }
+                    if value.contains(Faces::BOTTOM) {
+                        faces.push(syn::parse_str("BOTTOM").unwrap());
+                    }
+                    if value.contains(Faces::FRONT) {
+                        faces.push(syn::parse_str("FRONT").unwrap());
+                    }
+                    let faces = faces.into_iter();
+                    append(q! {#(Faces::#faces)|*});
+                }
+            }
+            Variant::Axes(value) => {
+                if value == &Axes::all() {
+                    append(q! {Axes::all()});
+                } else if value == &Axes::empty() {
+                    append(q! {Axes::empty()});
+                } else {
+                    // TODO: use iter_names()
+                    let mut axes: Vec<syn::Ident> = Vec::with_capacity(6);
+                    if value.contains(Axes::X) {
+                        axes.push(syn::parse_str("X").unwrap());
+                    }
+                    if value.contains(Axes::Y) {
+                        axes.push(syn::parse_str("Y").unwrap());
+                    }
+                    if value.contains(Axes::Z) {
+                        axes.push(syn::parse_str("Z").unwrap());
+                    }
+                    let axes = axes.into_iter();
+                    append(q! {#(Axes::#axes)|*});
+                }
+            }
             Variant::BrickColor(value) => {
                 let number: u16 = *value as u16;
                 append(q! {BrickColor::from_number(#number).unwrap()});
