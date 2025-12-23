@@ -1,5 +1,5 @@
-use rbx_types::CFrame;
 use rbx_classes::instances::Part;
+use rbx_types::CFrame;
 
 #[test]
 fn part_inherits_instance() {
