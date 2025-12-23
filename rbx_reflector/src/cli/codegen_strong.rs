@@ -513,36 +513,36 @@ impl StrongInstancesCollector {
 
             let mut iter = superclasses.into_iter().map(|class| {
                 let ident: syn::Ident = syn::parse_str(&class.name).unwrap();
-                let default_struct: syn::ExprStruct = syn::parse_quote! {
-                    #ident{
-                    }
-                };
-                (default_struct, class)
+                let default_struct = syn::parse_quote! {#ident{}};
+                // this is duplicating a lot of work, but whatever
+                let fields = get_fields_info(class, database);
+                (default_struct, fields)
             });
+
+            fn push_fields(
+                (mut default_struct, fields): (syn::ExprStruct, impl AsRef<[FieldInfo]>),
+            ) -> syn::ExprStruct {
+                default_struct.fields.push(syn::parse_quote! {
+                    superclass
+                });
+                default_struct.fields.extend(
+                    fields
+                        .as_ref()
+                        .iter()
+                        .map(|field_info| &field_info.default_value)
+                        .cloned(),
+                );
+                default_struct
+            }
 
             // root superclass has no superclass (and is assumed to have no fields)
             let (root, _) = iter.next().unwrap();
 
             // superclasses
-            let push_default_fields =
-                |(mut default_struct, class): (syn::ExprStruct, &ClassDescriptor<'_>)| {
-                    default_struct.fields.push(syn::parse_quote! {
-                        superclass
-                    });
-                    // this is duplicating a lot of work, but whatever
-                    let fields = get_fields_info(class, database);
-                    default_struct.fields.extend(
-                        fields
-                            .iter()
-                            .map(|field_info| &field_info.default_value)
-                            .cloned(),
-                    );
-                    default_struct
-                };
-            let iter = iter.map(push_default_fields);
+            let iter = iter.map(push_fields);
 
             // self
-            let default_struct = push_default_fields((syn::parse_quote! {Self{}}, descriptor));
+            let default_struct = push_fields((syn::parse_quote! {Self{}}, &fields));
 
             let default_impl = syn::parse_quote! {
                 impl Default for #ident{
