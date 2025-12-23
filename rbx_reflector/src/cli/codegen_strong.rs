@@ -557,13 +557,10 @@ impl StrongInstancesCollector {
         }
 
         // superclass field is added to the top
-        let superclass_field = superclass_ident.map(|superclass_ident| syn::Field {
-            attrs: Vec::new(),
-            vis: syn::Visibility::Inherited,
-            mutability: syn::FieldMutability::None,
-            ident: Some(syn::parse_quote!(superclass)),
-            colon_token: Some(syn::token::Colon::default()),
-            ty: syn::parse_quote!(#superclass_ident),
+        let superclass_field = superclass_ident.map(|superclass_ident| {
+            syn::parse_quote! {
+                superclass: #superclass_ident
+            }
         });
 
         // generate the class struct
