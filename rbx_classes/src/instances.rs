@@ -875,11 +875,10 @@ impl Default for Accessory {
             superclass,
             AttachmentPoint: CFrame::identity(),
         };
-        let superclass = Accessory {
+        Self {
             superclass,
             AccessoryType: enums::AccessoryType::Unknown,
-        };
-        superclass
+        }
     }
 }
 #[derive(Debug, Clone)]
@@ -910,7 +909,7 @@ impl Default for AccessoryDescription {
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
         };
-        let superclass = AccessoryDescription {
+        Self {
             superclass,
             AccessoryType: enums::AccessoryType::Unknown,
             AssetId: 0i64,
@@ -921,8 +920,7 @@ impl Default for AccessoryDescription {
             Puffiness: 1f32,
             Rotation: Vector3::new(0f32, 0f32, 0f32),
             Scale: Vector3::new(1f32, 1f32, 1f32),
-        };
-        superclass
+        }
     }
 }
 #[derive(Debug, Clone)]
@@ -953,11 +951,10 @@ impl Default for Accoutrement {
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
         };
-        let superclass = Accoutrement {
+        Self {
             superclass,
             AttachmentPoint: CFrame::identity(),
-        };
-        superclass
+        }
     }
 }
 #[derive(Debug, Clone)]
@@ -1029,13 +1026,12 @@ impl Default for AdGui {
             Adornee: Ref::none(),
             Face: enums::NormalId::Right,
         };
-        let superclass = AdGui {
+        Self {
             superclass,
             AdShape: enums::AdShape::HorizontalRectangle,
             EnableVideoAds: false,
             FallbackImage: "".into(),
-        };
-        superclass
+        }
     }
 }
 #[derive(Debug, Clone)]
@@ -1093,7 +1089,7 @@ impl Default for AirController {
             BalanceRigidityEnabled: false,
             MoveSpeedFactor: 0f32,
         };
-        let superclass = AirController {
+        Self {
             superclass,
             BalanceMaxTorque: 10000f32,
             BalanceSpeed: 100f32,
@@ -1102,8 +1098,7 @@ impl Default for AirController {
             MoveMaxForce: 1000f32,
             TurnMaxTorque: 10000f32,
             TurnSpeedFactor: 1f32,
-        };
-        superclass
+        }
     }
 }
 #[derive(Debug, Clone)]
@@ -1142,7 +1137,7 @@ impl Default for AlignOrientation {
             Enabled: false,
             Visible: false,
         };
-        let superclass = AlignOrientation {
+        Self {
             superclass,
             AlignType: enums::AlignType::AllAxes,
             CFrame: CFrame::identity(),
@@ -1153,8 +1148,7 @@ impl Default for AlignOrientation {
             ReactionTorqueEnabled: false,
             Responsiveness: 10f32,
             RigidityEnabled: false,
-        };
-        superclass
+        }
     }
 }
 #[derive(Debug, Clone)]
@@ -1195,7 +1189,7 @@ impl Default for AlignPosition {
             Enabled: false,
             Visible: false,
         };
-        let superclass = AlignPosition {
+        Self {
             superclass,
             ApplyAtCenterOfMass: false,
             ForceLimitMode: enums::ForceLimitMode::Magnitude,
@@ -1208,8 +1202,7 @@ impl Default for AlignPosition {
             ReactionForceEnabled: false,
             Responsiveness: 10f32,
             RigidityEnabled: false,
-        };
-        superclass
+        }
     }
 }
 #[derive(Debug, Clone)]
@@ -1232,11 +1225,10 @@ impl Default for AnalyticsService {
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
         };
-        let superclass = AnalyticsService {
+        Self {
             superclass,
             ApiKey: "".to_owned(),
-        };
-        superclass
+        }
     }
 }
 #[derive(Debug, Clone)]
@@ -1270,14 +1262,13 @@ impl Default for AngularVelocity {
             Enabled: false,
             Visible: false,
         };
-        let superclass = AngularVelocity {
+        Self {
             superclass,
             AngularVelocity: Vector3::new(0f32, 0f32, 0f32),
             MaxTorque: 0f32,
             ReactionTorqueEnabled: false,
             RelativeTo: enums::ActuatorRelativeTo::World,
-        };
-        superclass
+        }
     }
 }
 #[derive(Debug, Clone)]
@@ -1300,11 +1291,10 @@ impl Default for Animation {
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
         };
-        let superclass = Animation {
+        Self {
             superclass,
             AnimationId: "".into(),
-        };
-        superclass
+        }
     }
 }
 #[derive(Debug, Clone)]
@@ -1329,13 +1319,12 @@ impl Default for AnimationClip {
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
         };
-        let superclass = AnimationClip {
+        Self {
             superclass,
             GuidBinaryString: b"".as_slice().into(),
             Loop: false,
             Priority: enums::AnimationPriority::Idle,
-        };
-        superclass
+        }
     }
 }
 #[derive(Debug, Clone)]
@@ -1377,14 +1366,13 @@ impl Default for AnimationConstraint {
             Enabled: false,
             Visible: false,
         };
-        let superclass = AnimationConstraint {
+        Self {
             superclass,
             IsKinematic: false,
             MaxForce: 10000f32,
             MaxTorque: 10000f32,
             Transform: CFrame::identity(),
-        };
-        superclass
+        }
     }
 }
 #[derive(Debug, Clone)]
@@ -1456,12 +1444,11 @@ impl Default for AnimationNodeDefinition {
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
         };
-        let superclass = AnimationNodeDefinition {
+        Self {
             superclass,
             InputPinData: b"\x01\0\0\0\0\0\0\0".as_slice().into(),
             NodeType: enums::AnimationNodeType::InvalidNode,
-        };
-        superclass
+        }
     }
 }
 #[derive(Debug, Clone)]
@@ -1489,8 +1476,7 @@ impl Default for AnimationRigData {
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
         };
-        let superclass = AnimationRigData { superclass , Label : b"\x01\0\0\0\x01\0\0\0\0\0\0\0" . as_slice () . into () , Name : b"\x01\0\0\0\x01\0\0\0\0\0\0\0" . as_slice () . into () , Parent : b"\x01\0\0\0\x01\0\0\0\0\0" . as_slice () . into () , PostTransform : b"\x01\0\0\0\x01\0\0\0\0\0\x80?\0\0\0\0\0\0\0\0\0\0\0\0\0\0\x80?\0\0\0\0\0\0\0\0\0\0\0\0\0\0\x80?\0\0\0\0\0\0\0\0\0\0\0\0" . as_slice () . into () , PreTransform : b"\x01\0\0\0\x01\0\0\0\0\0\x80?\0\0\0\0\0\0\0\0\0\0\0\0\0\0\x80?\0\0\0\0\0\0\0\0\0\0\0\0\0\0\x80?\0\0\0\0\0\0\0\0\0\0\0\0" . as_slice () . into () , Transform : b"\x01\0\0\0\x01\0\0\0\0\0\x80?\0\0\0\0\0\0\0\0\0\0\0\0\0\0\x80?\0\0\0\0\0\0\0\0\0\0\0\0\0\0\x80?\0\0\0\0\0\0\0\0\0\0\0\0" . as_slice () . into () } ;
-        superclass
+        Self { superclass , Label : b"\x01\0\0\0\x01\0\0\0\0\0\0\0" . as_slice () . into () , Name : b"\x01\0\0\0\x01\0\0\0\0\0\0\0" . as_slice () . into () , Parent : b"\x01\0\0\0\x01\0\0\0\0\0" . as_slice () . into () , PostTransform : b"\x01\0\0\0\x01\0\0\0\0\0\x80?\0\0\0\0\0\0\0\0\0\0\0\0\0\0\x80?\0\0\0\0\0\0\0\0\0\0\0\0\0\0\x80?\0\0\0\0\0\0\0\0\0\0\0\0" . as_slice () . into () , PreTransform : b"\x01\0\0\0\x01\0\0\0\0\0\x80?\0\0\0\0\0\0\0\0\0\0\0\0\0\0\x80?\0\0\0\0\0\0\0\0\0\0\0\0\0\0\x80?\0\0\0\0\0\0\0\0\0\0\0\0" . as_slice () . into () , Transform : b"\x01\0\0\0\x01\0\0\0\0\0\x80?\0\0\0\0\0\0\0\0\0\0\0\0\0\0\x80?\0\0\0\0\0\0\0\0\0\0\0\0\0\0\x80?\0\0\0\0\0\0\0\0\0\0\0\0" . as_slice () . into () }
     }
 }
 #[derive(Debug, Clone)]
@@ -1521,11 +1507,10 @@ impl Default for AnimationTrack {
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
         };
-        let superclass = AnimationTrack {
+        Self {
             superclass,
             Priority: enums::AnimationPriority::Idle,
-        };
-        superclass
+        }
     }
 }
 #[derive(Debug, Clone)]
@@ -1548,11 +1533,10 @@ impl Default for Animator {
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
         };
-        let superclass = Animator {
+        Self {
             superclass,
             PreferLodEnabled: true,
-        };
-        superclass
+        }
     }
 }
 #[derive(Debug, Clone)]
@@ -1635,11 +1619,10 @@ impl Default for ArcHandles {
             Adornee: Ref::none(),
         };
         let superclass = HandlesBase { superclass };
-        let superclass = ArcHandles {
+        Self {
             superclass,
             Axes: unimplemented!(),
-        };
-        superclass
+        }
     }
 }
 #[derive(Debug, Clone)]
@@ -1672,13 +1655,12 @@ impl Default for AssetDeliveryProxy {
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
         };
-        let superclass = AssetDeliveryProxy {
+        Self {
             superclass,
             Interface: "".to_owned(),
             Port: 0i32,
             StartServer: false,
-        };
-        superclass
+        }
     }
 }
 #[derive(Debug, Clone)]
@@ -1727,13 +1709,12 @@ impl Default for AssetPatchSettings {
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
         };
-        let superclass = AssetPatchSettings {
+        Self {
             superclass,
             ContentId: "".to_owned(),
             OutputPath: "".to_owned(),
             PatchId: "".to_owned(),
-        };
-        superclass
+        }
     }
 }
 #[derive(Debug, Clone)]
@@ -1756,11 +1737,10 @@ impl Default for AssetService {
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
         };
-        let superclass = AssetService {
+        Self {
             superclass,
             AllowInsertFreeAssets: false,
-        };
-        superclass
+        }
     }
 }
 #[derive(Debug, Clone)]
@@ -1796,7 +1776,7 @@ impl Default for Atmosphere {
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
         };
-        let superclass = Atmosphere {
+        Self {
             superclass,
             Color: Color3::new(0.7843f32, 0.6667f32, 0.4235f32),
             Decay: Color3::new(0.3608f32, 0.2353f32, 0.0549f32),
@@ -1804,8 +1784,7 @@ impl Default for Atmosphere {
             Glare: 0f32,
             Haze: 0f32,
             Offset: 0f32,
-        };
-        superclass
+        }
     }
 }
 #[derive(Debug, Clone)]
@@ -1837,12 +1816,11 @@ impl Default for Attachment {
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
         };
-        let superclass = Attachment {
+        Self {
             superclass,
             CFrame: CFrame::identity(),
             Visible: false,
-        };
-        superclass
+        }
     }
 }
 #[derive(Debug, Clone)]
@@ -1866,12 +1844,11 @@ impl Default for AudioAnalyzer {
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
         };
-        let superclass = AudioAnalyzer {
+        Self {
             superclass,
             SpectrumEnabled: true,
             WindowSize: enums::AudioWindowSize::Medium,
-        };
-        superclass
+        }
     }
 }
 #[derive(Debug, Clone)]
@@ -1894,11 +1871,10 @@ impl Default for AudioChannelMixer {
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
         };
-        let superclass = AudioChannelMixer {
+        Self {
             superclass,
             Layout: enums::AudioChannelLayout::Stereo,
-        };
-        superclass
+        }
     }
 }
 #[derive(Debug, Clone)]
@@ -1921,11 +1897,10 @@ impl Default for AudioChannelSplitter {
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
         };
-        let superclass = AudioChannelSplitter {
+        Self {
             superclass,
             Layout: enums::AudioChannelLayout::Stereo,
-        };
-        superclass
+        }
     }
 }
 #[derive(Debug, Clone)]
@@ -1951,14 +1926,13 @@ impl Default for AudioChorus {
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
         };
-        let superclass = AudioChorus {
+        Self {
             superclass,
             Bypass: false,
             Depth: 0.45f32,
             Mix: 0.85f32,
             Rate: 5f32,
-        };
-        superclass
+        }
     }
 }
 #[derive(Debug, Clone)]
@@ -1986,7 +1960,7 @@ impl Default for AudioCompressor {
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
         };
-        let superclass = AudioCompressor {
+        Self {
             superclass,
             Attack: 0.1f32,
             Bypass: false,
@@ -1994,8 +1968,7 @@ impl Default for AudioCompressor {
             Ratio: 40f32,
             Release: 0.1f32,
             Threshold: -40f32,
-        };
-        superclass
+        }
     }
 }
 #[derive(Debug, Clone)]
@@ -2022,15 +1995,14 @@ impl Default for AudioDeviceInput {
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
         };
-        let superclass = AudioDeviceInput {
+        Self {
             superclass,
             AccessType: enums::AccessModifierType::Deny,
             Active: true,
             Muted: false,
             Player: Ref::none(),
             Volume: 1f32,
-        };
-        superclass
+        }
     }
 }
 #[derive(Debug, Clone)]
@@ -2053,11 +2025,10 @@ impl Default for AudioDeviceOutput {
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
         };
-        let superclass = AudioDeviceOutput {
+        Self {
             superclass,
             Player: Ref::none(),
-        };
-        superclass
+        }
     }
 }
 #[derive(Debug, Clone)]
@@ -2081,12 +2052,11 @@ impl Default for AudioDistortion {
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
         };
-        let superclass = AudioDistortion {
+        Self {
             superclass,
             Bypass: false,
             Level: 0.5f32,
-        };
-        superclass
+        }
     }
 }
 #[derive(Debug, Clone)]
@@ -2114,7 +2084,7 @@ impl Default for AudioEcho {
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
         };
-        let superclass = AudioEcho {
+        Self {
             superclass,
             Bypass: false,
             DelayTime: 1f32,
@@ -2122,8 +2092,7 @@ impl Default for AudioEcho {
             Feedback: 0.5f32,
             RampTime: 0f32,
             WetLevel: 0f32,
-        };
-        superclass
+        }
     }
 }
 #[derive(Debug, Clone)]
@@ -2151,7 +2120,7 @@ impl Default for AudioEmitter {
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
         };
-        let superclass = AudioEmitter {
+        Self {
             superclass,
             AcousticSimulationEnabled: true,
             AngleAttenuation: b"\0".as_slice().into(),
@@ -2159,8 +2128,7 @@ impl Default for AudioEmitter {
             DistanceAttenuation: b"\0".as_slice().into(),
             PositionOverride: Ref::none(),
             SimulationFidelity: enums::AudioSimulationFidelity::Automatic,
-        };
-        superclass
+        }
     }
 }
 #[derive(Debug, Clone)]
@@ -2187,15 +2155,14 @@ impl Default for AudioEqualizer {
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
         };
-        let superclass = AudioEqualizer {
+        Self {
             superclass,
             Bypass: false,
             HighGain: 0f32,
             LowGain: 0f32,
             MidGain: 0f32,
             MidRange: NumberRange::new(400f32, 4000f32),
-        };
-        superclass
+        }
     }
 }
 #[derive(Debug, Clone)]
@@ -2219,12 +2186,11 @@ impl Default for AudioFader {
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
         };
-        let superclass = AudioFader {
+        Self {
             superclass,
             Bypass: false,
             Volume: 1f32,
-        };
-        superclass
+        }
     }
 }
 #[derive(Debug, Clone)]
@@ -2251,15 +2217,14 @@ impl Default for AudioFilter {
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
         };
-        let superclass = AudioFilter {
+        Self {
             superclass,
             Bypass: false,
             FilterType: enums::AudioFilterType::Peak,
             Frequency: 2000f32,
             Gain: 0f32,
             Q: 0.707f32,
-        };
-        superclass
+        }
     }
 }
 #[derive(Debug, Clone)]
@@ -2285,14 +2250,13 @@ impl Default for AudioFlanger {
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
         };
-        let superclass = AudioFlanger {
+        Self {
             superclass,
             Bypass: false,
             Depth: 0.45f32,
             Mix: 0.85f32,
             Rate: 5f32,
-        };
-        superclass
+        }
     }
 }
 #[derive(Debug, Clone)]
@@ -2326,14 +2290,13 @@ impl Default for AudioGate {
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
         };
-        let superclass = AudioGate {
+        Self {
             superclass,
             Attack: 0.01f32,
             Bypass: false,
             Release: 0.1f32,
             Threshold: NumberRange::new(-36f32, -24f32),
-        };
-        superclass
+        }
     }
 }
 #[derive(Debug, Clone)]
@@ -2358,13 +2321,12 @@ impl Default for AudioLimiter {
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
         };
-        let superclass = AudioLimiter {
+        Self {
             superclass,
             Bypass: false,
             MaxLevel: 0f32,
             Release: 0.01f32,
-        };
-        superclass
+        }
     }
 }
 #[derive(Debug, Clone)]
@@ -2392,7 +2354,7 @@ impl Default for AudioListener {
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
         };
-        let superclass = AudioListener {
+        Self {
             superclass,
             AcousticSimulationEnabled: true,
             AngleAttenuation: b"\0".as_slice().into(),
@@ -2400,8 +2362,7 @@ impl Default for AudioListener {
             DistanceAttenuation: b"\0".as_slice().into(),
             PositionOverride: Ref::none(),
             SimulationFidelity: enums::AudioSimulationFidelity::Automatic,
-        };
-        superclass
+        }
     }
 }
 #[derive(Debug, Clone)]
@@ -2434,13 +2395,12 @@ impl Default for AudioPitchShifter {
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
         };
-        let superclass = AudioPitchShifter {
+        Self {
             superclass,
             Bypass: false,
             Pitch: 1.25f32,
             WindowSize: enums::AudioWindowSize::Medium,
-        };
-        superclass
+        }
     }
 }
 #[derive(Debug, Clone)]
@@ -2472,7 +2432,7 @@ impl Default for AudioPlayer {
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
         };
-        let superclass = AudioPlayer {
+        Self {
             superclass,
             AudioContent: Content::none(),
             AutoLoad: true,
@@ -2484,8 +2444,7 @@ impl Default for AudioPlayer {
             PlaybackSpeed: 1f64,
             TimePosition: 0f64,
             Volume: 1f32,
-        };
-        superclass
+        }
     }
 }
 #[derive(Debug, Clone)]
@@ -2508,11 +2467,10 @@ impl Default for AudioRecorder {
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
         };
-        let superclass = AudioRecorder {
+        Self {
             superclass,
             IsRecording: false,
-        };
-        superclass
+        }
     }
 }
 #[derive(Debug, Clone)]
@@ -2547,7 +2505,7 @@ impl Default for AudioReverb {
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
         };
-        let superclass = AudioReverb {
+        Self {
             superclass,
             Bypass: false,
             DecayRatio: 0.5f32,
@@ -2562,8 +2520,7 @@ impl Default for AudioReverb {
             LowShelfGain: 0f32,
             ReferenceFrequency: 5000f32,
             WetLevel: -6f32,
-        };
-        superclass
+        }
     }
 }
 #[derive(Debug, Clone)]
@@ -2593,7 +2550,7 @@ impl Default for AudioSearchParams {
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
         };
-        let superclass = AudioSearchParams {
+        Self {
             superclass,
             Album: "".to_owned(),
             Artist: "".to_owned(),
@@ -2603,8 +2560,7 @@ impl Default for AudioSearchParams {
             SearchKeyword: "".to_owned(),
             Tag: "".to_owned(),
             Title: "".to_owned(),
-        };
-        superclass
+        }
     }
 }
 #[derive(Debug, Clone)]
@@ -2628,12 +2584,11 @@ impl Default for AudioSpeechToText {
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
         };
-        let superclass = AudioSpeechToText {
+        Self {
             superclass,
             Enabled: false,
             Text: "".to_owned(),
-        };
-        superclass
+        }
     }
 }
 #[derive(Debug, Clone)]
@@ -2663,7 +2618,7 @@ impl Default for AudioTextToSpeech {
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
         };
-        let superclass = AudioTextToSpeech {
+        Self {
             superclass,
             Looping: false,
             Pitch: 0f32,
@@ -2673,8 +2628,7 @@ impl Default for AudioTextToSpeech {
             TimePosition: 0f64,
             VoiceId: "".to_owned(),
             Volume: 1f32,
-        };
-        superclass
+        }
     }
 }
 #[derive(Debug, Clone)]
@@ -2703,7 +2657,7 @@ impl Default for AudioTremolo {
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
         };
-        let superclass = AudioTremolo {
+        Self {
             superclass,
             Bypass: false,
             Depth: 1f32,
@@ -2712,8 +2666,7 @@ impl Default for AudioTremolo {
             Shape: 0f32,
             Skew: 0f32,
             Square: 0f32,
-        };
-        superclass
+        }
     }
 }
 #[derive(Debug, Clone)]
@@ -2745,7 +2698,7 @@ impl Default for AuroraScript {
             superclass,
             ScriptGuid: "".to_owned(),
         };
-        let superclass = AuroraScript {
+        Self {
             superclass,
             AuroraScriptBindingsSerialize: b"".as_slice().into(),
             EnableCulling: false,
@@ -2753,8 +2706,7 @@ impl Default for AuroraScript {
             LodCriticality: 0i32,
             Priority: 0i32,
             Source: "".to_owned(),
-        };
-        superclass
+        }
     }
 }
 #[derive(Debug, Clone)]
@@ -2781,15 +2733,14 @@ impl Default for AuroraScriptObject {
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
         };
-        let superclass = AuroraScriptObject {
+        Self {
             superclass,
             BehaviorWeak: Ref::none(),
             BoundInstanceWeak: Ref::none(),
             FrameId: 0i32,
             LodLevel: 0i32,
             PriorFrameInvoked: 0i32,
-        };
-        superclass
+        }
     }
 }
 #[derive(Debug, Clone)]
@@ -2823,14 +2774,13 @@ impl Default for AuroraService {
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
         };
-        let superclass = AuroraService {
+        Self {
             superclass,
             HashRoundingPoint: 0f64,
             IgnoreRotation: false,
             LockStepIdOffset: false,
             RollbackOffset: 0i32,
-        };
-        superclass
+        }
     }
 }
 #[derive(Debug, Clone)]
@@ -2874,7 +2824,7 @@ impl Default for AvatarAccessoryRules {
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
         };
-        let superclass = AvatarAccessoryRules {
+        Self {
             superclass,
             AccessoryMode: enums::AvatarSettingsAccessoryMode::PlayerChoice,
             CustomAccessoryMode: enums::AvatarSettingsCustomAccessoryMode::PlayerChoice,
@@ -2898,8 +2848,7 @@ impl Default for AvatarAccessoryRules {
             EnableVfx: true,
             LimitBounds: Vector3::new(0f32, 0f32, 0f32),
             LimitMethod: enums::AvatarSettingsAccessoryLimitMethod::Remove,
-        };
-        superclass
+        }
     }
 }
 #[derive(Debug, Clone)]
@@ -2943,7 +2892,7 @@ impl Default for AvatarAnimationRules {
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
         };
-        let superclass = AvatarAnimationRules {
+        Self {
             superclass,
             AnimationClipsMode: enums::AvatarSettingsAnimationClipsMode::PlayerChoice,
             AnimationPacksMode: enums::AvatarSettingsAnimationPacksMode::PlayerChoice,
@@ -2967,8 +2916,7 @@ impl Default for AvatarAnimationRules {
             CustomSwimIdleAnimationId: 0i64,
             CustomWalkAnimationEnabled: false,
             CustomWalkAnimationId: 0i64,
-        };
-        superclass
+        }
     }
 }
 #[derive(Debug, Clone)]
@@ -3022,7 +2970,7 @@ impl Default for AvatarBodyRules {
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
         };
-        let superclass = AvatarBodyRules {
+        Self {
             superclass,
             AppearanceMode: enums::AvatarSettingsAppearanceMode::PlayerChoice,
             BuildMode: enums::AvatarSettingsBuildMode::PlayerChoice,
@@ -3056,8 +3004,7 @@ impl Default for AvatarBodyRules {
             CustomWidthScale: NumberRange::new(0.7f32, 1f32),
             KeepPlayerHead: true,
             ScaleMode: enums::AvatarSettingsScaleMode::PlayerChoice,
-        };
-        superclass
+        }
     }
 }
 #[derive(Debug, Clone)]
@@ -3114,7 +3061,7 @@ impl Default for AvatarClothingRules {
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
         };
-        let superclass = AvatarClothingRules {
+        Self {
             superclass,
             ClothingMode: enums::AvatarSettingsClothingMode::PlayerChoice,
             CustomClassicPantsAccessoryEnabled: false,
@@ -3143,8 +3090,7 @@ impl Default for AvatarClothingRules {
             CustomTShirtAccessoryEnabled: false,
             CustomTShirtAccessoryId: 0i64,
             LimitBounds: Vector3::new(0f32, 0f32, 0f32),
-        };
-        superclass
+        }
     }
 }
 #[derive(Debug, Clone)]
@@ -3170,14 +3116,13 @@ impl Default for AvatarCollisionRules {
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
         };
-        let superclass = AvatarCollisionRules {
+        Self {
             superclass,
             CollisionMode: enums::AvatarSettingsCollisionMode::Default,
             HitAndTouchDetectionMode: enums::AvatarSettingsHitAndTouchDetectionMode::UseParts,
             LegacyCollisionMode: enums::AvatarSettingsLegacyCollisionMode::InnerBoxColliders,
             SingleColliderSize: Vector3::new(2f32, 3f32, 1f32),
-        };
-        superclass
+        }
     }
 }
 #[derive(Debug, Clone)]
@@ -3224,11 +3169,10 @@ impl Default for AvatarRules {
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
         };
-        let superclass = AvatarRules {
+        Self {
             superclass,
             AvatarType: enums::GameAvatarType::R15,
-        };
-        superclass
+        }
     }
 }
 #[derive(Debug, Clone)]
@@ -3280,11 +3224,10 @@ impl Default for BackpackItem {
             SlimHash: SharedString::new(b"".to_vec()),
             WorldPivotData: None,
         };
-        let superclass = BackpackItem {
+        Self {
             superclass,
             TextureContent: Content::none(),
-        };
-        superclass
+        }
     }
 }
 #[derive(Debug, Clone)]
@@ -3330,7 +3273,7 @@ impl Default for BallSocketConstraint {
             Enabled: false,
             Visible: false,
         };
-        let superclass = BallSocketConstraint {
+        Self {
             superclass,
             LimitsEnabled: false,
             MaxFrictionTorqueXml: 0f32,
@@ -3340,8 +3283,7 @@ impl Default for BallSocketConstraint {
             TwistLowerAngle: -45f32,
             TwistUpperAngle: 45f32,
             UpperAngle: 45f32,
-        };
-        superclass
+        }
     }
 }
 #[derive(Debug, Clone)]
@@ -3373,12 +3315,11 @@ impl Default for BaseImportData {
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
         };
-        let superclass = BaseImportData {
+        Self {
             superclass,
             ImportName: "".to_owned(),
             ShouldImport: false,
-        };
-        superclass
+        }
     }
 }
 #[derive(Debug, Clone)]
@@ -3445,7 +3386,7 @@ impl Default for BasePart {
             UniqueId: UniqueId::nil(),
         };
         let superclass = PVInstance { superclass };
-        let superclass = BasePart {
+        Self {
             superclass,
             Anchored: false,
             AudioCanCollide: false,
@@ -3491,8 +3432,7 @@ impl Default for BasePart {
             TopSurfaceInput: enums::InputType::NoInput,
             Transparency: 0f32,
             Velocity: Vector3::new(0f32, 0f32, 0f32),
-        };
-        superclass
+        }
     }
 }
 #[derive(Debug, Clone)]
@@ -3537,13 +3477,12 @@ impl Default for BaseScript {
             superclass,
             ScriptGuid: "".to_owned(),
         };
-        let superclass = BaseScript {
+        Self {
             superclass,
             Disabled: false,
             LinkedSource: "".into(),
             RunContext: enums::RunContext::Legacy,
-        };
-        superclass
+        }
     }
 }
 #[derive(Debug, Clone)]
@@ -3572,7 +3511,7 @@ impl Default for BaseWrap {
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
         };
-        let superclass = BaseWrap {
+        Self {
             superclass,
             CageMeshContent: Content::none(),
             CageOrigin: CFrame::identity(),
@@ -3581,8 +3520,7 @@ impl Default for BaseWrap {
             HsrMeshIdData: SharedString::new(b"".to_vec()),
             ImportOrigin: CFrame::identity(),
             TemporaryCageMeshId: "".into(),
-        };
-        superclass
+        }
     }
 }
 #[derive(Debug, Clone)]
@@ -3623,7 +3561,7 @@ impl Default for Beam {
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
         };
-        let superclass = Beam {
+        Self {
             superclass,
             Attachment0: Ref::none(),
             Attachment1: Ref::none(),
@@ -3654,8 +3592,7 @@ impl Default for Beam {
             Width0: 1f32,
             Width1: 1f32,
             ZOffset: 0f32,
-        };
-        superclass
+        }
     }
 }
 #[derive(Debug, Clone)]
@@ -3686,13 +3623,12 @@ impl Default for BevelMesh {
             Scale: Vector3::new(0f32, 0f32, 0f32),
             VertexColor: Vector3::new(0f32, 0f32, 0f32),
         };
-        let superclass = BevelMesh {
+        Self {
             superclass,
             Bevel: 0f32,
             BevelRoundness: 0f32,
             Bulge: 0f32,
-        };
-        superclass
+        }
     }
 }
 #[derive(Debug, Clone)]
@@ -3747,7 +3683,7 @@ impl Default for BillboardGui {
             ResetOnSpawn: false,
             ZIndexBehavior: enums::ZIndexBehavior::Global,
         };
-        let superclass = BillboardGui {
+        Self {
             superclass,
             Active: false,
             Adornee: Ref::none(),
@@ -3765,8 +3701,7 @@ impl Default for BillboardGui {
             SizeOffset: Vector2::new(0f32, 0f32),
             StudsOffset: Vector3::new(0f32, 0f32, 0f32),
             StudsOffsetWorldSpace: Vector3::new(0f32, 0f32, 0f32),
-        };
-        superclass
+        }
     }
 }
 #[derive(Debug, Clone)]
@@ -3790,11 +3725,10 @@ impl Default for BinaryStringValue {
             UniqueId: UniqueId::nil(),
         };
         let superclass = ValueBase { superclass };
-        let superclass = BinaryStringValue {
+        Self {
             superclass,
             Value: b"".as_slice().into(),
-        };
-        superclass
+        }
     }
 }
 #[derive(Debug, Clone)]
@@ -3847,13 +3781,12 @@ impl Default for BloomEffect {
             superclass,
             Enabled: false,
         };
-        let superclass = BloomEffect {
+        Self {
             superclass,
             Intensity: 0.4f32,
             Size: 24f32,
             Threshold: 0.95f32,
-        };
-        superclass
+        }
     }
 }
 #[derive(Debug, Clone)]
@@ -3880,11 +3813,10 @@ impl Default for BlurEffect {
             superclass,
             Enabled: false,
         };
-        let superclass = BlurEffect {
+        Self {
             superclass,
             Size: 24f32,
-        };
-        superclass
+        }
     }
 }
 #[derive(Debug, Clone)]
@@ -3910,13 +3842,12 @@ impl Default for BodyAngularVelocity {
             UniqueId: UniqueId::nil(),
         };
         let superclass = BodyMover { superclass };
-        let superclass = BodyAngularVelocity {
+        Self {
             superclass,
             AngularVelocity: Vector3::new(0f32, 2f32, 0f32),
             MaxTorque: Vector3::new(4000f32, 4000f32, 4000f32),
             P: 1250f32,
-        };
-        superclass
+        }
     }
 }
 #[derive(Debug, Clone)]
@@ -3945,7 +3876,7 @@ impl Default for BodyColors {
             UniqueId: UniqueId::nil(),
         };
         let superclass = CharacterAppearance { superclass };
-        let superclass = BodyColors {
+        Self {
             superclass,
             HeadColor3: Color3::new(0.9921569f32, 0.9176471f32, 0.5529412f32),
             LeftArmColor3: Color3::new(0.9921569f32, 0.9176471f32, 0.5529412f32),
@@ -3953,8 +3884,7 @@ impl Default for BodyColors {
             RightArmColor3: Color3::new(0.9921569f32, 0.9176471f32, 0.5529412f32),
             RightLegColor3: Color3::new(0.050980397f32, 0.41176474f32, 0.6745098f32),
             TorsoColor3: Color3::new(0.15686275f32, 0.49803925f32, 0.2784314f32),
-        };
-        superclass
+        }
     }
 }
 #[derive(Debug, Clone)]
@@ -3978,11 +3908,10 @@ impl Default for BodyForce {
             UniqueId: UniqueId::nil(),
         };
         let superclass = BodyMover { superclass };
-        let superclass = BodyForce {
+        Self {
             superclass,
             Force: Vector3::new(0f32, 1f32, 0f32),
-        };
-        superclass
+        }
     }
 }
 #[derive(Debug, Clone)]
@@ -4009,14 +3938,13 @@ impl Default for BodyGyro {
             UniqueId: UniqueId::nil(),
         };
         let superclass = BodyMover { superclass };
-        let superclass = BodyGyro {
+        Self {
             superclass,
             CFrame: CFrame::identity(),
             D: 500f32,
             MaxTorque: Vector3::new(400000f32, 0f32, 400000f32),
             P: 3000f32,
-        };
-        superclass
+        }
     }
 }
 #[derive(Debug, Clone)]
@@ -4051,15 +3979,14 @@ impl Default for BodyPartDescription {
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
         };
-        let superclass = BodyPartDescription {
+        Self {
             superclass,
             AssetId: 0i64,
             BodyPart: enums::BodyPart::Head,
             Color: Color3::new(0f32, 0f32, 0f32),
             HeadShape: "".to_owned(),
             Instance: Ref::none(),
-        };
-        superclass
+        }
     }
 }
 #[derive(Debug, Clone)]
@@ -4086,14 +4013,13 @@ impl Default for BodyPosition {
             UniqueId: UniqueId::nil(),
         };
         let superclass = BodyMover { superclass };
-        let superclass = BodyPosition {
+        Self {
             superclass,
             D: 1250f32,
             MaxForce: Vector3::new(4000f32, 4000f32, 4000f32),
             P: 10000f32,
             Position: Vector3::new(0f32, 50f32, 0f32),
-        };
-        superclass
+        }
     }
 }
 #[derive(Debug, Clone)]
@@ -4118,12 +4044,11 @@ impl Default for BodyThrust {
             UniqueId: UniqueId::nil(),
         };
         let superclass = BodyMover { superclass };
-        let superclass = BodyThrust {
+        Self {
             superclass,
             Force: Vector3::new(0f32, 1f32, 0f32),
             Location: Vector3::new(0f32, 0f32, 0f32),
-        };
-        superclass
+        }
     }
 }
 #[derive(Debug, Clone)]
@@ -4149,13 +4074,12 @@ impl Default for BodyVelocity {
             UniqueId: UniqueId::nil(),
         };
         let superclass = BodyMover { superclass };
-        let superclass = BodyVelocity {
+        Self {
             superclass,
             MaxForce: Vector3::new(4000f32, 4000f32, 4000f32),
             P: 1250f32,
             Velocity: Vector3::new(0f32, 2f32, 0f32),
-        };
-        superclass
+        }
     }
 }
 #[derive(Debug, Clone)]
@@ -4187,11 +4111,10 @@ impl Default for BoolValue {
             UniqueId: UniqueId::nil(),
         };
         let superclass = ValueBase { superclass };
-        let superclass = BoolValue {
+        Self {
             superclass,
             Value: false,
-        };
-        superclass
+        }
     }
 }
 #[derive(Debug, Clone)]
@@ -4234,12 +4157,11 @@ impl Default for BoxHandleAdornment {
             SizeRelativeOffset: Vector3::new(0f32, 0f32, 0f32),
             ZIndex: 0i32,
         };
-        let superclass = BoxHandleAdornment {
+        Self {
             superclass,
             Shading: enums::AdornShading::Default,
             Size: Vector3::new(1f32, 1f32, 1f32),
-        };
-        superclass
+        }
     }
 }
 #[derive(Debug, Clone)]
@@ -4271,11 +4193,10 @@ impl Default for BrickColorValue {
             UniqueId: UniqueId::nil(),
         };
         let superclass = ValueBase { superclass };
-        let superclass = BrickColorValue {
+        Self {
             superclass,
             Value: BrickColor::from_number(194u16).unwrap(),
-        };
-        superclass
+        }
     }
 }
 #[derive(Debug, Clone)]
@@ -4322,7 +4243,7 @@ impl Default for BubbleChatConfiguration {
             UniqueId: UniqueId::nil(),
         };
         let superclass = TextChatConfigurations { superclass };
-        let superclass = BubbleChatConfiguration {
+        Self {
             superclass,
             AdorneeName: "HumanoidRootPart".to_owned(),
             BackgroundColor3: Color3::new(0.98039216f32, 0.98039216f32, 0.98039216f32),
@@ -4340,8 +4261,7 @@ impl Default for BubbleChatConfiguration {
             TextColor3: Color3::new(0.22352941f32, 0.23137255f32, 0.23921569f32),
             TextSize: 16i64,
             VerticalStudsOffset: 0f32,
-        };
-        superclass
+        }
     }
 }
 #[derive(Debug, Clone)]
@@ -4393,12 +4313,11 @@ impl Default for BuoyancySensor {
             superclass,
             UpdateType: enums::SensorUpdateType::OnRead,
         };
-        let superclass = BuoyancySensor {
+        Self {
             superclass,
             FullySubmerged: false,
             TouchingSurface: false,
-        };
-        superclass
+        }
     }
 }
 #[derive(Debug, Clone)]
@@ -4422,11 +4341,10 @@ impl Default for CFrameValue {
             UniqueId: UniqueId::nil(),
         };
         let superclass = ValueBase { superclass };
-        let superclass = CFrameValue {
+        Self {
             superclass,
             Value: CFrame::identity(),
-        };
-        superclass
+        }
     }
 }
 #[derive(Debug, Clone)]
@@ -4482,7 +4400,7 @@ impl Default for Camera {
             UniqueId: UniqueId::nil(),
         };
         let superclass = PVInstance { superclass };
-        let superclass = Camera {
+        Self {
             superclass,
             CFrame: CFrame::new(
                 Vector3::new(0f32, 20f32, 20f32),
@@ -4507,8 +4425,7 @@ impl Default for Camera {
             HeadLocked: true,
             HeadScale: 1f32,
             VrTiltAndRollEnabled: false,
-        };
-        superclass
+        }
     }
 }
 #[derive(Debug, Clone)]
@@ -4571,12 +4488,11 @@ impl Default for CanvasGroup {
             Visible: false,
             ZIndex: 0i32,
         };
-        let superclass = CanvasGroup {
+        Self {
             superclass,
             GroupColor3: Color3::new(1f32, 1f32, 1f32),
             GroupTransparency: 0f32,
-        };
-        superclass
+        }
     }
 }
 #[derive(Debug, Clone)]
@@ -4653,11 +4569,10 @@ impl Default for ChannelSelectorSoundEffect {
             Priority: 0i32,
         };
         let superclass = CustomSoundEffect { superclass };
-        let superclass = ChannelSelectorSoundEffect {
+        Self {
             superclass,
             Channel: 1i32,
-        };
-        superclass
+        }
     }
 }
 #[derive(Debug, Clone)]
@@ -4690,7 +4605,7 @@ impl Default for ChannelTabsConfiguration {
             UniqueId: UniqueId::nil(),
         };
         let superclass = TextChatConfigurations { superclass };
-        let superclass = ChannelTabsConfiguration {
+        Self {
             superclass,
             BackgroundColor3: Color3::new(0.09803922f32, 0.105882354f32, 0.11372549f32),
             BackgroundTransparency: 0f64,
@@ -4702,8 +4617,7 @@ impl Default for ChannelTabsConfiguration {
             TextSize: 18i64,
             TextStrokeColor3: Color3::new(0f32, 0f32, 0f32),
             TextStrokeTransparency: 1f64,
-        };
-        superclass
+        }
     }
 }
 #[derive(Debug, Clone)]
@@ -4738,14 +4652,13 @@ impl Default for CharacterMesh {
             UniqueId: UniqueId::nil(),
         };
         let superclass = CharacterAppearance { superclass };
-        let superclass = CharacterMesh {
+        Self {
             superclass,
             BaseTextureId: 0i64,
             BodyPart: enums::BodyPart::Head,
             MeshId: 0i64,
             OverlayTextureId: 0i64,
-        };
-        superclass
+        }
     }
 }
 #[derive(Debug, Clone)]
@@ -4770,13 +4683,12 @@ impl Default for Chat {
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
         };
-        let superclass = Chat {
+        Self {
             superclass,
             BubbleChatEnabled: false,
             IsAutoMigrated: false,
             LoadDefaultChat: true,
-        };
-        superclass
+        }
     }
 }
 #[derive(Debug, Clone)]
@@ -4811,7 +4723,7 @@ impl Default for ChatInputBarConfiguration {
             UniqueId: UniqueId::nil(),
         };
         let superclass = TextChatConfigurations { superclass };
-        let superclass = ChatInputBarConfiguration {
+        Self {
             superclass,
             AutocompleteEnabled: true,
             BackgroundColor3: Color3::new(0.09803922f32, 0.105882354f32, 0.11372549f32),
@@ -4825,8 +4737,7 @@ impl Default for ChatInputBarConfiguration {
             TextSize: 14i64,
             TextStrokeColor3: Color3::new(0f32, 0f32, 0f32),
             TextStrokeTransparency: 0.5f64,
-        };
-        superclass
+        }
     }
 }
 #[derive(Debug, Clone)]
@@ -4861,7 +4772,7 @@ impl Default for ChatWindowConfiguration {
             UniqueId: UniqueId::nil(),
         };
         let superclass = TextChatConfigurations { superclass };
-        let superclass = ChatWindowConfiguration {
+        Self {
             superclass,
             BackgroundColor3: Color3::new(0.09803922f32, 0.105882354f32, 0.11372549f32),
             BackgroundTransparency: 0.3f64,
@@ -4875,8 +4786,7 @@ impl Default for ChatWindowConfiguration {
             TextStrokeTransparency: 0.5f64,
             VerticalAlignment: enums::VerticalAlignment::Top,
             WidthScale: 1f32,
-        };
-        superclass
+        }
     }
 }
 #[derive(Debug, Clone)]
@@ -4922,13 +4832,12 @@ impl Default for ChorusSoundEffect {
             Enabled: false,
             Priority: 0i32,
         };
-        let superclass = ChorusSoundEffect {
+        Self {
             superclass,
             Depth: 0.15f32,
             Mix: 0.5f32,
             Rate: 0.5f32,
-        };
-        superclass
+        }
     }
 }
 #[derive(Debug, Clone)]
@@ -4952,12 +4861,11 @@ impl Default for ClickDetector {
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
         };
-        let superclass = ClickDetector {
+        Self {
             superclass,
             CursorIconContent: Content::none(),
             MaxActivationDistance: 32f32,
-        };
-        superclass
+        }
     }
 }
 #[derive(Debug, Clone)]
@@ -4996,14 +4904,13 @@ impl Default for ClimbController {
             BalanceRigidityEnabled: false,
             MoveSpeedFactor: 0f32,
         };
-        let superclass = ClimbController {
+        Self {
             superclass,
             AccelerationTime: 0f32,
             BalanceMaxTorque: 10000f32,
             BalanceSpeed: 100f32,
             MoveMaxForce: 10000f32,
-        };
-        superclass
+        }
     }
 }
 #[derive(Debug, Clone)]
@@ -5027,11 +4934,10 @@ impl Default for Clothing {
             UniqueId: UniqueId::nil(),
         };
         let superclass = CharacterAppearance { superclass };
-        let superclass = Clothing {
+        Self {
             superclass,
             Color3: Color3::new(0f32, 0f32, 0f32),
-        };
-        superclass
+        }
     }
 }
 #[derive(Debug, Clone)]
@@ -5073,14 +4979,13 @@ impl Default for Clouds {
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
         };
-        let superclass = Clouds {
+        Self {
             superclass,
             Color: Color3::new(1f32, 1f32, 1f32),
             Cover: 0.5f32,
             Density: 0.7f32,
             Enabled: true,
-        };
-        superclass
+        }
     }
 }
 #[derive(Debug, Clone)]
@@ -5136,11 +5041,10 @@ impl Default for Color3Value {
             UniqueId: UniqueId::nil(),
         };
         let superclass = ValueBase { superclass };
-        let superclass = Color3Value {
+        Self {
             superclass,
             Value: Color3::new(0f32, 0f32, 0f32),
-        };
-        superclass
+        }
     }
 }
 #[derive(Debug, Clone)]
@@ -5170,14 +5074,13 @@ impl Default for ColorCorrectionEffect {
             superclass,
             Enabled: false,
         };
-        let superclass = ColorCorrectionEffect {
+        Self {
             superclass,
             Brightness: 0f32,
             Contrast: 0f32,
             Saturation: 0f32,
             TintColor: Color3::new(1f32, 1f32, 1f32),
-        };
-        superclass
+        }
     }
 }
 #[derive(Debug, Clone)]
@@ -5204,11 +5107,10 @@ impl Default for ColorGradingEffect {
             superclass,
             Enabled: false,
         };
-        let superclass = ColorGradingEffect {
+        Self {
             superclass,
             TonemapperPreset: enums::TonemapperPreset::Default,
-        };
-        superclass
+        }
     }
 }
 #[derive(Debug, Clone)]
@@ -5249,7 +5151,7 @@ impl Default for CompressorSoundEffect {
             Enabled: false,
             Priority: 0i32,
         };
-        let superclass = CompressorSoundEffect {
+        Self {
             superclass,
             Attack: 0.1f32,
             GainMakeup: 0f32,
@@ -5257,8 +5159,7 @@ impl Default for CompressorSoundEffect {
             Release: 0.1f32,
             SideChain: Ref::none(),
             Threshold: -40f32,
-        };
-        superclass
+        }
     }
 }
 #[derive(Debug, Clone)]
@@ -5303,14 +5204,13 @@ impl Default for ConeHandleAdornment {
             SizeRelativeOffset: Vector3::new(0f32, 0f32, 0f32),
             ZIndex: 0i32,
         };
-        let superclass = ConeHandleAdornment {
+        Self {
             superclass,
             Height: 2f32,
             Hollow: false,
             Radius: 0.5f32,
             Shading: enums::AdornShading::Default,
-        };
-        superclass
+        }
     }
 }
 #[derive(Debug, Clone)]
@@ -5377,15 +5277,14 @@ impl Default for Constraint {
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
         };
-        let superclass = Constraint {
+        Self {
             superclass,
             Attachment0: Ref::none(),
             Attachment1: Ref::none(),
             Color: BrickColor::from_number(194u16).unwrap(),
             Enabled: false,
             Visible: false,
-        };
-        superclass
+        }
     }
 }
 #[derive(Debug, Clone)]
@@ -5433,12 +5332,11 @@ impl Default for ControllerBase {
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
         };
-        let superclass = ControllerBase {
+        Self {
             superclass,
             BalanceRigidityEnabled: false,
             MoveSpeedFactor: 0f32,
-        };
-        superclass
+        }
     }
 }
 #[derive(Debug, Clone)]
@@ -5469,7 +5367,7 @@ impl Default for ControllerManager {
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
         };
-        let superclass = ControllerManager {
+        Self {
             superclass,
             ActiveController: Ref::none(),
             BaseMoveSpeed: 16f32,
@@ -5480,8 +5378,7 @@ impl Default for ControllerManager {
             MovingDirection: Vector3::new(0f32, 0f32, 0f32),
             RootPart: Ref::none(),
             UpDirection: Vector3::new(0f32, 1f32, 0f32),
-        };
-        superclass
+        }
     }
 }
 #[derive(Debug, Clone)]
@@ -5513,15 +5410,14 @@ impl Default for ControllerPartSensor {
             UpdateType: enums::SensorUpdateType::OnRead,
         };
         let superclass = ControllerSensor { superclass };
-        let superclass = ControllerPartSensor {
+        Self {
             superclass,
             HitFrame: CFrame::identity(),
             HitNormal: Vector3::new(0f32, 0f32, 0f32),
             SearchDistance: 0f32,
             SensedPart: Ref::none(),
             SensorMode: enums::SensorMode::Floor,
-        };
-        superclass
+        }
     }
 }
 #[derive(Debug, Clone)]
@@ -5577,11 +5473,10 @@ impl Default for CoreGui {
             UniqueId: UniqueId::nil(),
         };
         let superclass = BasePlayerGui { superclass };
-        let superclass = CoreGui {
+        Self {
             superclass,
             SelectionImageObject: Ref::none(),
-        };
-        superclass
+        }
     }
 }
 #[derive(Debug, Clone)]
@@ -5676,11 +5571,10 @@ impl Default for CustomEvent {
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
         };
-        let superclass = CustomEvent {
+        Self {
             superclass,
             PersistedCurrentValue: 0f32,
-        };
-        superclass
+        }
     }
 }
 #[derive(Debug, Clone)]
@@ -5703,11 +5597,10 @@ impl Default for CustomEventReceiver {
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
         };
-        let superclass = CustomEventReceiver {
+        Self {
             superclass,
             Source: Ref::none(),
-        };
-        superclass
+        }
     }
 }
 #[derive(Debug, Clone)]
@@ -5769,15 +5662,14 @@ impl Default for CylinderHandleAdornment {
             SizeRelativeOffset: Vector3::new(0f32, 0f32, 0f32),
             ZIndex: 0i32,
         };
-        let superclass = CylinderHandleAdornment {
+        Self {
             superclass,
             Angle: 360f32,
             Height: 1f32,
             InnerRadius: 0f32,
             Radius: 1f32,
             Shading: enums::AdornShading::Default,
-        };
-        superclass
+        }
     }
 }
 #[derive(Debug, Clone)]
@@ -5847,7 +5739,7 @@ impl Default for CylindricalConstraint {
             UpperLimit: 0f32,
             Velocity: 0f32,
         };
-        let superclass = CylindricalConstraint {
+        Self {
             superclass,
             AngularActuatorType: enums::ActuatorType::None,
             AngularLimitsEnabled: false,
@@ -5864,8 +5756,7 @@ impl Default for CylindricalConstraint {
             SoftlockAngularServoUponReachingTarget: false,
             TargetAngle: 0f32,
             UpperAngle: 45f32,
-        };
-        superclass
+        }
     }
 }
 #[derive(Debug, Clone)]
@@ -5898,13 +5789,12 @@ impl Default for DataModelMesh {
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
         };
-        let superclass = DataModelMesh {
+        Self {
             superclass,
             Offset: Vector3::new(0f32, 0f32, 0f32),
             Scale: Vector3::new(0f32, 0f32, 0f32),
             VertexColor: Vector3::new(0f32, 0f32, 0f32),
-        };
-        superclass
+        }
     }
 }
 #[derive(Debug, Clone)]
@@ -5951,11 +5841,10 @@ impl Default for DataStoreGetOptions {
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
         };
-        let superclass = DataStoreGetOptions {
+        Self {
             superclass,
             UseCache: false,
-        };
-        superclass
+        }
     }
 }
 #[derive(Debug, Clone)]
@@ -6034,11 +5923,10 @@ impl Default for DataStoreOptions {
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
         };
-        let superclass = DataStoreOptions {
+        Self {
             superclass,
             AllScopes: false,
-        };
-        superclass
+        }
     }
 }
 #[derive(Debug, Clone)]
@@ -6070,12 +5958,11 @@ impl Default for DataStoreService {
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
         };
-        let superclass = DataStoreService {
+        Self {
             superclass,
             AutomaticRetry: true,
             LegacyNamingScheme: false,
-        };
-        superclass
+        }
     }
 }
 #[derive(Debug, Clone)]
@@ -6114,11 +6001,10 @@ impl Default for Debris {
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
         };
-        let superclass = Debris {
+        Self {
             superclass,
             MaxItems: 1000i32,
-        };
-        superclass
+        }
     }
 }
 #[derive(Debug, Clone)]
@@ -6143,13 +6029,12 @@ impl Default for DebugSettings {
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
         };
-        let superclass = DebugSettings {
+        Self {
             superclass,
             IsScriptStackTracingEnabled: false,
             ReportSoundWarnings: false,
             TickCountPreciseOverride: enums::TickCountSampleMethod::Fast,
-        };
-        superclass
+        }
     }
 }
 #[derive(Debug, Clone)]
@@ -6185,7 +6070,7 @@ impl Default for DebuggerBreakpoint {
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
         };
-        let superclass = DebuggerBreakpoint {
+        Self {
             superclass,
             Condition: "".to_owned(),
             ContinueExecution: false,
@@ -6193,8 +6078,7 @@ impl Default for DebuggerBreakpoint {
             IsEnabled: false,
             Line: 0i32,
             LogExpression: "".to_owned(),
-        };
-        superclass
+        }
     }
 }
 #[derive(Debug, Clone)]
@@ -6225,11 +6109,10 @@ impl Default for DebuggerConnectionManager {
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
         };
-        let superclass = DebuggerConnectionManager {
+        Self {
             superclass,
             Timeout: 0f64,
-        };
-        superclass
+        }
     }
 }
 #[derive(Debug, Clone)]
@@ -6284,11 +6167,10 @@ impl Default for DebuggerWatch {
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
         };
-        let superclass = DebuggerWatch {
+        Self {
             superclass,
             Expression: "".to_owned(),
-        };
-        superclass
+        }
     }
 }
 #[derive(Debug, Clone)]
@@ -6325,7 +6207,7 @@ impl Default for Decal {
             superclass,
             Face: enums::NormalId::Right,
         };
-        let superclass = Decal {
+        Self {
             superclass,
             Color3: Color3::new(1f32, 1f32, 1f32),
             MetalnessMapContent: Content::none(),
@@ -6338,8 +6220,7 @@ impl Default for Decal {
             UvOffset: Vector2::new(0f32, 0f32),
             UvScale: Vector2::new(1f32, 1f32),
             ZIndex: 1i32,
-        };
-        superclass
+        }
     }
 }
 #[derive(Debug, Clone)]
@@ -6369,14 +6250,13 @@ impl Default for DepthOfFieldEffect {
             superclass,
             Enabled: false,
         };
-        let superclass = DepthOfFieldEffect {
+        Self {
             superclass,
             FarIntensity: 0.75f32,
             FocusDistance: 0.05f32,
             InFocusRadius: 10f32,
             NearIntensity: 0.75f32,
-        };
-        superclass
+        }
     }
 }
 #[derive(Debug, Clone)]
@@ -6415,7 +6295,7 @@ impl Default for Dialog {
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
         };
-        let superclass = Dialog {
+        Self {
             superclass,
             BehaviorType: enums::DialogBehaviorType::SinglePlayer,
             ConversationDistance: 25f32,
@@ -6426,8 +6306,7 @@ impl Default for Dialog {
             Tone: enums::DialogTone::Neutral,
             TriggerDistance: 0f32,
             TriggerOffset: Vector3::new(0f32, 0f32, 0f32),
-        };
-        superclass
+        }
     }
 }
 #[derive(Debug, Clone)]
@@ -6453,14 +6332,13 @@ impl Default for DialogChoice {
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
         };
-        let superclass = DialogChoice {
+        Self {
             superclass,
             GoodbyeChoiceActive: true,
             GoodbyeDialog: "".to_owned(),
             ResponseDialog: "".to_owned(),
             UserDialog: "".to_owned(),
-        };
-        superclass
+        }
     }
 }
 #[derive(Debug, Clone)]
@@ -6488,11 +6366,10 @@ impl Default for DistortionSoundEffect {
             Enabled: false,
             Priority: 0i32,
         };
-        let superclass = DistortionSoundEffect {
+        Self {
             superclass,
             Level: 0.75f32,
-        };
-        superclass
+        }
     }
 }
 #[derive(Debug, Clone)]
@@ -6526,13 +6403,12 @@ impl Default for DoubleConstrainedValue {
             UniqueId: UniqueId::nil(),
         };
         let superclass = ValueBase { superclass };
-        let superclass = DoubleConstrainedValue {
+        Self {
             superclass,
             MaxValue: 1f64,
             MinValue: 0f64,
             Value: 0f64,
-        };
-        superclass
+        }
     }
 }
 #[derive(Debug, Clone)]
@@ -6589,7 +6465,7 @@ impl Default for DragDetector {
             CursorIconContent: Content::none(),
             MaxActivationDistance: 32f32,
         };
-        let superclass = DragDetector {
+        Self {
             superclass,
             ActivatedCursorIconContent: Content::none(),
             ApplyAtCenterOfMass: false,
@@ -6613,8 +6489,7 @@ impl Default for DragDetector {
             TrackballRadialPullFactor: 1f32,
             TrackballRollFactor: 1f32,
             VrSwitchKeyCode: enums::KeyCode::ButtonL2,
-        };
-        superclass
+        }
     }
 }
 #[derive(Debug, Clone)]
@@ -6661,11 +6536,10 @@ impl Default for DynamicRotate {
             Part0: Ref::none(),
             Part1: Ref::none(),
         };
-        let superclass = DynamicRotate {
+        Self {
             superclass,
             BaseAngle: 0f32,
-        };
-        superclass
+        }
     }
 }
 #[derive(Debug, Clone)]
@@ -6696,14 +6570,13 @@ impl Default for EchoSoundEffect {
             Enabled: false,
             Priority: 0i32,
         };
-        let superclass = EchoSoundEffect {
+        Self {
             superclass,
             Delay: 1f32,
             DryLevel: 0f32,
             Feedback: 0.5f32,
             WetLevel: 0f32,
-        };
-        superclass
+        }
     }
 }
 #[derive(Debug, Clone)]
@@ -6717,11 +6590,10 @@ impl_strong_instance_from!(EditableImage);
 impl Default for EditableImage {
     fn default() -> Self {
         let superclass = Object {};
-        let superclass = EditableImage {
+        Self {
             superclass,
             ImageData: b"".as_slice().into(),
-        };
-        superclass
+        }
     }
 }
 #[derive(Debug, Clone)]
@@ -6736,12 +6608,11 @@ impl_strong_instance_from!(EditableMesh);
 impl Default for EditableMesh {
     fn default() -> Self {
         let superclass = Object {};
-        let superclass = EditableMesh {
+        Self {
             superclass,
             MeshData: SharedString::new(b"".to_vec()),
             SkinningEnabled: false,
-        };
-        superclass
+        }
     }
 }
 #[derive(Debug, Clone)]
@@ -6795,13 +6666,12 @@ impl Default for EqualizerSoundEffect {
             Enabled: false,
             Priority: 0i32,
         };
-        let superclass = EqualizerSoundEffect {
+        Self {
             superclass,
             HighGain: 0f32,
             LowGain: -20f32,
             MidGain: -10f32,
-        };
-        superclass
+        }
     }
 }
 #[derive(Debug, Clone)]
@@ -6824,11 +6694,10 @@ impl Default for EulerRotationCurve {
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
         };
-        let superclass = EulerRotationCurve {
+        Self {
             superclass,
             RotationOrder: enums::RotationOrder::XYZ,
-        };
-        superclass
+        }
     }
 }
 #[derive(Debug, Clone)]
@@ -6886,14 +6755,13 @@ impl Default for ExperienceInviteOptions {
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
         };
-        let superclass = ExperienceInviteOptions {
+        Self {
             superclass,
             InviteMessageId: "".to_owned(),
             InviteUser: 0i64,
             LaunchData: "".to_owned(),
             PromptMessage: "".to_owned(),
-        };
-        superclass
+        }
     }
 }
 #[derive(Debug, Clone)]
@@ -6978,7 +6846,7 @@ impl Default for Explosion {
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
         };
-        let superclass = Explosion {
+        Self {
             superclass,
             BlastPressure: 500000f32,
             BlastRadius: 4f32,
@@ -6987,8 +6855,7 @@ impl Default for Explosion {
             Position: Vector3::new(0f32, 0f32, 0f32),
             TimeScale: 1f32,
             Visible: true,
-        };
-        superclass
+        }
     }
 }
 #[derive(Debug, Clone)]
@@ -7027,11 +6894,10 @@ impl Default for FaceInstance {
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
         };
-        let superclass = FaceInstance {
+        Self {
             superclass,
             Face: enums::NormalId::Right,
-        };
-        superclass
+        }
     }
 }
 #[derive(Debug, Clone)]
@@ -7078,11 +6944,10 @@ impl Default for FacialAnimationStreamingServiceV2 {
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
         };
-        let superclass = FacialAnimationStreamingServiceV2 {
+        Self {
             superclass,
             ServiceState: 0i32,
-        };
-        superclass
+        }
     }
 }
 #[derive(Debug, Clone)]
@@ -7124,14 +6989,13 @@ impl Default for Feature {
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
         };
-        let superclass = Feature {
+        Self {
             superclass,
             FaceId: enums::NormalId::Right,
             InOut: enums::InOut::Edge,
             LeftRight: enums::LeftRight::Left,
             TopBottom: enums::TopBottom::Top,
-        };
-        superclass
+        }
     }
 }
 #[derive(Debug, Clone)]
@@ -7177,12 +7041,11 @@ impl Default for FileMesh {
             Scale: Vector3::new(0f32, 0f32, 0f32),
             VertexColor: Vector3::new(0f32, 0f32, 0f32),
         };
-        let superclass = FileMesh {
+        Self {
             superclass,
             MeshId: "".into(),
             TextureId: "".into(),
-        };
-        superclass
+        }
     }
 }
 #[derive(Debug, Clone)]
@@ -7208,14 +7071,13 @@ impl Default for Fire {
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
         };
-        let superclass = Fire {
+        Self {
             superclass,
             Color: Color3::new(0.92549026f32, 0.54509807f32, 0.27450982f32),
             Enabled: true,
             SecondaryColor: Color3::new(0.54509807f32, 0.3137255f32, 0.21568629f32),
             TimeScale: 1f32,
-        };
-        superclass
+        }
     }
 }
 #[derive(Debug, Clone)]
@@ -7264,11 +7126,10 @@ impl Default for Flag {
             RequiresHandle: true,
             ToolTip: "".to_owned(),
         };
-        let superclass = Flag {
+        Self {
             superclass,
             TeamColor: BrickColor::from_number(194u16).unwrap(),
-        };
-        superclass
+        }
     }
 }
 #[derive(Debug, Clone)]
@@ -7341,11 +7202,10 @@ impl Default for FlagStand {
         };
         let superclass = FormFactorPart { superclass };
         let superclass = Part { superclass };
-        let superclass = FlagStand {
+        Self {
             superclass,
             TeamColor: BrickColor::from_number(194u16).unwrap(),
-        };
-        superclass
+        }
     }
 }
 #[derive(Debug, Clone)]
@@ -7383,13 +7243,12 @@ impl Default for FlangeSoundEffect {
             Enabled: false,
             Priority: 0i32,
         };
-        let superclass = FlangeSoundEffect {
+        Self {
             superclass,
             Depth: 0.45f32,
             Mix: 0.85f32,
             Rate: 5f32,
-        };
-        superclass
+        }
     }
 }
 #[derive(Debug, Clone)]
@@ -7412,11 +7271,10 @@ impl Default for FloatCurve {
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
         };
-        let superclass = FloatCurve {
+        Self {
             superclass,
             ValuesAndTimes: b"\x02\0\0\0\0\0\0\0\x01\0\0\0\0\0\0\0".as_slice().into(),
-        };
-        superclass
+        }
     }
 }
 #[derive(Debug, Clone)]
@@ -7453,7 +7311,7 @@ impl Default for FloorWire {
             Transparency: 0f32,
             Visible: false,
         };
-        let superclass = FloorWire {
+        Self {
             superclass,
             CycleOffset: 0f32,
             From: Ref::none(),
@@ -7463,8 +7321,7 @@ impl Default for FloorWire {
             To: Ref::none(),
             Velocity: 2f32,
             WireRadius: 0.0625f32,
-        };
-        superclass
+        }
     }
 }
 #[derive(Debug, Clone)]
@@ -7511,11 +7368,10 @@ impl Default for ForceField {
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
         };
-        let superclass = ForceField {
+        Self {
             superclass,
             Visible: true,
-        };
-        superclass
+        }
     }
 }
 #[derive(Debug, Clone)]
@@ -7585,11 +7441,10 @@ impl Default for Frame {
             Visible: false,
             ZIndex: 0i32,
         };
-        let superclass = Frame {
+        Self {
             superclass,
             Style: enums::FrameStyle::Custom,
-        };
-        superclass
+        }
     }
 }
 #[derive(Debug, Clone)]
@@ -7629,12 +7484,11 @@ impl Default for FunctionalTest {
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
         };
-        let superclass = FunctionalTest {
+        Self {
             superclass,
             Description: "?".to_owned(),
             HasMigratedSettingsToTestService: false,
-        };
-        superclass
+        }
     }
 }
 #[derive(Debug, Clone)]
@@ -7665,11 +7519,10 @@ impl Default for GameSettings {
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
         };
-        let superclass = GameSettings {
+        Self {
             superclass,
             VideoCaptureEnabled: false,
-        };
-        superclass
+        }
     }
 }
 #[derive(Debug, Clone)]
@@ -7692,11 +7545,10 @@ impl Default for GamepadService {
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
         };
-        let superclass = GamepadService {
+        Self {
             superclass,
             GamepadCursorEnabled: false,
-        };
-        superclass
+        }
     }
 }
 #[derive(Debug, Clone)]
@@ -7763,15 +7615,14 @@ impl Default for GetTextBoundsParams {
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
         };
-        let superclass = GetTextBoundsParams {
+        Self {
             superclass,
             Font: unimplemented!("Font"),
             RichText: false,
             Size: 0f32,
             Text: "".to_owned(),
             Width: 0f32,
-        };
-        superclass
+        }
     }
 }
 #[derive(Debug, Clone)]
@@ -7821,14 +7672,13 @@ impl Default for Glue {
             Part0: Ref::none(),
             Part1: Ref::none(),
         };
-        let superclass = Glue {
+        Self {
             superclass,
             F0: Vector3::new(0f32, 0f32, 0f32),
             F1: Vector3::new(0f32, 0f32, 0f32),
             F2: Vector3::new(0f32, 0f32, 0f32),
             F3: Vector3::new(0f32, 0f32, 0f32),
-        };
-        superclass
+        }
     }
 }
 #[derive(Debug, Clone)]
@@ -7866,7 +7716,7 @@ impl Default for GroundController {
             BalanceRigidityEnabled: false,
             MoveSpeedFactor: 0f32,
         };
-        let superclass = GroundController {
+        Self {
             superclass,
             AccelerationLean: 1f32,
             AccelerationTime: 0f32,
@@ -7879,8 +7729,7 @@ impl Default for GroundController {
             StandForce: 10000f32,
             StandSpeed: 100f32,
             TurnSpeedFactor: 1f32,
-        };
-        superclass
+        }
     }
 }
 #[derive(Debug, Clone)]
@@ -7910,13 +7759,12 @@ impl Default for GroupImportData {
             ImportName: "".to_owned(),
             ShouldImport: false,
         };
-        let superclass = GroupImportData {
+        Self {
             superclass,
             Anchored: false,
             ImportAsModelAsset: false,
             InsertInWorkspace: false,
-        };
-        superclass
+        }
     }
 }
 #[derive(Debug, Clone)]
@@ -7962,7 +7810,7 @@ impl Default for GuiBase2d {
             UniqueId: UniqueId::nil(),
         };
         let superclass = GuiBase { superclass };
-        let superclass = GuiBase2d {
+        Self {
             superclass,
             AutoLocalize: false,
             RootLocalizationTable: Ref::none(),
@@ -7971,8 +7819,7 @@ impl Default for GuiBase2d {
             SelectionBehaviorRight: enums::SelectionBehavior::Escape,
             SelectionBehaviorUp: enums::SelectionBehavior::Escape,
             SelectionGroup: false,
-        };
-        superclass
+        }
     }
 }
 #[derive(Debug, Clone)]
@@ -7998,13 +7845,12 @@ impl Default for GuiBase3d {
             UniqueId: UniqueId::nil(),
         };
         let superclass = GuiBase { superclass };
-        let superclass = GuiBase3d {
+        Self {
             superclass,
             Color3: Color3::new(0f32, 0f32, 0f32),
             Transparency: 0f32,
             Visible: false,
-        };
-        superclass
+        }
     }
 }
 #[derive(Debug, Clone)]
@@ -8071,7 +7917,7 @@ impl Default for GuiButton {
             Visible: false,
             ZIndex: 0i32,
         };
-        let superclass = GuiButton {
+        Self {
             superclass,
             AutoButtonColor: false,
             HoverHapticEffect: Ref::none(),
@@ -8079,8 +7925,7 @@ impl Default for GuiButton {
             PressHapticEffect: Ref::none(),
             Selected: false,
             Style: enums::ButtonStyle::Custom,
-        };
-        superclass
+        }
     }
 }
 #[derive(Debug, Clone)]
@@ -8154,7 +7999,7 @@ impl Default for GuiObject {
             SelectionBehaviorUp: enums::SelectionBehavior::Escape,
             SelectionGroup: false,
         };
-        let superclass = GuiObject {
+        Self {
             superclass,
             Active: false,
             AnchorPoint: Vector2::new(0f32, 0f32),
@@ -8181,8 +8026,7 @@ impl Default for GuiObject {
             SizeConstraint: enums::SizeConstraint::RelativeXY,
             Visible: false,
             ZIndex: 0i32,
-        };
-        superclass
+        }
     }
 }
 #[derive(Debug, Clone)]
@@ -8207,13 +8051,12 @@ impl Default for GuiService {
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
         };
-        let superclass = GuiService {
+        Self {
             superclass,
             AutoSelectGuiEnabled: false,
             GuiNavigationEnabled: false,
             SelectedObject: Ref::none(),
-        };
-        superclass
+        }
     }
 }
 #[derive(Debug, Clone)]
@@ -8292,7 +8135,7 @@ impl Default for HandRigDescription {
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
         };
-        let superclass = HandRigDescription {
+        Self {
             superclass,
             Index1: Ref::none(),
             Index1TposeAdjustment: CFrame::identity(),
@@ -8335,8 +8178,7 @@ impl Default for HandRigDescription {
             Thumb3TposeAdjustment: CFrame::identity(),
             ThumbRange: Vector3::new(0f32, 0f32, 0f32),
             ThumbSize: 0f32,
-        };
-        superclass
+        }
     }
 }
 #[derive(Debug, Clone)]
@@ -8374,15 +8216,14 @@ impl Default for HandleAdornment {
             superclass,
             Adornee: Ref::none(),
         };
-        let superclass = HandleAdornment {
+        Self {
             superclass,
             AdornCullingMode: enums::AdornCullingMode::Automatic,
             AlwaysOnTop: false,
             CFrame: CFrame::identity(),
             SizeRelativeOffset: Vector3::new(0f32, 0f32, 0f32),
             ZIndex: 0i32,
-        };
-        superclass
+        }
     }
 }
 #[derive(Debug, Clone)]
@@ -8418,12 +8259,11 @@ impl Default for Handles {
             Adornee: Ref::none(),
         };
         let superclass = HandlesBase { superclass };
-        let superclass = Handles {
+        Self {
             superclass,
             Faces: unimplemented!(),
             Style: enums::HandlesStyle::Resize,
-        };
-        superclass
+        }
     }
 }
 #[derive(Debug, Clone)]
@@ -8459,7 +8299,7 @@ impl Default for HapticEffect {
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
         };
-        let superclass = HapticEffect {
+        Self {
             superclass,
             Looped: false,
             Position: Vector3::new(0f32, 0f32, 0f32),
@@ -8467,8 +8307,7 @@ impl Default for HapticEffect {
             Type: enums::HapticEffectType::UIClick,
             Waveform: Ref::none(),
             WaveformData: b"".as_slice().into(),
-        };
-        superclass
+        }
     }
 }
 #[derive(Debug, Clone)]
@@ -8540,12 +8379,11 @@ impl Default for HiddenSurfaceRemovalAsset {
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
         };
-        let superclass = HiddenSurfaceRemovalAsset {
+        Self {
             superclass,
             HsrData: b"".as_slice().into(),
             HsrMeshIdData: b"".as_slice().into(),
-        };
-        superclass
+        }
     }
 }
 #[derive(Debug, Clone)]
@@ -8574,7 +8412,7 @@ impl Default for Highlight {
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
         };
-        let superclass = Highlight {
+        Self {
             superclass,
             Adornee: Ref::none(),
             DepthMode: enums::HighlightDepthMode::AlwaysOnTop,
@@ -8583,8 +8421,7 @@ impl Default for Highlight {
             FillTransparency: 0.5f32,
             OutlineColor: Color3::new(1f32, 1f32, 1f32),
             OutlineTransparency: 0f32,
-        };
-        superclass
+        }
     }
 }
 #[derive(Debug, Clone)]
@@ -8628,7 +8465,7 @@ impl Default for HingeConstraint {
             Enabled: false,
             Visible: false,
         };
-        let superclass = HingeConstraint {
+        Self {
             superclass,
             ActuatorType: enums::ActuatorType::None,
             AngularResponsiveness: 45f32,
@@ -8644,8 +8481,7 @@ impl Default for HingeConstraint {
             SoftlockServoUponReachingTarget: false,
             TargetAngle: 0f32,
             UpperAngle: 45f32,
-        };
-        superclass
+        }
     }
 }
 #[derive(Debug, Clone)]
@@ -8710,12 +8546,11 @@ impl Default for HopperBin {
             superclass,
             TextureContent: Content::none(),
         };
-        let superclass = HopperBin {
+        Self {
             superclass,
             Active: false,
             BinType: enums::BinType::Script,
-        };
-        superclass
+        }
     }
 }
 #[derive(Debug, Clone)]
@@ -8754,11 +8589,10 @@ impl Default for HttpService {
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
         };
-        let superclass = HttpService {
+        Self {
             superclass,
             HttpEnabled: false,
-        };
-        superclass
+        }
     }
 }
 #[derive(Debug, Clone)]
@@ -8804,7 +8638,7 @@ impl Default for Humanoid {
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
         };
-        let superclass = Humanoid {
+        Self {
             superclass,
             AutoJumpEnabled: true,
             AutoRotate: true,
@@ -8830,8 +8664,7 @@ impl Default for Humanoid {
             RigType: enums::HumanoidRigType::R6,
             UseJumpPower: true,
             WalkSpeed: 16f32,
-        };
-        superclass
+        }
     }
 }
 #[derive(Debug, Clone)]
@@ -8881,7 +8714,7 @@ impl Default for HumanoidDescription {
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
         };
-        let superclass = HumanoidDescription {
+        Self {
             superclass,
             BodyTypeScale: 0.3f32,
             ClimbAnimation: 0i64,
@@ -8903,8 +8736,7 @@ impl Default for HumanoidDescription {
             SwimAnimation: 0i64,
             WalkAnimation: 0i64,
             WidthScale: 1f32,
-        };
-        superclass
+        }
     }
 }
 #[derive(Debug, Clone)]
@@ -9037,7 +8869,7 @@ impl Default for HumanoidRigDescription {
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
         };
-        let superclass = HumanoidRigDescription {
+        Self {
             superclass,
             Chest: Ref::none(),
             ChestRangeMax: Vector3::new(0f32, 0f32, 0f32),
@@ -9150,8 +8982,7 @@ impl Default for HumanoidRigDescription {
             WaistRangeMin: Vector3::new(0f32, 0f32, 0f32),
             WaistSize: 0f32,
             WaistTposeAdjustment: CFrame::identity(),
-        };
-        superclass
+        }
     }
 }
 #[derive(Debug, Clone)]
@@ -9184,7 +9015,7 @@ impl Default for IKControl {
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
         };
-        let superclass = IKControl {
+        Self {
             superclass,
             ChainRoot: Ref::none(),
             Enabled: true,
@@ -9197,8 +9028,7 @@ impl Default for IKControl {
             Target: Ref::none(),
             Type: enums::IKControlType::Transform,
             Weight: 1f32,
-        };
-        superclass
+        }
     }
 }
 #[derive(Debug, Clone)]
@@ -9296,7 +9126,7 @@ impl Default for ImageButton {
             Selected: false,
             Style: enums::ButtonStyle::Custom,
         };
-        let superclass = ImageButton {
+        Self {
             superclass,
             HoverImageContent: Content::none(),
             ImageColor3: Color3::new(1f32, 1f32, 1f32),
@@ -9310,8 +9140,7 @@ impl Default for ImageButton {
             SliceCenter: Rect::new(Vector2::new(0f32, 0f32), Vector2::new(0f32, 0f32)),
             SliceScale: 1f32,
             TileSize: UDim2::new(UDim::new(1f32, 0i32), UDim::new(1f32, 0i32)),
-        };
-        superclass
+        }
     }
 }
 #[derive(Debug, Clone)]
@@ -9354,12 +9183,11 @@ impl Default for ImageHandleAdornment {
             SizeRelativeOffset: Vector3::new(0f32, 0f32, 0f32),
             ZIndex: 0i32,
         };
-        let superclass = ImageHandleAdornment {
+        Self {
             superclass,
             Image: "rbxasset://textures/SurfacesDefault.png".into(),
             Size: Vector2::new(1f32, 1f32),
-        };
-        superclass
+        }
     }
 }
 #[derive(Debug, Clone)]
@@ -9431,7 +9259,7 @@ impl Default for ImageLabel {
             ZIndex: 0i32,
         };
         let superclass = GuiLabel { superclass };
-        let superclass = ImageLabel {
+        Self {
             superclass,
             ImageColor3: Color3::new(1f32, 1f32, 1f32),
             ImageContent: Content::none(),
@@ -9443,8 +9271,7 @@ impl Default for ImageLabel {
             SliceCenter: Rect::new(Vector2::new(0f32, 0f32), Vector2::new(0f32, 0f32)),
             SliceScale: 1f32,
             TileSize: UDim2::new(UDim::new(1f32, 0i32), UDim::new(1f32, 0i32)),
-        };
-        superclass
+        }
     }
 }
 #[derive(Debug, Clone)]
@@ -9480,7 +9307,7 @@ impl Default for IncrementalPatchBuilder {
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
         };
-        let superclass = IncrementalPatchBuilder {
+        Self {
             superclass,
             AddPathsToBundle: false,
             BuildDebouncePeriod: 0f64,
@@ -9488,8 +9315,7 @@ impl Default for IncrementalPatchBuilder {
             SerializePatch: false,
             UseFileLevelCompressionInsteadOfChunk: false,
             ZstdCompression: false,
-        };
-        superclass
+        }
     }
 }
 #[derive(Debug, Clone)]
@@ -9513,12 +9339,11 @@ impl Default for InputAction {
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
         };
-        let superclass = InputAction {
+        Self {
             superclass,
             Enabled: true,
             Type: enums::InputActionType::Bool,
-        };
-        superclass
+        }
     }
 }
 #[derive(Debug, Clone)]
@@ -9553,7 +9378,7 @@ impl Default for InputBinding {
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
         };
-        let superclass = InputBinding {
+        Self {
             superclass,
             Backward: enums::KeyCode::Unknown,
             Down: enums::KeyCode::Unknown,
@@ -9568,8 +9393,7 @@ impl Default for InputBinding {
             UiButton: Ref::none(),
             Up: enums::KeyCode::Unknown,
             Vector2Scale: Vector2::new(1f32, 1f32),
-        };
-        superclass
+        }
     }
 }
 #[derive(Debug, Clone)]
@@ -9594,13 +9418,12 @@ impl Default for InputContext {
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
         };
-        let superclass = InputContext {
+        Self {
             superclass,
             Enabled: true,
             Priority: 1000i32,
             Sink: false,
-        };
-        superclass
+        }
     }
 }
 #[derive(Debug, Clone)]
@@ -9632,12 +9455,11 @@ impl Default for InsertService {
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
         };
-        let superclass = InsertService {
+        Self {
             superclass,
             AllowClientInsertModels: false,
             AllowInsertFreeModels: false,
-        };
-        superclass
+        }
     }
 }
 #[derive(Debug, Clone)]
@@ -9656,7 +9478,7 @@ impl_strong_instance_from!(Instance);
 impl Default for Instance {
     fn default() -> Self {
         let superclass = Object {};
-        let superclass = Instance {
+        Self {
             superclass,
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
@@ -9664,8 +9486,7 @@ impl Default for Instance {
             SourceAssetId: 0i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
-        };
-        superclass
+        }
     }
 }
 #[derive(Debug, Clone)]
@@ -9695,11 +9516,10 @@ impl Default for InstanceAdornment {
             Transparency: 0f32,
             Visible: false,
         };
-        let superclass = InstanceAdornment {
+        Self {
             superclass,
             Adornee: Ref::none(),
-        };
-        superclass
+        }
     }
 }
 #[derive(Debug, Clone)]
@@ -9733,13 +9553,12 @@ impl Default for IntConstrainedValue {
             UniqueId: UniqueId::nil(),
         };
         let superclass = ValueBase { superclass };
-        let superclass = IntConstrainedValue {
+        Self {
             superclass,
             MaxValue: 10i64,
             MinValue: 0i64,
             Value: 0i64,
-        };
-        superclass
+        }
     }
 }
 #[derive(Debug, Clone)]
@@ -9763,11 +9582,10 @@ impl Default for IntValue {
             UniqueId: UniqueId::nil(),
         };
         let superclass = ValueBase { superclass };
-        let superclass = IntValue {
+        Self {
             superclass,
             Value: 0i64,
-        };
-        superclass
+        }
     }
 }
 #[derive(Debug, Clone)]
@@ -9792,13 +9610,12 @@ impl Default for InternalSyncItem {
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
         };
-        let superclass = InternalSyncItem {
+        Self {
             superclass,
             AutoSync: false,
             Enabled: false,
             Path: "".to_owned(),
-        };
-        superclass
+        }
     }
 }
 #[derive(Debug, Clone)]
@@ -9857,15 +9674,14 @@ impl Default for JointInstance {
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
         };
-        let superclass = JointInstance {
+        Self {
             superclass,
             C0: CFrame::identity(),
             C1: CFrame::identity(),
             Enabled: false,
             Part0: Ref::none(),
             Part1: Ref::none(),
-        };
-        superclass
+        }
     }
 }
 #[derive(Debug, Clone)]
@@ -9904,11 +9720,10 @@ impl Default for Keyframe {
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
         };
-        let superclass = Keyframe {
+        Self {
             superclass,
             Time: 0f32,
-        };
-        superclass
+        }
     }
 }
 #[derive(Debug, Clone)]
@@ -9931,11 +9746,10 @@ impl Default for KeyframeMarker {
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
         };
-        let superclass = KeyframeMarker {
+        Self {
             superclass,
             Value: "".to_owned(),
-        };
-        superclass
+        }
     }
 }
 #[derive(Debug, Clone)]
@@ -9964,11 +9778,10 @@ impl Default for KeyframeSequence {
             Loop: false,
             Priority: enums::AnimationPriority::Idle,
         };
-        let superclass = KeyframeSequence {
+        Self {
             superclass,
             AuthoredHipHeight: 2f32,
-        };
-        superclass
+        }
     }
 }
 #[derive(Debug, Clone)]
@@ -10028,13 +9841,12 @@ impl Default for LayerCollector {
             SelectionBehaviorUp: enums::SelectionBehavior::Escape,
             SelectionGroup: false,
         };
-        let superclass = LayerCollector {
+        Self {
             superclass,
             Enabled: false,
             ResetOnSpawn: false,
             ZIndexBehavior: enums::ZIndexBehavior::Global,
-        };
-        superclass
+        }
     }
 }
 #[derive(Debug, Clone)]
@@ -10068,14 +9880,13 @@ impl Default for Light {
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
         };
-        let superclass = Light {
+        Self {
             superclass,
             Brightness: 0f32,
             Color: Color3::new(0f32, 0f32, 0f32),
             Enabled: false,
             Shadows: false,
-        };
-        superclass
+        }
     }
 }
 #[derive(Debug, Clone)]
@@ -10118,7 +9929,7 @@ impl Default for Lighting {
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
         };
-        let superclass = Lighting {
+        Self {
             superclass,
             Ambient: Color3::new(0.5f32, 0.5f32, 0.5f32),
             Brightness: 1.9812492f32,
@@ -10141,8 +9952,7 @@ impl Default for Lighting {
             ShadowSoftness: 0.5f32,
             Technology: enums::Technology::Voxel,
             TimeOfDay: "14:00:00".to_owned(),
-        };
-        superclass
+        }
     }
 }
 #[derive(Debug, Clone)]
@@ -10177,15 +9987,14 @@ impl Default for LineForce {
             Enabled: false,
             Visible: false,
         };
-        let superclass = LineForce {
+        Self {
             superclass,
             ApplyAtCenterOfMass: false,
             InverseSquareLaw: false,
             Magnitude: 1000f32,
             MaxForce: f32::INFINITY,
             ReactionForceEnabled: false,
-        };
-        superclass
+        }
     }
 }
 #[derive(Debug, Clone)]
@@ -10228,12 +10037,11 @@ impl Default for LineHandleAdornment {
             SizeRelativeOffset: Vector3::new(0f32, 0f32, 0f32),
             ZIndex: 0i32,
         };
-        let superclass = LineHandleAdornment {
+        Self {
             superclass,
             Length: 5f32,
             Thickness: 1f32,
-        };
-        superclass
+        }
     }
 }
 #[derive(Debug, Clone)]
@@ -10277,7 +10085,7 @@ impl Default for LinearVelocity {
             Enabled: false,
             Visible: false,
         };
-        let superclass = LinearVelocity {
+        Self {
             superclass,
             ForceLimitMode: enums::ForceLimitMode::Magnitude,
             ForceLimitsEnabled: true,
@@ -10293,8 +10101,7 @@ impl Default for LinearVelocity {
             SecondaryTangentAxis: Vector3::new(0f32, 1f32, 0f32),
             VectorVelocity: Vector3::new(0f32, 0f32, 0f32),
             VelocityConstraintMode: enums::VelocityConstraintMode::Vector,
-        };
-        superclass
+        }
     }
 }
 #[derive(Debug, Clone)]
@@ -10374,12 +10181,11 @@ impl Default for LocalizationTable {
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
         };
-        let superclass = LocalizationTable {
+        Self {
             superclass,
             Contents: "[]".to_owned(),
             SourceLocaleId: "en-us".to_owned(),
-        };
-        superclass
+        }
     }
 }
 #[derive(Debug, Clone)]
@@ -10450,11 +10256,10 @@ impl Default for LuaSourceContainer {
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
         };
-        let superclass = LuaSourceContainer {
+        Self {
             superclass,
             ScriptGuid: "".to_owned(),
-        };
-        superclass
+        }
     }
 }
 #[derive(Debug, Clone)]
@@ -10541,11 +10346,10 @@ impl Default for MarkerCurve {
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
         };
-        let superclass = MarkerCurve {
+        Self {
             superclass,
             ValuesAndTimes: b"\x02\0\0\0\0\0\0\0\x01\0\0\0\0\0\0\0".as_slice().into(),
-        };
-        superclass
+        }
     }
 }
 #[derive(Debug, Clone)]
@@ -10601,15 +10405,14 @@ impl Default for MaterialImportData {
             ImportName: "".to_owned(),
             ShouldImport: false,
         };
-        let superclass = MaterialImportData {
+        Self {
             superclass,
             DiffuseFilePath: "".to_owned(),
             EmissiveFilePath: "".to_owned(),
             MetalnessFilePath: "".to_owned(),
             NormalFilePath: "".to_owned(),
             RoughnessFilePath: "".to_owned(),
-        };
-        superclass
+        }
     }
 }
 #[derive(Debug, Clone)]
@@ -10672,7 +10475,7 @@ impl Default for MaterialService {
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
         };
-        let superclass = MaterialService {
+        Self {
             superclass,
             AsphaltName: "Asphalt".to_owned(),
             BasaltName: "Basalt".to_owned(),
@@ -10715,8 +10518,7 @@ impl Default for MaterialService {
             Use2022MaterialsXml: false,
             WoodName: "Wood".to_owned(),
             WoodPlanksName: "WoodPlanks".to_owned(),
-        };
-        superclass
+        }
     }
 }
 #[derive(Debug, Clone)]
@@ -10750,7 +10552,7 @@ impl Default for MaterialVariant {
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
         };
-        let superclass = MaterialVariant {
+        Self {
             superclass,
             BaseMaterial: enums::Material::Plastic,
             ColorMapContent: Content::none(),
@@ -10764,8 +10566,7 @@ impl Default for MaterialVariant {
             RoughnessMapContent: Content::none(),
             StudsPerTile: 10f32,
             TexturePack: "".into(),
-        };
-        superclass
+        }
     }
 }
 #[derive(Debug, Clone)]
@@ -10867,7 +10668,7 @@ impl Default for MeshImportData {
             ImportName: "".to_owned(),
             ShouldImport: false,
         };
-        let superclass = MeshImportData {
+        Self {
             superclass,
             Anchored: false,
             CageMeshIntersectedPreview: false,
@@ -10880,8 +10681,7 @@ impl Default for MeshImportData {
             MeshHoleDetectedPreview: false,
             OuterCageFarExtendedFromMeshPreview: false,
             UseImportedPivot: false,
-        };
-        superclass
+        }
     }
 }
 #[derive(Debug, Clone)]
@@ -10972,7 +10772,7 @@ impl Default for MeshPart {
             UnscaledVolInertiaOffDiags: Vector3::new(0f32, 0f32, 0f32),
             UnscaledVolume: 0f32,
         };
-        let superclass = MeshPart {
+        Self {
             superclass,
             DoubleSided: false,
             HasJointOffset: false,
@@ -10984,8 +10784,7 @@ impl Default for MeshPart {
             RenderFidelity: enums::RenderFidelity::Automatic,
             TextureContent: Content::none(),
             VertexCount: 0i32,
-        };
-        superclass
+        }
     }
 }
 #[derive(Debug, Clone)]
@@ -11008,11 +10807,10 @@ impl Default for Message {
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
         };
-        let superclass = Message {
+        Self {
             superclass,
             Text: "".to_owned(),
-        };
-        superclass
+        }
     }
 }
 #[derive(Debug, Clone)]
@@ -11065,7 +10863,7 @@ impl Default for MetaBreakpoint {
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
         };
-        let superclass = MetaBreakpoint {
+        Self {
             superclass,
             Condition: "".to_owned(),
             ContinueExecution: false,
@@ -11074,8 +10872,7 @@ impl Default for MetaBreakpoint {
             LogMessage: "".to_owned(),
             RemoveOnHit: false,
             Script: "".to_owned(),
-        };
-        superclass
+        }
     }
 }
 #[derive(Debug, Clone)]
@@ -11098,11 +10895,10 @@ impl Default for MetaBreakpointContext {
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
         };
-        let superclass = MetaBreakpointContext {
+        Self {
             superclass,
             ContextDataInternal: "0 1 2 ".to_owned(),
-        };
-        superclass
+        }
     }
 }
 #[derive(Debug, Clone)]
@@ -11133,11 +10929,10 @@ impl Default for MicroProfilerService {
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
         };
-        let superclass = MicroProfilerService {
+        Self {
             superclass,
             ContextLabel: "".to_owned(),
-        };
-        superclass
+        }
     }
 }
 #[derive(Debug, Clone)]
@@ -11169,7 +10964,7 @@ impl Default for Model {
             UniqueId: UniqueId::nil(),
         };
         let superclass = PVInstance { superclass };
-        let superclass = Model {
+        Self {
             superclass,
             LevelOfDetail: enums::ModelLevelOfDetail::Automatic,
             ModelMeshCFrame: CFrame::identity(),
@@ -11180,8 +10975,7 @@ impl Default for Model {
             PrimaryPart: Ref::none(),
             SlimHash: SharedString::new(b"".to_vec()),
             WorldPivotData: None,
-        };
-        superclass
+        }
     }
 }
 #[derive(Debug, Clone)]
@@ -11217,12 +11011,11 @@ impl Default for ModuleScript {
             superclass,
             ScriptGuid: "".to_owned(),
         };
-        let superclass = ModuleScript {
+        Self {
             superclass,
             LinkedSource: "".into(),
             Source: "".to_owned(),
-        };
-        superclass
+        }
     }
 }
 #[derive(Debug, Clone)]
@@ -11254,12 +11047,11 @@ impl Default for Motor {
             Part0: Ref::none(),
             Part1: Ref::none(),
         };
-        let superclass = Motor {
+        Self {
             superclass,
             DesiredAngle: 0f32,
             MaxVelocity: 0f32,
-        };
-        superclass
+        }
     }
 }
 #[derive(Debug, Clone)]
@@ -11299,12 +11091,11 @@ impl Default for Mouse {
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
         };
-        let superclass = Mouse {
+        Self {
             superclass,
             IconContent: Content::none(),
             TargetFilter: Ref::none(),
-        };
-        superclass
+        }
     }
 }
 #[derive(Debug, Clone)]
@@ -11419,11 +11210,10 @@ impl Default for NegateOperation {
             SolidMeshHolder: NetAssetRef::new(b"".to_vec()),
             UsePartColor: false,
         };
-        let superclass = NegateOperation {
+        Self {
             superclass,
             PreviousOperation: enums::NegateOperationHiddenHistory::None,
-        };
-        superclass
+        }
     }
 }
 #[derive(Debug, Clone)]
@@ -11494,7 +11284,7 @@ impl Default for NetworkSettings {
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
         };
-        let superclass = NetworkSettings {
+        Self {
             superclass,
             HttpProxyEnabled: false,
             HttpProxyUrl: "".to_owned(),
@@ -11505,8 +11295,7 @@ impl Default for NetworkSettings {
             RandomizeJoinInstanceOrder: false,
             RenderStreamedRegions: false,
             ShowActiveAnimationAsset: false,
-        };
-        superclass
+        }
     }
 }
 #[derive(Debug, Clone)]
@@ -11531,13 +11320,12 @@ impl Default for NoCollisionConstraint {
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
         };
-        let superclass = NoCollisionConstraint {
+        Self {
             superclass,
             Enabled: true,
             Part0: Ref::none(),
             Part1: Ref::none(),
-        };
-        superclass
+        }
     }
 }
 #[derive(Debug, Clone)]
@@ -11561,12 +11349,11 @@ impl Default for Noise {
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
         };
-        let superclass = Noise {
+        Self {
             superclass,
             NoiseType: enums::NoiseType::SimplexGabor,
             Seed: 0i32,
-        };
-        superclass
+        }
     }
 }
 #[derive(Debug, Clone)]
@@ -11611,11 +11398,10 @@ impl Default for NumberPose {
             EasingStyle: enums::PoseEasingStyle::Linear,
             Weight: 0f32,
         };
-        let superclass = NumberPose {
+        Self {
             superclass,
             Value: 0f64,
-        };
-        superclass
+        }
     }
 }
 #[derive(Debug, Clone)]
@@ -11639,11 +11425,10 @@ impl Default for NumberValue {
             UniqueId: UniqueId::nil(),
         };
         let superclass = ValueBase { superclass };
-        let superclass = NumberValue {
+        Self {
             superclass,
             Value: 0f64,
-        };
-        superclass
+        }
     }
 }
 #[derive(Debug, Clone)]
@@ -11672,11 +11457,10 @@ impl Default for ObjectValue {
             UniqueId: UniqueId::nil(),
         };
         let superclass = ValueBase { superclass };
-        let superclass = ObjectValue {
+        Self {
             superclass,
             Value: Ref::none(),
-        };
-        superclass
+        }
     }
 }
 #[derive(Debug, Clone)]
@@ -11754,11 +11538,10 @@ impl Default for PVAdornment {
             Transparency: 0f32,
             Visible: false,
         };
-        let superclass = PVAdornment {
+        Self {
             superclass,
             Adornee: Ref::none(),
-        };
-        superclass
+        }
     }
 }
 #[derive(Debug, Clone)]
@@ -11793,15 +11576,14 @@ impl Default for PackageLink {
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
         };
-        let superclass = PackageLink {
+        Self {
             superclass,
             AutoUpdate: false,
             DefaultName: "".to_owned(),
             ModifiedState: 0i32,
             SerializedDefaultAttributes: b"".as_slice().into(),
             VersionIdSerialize: 0i64,
-        };
-        superclass
+        }
     }
 }
 #[derive(Debug, Clone)]
@@ -11853,11 +11635,10 @@ impl Default for Pants {
             superclass,
             Color3: Color3::new(0f32, 0f32, 0f32),
         };
-        let superclass = Pants {
+        Self {
             superclass,
             PantsTemplate: "".into(),
-        };
-        superclass
+        }
     }
 }
 #[derive(Debug, Clone)]
@@ -11903,11 +11684,10 @@ impl Default for PartAdornment {
             Transparency: 0f32,
             Visible: false,
         };
-        let superclass = PartAdornment {
+        Self {
             superclass,
             Adornee: Ref::none(),
-        };
-        superclass
+        }
     }
 }
 #[derive(Debug, Clone)]
@@ -12002,7 +11782,7 @@ impl Default for PartOperation {
             UnscaledVolInertiaOffDiags: Vector3::new(0f32, 0f32, 0f32),
             UnscaledVolume: 0f32,
         };
-        let superclass = PartOperation {
+        Self {
             superclass,
             AssetId: "".into(),
             ChildData: b"".as_slice().into(),
@@ -12018,8 +11798,7 @@ impl Default for PartOperation {
             SmoothingAngle: 0f32,
             SolidMeshHolder: NetAssetRef::new(b"".to_vec()),
             UsePartColor: false,
-        };
-        superclass
+        }
     }
 }
 #[derive(Debug, Clone)]
@@ -12043,12 +11822,11 @@ impl Default for PartOperationAsset {
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
         };
-        let superclass = PartOperationAsset {
+        Self {
             superclass,
             ChildData: b"".as_slice().into(),
             MeshData: b"".as_slice().into(),
-        };
-        superclass
+        }
     }
 }
 #[derive(Debug, Clone)]
@@ -12105,7 +11883,7 @@ impl Default for ParticleEmitter {
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
         };
-        let superclass = ParticleEmitter {
+        Self {
             superclass,
             Acceleration: Vector3::new(0f32, 0f32, 0f32),
             Brightness: 1f32,
@@ -12163,8 +11941,7 @@ impl Default for ParticleEmitter {
             VelocityInheritance: 0f32,
             WindAffectsDrag: false,
             ZOffset: 0f32,
-        };
-        superclass
+        }
     }
 }
 #[derive(Debug, Clone)]
@@ -12205,13 +11982,12 @@ impl Default for PatchMapping {
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
         };
-        let superclass = PatchMapping {
+        Self {
             superclass,
             FlattenTree: false,
             PatchId: "".to_owned(),
             TargetPath: "".to_owned(),
-        };
-        superclass
+        }
     }
 }
 #[derive(Debug, Clone)]
@@ -12249,7 +12025,7 @@ impl Default for Path2D {
             UniqueId: UniqueId::nil(),
         };
         let superclass = GuiBase { superclass };
-        let superclass = Path2D {
+        Self {
             superclass,
             Closed: false,
             Color3: Color3::new(0f32, 0f32, 0f32),
@@ -12258,8 +12034,7 @@ impl Default for Path2D {
             Transparency: 0f32,
             Visible: true,
             ZIndex: 1i32,
-        };
-        superclass
+        }
     }
 }
 #[derive(Debug, Clone)]
@@ -12285,14 +12060,13 @@ impl Default for PathfindingLink {
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
         };
-        let superclass = PathfindingLink {
+        Self {
             superclass,
             Attachment0: Ref::none(),
             Attachment1: Ref::none(),
             IsBidirectional: true,
             Label: "".to_owned(),
-        };
-        superclass
+        }
     }
 }
 #[derive(Debug, Clone)]
@@ -12316,12 +12090,11 @@ impl Default for PathfindingModifier {
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
         };
-        let superclass = PathfindingModifier {
+        Self {
             superclass,
             Label: "".to_owned(),
             PassThrough: false,
-        };
-        superclass
+        }
     }
 }
 #[derive(Debug, Clone)]
@@ -12447,7 +12220,7 @@ impl Default for PhysicsSettings {
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
         };
-        let superclass = PhysicsSettings {
+        Self {
             superclass,
             AllowSleep: false,
             AreAnchorsShown: false,
@@ -12497,8 +12270,7 @@ impl Default for PhysicsSettings {
             ThrottleAdjustTime: 0f64,
             TorqueDrawScale: 0f32,
             UseCsGv2: false,
-        };
-        superclass
+        }
     }
 }
 #[derive(Debug, Clone)]
@@ -12526,11 +12298,10 @@ impl Default for PitchShiftSoundEffect {
             Enabled: false,
             Priority: 0i32,
         };
-        let superclass = PitchShiftSoundEffect {
+        Self {
             superclass,
             Octave: 1.25f32,
-        };
-        superclass
+        }
     }
 }
 #[derive(Debug, Clone)]
@@ -12639,7 +12410,7 @@ impl Default for Player {
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
         };
-        let superclass = Player {
+        Self {
             superclass,
             AutoJumpEnabled: false,
             CameraMaxZoomDistance: 0f32,
@@ -12664,8 +12435,7 @@ impl Default for Player {
             Team: Ref::none(),
             TeamColor: BrickColor::from_number(194u16).unwrap(),
             TeleportedIn: false,
-        };
-        superclass
+        }
     }
 }
 #[derive(Debug, Clone)]
@@ -12712,11 +12482,10 @@ impl Default for PlayerDataService {
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
         };
-        let superclass = PlayerDataService {
+        Self {
             superclass,
             LoadFailureBehavior: enums::PlayerDataLoadFailureBehavior::Failure,
-        };
-        superclass
+        }
     }
 }
 #[derive(Debug, Clone)]
@@ -12745,7 +12514,7 @@ impl Default for PlayerEmulatorService {
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
         };
-        let superclass = PlayerEmulatorService {
+        Self {
             superclass,
             CustomPoliciesEnabled: false,
             EmulatedCountryCode: "".to_owned(),
@@ -12754,8 +12523,7 @@ impl Default for PlayerEmulatorService {
             PseudolocalizationEnabled: false,
             SerializedEmulatedPolicyInfo: b"".as_slice().into(),
             TextElongationFactor: 0i32,
-        };
-        superclass
+        }
     }
 }
 #[derive(Debug, Clone)]
@@ -12780,12 +12548,11 @@ impl Default for PlayerGui {
             UniqueId: UniqueId::nil(),
         };
         let superclass = BasePlayerGui { superclass };
-        let superclass = PlayerGui {
+        Self {
             superclass,
             ScreenOrientation: enums::ScreenOrientation::LandscapeLeft,
             SelectionImageObject: Ref::none(),
-        };
-        superclass
+        }
     }
 }
 #[derive(Debug, Clone)]
@@ -12843,14 +12610,13 @@ impl Default for Players {
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
         };
-        let superclass = Players {
+        Self {
             superclass,
             BanningEnabled: true,
             CharacterAutoLoads: true,
             RespawnTime: 5f32,
             UseStrafingAnimations: false,
-        };
-        superclass
+        }
     }
 }
 #[derive(Debug, Clone)]
@@ -12874,12 +12640,11 @@ impl Default for Plugin {
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
         };
-        let superclass = Plugin {
+        Self {
             superclass,
             DisableUiDragDetectorDrags: false,
             IsDebuggable: false,
-        };
-        superclass
+        }
     }
 }
 #[derive(Debug, Clone)]
@@ -12910,8 +12675,7 @@ impl Default for PluginCapabilities {
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
         };
-        let superclass = PluginCapabilities { superclass , Manifest : "{\"Metadata\":{\"TargetDataModels\": [\"Edit\", \"Server\", \"Client\"]},\"Permissions\":{}}" . to_owned () } ;
-        superclass
+        Self { superclass , Manifest : "{\"Metadata\":{\"TargetDataModels\": [\"Edit\", \"Server\", \"Client\"]},\"Permissions\":{}}" . to_owned () }
     }
 }
 #[derive(Debug, Clone)]
@@ -12967,11 +12731,10 @@ impl Default for PluginGui {
             ResetOnSpawn: false,
             ZIndexBehavior: enums::ZIndexBehavior::Global,
         };
-        let superclass = PluginGui {
+        Self {
             superclass,
             Title: "".to_owned(),
-        };
-        superclass
+        }
     }
 }
 #[derive(Debug, Clone)]
@@ -13073,11 +12836,10 @@ impl Default for PointLight {
             Enabled: false,
             Shadows: false,
         };
-        let superclass = PointLight {
+        Self {
             superclass,
             Range: 8f32,
-        };
-        superclass
+        }
     }
 }
 #[derive(Debug, Clone)]
@@ -13109,12 +12871,11 @@ impl Default for PolicyService {
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
         };
-        let superclass = PolicyService {
+        Self {
             superclass,
             IsLuobuServer: enums::TriStateBoolean::Unknown,
             LuobuWhitelisted: enums::TriStateBoolean::Unknown,
-        };
-        superclass
+        }
     }
 }
 #[derive(Debug, Clone)]
@@ -13143,11 +12904,10 @@ impl Default for Pose {
             EasingStyle: enums::PoseEasingStyle::Linear,
             Weight: 0f32,
         };
-        let superclass = Pose {
+        Self {
             superclass,
             CFrame: CFrame::identity(),
-        };
-        superclass
+        }
     }
 }
 #[derive(Debug, Clone)]
@@ -13172,13 +12932,12 @@ impl Default for PoseBase {
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
         };
-        let superclass = PoseBase {
+        Self {
             superclass,
             EasingDirection: enums::PoseEasingDirection::In,
             EasingStyle: enums::PoseEasingStyle::Linear,
             Weight: 0f32,
-        };
-        superclass
+        }
     }
 }
 #[derive(Debug, Clone)]
@@ -13201,11 +12960,10 @@ impl Default for PostEffect {
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
         };
-        let superclass = PostEffect {
+        Self {
             superclass,
             Enabled: false,
-        };
-        superclass
+        }
     }
 }
 #[derive(Debug, Clone)]
@@ -13258,7 +13016,7 @@ impl Default for ProximityPrompt {
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
         };
-        let superclass = ProximityPrompt {
+        Self {
             superclass,
             ActionText: "Interact".to_owned(),
             AutoLocalize: true,
@@ -13275,8 +13033,7 @@ impl Default for ProximityPrompt {
             RootLocalizationTable: Ref::none(),
             Style: enums::ProximityPromptStyle::Default,
             UiOffset: Vector2::new(0f32, 0f32),
-        };
-        superclass
+        }
     }
 }
 #[derive(Debug, Clone)]
@@ -13301,13 +13058,12 @@ impl Default for ProximityPromptService {
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
         };
-        let superclass = ProximityPromptService {
+        Self {
             superclass,
             Enabled: true,
             MaxIndicatorsVisible: 16i32,
             MaxPromptsVisible: 16i32,
-        };
-        superclass
+        }
     }
 }
 #[derive(Debug, Clone)]
@@ -13360,14 +13116,13 @@ impl Default for PyramidHandleAdornment {
             SizeRelativeOffset: Vector3::new(0f32, 0f32, 0f32),
             ZIndex: 0i32,
         };
-        let superclass = PyramidHandleAdornment {
+        Self {
             superclass,
             Height: 2f32,
             Shading: enums::AdornShading::Default,
             Sides: 4i32,
             Size: 1f32,
-        };
-        superclass
+        }
     }
 }
 #[derive(Debug, Clone)]
@@ -13407,14 +13162,13 @@ impl Default for RayValue {
             UniqueId: UniqueId::nil(),
         };
         let superclass = ValueBase { superclass };
-        let superclass = RayValue {
+        Self {
             superclass,
             Value: Ray::new(
                 Vector3::new(0f32, 0f32, 0f32),
                 Vector3::new(0f32, 0f32, 0f32),
             ),
-        };
-        superclass
+        }
     }
 }
 #[derive(Debug, Clone)]
@@ -13500,15 +13254,14 @@ impl Default for ReflectionMetadataClass {
             UiMinimum: 0f64,
             UiNumTicks: 0f64,
         };
-        let superclass = ReflectionMetadataClass {
+        Self {
             superclass,
             ExplorerImageIndex: 0i32,
             ExplorerOrder: 2147483647i32,
             Insertable: true,
             PreferredParent: "".to_owned(),
             ServiceVisibility: enums::ServiceVisibility::Always,
-        };
-        superclass
+        }
     }
 }
 #[derive(Debug, Clone)]
@@ -13594,7 +13347,7 @@ impl Default for ReflectionMetadataItem {
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
         };
-        let superclass = ReflectionMetadataItem {
+        Self {
             superclass,
             Browsable: false,
             ClassCategory: "".to_owned(),
@@ -13612,8 +13365,7 @@ impl Default for ReflectionMetadataItem {
             UiMaximum: 0f64,
             UiMinimum: 0f64,
             UiNumTicks: 0f64,
-        };
-        superclass
+        }
     }
 }
 #[derive(Debug, Clone)]
@@ -13729,7 +13481,7 @@ impl Default for RenderSettings {
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
         };
-        let superclass = RenderSettings {
+        Self {
             superclass,
             AutoFrmLevel: 0i32,
             EagerBulkExecution: false,
@@ -13745,8 +13497,7 @@ impl Default for RenderSettings {
             RenderCsgTrianglesDebug: false,
             ShowBoundingBoxes: false,
             ViewMode: enums::ViewMode::None,
-        };
-        superclass
+        }
     }
 }
 #[derive(Debug, Clone)]
@@ -13781,7 +13532,7 @@ impl Default for RenderingTest {
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
         };
-        let superclass = RenderingTest {
+        Self {
             superclass,
             CFrame: CFrame::identity(),
             ComparisonDiffThreshold: 10i32,
@@ -13796,8 +13547,7 @@ impl Default for RenderingTest {
             ShouldSkip: false,
             Ticket: "".to_owned(),
             Timeout: 30i32,
-        };
-        superclass
+        }
     }
 }
 #[derive(Debug, Clone)]
@@ -13845,15 +13595,14 @@ impl Default for ReverbSoundEffect {
             Enabled: false,
             Priority: 0i32,
         };
-        let superclass = ReverbSoundEffect {
+        Self {
             superclass,
             DecayTime: 1.5f32,
             Density: 1f32,
             Diffusion: 1f32,
             DryLevel: -6f32,
             WetLevel: 0f32,
-        };
-        superclass
+        }
     }
 }
 #[derive(Debug, Clone)]
@@ -13908,11 +13657,10 @@ impl Default for RobloxSerializableInstance {
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
         };
-        let superclass = RobloxSerializableInstance {
+        Self {
             superclass,
             Data: b"".as_slice().into(),
-        };
-        superclass
+        }
     }
 }
 #[derive(Debug, Clone)]
@@ -13954,7 +13702,7 @@ impl Default for RocketPropulsion {
             UniqueId: UniqueId::nil(),
         };
         let superclass = BodyMover { superclass };
-        let superclass = RocketPropulsion {
+        Self {
             superclass,
             CartoonFactor: 0.7f32,
             MaxSpeed: 30f32,
@@ -13967,8 +13715,7 @@ impl Default for RocketPropulsion {
             ThrustP: 5f32,
             TurnD: 500f32,
             TurnP: 3000f32,
-        };
-        superclass
+        }
     }
 }
 #[derive(Debug, Clone)]
@@ -14003,15 +13750,14 @@ impl Default for RodConstraint {
             Enabled: false,
             Visible: false,
         };
-        let superclass = RodConstraint {
+        Self {
             superclass,
             Length: 5f32,
             LimitAngle0: 90f32,
             LimitAngle1: 90f32,
             LimitsEnabled: false,
             Thickness: 0.1f32,
-        };
-        superclass
+        }
     }
 }
 #[derive(Debug, Clone)]
@@ -14076,7 +13822,7 @@ impl Default for RootImportData {
             ImportName: "".to_owned(),
             ShouldImport: false,
         };
-        let superclass = RootImportData {
+        Self {
             superclass,
             AddModelToInventory: false,
             Anchored: false,
@@ -14100,8 +13846,7 @@ impl Default for RootImportData {
             ValidateUgcBody: false,
             WorldForward: enums::NormalId::Right,
             WorldUp: enums::NormalId::Right,
-        };
-        superclass
+        }
     }
 }
 #[derive(Debug, Clone)]
@@ -14139,7 +13884,7 @@ impl Default for RopeConstraint {
             Enabled: false,
             Visible: false,
         };
-        let superclass = RopeConstraint {
+        Self {
             superclass,
             Length: 5f32,
             Restitution: 0f32,
@@ -14149,8 +13894,7 @@ impl Default for RopeConstraint {
             WinchResponsiveness: 45f32,
             WinchSpeed: 2f32,
             WinchTarget: 5f32,
-        };
-        superclass
+        }
     }
 }
 #[derive(Debug, Clone)]
@@ -14197,11 +13941,10 @@ impl Default for RotationCurve {
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
         };
-        let superclass = RotationCurve {
+        Self {
             superclass,
             ValuesAndTimes: b"\x01\0\0\0\0\0\0\0\x01\0\0\0\0\0\0\0".as_slice().into(),
-        };
-        superclass
+        }
     }
 }
 #[derive(Debug, Clone)]
@@ -14280,11 +14023,10 @@ impl Default for SafetyService {
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
         };
-        let superclass = SafetyService {
+        Self {
             superclass,
             IsCaptureModeForReport: false,
-        };
-        superclass
+        }
     }
 }
 #[derive(Debug, Clone)]
@@ -14327,14 +14069,13 @@ impl Default for ScreenGui {
             ResetOnSpawn: false,
             ZIndexBehavior: enums::ZIndexBehavior::Global,
         };
-        let superclass = ScreenGui {
+        Self {
             superclass,
             ClipToDeviceSafeArea: true,
             DisplayOrder: 0i32,
             SafeAreaCompatibility: enums::SafeAreaCompatibility::FullscreenExtension,
             ScreenInsets: enums::ScreenInsets::CoreUISafeInsets,
-        };
-        superclass
+        }
     }
 }
 #[derive(Debug, Clone)]
@@ -14374,7 +14115,7 @@ impl Default for ScreenshotHud {
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
         };
-        let superclass = ScreenshotHud {
+        Self {
             superclass,
             CameraButtonIcon: "".into(),
             CameraButtonPosition: UDim2::new(UDim::new(0f32, 0i32), UDim::new(0f32, 0i32)),
@@ -14386,8 +14127,7 @@ impl Default for ScreenshotHud {
             OverlayFont: enums::Font::Legacy,
             UsernameOverlayEnabled: false,
             Visible: false,
-        };
-        superclass
+        }
     }
 }
 #[derive(Debug, Clone)]
@@ -14420,11 +14160,10 @@ impl Default for Script {
             LinkedSource: "".into(),
             RunContext: enums::RunContext::Legacy,
         };
-        let superclass = Script {
+        Self {
             superclass,
             Source: "".to_owned(),
-        };
-        superclass
+        }
     }
 }
 #[derive(Debug, Clone)]
@@ -14496,12 +14235,11 @@ impl Default for ScriptDebugger {
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
         };
-        let superclass = ScriptDebugger {
+        Self {
             superclass,
             CoreScriptIdentifier: "".to_owned(),
             ScriptGuid: "".to_owned(),
-        };
-        superclass
+        }
     }
 }
 #[derive(Debug, Clone)]
@@ -14625,7 +14363,7 @@ impl Default for ScrollingFrame {
             Visible: false,
             ZIndex: 0i32,
         };
-        let superclass = ScrollingFrame {
+        Self {
             superclass,
             AutomaticCanvasSize: enums::AutomaticSize::None,
             BottomImageContent: Content::from_uri(
@@ -14644,8 +14382,7 @@ impl Default for ScrollingFrame {
             TopImageContent: Content::from_uri("rbxasset://textures/ui/Scroll/scroll-top.png"),
             VerticalScrollBarInset: enums::ScrollBarInset::None,
             VerticalScrollBarPosition: enums::VerticalScrollBarPosition::Right,
-        };
-        superclass
+        }
     }
 }
 #[derive(Debug, Clone)]
@@ -14718,11 +14455,10 @@ impl Default for Seat {
         };
         let superclass = FormFactorPart { superclass };
         let superclass = Part { superclass };
-        let superclass = Seat {
+        Self {
             superclass,
             Disabled: false,
-        };
-        superclass
+        }
     }
 }
 #[derive(Debug, Clone)]
@@ -14767,14 +14503,13 @@ impl Default for SelectionBox {
             superclass,
             Adornee: Ref::none(),
         };
-        let superclass = SelectionBox {
+        Self {
             superclass,
             LineThickness: 0.15f32,
             StudioSelectionBox: false,
             SurfaceColor3: Color3::new(0.050980397f32, 0.41176474f32, 0.6745098f32),
             SurfaceTransparency: 1f32,
-        };
-        superclass
+        }
     }
 }
 #[derive(Debug, Clone)]
@@ -14812,11 +14547,10 @@ impl Default for SelectionLasso {
             Transparency: 0f32,
             Visible: false,
         };
-        let superclass = SelectionLasso {
+        Self {
             superclass,
             Humanoid: Ref::none(),
-        };
-        superclass
+        }
     }
 }
 #[derive(Debug, Clone)]
@@ -14850,11 +14584,10 @@ impl Default for SelectionPartLasso {
             superclass,
             Humanoid: Ref::none(),
         };
-        let superclass = SelectionPartLasso {
+        Self {
             superclass,
             Part: Ref::none(),
-        };
-        superclass
+        }
     }
 }
 #[derive(Debug, Clone)]
@@ -14888,11 +14621,10 @@ impl Default for SelectionPointLasso {
             superclass,
             Humanoid: Ref::none(),
         };
-        let superclass = SelectionPointLasso {
+        Self {
             superclass,
             Point: Vector3::new(0f32, 0f32, 0f32),
-        };
-        superclass
+        }
     }
 }
 #[derive(Debug, Clone)]
@@ -14927,12 +14659,11 @@ impl Default for SelectionSphere {
             superclass,
             Adornee: Ref::none(),
         };
-        let superclass = SelectionSphere {
+        Self {
             superclass,
             SurfaceColor3: Color3::new(0.050980397f32, 0.41176474f32, 0.6745098f32),
             SurfaceTransparency: 1f32,
-        };
-        superclass
+        }
     }
 }
 #[derive(Debug, Clone)]
@@ -14955,11 +14686,10 @@ impl Default for SensorBase {
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
         };
-        let superclass = SensorBase {
+        Self {
             superclass,
             UpdateType: enums::SensorUpdateType::OnRead,
-        };
-        superclass
+        }
     }
 }
 #[derive(Debug, Clone)]
@@ -14998,11 +14728,10 @@ impl Default for ServerScriptService {
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
         };
-        let superclass = ServerScriptService {
+        Self {
             superclass,
             LoadStringEnabled: false,
-        };
-        superclass
+        }
     }
 }
 #[derive(Debug, Clone)]
@@ -15042,12 +14771,11 @@ impl Default for ServiceVisibilityService {
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
         };
-        let superclass = ServiceVisibilityService {
+        Self {
             superclass,
             HiddenServices: b"\0\0\0\0".as_slice().into(),
             VisibleServices: b"\0\0\0\0".as_slice().into(),
-        };
-        superclass
+        }
     }
 }
 #[derive(Debug, Clone)]
@@ -15099,11 +14827,10 @@ impl Default for Shirt {
             superclass,
             Color3: Color3::new(0f32, 0f32, 0f32),
         };
-        let superclass = Shirt {
+        Self {
             superclass,
             ShirtTemplate: "".into(),
-        };
-        superclass
+        }
     }
 }
 #[derive(Debug, Clone)]
@@ -15128,12 +14855,11 @@ impl Default for ShirtGraphic {
             UniqueId: UniqueId::nil(),
         };
         let superclass = CharacterAppearance { superclass };
-        let superclass = ShirtGraphic {
+        Self {
             superclass,
             Color3: Color3::new(1f32, 1f32, 1f32),
             Graphic: "".into(),
-        };
-        superclass
+        }
     }
 }
 #[derive(Debug, Clone)]
@@ -15216,13 +14942,12 @@ impl Default for SkateboardPlatform {
         };
         let superclass = FormFactorPart { superclass };
         let superclass = Part { superclass };
-        let superclass = SkateboardPlatform {
+        Self {
             superclass,
             Steer: 0i32,
             StickyWheels: true,
             Throttle: 0i32,
-        };
-        superclass
+        }
     }
 }
 #[derive(Debug, Clone)]
@@ -15246,11 +14971,10 @@ impl Default for Skin {
             UniqueId: UniqueId::nil(),
         };
         let superclass = CharacterAppearance { superclass };
-        let superclass = Skin {
+        Self {
             superclass,
             SkinColor: BrickColor::from_number(226u16).unwrap(),
-        };
-        superclass
+        }
     }
 }
 #[derive(Debug, Clone)]
@@ -15285,7 +15009,7 @@ impl Default for Sky {
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
         };
-        let superclass = Sky {
+        Self {
             superclass,
             CelestialBodiesShown: true,
             MoonAngularSize: 11f32,
@@ -15300,8 +15024,7 @@ impl Default for Sky {
             StarCount: 3000i32,
             SunAngularSize: 21f32,
             SunTextureId: "rbxasset://sky/sun.jpg".into(),
-        };
-        superclass
+        }
     }
 }
 #[derive(Debug, Clone)]
@@ -15345,7 +15068,7 @@ impl Default for SlidingBallConstraint {
             Enabled: false,
             Visible: false,
         };
-        let superclass = SlidingBallConstraint {
+        Self {
             superclass,
             ActuatorType: enums::ActuatorType::None,
             LimitsEnabled: false,
@@ -15361,8 +15084,7 @@ impl Default for SlidingBallConstraint {
             TargetPosition: 0f32,
             UpperLimit: 0f32,
             Velocity: 0f32,
-        };
-        superclass
+        }
     }
 }
 #[derive(Debug, Clone)]
@@ -15403,13 +15125,12 @@ impl Default for Smoke {
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
         };
-        let superclass = Smoke {
+        Self {
             superclass,
             Color: Color3::new(1f32, 1f32, 1f32),
             Enabled: true,
             TimeScale: 1f32,
-        };
-        superclass
+        }
     }
 }
 #[derive(Debug, Clone)]
@@ -15484,7 +15205,7 @@ impl Default for Sound {
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
         };
-        let superclass = Sound {
+        Self {
             superclass,
             AudioContent: Content::none(),
             IsMutedForCapture: false,
@@ -15499,8 +15220,7 @@ impl Default for Sound {
             SoundGroup: Ref::none(),
             TimePosition: 0f64,
             Volume: 0.5f32,
-        };
-        superclass
+        }
     }
 }
 #[derive(Debug, Clone)]
@@ -15524,12 +15244,11 @@ impl Default for SoundEffect {
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
         };
-        let superclass = SoundEffect {
+        Self {
             superclass,
             Enabled: false,
             Priority: 0i32,
-        };
-        superclass
+        }
     }
 }
 #[derive(Debug, Clone)]
@@ -15552,11 +15271,10 @@ impl Default for SoundGroup {
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
         };
-        let superclass = SoundGroup {
+        Self {
             superclass,
             Volume: 0.5f32,
-        };
-        superclass
+        }
     }
 }
 #[derive(Debug, Clone)]
@@ -15589,7 +15307,7 @@ impl Default for SoundService {
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
         };
-        let superclass = SoundService {
+        Self {
             superclass,
             AcousticSimulationEnabled: false,
             AmbientReverb: enums::ReverbType::NoReverb,
@@ -15602,8 +15320,7 @@ impl Default for SoundService {
             RespectFilteringEnabled: false,
             RolloffScale: 1f32,
             VolumetricAudio: enums::VolumetricAudio::Automatic,
-        };
-        superclass
+        }
     }
 }
 #[derive(Debug, Clone)]
@@ -15636,13 +15353,12 @@ impl Default for Sparkles {
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
         };
-        let superclass = Sparkles {
+        Self {
             superclass,
             Enabled: true,
             SparkleColor: Color3::new(0.5647059f32, 0.098039225f32, 1f32),
             TimeScale: 1f32,
-        };
-        superclass
+        }
     }
 }
 #[derive(Debug, Clone)]
@@ -15719,15 +15435,14 @@ impl Default for SpawnLocation {
         };
         let superclass = FormFactorPart { superclass };
         let superclass = Part { superclass };
-        let superclass = SpawnLocation {
+        Self {
             superclass,
             AllowTeamChangeOnTouch: false,
             Duration: 10i32,
             Enabled: true,
             Neutral: true,
             TeamColor: BrickColor::from_number(194u16).unwrap(),
-        };
-        superclass
+        }
     }
 }
 #[derive(Debug, Clone)]
@@ -15769,11 +15484,10 @@ impl Default for SpecialMesh {
             MeshId: "".into(),
             TextureId: "".into(),
         };
-        let superclass = SpecialMesh {
+        Self {
             superclass,
             MeshType: enums::MeshType::Head,
-        };
-        superclass
+        }
     }
 }
 #[derive(Debug, Clone)]
@@ -15816,12 +15530,11 @@ impl Default for SphereHandleAdornment {
             SizeRelativeOffset: Vector3::new(0f32, 0f32, 0f32),
             ZIndex: 0i32,
         };
-        let superclass = SphereHandleAdornment {
+        Self {
             superclass,
             Radius: 1f32,
             Shading: enums::AdornShading::Default,
-        };
-        superclass
+        }
     }
 }
 #[derive(Debug, Clone)]
@@ -15853,13 +15566,12 @@ impl Default for SpotLight {
             Enabled: false,
             Shadows: false,
         };
-        let superclass = SpotLight {
+        Self {
             superclass,
             Angle: 90f32,
             Face: enums::NormalId::Front,
             Range: 16f32,
-        };
-        superclass
+        }
     }
 }
 #[derive(Debug, Clone)]
@@ -15899,7 +15611,7 @@ impl Default for SpringConstraint {
             Enabled: false,
             Visible: false,
         };
-        let superclass = SpringConstraint {
+        Self {
             superclass,
             Coils: 3f32,
             Damping: 0f32,
@@ -15911,8 +15623,7 @@ impl Default for SpringConstraint {
             Radius: 0.4f32,
             Stiffness: 0f32,
             Thickness: 0.1f32,
-        };
-        superclass
+        }
     }
 }
 #[derive(Debug, Clone)]
@@ -15990,7 +15701,7 @@ impl Default for StarterGui {
             UniqueId: UniqueId::nil(),
         };
         let superclass = BasePlayerGui { superclass };
-        let superclass = StarterGui {
+        Self {
             superclass,
             ResetPlayerGuiOnSpawn: true,
             RtlTextSupport: enums::RtlTextSupport::Default,
@@ -15999,8 +15710,7 @@ impl Default for StarterGui {
             StudioDefaultStyleSheet: Ref::none(),
             StudioInsertWidgetLayerCollectorAutoLinkStyleSheet: Ref::none(),
             VirtualCursorMode: enums::VirtualCursorMode::Default,
-        };
-        superclass
+        }
     }
 }
 #[derive(Debug, Clone)]
@@ -16074,7 +15784,7 @@ impl Default for StarterPlayer {
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
         };
-        let superclass = StarterPlayer {
+        Self {
             superclass,
             AllowCustomAnimations: true,
             AutoJumpEnabled: true,
@@ -16120,8 +15830,7 @@ impl Default for StarterPlayer {
             LuaCharacterController: enums::CharacterControlMode::Default,
             NameDisplayDistance: 100f32,
             UserEmotesEnabled: true,
-        };
-        superclass
+        }
     }
 }
 #[derive(Debug, Clone)]
@@ -16201,11 +15910,10 @@ impl Default for StringValue {
             UniqueId: UniqueId::nil(),
         };
         let superclass = ValueBase { superclass };
-        let superclass = StringValue {
+        Self {
             superclass,
             Value: "".to_owned(),
-        };
-        superclass
+        }
     }
 }
 #[derive(Debug, Clone)]
@@ -16349,7 +16057,7 @@ impl Default for Studio {
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
         };
-        let superclass = Studio {
+        Self {
             superclass,
             ActionOnAutoResumeSync: enums::ActionOnAutoResumeSync::DontResume,
             ActionOnStopSync: enums::ActionOnStopSync::AlwaysAsk,
@@ -16473,8 +16181,7 @@ impl Default for Studio {
             TabWidth: 0i32,
             TextWrapping: false,
             UseBoundingBoxMoveHandles: false,
-        };
-        superclass
+        }
     }
 }
 #[derive(Debug, Clone)]
@@ -16509,15 +16216,14 @@ impl Default for StudioAttachment {
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
         };
-        let superclass = StudioAttachment {
+        Self {
             superclass,
             AutoHideParent: false,
             IsArrowVisible: false,
             Offset: Vector2::new(0f32, 0f32),
             SourceAnchorPoint: Vector2::new(0f32, 0f32),
             TargetAnchorPoint: Vector2::new(0f32, 0f32),
-        };
-        superclass
+        }
     }
 }
 #[derive(Debug, Clone)]
@@ -16549,12 +16255,11 @@ impl Default for StudioCameraService {
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
         };
-        let superclass = StudioCameraService {
+        Self {
             superclass,
             LockCameraSpeed: false,
             LoggingEnabled: false,
-        };
-        superclass
+        }
     }
 }
 #[derive(Debug, Clone)]
@@ -16577,11 +16282,10 @@ impl Default for StudioData {
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
         };
-        let superclass = StudioData {
+        Self {
             superclass,
             EnableScriptCollabByDefaultOnLoad: false,
-        };
-        superclass
+        }
     }
 }
 #[derive(Debug, Clone)]
@@ -16620,11 +16324,10 @@ impl Default for StudioPublishService {
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
         };
-        let superclass = StudioPublishService {
+        Self {
             superclass,
             PublishLocked: false,
-        };
-        superclass
+        }
     }
 }
 #[derive(Debug, Clone)]
@@ -16663,11 +16366,10 @@ impl Default for StudioService {
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
         };
-        let superclass = StudioService {
+        Self {
             superclass,
             Secrets: "".to_owned(),
-        };
-        superclass
+        }
     }
 }
 #[derive(Debug, Clone)]
@@ -16739,12 +16441,11 @@ impl Default for StyleDerive {
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
         };
-        let superclass = StyleDerive {
+        Self {
             superclass,
             Priority: 0i32,
             StyleSheet: Ref::none(),
-        };
-        superclass
+        }
     }
 }
 #[derive(Debug, Clone)]
@@ -16767,11 +16468,10 @@ impl Default for StyleLink {
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
         };
-        let superclass = StyleLink {
+        Self {
             superclass,
             StyleSheet: Ref::none(),
-        };
-        superclass
+        }
     }
 }
 #[derive(Debug, Clone)]
@@ -16797,14 +16497,13 @@ impl Default for StyleQuery {
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
         };
-        let superclass = StyleQuery {
+        Self {
             superclass,
             AspectRatioRange: NumberRange::new(0f32, 0f32),
             ConditionsSerialize: b"".as_slice().into(),
             MaxSize: Vector2::new(0f32, 0f32),
             MinSize: Vector2::new(0f32, 0f32),
-        };
-        superclass
+        }
     }
 }
 #[derive(Debug, Clone)]
@@ -16829,12 +16528,11 @@ impl Default for StyleRule {
             UniqueId: UniqueId::nil(),
         };
         let superclass = StyleBase { superclass };
-        let superclass = StyleRule {
+        Self {
             superclass,
             Priority: 0i32,
             Selector: "".to_owned(),
-        };
-        superclass
+        }
     }
 }
 #[derive(Debug, Clone)]
@@ -16878,12 +16576,11 @@ impl Default for SunRaysEffect {
             superclass,
             Enabled: false,
         };
-        let superclass = SunRaysEffect {
+        Self {
             superclass,
             Intensity: 0.25f32,
             Spread: 1f32,
-        };
-        superclass
+        }
     }
 }
 #[derive(Debug, Clone)]
@@ -16915,7 +16612,7 @@ impl Default for SurfaceAppearance {
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
         };
-        let superclass = SurfaceAppearance {
+        Self {
             superclass,
             AlphaMode: enums::AlphaMode::Overlay,
             Color: Color3::new(1f32, 1f32, 1f32),
@@ -16927,8 +16624,7 @@ impl Default for SurfaceAppearance {
             NormalMapContent: Content::none(),
             RoughnessMapContent: Content::none(),
             TexturePack: "".into(),
-        };
-        superclass
+        }
     }
 }
 #[derive(Debug, Clone)]
@@ -16983,7 +16679,7 @@ impl Default for SurfaceGui {
             Adornee: Ref::none(),
             Face: enums::NormalId::Right,
         };
-        let superclass = SurfaceGui {
+        Self {
             superclass,
             AlwaysOnTop: false,
             Brightness: 1f32,
@@ -16995,8 +16691,7 @@ impl Default for SurfaceGui {
             SizingMode: enums::SurfaceGuiSizingMode::FixedSize,
             ToolPunchThroughDistance: 0f32,
             ZOffset: 0f32,
-        };
-        superclass
+        }
     }
 }
 #[derive(Debug, Clone)]
@@ -17038,13 +16733,12 @@ impl Default for SurfaceGuiBase {
             ResetOnSpawn: false,
             ZIndexBehavior: enums::ZIndexBehavior::Global,
         };
-        let superclass = SurfaceGuiBase {
+        Self {
             superclass,
             Active: false,
             Adornee: Ref::none(),
             Face: enums::NormalId::Right,
-        };
-        superclass
+        }
     }
 }
 #[derive(Debug, Clone)]
@@ -17076,13 +16770,12 @@ impl Default for SurfaceLight {
             Enabled: false,
             Shadows: false,
         };
-        let superclass = SurfaceLight {
+        Self {
             superclass,
             Angle: 90f32,
             Face: enums::NormalId::Front,
             Range: 16f32,
-        };
-        superclass
+        }
     }
 }
 #[derive(Debug, Clone)]
@@ -17116,11 +16809,10 @@ impl Default for SurfaceSelection {
             superclass,
             Adornee: Ref::none(),
         };
-        let superclass = SurfaceSelection {
+        Self {
             superclass,
             TargetSurface: enums::NormalId::Right,
-        };
-        superclass
+        }
     }
 }
 #[derive(Debug, Clone)]
@@ -17152,15 +16844,14 @@ impl Default for SwimController {
             BalanceRigidityEnabled: false,
             MoveSpeedFactor: 0f32,
         };
-        let superclass = SwimController {
+        Self {
             superclass,
             AccelerationTime: 0f32,
             PitchMaxTorque: 10000f32,
             PitchSpeedFactor: 1f32,
             RollMaxTorque: 10000f32,
             RollSpeedFactor: 1f32,
-        };
-        superclass
+        }
     }
 }
 #[derive(Debug, Clone)]
@@ -17188,15 +16879,14 @@ impl Default for SyncScriptBuilder {
             UniqueId: UniqueId::nil(),
         };
         let superclass = ScriptBuilder { superclass };
-        let superclass = SyncScriptBuilder {
+        Self {
             superclass,
             CompileTarget: enums::CompileTarget::Client,
             CoverageInfo: false,
             DebugInfo: false,
             PackAsSource: false,
             RawBytecode: false,
-        };
-        superclass
+        }
     }
 }
 #[derive(Debug, Clone)]
@@ -17227,11 +16917,10 @@ impl Default for TaskScheduler {
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
         };
-        let superclass = TaskScheduler {
+        Self {
             superclass,
             ThreadPoolConfig: enums::ThreadPoolConfig::Auto,
-        };
-        superclass
+        }
     }
 }
 #[derive(Debug, Clone)]
@@ -17255,12 +16944,11 @@ impl Default for Team {
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
         };
-        let superclass = Team {
+        Self {
             superclass,
             AutoAssignable: true,
             TeamColor: BrickColor::from_number(1u16).unwrap(),
-        };
-        superclass
+        }
     }
 }
 #[derive(Debug, Clone)]
@@ -17333,13 +17021,12 @@ impl Default for TeleportOptions {
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
         };
-        let superclass = TeleportOptions {
+        Self {
             superclass,
             ReservedServerAccessCode: "".to_owned(),
             ServerInstanceId: "".to_owned(),
             ShouldReserveServer: false,
-        };
-        superclass
+        }
     }
 }
 #[derive(Debug, Clone)]
@@ -17445,7 +17132,7 @@ impl Default for Terrain {
             Transparency: 0f32,
             Velocity: Vector3::new(0f32, 0f32, 0f32),
         };
-        let superclass = Terrain {
+        Self {
             superclass,
             AcquisitionMethod: enums::TerrainAcquisitionMethod::None,
             Decoration: false,
@@ -17459,8 +17146,7 @@ impl Default for Terrain {
             WaterTransparency: 0.3f32,
             WaterWaveSize: 0.15f32,
             WaterWaveSpeed: 10f32,
-        };
-        superclass
+        }
     }
 }
 #[derive(Debug, Clone)]
@@ -17493,7 +17179,7 @@ impl Default for TerrainDetail {
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
         };
-        let superclass = TerrainDetail {
+        Self {
             superclass,
             ColorMapContent: Content::none(),
             EmissiveMaskContent: Content::none(),
@@ -17506,8 +17192,7 @@ impl Default for TerrainDetail {
             RoughnessMapContent: Content::none(),
             StudsPerTile: 10f32,
             TexturePack: "".into(),
-        };
-        superclass
+        }
     }
 }
 #[derive(Debug, Clone)]
@@ -17556,13 +17241,12 @@ impl Default for TerrainRegion {
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
         };
-        let superclass = TerrainRegion {
+        Self {
             superclass,
             ExtentsMax: Vector3int16::new(0i16, 0i16, 0i16),
             ExtentsMin: Vector3int16::new(0i16, 0i16, 0i16),
             SmoothGrid: b"\x01\x05".as_slice().into(),
-        };
-        superclass
+        }
     }
 }
 #[derive(Debug, Clone)]
@@ -17601,7 +17285,7 @@ impl Default for TestService {
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
         };
-        let superclass = TestService {
+        Self {
             superclass,
             AutoRuns: true,
             Description: "".to_owned(),
@@ -17612,8 +17296,7 @@ impl Default for TestService {
             SimulateSecondsLag: 0f64,
             ThrottlePhysicsToRealtime: true,
             Timeout: 10f64,
-        };
-        superclass
+        }
     }
 }
 #[derive(Debug, Clone)]
@@ -17699,7 +17382,7 @@ impl Default for TextBox {
             Visible: false,
             ZIndex: 0i32,
         };
-        let superclass = TextBox {
+        Self {
             superclass,
             ClearTextOnFocus: true,
             FontFace: unimplemented!("Font"),
@@ -17726,8 +17409,7 @@ impl Default for TextBox {
             TextWrapped: false,
             TextXAlignment: enums::TextXAlignment::Center,
             TextYAlignment: enums::TextYAlignment::Center,
-        };
-        superclass
+        }
     }
 }
 #[derive(Debug, Clone)]
@@ -17824,7 +17506,7 @@ impl Default for TextButton {
             Selected: false,
             Style: enums::ButtonStyle::Custom,
         };
-        let superclass = TextButton {
+        Self {
             superclass,
             FontFace: unimplemented!("Font"),
             LineHeight: 1f32,
@@ -17845,8 +17527,7 @@ impl Default for TextButton {
             TextWrapped: false,
             TextXAlignment: enums::TextXAlignment::Center,
             TextYAlignment: enums::TextYAlignment::Center,
-        };
-        superclass
+        }
     }
 }
 #[derive(Debug, Clone)]
@@ -17880,14 +17561,13 @@ impl Default for TextChatCommand {
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
         };
-        let superclass = TextChatCommand {
+        Self {
             superclass,
             AutocompleteVisible: true,
             Enabled: true,
             PrimaryAlias: "".to_owned(),
             SecondaryAlias: "".to_owned(),
-        };
-        superclass
+        }
     }
 }
 #[derive(Debug, Clone)]
@@ -17921,14 +17601,13 @@ impl Default for TextChatMessage {
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
         };
-        let superclass = TextChatMessage {
+        Self {
             superclass,
             BubbleChatMessageProperties: Ref::none(),
             ChatWindowMessageProperties: Ref::none(),
             TextChannel: Ref::none(),
             TextSource: Ref::none(),
-        };
-        superclass
+        }
     }
 }
 #[derive(Debug, Clone)]
@@ -17965,7 +17644,7 @@ impl Default for TextChatService {
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
         };
-        let superclass = TextChatService {
+        Self {
             superclass,
             ChatTranslationFtuxShown: true,
             ChatTranslationToggleEnabled: false,
@@ -17974,8 +17653,7 @@ impl Default for TextChatService {
             CreateDefaultTextChannels: true,
             HasSeenDeprecationDialog: false,
             IsLegacyChatDisabled: false,
-        };
-        superclass
+        }
     }
 }
 #[derive(Debug, Clone)]
@@ -18017,14 +17695,13 @@ impl Default for TextGenerator {
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
         };
-        let superclass = TextGenerator {
+        Self {
             superclass,
             Seed: 0i32,
             SystemPrompt: "".to_owned(),
             Temperature: 0.7f32,
             TopP: 0.9f32,
-        };
-        superclass
+        }
     }
 }
 #[derive(Debug, Clone)]
@@ -18105,7 +17782,7 @@ impl Default for TextLabel {
             ZIndex: 0i32,
         };
         let superclass = GuiLabel { superclass };
-        let superclass = TextLabel {
+        Self {
             superclass,
             FontFace: unimplemented!("Font"),
             LineHeight: 1f32,
@@ -18126,8 +17803,7 @@ impl Default for TextLabel {
             TextWrapped: false,
             TextXAlignment: enums::TextXAlignment::Center,
             TextYAlignment: enums::TextYAlignment::Center,
-        };
-        superclass
+        }
     }
 }
 #[derive(Debug, Clone)]
@@ -18158,11 +17834,10 @@ impl Default for TextSource {
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
         };
-        let superclass = TextSource {
+        Self {
             superclass,
             CanSend: false,
-        };
-        superclass
+        }
     }
 }
 #[derive(Debug, Clone)]
@@ -18206,14 +17881,13 @@ impl Default for Texture {
             UvScale: Vector2::new(1f32, 1f32),
             ZIndex: 1i32,
         };
-        let superclass = Texture {
+        Self {
             superclass,
             OffsetStudsU: 0f32,
             OffsetStudsV: 0f32,
             StudsPerTileU: 2f32,
             StudsPerTileV: 2f32,
-        };
-        superclass
+        }
     }
 }
 #[derive(Debug, Clone)]
@@ -18314,7 +17988,7 @@ impl Default for Tool {
             superclass,
             TextureContent: Content::none(),
         };
-        let superclass = Tool {
+        Self {
             superclass,
             CanBeDropped: true,
             Enabled: true,
@@ -18322,8 +17996,7 @@ impl Default for Tool {
             ManualActivationOnly: false,
             RequiresHandle: true,
             ToolTip: "".to_owned(),
-        };
-        superclass
+        }
     }
 }
 #[derive(Debug, Clone)]
@@ -18355,12 +18028,11 @@ impl Default for Torque {
             Enabled: false,
             Visible: false,
         };
-        let superclass = Torque {
+        Self {
             superclass,
             RelativeTo: enums::ActuatorRelativeTo::Attachment0,
             Torque: Vector3::new(0f32, 0f32, 0f32),
-        };
-        superclass
+        }
     }
 }
 #[derive(Debug, Clone)]
@@ -18399,7 +18071,7 @@ impl Default for TorsionSpringConstraint {
             Enabled: false,
             Visible: false,
         };
-        let superclass = TorsionSpringConstraint {
+        Self {
             superclass,
             Coils: 8f32,
             Damping: 0.01f32,
@@ -18410,8 +18082,7 @@ impl Default for TorsionSpringConstraint {
             Radius: 0.4f32,
             Restitution: 0f32,
             Stiffness: 100f32,
-        };
-        superclass
+        }
     }
 }
 #[derive(Debug, Clone)]
@@ -18469,14 +18140,13 @@ impl Default for TrackerLodController {
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
         };
-        let superclass = TrackerLodController {
+        Self {
             superclass,
             AudioMode: enums::TrackerLodFlagMode::ForceFalse,
             VideoExtrapolationMode: enums::TrackerExtrapolationFlagMode::ForceDisabled,
             VideoLodMode: enums::TrackerLodValueMode::Force0,
             VideoMode: enums::TrackerLodFlagMode::ForceFalse,
-        };
-        superclass
+        }
     }
 }
 #[derive(Debug, Clone)]
@@ -18522,7 +18192,7 @@ impl Default for Trail {
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
         };
-        let superclass = Trail {
+        Self {
             superclass,
             Attachment0: Ref::none(),
             Attachment1: Ref::none(),
@@ -18555,8 +18225,7 @@ impl Default for Trail {
                     NumberSequenceKeypoint::new(1f32, 1f32, 0f32),
                 ],
             },
-        };
-        superclass
+        }
     }
 }
 #[derive(Debug, Clone)]
@@ -18594,13 +18263,12 @@ impl Default for TremoloSoundEffect {
             Enabled: false,
             Priority: 0i32,
         };
-        let superclass = TremoloSoundEffect {
+        Self {
             superclass,
             Depth: 1f32,
             Duty: 0.5f32,
             Frequency: 5f32,
-        };
-        superclass
+        }
     }
 }
 #[derive(Debug, Clone)]
@@ -18678,7 +18346,7 @@ impl Default for TriangleMeshPart {
             Transparency: 0f32,
             Velocity: Vector3::new(0f32, 0f32, 0f32),
         };
-        let superclass = TriangleMeshPart {
+        Self {
             superclass,
             AeroMeshData: SharedString::new(b"".to_vec()),
             FluidFidelityInternal: enums::FluidFidelity::Automatic,
@@ -18688,8 +18356,7 @@ impl Default for TriangleMeshPart {
             UnscaledVolInertiaDiags: Vector3::new(0f32, 0f32, 0f32),
             UnscaledVolInertiaOffDiags: Vector3::new(0f32, 0f32, 0f32),
             UnscaledVolume: 0f32,
-        };
-        superclass
+        }
     }
 }
 #[derive(Debug, Clone)]
@@ -18760,11 +18427,10 @@ impl Default for TrussPart {
             Transparency: 0f32,
             Velocity: Vector3::new(0f32, 0f32, 0f32),
         };
-        let superclass = TrussPart {
+        Self {
             superclass,
             Style: enums::Style::AlternatingSupports,
-        };
-        superclass
+        }
     }
 }
 #[derive(Debug, Clone)]
@@ -18840,13 +18506,12 @@ impl Default for UIAspectRatioConstraint {
         let superclass = UIBase { superclass };
         let superclass = UIComponent { superclass };
         let superclass = UIConstraint { superclass };
-        let superclass = UIAspectRatioConstraint {
+        Self {
             superclass,
             AspectRatio: 1f32,
             AspectType: enums::AspectType::FitWithinMaxSize,
             DominantAxis: enums::DominantAxis::Width,
-        };
-        superclass
+        }
     }
 }
 #[derive(Debug, Clone)]
@@ -18895,11 +18560,10 @@ impl Default for UICorner {
         };
         let superclass = UIBase { superclass };
         let superclass = UIComponent { superclass };
-        let superclass = UICorner {
+        Self {
             superclass,
             CornerRadius: UDim::new(0f32, 8i32),
-        };
-        superclass
+        }
     }
 }
 #[derive(Debug, Clone)]
@@ -18943,7 +18607,7 @@ impl Default for UIDragDetector {
         };
         let superclass = UIBase { superclass };
         let superclass = UIComponent { superclass };
-        let superclass = UIDragDetector {
+        Self {
             superclass,
             ActivatedCursorIconContent: Content::none(),
             BoundingBehavior: enums::UIDragDetectorBoundingBehavior::Automatic,
@@ -18965,8 +18629,7 @@ impl Default for UIDragDetector {
             SelectionModeDragSpeed: UDim2::new(UDim::new(0f32, 300i32), UDim::new(0f32, 300i32)),
             SelectionModeRotateSpeed: 90f32,
             UiDragSpeedAxisMapping: enums::UIDragSpeedAxisMapping::XY,
-        };
-        superclass
+        }
     }
 }
 #[derive(Debug, Clone)]
@@ -19002,14 +18665,13 @@ impl Default for UIFlexItem {
         };
         let superclass = UIBase { superclass };
         let superclass = UIComponent { superclass };
-        let superclass = UIFlexItem {
+        Self {
             superclass,
             FlexMode: enums::UIFlexMode::None,
             GrowRatio: 0f32,
             ItemLineAlignment: enums::ItemLineAlignment::Automatic,
             ShrinkRatio: 0f32,
-        };
-        superclass
+        }
     }
 }
 #[derive(Debug, Clone)]
@@ -19038,7 +18700,7 @@ impl Default for UIGradient {
         };
         let superclass = UIBase { superclass };
         let superclass = UIComponent { superclass };
-        let superclass = UIGradient {
+        Self {
             superclass,
             Color: ColorSequence {
                 keypoints: vec![
@@ -19055,8 +18717,7 @@ impl Default for UIGradient {
                     NumberSequenceKeypoint::new(1f32, 0f32, 0f32),
                 ],
             },
-        };
-        superclass
+        }
     }
 }
 #[derive(Debug, Clone)]
@@ -19092,14 +18753,13 @@ impl Default for UIGridLayout {
             SortOrder: enums::SortOrder::Name,
             VerticalAlignment: enums::VerticalAlignment::Center,
         };
-        let superclass = UIGridLayout {
+        Self {
             superclass,
             CellPadding: UDim2::new(UDim::new(0f32, 5i32), UDim::new(0f32, 5i32)),
             CellSize: UDim2::new(UDim::new(0f32, 100i32), UDim::new(0f32, 100i32)),
             FillDirectionMaxCells: 0i32,
             StartCorner: enums::StartCorner::TopLeft,
-        };
-        superclass
+        }
     }
 }
 #[derive(Debug, Clone)]
@@ -19128,14 +18788,13 @@ impl Default for UIGridStyleLayout {
         let superclass = UIBase { superclass };
         let superclass = UIComponent { superclass };
         let superclass = UILayout { superclass };
-        let superclass = UIGridStyleLayout {
+        Self {
             superclass,
             FillDirection: enums::FillDirection::Horizontal,
             HorizontalAlignment: enums::HorizontalAlignment::Center,
             SortOrder: enums::SortOrder::Name,
             VerticalAlignment: enums::VerticalAlignment::Center,
-        };
-        superclass
+        }
     }
 }
 #[derive(Debug, Clone)]
@@ -19180,15 +18839,14 @@ impl Default for UIListLayout {
             SortOrder: enums::SortOrder::Name,
             VerticalAlignment: enums::VerticalAlignment::Center,
         };
-        let superclass = UIListLayout {
+        Self {
             superclass,
             HorizontalFlex: enums::UIFlexAlignment::None,
             ItemLineAlignment: enums::ItemLineAlignment::Automatic,
             Padding: UDim::new(0f32, 0i32),
             VerticalFlex: enums::UIFlexAlignment::None,
             Wraps: false,
-        };
-        superclass
+        }
     }
 }
 #[derive(Debug, Clone)]
@@ -19216,14 +18874,13 @@ impl Default for UIPadding {
         };
         let superclass = UIBase { superclass };
         let superclass = UIComponent { superclass };
-        let superclass = UIPadding {
+        Self {
             superclass,
             PaddingBottom: UDim::new(0f32, 0i32),
             PaddingLeft: UDim::new(0f32, 0i32),
             PaddingRight: UDim::new(0f32, 0i32),
             PaddingTop: UDim::new(0f32, 0i32),
-        };
-        superclass
+        }
     }
 }
 #[derive(Debug, Clone)]
@@ -19264,7 +18921,7 @@ impl Default for UIPageLayout {
             SortOrder: enums::SortOrder::Name,
             VerticalAlignment: enums::VerticalAlignment::Center,
         };
-        let superclass = UIPageLayout {
+        Self {
             superclass,
             Animated: true,
             Circular: false,
@@ -19275,8 +18932,7 @@ impl Default for UIPageLayout {
             ScrollWheelInputEnabled: true,
             TouchInputEnabled: true,
             TweenTime: 1f32,
-        };
-        superclass
+        }
     }
 }
 #[derive(Debug, Clone)]
@@ -19301,11 +18957,10 @@ impl Default for UIScale {
         };
         let superclass = UIBase { superclass };
         let superclass = UIComponent { superclass };
-        let superclass = UIScale {
+        Self {
             superclass,
             Scale: 1f32,
-        };
-        superclass
+        }
     }
 }
 #[derive(Debug, Clone)]
@@ -19332,12 +18987,11 @@ impl Default for UISizeConstraint {
         let superclass = UIBase { superclass };
         let superclass = UIComponent { superclass };
         let superclass = UIConstraint { superclass };
-        let superclass = UISizeConstraint {
+        Self {
             superclass,
             MaxSize: Vector2::new(f32::INFINITY, f32::INFINITY),
             MinSize: Vector2::new(0f32, 0f32),
-        };
-        superclass
+        }
     }
 }
 #[derive(Debug, Clone)]
@@ -19371,7 +19025,7 @@ impl Default for UIStroke {
         };
         let superclass = UIBase { superclass };
         let superclass = UIComponent { superclass };
-        let superclass = UIStroke {
+        Self {
             superclass,
             ApplyStrokeMode: enums::ApplyStrokeMode::Contextual,
             BorderOffset: UDim::new(0f32, 0i32),
@@ -19383,8 +19037,7 @@ impl Default for UIStroke {
             Thickness: 1f32,
             Transparency: 0f32,
             ZIndex: 1i32,
-        };
-        superclass
+        }
     }
 }
 #[derive(Debug, Clone)]
@@ -19420,14 +19073,13 @@ impl Default for UITableLayout {
             SortOrder: enums::SortOrder::Name,
             VerticalAlignment: enums::VerticalAlignment::Center,
         };
-        let superclass = UITableLayout {
+        Self {
             superclass,
             FillEmptySpaceColumns: false,
             FillEmptySpaceRows: false,
             MajorAxis: enums::TableMajorAxis::RowMajor,
             Padding: UDim2::new(UDim::new(0f32, 0i32), UDim::new(0f32, 0i32)),
-        };
-        superclass
+        }
     }
 }
 #[derive(Debug, Clone)]
@@ -19454,12 +19106,11 @@ impl Default for UITextSizeConstraint {
         let superclass = UIBase { superclass };
         let superclass = UIComponent { superclass };
         let superclass = UIConstraint { superclass };
-        let superclass = UITextSizeConstraint {
+        Self {
             superclass,
             MaxTextSize: 100i32,
             MinTextSize: 1i32,
-        };
-        superclass
+        }
     }
 }
 #[derive(Debug, Clone)]
@@ -19509,14 +19160,13 @@ impl Default for UniversalConstraint {
             Enabled: false,
             Visible: false,
         };
-        let superclass = UniversalConstraint {
+        Self {
             superclass,
             LimitsEnabled: false,
             MaxAngle: 45f32,
             Radius: 0.2f32,
             Restitution: 0f32,
-        };
-        superclass
+        }
     }
 }
 #[derive(Debug, Clone)]
@@ -19547,12 +19197,11 @@ impl Default for UnvalidatedAssetService {
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
         };
-        let superclass = UnvalidatedAssetService {
+        Self {
             superclass,
             CachedData: "{\"lastSaveTime\":0,\"lastKnownPublishRequest\":0,\"users\":[]}"
                 .to_owned(),
-        };
-        superclass
+        }
     }
 }
 #[derive(Debug, Clone)]
@@ -19641,7 +19290,7 @@ impl Default for UserGameSettings {
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
         };
-        let superclass = UserGameSettings {
+        Self {
             superclass,
             AllTutorialsDisabled: false,
             BadgeVisible: false,
@@ -19710,8 +19359,7 @@ impl Default for UserGameSettings {
             VrSmoothRotationEnabledCustomOption: false,
             VrThirdPersonFollowCamEnabled: false,
             VrThirdPersonFollowCamEnabledCustomOption: false,
-        };
-        superclass
+        }
     }
 }
 #[derive(Debug, Clone)]
@@ -19737,14 +19385,13 @@ impl Default for UserInputService {
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
         };
-        let superclass = UserInputService {
+        Self {
             superclass,
             LegacyInputEventsEnabled: false,
             MouseBehavior: enums::MouseBehavior::Default,
             MouseIconContent: Content::none(),
             MouseIconEnabled: false,
-        };
-        superclass
+        }
     }
 }
 #[derive(Debug, Clone)]
@@ -19795,15 +19442,14 @@ impl Default for VRService {
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
         };
-        let superclass = VRService {
+        Self {
             superclass,
             AutomaticScaling: enums::VRScaling::World,
             AvatarGestures: false,
             ControllerModels: enums::VRControllerModelMode::Transparent,
             FadeOutViewOnCollision: true,
             LaserPointer: enums::VRLaserPointerMode::Pointer,
-        };
-        superclass
+        }
     }
 }
 #[derive(Debug, Clone)]
@@ -19842,11 +19488,10 @@ impl Default for ValueCurve {
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
         };
-        let superclass = ValueCurve {
+        Self {
             superclass,
             ValuesAndTimes: b"\x02\0\0\0\0\0\0\0\x01\0\0\0\0\0\0\0".as_slice().into(),
-        };
-        superclass
+        }
     }
 }
 #[derive(Debug, Clone)]
@@ -19878,11 +19523,10 @@ impl Default for Vector3Value {
             UniqueId: UniqueId::nil(),
         };
         let superclass = ValueBase { superclass };
-        let superclass = Vector3Value {
+        Self {
             superclass,
             Value: Vector3::new(0f32, 0f32, 0f32),
-        };
-        superclass
+        }
     }
 }
 #[derive(Debug, Clone)]
@@ -19915,13 +19559,12 @@ impl Default for VectorForce {
             Enabled: false,
             Visible: false,
         };
-        let superclass = VectorForce {
+        Self {
             superclass,
             ApplyAtCenterOfMass: false,
             Force: Vector3::new(1000f32, 0f32, 0f32),
             RelativeTo: enums::ActuatorRelativeTo::Attachment0,
-        };
-        superclass
+        }
     }
 }
 #[derive(Debug, Clone)]
@@ -20008,7 +19651,7 @@ impl Default for VehicleSeat {
             Transparency: 0f32,
             Velocity: Vector3::new(0f32, 0f32, 0f32),
         };
-        let superclass = VehicleSeat {
+        Self {
             superclass,
             Disabled: false,
             HeadsUpDisplay: true,
@@ -20019,8 +19662,7 @@ impl Default for VehicleSeat {
             ThrottleFloat: 0f32,
             Torque: 10f32,
             TurnSpeed: 1f32,
-        };
-        superclass
+        }
     }
 }
 #[derive(Debug, Clone)]
@@ -20054,14 +19696,13 @@ impl Default for VelocityMotor {
             Part0: Ref::none(),
             Part1: Ref::none(),
         };
-        let superclass = VelocityMotor {
+        Self {
             superclass,
             CurrentAngle: 0f32,
             DesiredAngle: 0f32,
             Hole: Ref::none(),
             MaxVelocity: 0f32,
-        };
-        superclass
+        }
     }
 }
 #[derive(Debug, Clone)]
@@ -20110,13 +19751,12 @@ impl Default for VideoDeviceInput {
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
         };
-        let superclass = VideoDeviceInput {
+        Self {
             superclass,
             Active: false,
             CameraId: "".to_owned(),
             CaptureQuality: enums::VideoDeviceCaptureQuality::Default,
-        };
-        superclass
+        }
     }
 }
 #[derive(Debug, Clone)]
@@ -20184,7 +19824,7 @@ impl Default for VideoDisplay {
             Visible: false,
             ZIndex: 0i32,
         };
-        let superclass = VideoDisplay {
+        Self {
             superclass,
             ResampleMode: enums::ResamplerMode::Default,
             ScaleType: enums::ScaleType::Stretch,
@@ -20193,8 +19833,7 @@ impl Default for VideoDisplay {
             VideoRectOffset: Vector2::new(0f32, 0f32),
             VideoRectSize: Vector2::new(0f32, 0f32),
             VideoTransparency: 0f32,
-        };
-        superclass
+        }
     }
 }
 #[derive(Debug, Clone)]
@@ -20260,15 +19899,14 @@ impl Default for VideoFrame {
             Visible: false,
             ZIndex: 0i32,
         };
-        let superclass = VideoFrame {
+        Self {
             superclass,
             Looped: false,
             Playing: false,
             TimePosition: 0f64,
             VideoContent: Content::none(),
             Volume: 1f32,
-        };
-        superclass
+        }
     }
 }
 #[derive(Debug, Clone)]
@@ -20295,15 +19933,14 @@ impl Default for VideoPlayer {
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
         };
-        let superclass = VideoPlayer {
+        Self {
             superclass,
             Looping: false,
             PlaybackSpeed: 1f32,
             TimePosition: 0f64,
             VideoContent: Content::none(),
             Volume: 1f32,
-        };
-        superclass
+        }
     }
 }
 #[derive(Debug, Clone)]
@@ -20395,7 +20032,7 @@ impl Default for ViewportFrame {
             Visible: false,
             ZIndex: 0i32,
         };
-        let superclass = ViewportFrame {
+        Self {
             superclass,
             Ambient: Color3::new(0.78431374f32, 0.78431374f32, 0.78431374f32),
             CameraCFrame: CFrame::identity(),
@@ -20404,8 +20041,7 @@ impl Default for ViewportFrame {
             ImageTransparency: 0f32,
             LightColor: Color3::new(0.54901963f32, 0.54901963f32, 0.54901963f32),
             LightDirection: Vector3::new(-1f32, -1f32, -1f32),
-        };
-        superclass
+        }
     }
 }
 #[derive(Debug, Clone)]
@@ -20462,13 +20098,12 @@ impl Default for VisualizationMode {
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
         };
-        let superclass = VisualizationMode {
+        Self {
             superclass,
             Enabled: false,
             Title: "".to_owned(),
             ToolTip: "".to_owned(),
-        };
-        superclass
+        }
     }
 }
 #[derive(Debug, Clone)]
@@ -20492,12 +20127,11 @@ impl Default for VisualizationModeCategory {
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
         };
-        let superclass = VisualizationModeCategory {
+        Self {
             superclass,
             Enabled: false,
             Title: "".to_owned(),
-        };
-        superclass
+        }
     }
 }
 #[derive(Debug, Clone)]
@@ -20538,13 +20172,12 @@ impl Default for VoiceChatService {
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
         };
-        let superclass = VoiceChatService {
+        Self {
             superclass,
             DefaultDistanceAttenuation: enums::VoiceChatDistanceAttenuationType::Inverse,
             EnableDefaultVoice: true,
             UseAudioApi: enums::AudioApiRollout::Automatic,
-        };
-        superclass
+        }
     }
 }
 #[derive(Debug, Clone)]
@@ -20616,12 +20249,11 @@ impl Default for WeldConstraint {
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
         };
-        let superclass = WeldConstraint {
+        Self {
             superclass,
             CFrame0: CFrame::identity(),
             State: 3i32,
-        };
-        superclass
+        }
     }
 }
 #[derive(Debug, Clone)]
@@ -20647,14 +20279,13 @@ impl Default for Wire {
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
         };
-        let superclass = Wire {
+        Self {
             superclass,
             SourceInstance: Ref::none(),
             SourceName: "Output".to_owned(),
             TargetInstance: Ref::none(),
             TargetName: "Input".to_owned(),
-        };
-        superclass
+        }
     }
 }
 #[derive(Debug, Clone)]
@@ -20697,12 +20328,11 @@ impl Default for WireframeHandleAdornment {
             SizeRelativeOffset: Vector3::new(0f32, 0f32, 0f32),
             ZIndex: 0i32,
         };
-        let superclass = WireframeHandleAdornment {
+        Self {
             superclass,
             Scale: Vector3::new(1f32, 1f32, 1f32),
             Thickness: 1f32,
-        };
-        superclass
+        }
     }
 }
 #[derive(Debug, Clone)]
@@ -20778,7 +20408,7 @@ impl Default for Workspace {
             WorldPivotData: None,
         };
         let superclass = WorldRoot { superclass };
-        let superclass = Workspace {
+        Self {
             superclass,
             AirDensity: 0.0012f32,
             AirTurbulenceIntensity: 0f32,
@@ -20822,8 +20452,7 @@ impl Default for Workspace {
             TouchEventsUseCollisionGroups: enums::RolloutState::Default,
             TouchesUseCollisionGroups: false,
             UseNewLuauTypeSolver: enums::RolloutState::Enabled,
-        };
-        superclass
+        }
     }
 }
 #[derive(Debug, Clone)]
@@ -20896,7 +20525,7 @@ impl Default for WrapLayer {
             ImportOrigin: CFrame::identity(),
             TemporaryCageMeshId: "".into(),
         };
-        let superclass = WrapLayer {
+        Self {
             superclass,
             AutoSkin: enums::WrapLayerAutoSkin::Disabled,
             BindOffset: CFrame::identity(),
@@ -20907,8 +20536,7 @@ impl Default for WrapLayer {
             ReferenceOrigin: CFrame::identity(),
             ShrinkFactor: 0f32,
             TemporaryReferenceId: "".into(),
-        };
-        superclass
+        }
     }
 }
 #[derive(Debug, Clone)]
@@ -20941,11 +20569,10 @@ impl Default for WrapTarget {
             ImportOrigin: CFrame::identity(),
             TemporaryCageMeshId: "".into(),
         };
-        let superclass = WrapTarget {
+        Self {
             superclass,
             Stiffness: 0f32,
-        };
-        superclass
+        }
     }
 }
 #[derive(Debug, Clone)]
@@ -20970,12 +20597,11 @@ impl Default for WrapTextureTransfer {
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
         };
-        let superclass = WrapTextureTransfer {
+        Self {
             superclass,
             ReferenceCageMeshContent: Content::none(),
             UvMaxBound: Vector2::new(f32::NEG_INFINITY, f32::NEG_INFINITY),
             UvMinBound: Vector2::new(f32::INFINITY, f32::INFINITY),
-        };
-        superclass
+        }
     }
 }
