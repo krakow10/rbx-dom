@@ -1,7 +1,7 @@
 use ahash::{AHashMap, AHashSet};
 use rbx_types::{Ref, UniqueId};
 
-use rbx_classes::instances::StrongInstance;
+use crate::instance::StrongInstance;
 
 /// Represents a DOM containing one or more Roblox instances.
 #[derive(Debug)]
