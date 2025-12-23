@@ -21,7 +21,7 @@ impl CodegenStrongSubcommand {
 
         // ==== generate instances.rs ====
         let instance_code = {
-            let mut strong_instances = StrongInstancesCollector::new();
+            let mut strong_instances = StrongInstancesCollector::with_capacity(db.classes.len());
             for descriptor in db.classes.values() {
                 strong_instances.push(descriptor, db);
             }
@@ -36,7 +36,7 @@ impl CodegenStrongSubcommand {
         };
         // ==== generate enum.rs ====
         let enum_code = {
-            let mut strong_enum = EnumCollector::new();
+            let mut strong_enum = EnumCollector::with_capacity(db.enums.len());
             for descriptor in db.enums.values() {
                 strong_enum.push(descriptor);
             }
@@ -466,10 +466,10 @@ struct StrongInstancesCollector {
     variants: Vec<syn::Variant>,
 }
 impl StrongInstancesCollector {
-    fn new() -> Self {
+    fn with_capacity(capacity: usize) -> Self {
         Self {
-            structs: Vec::new(),
-            variants: Vec::new(),
+            structs: Vec::with_capacity(capacity),
+            variants: Vec::with_capacity(capacity),
         }
     }
     fn push(&mut self, descriptor: &ClassDescriptor, database: &ReflectionDatabase<'_>) {
@@ -645,10 +645,10 @@ struct EnumCollector {
     variants: Vec<syn::Variant>,
 }
 impl EnumCollector {
-    fn new() -> Self {
+    fn with_capacity(capacity: usize) -> Self {
         Self {
-            enums: Vec::new(),
-            variants: Vec::new(),
+            enums: Vec::with_capacity(capacity),
+            variants: Vec::with_capacity(capacity),
         }
     }
     fn push(&mut self, descriptor: &EnumDescriptor) {
