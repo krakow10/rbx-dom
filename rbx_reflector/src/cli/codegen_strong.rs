@@ -177,6 +177,36 @@ impl ToTokens for WrapToTokens<&rbx_types::Color3> {
         append(quote::quote! {Color3::new(#r,#g,#b)});
     }
 }
+
+impl ToTokens for WrapToTokens<rbx_types::FontWeight> {
+    fn to_tokens(&self, tokens: &mut proc_macro2::TokenStream) {
+        let &WrapToTokens(value) = self;
+        let mut append = |tt| tokens.extend(tt);
+        match value {
+            rbx_types::FontWeight::Thin => append(quote::quote!(FontWeight::Thin)),
+            rbx_types::FontWeight::ExtraLight => append(quote::quote!(FontWeight::ExtraLight)),
+            rbx_types::FontWeight::Light => append(quote::quote!(FontWeight::Light)),
+            rbx_types::FontWeight::Regular => append(quote::quote!(FontWeight::Regular)),
+            rbx_types::FontWeight::Medium => append(quote::quote!(FontWeight::Medium)),
+            rbx_types::FontWeight::SemiBold => append(quote::quote!(FontWeight::SemiBold)),
+            rbx_types::FontWeight::Bold => append(quote::quote!(FontWeight::Bold)),
+            rbx_types::FontWeight::ExtraBold => append(quote::quote!(FontWeight::ExtraBold)),
+            rbx_types::FontWeight::Heavy => append(quote::quote!(FontWeight::Heavy)),
+            _ => unimplemented!(),
+        }
+    }
+}
+impl ToTokens for WrapToTokens<rbx_types::FontStyle> {
+    fn to_tokens(&self, tokens: &mut proc_macro2::TokenStream) {
+        let &WrapToTokens(value) = self;
+        let mut append = |tt| tokens.extend(tt);
+        match value {
+            rbx_types::FontStyle::Normal => append(quote::quote!(FontStyle::Normal)),
+            rbx_types::FontStyle::Italic => append(quote::quote!(FontStyle::Italic)),
+            _ => unimplemented!(),
+        }
+    }
+}
 impl ToTokens for WrapToTokens<&Variant> {
     fn to_tokens(&self, tokens: &mut proc_macro2::TokenStream) {
         use quote::quote as q;
@@ -335,7 +365,23 @@ impl ToTokens for WrapToTokens<&Variant> {
                 }
                 append(q! {UniqueId::nil()});
             }
-            Variant::Font(value) => append(q! {unimplemented!("Font")}),
+            Variant::Font(value) => {
+                let family = value.family.as_str();
+                let weight = WrapToTokens(value.weight);
+                let style = WrapToTokens(value.style);
+                let cached_face_id = value.cached_face_id.as_deref();
+                match cached_face_id {
+                    Some(cached_face_id) => append(q! {
+                        Font {
+                            family: #family.to_owned(),
+                            weight: #weight,
+                            style: #style,
+                            cached_face_id: Some(#cached_face_id.to_owned()),
+                        }
+                    }),
+                    None => append(q! {Font::new(#family,#weight,#style)}),
+                }
+            }
             Variant::MaterialColors(value) => append(q! {unimplemented!("MaterialColors")}),
             Variant::SecurityCapabilities(value) => {
                 let bits = value.bits();
