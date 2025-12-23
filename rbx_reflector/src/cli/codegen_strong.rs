@@ -407,7 +407,19 @@ impl ToTokens for WrapToTokens<&Variant> {
                 let lit = value.as_str();
                 append(q! {#lit.into()});
             }
-            Variant::Attributes(value) => append(q! {unimplemented!("Attributes")}),
+            Variant::Attributes(value) => {
+                if value.is_empty() {
+                    append(q! {Attributes::new()});
+                } else {
+                    let iter_k = value.iter().map(|(k, _)| k.as_str());
+                    let iter_v = value.iter().map(|(_, v)| WrapToTokens(v));
+                    append(q! {
+                        Attributes::from_iter([
+                            #((#iter_k.to_owned(),#iter_v)),*
+                        ])
+                    })
+                }
+            }
             Variant::UniqueId(value) => {
                 if !value.is_nil() {
                     panic!("Cannot create default UniqueId");
