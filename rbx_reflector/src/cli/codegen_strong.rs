@@ -576,13 +576,11 @@ struct StructWithImpls {
 }
 struct StrongInstancesCollector {
     structs: Vec<StructWithImpls>,
-    variants: Vec<syn::Variant>,
 }
 impl StrongInstancesCollector {
     fn with_capacity(capacity: usize) -> Self {
         Self {
             structs: Vec::with_capacity(capacity),
-            variants: Vec::with_capacity(capacity),
         }
     }
     fn push(&mut self, descriptor: &ClassDescriptor, database: &ReflectionDatabase<'_>) {
@@ -606,9 +604,6 @@ impl StrongInstancesCollector {
                 impl_inherits!(#ident, #superclass_ident);
             });
         }
-        impls.push(syn::parse_quote! {
-            impl_strong_instance_from!(#ident);
-        });
 
         // Attributes
         let mut attrs: Vec<syn::Attribute> = syn::parse_quote!(
@@ -695,14 +690,10 @@ impl StrongInstancesCollector {
             },
             impls,
         });
-
-        // generate the StrongInstances variant
-        self.variants.push(syn::parse_quote!(#ident(Box<#ident>)));
     }
     fn sort(mut self) -> Sorted<Self> {
         // sort for consistency
         self.structs.sort_by(|a, b| a.item.ident.cmp(&b.item.ident));
-        self.variants.sort_by(|a, b| a.ident.cmp(&b.ident));
         Sorted(self)
     }
 }
@@ -713,23 +704,35 @@ impl ToTokens for Sorted<StrongInstancesCollector> {
     fn into_token_stream(self) -> proc_macro2::TokenStream {
         let Sorted(instances) = self;
         // generate StrongInstance enum
-        let mut strong_instances_enum: syn::ItemEnum = syn::parse_quote! {
-            #[derive(Debug, Clone)]
-            pub enum StrongInstance {
+        let iter = instances.structs.iter().map(|s| &s.item.ident);
+        let strong_instances_macro: syn::ItemMacro = syn::parse_quote! {
+            /// Invoke a macro with every class ident,
+            /// i.e
+            /// ```rust
+            /// for_each_class!(my_macro);
+            /// ```
+            /// invokes
+            /// ```rust
+            /// my_macro!(Accoutrement, Part, WedgePart, ...);
+            /// ```
+            #[macro_export]
+            macro_rules! for_each_class {
+                ($my_macro:ident) => {
+                    $my_macro!(#(#iter),*);
+                };
             }
         };
-        strong_instances_enum.variants.extend(instances.variants);
 
         // create complete file including use statements
         let mut complete_file: syn::File = syn::parse_quote! {
             use core::ops::{Deref, DerefMut};
-            use crate::{impl_inherits, impl_strong_instance_from};
+            use crate::impl_inherits;
             use super::enums;
             use rbx_types::*;
         };
         complete_file
             .items
-            .push(syn::Item::Enum(strong_instances_enum));
+            .push(syn::Item::Macro(strong_instances_macro));
         complete_file
             .items
             .extend(
@@ -755,13 +758,11 @@ fn fix_enum_ident(ident: &str) -> &str {
 
 struct EnumCollector {
     enums: Vec<syn::ItemEnum>,
-    variants: Vec<syn::Variant>,
 }
 impl EnumCollector {
     fn with_capacity(capacity: usize) -> Self {
         Self {
             enums: Vec::with_capacity(capacity),
-            variants: Vec::with_capacity(capacity),
         }
     }
     fn push(&mut self, descriptor: &EnumDescriptor) {
@@ -803,14 +804,10 @@ impl EnumCollector {
             variants: variants.collect(),
             brace_token: syn::token::Brace::default(),
         });
-
-        // generate the StrongEnum variant
-        self.variants.push(syn::parse_quote!(#ident(#ident)));
     }
     fn sort(mut self) -> Sorted<Self> {
         // sort for consistency
         self.enums.sort_by(|a, b| a.ident.cmp(&b.ident));
-        self.variants.sort_by(|a, b| a.ident.cmp(&b.ident));
         Sorted(self)
     }
 }
@@ -821,17 +818,31 @@ impl ToTokens for Sorted<EnumCollector> {
     fn into_token_stream(self) -> proc_macro2::TokenStream {
         let Sorted(enums) = self;
 
-        // generate StrongInstance enum
-        let mut strong_enum: syn::ItemEnum = syn::parse_quote! {
-            #[derive(Debug, Clone)]
-            pub enum StrongEnum {
+        // generate enums macro
+        let iter = enums.enums.iter().map(|s| &s.ident);
+        let strong_enums_macro: syn::ItemMacro = syn::parse_quote! {
+            /// Invoke a macro with every enum ident,
+            /// i.e
+            /// ```rust
+            /// for_each_enum!(my_macro);
+            /// ```
+            /// invokes
+            /// ```rust
+            /// my_macro!(AlignType, FormFactor, KeyCode, ...)
+            /// ```
+            #[macro_export]
+            macro_rules! for_each_enum {
+                ($my_macro:ident) => {
+                    $my_macro!(#(#iter),*);
+                };
             }
         };
-        strong_enum.variants.extend(enums.variants);
 
         // create complete file including use statements
         let mut complete_file: syn::File = syn::parse_quote! {};
-        complete_file.items.push(syn::Item::Enum(strong_enum));
+        complete_file
+            .items
+            .push(syn::Item::Macro(strong_enums_macro));
         complete_file
             .items
             .extend(enums.enums.into_iter().map(syn::Item::Enum));
