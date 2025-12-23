@@ -1621,7 +1621,7 @@ impl Default for ArcHandles {
         let superclass = HandlesBase { superclass };
         Self {
             superclass,
-            Axes: unimplemented!(),
+            Axes: Axes::all(),
         }
     }
 }
@@ -8285,7 +8285,7 @@ impl Default for Handles {
         let superclass = HandlesBase { superclass };
         Self {
             superclass,
-            Faces: unimplemented!(),
+            Faces: Faces::all(),
             Style: enums::HandlesStyle::Resize,
         }
     }
