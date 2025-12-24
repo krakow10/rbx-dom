@@ -1,5 +1,6 @@
-use crate::instances::Part;
-use rbx_types::CFrame;
+use crate::dom::StrongDom;
+use crate::instances::{BasePart, Part};
+use rbx_types::{CFrame, Ref};
 
 #[test]
 fn part_inherits_instance() {
@@ -8,4 +9,18 @@ fn part_inherits_instance() {
     // look ma, inheritance in rust!
     part.Name = "Part".to_owned();
     part.CFrame = CFrame::identity();
+}
+
+#[test]
+fn get_by_ref() {
+    let dom = StrongDom::default();
+
+    let instance: Option<Result<&BasePart, _>> = dom.get_by_ref(Ref::none());
+
+    if let Some(result) = instance {
+        match result {
+            Ok(base_part) => println!("BasePart is a superclass {:?}", base_part.CFrame),
+            Err(other) => println!("Other class {:?}", other),
+        }
+    }
 }

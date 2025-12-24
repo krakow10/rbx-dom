@@ -37,3 +37,26 @@ macro_rules! impl_strong_instance {
     };
 }
 rbx_classes::for_each_class!(impl_strong_instance);
+
+impl<'a> From<&'a StrongInstance>
+    for Result<&'a rbx_classes::instances::BasePart<InstanceInner>, &'a StrongInstance>
+{
+    fn from(value: &'a StrongInstance) -> Self {
+        match value {
+            StrongInstance::CornerWedgePart(class) => Ok(class),
+            StrongInstance::FormFactorPart(class) => Ok(class),
+            StrongInstance::Terrain(class) => Ok(class),
+            StrongInstance::TriangleMeshPart(class) => Ok(class),
+            StrongInstance::TrussPart(class) => Ok(class),
+            StrongInstance::VehicleSeat(class) => Ok(class),
+            StrongInstance::Part(class) => Ok(class),
+            StrongInstance::WedgePart(class) => Ok(class),
+            StrongInstance::FlagStand(class) => Ok(class),
+            StrongInstance::Platform(class) => Ok(class),
+            StrongInstance::Seat(class) => Ok(class),
+            StrongInstance::SkateboardPlatform(class) => Ok(class),
+            StrongInstance::SpawnLocation(class) => Ok(class),
+            other => Err(other),
+        }
+    }
+}
