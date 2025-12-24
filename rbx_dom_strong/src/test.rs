@@ -1,10 +1,9 @@
-use crate::instance::Instance;
-use rbx_classes::instances::Part;
+use crate::instances::Part;
 use rbx_types::CFrame;
 
 #[test]
 fn part_inherits_instance() {
-    let mut part = Part::<Instance>::default();
+    let mut part = Part::default();
 
     // look ma, inheritance in rust!
     part.Name = "Part".to_owned();
