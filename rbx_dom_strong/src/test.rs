@@ -15,7 +15,7 @@ fn part_inherits_instance() {
 fn get_by_ref() {
     let dom = StrongDom::default();
 
-    let instance: Option<Result<&BasePart, _>> = dom.get_by_ref(Ref::none());
+    let instance = dom.get_by_ref::<Result<&BasePart, _>>(Ref::none());
 
     if let Some(result) = instance {
         match result {
