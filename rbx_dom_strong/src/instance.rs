@@ -22,8 +22,8 @@ macro_rules! impl_strong_instance {
         #[derive(Debug)]
         pub enum StrongInstance {
             $(
-                $class(Box<rbx_classes::instances::$class<Instance>>)
-            ),*
+                $class(Box<rbx_classes::instances::$class<Instance>>),
+            )*
         }
 
         // From impls
