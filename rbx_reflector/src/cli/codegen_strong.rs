@@ -601,7 +601,11 @@ impl StrongInstancesCollector {
         let mut impls = Vec::new();
         if let Some(superclass_ident) = &superclass_ident {
             impls.push(syn::parse_quote! {
-                impl_inherits!(#ident, #superclass_ident);
+                impl_inherits!(#ident<I>, #superclass_ident<I>);
+            });
+        } else {
+            impls.push(syn::parse_quote! {
+                impl_inherits!(#ident<I>, I);
             });
         }
 
@@ -620,16 +624,30 @@ impl StrongInstancesCollector {
             superclasses.reverse();
 
             let mut iter = superclasses.into_iter().map(|class| {
-                let ident: syn::Ident = syn::parse_str(&class.name).unwrap();
-                let default_struct = syn::parse_quote! {#ident{}};
+                let ident = syn::parse_str(&class.name).unwrap();
                 // this is duplicating a lot of work, but whatever
                 let fields = get_fields_info(class, &descriptor.default_properties, database);
-                (default_struct, fields)
+                (OtherIdent(ident), fields)
             });
 
+            // Some crap needed because Self isn't a valid ident
+            struct OtherIdent(syn::Ident);
+            struct SelfIdent;
+            impl From<OtherIdent> for syn::ExprStruct {
+                fn from(OtherIdent(ident): OtherIdent) -> Self {
+                    syn::parse_quote! {#ident{}}
+                }
+            }
+            impl From<SelfIdent> for syn::ExprStruct {
+                fn from(_: SelfIdent) -> Self {
+                    syn::parse_quote! {Self{}}
+                }
+            }
+
             fn push_fields(
-                (mut default_struct, fields): (syn::ExprStruct, impl AsRef<[FieldInfo]>),
+                (ident, fields): (impl Into<syn::ExprStruct>, impl AsRef<[FieldInfo]>),
             ) -> syn::ExprStruct {
+                let mut default_struct = ident.into();
                 default_struct.fields.push(syn::parse_quote! {
                     superclass
                 });
@@ -643,19 +661,19 @@ impl StrongInstancesCollector {
                 default_struct
             }
 
-            // root superclass has no superclass (and is assumed to have no fields)
-            let (root, _) = iter.next().unwrap();
+            // root superclass has no superclass
+            let (OtherIdent(root), _) = iter.next().unwrap();
 
             // superclasses
             let iter = iter.map(push_fields);
 
             // self
-            let default_struct = push_fields((syn::parse_quote! {Self{}}, &fields));
+            let default_struct = push_fields((SelfIdent, &fields));
 
             let default_impl = syn::parse_quote! {
-                impl Default for #ident{
+                impl<I: Default> Default for #ident<I>{
                     fn default() -> Self {
-                        let superclass = #root;
+                        let superclass = #root::default();
                         #(let superclass = #iter;)*
                         #default_struct
                     }
@@ -665,11 +683,15 @@ impl StrongInstancesCollector {
         }
 
         // superclass field is added to the top
-        let superclass_field = superclass_ident.map(|superclass_ident| {
+        let superclass_field: syn::Field = if let Some(superclass_ident) = superclass_ident {
             syn::parse_quote! {
-                superclass: #superclass_ident
+                superclass: #superclass_ident<I>
             }
-        });
+        } else {
+            syn::parse_quote! {
+                superclass: I
+            }
+        };
 
         // generate the class struct
         self.structs.push(StructWithImpls {
@@ -678,10 +700,10 @@ impl StrongInstancesCollector {
                 vis: syn::Visibility::Public(syn::token::Pub::default()),
                 struct_token: syn::token::Struct::default(),
                 ident: ident.clone(),
-                generics: syn::Generics::default(),
+                generics: syn::parse_quote! {<I>},
                 fields: syn::Fields::Named(syn::FieldsNamed {
                     brace_token: syn::token::Brace::default(),
-                    named: superclass_field
+                    named: [superclass_field]
                         .into_iter()
                         .chain(fields.into_iter().map(|field_info| field_info.field))
                         .collect(),
