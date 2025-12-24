@@ -1,9 +1,9 @@
-use crate::instance;
+use crate::instance::InstanceInner;
 use rbx_classes::instances;
 macro_rules! impl_instance_aliases {
     ($($class:ident),*) => {
         $(
-            pub type $class = instances::$class<instance::Instance>;
+            pub type $class = instances::$class<InstanceInner>;
         )*
     }
 }

@@ -1,13 +1,13 @@
 use rbx_types::Ref;
 
 #[derive(Debug)]
-pub struct Instance {
+pub struct InstanceInner {
     referent: Ref,
     children: Vec<Ref>,
     parent: Ref,
 }
 
-impl Default for Instance {
+impl Default for InstanceInner {
     fn default() -> Self {
         Self {
             referent: Ref::new(),
@@ -22,14 +22,14 @@ macro_rules! impl_strong_instance {
         #[derive(Debug)]
         pub enum StrongInstance {
             $(
-                $class(Box<rbx_classes::instances::$class<Instance>>),
+                $class(Box<rbx_classes::instances::$class<InstanceInner>>),
             )*
         }
 
         // From impls
         $(
-            impl From<rbx_classes::instances::$class<Instance>> for StrongInstance {
-                fn from(value: rbx_classes::instances::$class<Instance>) -> Self {
+            impl From<rbx_classes::instances::$class<InstanceInner>> for StrongInstance {
+                fn from(value: rbx_classes::instances::$class<InstanceInner>) -> Self {
                     Self::$class(Box::new(value))
                 }
             }
