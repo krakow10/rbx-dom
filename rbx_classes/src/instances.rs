@@ -13,7 +13,7 @@ use rbx_types::*;
 #[doc = r" ```"]
 #[macro_export]
 macro_rules! for_each_class {
-    ($my_macro : ident) => {
+    ($ my_macro : ident) => {
         $my_macro!(
             Accessory,
             AccessoryDescription,
