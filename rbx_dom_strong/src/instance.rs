@@ -45,6 +45,7 @@ pub trait AsClass<Class> {
 }
 macro_rules! impl_as_class_for_instance_and_descendants {
     ($class:ident, [$($descendant:ident),*]) => {
+        #[allow(unreachable_patterns)]
         impl AsClass<instances::$class<InstanceInner>> for StrongInstance {
             fn as_class(&self) -> Option<&instances::$class<InstanceInner>> {
                 Some(match self {
