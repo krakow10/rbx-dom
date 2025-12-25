@@ -20,6 +20,8 @@ impl CodegenStrongSubcommand {
         let dest_enum = self.output.join("enums.rs");
         let dest_macro = self.output.join("macros.rs");
 
+        let t = std::time::Instant::now();
+
         // collect sorted instances
         let instances = {
             let mut strong_instances = StrongInstancesCollector::with_capacity(db.classes.len());
@@ -28,6 +30,9 @@ impl CodegenStrongSubcommand {
             }
             strong_instances.sort()
         };
+
+        let t_instances = t.elapsed();
+        let t = std::time::Instant::now();
 
         // collect sorted enums
         let enums = {
@@ -38,8 +43,20 @@ impl CodegenStrongSubcommand {
             strong_enum.sort()
         };
 
-        // ==== generate macros.rs ====
+        let t_enums = t.elapsed();
+        let t = std::time::Instant::now();
+
+        // generate macros
         let macro_code = generate_macros(db);
+
+        let t_macros = t.elapsed();
+
+        // print timings
+        println!("t_instances={t_instances:?}");
+        println!("t_enums={t_enums:?}");
+        println!("t_macros={t_macros:?}");
+
+        // ==== generate macros.rs ====
         let macro_code = macro_code.into_token_stream().to_string();
         let macro_code = rustfmt(macro_code.as_bytes())?;
 
