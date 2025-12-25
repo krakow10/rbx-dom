@@ -38,10 +38,11 @@ macro_rules! impl_strong_instance {
 }
 rbx_classes::for_each_class!(impl_strong_instance);
 
-impl<'a> From<&'a StrongInstance>
-    for Result<&'a rbx_classes::instances::BasePart<InstanceInner>, &'a StrongInstance>
-{
-    fn from(value: &'a StrongInstance) -> Self {
+impl<'a> TryFrom<&'a StrongInstance> for &'a rbx_classes::instances::BasePart<InstanceInner> {
+    type Error = &'a StrongInstance;
+    fn try_from(
+        value: &'a StrongInstance,
+    ) -> Result<&'a rbx_classes::instances::BasePart<InstanceInner>, &'a StrongInstance> {
         match value {
             StrongInstance::CornerWedgePart(class) => Ok(class),
             StrongInstance::FormFactorPart(class) => Ok(class),
@@ -58,5 +59,20 @@ impl<'a> From<&'a StrongInstance>
             StrongInstance::SpawnLocation(class) => Ok(class),
             other => Err(other),
         }
+    }
+}
+
+impl StrongInstance {
+    pub fn as_class<'a, Class>(&'a self) -> Option<&'a Class>
+    where
+        &'a Self: TryInto<&'a Class>,
+    {
+        self.try_into().ok()
+    }
+    pub fn as_class_mut<'a, Class>(&'a mut self) -> Option<&'a mut Class>
+    where
+        &'a mut Self: TryInto<&'a mut Class>,
+    {
+        self.try_into().ok()
     }
 }

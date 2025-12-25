@@ -14,19 +14,13 @@ pub struct StrongDom {
 impl StrongDom {
     /// Returns a reference to an instance by referent, or `None` if it is not
     /// found.
-    pub fn get_by_ref<'a, IntoClass>(&'a self, referent: Ref) -> Option<IntoClass>
-    where
-        &'a StrongInstance: Into<IntoClass>,
-    {
-        self.instances.get(&referent).map(Into::into)
+    pub fn get_by_ref(&self, referent: Ref) -> Option<&StrongInstance> {
+        self.instances.get(&referent)
     }
 
     /// Returns a _mutable_ reference to an instance by referent, or `None` if
     /// it is not found.
-    pub fn get_by_ref_mut<'a, IntoClass>(&'a mut self, referent: Ref) -> Option<IntoClass>
-    where
-        &'a mut StrongInstance: Into<IntoClass>,
-    {
+    pub fn get_by_ref_mut(&mut self, referent: Ref) -> Option<&mut StrongInstance> {
         self.instances.get_mut(&referent).map(Into::into)
     }
 }
