@@ -8,22 +8,12 @@ pub struct InstanceInner {
     parent: Ref,
 }
 
-impl Default for InstanceInner {
-    fn default() -> Self {
-        Self {
-            referent: Ref::new(),
-            children: Vec::new(),
-            parent: Ref::none(),
-        }
-    }
-}
-
 macro_rules! impl_strong_instance {
     ($($class:ident),*) => {
         #[derive(Debug)]
-        pub enum StrongInstance {
+        pub enum StrongInstance<I> {
             $(
-                $class(Box<instances::$class<InstanceInner>>),
+                $class(Box<instances::$class<I>>),
             )*
         }
     };
@@ -37,8 +27,8 @@ pub trait AsClass<Class> {
 macro_rules! impl_as_class_for_instance_and_descendants {
     ($class:ident, [$($descendant:ident),*]) => {
         #[allow(unreachable_patterns)]
-        impl AsClass<instances::$class<InstanceInner>> for StrongInstance {
-            fn as_class(&self) -> Option<&instances::$class<InstanceInner>> {
+        impl<I> AsClass<instances::$class<I>> for StrongInstance<I> {
+            fn as_class(&self) -> Option<&instances::$class<I>> {
                 Some(match self {
                     $(
                         StrongInstance::$descendant(class) => class,
@@ -46,7 +36,7 @@ macro_rules! impl_as_class_for_instance_and_descendants {
                     _ => return None,
                 })
             }
-            fn as_class_mut(&mut self) -> Option<&mut instances::$class<InstanceInner>> {
+            fn as_class_mut(&mut self) -> Option<&mut instances::$class<I>> {
                 Some(match self {
                     $(
                         StrongInstance::$descendant(class) => class,
@@ -66,7 +56,7 @@ macro_rules! impl_as_class {
 }
 rbx_classes::for_each_class_descendants!(impl_as_class);
 
-impl StrongInstance {
+impl<I> StrongInstance<I> {
     pub fn as_class<Class>(&self) -> Option<&Class>
     where
         Self: AsClass<Class>,
