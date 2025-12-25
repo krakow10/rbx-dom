@@ -26,15 +26,6 @@ macro_rules! impl_strong_instance {
                 $class(Box<instances::$class<InstanceInner>>),
             )*
         }
-
-        // From impls
-        $(
-            impl From<instances::$class<InstanceInner>> for StrongInstance {
-                fn from(value: instances::$class<InstanceInner>) -> Self {
-                    Self::$class(Box::new(value))
-                }
-            }
-        )*
     };
 }
 rbx_classes::for_each_class!(impl_strong_instance);
