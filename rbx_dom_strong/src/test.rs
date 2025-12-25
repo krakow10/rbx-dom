@@ -15,12 +15,12 @@ fn part_inherits_instance() {
 fn get_by_ref() {
     let dom = StrongDom::default();
 
-    if let Some(instance) = dom.get_by_ref(Ref::none()) {
-        match instance.as_class::<BasePart>() {
-            Some(base_part) => {
-                println!("BasePart is a superclass {:?}", base_part.CFrame)
-            }
-            None => println!("Other class {:?}", instance),
-        }
+    // dummy referent just to get this compiling...
+    let referent = Ref::none();
+
+    if let Some(instance) = dom.get_by_ref(referent)
+        && let Some(base_part) = instance.as_class::<BasePart>()
+    {
+        println!("BasePart is a superclass {:?}", base_part.CFrame)
     }
 }
