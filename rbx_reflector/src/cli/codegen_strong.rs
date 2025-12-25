@@ -23,10 +23,11 @@ impl CodegenStrongSubcommand {
         let t = std::time::Instant::now();
 
         // collect sorted instances
+        let mut print_once = std::collections::HashSet::new();
         let instances = {
             let mut strong_instances = StrongInstancesCollector::with_capacity(db.classes.len());
             for descriptor in db.classes.values() {
-                strong_instances.push(descriptor, db);
+                strong_instances.push(&mut print_once, descriptor, db);
             }
             strong_instances.sort()
         };
@@ -494,10 +495,11 @@ struct FieldInfo {
     field: syn::Field,
     default_value: syn::FieldValue,
 }
-fn get_fields_info(
-    descriptor: &ClassDescriptor,
-    default_properties: &std::collections::HashMap<std::borrow::Cow<'_, str>, Variant>,
-    database: &ReflectionDatabase<'_>,
+fn get_fields_info<'db>(
+    print_once: &mut std::collections::HashSet<&'db str>,
+    descriptor: &'db ClassDescriptor<'db>,
+    default_properties: &std::collections::HashMap<std::borrow::Cow<'db, str>, Variant>,
+    database: &'db ReflectionDatabase<'db>,
 ) -> Vec<FieldInfo> {
     // generate fields
     let mut fields = Vec::new();
@@ -555,10 +557,12 @@ fn get_fields_info(
                         .iter()
                         .min_by_key(|&(_, &v)| v)
                         .expect("Expected enum to have more than 0 variants");
-                    println!(
-                        "Enum {enum_name} discriminant not found {find_value} for class {}. Inventing a default value: {enum_variant_name} = {enum_variant_value}",
-                        prop.name
-                    );
+                    if print_once.insert(enum_variant_name) {
+                        println!(
+                            "Enum {enum_name} discriminant not found {find_value} for class {}. Inventing a default value: {enum_variant_name} = {enum_variant_value}",
+                            prop.name
+                        );
+                    }
                     enum_variant_name
                 };
 
@@ -603,8 +607,18 @@ impl StrongInstancesCollector {
             structs: Vec::with_capacity(capacity),
         }
     }
-    fn push(&mut self, descriptor: &ClassDescriptor, database: &ReflectionDatabase<'_>) {
-        let fields = get_fields_info(descriptor, &descriptor.default_properties, database);
+    fn push<'db>(
+        &mut self,
+        print_once: &mut std::collections::HashSet<&'db str>,
+        descriptor: &'db ClassDescriptor<'db>,
+        database: &'db ReflectionDatabase<'db>,
+    ) {
+        let fields = get_fields_info(
+            print_once,
+            descriptor,
+            &descriptor.default_properties,
+            database,
+        );
 
         // struct ident
         let ident = syn::Ident::new(&descriptor.name, proc_macro2::Span::call_site());
@@ -646,7 +660,8 @@ impl StrongInstancesCollector {
             let mut iter = superclasses.into_iter().map(|class| {
                 let ident = syn::parse_str(&class.name).unwrap();
                 // this is duplicating a lot of work, but whatever
-                let fields = get_fields_info(class, &descriptor.default_properties, database);
+                let fields =
+                    get_fields_info(print_once, class, &descriptor.default_properties, database);
                 (OtherIdent(ident), fields)
             });
 
