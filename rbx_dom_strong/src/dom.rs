@@ -1,6 +1,7 @@
 use ahash::{AHashMap, AHashSet};
 use rbx_types::{Ref, UniqueId};
 
+use crate::instance::InstanceBuilderInner;
 use crate::instance::InstanceInner;
 use crate::instance::StrongInstance;
 
@@ -13,6 +14,22 @@ pub struct StrongDom {
 }
 
 impl StrongDom {
+    /// Construct a new `WeakDom` described by the given [`InstanceBuilder`].
+    pub fn new<B>(builder: B) -> Self
+    where
+        B: core::ops::Deref<Target = InstanceBuilderInner>,
+        B: Into<StrongInstance<InstanceBuilderInner>>,
+    {
+        let mut dom = Self {
+            instances: AHashMap::new(),
+            root_ref: builder.referent(),
+            unique_ids: AHashSet::new(),
+        };
+
+        dom.insert(Ref::none(), builder);
+        dom
+    }
+
     /// Returns a reference to an instance by referent, or `None` if it is not
     /// found.
     pub fn get_by_ref(&self, referent: Ref) -> Option<&StrongInstance<InstanceInner>> {

@@ -8,6 +8,28 @@ pub struct InstanceInner {
     parent: Ref,
 }
 
+#[derive(Debug)]
+pub struct InstanceBuilderInner {
+    referent: Ref,
+    children: Vec<StrongInstance<InstanceBuilderInner>>,
+}
+
+impl InstanceBuilderInner {
+    /// Return the referent of the instance that the `InstanceBuilder` refers to.
+    pub fn referent(&self) -> Ref {
+        self.referent
+    }
+}
+
+impl Default for InstanceBuilderInner {
+    fn default() -> Self {
+        Self {
+            referent: Ref::new(),
+            children: Vec::new(),
+        }
+    }
+}
+
 macro_rules! impl_strong_instance {
     ($($class:ident),*) => {
         #[derive(Debug)]
@@ -16,6 +38,15 @@ macro_rules! impl_strong_instance {
                 $class(Box<instances::$class<I>>),
             )*
         }
+
+        // From impls
+        $(
+            impl<I> From<instances::$class<I>> for StrongInstance<I> {
+                fn from(value: instances::$class<I>) -> Self {
+                    Self::$class(Box::new(value))
+                }
+            }
+        )*
     };
 }
 rbx_classes::for_each_class!(impl_strong_instance);
