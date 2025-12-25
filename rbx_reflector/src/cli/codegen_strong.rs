@@ -39,7 +39,7 @@ impl CodegenStrongSubcommand {
         };
 
         // ==== generate macros.rs ====
-        let macro_code = generate_macros(&enums, &instances);
+        let macro_code = generate_macros(db);
         let macro_code = macro_code.into_token_stream().to_string();
         let macro_code = rustfmt(macro_code.as_bytes())?;
 
@@ -826,14 +826,16 @@ impl ToTokens for Sorted<EnumCollector> {
     }
 }
 
-fn generate_macros(
-    sorted_enums: &Sorted<EnumCollector>,
-    sorted_instances: &Sorted<StrongInstancesCollector>,
-) -> proc_macro2::TokenStream {
-    let Sorted(enums) = sorted_enums;
+fn generate_macros(database: &ReflectionDatabase<'_>) -> proc_macro2::TokenStream {
+    let mut enums: Vec<_> = database.enums.values().collect();
+    enums.sort_by_key(|e| e.name.as_ref());
+    let mut classes: Vec<_> = database.classes.values().collect();
+    classes.sort_by_key(|e| e.name.as_ref());
 
     // generate enums macro
-    let iter = enums.enums.iter().map(|s| &s.ident);
+    let iter = enums
+        .iter()
+        .map(|&e| syn::parse_str::<syn::Ident>(&e.name).unwrap());
     let strong_enums_macro: syn::ItemMacro = syn::parse_quote! {
         /// Invoke a macro with every enum ident,
         /// i.e
@@ -852,9 +854,10 @@ fn generate_macros(
         }
     };
 
-    let Sorted(instances) = sorted_instances;
     // generate StrongInstances macro
-    let iter = instances.structs.iter().map(|s| &s.item.ident);
+    let iter = classes
+        .iter()
+        .map(|&c| syn::parse_str::<syn::Ident>(&c.name).unwrap());
     let strong_instances_macro: syn::ItemMacro = syn::parse_quote! {
         /// Invoke a macro with every class ident,
         /// i.e
