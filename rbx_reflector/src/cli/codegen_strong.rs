@@ -880,9 +880,36 @@ fn generate_macros(database: &ReflectionDatabase<'_>) -> proc_macro2::TokenStrea
         }
     };
 
+    // generate instance descendants macro
+    let iter = classes.iter().map(|&(c, ref ident)| {
+        // generate (BasePart, [Part, WedgePart, BasePart, ...])
+        let iter = classes.iter().filter_map(|&(descendant, ref desc_ident)| {
+            database.has_superclass(descendant, c).then_some(desc_ident)
+        });
+        quote::quote! {(#ident, [#(#iter),*])}
+    });
+    let for_each_class_descendants_macro: syn::ItemMacro = syn::parse_quote! {
+        /// Invoke a macro with every class ident, and a list of its descendants
+        /// i.e
+        /// ```rust
+        /// for_each_class_descendants!(my_macro);
+        /// ```
+        /// invokes
+        /// ```rust
+        /// my_macro!((BasePart, [BasePart, Part, WedgePart, ...]), ...);
+        /// ```
+        #[macro_export]
+        macro_rules! for_each_class_descendants {
+            ($my_macro:ident) => {
+                $my_macro!(#(#iter),*);
+            };
+        }
+    };
+
     quote::quote! {
         #for_each_enum_macro
         #for_each_class_macro
+        #for_each_class_descendants_macro
     }
 }
 
