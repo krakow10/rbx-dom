@@ -18,41 +18,44 @@ impl CodegenStrongSubcommand {
 
         let dest_instance = self.output.join("instances.rs");
         let dest_enum = self.output.join("enums.rs");
+        let dest_macro = self.output.join("macros.rs");
 
-        // ==== generate instances.rs ====
-        let instance_code = {
+        // collect sorted instances
+        let instances = {
             let mut strong_instances = StrongInstancesCollector::with_capacity(db.classes.len());
             for descriptor in db.classes.values() {
                 strong_instances.push(descriptor, db);
             }
-
-            // make a string of the unformatted code
-            let code = strong_instances.sort().into_token_stream().to_string();
-
-            // format via cli
-            let code = rustfmt(code.as_bytes())?;
-
-            code
+            strong_instances.sort()
         };
-        // ==== generate enum.rs ====
-        let enum_code = {
+
+        // collect sorted enums
+        let enums = {
             let mut strong_enum = EnumCollector::with_capacity(db.enums.len());
             for descriptor in db.enums.values() {
                 strong_enum.push(descriptor);
             }
-
-            // make a string of the unformatted code
-            let code = strong_enum.sort().into_token_stream().to_string();
-
-            // format via cli
-            let code = rustfmt(code.as_bytes())?;
-
-            code
+            strong_enum.sort()
         };
 
-        // save to destination file
+        // ==== generate macros.rs ====
+        let macro_code = generate_macros(&enums, &instances);
+        let macro_code = macro_code.into_token_stream().to_string();
+        let macro_code = rustfmt(macro_code.as_bytes())?;
+
+        // ==== generate instances.rs ====
+        let instance_code = instances.into_token_stream().to_string();
+        let instance_code = rustfmt(instance_code.as_bytes())?;
+
+        // ==== generate enum.rs ====
+        let enum_code = enums.into_token_stream().to_string();
+        let enum_code = rustfmt(enum_code.as_bytes())?;
+
+        // write destination files
+        std::fs::write(dest_macro, macro_code)?;
         std::fs::write(dest_instance, instance_code)?;
         std::fs::write(dest_enum, enum_code)?;
+
         Ok(())
     }
 }
@@ -725,36 +728,28 @@ impl ToTokens for Sorted<StrongInstancesCollector> {
     }
     fn into_token_stream(self) -> proc_macro2::TokenStream {
         let Sorted(instances) = self;
-        // generate StrongInstance enum
-        let iter = instances.structs.iter().map(|s| &s.item.ident);
-        let strong_instances_macro: syn::ItemMacro = syn::parse_quote! {
-            /// Invoke a macro with every class ident,
-            /// i.e
-            /// ```rust
-            /// for_each_class!(my_macro);
-            /// ```
-            /// invokes
-            /// ```rust
-            /// my_macro!(Accoutrement, Part, WedgePart, ...);
-            /// ```
-            #[macro_export]
-            macro_rules! for_each_class {
-                ($my_macro:ident) => {
-                    $my_macro!(#(#iter),*);
-                };
-            }
-        };
 
         // create complete file including use statements
         let mut complete_file: syn::File = syn::parse_quote! {
             use core::ops::{Deref, DerefMut};
-            use crate::impl_inherits;
             use super::enums;
             use rbx_types::*;
+            macro_rules! impl_inherits {
+                ($class:path, $inherits:path) => {
+                    impl<I> Deref for $class {
+                        type Target = $inherits;
+                        fn deref(&self) -> &$inherits {
+                            &self.superclass
+                        }
+                    }
+                    impl<I> DerefMut for $class {
+                        fn deref_mut(&mut self) -> &mut $inherits {
+                            &mut self.superclass
+                        }
+                    }
+                };
+            }
         };
-        complete_file
-            .items
-            .push(syn::Item::Macro(strong_instances_macro));
         complete_file
             .items
             .extend(
@@ -840,36 +835,66 @@ impl ToTokens for Sorted<EnumCollector> {
     fn into_token_stream(self) -> proc_macro2::TokenStream {
         let Sorted(enums) = self;
 
-        // generate enums macro
-        let iter = enums.enums.iter().map(|s| &s.ident);
-        let strong_enums_macro: syn::ItemMacro = syn::parse_quote! {
-            /// Invoke a macro with every enum ident,
-            /// i.e
-            /// ```rust
-            /// for_each_enum!(my_macro);
-            /// ```
-            /// invokes
-            /// ```rust
-            /// my_macro!(AlignType, FormFactor, KeyCode, ...)
-            /// ```
-            #[macro_export]
-            macro_rules! for_each_enum {
-                ($my_macro:ident) => {
-                    $my_macro!(#(#iter),*);
-                };
-            }
-        };
-
         // create complete file including use statements
         let mut complete_file: syn::File = syn::parse_quote! {};
-        complete_file
-            .items
-            .push(syn::Item::Macro(strong_enums_macro));
         complete_file
             .items
             .extend(enums.enums.into_iter().map(syn::Item::Enum));
 
         quote::quote! {#complete_file}
+    }
+}
+
+fn generate_macros(
+    sorted_enums: &Sorted<EnumCollector>,
+    sorted_instances: &Sorted<StrongInstancesCollector>,
+) -> proc_macro2::TokenStream {
+    let Sorted(enums) = sorted_enums;
+
+    // generate enums macro
+    let iter = enums.enums.iter().map(|s| &s.ident);
+    let strong_enums_macro: syn::ItemMacro = syn::parse_quote! {
+        /// Invoke a macro with every enum ident,
+        /// i.e
+        /// ```rust
+        /// for_each_enum!(my_macro);
+        /// ```
+        /// invokes
+        /// ```rust
+        /// my_macro!(AlignType, FormFactor, KeyCode, ...)
+        /// ```
+        #[macro_export]
+        macro_rules! for_each_enum {
+            ($my_macro:ident) => {
+                $my_macro!(#(#iter),*);
+            };
+        }
+    };
+
+    let Sorted(instances) = sorted_instances;
+    // generate StrongInstances macro
+    let iter = instances.structs.iter().map(|s| &s.item.ident);
+    let strong_instances_macro: syn::ItemMacro = syn::parse_quote! {
+        /// Invoke a macro with every class ident,
+        /// i.e
+        /// ```rust
+        /// for_each_class!(my_macro);
+        /// ```
+        /// invokes
+        /// ```rust
+        /// my_macro!(Accoutrement, Part, WedgePart, ...);
+        /// ```
+        #[macro_export]
+        macro_rules! for_each_class {
+            ($my_macro:ident) => {
+                $my_macro!(#(#iter),*);
+            };
+        }
+    };
+
+    quote::quote! {
+        #strong_enums_macro
+        #strong_instances_macro
     }
 }
 
