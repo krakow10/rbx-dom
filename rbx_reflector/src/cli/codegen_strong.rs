@@ -697,24 +697,18 @@ impl StrongInstancesCollector {
         };
 
         // generate the class struct
-        self.structs.push(StructWithImpls {
-            item: syn::ItemStruct {
-                attrs,
-                vis: syn::Visibility::Public(syn::token::Pub::default()),
-                struct_token: syn::token::Struct::default(),
-                ident: ident.clone(),
-                generics: syn::parse_quote! {<I>},
-                fields: syn::Fields::Named(syn::FieldsNamed {
-                    brace_token: syn::token::Brace::default(),
-                    named: [superclass_field]
-                        .into_iter()
-                        .chain(fields.into_iter().map(|field_info| field_info.field))
-                        .collect(),
-                }),
-                semi_token: None,
-            },
-            impls,
+        let mut item: syn::ItemStruct = syn::parse_quote! {
+            pub struct #ident<I> {}
+        };
+        item.attrs = attrs;
+        item.fields = syn::Fields::Named(syn::FieldsNamed {
+            brace_token: syn::token::Brace::default(),
+            named: [superclass_field]
+                .into_iter()
+                .chain(fields.into_iter().map(|field_info| field_info.field))
+                .collect(),
         });
+        self.structs.push(StructWithImpls { item, impls });
     }
     fn sort(mut self) -> Sorted<Self> {
         // sort for consistency
@@ -729,8 +723,15 @@ impl ToTokens for Sorted<StrongInstancesCollector> {
     fn into_token_stream(self) -> proc_macro2::TokenStream {
         let Sorted(instances) = self;
 
+        let iter = instances
+            .structs
+            .into_iter()
+            .flat_map(|StructWithImpls { item, impls }| {
+                std::iter::once(syn::Item::Struct(item)).chain(impls)
+            });
+
         // create complete file including use statements
-        let mut complete_file: syn::File = syn::parse_quote! {
+        quote::quote! {
             use core::ops::{Deref, DerefMut};
             use super::enums;
             use rbx_types::*;
@@ -749,19 +750,8 @@ impl ToTokens for Sorted<StrongInstancesCollector> {
                     }
                 };
             }
-        };
-        complete_file
-            .items
-            .extend(
-                instances
-                    .structs
-                    .into_iter()
-                    .flat_map(|StructWithImpls { item, impls }| {
-                        std::iter::once(syn::Item::Struct(item)).chain(impls)
-                    }),
-            );
-
-        quote::quote! {#complete_file}
+            #(#iter)*
+        }
     }
 }
 
@@ -809,18 +799,13 @@ impl EnumCollector {
         let ident = syn::Ident::new(&descriptor.name, proc_macro2::Span::call_site());
 
         // generate the enum
-        self.enums.push(syn::ItemEnum {
-            attrs: syn::parse_quote! {
-                #[derive(Debug, Clone)]
-                #[allow(nonstandard_style)]
-            },
-            vis: syn::Visibility::Public(syn::token::Pub::default()),
-            enum_token: syn::token::Enum::default(),
-            ident: ident.clone(),
-            generics: syn::Generics::default(),
-            variants: variants.collect(),
-            brace_token: syn::token::Brace::default(),
-        });
+        let mut item_enum: syn::ItemEnum = syn::parse_quote! {
+            #[derive(Debug, Clone)]
+            #[allow(nonstandard_style)]
+            pub enum #ident {}
+        };
+        item_enum.variants.extend(variants);
+        self.enums.push(item_enum);
     }
     fn sort(mut self) -> Sorted<Self> {
         // sort for consistency
@@ -836,12 +821,8 @@ impl ToTokens for Sorted<EnumCollector> {
         let Sorted(enums) = self;
 
         // create complete file including use statements
-        let mut complete_file: syn::File = syn::parse_quote! {};
-        complete_file
-            .items
-            .extend(enums.enums.into_iter().map(syn::Item::Enum));
-
-        quote::quote! {#complete_file}
+        let iter = enums.enums.into_iter();
+        quote::quote! {#(#iter)*}
     }
 }
 
