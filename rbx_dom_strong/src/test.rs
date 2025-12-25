@@ -1,9 +1,9 @@
 use crate::dom::StrongDom;
-use crate::instances::Part;
 use rbx_types::{CFrame, Ref};
 
 #[test]
 fn part_inherits_instance() {
+    use crate::instances::Part;
     let mut dom = StrongDom::default();
 
     // dummy referent just to get this compiling...
