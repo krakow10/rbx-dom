@@ -41,30 +41,38 @@ rbx_classes::for_each_class!(impl_strong_instance);
 
 pub trait AsClass<Class> {
     fn as_class(&self) -> Option<&Class>;
-}
-pub trait AsClassMut<Class> {
     fn as_class_mut(&mut self) -> Option<&mut Class>;
 }
-impl AsClass<instances::BasePart<InstanceInner>> for StrongInstance {
-    fn as_class(&self) -> Option<&instances::BasePart<InstanceInner>> {
-        Some(match self {
-            StrongInstance::CornerWedgePart(class) => class,
-            StrongInstance::FormFactorPart(class) => class,
-            StrongInstance::Terrain(class) => class,
-            StrongInstance::TriangleMeshPart(class) => class,
-            StrongInstance::TrussPart(class) => class,
-            StrongInstance::VehicleSeat(class) => class,
-            StrongInstance::Part(class) => class,
-            StrongInstance::WedgePart(class) => class,
-            StrongInstance::FlagStand(class) => class,
-            StrongInstance::Platform(class) => class,
-            StrongInstance::Seat(class) => class,
-            StrongInstance::SkateboardPlatform(class) => class,
-            StrongInstance::SpawnLocation(class) => class,
-            _ => return None,
-        })
-    }
+macro_rules! impl_as_class_for_instance_and_descendants {
+    ($class:ident, [$($descendant:ident),*]) => {
+        impl AsClass<instances::$class<InstanceInner>> for StrongInstance {
+            fn as_class(&self) -> Option<&instances::$class<InstanceInner>> {
+                Some(match self {
+                    $(
+                        StrongInstance::$descendant(class) => class,
+                    )*
+                    _ => return None,
+                })
+            }
+            fn as_class_mut(&mut self) -> Option<&mut instances::$class<InstanceInner>> {
+                Some(match self {
+                    $(
+                        StrongInstance::$descendant(class) => class,
+                    )*
+                    _ => return None,
+                })
+            }
+        }
+    };
 }
+macro_rules! impl_as_class {
+    ($(($class:ident,$descendants:tt)),*) => {
+        $(
+            impl_as_class_for_instance_and_descendants!($class,$descendants);
+        )*
+    };
+}
+rbx_classes::for_each_class_descendants!(impl_as_class);
 
 impl StrongInstance {
     pub fn as_class<Class>(&self) -> Option<&Class>
@@ -75,8 +83,8 @@ impl StrongInstance {
     }
     pub fn as_class_mut<Class>(&mut self) -> Option<&mut Class>
     where
-        Self: AsClassMut<Class>,
+        Self: AsClass<Class>,
     {
-        AsClassMut::as_class_mut(self)
+        AsClass::as_class_mut(self)
     }
 }
