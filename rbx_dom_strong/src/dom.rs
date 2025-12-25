@@ -22,7 +22,7 @@ impl StrongDom {
     /// Returns a _mutable_ reference to an instance by referent, or `None` if
     /// it is not found.
     pub fn get_by_ref_mut(&mut self, referent: Ref) -> Option<&mut StrongInstance<InstanceInner>> {
-        self.instances.get_mut(&referent).map(Into::into)
+        self.instances.get_mut(&referent)
     }
 }
 
