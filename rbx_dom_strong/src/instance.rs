@@ -1,3 +1,4 @@
+use rbx_classes::instances;
 use rbx_types::Ref;
 
 #[derive(Debug)]
@@ -22,14 +23,14 @@ macro_rules! impl_strong_instance {
         #[derive(Debug)]
         pub enum StrongInstance {
             $(
-                $class(Box<rbx_classes::instances::$class<InstanceInner>>),
+                $class(Box<instances::$class<InstanceInner>>),
             )*
         }
 
         // From impls
         $(
-            impl From<rbx_classes::instances::$class<InstanceInner>> for StrongInstance {
-                fn from(value: rbx_classes::instances::$class<InstanceInner>) -> Self {
+            impl From<instances::$class<InstanceInner>> for StrongInstance {
+                fn from(value: instances::$class<InstanceInner>) -> Self {
                     Self::$class(Box::new(value))
                 }
             }
@@ -38,41 +39,44 @@ macro_rules! impl_strong_instance {
 }
 rbx_classes::for_each_class!(impl_strong_instance);
 
-impl<'a> TryFrom<&'a StrongInstance> for &'a rbx_classes::instances::BasePart<InstanceInner> {
-    type Error = &'a StrongInstance;
-    fn try_from(
-        value: &'a StrongInstance,
-    ) -> Result<&'a rbx_classes::instances::BasePart<InstanceInner>, &'a StrongInstance> {
-        match value {
-            StrongInstance::CornerWedgePart(class) => Ok(class),
-            StrongInstance::FormFactorPart(class) => Ok(class),
-            StrongInstance::Terrain(class) => Ok(class),
-            StrongInstance::TriangleMeshPart(class) => Ok(class),
-            StrongInstance::TrussPart(class) => Ok(class),
-            StrongInstance::VehicleSeat(class) => Ok(class),
-            StrongInstance::Part(class) => Ok(class),
-            StrongInstance::WedgePart(class) => Ok(class),
-            StrongInstance::FlagStand(class) => Ok(class),
-            StrongInstance::Platform(class) => Ok(class),
-            StrongInstance::Seat(class) => Ok(class),
-            StrongInstance::SkateboardPlatform(class) => Ok(class),
-            StrongInstance::SpawnLocation(class) => Ok(class),
-            other => Err(other),
-        }
+pub trait AsClass<Class> {
+    fn as_class(&self) -> Option<&Class>;
+}
+pub trait AsClassMut<Class> {
+    fn as_class_mut(&mut self) -> Option<&mut Class>;
+}
+impl AsClass<instances::BasePart<InstanceInner>> for StrongInstance {
+    fn as_class(&self) -> Option<&instances::BasePart<InstanceInner>> {
+        Some(match self {
+            StrongInstance::CornerWedgePart(class) => class,
+            StrongInstance::FormFactorPart(class) => class,
+            StrongInstance::Terrain(class) => class,
+            StrongInstance::TriangleMeshPart(class) => class,
+            StrongInstance::TrussPart(class) => class,
+            StrongInstance::VehicleSeat(class) => class,
+            StrongInstance::Part(class) => class,
+            StrongInstance::WedgePart(class) => class,
+            StrongInstance::FlagStand(class) => class,
+            StrongInstance::Platform(class) => class,
+            StrongInstance::Seat(class) => class,
+            StrongInstance::SkateboardPlatform(class) => class,
+            StrongInstance::SpawnLocation(class) => class,
+            _ => return None,
+        })
     }
 }
 
 impl StrongInstance {
-    pub fn as_class<'a, Class>(&'a self) -> Option<&'a Class>
+    pub fn as_class<Class>(&self) -> Option<&Class>
     where
-        &'a Self: TryInto<&'a Class>,
+        Self: AsClass<Class>,
     {
-        self.try_into().ok()
+        AsClass::as_class(self)
     }
-    pub fn as_class_mut<'a, Class>(&'a mut self) -> Option<&'a mut Class>
+    pub fn as_class_mut<Class>(&mut self) -> Option<&mut Class>
     where
-        &'a mut Self: TryInto<&'a mut Class>,
+        Self: AsClassMut<Class>,
     {
-        self.try_into().ok()
+        AsClassMut::as_class_mut(self)
     }
 }
