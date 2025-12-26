@@ -24,9 +24,9 @@ macro_rules! impl_class {
 }
 rbx_classes::for_each_class!(impl_class);
 
-pub trait AsClass<Class> {
-    fn as_class(&self) -> Option<&Class>;
-    fn as_class_mut(&mut self) -> Option<&mut Class>;
+pub trait AsClass<C> {
+    fn as_class(&self) -> Option<&C>;
+    fn as_class_mut(&mut self) -> Option<&mut C>;
 }
 macro_rules! impl_as_class_for_instance_and_descendants {
     ($class:ident, [$($descendant:ident),*]) => {
