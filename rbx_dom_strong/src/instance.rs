@@ -2,71 +2,65 @@ use rbx_classes::instances;
 use rbx_types::Ref;
 
 #[derive(Debug)]
-pub struct InstanceInner {
+pub struct Instance {
     referent: Ref,
     children: Vec<Ref>,
     parent: Ref,
+    class: Class,
 }
 
 #[derive(Debug)]
-pub struct InstanceBuilderInner {
+pub struct InstanceBuilder<C> {
     referent: Ref,
-    children: Vec<StrongInstance<InstanceBuilderInner>>,
+    children: Vec<InstanceBuilder<Class>>,
+    class: C,
 }
 
-impl InstanceBuilderInner {
+impl<C> InstanceBuilder<C> {
     /// Return the referent of the instance that the `InstanceBuilder` refers to.
     pub fn referent(&self) -> Ref {
         self.referent
     }
 }
 
-impl Default for InstanceBuilderInner {
+impl<C: Default> Default for InstanceBuilder<C> {
     fn default() -> Self {
         Self {
             referent: Ref::new(),
             children: Vec::new(),
+            class: C::default(),
         }
+    }
+}
+impl<C> core::ops::Deref for InstanceBuilder<C> {
+    type Target = C;
+    fn deref(&self) -> &Self::Target {
+        &self.class
+    }
+}
+impl<C> core::ops::DerefMut for InstanceBuilder<C> {
+    fn deref_mut(&mut self) -> &mut Self::Target {
+        &mut self.class
     }
 }
 
 macro_rules! impl_strong_instance {
     ($($class:ident),*) => {
         #[derive(Debug)]
-        pub enum StrongInstance<I> {
+        pub enum Class {
             $(
-                $class(Box<instances::$class<I>>),
+                $class(Box<instances::$class>),
             )*
         }
 
         // From impls
         $(
-            impl<I> From<instances::$class<I>> for StrongInstance<I> {
-                fn from(value: instances::$class<I>) -> Self {
+            impl From<instances::$class> for Class {
+                fn from(value: instances::$class) -> Self {
                     Self::$class(Box::new(value))
                 }
             }
         )*
-
-        impl<I> core::ops::Deref for StrongInstance<I> {
-            type Target = I;
-            fn deref(&self) -> &Self::Target {
-                match self {
-                    $(
-                        StrongInstance::$class(class) => class,
-                    )*
-                }
-            }
-        }
-        impl<I> core::ops::DerefMut for StrongInstance<I> {
-            fn deref_mut(&mut self) -> &mut Self::Target {
-                match self {
-                    $(
-                        StrongInstance::$class(class) => class,
-                    )*
-                }
-            }
-        }
     };
 }
 rbx_classes::for_each_class!(impl_strong_instance);
@@ -78,19 +72,19 @@ pub trait AsClass<Class> {
 macro_rules! impl_as_class_for_instance_and_descendants {
     ($class:ident, [$($descendant:ident),*]) => {
         #[allow(unreachable_patterns)]
-        impl<I> AsClass<instances::$class<I>> for StrongInstance<I> {
-            fn as_class(&self) -> Option<&instances::$class<I>> {
+        impl AsClass<instances::$class> for Class {
+            fn as_class(&self) -> Option<&instances::$class> {
                 Some(match self {
                     $(
-                        StrongInstance::$descendant(class) => class,
+                        Class::$descendant(class) => class,
                     )*
                     _ => return None,
                 })
             }
-            fn as_class_mut(&mut self) -> Option<&mut instances::$class<I>> {
+            fn as_class_mut(&mut self) -> Option<&mut instances::$class> {
                 Some(match self {
                     $(
-                        StrongInstance::$descendant(class) => class,
+                        Class::$descendant(class) => class,
                     )*
                     _ => return None,
                 })
@@ -107,17 +101,17 @@ macro_rules! impl_as_class {
 }
 rbx_classes::for_each_class_descendants!(impl_as_class);
 
-impl<I> StrongInstance<I> {
-    pub fn as_class<Class>(&self) -> Option<&Class>
+impl Instance {
+    pub fn as_class<C>(&self) -> Option<&C>
     where
-        Self: AsClass<Class>,
+        Class: AsClass<C>,
     {
-        AsClass::as_class(self)
+        self.class.as_class()
     }
-    pub fn as_class_mut<Class>(&mut self) -> Option<&mut Class>
+    pub fn as_class_mut<C>(&mut self) -> Option<&mut C>
     where
-        Self: AsClass<Class>,
+        Class: AsClass<C>,
     {
-        AsClass::as_class_mut(self)
+        self.class.as_class_mut()
     }
 }

@@ -1,14 +1,11 @@
 use crate::dom::StrongDom;
-use crate::instance::InstanceBuilderInner;
-use rbx_classes::instances;
+use crate::instance::InstanceBuilder;
+use rbx_classes::instances::Part;
 use rbx_types::{CFrame, Ref};
-
-type PartBuilder = instances::Part<InstanceBuilderInner>;
 
 #[test]
 fn builder() {
-    use crate::instances::Part;
-    let mut part_builder = PartBuilder::default();
+    let mut part_builder = InstanceBuilder::<Part>::default();
 
     part_builder.Name = "Part".to_owned();
     part_builder.CFrame = CFrame::identity();
@@ -29,7 +26,6 @@ fn builder() {
 
 #[test]
 fn part_inherits_instance() {
-    use crate::instances::Part;
     let mut dom = StrongDom::default();
 
     // dummy referent just to get this compiling...
