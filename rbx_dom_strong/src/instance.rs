@@ -101,3 +101,19 @@ impl<I> StrongInstance<I> {
         AsClass::as_class_mut(self)
     }
 }
+
+impl<I> core::ops::Deref for StrongInstance<I> {
+    type Target = I;
+    fn deref(&self) -> &Self::Target {
+        macro_rules! match_all {
+            ($($class:ident),*) => {
+                match self {
+                    $(
+                        StrongInstance::$class(class) => class,
+                    )*
+                }
+            };
+        }
+        rbx_classes::for_each_class!(match_all)
+    }
+}

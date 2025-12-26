@@ -17,9 +17,9 @@ impl StrongDom {
     /// Construct a new `WeakDom` described by the given [`InstanceBuilder`].
     pub fn new<B>(builder: B) -> Self
     where
-        B: core::ops::Deref<Target = InstanceBuilderInner>,
         B: Into<StrongInstance<InstanceBuilderInner>>,
     {
+        let builder = builder.into();
         let mut dom = Self {
             instances: AHashMap::new(),
             root_ref: builder.referent(),
