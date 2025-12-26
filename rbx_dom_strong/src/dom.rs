@@ -4,8 +4,7 @@ use ahash::{AHashMap, AHashSet};
 use rbx_types::{Ref, UniqueId};
 
 use crate::class::Class;
-use crate::instance::Instance;
-use crate::instance::InstanceBuilder;
+use crate::instance::{Instance, InstanceBuilder};
 
 /// Represents a DOM containing one or more Roblox instances.
 #[derive(Debug)]
