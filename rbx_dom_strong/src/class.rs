@@ -29,7 +29,7 @@ pub trait AsClass<C> {
     fn as_class(&self) -> Option<&C>;
     fn as_class_mut(&mut self) -> Option<&mut C>;
 }
-macro_rules! impl_as_class_for_instance_and_descendants {
+macro_rules! impl_as_class_for_class_and_descendants {
     ($class:ident, [$($descendant:ident),*]) => {
         #[allow(unreachable_patterns)]
         impl AsClass<instances::$class> for Class {
@@ -55,7 +55,7 @@ macro_rules! impl_as_class_for_instance_and_descendants {
 macro_rules! impl_as_class {
     ($(($class:ident,$descendants:tt)),*) => {
         $(
-            impl_as_class_for_instance_and_descendants!($class,$descendants);
+            impl_as_class_for_class_and_descendants!($class,$descendants);
         )*
     };
 }
