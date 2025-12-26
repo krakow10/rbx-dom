@@ -5,12 +5,12 @@ use rbx_types::{CFrame, Ref};
 
 #[test]
 fn builder() {
-    let mut part_builder = InstanceBuilder::<Part>::default();
+    let mut part = Part::default();
+    part.Name = "Part".to_owned();
+    part.CFrame = CFrame::identity();
+    part.Anchored = true;
 
-    part_builder.Name = "Part".to_owned();
-    part_builder.CFrame = CFrame::identity();
-    part_builder.Anchored = true;
-
+    let part_builder = InstanceBuilder::new(part);
     let referent = part_builder.referent();
 
     let dom = StrongDom::new(part_builder);
