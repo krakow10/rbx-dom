@@ -4,6 +4,8 @@ macro_rules! impl_class {
     ($($class:ident),*) => {
         /// Class is an enum of boxed structs,
         /// with each struct being a different class.
+        // ReflectionMetadataClass annoyingly procs this lint
+        #[expect(clippy::enum_variant_names)]
         #[derive(Debug)]
         pub enum Class {
             $(
