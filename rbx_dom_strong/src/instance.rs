@@ -1,6 +1,6 @@
 use rbx_types::Ref;
 
-use crate::class::{AsClass, Class};
+use crate::class::{AsClass, Class, ToClass};
 
 #[derive(Debug)]
 pub struct InstanceBuilder<C> {
@@ -35,6 +35,23 @@ impl<C> InstanceBuilder<C> {
     /// Change the referent of the `InstanceBuilder`.
     pub fn set_referent<R: Into<Ref>>(&mut self, referent: R) {
         self.referent = referent.into();
+    }
+
+    /// Change the name of the `InstanceBuilder`.
+    pub fn with_name<S: Into<String>>(mut self, name: S) -> Self
+    where
+        C: ToClass<rbx_classes::instances::Instance>,
+    {
+        self.set_name(name);
+        self
+    }
+
+    /// Change the name of the `InstanceBuilder`.
+    pub fn set_name<S: Into<String>>(&mut self, name: S)
+    where
+        C: ToClass<rbx_classes::instances::Instance>,
+    {
+        self.class.to_class_mut().Name = name.into();
     }
 
     /// Add a new child to the `InstanceBuilder`.
