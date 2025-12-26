@@ -17,6 +17,15 @@ pub struct InstanceBuilder<C> {
 }
 
 impl<C> InstanceBuilder<C> {
+    /// Create a new `InstanceBuilder` with the given Class.
+    pub fn new(class: C) -> Self {
+        InstanceBuilder {
+            referent: Ref::new(),
+            children: Vec::new(),
+            class,
+        }
+    }
+
     /// Return the referent of the instance that the `InstanceBuilder` refers to.
     pub fn referent(&self) -> Ref {
         self.referent
