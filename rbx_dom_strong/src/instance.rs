@@ -3,6 +3,8 @@ use rbx_types::Ref;
 
 macro_rules! impl_class {
     ($($class:ident),*) => {
+        /// Class is an enum of boxed structs,
+        /// with each struct being a different class.
         #[derive(Debug)]
         pub enum Class {
             $(
@@ -150,7 +152,7 @@ impl Instance {
 
     /// Cast the instance's class as a superclass.  For example, if the
     /// Instance's Class is Part, `instance.as_class::<BasePart>()` gives
-    /// an Option<&BasePart>.
+    /// Some(&BasePart).
     pub fn as_class<C>(&self) -> Option<&C>
     where
         Class: AsClass<C>,
@@ -160,7 +162,7 @@ impl Instance {
 
     /// Cast the instance's class as a superclass.  For example, if the
     /// Instance's Class is Part, `instance.as_class_mut::<BasePart>()` gives
-    /// an Option<&mut BasePart>.
+    /// an Some(&mut BasePart).
     pub fn as_class_mut<C>(&mut self) -> Option<&mut C>
     where
         Class: AsClass<C>,
