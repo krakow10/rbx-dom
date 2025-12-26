@@ -869,11 +869,11 @@ fn generate_macros(database: &ReflectionDatabase<'_>) -> proc_macro2::TokenStrea
     let for_each_enum_macro: syn::ItemMacro = syn::parse_quote! {
         /// Invoke a macro with every enum ident,
         /// i.e
-        /// ```rust
+        /// ```rust,ignore
         /// for_each_enum!(my_macro);
         /// ```
         /// invokes
-        /// ```rust
+        /// ```rust,ignore
         /// my_macro!(AlignType, FormFactor, KeyCode, ...)
         /// ```
         #[macro_export]
@@ -889,11 +889,11 @@ fn generate_macros(database: &ReflectionDatabase<'_>) -> proc_macro2::TokenStrea
     let for_each_class_macro: syn::ItemMacro = syn::parse_quote! {
         /// Invoke a macro with every class ident,
         /// i.e
-        /// ```rust
+        /// ```rust,ignore
         /// for_each_class!(my_macro);
         /// ```
         /// invokes
-        /// ```rust
+        /// ```rust,ignore
         /// my_macro!(Accoutrement, Part, WedgePart, ...);
         /// ```
         #[macro_export]
@@ -915,11 +915,11 @@ fn generate_macros(database: &ReflectionDatabase<'_>) -> proc_macro2::TokenStrea
     let for_each_class_descendants_macro: syn::ItemMacro = syn::parse_quote! {
         /// Invoke a macro with every class ident, and a list of its descendants
         /// i.e
-        /// ```rust
+        /// ```rust,ignore
         /// for_each_class_descendants!(my_macro);
         /// ```
         /// invokes
-        /// ```rust
+        /// ```rust,ignore
         /// my_macro!((BasePart, [BasePart, Part, WedgePart, ...]), ...);
         /// ```
         #[macro_export]
