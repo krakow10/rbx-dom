@@ -23,6 +23,8 @@ macro_rules! impl_class {
 }
 rbx_classes::for_each_class!(impl_class);
 
+/// Cast one class as another class using dereferencing.
+/// Only used with the Class enum within an Instance.
 pub trait AsClass<C> {
     fn as_class(&self) -> Option<&C>;
     fn as_class_mut(&mut self) -> Option<&mut C>;
