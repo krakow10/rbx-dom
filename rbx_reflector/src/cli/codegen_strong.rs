@@ -635,11 +635,7 @@ impl StrongInstancesCollector {
         let mut impls = Vec::new();
         if let Some(superclass_ident) = &superclass_ident {
             impls.push(syn::parse_quote! {
-                impl_inherits!(#ident<I>, #superclass_ident<I>);
-            });
-        } else {
-            impls.push(syn::parse_quote! {
-                impl_inherits!(#ident<I>, I);
+                impl_inherits!(#ident, #superclass_ident);
             });
         }
 
@@ -706,7 +702,7 @@ impl StrongInstancesCollector {
             let default_struct = push_fields((SelfIdent, &fields));
 
             let default_impl = syn::parse_quote! {
-                impl<I: Default> Default for #ident<I>{
+                impl Default for #ident{
                     fn default() -> Self {
                         let superclass = #root::default();
                         #(let superclass = #iter;)*
@@ -718,24 +714,20 @@ impl StrongInstancesCollector {
         }
 
         // superclass field is added to the top
-        let superclass_field: syn::Field = if let Some(superclass_ident) = superclass_ident {
+        let superclass_field = superclass_ident.map(|superclass_ident| {
             syn::parse_quote! {
-                superclass: #superclass_ident<I>
+                superclass: #superclass_ident
             }
-        } else {
-            syn::parse_quote! {
-                superclass: I
-            }
-        };
+        });
 
         // generate the class struct
         let mut item: syn::ItemStruct = syn::parse_quote! {
-            pub struct #ident<I> {}
+            pub struct #ident {}
         };
         item.attrs = attrs;
         item.fields = syn::Fields::Named(syn::FieldsNamed {
             brace_token: syn::token::Brace::default(),
-            named: [superclass_field]
+            named: superclass_field
                 .into_iter()
                 .chain(fields.into_iter().map(|field_info| field_info.field))
                 .collect(),
@@ -769,13 +761,13 @@ impl ToTokens for Sorted<StrongInstancesCollector> {
             use rbx_types::*;
             macro_rules! impl_inherits {
                 ($class:path, $inherits:path) => {
-                    impl<I> Deref for $class {
+                    impl Deref for $class {
                         type Target = $inherits;
                         fn deref(&self) -> &$inherits {
                             &self.superclass
                         }
                     }
-                    impl<I> DerefMut for $class {
+                    impl DerefMut for $class {
                         fn deref_mut(&mut self) -> &mut $inherits {
                             &mut self.superclass
                         }
