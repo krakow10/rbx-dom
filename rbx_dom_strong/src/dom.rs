@@ -30,6 +30,27 @@ impl StrongDom {
         dom
     }
 
+    /// Reserve at least enough space for `additional` number of instances in
+    /// the WeakDom.
+    pub fn reserve(&mut self, additional: usize) {
+        self.instances.reserve(additional);
+    }
+
+    /// Returns the referent of the root instance of the `WeakDom`.
+    pub fn root_ref(&self) -> Ref {
+        self.root_ref
+    }
+
+    /// Returns a reference to the root instance of the `WeakDom`.
+    pub fn root(&self) -> &Instance {
+        self.instances.get(&self.root_ref).unwrap()
+    }
+
+    /// Returns a _mutable_ reference to the root instance of the `WeakDom`.
+    pub fn root_mut(&mut self) -> &mut Instance {
+        self.instances.get_mut(&self.root_ref).unwrap()
+    }
+
     /// Returns a reference to an instance by referent, or `None` if it is not
     /// found.
     pub fn get_by_ref(&self, referent: Ref) -> Option<&Instance> {
