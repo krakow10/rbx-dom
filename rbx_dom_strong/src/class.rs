@@ -25,13 +25,20 @@ macro_rules! impl_class {
 }
 rbx_classes::for_each_class!(impl_class);
 
-/// Cast one class as another class using dereferencing.
-/// Only used with the Class enum within an Instance.
+/// Convert a `Class` enum into any descendant
+/// of a superclass using dereferencing.
 pub trait AsClass<C> {
     fn as_class(&self) -> Option<&C>;
     fn as_class_mut(&mut self) -> Option<&mut C>;
 }
-macro_rules! impl_as_class_for_class_and_descendants {
+/// Class to class conversion. Inheritance as a trait bound.
+/// Perform an infallible conversion using dereferencing.
+/// Part -> BasePart is possible, but BasePart -> Part is not.
+pub trait ToClass<C> {
+    fn to_class(&self) -> &C;
+    fn to_class_mut(&mut self) -> &mut C;
+}
+macro_rules! impl_traits_for_class_and_descendants {
     ($class:ident, [$($descendant:ident),*]) => {
         #[allow(unreachable_patterns)]
         impl AsClass<instances::$class> for Class {
@@ -52,12 +59,22 @@ macro_rules! impl_as_class_for_class_and_descendants {
                 })
             }
         }
+        $(
+            impl ToClass<instances::$class> for instances::$descendant {
+                fn to_class(&self) -> &instances::$class {
+                    self
+                }
+                fn to_class_mut(&mut self) -> &mut instances::$class {
+                    self
+                }
+            }
+        )*
     };
 }
 macro_rules! impl_as_class {
     ($(($class:ident,$descendants:tt)),*) => {
         $(
-            impl_as_class_for_class_and_descendants!($class,$descendants);
+            impl_traits_for_class_and_descendants!($class,$descendants);
         )*
     };
 }
