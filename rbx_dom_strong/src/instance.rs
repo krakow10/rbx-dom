@@ -47,6 +47,26 @@ macro_rules! impl_strong_instance {
                 }
             }
         )*
+
+        impl<I> core::ops::Deref for StrongInstance<I> {
+            type Target = I;
+            fn deref(&self) -> &Self::Target {
+                match self {
+                    $(
+                        StrongInstance::$class(class) => class,
+                    )*
+                }
+            }
+        }
+        impl<I> core::ops::DerefMut for StrongInstance<I> {
+            fn deref_mut(&mut self) -> &mut Self::Target {
+                match self {
+                    $(
+                        StrongInstance::$class(class) => class,
+                    )*
+                }
+            }
+        }
     };
 }
 rbx_classes::for_each_class!(impl_strong_instance);
@@ -99,21 +119,5 @@ impl<I> StrongInstance<I> {
         Self: AsClass<Class>,
     {
         AsClass::as_class_mut(self)
-    }
-}
-
-impl<I> core::ops::Deref for StrongInstance<I> {
-    type Target = I;
-    fn deref(&self) -> &Self::Target {
-        macro_rules! match_all {
-            ($($class:ident),*) => {
-                match self {
-                    $(
-                        StrongInstance::$class(class) => class,
-                    )*
-                }
-            };
-        }
-        rbx_classes::for_each_class!(match_all)
     }
 }
