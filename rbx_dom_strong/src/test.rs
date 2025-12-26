@@ -1,7 +1,7 @@
 use crate::dom::StrongDom;
 use crate::instance::InstanceBuilder;
 use rbx_classes::instances::Part;
-use rbx_types::{CFrame, Ref};
+use rbx_types::CFrame;
 
 #[test]
 fn builder() {
@@ -26,18 +26,17 @@ fn builder() {
 
 #[test]
 fn part_inherits_instance() {
-    let mut dom = StrongDom::default();
+    let part_builder = InstanceBuilder::<Part>::default();
+    let referent = part_builder.referent();
 
-    // dummy referent just to get this compiling...
-    let referent = Ref::none();
+    let mut dom = StrongDom::new(part_builder);
 
-    if let Some(instance) = dom.get_by_ref_mut(referent)
-        && let Some(part) = instance.as_class_mut::<Part>()
-    {
-        // look ma, inheritance in rust!
-        part.Name = "Part".to_owned();
-        part.CFrame = CFrame::identity();
-    }
+    let instance = dom.get_by_ref_mut(referent).unwrap();
+    let part = instance.as_class_mut::<Part>().unwrap();
+
+    // look ma, inheritance in rust!
+    part.Name = "Part".to_owned();
+    part.CFrame = CFrame::identity();
 }
 
 #[test]
