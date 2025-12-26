@@ -33,7 +33,13 @@ pub trait AsClass<C> {
 }
 /// Class to class conversion. Inheritance as a trait bound.
 /// Perform an infallible conversion using dereferencing.
+///
 /// Part -> BasePart is possible, but BasePart -> Part is not.
+///
+/// If you have the class, you can simply use dereferencing directly,
+/// but if you have a generic parameter that accepts a class,
+/// this can be used as a trait bound to access the properties
+/// of a particular class.
 pub trait ToClass<C> {
     fn to_class(&self) -> &C;
     fn to_class_mut(&mut self) -> &mut C;
