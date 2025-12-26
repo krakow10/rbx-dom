@@ -3,17 +3,17 @@ use rbx_types::Ref;
 
 #[derive(Debug)]
 pub struct Instance {
-    referent: Ref,
-    children: Vec<Ref>,
-    parent: Ref,
-    class: Class,
+    pub(crate) referent: Ref,
+    pub(crate) children: Vec<Ref>,
+    pub(crate) parent: Ref,
+    pub(crate) class: Class,
 }
 
 #[derive(Debug)]
 pub struct InstanceBuilder<C> {
-    referent: Ref,
-    children: Vec<InstanceBuilder<Class>>,
-    class: C,
+    pub(crate) referent: Ref,
+    pub(crate) children: Vec<InstanceBuilder<Class>>,
+    pub(crate) class: C,
 }
 
 impl<C> InstanceBuilder<C> {

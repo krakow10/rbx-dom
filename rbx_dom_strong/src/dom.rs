@@ -1,3 +1,5 @@
+use std::collections::VecDeque;
+
 use ahash::{AHashMap, AHashSet};
 use rbx_types::{Ref, UniqueId};
 
@@ -25,8 +27,7 @@ impl StrongDom {
             unique_ids: AHashSet::new(),
         };
 
-        // dom.insert(Ref::none(), builder);
-        unimplemented!();
+        dom.insert(Ref::none(), builder);
         dom
     }
 
@@ -61,6 +62,101 @@ impl StrongDom {
     /// it is not found.
     pub fn get_by_ref_mut(&mut self, referent: Ref) -> Option<&mut Instance> {
         self.instances.get_mut(&referent)
+    }
+
+    /// Insert a new instance into the DOM with the given parent. The parent is allowed to
+    /// be the none Ref.
+    ///
+    /// ## Panics
+    /// Panics if `parent_ref` is some and does not refer to an instance in the DOM.
+    pub fn insert<C>(&mut self, parent_ref: Ref, root_builder: InstanceBuilder<C>) -> Ref
+    where
+        C: Into<Class>,
+    {
+        fn insert(
+            dom: &mut StrongDom,
+            builder: InstanceBuilder<Class>,
+            parent: Ref,
+            queue: Option<&mut VecDeque<(Ref, InstanceBuilder<Class>)>>,
+        ) {
+            dom.inner_insert(
+                builder.referent,
+                Instance {
+                    referent: builder.referent,
+                    children: Vec::with_capacity(builder.children.len()),
+                    parent,
+                    class: builder.class,
+                },
+            );
+
+            if parent.is_some() {
+                dom.instances
+                    .get_mut(&parent)
+                    .unwrap_or_else(|| panic!("cannot insert into parent that does not exist"))
+                    .children
+                    .push(builder.referent);
+            }
+
+            if let Some(queue) = queue {
+                for child in builder.children {
+                    queue.push_back((builder.referent, child));
+                }
+            }
+        }
+
+        let root_builder = InstanceBuilder {
+            referent: root_builder.referent,
+            children: root_builder.children,
+            class: root_builder.class.into(),
+        };
+        let root_referent = root_builder.referent;
+
+        // Fast path: if the builder does not have any children, then we don't have to
+        // construct a queue to keep track of descendants for insertion, avoiding a heap
+        // allocation.
+        if root_builder.children.is_empty() {
+            insert(self, root_builder, parent_ref, None);
+        } else {
+            // Rather than performing this movement recursively, we instead use a
+            // queue that we load the children of each `InstanceBuilder` into.
+            // Then we can just iter through that.
+            let mut queue = VecDeque::with_capacity(1);
+            queue.push_back((parent_ref, root_builder));
+
+            while let Some((parent, builder)) = queue.pop_front() {
+                insert(self, builder, parent, Some(&mut queue));
+            }
+        }
+
+        root_referent
+    }
+
+    fn inner_insert(&mut self, referent: Ref, instance: Instance) {
+        self.instances.insert(referent, instance);
+
+        // We need to ensure that the value of the Instance.UniqueId property does
+        // not collide with another instance. If it does, we must regenerate
+        // it. If we *don't* do this, it's possible to use WeakDom::insert to
+        // insert UniqueId properties that collide with other instances in the
+        // dom, violating the invariant that every UniqueId is unique.
+
+        // Unwrap is safe because we just inserted this referent into the instance map
+        let instance = self.instances.get_mut(&referent).unwrap();
+        if let Some(instance) = instance.as_class_mut::<rbx_classes::instances::Instance>() {
+            if self.unique_ids.contains(&instance.UniqueId) {
+                // We found a collision! We need to replace the UniqueId property with
+                // a new value.
+
+                // Unwrap is probably ok. Likely not worth making this method fallible
+                // just because the system clock might be out whack, so panicking is fine
+                let new_unique_id = UniqueId::now().unwrap();
+
+                self.unique_ids.insert(new_unique_id);
+                instance.UniqueId = new_unique_id;
+            } else {
+                self.unique_ids.insert(instance.UniqueId);
+            };
+        }
     }
 }
 
