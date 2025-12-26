@@ -104,7 +104,7 @@ impl Instance {
 
     /// Cast the instance's class as a superclass.  For example, if the
     /// Instance's Class is Part, `instance.as_class_mut::<BasePart>()` gives
-    /// an Some(&mut BasePart).
+    /// Some(&mut BasePart).
     pub fn as_class_mut<C>(&mut self) -> Option<&mut C>
     where
         Class: AsClass<C>,
