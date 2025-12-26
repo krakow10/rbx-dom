@@ -3,17 +3,17 @@ use rbx_types::Ref;
 
 #[derive(Debug)]
 pub struct Instance {
-    pub(crate) referent: Ref,
-    pub(crate) children: Vec<Ref>,
-    pub(crate) parent: Ref,
-    pub(crate) class: Class,
+    referent: Ref,
+    children: Vec<Ref>,
+    parent: Ref,
+    class: Class,
 }
 
 #[derive(Debug)]
 pub struct InstanceBuilder<C> {
-    pub(crate) referent: Ref,
-    pub(crate) children: Vec<InstanceBuilder<Class>>,
-    pub(crate) class: C,
+    referent: Ref,
+    children: Vec<InstanceBuilder<Class>>,
+    class: C,
 }
 
 impl<C> InstanceBuilder<C> {
@@ -29,6 +29,21 @@ impl<C> InstanceBuilder<C> {
     /// Return the referent of the instance that the `InstanceBuilder` refers to.
     pub fn referent(&self) -> Ref {
         self.referent
+    }
+
+    pub(crate) fn children(&self) -> &[InstanceBuilder<Class>] {
+        &self.children
+    }
+
+    pub(crate) fn into_class(self) -> InstanceBuilder<Class>
+    where
+        C: Into<Class>,
+    {
+        InstanceBuilder {
+            referent: self.referent,
+            children: self.children,
+            class: self.class.into(),
+        }
     }
 }
 
@@ -111,16 +126,63 @@ macro_rules! impl_as_class {
 rbx_classes::for_each_class_descendants!(impl_as_class);
 
 impl Instance {
+    /// Returns this instance's referent. It will always be non-null.
+    #[inline]
+    pub fn referent(&self) -> Ref {
+        self.referent
+    }
+
+    /// Returns a list of the referents corresponding to the instance's
+    /// children. All referents returned will be non-null and point to valid
+    /// instances in the same [`WeakDom`][crate::WeakDom].
+    #[inline]
+    pub fn children(&self) -> &[Ref] {
+        &self.children
+    }
+
+    /// Returns the referent corresponding to this instance's parent. This
+    /// referent will either point to an instance in the same
+    /// [`WeakDom`][crate::WeakDom] or be null.
+    #[inline]
+    pub fn parent(&self) -> Ref {
+        self.parent
+    }
+
+    /// Cast the instance's class as a superclass.  For example, if the
+    /// Instance's Class is Part, `instance.as_class::<BasePart>()` gives
+    /// an Option<&BasePart>.
     pub fn as_class<C>(&self) -> Option<&C>
     where
         Class: AsClass<C>,
     {
         self.class.as_class()
     }
+
+    /// Cast the instance's class as a superclass.  For example, if the
+    /// Instance's Class is Part, `instance.as_class_mut::<BasePart>()` gives
+    /// an Option<&mut BasePart>.
     pub fn as_class_mut<C>(&mut self) -> Option<&mut C>
     where
         Class: AsClass<C>,
     {
         self.class.as_class_mut()
+    }
+
+    pub(crate) fn children_mut(&mut self) -> &mut Vec<Ref> {
+        &mut self.children
+    }
+    pub(crate) fn from_builder<C: Into<Class>>(
+        parent: Ref,
+        builder: InstanceBuilder<C>,
+    ) -> (Self, Vec<InstanceBuilder<Class>>) {
+        (
+            Instance {
+                referent: builder.referent,
+                children: Vec::with_capacity(builder.children.len()),
+                parent,
+                class: builder.class.into(),
+            },
+            builder.children,
+        )
     }
 }

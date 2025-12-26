@@ -79,42 +79,32 @@ impl StrongDom {
             parent: Ref,
             queue: Option<&mut VecDeque<(Ref, InstanceBuilder<Class>)>>,
         ) {
-            dom.inner_insert(
-                builder.referent,
-                Instance {
-                    referent: builder.referent,
-                    children: Vec::with_capacity(builder.children.len()),
-                    parent,
-                    class: builder.class,
-                },
-            );
+            let referent = builder.referent();
+            let (instance, builder_children) = Instance::from_builder(parent, builder);
+            dom.inner_insert(referent, instance);
 
             if parent.is_some() {
                 dom.instances
                     .get_mut(&parent)
                     .unwrap_or_else(|| panic!("cannot insert into parent that does not exist"))
-                    .children
-                    .push(builder.referent);
+                    .children_mut()
+                    .push(referent);
             }
 
             if let Some(queue) = queue {
-                for child in builder.children {
-                    queue.push_back((builder.referent, child));
+                for child in builder_children {
+                    queue.push_back((referent, child));
                 }
             }
         }
 
-        let root_builder = InstanceBuilder {
-            referent: root_builder.referent,
-            children: root_builder.children,
-            class: root_builder.class.into(),
-        };
-        let root_referent = root_builder.referent;
+        let root_builder = root_builder.into_class();
+        let root_referent = root_builder.referent();
 
         // Fast path: if the builder does not have any children, then we don't have to
         // construct a queue to keep track of descendants for insertion, avoiding a heap
         // allocation.
-        if root_builder.children.is_empty() {
+        if root_builder.children().is_empty() {
             insert(self, root_builder, parent_ref, None);
         } else {
             // Rather than performing this movement recursively, we instead use a
