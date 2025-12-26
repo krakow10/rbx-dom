@@ -24,6 +24,57 @@ impl<C> InstanceBuilder<C> {
         self.referent
     }
 
+    /// Change the referent of the `InstanceBuilder`.
+    pub fn with_referent<R: Into<Ref>>(self, referent: R) -> Self {
+        Self {
+            referent: referent.into(),
+            ..self
+        }
+    }
+
+    /// Change the referent of the `InstanceBuilder`.
+    pub fn set_referent<R: Into<Ref>>(&mut self, referent: R) {
+        self.referent = referent.into();
+    }
+
+    /// Add a new child to the `InstanceBuilder`.
+    pub fn with_child<ChildClass>(mut self, child: InstanceBuilder<ChildClass>) -> Self
+    where
+        ChildClass: Into<Class>,
+    {
+        self.children.push(child.into_class());
+        self
+    }
+
+    /// Add a new child to the `InstanceBuilder`.
+    pub fn add_child<ChildClass>(&mut self, child: InstanceBuilder<ChildClass>)
+    where
+        ChildClass: Into<Class>,
+    {
+        self.children.push(child.into_class());
+    }
+
+    /// Add multiple children to the `InstanceBuilder` at once.
+    ///
+    /// Order of the children will be preserved.
+    pub fn with_children<I>(mut self, children: I) -> Self
+    where
+        I: IntoIterator<Item = InstanceBuilder<Class>>,
+    {
+        self.children.extend(children);
+        self
+    }
+
+    /// Add multiple children to the `InstanceBuilder` at once.
+    ///
+    /// Order of the children will be preserved.
+    pub fn add_children<I>(&mut self, children: I)
+    where
+        I: IntoIterator<Item = InstanceBuilder<Class>>,
+    {
+        self.children.extend(children);
+    }
+
     pub(crate) fn children(&self) -> &[InstanceBuilder<Class>] {
         &self.children
     }

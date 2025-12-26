@@ -39,3 +39,21 @@ fn part_inherits_instance() {
         part.CFrame = CFrame::identity();
     }
 }
+
+#[test]
+fn large_depth_tree() {
+    use rbx_classes::instances::Folder;
+    // We've had issues with stack overflows when creating WeakDoms with
+    // particularly deep trees, so this test is simply to ensure that does
+    // not happen. `i16::MAX` is arbitrary but very large for recursion.
+    const N: usize = i16::MAX as usize;
+
+    let mut refs = Vec::with_capacity(N + 1);
+    let mut base = InstanceBuilder::<Folder>::default();
+    refs.push(base.referent());
+    for _ in 0..N {
+        base = InstanceBuilder::<Folder>::default().with_child(base);
+        refs.push(base.referent());
+    }
+    let _ = StrongDom::new(base);
+}
