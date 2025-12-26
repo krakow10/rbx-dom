@@ -3,13 +3,13 @@ use core::ops::{Deref, DerefMut};
 use rbx_types::*;
 macro_rules! impl_inherits {
     ($ class : path , $ inherits : path) => {
-        impl<I> Deref for $class {
+        impl Deref for $class {
             type Target = $inherits;
             fn deref(&self) -> &$inherits {
                 &self.superclass
             }
         }
-        impl<I> DerefMut for $class {
+        impl DerefMut for $class {
             fn deref_mut(&mut self) -> &mut $inherits {
                 &mut self.superclass
             }
@@ -18,12 +18,12 @@ macro_rules! impl_inherits {
 }
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
-pub struct Accessory<I> {
-    superclass: Accoutrement<I>,
+pub struct Accessory {
+    superclass: Accoutrement,
     pub AccessoryType: enums::AccessoryType,
 }
-impl_inherits!(Accessory<I>, Accoutrement<I>);
-impl<I: Default> Default for Accessory<I> {
+impl_inherits!(Accessory, Accoutrement);
+impl Default for Accessory {
     fn default() -> Self {
         let superclass = Object::default();
         let superclass = Instance {
@@ -47,8 +47,8 @@ impl<I: Default> Default for Accessory<I> {
 }
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
-pub struct AccessoryDescription<I> {
-    superclass: Instance<I>,
+pub struct AccessoryDescription {
+    superclass: Instance,
     pub AccessoryType: enums::AccessoryType,
     pub AssetId: i64,
     pub Instance: Ref,
@@ -59,8 +59,8 @@ pub struct AccessoryDescription<I> {
     pub Rotation: Vector3,
     pub Scale: Vector3,
 }
-impl_inherits!(AccessoryDescription<I>, Instance<I>);
-impl<I: Default> Default for AccessoryDescription<I> {
+impl_inherits!(AccessoryDescription, Instance);
+impl Default for AccessoryDescription {
     fn default() -> Self {
         let superclass = Object::default();
         let superclass = Instance {
@@ -89,18 +89,18 @@ impl<I: Default> Default for AccessoryDescription<I> {
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 #[derive(Default)]
-pub struct AccountService<I> {
-    superclass: Instance<I>,
+pub struct AccountService {
+    superclass: Instance,
 }
-impl_inherits!(AccountService<I>, Instance<I>);
+impl_inherits!(AccountService, Instance);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
-pub struct Accoutrement<I> {
-    superclass: Instance<I>,
+pub struct Accoutrement {
+    superclass: Instance,
     pub AttachmentPoint: CFrame,
 }
-impl_inherits!(Accoutrement<I>, Instance<I>);
-impl<I: Default> Default for Accoutrement<I> {
+impl_inherits!(Accoutrement, Instance);
+impl Default for Accoutrement {
     fn default() -> Self {
         let superclass = Object::default();
         let superclass = Instance {
@@ -121,34 +121,34 @@ impl<I: Default> Default for Accoutrement<I> {
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 #[derive(Default)]
-pub struct AchievementService<I> {
-    superclass: Instance<I>,
+pub struct AchievementService {
+    superclass: Instance,
 }
-impl_inherits!(AchievementService<I>, Instance<I>);
+impl_inherits!(AchievementService, Instance);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 #[derive(Default)]
-pub struct ActivityHistoryEventService<I> {
-    superclass: Instance<I>,
+pub struct ActivityHistoryEventService {
+    superclass: Instance,
 }
-impl_inherits!(ActivityHistoryEventService<I>, Instance<I>);
+impl_inherits!(ActivityHistoryEventService, Instance);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 #[derive(Default)]
-pub struct Actor<I> {
-    superclass: Model<I>,
+pub struct Actor {
+    superclass: Model,
 }
-impl_inherits!(Actor<I>, Model<I>);
+impl_inherits!(Actor, Model);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
-pub struct AdGui<I> {
-    superclass: SurfaceGuiBase<I>,
+pub struct AdGui {
+    superclass: SurfaceGuiBase,
     pub AdShape: enums::AdShape,
     pub EnableVideoAds: bool,
     pub FallbackImage: ContentId,
 }
-impl_inherits!(AdGui<I>, SurfaceGuiBase<I>);
-impl<I: Default> Default for AdGui<I> {
+impl_inherits!(AdGui, SurfaceGuiBase);
+impl Default for AdGui {
     fn default() -> Self {
         let superclass = Object::default();
         let superclass = Instance {
@@ -194,28 +194,28 @@ impl<I: Default> Default for AdGui<I> {
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 #[derive(Default)]
-pub struct AdPortal<I> {
-    superclass: Instance<I>,
+pub struct AdPortal {
+    superclass: Instance,
 }
-impl_inherits!(AdPortal<I>, Instance<I>);
+impl_inherits!(AdPortal, Instance);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 #[derive(Default)]
-pub struct AdService<I> {
-    superclass: Instance<I>,
+pub struct AdService {
+    superclass: Instance,
 }
-impl_inherits!(AdService<I>, Instance<I>);
+impl_inherits!(AdService, Instance);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 #[derive(Default)]
-pub struct AdvancedDragger<I> {
-    superclass: Instance<I>,
+pub struct AdvancedDragger {
+    superclass: Instance,
 }
-impl_inherits!(AdvancedDragger<I>, Instance<I>);
+impl_inherits!(AdvancedDragger, Instance);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
-pub struct AirController<I> {
-    superclass: ControllerBase<I>,
+pub struct AirController {
+    superclass: ControllerBase,
     pub BalanceMaxTorque: f32,
     pub BalanceSpeed: f32,
     pub MaintainAngularMomentum: bool,
@@ -224,8 +224,8 @@ pub struct AirController<I> {
     pub TurnMaxTorque: f32,
     pub TurnSpeedFactor: f32,
 }
-impl_inherits!(AirController<I>, ControllerBase<I>);
-impl<I: Default> Default for AirController<I> {
+impl_inherits!(AirController, ControllerBase);
+impl Default for AirController {
     fn default() -> Self {
         let superclass = Object::default();
         let superclass = Instance {
@@ -256,8 +256,8 @@ impl<I: Default> Default for AirController<I> {
 }
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
-pub struct AlignOrientation<I> {
-    superclass: Constraint<I>,
+pub struct AlignOrientation {
+    superclass: Constraint,
     pub AlignType: enums::AlignType,
     pub CFrame: CFrame,
     pub MaxAngularVelocity: f32,
@@ -268,8 +268,8 @@ pub struct AlignOrientation<I> {
     pub Responsiveness: f32,
     pub RigidityEnabled: bool,
 }
-impl_inherits!(AlignOrientation<I>, Constraint<I>);
-impl<I: Default> Default for AlignOrientation<I> {
+impl_inherits!(AlignOrientation, Constraint);
+impl Default for AlignOrientation {
     fn default() -> Self {
         let superclass = Object::default();
         let superclass = Instance {
@@ -305,8 +305,8 @@ impl<I: Default> Default for AlignOrientation<I> {
 }
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
-pub struct AlignPosition<I> {
-    superclass: Constraint<I>,
+pub struct AlignPosition {
+    superclass: Constraint,
     pub ApplyAtCenterOfMass: bool,
     pub ForceLimitMode: enums::ForceLimitMode,
     pub ForceRelativeTo: enums::ActuatorRelativeTo,
@@ -319,8 +319,8 @@ pub struct AlignPosition<I> {
     pub Responsiveness: f32,
     pub RigidityEnabled: bool,
 }
-impl_inherits!(AlignPosition<I>, Constraint<I>);
-impl<I: Default> Default for AlignPosition<I> {
+impl_inherits!(AlignPosition, Constraint);
+impl Default for AlignPosition {
     fn default() -> Self {
         let superclass = Object::default();
         let superclass = Instance {
@@ -358,12 +358,12 @@ impl<I: Default> Default for AlignPosition<I> {
 }
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
-pub struct AnalyticsService<I> {
-    superclass: Instance<I>,
+pub struct AnalyticsService {
+    superclass: Instance,
     pub ApiKey: String,
 }
-impl_inherits!(AnalyticsService<I>, Instance<I>);
-impl<I: Default> Default for AnalyticsService<I> {
+impl_inherits!(AnalyticsService, Instance);
+impl Default for AnalyticsService {
     fn default() -> Self {
         let superclass = Object::default();
         let superclass = Instance {
@@ -383,15 +383,15 @@ impl<I: Default> Default for AnalyticsService<I> {
 }
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
-pub struct AngularVelocity<I> {
-    superclass: Constraint<I>,
+pub struct AngularVelocity {
+    superclass: Constraint,
     pub AngularVelocity: Vector3,
     pub MaxTorque: f32,
     pub ReactionTorqueEnabled: bool,
     pub RelativeTo: enums::ActuatorRelativeTo,
 }
-impl_inherits!(AngularVelocity<I>, Constraint<I>);
-impl<I: Default> Default for AngularVelocity<I> {
+impl_inherits!(AngularVelocity, Constraint);
+impl Default for AngularVelocity {
     fn default() -> Self {
         let superclass = Object::default();
         let superclass = Instance {
@@ -422,12 +422,12 @@ impl<I: Default> Default for AngularVelocity<I> {
 }
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
-pub struct Animation<I> {
-    superclass: Instance<I>,
+pub struct Animation {
+    superclass: Instance,
     pub AnimationId: ContentId,
 }
-impl_inherits!(Animation<I>, Instance<I>);
-impl<I: Default> Default for Animation<I> {
+impl_inherits!(Animation, Instance);
+impl Default for Animation {
     fn default() -> Self {
         let superclass = Object::default();
         let superclass = Instance {
@@ -447,14 +447,14 @@ impl<I: Default> Default for Animation<I> {
 }
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
-pub struct AnimationClip<I> {
-    superclass: Instance<I>,
+pub struct AnimationClip {
+    superclass: Instance,
     pub GuidBinaryString: BinaryString,
     pub Loop: bool,
     pub Priority: enums::AnimationPriority,
 }
-impl_inherits!(AnimationClip<I>, Instance<I>);
-impl<I: Default> Default for AnimationClip<I> {
+impl_inherits!(AnimationClip, Instance);
+impl Default for AnimationClip {
     fn default() -> Self {
         let superclass = Object::default();
         let superclass = Instance {
@@ -477,21 +477,21 @@ impl<I: Default> Default for AnimationClip<I> {
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 #[derive(Default)]
-pub struct AnimationClipProvider<I> {
-    superclass: Instance<I>,
+pub struct AnimationClipProvider {
+    superclass: Instance,
 }
-impl_inherits!(AnimationClipProvider<I>, Instance<I>);
+impl_inherits!(AnimationClipProvider, Instance);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
-pub struct AnimationConstraint<I> {
-    superclass: Constraint<I>,
+pub struct AnimationConstraint {
+    superclass: Constraint,
     pub IsKinematic: bool,
     pub MaxForce: f32,
     pub MaxTorque: f32,
     pub Transform: CFrame,
 }
-impl_inherits!(AnimationConstraint<I>, Constraint<I>);
-impl<I: Default> Default for AnimationConstraint<I> {
+impl_inherits!(AnimationConstraint, Constraint);
+impl Default for AnimationConstraint {
     fn default() -> Self {
         let superclass = Object::default();
         let superclass = Instance {
@@ -523,54 +523,54 @@ impl<I: Default> Default for AnimationConstraint<I> {
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 #[derive(Default)]
-pub struct AnimationController<I> {
-    superclass: Instance<I>,
+pub struct AnimationController {
+    superclass: Instance,
 }
-impl_inherits!(AnimationController<I>, Instance<I>);
+impl_inherits!(AnimationController, Instance);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 #[derive(Default)]
-pub struct AnimationFromVideoCreatorService<I> {
-    superclass: Instance<I>,
+pub struct AnimationFromVideoCreatorService {
+    superclass: Instance,
 }
-impl_inherits!(AnimationFromVideoCreatorService<I>, Instance<I>);
+impl_inherits!(AnimationFromVideoCreatorService, Instance);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 #[derive(Default)]
-pub struct AnimationFromVideoCreatorStudioService<I> {
-    superclass: Instance<I>,
+pub struct AnimationFromVideoCreatorStudioService {
+    superclass: Instance,
 }
-impl_inherits!(AnimationFromVideoCreatorStudioService<I>, Instance<I>);
+impl_inherits!(AnimationFromVideoCreatorStudioService, Instance);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 #[derive(Default)]
-pub struct AnimationGraphDefinition<I> {
-    superclass: AnimationClip<I>,
+pub struct AnimationGraphDefinition {
+    superclass: AnimationClip,
 }
-impl_inherits!(AnimationGraphDefinition<I>, AnimationClip<I>);
+impl_inherits!(AnimationGraphDefinition, AnimationClip);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 #[derive(Default)]
-pub struct AnimationImportData<I> {
-    superclass: BaseImportData<I>,
+pub struct AnimationImportData {
+    superclass: BaseImportData,
 }
-impl_inherits!(AnimationImportData<I>, BaseImportData<I>);
+impl_inherits!(AnimationImportData, BaseImportData);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 #[derive(Default)]
-pub struct AnimationNode<I> {
-    superclass: Object<I>,
+pub struct AnimationNode {
+    superclass: Object,
 }
-impl_inherits!(AnimationNode<I>, Object<I>);
+impl_inherits!(AnimationNode, Object);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
-pub struct AnimationNodeDefinition<I> {
-    superclass: Instance<I>,
+pub struct AnimationNodeDefinition {
+    superclass: Instance,
     pub InputPinData: BinaryString,
     pub NodeType: enums::AnimationNodeType,
 }
-impl_inherits!(AnimationNodeDefinition<I>, Instance<I>);
-impl<I: Default> Default for AnimationNodeDefinition<I> {
+impl_inherits!(AnimationNodeDefinition, Instance);
+impl Default for AnimationNodeDefinition {
     fn default() -> Self {
         let superclass = Object::default();
         let superclass = Instance {
@@ -591,8 +591,8 @@ impl<I: Default> Default for AnimationNodeDefinition<I> {
 }
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
-pub struct AnimationRigData<I> {
-    superclass: Instance<I>,
+pub struct AnimationRigData {
+    superclass: Instance,
     pub Label: BinaryString,
     pub Name: BinaryString,
     pub Parent: BinaryString,
@@ -600,8 +600,8 @@ pub struct AnimationRigData<I> {
     pub PreTransform: BinaryString,
     pub Transform: BinaryString,
 }
-impl_inherits!(AnimationRigData<I>, Instance<I>);
-impl<I: Default> Default for AnimationRigData<I> {
+impl_inherits!(AnimationRigData, Instance);
+impl Default for AnimationRigData {
     fn default() -> Self {
         let superclass = Object::default();
         let superclass = Instance {
@@ -619,18 +619,18 @@ impl<I: Default> Default for AnimationRigData<I> {
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 #[derive(Default)]
-pub struct AnimationStreamTrack<I> {
-    superclass: Instance<I>,
+pub struct AnimationStreamTrack {
+    superclass: Instance,
 }
-impl_inherits!(AnimationStreamTrack<I>, Instance<I>);
+impl_inherits!(AnimationStreamTrack, Instance);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
-pub struct AnimationTrack<I> {
-    superclass: Instance<I>,
+pub struct AnimationTrack {
+    superclass: Instance,
     pub Priority: enums::AnimationPriority,
 }
-impl_inherits!(AnimationTrack<I>, Instance<I>);
-impl<I: Default> Default for AnimationTrack<I> {
+impl_inherits!(AnimationTrack, Instance);
+impl Default for AnimationTrack {
     fn default() -> Self {
         let superclass = Object::default();
         let superclass = Instance {
@@ -650,12 +650,12 @@ impl<I: Default> Default for AnimationTrack<I> {
 }
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
-pub struct Animator<I> {
-    superclass: Instance<I>,
+pub struct Animator {
+    superclass: Instance,
     pub PreferLodEnabled: bool,
 }
-impl_inherits!(Animator<I>, Instance<I>);
-impl<I: Default> Default for Animator<I> {
+impl_inherits!(Animator, Instance);
+impl Default for Animator {
     fn default() -> Self {
         let superclass = Object::default();
         let superclass = Instance {
@@ -676,53 +676,53 @@ impl<I: Default> Default for Animator<I> {
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 #[derive(Default)]
-pub struct Annotation<I> {
-    superclass: Instance<I>,
+pub struct Annotation {
+    superclass: Instance,
 }
-impl_inherits!(Annotation<I>, Instance<I>);
+impl_inherits!(Annotation, Instance);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 #[derive(Default)]
-pub struct AnnotationsService<I> {
-    superclass: Instance<I>,
+pub struct AnnotationsService {
+    superclass: Instance,
 }
-impl_inherits!(AnnotationsService<I>, Instance<I>);
+impl_inherits!(AnnotationsService, Instance);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 #[derive(Default)]
-pub struct AppLifecycleObserverService<I> {
-    superclass: Instance<I>,
+pub struct AppLifecycleObserverService {
+    superclass: Instance,
 }
-impl_inherits!(AppLifecycleObserverService<I>, Instance<I>);
+impl_inherits!(AppLifecycleObserverService, Instance);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 #[derive(Default)]
-pub struct AppRatingPromptService<I> {
-    superclass: Instance<I>,
+pub struct AppRatingPromptService {
+    superclass: Instance,
 }
-impl_inherits!(AppRatingPromptService<I>, Instance<I>);
+impl_inherits!(AppRatingPromptService, Instance);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 #[derive(Default)]
-pub struct AppStorageService<I> {
-    superclass: LocalStorageService<I>,
+pub struct AppStorageService {
+    superclass: LocalStorageService,
 }
-impl_inherits!(AppStorageService<I>, LocalStorageService<I>);
+impl_inherits!(AppStorageService, LocalStorageService);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 #[derive(Default)]
-pub struct AppUpdateService<I> {
-    superclass: Instance<I>,
+pub struct AppUpdateService {
+    superclass: Instance,
 }
-impl_inherits!(AppUpdateService<I>, Instance<I>);
+impl_inherits!(AppUpdateService, Instance);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
-pub struct ArcHandles<I> {
-    superclass: HandlesBase<I>,
+pub struct ArcHandles {
+    superclass: HandlesBase,
     pub Axes: Axes,
 }
-impl_inherits!(ArcHandles<I>, HandlesBase<I>);
-impl<I: Default> Default for ArcHandles<I> {
+impl_inherits!(ArcHandles, HandlesBase);
+impl Default for ArcHandles {
     fn default() -> Self {
         let superclass = Object::default();
         let superclass = Instance {
@@ -755,20 +755,20 @@ impl<I: Default> Default for ArcHandles<I> {
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 #[derive(Default)]
-pub struct AssetCounterService<I> {
-    superclass: Instance<I>,
+pub struct AssetCounterService {
+    superclass: Instance,
 }
-impl_inherits!(AssetCounterService<I>, Instance<I>);
+impl_inherits!(AssetCounterService, Instance);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
-pub struct AssetDeliveryProxy<I> {
-    superclass: Instance<I>,
+pub struct AssetDeliveryProxy {
+    superclass: Instance,
     pub Interface: String,
     pub Port: i32,
     pub StartServer: bool,
 }
-impl_inherits!(AssetDeliveryProxy<I>, Instance<I>);
-impl<I: Default> Default for AssetDeliveryProxy<I> {
+impl_inherits!(AssetDeliveryProxy, Instance);
+impl Default for AssetDeliveryProxy {
     fn default() -> Self {
         let superclass = Object::default();
         let superclass = Instance {
@@ -791,34 +791,34 @@ impl<I: Default> Default for AssetDeliveryProxy<I> {
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 #[derive(Default)]
-pub struct AssetImportService<I> {
-    superclass: Instance<I>,
+pub struct AssetImportService {
+    superclass: Instance,
 }
-impl_inherits!(AssetImportService<I>, Instance<I>);
+impl_inherits!(AssetImportService, Instance);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 #[derive(Default)]
-pub struct AssetImportSession<I> {
-    superclass: ImportSession<I>,
+pub struct AssetImportSession {
+    superclass: ImportSession,
 }
-impl_inherits!(AssetImportSession<I>, ImportSession<I>);
+impl_inherits!(AssetImportSession, ImportSession);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 #[derive(Default)]
-pub struct AssetManagerService<I> {
-    superclass: Instance<I>,
+pub struct AssetManagerService {
+    superclass: Instance,
 }
-impl_inherits!(AssetManagerService<I>, Instance<I>);
+impl_inherits!(AssetManagerService, Instance);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
-pub struct AssetPatchSettings<I> {
-    superclass: Instance<I>,
+pub struct AssetPatchSettings {
+    superclass: Instance,
     pub ContentId: String,
     pub OutputPath: String,
     pub PatchId: String,
 }
-impl_inherits!(AssetPatchSettings<I>, Instance<I>);
-impl<I: Default> Default for AssetPatchSettings<I> {
+impl_inherits!(AssetPatchSettings, Instance);
+impl Default for AssetPatchSettings {
     fn default() -> Self {
         let superclass = Object::default();
         let superclass = Instance {
@@ -840,12 +840,12 @@ impl<I: Default> Default for AssetPatchSettings<I> {
 }
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
-pub struct AssetService<I> {
-    superclass: Instance<I>,
+pub struct AssetService {
+    superclass: Instance,
     pub AllowInsertFreeAssets: bool,
 }
-impl_inherits!(AssetService<I>, Instance<I>);
-impl<I: Default> Default for AssetService<I> {
+impl_inherits!(AssetService, Instance);
+impl Default for AssetService {
     fn default() -> Self {
         let superclass = Object::default();
         let superclass = Instance {
@@ -866,14 +866,14 @@ impl<I: Default> Default for AssetService<I> {
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 #[derive(Default)]
-pub struct AssetSoundEffect<I> {
-    superclass: CustomSoundEffect<I>,
+pub struct AssetSoundEffect {
+    superclass: CustomSoundEffect,
 }
-impl_inherits!(AssetSoundEffect<I>, CustomSoundEffect<I>);
+impl_inherits!(AssetSoundEffect, CustomSoundEffect);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
-pub struct Atmosphere<I> {
-    superclass: Instance<I>,
+pub struct Atmosphere {
+    superclass: Instance,
     pub Color: Color3,
     pub Decay: Color3,
     pub Density: f32,
@@ -881,8 +881,8 @@ pub struct Atmosphere<I> {
     pub Haze: f32,
     pub Offset: f32,
 }
-impl_inherits!(Atmosphere<I>, Instance<I>);
-impl<I: Default> Default for Atmosphere<I> {
+impl_inherits!(Atmosphere, Instance);
+impl Default for Atmosphere {
     fn default() -> Self {
         let superclass = Object::default();
         let superclass = Instance {
@@ -908,19 +908,19 @@ impl<I: Default> Default for Atmosphere<I> {
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 #[derive(Default)]
-pub struct AtmosphereSensor<I> {
-    superclass: SensorBase<I>,
+pub struct AtmosphereSensor {
+    superclass: SensorBase,
 }
-impl_inherits!(AtmosphereSensor<I>, SensorBase<I>);
+impl_inherits!(AtmosphereSensor, SensorBase);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
-pub struct Attachment<I> {
-    superclass: Instance<I>,
+pub struct Attachment {
+    superclass: Instance,
     pub CFrame: CFrame,
     pub Visible: bool,
 }
-impl_inherits!(Attachment<I>, Instance<I>);
-impl<I: Default> Default for Attachment<I> {
+impl_inherits!(Attachment, Instance);
+impl Default for Attachment {
     fn default() -> Self {
         let superclass = Object::default();
         let superclass = Instance {
@@ -941,13 +941,13 @@ impl<I: Default> Default for Attachment<I> {
 }
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
-pub struct AudioAnalyzer<I> {
-    superclass: Instance<I>,
+pub struct AudioAnalyzer {
+    superclass: Instance,
     pub SpectrumEnabled: bool,
     pub WindowSize: enums::AudioWindowSize,
 }
-impl_inherits!(AudioAnalyzer<I>, Instance<I>);
-impl<I: Default> Default for AudioAnalyzer<I> {
+impl_inherits!(AudioAnalyzer, Instance);
+impl Default for AudioAnalyzer {
     fn default() -> Self {
         let superclass = Object::default();
         let superclass = Instance {
@@ -968,12 +968,12 @@ impl<I: Default> Default for AudioAnalyzer<I> {
 }
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
-pub struct AudioChannelMixer<I> {
-    superclass: Instance<I>,
+pub struct AudioChannelMixer {
+    superclass: Instance,
     pub Layout: enums::AudioChannelLayout,
 }
-impl_inherits!(AudioChannelMixer<I>, Instance<I>);
-impl<I: Default> Default for AudioChannelMixer<I> {
+impl_inherits!(AudioChannelMixer, Instance);
+impl Default for AudioChannelMixer {
     fn default() -> Self {
         let superclass = Object::default();
         let superclass = Instance {
@@ -993,12 +993,12 @@ impl<I: Default> Default for AudioChannelMixer<I> {
 }
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
-pub struct AudioChannelSplitter<I> {
-    superclass: Instance<I>,
+pub struct AudioChannelSplitter {
+    superclass: Instance,
     pub Layout: enums::AudioChannelLayout,
 }
-impl_inherits!(AudioChannelSplitter<I>, Instance<I>);
-impl<I: Default> Default for AudioChannelSplitter<I> {
+impl_inherits!(AudioChannelSplitter, Instance);
+impl Default for AudioChannelSplitter {
     fn default() -> Self {
         let superclass = Object::default();
         let superclass = Instance {
@@ -1018,15 +1018,15 @@ impl<I: Default> Default for AudioChannelSplitter<I> {
 }
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
-pub struct AudioChorus<I> {
-    superclass: Instance<I>,
+pub struct AudioChorus {
+    superclass: Instance,
     pub Bypass: bool,
     pub Depth: f32,
     pub Mix: f32,
     pub Rate: f32,
 }
-impl_inherits!(AudioChorus<I>, Instance<I>);
-impl<I: Default> Default for AudioChorus<I> {
+impl_inherits!(AudioChorus, Instance);
+impl Default for AudioChorus {
     fn default() -> Self {
         let superclass = Object::default();
         let superclass = Instance {
@@ -1049,8 +1049,8 @@ impl<I: Default> Default for AudioChorus<I> {
 }
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
-pub struct AudioCompressor<I> {
-    superclass: Instance<I>,
+pub struct AudioCompressor {
+    superclass: Instance,
     pub Attack: f32,
     pub Bypass: bool,
     pub MakeupGain: f32,
@@ -1058,8 +1058,8 @@ pub struct AudioCompressor<I> {
     pub Release: f32,
     pub Threshold: f32,
 }
-impl_inherits!(AudioCompressor<I>, Instance<I>);
-impl<I: Default> Default for AudioCompressor<I> {
+impl_inherits!(AudioCompressor, Instance);
+impl Default for AudioCompressor {
     fn default() -> Self {
         let superclass = Object::default();
         let superclass = Instance {
@@ -1084,16 +1084,16 @@ impl<I: Default> Default for AudioCompressor<I> {
 }
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
-pub struct AudioDeviceInput<I> {
-    superclass: Instance<I>,
+pub struct AudioDeviceInput {
+    superclass: Instance,
     pub AccessType: enums::AccessModifierType,
     pub Active: bool,
     pub Muted: bool,
     pub Player: Ref,
     pub Volume: f32,
 }
-impl_inherits!(AudioDeviceInput<I>, Instance<I>);
-impl<I: Default> Default for AudioDeviceInput<I> {
+impl_inherits!(AudioDeviceInput, Instance);
+impl Default for AudioDeviceInput {
     fn default() -> Self {
         let superclass = Object::default();
         let superclass = Instance {
@@ -1117,12 +1117,12 @@ impl<I: Default> Default for AudioDeviceInput<I> {
 }
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
-pub struct AudioDeviceOutput<I> {
-    superclass: Instance<I>,
+pub struct AudioDeviceOutput {
+    superclass: Instance,
     pub Player: Ref,
 }
-impl_inherits!(AudioDeviceOutput<I>, Instance<I>);
-impl<I: Default> Default for AudioDeviceOutput<I> {
+impl_inherits!(AudioDeviceOutput, Instance);
+impl Default for AudioDeviceOutput {
     fn default() -> Self {
         let superclass = Object::default();
         let superclass = Instance {
@@ -1142,13 +1142,13 @@ impl<I: Default> Default for AudioDeviceOutput<I> {
 }
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
-pub struct AudioDistortion<I> {
-    superclass: Instance<I>,
+pub struct AudioDistortion {
+    superclass: Instance,
     pub Bypass: bool,
     pub Level: f32,
 }
-impl_inherits!(AudioDistortion<I>, Instance<I>);
-impl<I: Default> Default for AudioDistortion<I> {
+impl_inherits!(AudioDistortion, Instance);
+impl Default for AudioDistortion {
     fn default() -> Self {
         let superclass = Object::default();
         let superclass = Instance {
@@ -1169,8 +1169,8 @@ impl<I: Default> Default for AudioDistortion<I> {
 }
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
-pub struct AudioEcho<I> {
-    superclass: Instance<I>,
+pub struct AudioEcho {
+    superclass: Instance,
     pub Bypass: bool,
     pub DelayTime: f32,
     pub DryLevel: f32,
@@ -1178,8 +1178,8 @@ pub struct AudioEcho<I> {
     pub RampTime: f32,
     pub WetLevel: f32,
 }
-impl_inherits!(AudioEcho<I>, Instance<I>);
-impl<I: Default> Default for AudioEcho<I> {
+impl_inherits!(AudioEcho, Instance);
+impl Default for AudioEcho {
     fn default() -> Self {
         let superclass = Object::default();
         let superclass = Instance {
@@ -1204,8 +1204,8 @@ impl<I: Default> Default for AudioEcho<I> {
 }
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
-pub struct AudioEmitter<I> {
-    superclass: Instance<I>,
+pub struct AudioEmitter {
+    superclass: Instance,
     pub AcousticSimulationEnabled: bool,
     pub AngleAttenuation: BinaryString,
     pub AudioInteractionGroup: String,
@@ -1213,8 +1213,8 @@ pub struct AudioEmitter<I> {
     pub PositionOverride: Ref,
     pub SimulationFidelity: enums::AudioSimulationFidelity,
 }
-impl_inherits!(AudioEmitter<I>, Instance<I>);
-impl<I: Default> Default for AudioEmitter<I> {
+impl_inherits!(AudioEmitter, Instance);
+impl Default for AudioEmitter {
     fn default() -> Self {
         let superclass = Object::default();
         let superclass = Instance {
@@ -1239,16 +1239,16 @@ impl<I: Default> Default for AudioEmitter<I> {
 }
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
-pub struct AudioEqualizer<I> {
-    superclass: Instance<I>,
+pub struct AudioEqualizer {
+    superclass: Instance,
     pub Bypass: bool,
     pub HighGain: f32,
     pub LowGain: f32,
     pub MidGain: f32,
     pub MidRange: NumberRange,
 }
-impl_inherits!(AudioEqualizer<I>, Instance<I>);
-impl<I: Default> Default for AudioEqualizer<I> {
+impl_inherits!(AudioEqualizer, Instance);
+impl Default for AudioEqualizer {
     fn default() -> Self {
         let superclass = Object::default();
         let superclass = Instance {
@@ -1272,13 +1272,13 @@ impl<I: Default> Default for AudioEqualizer<I> {
 }
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
-pub struct AudioFader<I> {
-    superclass: Instance<I>,
+pub struct AudioFader {
+    superclass: Instance,
     pub Bypass: bool,
     pub Volume: f32,
 }
-impl_inherits!(AudioFader<I>, Instance<I>);
-impl<I: Default> Default for AudioFader<I> {
+impl_inherits!(AudioFader, Instance);
+impl Default for AudioFader {
     fn default() -> Self {
         let superclass = Object::default();
         let superclass = Instance {
@@ -1299,16 +1299,16 @@ impl<I: Default> Default for AudioFader<I> {
 }
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
-pub struct AudioFilter<I> {
-    superclass: Instance<I>,
+pub struct AudioFilter {
+    superclass: Instance,
     pub Bypass: bool,
     pub FilterType: enums::AudioFilterType,
     pub Frequency: f32,
     pub Gain: f32,
     pub Q: f32,
 }
-impl_inherits!(AudioFilter<I>, Instance<I>);
-impl<I: Default> Default for AudioFilter<I> {
+impl_inherits!(AudioFilter, Instance);
+impl Default for AudioFilter {
     fn default() -> Self {
         let superclass = Object::default();
         let superclass = Instance {
@@ -1332,15 +1332,15 @@ impl<I: Default> Default for AudioFilter<I> {
 }
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
-pub struct AudioFlanger<I> {
-    superclass: Instance<I>,
+pub struct AudioFlanger {
+    superclass: Instance,
     pub Bypass: bool,
     pub Depth: f32,
     pub Mix: f32,
     pub Rate: f32,
 }
-impl_inherits!(AudioFlanger<I>, Instance<I>);
-impl<I: Default> Default for AudioFlanger<I> {
+impl_inherits!(AudioFlanger, Instance);
+impl Default for AudioFlanger {
     fn default() -> Self {
         let superclass = Object::default();
         let superclass = Instance {
@@ -1364,21 +1364,21 @@ impl<I: Default> Default for AudioFlanger<I> {
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 #[derive(Default)]
-pub struct AudioFocusService<I> {
-    superclass: Instance<I>,
+pub struct AudioFocusService {
+    superclass: Instance,
 }
-impl_inherits!(AudioFocusService<I>, Instance<I>);
+impl_inherits!(AudioFocusService, Instance);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
-pub struct AudioGate<I> {
-    superclass: Instance<I>,
+pub struct AudioGate {
+    superclass: Instance,
     pub Attack: f32,
     pub Bypass: bool,
     pub Release: f32,
     pub Threshold: NumberRange,
 }
-impl_inherits!(AudioGate<I>, Instance<I>);
-impl<I: Default> Default for AudioGate<I> {
+impl_inherits!(AudioGate, Instance);
+impl Default for AudioGate {
     fn default() -> Self {
         let superclass = Object::default();
         let superclass = Instance {
@@ -1401,14 +1401,14 @@ impl<I: Default> Default for AudioGate<I> {
 }
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
-pub struct AudioLimiter<I> {
-    superclass: Instance<I>,
+pub struct AudioLimiter {
+    superclass: Instance,
     pub Bypass: bool,
     pub MaxLevel: f32,
     pub Release: f32,
 }
-impl_inherits!(AudioLimiter<I>, Instance<I>);
-impl<I: Default> Default for AudioLimiter<I> {
+impl_inherits!(AudioLimiter, Instance);
+impl Default for AudioLimiter {
     fn default() -> Self {
         let superclass = Object::default();
         let superclass = Instance {
@@ -1430,8 +1430,8 @@ impl<I: Default> Default for AudioLimiter<I> {
 }
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
-pub struct AudioListener<I> {
-    superclass: Instance<I>,
+pub struct AudioListener {
+    superclass: Instance,
     pub AcousticSimulationEnabled: bool,
     pub AngleAttenuation: BinaryString,
     pub AudioInteractionGroup: String,
@@ -1439,8 +1439,8 @@ pub struct AudioListener<I> {
     pub PositionOverride: Ref,
     pub SimulationFidelity: enums::AudioSimulationFidelity,
 }
-impl_inherits!(AudioListener<I>, Instance<I>);
-impl<I: Default> Default for AudioListener<I> {
+impl_inherits!(AudioListener, Instance);
+impl Default for AudioListener {
     fn default() -> Self {
         let superclass = Object::default();
         let superclass = Instance {
@@ -1466,20 +1466,20 @@ impl<I: Default> Default for AudioListener<I> {
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 #[derive(Default)]
-pub struct AudioPages<I> {
-    superclass: Pages<I>,
+pub struct AudioPages {
+    superclass: Pages,
 }
-impl_inherits!(AudioPages<I>, Pages<I>);
+impl_inherits!(AudioPages, Pages);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
-pub struct AudioPitchShifter<I> {
-    superclass: Instance<I>,
+pub struct AudioPitchShifter {
+    superclass: Instance,
     pub Bypass: bool,
     pub Pitch: f32,
     pub WindowSize: enums::AudioWindowSize,
 }
-impl_inherits!(AudioPitchShifter<I>, Instance<I>);
-impl<I: Default> Default for AudioPitchShifter<I> {
+impl_inherits!(AudioPitchShifter, Instance);
+impl Default for AudioPitchShifter {
     fn default() -> Self {
         let superclass = Object::default();
         let superclass = Instance {
@@ -1501,8 +1501,8 @@ impl<I: Default> Default for AudioPitchShifter<I> {
 }
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
-pub struct AudioPlayer<I> {
-    superclass: Instance<I>,
+pub struct AudioPlayer {
+    superclass: Instance,
     pub AudioContent: Content,
     pub AutoLoad: bool,
     pub AutoPlay: bool,
@@ -1514,8 +1514,8 @@ pub struct AudioPlayer<I> {
     pub TimePosition: f64,
     pub Volume: f32,
 }
-impl_inherits!(AudioPlayer<I>, Instance<I>);
-impl<I: Default> Default for AudioPlayer<I> {
+impl_inherits!(AudioPlayer, Instance);
+impl Default for AudioPlayer {
     fn default() -> Self {
         let superclass = Object::default();
         let superclass = Instance {
@@ -1544,12 +1544,12 @@ impl<I: Default> Default for AudioPlayer<I> {
 }
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
-pub struct AudioRecorder<I> {
-    superclass: Instance<I>,
+pub struct AudioRecorder {
+    superclass: Instance,
     pub IsRecording: bool,
 }
-impl_inherits!(AudioRecorder<I>, Instance<I>);
-impl<I: Default> Default for AudioRecorder<I> {
+impl_inherits!(AudioRecorder, Instance);
+impl Default for AudioRecorder {
     fn default() -> Self {
         let superclass = Object::default();
         let superclass = Instance {
@@ -1569,8 +1569,8 @@ impl<I: Default> Default for AudioRecorder<I> {
 }
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
-pub struct AudioReverb<I> {
-    superclass: Instance<I>,
+pub struct AudioReverb {
+    superclass: Instance,
     pub Bypass: bool,
     pub DecayRatio: f32,
     pub DecayTime: f32,
@@ -1585,8 +1585,8 @@ pub struct AudioReverb<I> {
     pub ReferenceFrequency: f32,
     pub WetLevel: f32,
 }
-impl_inherits!(AudioReverb<I>, Instance<I>);
-impl<I: Default> Default for AudioReverb<I> {
+impl_inherits!(AudioReverb, Instance);
+impl Default for AudioReverb {
     fn default() -> Self {
         let superclass = Object::default();
         let superclass = Instance {
@@ -1618,8 +1618,8 @@ impl<I: Default> Default for AudioReverb<I> {
 }
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
-pub struct AudioSearchParams<I> {
-    superclass: Instance<I>,
+pub struct AudioSearchParams {
+    superclass: Instance,
     pub Album: String,
     pub Artist: String,
     pub AudioSubType: enums::AudioSubType,
@@ -1629,8 +1629,8 @@ pub struct AudioSearchParams<I> {
     pub Tag: String,
     pub Title: String,
 }
-impl_inherits!(AudioSearchParams<I>, Instance<I>);
-impl<I: Default> Default for AudioSearchParams<I> {
+impl_inherits!(AudioSearchParams, Instance);
+impl Default for AudioSearchParams {
     fn default() -> Self {
         let superclass = Object::default();
         let superclass = Instance {
@@ -1657,13 +1657,13 @@ impl<I: Default> Default for AudioSearchParams<I> {
 }
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
-pub struct AudioSpeechToText<I> {
-    superclass: Instance<I>,
+pub struct AudioSpeechToText {
+    superclass: Instance,
     pub Enabled: bool,
     pub Text: String,
 }
-impl_inherits!(AudioSpeechToText<I>, Instance<I>);
-impl<I: Default> Default for AudioSpeechToText<I> {
+impl_inherits!(AudioSpeechToText, Instance);
+impl Default for AudioSpeechToText {
     fn default() -> Self {
         let superclass = Object::default();
         let superclass = Instance {
@@ -1684,8 +1684,8 @@ impl<I: Default> Default for AudioSpeechToText<I> {
 }
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
-pub struct AudioTextToSpeech<I> {
-    superclass: Instance<I>,
+pub struct AudioTextToSpeech {
+    superclass: Instance,
     pub Looping: bool,
     pub Pitch: f32,
     pub PlaybackSpeed: f32,
@@ -1695,8 +1695,8 @@ pub struct AudioTextToSpeech<I> {
     pub VoiceId: String,
     pub Volume: f32,
 }
-impl_inherits!(AudioTextToSpeech<I>, Instance<I>);
-impl<I: Default> Default for AudioTextToSpeech<I> {
+impl_inherits!(AudioTextToSpeech, Instance);
+impl Default for AudioTextToSpeech {
     fn default() -> Self {
         let superclass = Object::default();
         let superclass = Instance {
@@ -1723,8 +1723,8 @@ impl<I: Default> Default for AudioTextToSpeech<I> {
 }
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
-pub struct AudioTremolo<I> {
-    superclass: Instance<I>,
+pub struct AudioTremolo {
+    superclass: Instance,
     pub Bypass: bool,
     pub Depth: f32,
     pub Duty: f32,
@@ -1733,8 +1733,8 @@ pub struct AudioTremolo<I> {
     pub Skew: f32,
     pub Square: f32,
 }
-impl_inherits!(AudioTremolo<I>, Instance<I>);
-impl<I: Default> Default for AudioTremolo<I> {
+impl_inherits!(AudioTremolo, Instance);
+impl Default for AudioTremolo {
     fn default() -> Self {
         let superclass = Object::default();
         let superclass = Instance {
@@ -1760,8 +1760,8 @@ impl<I: Default> Default for AudioTremolo<I> {
 }
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
-pub struct AuroraScript<I> {
-    superclass: LuaSourceContainer<I>,
+pub struct AuroraScript {
+    superclass: LuaSourceContainer,
     pub AuroraScriptBindingsSerialize: BinaryString,
     pub EnableCulling: bool,
     pub EnableLod: bool,
@@ -1769,8 +1769,8 @@ pub struct AuroraScript<I> {
     pub Priority: i32,
     pub Source: String,
 }
-impl_inherits!(AuroraScript<I>, LuaSourceContainer<I>);
-impl<I: Default> Default for AuroraScript<I> {
+impl_inherits!(AuroraScript, LuaSourceContainer);
+impl Default for AuroraScript {
     fn default() -> Self {
         let superclass = Object::default();
         let superclass = Instance {
@@ -1799,16 +1799,16 @@ impl<I: Default> Default for AuroraScript<I> {
 }
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
-pub struct AuroraScriptObject<I> {
-    superclass: Instance<I>,
+pub struct AuroraScriptObject {
+    superclass: Instance,
     pub BehaviorWeak: Ref,
     pub BoundInstanceWeak: Ref,
     pub FrameId: i32,
     pub LodLevel: i32,
     pub PriorFrameInvoked: i32,
 }
-impl_inherits!(AuroraScriptObject<I>, Instance<I>);
-impl<I: Default> Default for AuroraScriptObject<I> {
+impl_inherits!(AuroraScriptObject, Instance);
+impl Default for AuroraScriptObject {
     fn default() -> Self {
         let superclass = Object::default();
         let superclass = Instance {
@@ -1833,21 +1833,21 @@ impl<I: Default> Default for AuroraScriptObject<I> {
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 #[derive(Default)]
-pub struct AuroraScriptService<I> {
-    superclass: Instance<I>,
+pub struct AuroraScriptService {
+    superclass: Instance,
 }
-impl_inherits!(AuroraScriptService<I>, Instance<I>);
+impl_inherits!(AuroraScriptService, Instance);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
-pub struct AuroraService<I> {
-    superclass: Instance<I>,
+pub struct AuroraService {
+    superclass: Instance,
     pub HashRoundingPoint: f64,
     pub IgnoreRotation: bool,
     pub LockStepIdOffset: bool,
     pub RollbackOffset: i32,
 }
-impl_inherits!(AuroraService<I>, Instance<I>);
-impl<I: Default> Default for AuroraService<I> {
+impl_inherits!(AuroraService, Instance);
+impl Default for AuroraService {
     fn default() -> Self {
         let superclass = Object::default();
         let superclass = Instance {
@@ -1870,8 +1870,8 @@ impl<I: Default> Default for AuroraService<I> {
 }
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
-pub struct AvatarAccessoryRules<I> {
-    superclass: Instance<I>,
+pub struct AvatarAccessoryRules {
+    superclass: Instance,
     pub AccessoryMode: enums::AvatarSettingsAccessoryMode,
     pub CustomAccessoryMode: enums::AvatarSettingsCustomAccessoryMode,
     pub CustomBackAccessoryEnabled: bool,
@@ -1895,8 +1895,8 @@ pub struct AvatarAccessoryRules<I> {
     pub LimitBounds: Vector3,
     pub LimitMethod: enums::AvatarSettingsAccessoryLimitMethod,
 }
-impl_inherits!(AvatarAccessoryRules<I>, Instance<I>);
-impl<I: Default> Default for AvatarAccessoryRules<I> {
+impl_inherits!(AvatarAccessoryRules, Instance);
+impl Default for AvatarAccessoryRules {
     fn default() -> Self {
         let superclass = Object::default();
         let superclass = Instance {
@@ -1937,8 +1937,8 @@ impl<I: Default> Default for AvatarAccessoryRules<I> {
 }
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
-pub struct AvatarAnimationRules<I> {
-    superclass: Instance<I>,
+pub struct AvatarAnimationRules {
+    superclass: Instance,
     pub AnimationClipsMode: enums::AvatarSettingsAnimationClipsMode,
     pub AnimationPacksMode: enums::AvatarSettingsAnimationPacksMode,
     pub CustomClimbAnimationEnabled: bool,
@@ -1962,8 +1962,8 @@ pub struct AvatarAnimationRules<I> {
     pub CustomWalkAnimationEnabled: bool,
     pub CustomWalkAnimationId: i64,
 }
-impl_inherits!(AvatarAnimationRules<I>, Instance<I>);
-impl<I: Default> Default for AvatarAnimationRules<I> {
+impl_inherits!(AvatarAnimationRules, Instance);
+impl Default for AvatarAnimationRules {
     fn default() -> Self {
         let superclass = Object::default();
         let superclass = Instance {
@@ -2004,8 +2004,8 @@ impl<I: Default> Default for AvatarAnimationRules<I> {
 }
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
-pub struct AvatarBodyRules<I> {
-    superclass: Instance<I>,
+pub struct AvatarBodyRules {
+    superclass: Instance,
     pub AppearanceMode: enums::AvatarSettingsAppearanceMode,
     pub BuildMode: enums::AvatarSettingsBuildMode,
     pub CustomBodyBundleId: i64,
@@ -2039,8 +2039,8 @@ pub struct AvatarBodyRules<I> {
     pub KeepPlayerHead: bool,
     pub ScaleMode: enums::AvatarSettingsScaleMode,
 }
-impl_inherits!(AvatarBodyRules<I>, Instance<I>);
-impl<I: Default> Default for AvatarBodyRules<I> {
+impl_inherits!(AvatarBodyRules, Instance);
+impl Default for AvatarBodyRules {
     fn default() -> Self {
         let superclass = Object::default();
         let superclass = Instance {
@@ -2092,14 +2092,14 @@ impl<I: Default> Default for AvatarBodyRules<I> {
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 #[derive(Default)]
-pub struct AvatarChatService<I> {
-    superclass: Instance<I>,
+pub struct AvatarChatService {
+    superclass: Instance,
 }
-impl_inherits!(AvatarChatService<I>, Instance<I>);
+impl_inherits!(AvatarChatService, Instance);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
-pub struct AvatarClothingRules<I> {
-    superclass: Instance<I>,
+pub struct AvatarClothingRules {
+    superclass: Instance,
     pub ClothingMode: enums::AvatarSettingsClothingMode,
     pub CustomClassicPantsAccessoryEnabled: bool,
     pub CustomClassicPantsAccessoryId: i64,
@@ -2128,8 +2128,8 @@ pub struct AvatarClothingRules<I> {
     pub CustomTShirtAccessoryId: i64,
     pub LimitBounds: Vector3,
 }
-impl_inherits!(AvatarClothingRules<I>, Instance<I>);
-impl<I: Default> Default for AvatarClothingRules<I> {
+impl_inherits!(AvatarClothingRules, Instance);
+impl Default for AvatarClothingRules {
     fn default() -> Self {
         let superclass = Object::default();
         let superclass = Instance {
@@ -2175,15 +2175,15 @@ impl<I: Default> Default for AvatarClothingRules<I> {
 }
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
-pub struct AvatarCollisionRules<I> {
-    superclass: Instance<I>,
+pub struct AvatarCollisionRules {
+    superclass: Instance,
     pub CollisionMode: enums::AvatarSettingsCollisionMode,
     pub HitAndTouchDetectionMode: enums::AvatarSettingsHitAndTouchDetectionMode,
     pub LegacyCollisionMode: enums::AvatarSettingsLegacyCollisionMode,
     pub SingleColliderSize: Vector3,
 }
-impl_inherits!(AvatarCollisionRules<I>, Instance<I>);
-impl<I: Default> Default for AvatarCollisionRules<I> {
+impl_inherits!(AvatarCollisionRules, Instance);
+impl Default for AvatarCollisionRules {
     fn default() -> Self {
         let superclass = Object::default();
         let superclass = Instance {
@@ -2207,32 +2207,32 @@ impl<I: Default> Default for AvatarCollisionRules<I> {
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 #[derive(Default)]
-pub struct AvatarCreationService<I> {
-    superclass: Instance<I>,
+pub struct AvatarCreationService {
+    superclass: Instance,
 }
-impl_inherits!(AvatarCreationService<I>, Instance<I>);
+impl_inherits!(AvatarCreationService, Instance);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 #[derive(Default)]
-pub struct AvatarEditorService<I> {
-    superclass: Instance<I>,
+pub struct AvatarEditorService {
+    superclass: Instance,
 }
-impl_inherits!(AvatarEditorService<I>, Instance<I>);
+impl_inherits!(AvatarEditorService, Instance);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 #[derive(Default)]
-pub struct AvatarImportService<I> {
-    superclass: Instance<I>,
+pub struct AvatarImportService {
+    superclass: Instance,
 }
-impl_inherits!(AvatarImportService<I>, Instance<I>);
+impl_inherits!(AvatarImportService, Instance);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
-pub struct AvatarRules<I> {
-    superclass: Instance<I>,
+pub struct AvatarRules {
+    superclass: Instance,
     pub AvatarType: enums::GameAvatarType,
 }
-impl_inherits!(AvatarRules<I>, Instance<I>);
-impl<I: Default> Default for AvatarRules<I> {
+impl_inherits!(AvatarRules, Instance);
+impl Default for AvatarRules {
     fn default() -> Self {
         let superclass = Object::default();
         let superclass = Instance {
@@ -2253,25 +2253,25 @@ impl<I: Default> Default for AvatarRules<I> {
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 #[derive(Default)]
-pub struct AvatarSettings<I> {
-    superclass: Instance<I>,
+pub struct AvatarSettings {
+    superclass: Instance,
 }
-impl_inherits!(AvatarSettings<I>, Instance<I>);
+impl_inherits!(AvatarSettings, Instance);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 #[derive(Default)]
-pub struct Backpack<I> {
-    superclass: Instance<I>,
+pub struct Backpack {
+    superclass: Instance,
 }
-impl_inherits!(Backpack<I>, Instance<I>);
+impl_inherits!(Backpack, Instance);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
-pub struct BackpackItem<I> {
-    superclass: Model<I>,
+pub struct BackpackItem {
+    superclass: Model,
     pub TextureContent: Content,
 }
-impl_inherits!(BackpackItem<I>, Model<I>);
-impl<I: Default> Default for BackpackItem<I> {
+impl_inherits!(BackpackItem, Model);
+impl Default for BackpackItem {
     fn default() -> Self {
         let superclass = Object::default();
         let superclass = Instance {
@@ -2305,14 +2305,14 @@ impl<I: Default> Default for BackpackItem<I> {
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 #[derive(Default)]
-pub struct BadgeService<I> {
-    superclass: Instance<I>,
+pub struct BadgeService {
+    superclass: Instance,
 }
-impl_inherits!(BadgeService<I>, Instance<I>);
+impl_inherits!(BadgeService, Instance);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
-pub struct BallSocketConstraint<I> {
-    superclass: Constraint<I>,
+pub struct BallSocketConstraint {
+    superclass: Constraint,
     pub LimitsEnabled: bool,
     pub MaxFrictionTorqueXml: f32,
     pub Radius: f32,
@@ -2322,8 +2322,8 @@ pub struct BallSocketConstraint<I> {
     pub TwistUpperAngle: f32,
     pub UpperAngle: f32,
 }
-impl_inherits!(BallSocketConstraint<I>, Constraint<I>);
-impl<I: Default> Default for BallSocketConstraint<I> {
+impl_inherits!(BallSocketConstraint, Constraint);
+impl Default for BallSocketConstraint {
     fn default() -> Self {
         let superclass = Object::default();
         let superclass = Instance {
@@ -2359,19 +2359,19 @@ impl<I: Default> Default for BallSocketConstraint<I> {
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 #[derive(Default)]
-pub struct BanHistoryPages<I> {
-    superclass: Pages<I>,
+pub struct BanHistoryPages {
+    superclass: Pages,
 }
-impl_inherits!(BanHistoryPages<I>, Pages<I>);
+impl_inherits!(BanHistoryPages, Pages);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
-pub struct BaseImportData<I> {
-    superclass: Instance<I>,
+pub struct BaseImportData {
+    superclass: Instance,
     pub ImportName: String,
     pub ShouldImport: bool,
 }
-impl_inherits!(BaseImportData<I>, Instance<I>);
-impl<I: Default> Default for BaseImportData<I> {
+impl_inherits!(BaseImportData, Instance);
+impl Default for BaseImportData {
     fn default() -> Self {
         let superclass = Object::default();
         let superclass = Instance {
@@ -2392,8 +2392,8 @@ impl<I: Default> Default for BaseImportData<I> {
 }
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
-pub struct BasePart<I> {
-    superclass: PVInstance<I>,
+pub struct BasePart {
+    superclass: PVInstance,
     pub Anchored: bool,
     pub AudioCanCollide: bool,
     pub BackParamA: f32,
@@ -2439,8 +2439,8 @@ pub struct BasePart<I> {
     pub Transparency: f32,
     pub Velocity: Vector3,
 }
-impl_inherits!(BasePart<I>, PVInstance<I>);
-impl<I: Default> Default for BasePart<I> {
+impl_inherits!(BasePart, PVInstance);
+impl Default for BasePart {
     fn default() -> Self {
         let superclass = Object::default();
         let superclass = Instance {
@@ -2505,27 +2505,27 @@ impl<I: Default> Default for BasePart<I> {
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 #[derive(Default)]
-pub struct BasePlayerGui<I> {
-    superclass: Instance<I>,
+pub struct BasePlayerGui {
+    superclass: Instance,
 }
-impl_inherits!(BasePlayerGui<I>, Instance<I>);
+impl_inherits!(BasePlayerGui, Instance);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 #[derive(Default)]
-pub struct BaseRemoteEvent<I> {
-    superclass: Instance<I>,
+pub struct BaseRemoteEvent {
+    superclass: Instance,
 }
-impl_inherits!(BaseRemoteEvent<I>, Instance<I>);
+impl_inherits!(BaseRemoteEvent, Instance);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
-pub struct BaseScript<I> {
-    superclass: LuaSourceContainer<I>,
+pub struct BaseScript {
+    superclass: LuaSourceContainer,
     pub Disabled: bool,
     pub LinkedSource: ContentId,
     pub RunContext: enums::RunContext,
 }
-impl_inherits!(BaseScript<I>, LuaSourceContainer<I>);
-impl<I: Default> Default for BaseScript<I> {
+impl_inherits!(BaseScript, LuaSourceContainer);
+impl Default for BaseScript {
     fn default() -> Self {
         let superclass = Object::default();
         let superclass = Instance {
@@ -2551,8 +2551,8 @@ impl<I: Default> Default for BaseScript<I> {
 }
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
-pub struct BaseWrap<I> {
-    superclass: Instance<I>,
+pub struct BaseWrap {
+    superclass: Instance,
     pub CageMeshContent: Content,
     pub CageOrigin: CFrame,
     pub HsrAssetId: ContentId,
@@ -2561,8 +2561,8 @@ pub struct BaseWrap<I> {
     pub ImportOrigin: CFrame,
     pub TemporaryCageMeshId: ContentId,
 }
-impl_inherits!(BaseWrap<I>, Instance<I>);
-impl<I: Default> Default for BaseWrap<I> {
+impl_inherits!(BaseWrap, Instance);
+impl Default for BaseWrap {
     fn default() -> Self {
         let superclass = Object::default();
         let superclass = Instance {
@@ -2588,8 +2588,8 @@ impl<I: Default> Default for BaseWrap<I> {
 }
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
-pub struct Beam<I> {
-    superclass: Instance<I>,
+pub struct Beam {
+    superclass: Instance,
     pub Attachment0: Ref,
     pub Attachment1: Ref,
     pub Brightness: f32,
@@ -2610,8 +2610,8 @@ pub struct Beam<I> {
     pub Width1: f32,
     pub ZOffset: f32,
 }
-impl_inherits!(Beam<I>, Instance<I>);
-impl<I: Default> Default for Beam<I> {
+impl_inherits!(Beam, Instance);
+impl Default for Beam {
     fn default() -> Self {
         let superclass = Object::default();
         let superclass = Instance {
@@ -2659,14 +2659,14 @@ impl<I: Default> Default for Beam<I> {
 }
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
-pub struct BevelMesh<I> {
-    superclass: DataModelMesh<I>,
+pub struct BevelMesh {
+    superclass: DataModelMesh,
     pub Bevel: f32,
     pub BevelRoundness: f32,
     pub Bulge: f32,
 }
-impl_inherits!(BevelMesh<I>, DataModelMesh<I>);
-impl<I: Default> Default for BevelMesh<I> {
+impl_inherits!(BevelMesh, DataModelMesh);
+impl Default for BevelMesh {
     fn default() -> Self {
         let superclass = Object::default();
         let superclass = Instance {
@@ -2694,8 +2694,8 @@ impl<I: Default> Default for BevelMesh<I> {
 }
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
-pub struct BillboardGui<I> {
-    superclass: LayerCollector<I>,
+pub struct BillboardGui {
+    superclass: LayerCollector,
     pub Active: bool,
     pub Adornee: Ref,
     pub AlwaysOnTop: bool,
@@ -2713,8 +2713,8 @@ pub struct BillboardGui<I> {
     pub StudsOffset: Vector3,
     pub StudsOffsetWorldSpace: Vector3,
 }
-impl_inherits!(BillboardGui<I>, LayerCollector<I>);
-impl<I: Default> Default for BillboardGui<I> {
+impl_inherits!(BillboardGui, LayerCollector);
+impl Default for BillboardGui {
     fn default() -> Self {
         let superclass = Object::default();
         let superclass = Instance {
@@ -2766,12 +2766,12 @@ impl<I: Default> Default for BillboardGui<I> {
 }
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
-pub struct BinaryStringValue<I> {
-    superclass: ValueBase<I>,
+pub struct BinaryStringValue {
+    superclass: ValueBase,
     pub Value: BinaryString,
 }
-impl_inherits!(BinaryStringValue<I>, ValueBase<I>);
-impl<I: Default> Default for BinaryStringValue<I> {
+impl_inherits!(BinaryStringValue, ValueBase);
+impl Default for BinaryStringValue {
     fn default() -> Self {
         let superclass = Object::default();
         let superclass = Instance {
@@ -2793,34 +2793,34 @@ impl<I: Default> Default for BinaryStringValue<I> {
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 #[derive(Default)]
-pub struct BindableEvent<I> {
-    superclass: Instance<I>,
+pub struct BindableEvent {
+    superclass: Instance,
 }
-impl_inherits!(BindableEvent<I>, Instance<I>);
+impl_inherits!(BindableEvent, Instance);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 #[derive(Default)]
-pub struct BindableFunction<I> {
-    superclass: Instance<I>,
+pub struct BindableFunction {
+    superclass: Instance,
 }
-impl_inherits!(BindableFunction<I>, Instance<I>);
+impl_inherits!(BindableFunction, Instance);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 #[derive(Default)]
-pub struct BlockMesh<I> {
-    superclass: BevelMesh<I>,
+pub struct BlockMesh {
+    superclass: BevelMesh,
 }
-impl_inherits!(BlockMesh<I>, BevelMesh<I>);
+impl_inherits!(BlockMesh, BevelMesh);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
-pub struct BloomEffect<I> {
-    superclass: PostEffect<I>,
+pub struct BloomEffect {
+    superclass: PostEffect,
     pub Intensity: f32,
     pub Size: f32,
     pub Threshold: f32,
 }
-impl_inherits!(BloomEffect<I>, PostEffect<I>);
-impl<I: Default> Default for BloomEffect<I> {
+impl_inherits!(BloomEffect, PostEffect);
+impl Default for BloomEffect {
     fn default() -> Self {
         let superclass = Object::default();
         let superclass = Instance {
@@ -2846,12 +2846,12 @@ impl<I: Default> Default for BloomEffect<I> {
 }
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
-pub struct BlurEffect<I> {
-    superclass: PostEffect<I>,
+pub struct BlurEffect {
+    superclass: PostEffect,
     pub Size: f32,
 }
-impl_inherits!(BlurEffect<I>, PostEffect<I>);
-impl<I: Default> Default for BlurEffect<I> {
+impl_inherits!(BlurEffect, PostEffect);
+impl Default for BlurEffect {
     fn default() -> Self {
         let superclass = Object::default();
         let superclass = Instance {
@@ -2875,14 +2875,14 @@ impl<I: Default> Default for BlurEffect<I> {
 }
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
-pub struct BodyAngularVelocity<I> {
-    superclass: BodyMover<I>,
+pub struct BodyAngularVelocity {
+    superclass: BodyMover,
     pub AngularVelocity: Vector3,
     pub MaxTorque: Vector3,
     pub P: f32,
 }
-impl_inherits!(BodyAngularVelocity<I>, BodyMover<I>);
-impl<I: Default> Default for BodyAngularVelocity<I> {
+impl_inherits!(BodyAngularVelocity, BodyMover);
+impl Default for BodyAngularVelocity {
     fn default() -> Self {
         let superclass = Object::default();
         let superclass = Instance {
@@ -2905,8 +2905,8 @@ impl<I: Default> Default for BodyAngularVelocity<I> {
 }
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
-pub struct BodyColors<I> {
-    superclass: CharacterAppearance<I>,
+pub struct BodyColors {
+    superclass: CharacterAppearance,
     pub HeadColor3: Color3,
     pub LeftArmColor3: Color3,
     pub LeftLegColor3: Color3,
@@ -2914,8 +2914,8 @@ pub struct BodyColors<I> {
     pub RightLegColor3: Color3,
     pub TorsoColor3: Color3,
 }
-impl_inherits!(BodyColors<I>, CharacterAppearance<I>);
-impl<I: Default> Default for BodyColors<I> {
+impl_inherits!(BodyColors, CharacterAppearance);
+impl Default for BodyColors {
     fn default() -> Self {
         let superclass = Object::default();
         let superclass = Instance {
@@ -2941,12 +2941,12 @@ impl<I: Default> Default for BodyColors<I> {
 }
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
-pub struct BodyForce<I> {
-    superclass: BodyMover<I>,
+pub struct BodyForce {
+    superclass: BodyMover,
     pub Force: Vector3,
 }
-impl_inherits!(BodyForce<I>, BodyMover<I>);
-impl<I: Default> Default for BodyForce<I> {
+impl_inherits!(BodyForce, BodyMover);
+impl Default for BodyForce {
     fn default() -> Self {
         let superclass = Object::default();
         let superclass = Instance {
@@ -2967,15 +2967,15 @@ impl<I: Default> Default for BodyForce<I> {
 }
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
-pub struct BodyGyro<I> {
-    superclass: BodyMover<I>,
+pub struct BodyGyro {
+    superclass: BodyMover,
     pub CFrame: CFrame,
     pub D: f32,
     pub MaxTorque: Vector3,
     pub P: f32,
 }
-impl_inherits!(BodyGyro<I>, BodyMover<I>);
-impl<I: Default> Default for BodyGyro<I> {
+impl_inherits!(BodyGyro, BodyMover);
+impl Default for BodyGyro {
     fn default() -> Self {
         let superclass = Object::default();
         let superclass = Instance {
@@ -3000,22 +3000,22 @@ impl<I: Default> Default for BodyGyro<I> {
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 #[derive(Default)]
-pub struct BodyMover<I> {
-    superclass: Instance<I>,
+pub struct BodyMover {
+    superclass: Instance,
 }
-impl_inherits!(BodyMover<I>, Instance<I>);
+impl_inherits!(BodyMover, Instance);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
-pub struct BodyPartDescription<I> {
-    superclass: Instance<I>,
+pub struct BodyPartDescription {
+    superclass: Instance,
     pub AssetId: i64,
     pub BodyPart: enums::BodyPart,
     pub Color: Color3,
     pub HeadShape: String,
     pub Instance: Ref,
 }
-impl_inherits!(BodyPartDescription<I>, Instance<I>);
-impl<I: Default> Default for BodyPartDescription<I> {
+impl_inherits!(BodyPartDescription, Instance);
+impl Default for BodyPartDescription {
     fn default() -> Self {
         let superclass = Object::default();
         let superclass = Instance {
@@ -3039,15 +3039,15 @@ impl<I: Default> Default for BodyPartDescription<I> {
 }
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
-pub struct BodyPosition<I> {
-    superclass: BodyMover<I>,
+pub struct BodyPosition {
+    superclass: BodyMover,
     pub D: f32,
     pub MaxForce: Vector3,
     pub P: f32,
     pub Position: Vector3,
 }
-impl_inherits!(BodyPosition<I>, BodyMover<I>);
-impl<I: Default> Default for BodyPosition<I> {
+impl_inherits!(BodyPosition, BodyMover);
+impl Default for BodyPosition {
     fn default() -> Self {
         let superclass = Object::default();
         let superclass = Instance {
@@ -3071,13 +3071,13 @@ impl<I: Default> Default for BodyPosition<I> {
 }
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
-pub struct BodyThrust<I> {
-    superclass: BodyMover<I>,
+pub struct BodyThrust {
+    superclass: BodyMover,
     pub Force: Vector3,
     pub Location: Vector3,
 }
-impl_inherits!(BodyThrust<I>, BodyMover<I>);
-impl<I: Default> Default for BodyThrust<I> {
+impl_inherits!(BodyThrust, BodyMover);
+impl Default for BodyThrust {
     fn default() -> Self {
         let superclass = Object::default();
         let superclass = Instance {
@@ -3099,14 +3099,14 @@ impl<I: Default> Default for BodyThrust<I> {
 }
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
-pub struct BodyVelocity<I> {
-    superclass: BodyMover<I>,
+pub struct BodyVelocity {
+    superclass: BodyMover,
     pub MaxForce: Vector3,
     pub P: f32,
     pub Velocity: Vector3,
 }
-impl_inherits!(BodyVelocity<I>, BodyMover<I>);
-impl<I: Default> Default for BodyVelocity<I> {
+impl_inherits!(BodyVelocity, BodyMover);
+impl Default for BodyVelocity {
     fn default() -> Self {
         let superclass = Object::default();
         let superclass = Instance {
@@ -3130,18 +3130,18 @@ impl<I: Default> Default for BodyVelocity<I> {
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 #[derive(Default)]
-pub struct Bone<I> {
-    superclass: Attachment<I>,
+pub struct Bone {
+    superclass: Attachment,
 }
-impl_inherits!(Bone<I>, Attachment<I>);
+impl_inherits!(Bone, Attachment);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
-pub struct BoolValue<I> {
-    superclass: ValueBase<I>,
+pub struct BoolValue {
+    superclass: ValueBase,
     pub Value: bool,
 }
-impl_inherits!(BoolValue<I>, ValueBase<I>);
-impl<I: Default> Default for BoolValue<I> {
+impl_inherits!(BoolValue, ValueBase);
+impl Default for BoolValue {
     fn default() -> Self {
         let superclass = Object::default();
         let superclass = Instance {
@@ -3162,13 +3162,13 @@ impl<I: Default> Default for BoolValue<I> {
 }
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
-pub struct BoxHandleAdornment<I> {
-    superclass: HandleAdornment<I>,
+pub struct BoxHandleAdornment {
+    superclass: HandleAdornment,
     pub Shading: enums::AdornShading,
     pub Size: Vector3,
 }
-impl_inherits!(BoxHandleAdornment<I>, HandleAdornment<I>);
-impl<I: Default> Default for BoxHandleAdornment<I> {
+impl_inherits!(BoxHandleAdornment, HandleAdornment);
+impl Default for BoxHandleAdornment {
     fn default() -> Self {
         let superclass = Object::default();
         let superclass = Instance {
@@ -3209,18 +3209,18 @@ impl<I: Default> Default for BoxHandleAdornment<I> {
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 #[derive(Default)]
-pub struct Breakpoint<I> {
-    superclass: Instance<I>,
+pub struct Breakpoint {
+    superclass: Instance,
 }
-impl_inherits!(Breakpoint<I>, Instance<I>);
+impl_inherits!(Breakpoint, Instance);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
-pub struct BrickColorValue<I> {
-    superclass: ValueBase<I>,
+pub struct BrickColorValue {
+    superclass: ValueBase,
     pub Value: BrickColor,
 }
-impl_inherits!(BrickColorValue<I>, ValueBase<I>);
-impl<I: Default> Default for BrickColorValue<I> {
+impl_inherits!(BrickColorValue, ValueBase);
+impl Default for BrickColorValue {
     fn default() -> Self {
         let superclass = Object::default();
         let superclass = Instance {
@@ -3242,14 +3242,14 @@ impl<I: Default> Default for BrickColorValue<I> {
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 #[derive(Default)]
-pub struct BrowserService<I> {
-    superclass: Instance<I>,
+pub struct BrowserService {
+    superclass: Instance,
 }
-impl_inherits!(BrowserService<I>, Instance<I>);
+impl_inherits!(BrowserService, Instance);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
-pub struct BubbleChatConfiguration<I> {
-    superclass: TextChatConfigurations<I>,
+pub struct BubbleChatConfiguration {
+    superclass: TextChatConfigurations,
     pub AdorneeName: String,
     pub BackgroundColor3: Color3,
     pub BackgroundTransparency: f64,
@@ -3267,8 +3267,8 @@ pub struct BubbleChatConfiguration<I> {
     pub TextSize: i64,
     pub VerticalStudsOffset: f32,
 }
-impl_inherits!(BubbleChatConfiguration<I>, TextChatConfigurations<I>);
-impl<I: Default> Default for BubbleChatConfiguration<I> {
+impl_inherits!(BubbleChatConfiguration, TextChatConfigurations);
+impl Default for BubbleChatConfiguration {
     fn default() -> Self {
         let superclass = Object::default();
         let superclass = Instance {
@@ -3310,33 +3310,33 @@ impl<I: Default> Default for BubbleChatConfiguration<I> {
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 #[derive(Default)]
-pub struct BubbleChatMessageProperties<I> {
-    superclass: TextChatMessageProperties<I>,
+pub struct BubbleChatMessageProperties {
+    superclass: TextChatMessageProperties,
 }
-impl_inherits!(BubbleChatMessageProperties<I>, TextChatMessageProperties<I>);
+impl_inherits!(BubbleChatMessageProperties, TextChatMessageProperties);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 #[derive(Default)]
-pub struct BugReporterService<I> {
-    superclass: Instance<I>,
+pub struct BugReporterService {
+    superclass: Instance,
 }
-impl_inherits!(BugReporterService<I>, Instance<I>);
+impl_inherits!(BugReporterService, Instance);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 #[derive(Default)]
-pub struct BulkImportService<I> {
-    superclass: Instance<I>,
+pub struct BulkImportService {
+    superclass: Instance,
 }
-impl_inherits!(BulkImportService<I>, Instance<I>);
+impl_inherits!(BulkImportService, Instance);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
-pub struct BuoyancySensor<I> {
-    superclass: SensorBase<I>,
+pub struct BuoyancySensor {
+    superclass: SensorBase,
     pub FullySubmerged: bool,
     pub TouchingSurface: bool,
 }
-impl_inherits!(BuoyancySensor<I>, SensorBase<I>);
-impl<I: Default> Default for BuoyancySensor<I> {
+impl_inherits!(BuoyancySensor, SensorBase);
+impl Default for BuoyancySensor {
     fn default() -> Self {
         let superclass = Object::default();
         let superclass = Instance {
@@ -3361,12 +3361,12 @@ impl<I: Default> Default for BuoyancySensor<I> {
 }
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
-pub struct CFrameValue<I> {
-    superclass: ValueBase<I>,
+pub struct CFrameValue {
+    superclass: ValueBase,
     pub Value: CFrame,
 }
-impl_inherits!(CFrameValue<I>, ValueBase<I>);
-impl<I: Default> Default for CFrameValue<I> {
+impl_inherits!(CFrameValue, ValueBase);
+impl Default for CFrameValue {
     fn default() -> Self {
         let superclass = Object::default();
         let superclass = Instance {
@@ -3388,28 +3388,28 @@ impl<I: Default> Default for CFrameValue<I> {
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 #[derive(Default)]
-pub struct CSGDictionaryService<I> {
-    superclass: FlyweightService<I>,
+pub struct CSGDictionaryService {
+    superclass: FlyweightService,
 }
-impl_inherits!(CSGDictionaryService<I>, FlyweightService<I>);
+impl_inherits!(CSGDictionaryService, FlyweightService);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 #[derive(Default)]
-pub struct CacheableContentProvider<I> {
-    superclass: Instance<I>,
+pub struct CacheableContentProvider {
+    superclass: Instance,
 }
-impl_inherits!(CacheableContentProvider<I>, Instance<I>);
+impl_inherits!(CacheableContentProvider, Instance);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 #[derive(Default)]
-pub struct CalloutService<I> {
-    superclass: Instance<I>,
+pub struct CalloutService {
+    superclass: Instance,
 }
-impl_inherits!(CalloutService<I>, Instance<I>);
+impl_inherits!(CalloutService, Instance);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
-pub struct Camera<I> {
-    superclass: PVInstance<I>,
+pub struct Camera {
+    superclass: PVInstance,
     pub CFrame: CFrame,
     pub CameraSubject: Ref,
     pub CameraType: enums::CameraType,
@@ -3420,8 +3420,8 @@ pub struct Camera<I> {
     pub HeadScale: f32,
     pub VrTiltAndRollEnabled: bool,
 }
-impl_inherits!(Camera<I>, PVInstance<I>);
-impl<I: Default> Default for Camera<I> {
+impl_inherits!(Camera, PVInstance);
+impl Default for Camera {
     fn default() -> Self {
         let superclass = Object::default();
         let superclass = Instance {
@@ -3464,13 +3464,13 @@ impl<I: Default> Default for Camera<I> {
 }
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
-pub struct CanvasGroup<I> {
-    superclass: GuiObject<I>,
+pub struct CanvasGroup {
+    superclass: GuiObject,
     pub GroupColor3: Color3,
     pub GroupTransparency: f32,
 }
-impl_inherits!(CanvasGroup<I>, GuiObject<I>);
-impl<I: Default> Default for CanvasGroup<I> {
+impl_inherits!(CanvasGroup, GuiObject);
+impl Default for CanvasGroup {
     fn default() -> Self {
         let superclass = Object::default();
         let superclass = Instance {
@@ -3531,53 +3531,53 @@ impl<I: Default> Default for CanvasGroup<I> {
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 #[derive(Default)]
-pub struct Capture<I> {
-    superclass: Object<I>,
+pub struct Capture {
+    superclass: Object,
 }
-impl_inherits!(Capture<I>, Object<I>);
+impl_inherits!(Capture, Object);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 #[derive(Default)]
-pub struct CaptureService<I> {
-    superclass: Instance<I>,
+pub struct CaptureService {
+    superclass: Instance,
 }
-impl_inherits!(CaptureService<I>, Instance<I>);
+impl_inherits!(CaptureService, Instance);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 #[derive(Default)]
-pub struct CapturesPages<I> {
-    superclass: Pages<I>,
+pub struct CapturesPages {
+    superclass: Pages,
 }
-impl_inherits!(CapturesPages<I>, Pages<I>);
+impl_inherits!(CapturesPages, Pages);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 #[derive(Default)]
-pub struct CatalogPages<I> {
-    superclass: Pages<I>,
+pub struct CatalogPages {
+    superclass: Pages,
 }
-impl_inherits!(CatalogPages<I>, Pages<I>);
+impl_inherits!(CatalogPages, Pages);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 #[derive(Default)]
-pub struct ChangeHistoryService<I> {
-    superclass: Instance<I>,
+pub struct ChangeHistoryService {
+    superclass: Instance,
 }
-impl_inherits!(ChangeHistoryService<I>, Instance<I>);
+impl_inherits!(ChangeHistoryService, Instance);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 #[derive(Default)]
-pub struct ChangeHistoryStreamingService<I> {
-    superclass: Instance<I>,
+pub struct ChangeHistoryStreamingService {
+    superclass: Instance,
 }
-impl_inherits!(ChangeHistoryStreamingService<I>, Instance<I>);
+impl_inherits!(ChangeHistoryStreamingService, Instance);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
-pub struct ChannelSelectorSoundEffect<I> {
-    superclass: CustomSoundEffect<I>,
+pub struct ChannelSelectorSoundEffect {
+    superclass: CustomSoundEffect,
     pub Channel: i32,
 }
-impl_inherits!(ChannelSelectorSoundEffect<I>, CustomSoundEffect<I>);
-impl<I: Default> Default for ChannelSelectorSoundEffect<I> {
+impl_inherits!(ChannelSelectorSoundEffect, CustomSoundEffect);
+impl Default for ChannelSelectorSoundEffect {
     fn default() -> Self {
         let superclass = Object::default();
         let superclass = Instance {
@@ -3603,8 +3603,8 @@ impl<I: Default> Default for ChannelSelectorSoundEffect<I> {
 }
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
-pub struct ChannelTabsConfiguration<I> {
-    superclass: TextChatConfigurations<I>,
+pub struct ChannelTabsConfiguration {
+    superclass: TextChatConfigurations,
     pub BackgroundColor3: Color3,
     pub BackgroundTransparency: f64,
     pub Enabled: bool,
@@ -3616,8 +3616,8 @@ pub struct ChannelTabsConfiguration<I> {
     pub TextStrokeColor3: Color3,
     pub TextStrokeTransparency: f64,
 }
-impl_inherits!(ChannelTabsConfiguration<I>, TextChatConfigurations<I>);
-impl<I: Default> Default for ChannelTabsConfiguration<I> {
+impl_inherits!(ChannelTabsConfiguration, TextChatConfigurations);
+impl Default for ChannelTabsConfiguration {
     fn default() -> Self {
         let superclass = Object::default();
         let superclass = Instance {
@@ -3653,21 +3653,21 @@ impl<I: Default> Default for ChannelTabsConfiguration<I> {
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 #[derive(Default)]
-pub struct CharacterAppearance<I> {
-    superclass: Instance<I>,
+pub struct CharacterAppearance {
+    superclass: Instance,
 }
-impl_inherits!(CharacterAppearance<I>, Instance<I>);
+impl_inherits!(CharacterAppearance, Instance);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
-pub struct CharacterMesh<I> {
-    superclass: CharacterAppearance<I>,
+pub struct CharacterMesh {
+    superclass: CharacterAppearance,
     pub BaseTextureId: i64,
     pub BodyPart: enums::BodyPart,
     pub MeshId: i64,
     pub OverlayTextureId: i64,
 }
-impl_inherits!(CharacterMesh<I>, CharacterAppearance<I>);
-impl<I: Default> Default for CharacterMesh<I> {
+impl_inherits!(CharacterMesh, CharacterAppearance);
+impl Default for CharacterMesh {
     fn default() -> Self {
         let superclass = Object::default();
         let superclass = Instance {
@@ -3691,14 +3691,14 @@ impl<I: Default> Default for CharacterMesh<I> {
 }
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
-pub struct Chat<I> {
-    superclass: Instance<I>,
+pub struct Chat {
+    superclass: Instance,
     pub BubbleChatEnabled: bool,
     pub IsAutoMigrated: bool,
     pub LoadDefaultChat: bool,
 }
-impl_inherits!(Chat<I>, Instance<I>);
-impl<I: Default> Default for Chat<I> {
+impl_inherits!(Chat, Instance);
+impl Default for Chat {
     fn default() -> Self {
         let superclass = Object::default();
         let superclass = Instance {
@@ -3720,8 +3720,8 @@ impl<I: Default> Default for Chat<I> {
 }
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
-pub struct ChatInputBarConfiguration<I> {
-    superclass: TextChatConfigurations<I>,
+pub struct ChatInputBarConfiguration {
+    superclass: TextChatConfigurations,
     pub AutocompleteEnabled: bool,
     pub BackgroundColor3: Color3,
     pub BackgroundTransparency: f64,
@@ -3735,8 +3735,8 @@ pub struct ChatInputBarConfiguration<I> {
     pub TextStrokeColor3: Color3,
     pub TextStrokeTransparency: f64,
 }
-impl_inherits!(ChatInputBarConfiguration<I>, TextChatConfigurations<I>);
-impl<I: Default> Default for ChatInputBarConfiguration<I> {
+impl_inherits!(ChatInputBarConfiguration, TextChatConfigurations);
+impl Default for ChatInputBarConfiguration {
     fn default() -> Self {
         let superclass = Object::default();
         let superclass = Instance {
@@ -3773,8 +3773,8 @@ impl<I: Default> Default for ChatInputBarConfiguration<I> {
 }
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
-pub struct ChatWindowConfiguration<I> {
-    superclass: TextChatConfigurations<I>,
+pub struct ChatWindowConfiguration {
+    superclass: TextChatConfigurations,
     pub BackgroundColor3: Color3,
     pub BackgroundTransparency: f64,
     pub Enabled: bool,
@@ -3788,8 +3788,8 @@ pub struct ChatWindowConfiguration<I> {
     pub VerticalAlignment: enums::VerticalAlignment,
     pub WidthScale: f32,
 }
-impl_inherits!(ChatWindowConfiguration<I>, TextChatConfigurations<I>);
-impl<I: Default> Default for ChatWindowConfiguration<I> {
+impl_inherits!(ChatWindowConfiguration, TextChatConfigurations);
+impl Default for ChatWindowConfiguration {
     fn default() -> Self {
         let superclass = Object::default();
         let superclass = Instance {
@@ -3827,27 +3827,27 @@ impl<I: Default> Default for ChatWindowConfiguration<I> {
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 #[derive(Default)]
-pub struct ChatWindowMessageProperties<I> {
-    superclass: TextChatMessageProperties<I>,
+pub struct ChatWindowMessageProperties {
+    superclass: TextChatMessageProperties,
 }
-impl_inherits!(ChatWindowMessageProperties<I>, TextChatMessageProperties<I>);
+impl_inherits!(ChatWindowMessageProperties, TextChatMessageProperties);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 #[derive(Default)]
-pub struct ChatbotUIService<I> {
-    superclass: Instance<I>,
+pub struct ChatbotUIService {
+    superclass: Instance,
 }
-impl_inherits!(ChatbotUIService<I>, Instance<I>);
+impl_inherits!(ChatbotUIService, Instance);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
-pub struct ChorusSoundEffect<I> {
-    superclass: SoundEffect<I>,
+pub struct ChorusSoundEffect {
+    superclass: SoundEffect,
     pub Depth: f32,
     pub Mix: f32,
     pub Rate: f32,
 }
-impl_inherits!(ChorusSoundEffect<I>, SoundEffect<I>);
-impl<I: Default> Default for ChorusSoundEffect<I> {
+impl_inherits!(ChorusSoundEffect, SoundEffect);
+impl Default for ChorusSoundEffect {
     fn default() -> Self {
         let superclass = Object::default();
         let superclass = Instance {
@@ -3874,13 +3874,13 @@ impl<I: Default> Default for ChorusSoundEffect<I> {
 }
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
-pub struct ClickDetector<I> {
-    superclass: Instance<I>,
+pub struct ClickDetector {
+    superclass: Instance,
     pub CursorIconContent: Content,
     pub MaxActivationDistance: f32,
 }
-impl_inherits!(ClickDetector<I>, Instance<I>);
-impl<I: Default> Default for ClickDetector<I> {
+impl_inherits!(ClickDetector, Instance);
+impl Default for ClickDetector {
     fn default() -> Self {
         let superclass = Object::default();
         let superclass = Instance {
@@ -3902,21 +3902,21 @@ impl<I: Default> Default for ClickDetector<I> {
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 #[derive(Default)]
-pub struct ClientReplicator<I> {
-    superclass: NetworkReplicator<I>,
+pub struct ClientReplicator {
+    superclass: NetworkReplicator,
 }
-impl_inherits!(ClientReplicator<I>, NetworkReplicator<I>);
+impl_inherits!(ClientReplicator, NetworkReplicator);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
-pub struct ClimbController<I> {
-    superclass: ControllerBase<I>,
+pub struct ClimbController {
+    superclass: ControllerBase,
     pub AccelerationTime: f32,
     pub BalanceMaxTorque: f32,
     pub BalanceSpeed: f32,
     pub MoveMaxForce: f32,
 }
-impl_inherits!(ClimbController<I>, ControllerBase<I>);
-impl<I: Default> Default for ClimbController<I> {
+impl_inherits!(ClimbController, ControllerBase);
+impl Default for ClimbController {
     fn default() -> Self {
         let superclass = Object::default();
         let superclass = Instance {
@@ -3944,12 +3944,12 @@ impl<I: Default> Default for ClimbController<I> {
 }
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
-pub struct Clothing<I> {
-    superclass: CharacterAppearance<I>,
+pub struct Clothing {
+    superclass: CharacterAppearance,
     pub Color3: Color3,
 }
-impl_inherits!(Clothing<I>, CharacterAppearance<I>);
-impl<I: Default> Default for Clothing<I> {
+impl_inherits!(Clothing, CharacterAppearance);
+impl Default for Clothing {
     fn default() -> Self {
         let superclass = Object::default();
         let superclass = Instance {
@@ -3971,28 +3971,28 @@ impl<I: Default> Default for Clothing<I> {
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 #[derive(Default)]
-pub struct CloudCRUDService<I> {
-    superclass: Instance<I>,
+pub struct CloudCRUDService {
+    superclass: Instance,
 }
-impl_inherits!(CloudCRUDService<I>, Instance<I>);
+impl_inherits!(CloudCRUDService, Instance);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 #[derive(Default)]
-pub struct CloudLocalizationTable<I> {
-    superclass: LocalizationTable<I>,
+pub struct CloudLocalizationTable {
+    superclass: LocalizationTable,
 }
-impl_inherits!(CloudLocalizationTable<I>, LocalizationTable<I>);
+impl_inherits!(CloudLocalizationTable, LocalizationTable);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
-pub struct Clouds<I> {
-    superclass: Instance<I>,
+pub struct Clouds {
+    superclass: Instance,
     pub Color: Color3,
     pub Cover: f32,
     pub Density: f32,
     pub Enabled: bool,
 }
-impl_inherits!(Clouds<I>, Instance<I>);
-impl<I: Default> Default for Clouds<I> {
+impl_inherits!(Clouds, Instance);
+impl Default for Clouds {
     fn default() -> Self {
         let superclass = Object::default();
         let superclass = Instance {
@@ -4016,39 +4016,39 @@ impl<I: Default> Default for Clouds<I> {
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 #[derive(Default)]
-pub struct ClusterPacketCache<I> {
-    superclass: Instance<I>,
+pub struct ClusterPacketCache {
+    superclass: Instance,
 }
-impl_inherits!(ClusterPacketCache<I>, Instance<I>);
+impl_inherits!(ClusterPacketCache, Instance);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 #[derive(Default)]
-pub struct Collaborator<I> {
-    superclass: Instance<I>,
+pub struct Collaborator {
+    superclass: Instance,
 }
-impl_inherits!(Collaborator<I>, Instance<I>);
+impl_inherits!(Collaborator, Instance);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 #[derive(Default)]
-pub struct CollaboratorsService<I> {
-    superclass: Instance<I>,
+pub struct CollaboratorsService {
+    superclass: Instance,
 }
-impl_inherits!(CollaboratorsService<I>, Instance<I>);
+impl_inherits!(CollaboratorsService, Instance);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 #[derive(Default)]
-pub struct CollectionService<I> {
-    superclass: Instance<I>,
+pub struct CollectionService {
+    superclass: Instance,
 }
-impl_inherits!(CollectionService<I>, Instance<I>);
+impl_inherits!(CollectionService, Instance);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
-pub struct Color3Value<I> {
-    superclass: ValueBase<I>,
+pub struct Color3Value {
+    superclass: ValueBase,
     pub Value: Color3,
 }
-impl_inherits!(Color3Value<I>, ValueBase<I>);
-impl<I: Default> Default for Color3Value<I> {
+impl_inherits!(Color3Value, ValueBase);
+impl Default for Color3Value {
     fn default() -> Self {
         let superclass = Object::default();
         let superclass = Instance {
@@ -4069,15 +4069,15 @@ impl<I: Default> Default for Color3Value<I> {
 }
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
-pub struct ColorCorrectionEffect<I> {
-    superclass: PostEffect<I>,
+pub struct ColorCorrectionEffect {
+    superclass: PostEffect,
     pub Brightness: f32,
     pub Contrast: f32,
     pub Saturation: f32,
     pub TintColor: Color3,
 }
-impl_inherits!(ColorCorrectionEffect<I>, PostEffect<I>);
-impl<I: Default> Default for ColorCorrectionEffect<I> {
+impl_inherits!(ColorCorrectionEffect, PostEffect);
+impl Default for ColorCorrectionEffect {
     fn default() -> Self {
         let superclass = Object::default();
         let superclass = Instance {
@@ -4104,12 +4104,12 @@ impl<I: Default> Default for ColorCorrectionEffect<I> {
 }
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
-pub struct ColorGradingEffect<I> {
-    superclass: PostEffect<I>,
+pub struct ColorGradingEffect {
+    superclass: PostEffect,
     pub TonemapperPreset: enums::TonemapperPreset,
 }
-impl_inherits!(ColorGradingEffect<I>, PostEffect<I>);
-impl<I: Default> Default for ColorGradingEffect<I> {
+impl_inherits!(ColorGradingEffect, PostEffect);
+impl Default for ColorGradingEffect {
     fn default() -> Self {
         let superclass = Object::default();
         let superclass = Instance {
@@ -4134,14 +4134,14 @@ impl<I: Default> Default for ColorGradingEffect<I> {
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 #[derive(Default)]
-pub struct CommerceService<I> {
-    superclass: Instance<I>,
+pub struct CommerceService {
+    superclass: Instance,
 }
-impl_inherits!(CommerceService<I>, Instance<I>);
+impl_inherits!(CommerceService, Instance);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
-pub struct CompressorSoundEffect<I> {
-    superclass: SoundEffect<I>,
+pub struct CompressorSoundEffect {
+    superclass: SoundEffect,
     pub Attack: f32,
     pub GainMakeup: f32,
     pub Ratio: f32,
@@ -4149,8 +4149,8 @@ pub struct CompressorSoundEffect<I> {
     pub SideChain: Ref,
     pub Threshold: f32,
 }
-impl_inherits!(CompressorSoundEffect<I>, SoundEffect<I>);
-impl<I: Default> Default for CompressorSoundEffect<I> {
+impl_inherits!(CompressorSoundEffect, SoundEffect);
+impl Default for CompressorSoundEffect {
     fn default() -> Self {
         let superclass = Object::default();
         let superclass = Instance {
@@ -4180,15 +4180,15 @@ impl<I: Default> Default for CompressorSoundEffect<I> {
 }
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
-pub struct ConeHandleAdornment<I> {
-    superclass: HandleAdornment<I>,
+pub struct ConeHandleAdornment {
+    superclass: HandleAdornment,
     pub Height: f32,
     pub Hollow: bool,
     pub Radius: f32,
     pub Shading: enums::AdornShading,
 }
-impl_inherits!(ConeHandleAdornment<I>, HandleAdornment<I>);
-impl<I: Default> Default for ConeHandleAdornment<I> {
+impl_inherits!(ConeHandleAdornment, HandleAdornment);
+impl Default for ConeHandleAdornment {
     fn default() -> Self {
         let superclass = Object::default();
         let superclass = Instance {
@@ -4231,50 +4231,50 @@ impl<I: Default> Default for ConeHandleAdornment<I> {
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 #[derive(Default)]
-pub struct ConfigService<I> {
-    superclass: Instance<I>,
+pub struct ConfigService {
+    superclass: Instance,
 }
-impl_inherits!(ConfigService<I>, Instance<I>);
+impl_inherits!(ConfigService, Instance);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 #[derive(Default)]
-pub struct ConfigSnapshot<I> {
-    superclass: Object<I>,
+pub struct ConfigSnapshot {
+    superclass: Object,
 }
-impl_inherits!(ConfigSnapshot<I>, Object<I>);
+impl_inherits!(ConfigSnapshot, Object);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 #[derive(Default)]
-pub struct Configuration<I> {
-    superclass: Instance<I>,
+pub struct Configuration {
+    superclass: Instance,
 }
-impl_inherits!(Configuration<I>, Instance<I>);
+impl_inherits!(Configuration, Instance);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 #[derive(Default)]
-pub struct ConfigureServerService<I> {
-    superclass: Instance<I>,
+pub struct ConfigureServerService {
+    superclass: Instance,
 }
-impl_inherits!(ConfigureServerService<I>, Instance<I>);
+impl_inherits!(ConfigureServerService, Instance);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 #[derive(Default)]
-pub struct ConnectivityService<I> {
-    superclass: Instance<I>,
+pub struct ConnectivityService {
+    superclass: Instance,
 }
-impl_inherits!(ConnectivityService<I>, Instance<I>);
+impl_inherits!(ConnectivityService, Instance);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
-pub struct Constraint<I> {
-    superclass: Instance<I>,
+pub struct Constraint {
+    superclass: Instance,
     pub Attachment0: Ref,
     pub Attachment1: Ref,
     pub Color: BrickColor,
     pub Enabled: bool,
     pub Visible: bool,
 }
-impl_inherits!(Constraint<I>, Instance<I>);
-impl<I: Default> Default for Constraint<I> {
+impl_inherits!(Constraint, Instance);
+impl Default for Constraint {
     fn default() -> Self {
         let superclass = Object::default();
         let superclass = Instance {
@@ -4299,33 +4299,33 @@ impl<I: Default> Default for Constraint<I> {
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 #[derive(Default)]
-pub struct ContentProvider<I> {
-    superclass: Instance<I>,
+pub struct ContentProvider {
+    superclass: Instance,
 }
-impl_inherits!(ContentProvider<I>, Instance<I>);
+impl_inherits!(ContentProvider, Instance);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 #[derive(Default)]
-pub struct ContextActionService<I> {
-    superclass: Instance<I>,
+pub struct ContextActionService {
+    superclass: Instance,
 }
-impl_inherits!(ContextActionService<I>, Instance<I>);
+impl_inherits!(ContextActionService, Instance);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 #[derive(Default)]
-pub struct Controller<I> {
-    superclass: Instance<I>,
+pub struct Controller {
+    superclass: Instance,
 }
-impl_inherits!(Controller<I>, Instance<I>);
+impl_inherits!(Controller, Instance);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
-pub struct ControllerBase<I> {
-    superclass: Instance<I>,
+pub struct ControllerBase {
+    superclass: Instance,
     pub BalanceRigidityEnabled: bool,
     pub MoveSpeedFactor: f32,
 }
-impl_inherits!(ControllerBase<I>, Instance<I>);
-impl<I: Default> Default for ControllerBase<I> {
+impl_inherits!(ControllerBase, Instance);
+impl Default for ControllerBase {
     fn default() -> Self {
         let superclass = Object::default();
         let superclass = Instance {
@@ -4346,8 +4346,8 @@ impl<I: Default> Default for ControllerBase<I> {
 }
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
-pub struct ControllerManager<I> {
-    superclass: Instance<I>,
+pub struct ControllerManager {
+    superclass: Instance,
     pub ActiveController: Ref,
     pub BaseMoveSpeed: f32,
     pub BaseTurnSpeed: f32,
@@ -4358,8 +4358,8 @@ pub struct ControllerManager<I> {
     pub RootPart: Ref,
     pub UpDirection: Vector3,
 }
-impl_inherits!(ControllerManager<I>, Instance<I>);
-impl<I: Default> Default for ControllerManager<I> {
+impl_inherits!(ControllerManager, Instance);
+impl Default for ControllerManager {
     fn default() -> Self {
         let superclass = Object::default();
         let superclass = Instance {
@@ -4387,16 +4387,16 @@ impl<I: Default> Default for ControllerManager<I> {
 }
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
-pub struct ControllerPartSensor<I> {
-    superclass: ControllerSensor<I>,
+pub struct ControllerPartSensor {
+    superclass: ControllerSensor,
     pub HitFrame: CFrame,
     pub HitNormal: Vector3,
     pub SearchDistance: f32,
     pub SensedPart: Ref,
     pub SensorMode: enums::SensorMode,
 }
-impl_inherits!(ControllerPartSensor<I>, ControllerSensor<I>);
-impl<I: Default> Default for ControllerPartSensor<I> {
+impl_inherits!(ControllerPartSensor, ControllerSensor);
+impl Default for ControllerPartSensor {
     fn default() -> Self {
         let superclass = Object::default();
         let superclass = Instance {
@@ -4426,39 +4426,39 @@ impl<I: Default> Default for ControllerPartSensor<I> {
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 #[derive(Default)]
-pub struct ControllerSensor<I> {
-    superclass: SensorBase<I>,
+pub struct ControllerSensor {
+    superclass: SensorBase,
 }
-impl_inherits!(ControllerSensor<I>, SensorBase<I>);
+impl_inherits!(ControllerSensor, SensorBase);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 #[derive(Default)]
-pub struct ControllerService<I> {
-    superclass: Instance<I>,
+pub struct ControllerService {
+    superclass: Instance,
 }
-impl_inherits!(ControllerService<I>, Instance<I>);
+impl_inherits!(ControllerService, Instance);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 #[derive(Default)]
-pub struct ConversationalAIAcceptanceService<I> {
-    superclass: Instance<I>,
+pub struct ConversationalAIAcceptanceService {
+    superclass: Instance,
 }
-impl_inherits!(ConversationalAIAcceptanceService<I>, Instance<I>);
+impl_inherits!(ConversationalAIAcceptanceService, Instance);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 #[derive(Default)]
-pub struct CookiesService<I> {
-    superclass: Instance<I>,
+pub struct CookiesService {
+    superclass: Instance,
 }
-impl_inherits!(CookiesService<I>, Instance<I>);
+impl_inherits!(CookiesService, Instance);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
-pub struct CoreGui<I> {
-    superclass: BasePlayerGui<I>,
+pub struct CoreGui {
+    superclass: BasePlayerGui,
     pub SelectionImageObject: Ref,
 }
-impl_inherits!(CoreGui<I>, BasePlayerGui<I>);
-impl<I: Default> Default for CoreGui<I> {
+impl_inherits!(CoreGui, BasePlayerGui);
+impl Default for CoreGui {
     fn default() -> Self {
         let superclass = Object::default();
         let superclass = Instance {
@@ -4480,74 +4480,74 @@ impl<I: Default> Default for CoreGui<I> {
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 #[derive(Default)]
-pub struct CorePackages<I> {
-    superclass: Instance<I>,
+pub struct CorePackages {
+    superclass: Instance,
 }
-impl_inherits!(CorePackages<I>, Instance<I>);
+impl_inherits!(CorePackages, Instance);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 #[derive(Default)]
-pub struct CoreScript<I> {
-    superclass: BaseScript<I>,
+pub struct CoreScript {
+    superclass: BaseScript,
 }
-impl_inherits!(CoreScript<I>, BaseScript<I>);
+impl_inherits!(CoreScript, BaseScript);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 #[derive(Default)]
-pub struct CoreScriptDebuggingManagerHelper<I> {
-    superclass: Instance<I>,
+pub struct CoreScriptDebuggingManagerHelper {
+    superclass: Instance,
 }
-impl_inherits!(CoreScriptDebuggingManagerHelper<I>, Instance<I>);
+impl_inherits!(CoreScriptDebuggingManagerHelper, Instance);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 #[derive(Default)]
-pub struct CoreScriptSyncService<I> {
-    superclass: Instance<I>,
+pub struct CoreScriptSyncService {
+    superclass: Instance,
 }
-impl_inherits!(CoreScriptSyncService<I>, Instance<I>);
+impl_inherits!(CoreScriptSyncService, Instance);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 #[derive(Default)]
-pub struct CornerWedgePart<I> {
-    superclass: BasePart<I>,
+pub struct CornerWedgePart {
+    superclass: BasePart,
 }
-impl_inherits!(CornerWedgePart<I>, BasePart<I>);
+impl_inherits!(CornerWedgePart, BasePart);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 #[derive(Default)]
-pub struct CreationDBService<I> {
-    superclass: Instance<I>,
+pub struct CreationDBService {
+    superclass: Instance,
 }
-impl_inherits!(CreationDBService<I>, Instance<I>);
+impl_inherits!(CreationDBService, Instance);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 #[derive(Default)]
-pub struct CreatorStoreService<I> {
-    superclass: Instance<I>,
+pub struct CreatorStoreService {
+    superclass: Instance,
 }
-impl_inherits!(CreatorStoreService<I>, Instance<I>);
+impl_inherits!(CreatorStoreService, Instance);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 #[derive(Default)]
-pub struct CrossDMScriptChangeListener<I> {
-    superclass: Instance<I>,
+pub struct CrossDMScriptChangeListener {
+    superclass: Instance,
 }
-impl_inherits!(CrossDMScriptChangeListener<I>, Instance<I>);
+impl_inherits!(CrossDMScriptChangeListener, Instance);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 #[derive(Default)]
-pub struct CurveAnimation<I> {
-    superclass: AnimationClip<I>,
+pub struct CurveAnimation {
+    superclass: AnimationClip,
 }
-impl_inherits!(CurveAnimation<I>, AnimationClip<I>);
+impl_inherits!(CurveAnimation, AnimationClip);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
-pub struct CustomEvent<I> {
-    superclass: Instance<I>,
+pub struct CustomEvent {
+    superclass: Instance,
     pub PersistedCurrentValue: f32,
 }
-impl_inherits!(CustomEvent<I>, Instance<I>);
-impl<I: Default> Default for CustomEvent<I> {
+impl_inherits!(CustomEvent, Instance);
+impl Default for CustomEvent {
     fn default() -> Self {
         let superclass = Object::default();
         let superclass = Instance {
@@ -4567,12 +4567,12 @@ impl<I: Default> Default for CustomEvent<I> {
 }
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
-pub struct CustomEventReceiver<I> {
-    superclass: Instance<I>,
+pub struct CustomEventReceiver {
+    superclass: Instance,
     pub Source: Ref,
 }
-impl_inherits!(CustomEventReceiver<I>, Instance<I>);
-impl<I: Default> Default for CustomEventReceiver<I> {
+impl_inherits!(CustomEventReceiver, Instance);
+impl Default for CustomEventReceiver {
     fn default() -> Self {
         let superclass = Object::default();
         let superclass = Instance {
@@ -4593,29 +4593,29 @@ impl<I: Default> Default for CustomEventReceiver<I> {
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 #[derive(Default)]
-pub struct CustomLog<I> {
-    superclass: Instance<I>,
+pub struct CustomLog {
+    superclass: Instance,
 }
-impl_inherits!(CustomLog<I>, Instance<I>);
+impl_inherits!(CustomLog, Instance);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 #[derive(Default)]
-pub struct CustomSoundEffect<I> {
-    superclass: SoundEffect<I>,
+pub struct CustomSoundEffect {
+    superclass: SoundEffect,
 }
-impl_inherits!(CustomSoundEffect<I>, SoundEffect<I>);
+impl_inherits!(CustomSoundEffect, SoundEffect);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
-pub struct CylinderHandleAdornment<I> {
-    superclass: HandleAdornment<I>,
+pub struct CylinderHandleAdornment {
+    superclass: HandleAdornment,
     pub Angle: f32,
     pub Height: f32,
     pub InnerRadius: f32,
     pub Radius: f32,
     pub Shading: enums::AdornShading,
 }
-impl_inherits!(CylinderHandleAdornment<I>, HandleAdornment<I>);
-impl<I: Default> Default for CylinderHandleAdornment<I> {
+impl_inherits!(CylinderHandleAdornment, HandleAdornment);
+impl Default for CylinderHandleAdornment {
     fn default() -> Self {
         let superclass = Object::default();
         let superclass = Instance {
@@ -4659,14 +4659,14 @@ impl<I: Default> Default for CylinderHandleAdornment<I> {
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 #[derive(Default)]
-pub struct CylinderMesh<I> {
-    superclass: BevelMesh<I>,
+pub struct CylinderMesh {
+    superclass: BevelMesh,
 }
-impl_inherits!(CylinderMesh<I>, BevelMesh<I>);
+impl_inherits!(CylinderMesh, BevelMesh);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
-pub struct CylindricalConstraint<I> {
-    superclass: SlidingBallConstraint<I>,
+pub struct CylindricalConstraint {
+    superclass: SlidingBallConstraint,
     pub AngularActuatorType: enums::ActuatorType,
     pub AngularLimitsEnabled: bool,
     pub AngularResponsiveness: f32,
@@ -4683,8 +4683,8 @@ pub struct CylindricalConstraint<I> {
     pub TargetAngle: f32,
     pub UpperAngle: f32,
 }
-impl_inherits!(CylindricalConstraint<I>, SlidingBallConstraint<I>);
-impl<I: Default> Default for CylindricalConstraint<I> {
+impl_inherits!(CylindricalConstraint, SlidingBallConstraint);
+impl Default for CylindricalConstraint {
     fn default() -> Self {
         let superclass = Object::default();
         let superclass = Instance {
@@ -4744,20 +4744,20 @@ impl<I: Default> Default for CylindricalConstraint<I> {
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 #[derive(Default)]
-pub struct DataModel<I> {
-    superclass: ServiceProvider<I>,
+pub struct DataModel {
+    superclass: ServiceProvider,
 }
-impl_inherits!(DataModel<I>, ServiceProvider<I>);
+impl_inherits!(DataModel, ServiceProvider);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
-pub struct DataModelMesh<I> {
-    superclass: Instance<I>,
+pub struct DataModelMesh {
+    superclass: Instance,
     pub Offset: Vector3,
     pub Scale: Vector3,
     pub VertexColor: Vector3,
 }
-impl_inherits!(DataModelMesh<I>, Instance<I>);
-impl<I: Default> Default for DataModelMesh<I> {
+impl_inherits!(DataModelMesh, Instance);
+impl Default for DataModelMesh {
     fn default() -> Self {
         let superclass = Object::default();
         let superclass = Instance {
@@ -4780,32 +4780,32 @@ impl<I: Default> Default for DataModelMesh<I> {
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 #[derive(Default)]
-pub struct DataModelPatchService<I> {
-    superclass: Instance<I>,
+pub struct DataModelPatchService {
+    superclass: Instance,
 }
-impl_inherits!(DataModelPatchService<I>, Instance<I>);
+impl_inherits!(DataModelPatchService, Instance);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 #[derive(Default)]
-pub struct DataModelSession<I> {
-    superclass: Instance<I>,
+pub struct DataModelSession {
+    superclass: Instance,
 }
-impl_inherits!(DataModelSession<I>, Instance<I>);
+impl_inherits!(DataModelSession, Instance);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 #[derive(Default)]
-pub struct DataStore<I> {
-    superclass: GlobalDataStore<I>,
+pub struct DataStore {
+    superclass: GlobalDataStore,
 }
-impl_inherits!(DataStore<I>, GlobalDataStore<I>);
+impl_inherits!(DataStore, GlobalDataStore);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
-pub struct DataStoreGetOptions<I> {
-    superclass: Instance<I>,
+pub struct DataStoreGetOptions {
+    superclass: Instance,
     pub UseCache: bool,
 }
-impl_inherits!(DataStoreGetOptions<I>, Instance<I>);
-impl<I: Default> Default for DataStoreGetOptions<I> {
+impl_inherits!(DataStoreGetOptions, Instance);
+impl Default for DataStoreGetOptions {
     fn default() -> Self {
         let superclass = Object::default();
         let superclass = Instance {
@@ -4826,60 +4826,60 @@ impl<I: Default> Default for DataStoreGetOptions<I> {
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 #[derive(Default)]
-pub struct DataStoreIncrementOptions<I> {
-    superclass: Instance<I>,
+pub struct DataStoreIncrementOptions {
+    superclass: Instance,
 }
-impl_inherits!(DataStoreIncrementOptions<I>, Instance<I>);
+impl_inherits!(DataStoreIncrementOptions, Instance);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 #[derive(Default)]
-pub struct DataStoreInfo<I> {
-    superclass: Instance<I>,
+pub struct DataStoreInfo {
+    superclass: Instance,
 }
-impl_inherits!(DataStoreInfo<I>, Instance<I>);
+impl_inherits!(DataStoreInfo, Instance);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 #[derive(Default)]
-pub struct DataStoreKey<I> {
-    superclass: Instance<I>,
+pub struct DataStoreKey {
+    superclass: Instance,
 }
-impl_inherits!(DataStoreKey<I>, Instance<I>);
+impl_inherits!(DataStoreKey, Instance);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 #[derive(Default)]
-pub struct DataStoreKeyInfo<I> {
-    superclass: Instance<I>,
+pub struct DataStoreKeyInfo {
+    superclass: Instance,
 }
-impl_inherits!(DataStoreKeyInfo<I>, Instance<I>);
+impl_inherits!(DataStoreKeyInfo, Instance);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 #[derive(Default)]
-pub struct DataStoreKeyPages<I> {
-    superclass: Pages<I>,
+pub struct DataStoreKeyPages {
+    superclass: Pages,
 }
-impl_inherits!(DataStoreKeyPages<I>, Pages<I>);
+impl_inherits!(DataStoreKeyPages, Pages);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 #[derive(Default)]
-pub struct DataStoreListingPages<I> {
-    superclass: Pages<I>,
+pub struct DataStoreListingPages {
+    superclass: Pages,
 }
-impl_inherits!(DataStoreListingPages<I>, Pages<I>);
+impl_inherits!(DataStoreListingPages, Pages);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 #[derive(Default)]
-pub struct DataStoreObjectVersionInfo<I> {
-    superclass: Instance<I>,
+pub struct DataStoreObjectVersionInfo {
+    superclass: Instance,
 }
-impl_inherits!(DataStoreObjectVersionInfo<I>, Instance<I>);
+impl_inherits!(DataStoreObjectVersionInfo, Instance);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
-pub struct DataStoreOptions<I> {
-    superclass: Instance<I>,
+pub struct DataStoreOptions {
+    superclass: Instance,
     pub AllScopes: bool,
 }
-impl_inherits!(DataStoreOptions<I>, Instance<I>);
-impl<I: Default> Default for DataStoreOptions<I> {
+impl_inherits!(DataStoreOptions, Instance);
+impl Default for DataStoreOptions {
     fn default() -> Self {
         let superclass = Object::default();
         let superclass = Instance {
@@ -4900,19 +4900,19 @@ impl<I: Default> Default for DataStoreOptions<I> {
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 #[derive(Default)]
-pub struct DataStorePages<I> {
-    superclass: Pages<I>,
+pub struct DataStorePages {
+    superclass: Pages,
 }
-impl_inherits!(DataStorePages<I>, Pages<I>);
+impl_inherits!(DataStorePages, Pages);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
-pub struct DataStoreService<I> {
-    superclass: Instance<I>,
+pub struct DataStoreService {
+    superclass: Instance,
     pub AutomaticRetry: bool,
     pub LegacyNamingScheme: bool,
 }
-impl_inherits!(DataStoreService<I>, Instance<I>);
-impl<I: Default> Default for DataStoreService<I> {
+impl_inherits!(DataStoreService, Instance);
+impl Default for DataStoreService {
     fn default() -> Self {
         let superclass = Object::default();
         let superclass = Instance {
@@ -4934,25 +4934,25 @@ impl<I: Default> Default for DataStoreService<I> {
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 #[derive(Default)]
-pub struct DataStoreSetOptions<I> {
-    superclass: Instance<I>,
+pub struct DataStoreSetOptions {
+    superclass: Instance,
 }
-impl_inherits!(DataStoreSetOptions<I>, Instance<I>);
+impl_inherits!(DataStoreSetOptions, Instance);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 #[derive(Default)]
-pub struct DataStoreVersionPages<I> {
-    superclass: Pages<I>,
+pub struct DataStoreVersionPages {
+    superclass: Pages,
 }
-impl_inherits!(DataStoreVersionPages<I>, Pages<I>);
+impl_inherits!(DataStoreVersionPages, Pages);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
-pub struct Debris<I> {
-    superclass: Instance<I>,
+pub struct Debris {
+    superclass: Instance,
     pub MaxItems: i32,
 }
-impl_inherits!(Debris<I>, Instance<I>);
-impl<I: Default> Default for Debris<I> {
+impl_inherits!(Debris, Instance);
+impl Default for Debris {
     fn default() -> Self {
         let superclass = Object::default();
         let superclass = Instance {
@@ -4972,14 +4972,14 @@ impl<I: Default> Default for Debris<I> {
 }
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
-pub struct DebugSettings<I> {
-    superclass: Instance<I>,
+pub struct DebugSettings {
+    superclass: Instance,
     pub IsScriptStackTracingEnabled: bool,
     pub ReportSoundWarnings: bool,
     pub TickCountPreciseOverride: enums::TickCountSampleMethod,
 }
-impl_inherits!(DebugSettings<I>, Instance<I>);
-impl<I: Default> Default for DebugSettings<I> {
+impl_inherits!(DebugSettings, Instance);
+impl Default for DebugSettings {
     fn default() -> Self {
         let superclass = Object::default();
         let superclass = Instance {
@@ -5002,14 +5002,14 @@ impl<I: Default> Default for DebugSettings<I> {
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 #[derive(Default)]
-pub struct DebuggablePluginWatcher<I> {
-    superclass: Instance<I>,
+pub struct DebuggablePluginWatcher {
+    superclass: Instance,
 }
-impl_inherits!(DebuggablePluginWatcher<I>, Instance<I>);
+impl_inherits!(DebuggablePluginWatcher, Instance);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
-pub struct DebuggerBreakpoint<I> {
-    superclass: Instance<I>,
+pub struct DebuggerBreakpoint {
+    superclass: Instance,
     pub Condition: String,
     pub ContinueExecution: bool,
     pub IsContextDependentBreakpoint: bool,
@@ -5017,8 +5017,8 @@ pub struct DebuggerBreakpoint<I> {
     pub Line: i32,
     pub LogExpression: String,
 }
-impl_inherits!(DebuggerBreakpoint<I>, Instance<I>);
-impl<I: Default> Default for DebuggerBreakpoint<I> {
+impl_inherits!(DebuggerBreakpoint, Instance);
+impl Default for DebuggerBreakpoint {
     fn default() -> Self {
         let superclass = Object::default();
         let superclass = Instance {
@@ -5044,18 +5044,18 @@ impl<I: Default> Default for DebuggerBreakpoint<I> {
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 #[derive(Default)]
-pub struct DebuggerConnection<I> {
-    superclass: Instance<I>,
+pub struct DebuggerConnection {
+    superclass: Instance,
 }
-impl_inherits!(DebuggerConnection<I>, Instance<I>);
+impl_inherits!(DebuggerConnection, Instance);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
-pub struct DebuggerConnectionManager<I> {
-    superclass: Instance<I>,
+pub struct DebuggerConnectionManager {
+    superclass: Instance,
     pub Timeout: f64,
 }
-impl_inherits!(DebuggerConnectionManager<I>, Instance<I>);
-impl<I: Default> Default for DebuggerConnectionManager<I> {
+impl_inherits!(DebuggerConnectionManager, Instance);
+impl Default for DebuggerConnectionManager {
     fn default() -> Self {
         let superclass = Object::default();
         let superclass = Instance {
@@ -5076,39 +5076,39 @@ impl<I: Default> Default for DebuggerConnectionManager<I> {
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 #[derive(Default)]
-pub struct DebuggerLuaResponse<I> {
-    superclass: Instance<I>,
+pub struct DebuggerLuaResponse {
+    superclass: Instance,
 }
-impl_inherits!(DebuggerLuaResponse<I>, Instance<I>);
+impl_inherits!(DebuggerLuaResponse, Instance);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 #[derive(Default)]
-pub struct DebuggerManager<I> {
-    superclass: Instance<I>,
+pub struct DebuggerManager {
+    superclass: Instance,
 }
-impl_inherits!(DebuggerManager<I>, Instance<I>);
+impl_inherits!(DebuggerManager, Instance);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 #[derive(Default)]
-pub struct DebuggerUIService<I> {
-    superclass: Instance<I>,
+pub struct DebuggerUIService {
+    superclass: Instance,
 }
-impl_inherits!(DebuggerUIService<I>, Instance<I>);
+impl_inherits!(DebuggerUIService, Instance);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 #[derive(Default)]
-pub struct DebuggerVariable<I> {
-    superclass: Instance<I>,
+pub struct DebuggerVariable {
+    superclass: Instance,
 }
-impl_inherits!(DebuggerVariable<I>, Instance<I>);
+impl_inherits!(DebuggerVariable, Instance);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
-pub struct DebuggerWatch<I> {
-    superclass: Instance<I>,
+pub struct DebuggerWatch {
+    superclass: Instance,
     pub Expression: String,
 }
-impl_inherits!(DebuggerWatch<I>, Instance<I>);
-impl<I: Default> Default for DebuggerWatch<I> {
+impl_inherits!(DebuggerWatch, Instance);
+impl Default for DebuggerWatch {
     fn default() -> Self {
         let superclass = Object::default();
         let superclass = Instance {
@@ -5128,8 +5128,8 @@ impl<I: Default> Default for DebuggerWatch<I> {
 }
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
-pub struct Decal<I> {
-    superclass: FaceInstance<I>,
+pub struct Decal {
+    superclass: FaceInstance,
     pub Color3: Color3,
     pub MetalnessMapContent: Content,
     pub NormalMapContent: Content,
@@ -5142,8 +5142,8 @@ pub struct Decal<I> {
     pub UvScale: Vector2,
     pub ZIndex: i32,
 }
-impl_inherits!(Decal<I>, FaceInstance<I>);
-impl<I: Default> Default for Decal<I> {
+impl_inherits!(Decal, FaceInstance);
+impl Default for Decal {
     fn default() -> Self {
         let superclass = Object::default();
         let superclass = Instance {
@@ -5177,15 +5177,15 @@ impl<I: Default> Default for Decal<I> {
 }
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
-pub struct DepthOfFieldEffect<I> {
-    superclass: PostEffect<I>,
+pub struct DepthOfFieldEffect {
+    superclass: PostEffect,
     pub FarIntensity: f32,
     pub FocusDistance: f32,
     pub InFocusRadius: f32,
     pub NearIntensity: f32,
 }
-impl_inherits!(DepthOfFieldEffect<I>, PostEffect<I>);
-impl<I: Default> Default for DepthOfFieldEffect<I> {
+impl_inherits!(DepthOfFieldEffect, PostEffect);
+impl Default for DepthOfFieldEffect {
     fn default() -> Self {
         let superclass = Object::default();
         let superclass = Instance {
@@ -5213,14 +5213,14 @@ impl<I: Default> Default for DepthOfFieldEffect<I> {
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 #[derive(Default)]
-pub struct DeviceIdService<I> {
-    superclass: Instance<I>,
+pub struct DeviceIdService {
+    superclass: Instance,
 }
-impl_inherits!(DeviceIdService<I>, Instance<I>);
+impl_inherits!(DeviceIdService, Instance);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
-pub struct Dialog<I> {
-    superclass: Instance<I>,
+pub struct Dialog {
+    superclass: Instance,
     pub BehaviorType: enums::DialogBehaviorType,
     pub ConversationDistance: f32,
     pub GoodbyeChoiceActive: bool,
@@ -5231,8 +5231,8 @@ pub struct Dialog<I> {
     pub TriggerDistance: f32,
     pub TriggerOffset: Vector3,
 }
-impl_inherits!(Dialog<I>, Instance<I>);
-impl<I: Default> Default for Dialog<I> {
+impl_inherits!(Dialog, Instance);
+impl Default for Dialog {
     fn default() -> Self {
         let superclass = Object::default();
         let superclass = Instance {
@@ -5260,15 +5260,15 @@ impl<I: Default> Default for Dialog<I> {
 }
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
-pub struct DialogChoice<I> {
-    superclass: Instance<I>,
+pub struct DialogChoice {
+    superclass: Instance,
     pub GoodbyeChoiceActive: bool,
     pub GoodbyeDialog: String,
     pub ResponseDialog: String,
     pub UserDialog: String,
 }
-impl_inherits!(DialogChoice<I>, Instance<I>);
-impl<I: Default> Default for DialogChoice<I> {
+impl_inherits!(DialogChoice, Instance);
+impl Default for DialogChoice {
     fn default() -> Self {
         let superclass = Object::default();
         let superclass = Instance {
@@ -5291,12 +5291,12 @@ impl<I: Default> Default for DialogChoice<I> {
 }
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
-pub struct DistortionSoundEffect<I> {
-    superclass: SoundEffect<I>,
+pub struct DistortionSoundEffect {
+    superclass: SoundEffect,
     pub Level: f32,
 }
-impl_inherits!(DistortionSoundEffect<I>, SoundEffect<I>);
-impl<I: Default> Default for DistortionSoundEffect<I> {
+impl_inherits!(DistortionSoundEffect, SoundEffect);
+impl Default for DistortionSoundEffect {
     fn default() -> Self {
         let superclass = Object::default();
         let superclass = Instance {
@@ -5322,20 +5322,20 @@ impl<I: Default> Default for DistortionSoundEffect<I> {
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 #[derive(Default)]
-pub struct DockWidgetPluginGui<I> {
-    superclass: PluginGui<I>,
+pub struct DockWidgetPluginGui {
+    superclass: PluginGui,
 }
-impl_inherits!(DockWidgetPluginGui<I>, PluginGui<I>);
+impl_inherits!(DockWidgetPluginGui, PluginGui);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
-pub struct DoubleConstrainedValue<I> {
-    superclass: ValueBase<I>,
+pub struct DoubleConstrainedValue {
+    superclass: ValueBase,
     pub MaxValue: f64,
     pub MinValue: f64,
     pub Value: f64,
 }
-impl_inherits!(DoubleConstrainedValue<I>, ValueBase<I>);
-impl<I: Default> Default for DoubleConstrainedValue<I> {
+impl_inherits!(DoubleConstrainedValue, ValueBase);
+impl Default for DoubleConstrainedValue {
     fn default() -> Self {
         let superclass = Object::default();
         let superclass = Instance {
@@ -5359,14 +5359,14 @@ impl<I: Default> Default for DoubleConstrainedValue<I> {
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 #[derive(Default)]
-pub struct DraftsService<I> {
-    superclass: Instance<I>,
+pub struct DraftsService {
+    superclass: Instance,
 }
-impl_inherits!(DraftsService<I>, Instance<I>);
+impl_inherits!(DraftsService, Instance);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
-pub struct DragDetector<I> {
-    superclass: ClickDetector<I>,
+pub struct DragDetector {
+    superclass: ClickDetector,
     pub ActivatedCursorIconContent: Content,
     pub ApplyAtCenterOfMass: bool,
     pub DragFrame: CFrame,
@@ -5390,8 +5390,8 @@ pub struct DragDetector<I> {
     pub TrackballRollFactor: f32,
     pub VrSwitchKeyCode: enums::KeyCode,
 }
-impl_inherits!(DragDetector<I>, ClickDetector<I>);
-impl<I: Default> Default for DragDetector<I> {
+impl_inherits!(DragDetector, ClickDetector);
+impl Default for DragDetector {
     fn default() -> Self {
         let superclass = Object::default();
         let superclass = Instance {
@@ -5438,25 +5438,25 @@ impl<I: Default> Default for DragDetector<I> {
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 #[derive(Default)]
-pub struct Dragger<I> {
-    superclass: Instance<I>,
+pub struct Dragger {
+    superclass: Instance,
 }
-impl_inherits!(Dragger<I>, Instance<I>);
+impl_inherits!(Dragger, Instance);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 #[derive(Default)]
-pub struct DraggerService<I> {
-    superclass: Instance<I>,
+pub struct DraggerService {
+    superclass: Instance,
 }
-impl_inherits!(DraggerService<I>, Instance<I>);
+impl_inherits!(DraggerService, Instance);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
-pub struct DynamicRotate<I> {
-    superclass: JointInstance<I>,
+pub struct DynamicRotate {
+    superclass: JointInstance,
     pub BaseAngle: f32,
 }
-impl_inherits!(DynamicRotate<I>, JointInstance<I>);
-impl<I: Default> Default for DynamicRotate<I> {
+impl_inherits!(DynamicRotate, JointInstance);
+impl Default for DynamicRotate {
     fn default() -> Self {
         let superclass = Object::default();
         let superclass = Instance {
@@ -5484,15 +5484,15 @@ impl<I: Default> Default for DynamicRotate<I> {
 }
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
-pub struct EchoSoundEffect<I> {
-    superclass: SoundEffect<I>,
+pub struct EchoSoundEffect {
+    superclass: SoundEffect,
     pub Delay: f32,
     pub DryLevel: f32,
     pub Feedback: f32,
     pub WetLevel: f32,
 }
-impl_inherits!(EchoSoundEffect<I>, SoundEffect<I>);
-impl<I: Default> Default for EchoSoundEffect<I> {
+impl_inherits!(EchoSoundEffect, SoundEffect);
+impl Default for EchoSoundEffect {
     fn default() -> Self {
         let superclass = Object::default();
         let superclass = Instance {
@@ -5520,12 +5520,12 @@ impl<I: Default> Default for EchoSoundEffect<I> {
 }
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
-pub struct EditableImage<I> {
-    superclass: Object<I>,
+pub struct EditableImage {
+    superclass: Object,
     pub ImageData: BinaryString,
 }
-impl_inherits!(EditableImage<I>, Object<I>);
-impl<I: Default> Default for EditableImage<I> {
+impl_inherits!(EditableImage, Object);
+impl Default for EditableImage {
     fn default() -> Self {
         let superclass = Object::default();
         Self {
@@ -5536,13 +5536,13 @@ impl<I: Default> Default for EditableImage<I> {
 }
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
-pub struct EditableMesh<I> {
-    superclass: Object<I>,
+pub struct EditableMesh {
+    superclass: Object,
     pub MeshData: SharedString,
     pub SkinningEnabled: bool,
 }
-impl_inherits!(EditableMesh<I>, Object<I>);
-impl<I: Default> Default for EditableMesh<I> {
+impl_inherits!(EditableMesh, Object);
+impl Default for EditableMesh {
     fn default() -> Self {
         let superclass = Object::default();
         Self {
@@ -5555,34 +5555,34 @@ impl<I: Default> Default for EditableMesh<I> {
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 #[derive(Default)]
-pub struct EditableService<I> {
-    superclass: Instance<I>,
+pub struct EditableService {
+    superclass: Instance,
 }
-impl_inherits!(EditableService<I>, Instance<I>);
+impl_inherits!(EditableService, Instance);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 #[derive(Default)]
-pub struct EmotesPages<I> {
-    superclass: InventoryPages<I>,
+pub struct EmotesPages {
+    superclass: InventoryPages,
 }
-impl_inherits!(EmotesPages<I>, InventoryPages<I>);
+impl_inherits!(EmotesPages, InventoryPages);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 #[derive(Default)]
-pub struct EncodingService<I> {
-    superclass: Instance<I>,
+pub struct EncodingService {
+    superclass: Instance,
 }
-impl_inherits!(EncodingService<I>, Instance<I>);
+impl_inherits!(EncodingService, Instance);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
-pub struct EqualizerSoundEffect<I> {
-    superclass: SoundEffect<I>,
+pub struct EqualizerSoundEffect {
+    superclass: SoundEffect,
     pub HighGain: f32,
     pub LowGain: f32,
     pub MidGain: f32,
 }
-impl_inherits!(EqualizerSoundEffect<I>, SoundEffect<I>);
-impl<I: Default> Default for EqualizerSoundEffect<I> {
+impl_inherits!(EqualizerSoundEffect, SoundEffect);
+impl Default for EqualizerSoundEffect {
     fn default() -> Self {
         let superclass = Object::default();
         let superclass = Instance {
@@ -5609,12 +5609,12 @@ impl<I: Default> Default for EqualizerSoundEffect<I> {
 }
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
-pub struct EulerRotationCurve<I> {
-    superclass: Instance<I>,
+pub struct EulerRotationCurve {
+    superclass: Instance,
     pub RotationOrder: enums::RotationOrder,
 }
-impl_inherits!(EulerRotationCurve<I>, Instance<I>);
-impl<I: Default> Default for EulerRotationCurve<I> {
+impl_inherits!(EulerRotationCurve, Instance);
+impl Default for EulerRotationCurve {
     fn default() -> Self {
         let superclass = Object::default();
         let superclass = Instance {
@@ -5635,42 +5635,42 @@ impl<I: Default> Default for EulerRotationCurve<I> {
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 #[derive(Default)]
-pub struct EventIngestService<I> {
-    superclass: Instance<I>,
+pub struct EventIngestService {
+    superclass: Instance,
 }
-impl_inherits!(EventIngestService<I>, Instance<I>);
+impl_inherits!(EventIngestService, Instance);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 #[derive(Default)]
-pub struct ExampleV2Service<I> {
-    superclass: Instance<I>,
+pub struct ExampleV2Service {
+    superclass: Instance,
 }
-impl_inherits!(ExampleV2Service<I>, Instance<I>);
+impl_inherits!(ExampleV2Service, Instance);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 #[derive(Default)]
-pub struct ExecutedRemoteCommand<I> {
-    superclass: Object<I>,
+pub struct ExecutedRemoteCommand {
+    superclass: Object,
 }
-impl_inherits!(ExecutedRemoteCommand<I>, Object<I>);
+impl_inherits!(ExecutedRemoteCommand, Object);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 #[derive(Default)]
-pub struct ExperienceAuthService<I> {
-    superclass: Instance<I>,
+pub struct ExperienceAuthService {
+    superclass: Instance,
 }
-impl_inherits!(ExperienceAuthService<I>, Instance<I>);
+impl_inherits!(ExperienceAuthService, Instance);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
-pub struct ExperienceInviteOptions<I> {
-    superclass: Instance<I>,
+pub struct ExperienceInviteOptions {
+    superclass: Instance,
     pub InviteMessageId: String,
     pub InviteUser: i64,
     pub LaunchData: String,
     pub PromptMessage: String,
 }
-impl_inherits!(ExperienceInviteOptions<I>, Instance<I>);
-impl<I: Default> Default for ExperienceInviteOptions<I> {
+impl_inherits!(ExperienceInviteOptions, Instance);
+impl Default for ExperienceInviteOptions {
     fn default() -> Self {
         let superclass = Object::default();
         let superclass = Instance {
@@ -5694,56 +5694,56 @@ impl<I: Default> Default for ExperienceInviteOptions<I> {
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 #[derive(Default)]
-pub struct ExperienceNotificationService<I> {
-    superclass: Instance<I>,
+pub struct ExperienceNotificationService {
+    superclass: Instance,
 }
-impl_inherits!(ExperienceNotificationService<I>, Instance<I>);
+impl_inherits!(ExperienceNotificationService, Instance);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 #[derive(Default)]
-pub struct ExperienceService<I> {
-    superclass: Instance<I>,
+pub struct ExperienceService {
+    superclass: Instance,
 }
-impl_inherits!(ExperienceService<I>, Instance<I>);
+impl_inherits!(ExperienceService, Instance);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 #[derive(Default)]
-pub struct ExperienceStateCaptureService<I> {
-    superclass: Instance<I>,
+pub struct ExperienceStateCaptureService {
+    superclass: Instance,
 }
-impl_inherits!(ExperienceStateCaptureService<I>, Instance<I>);
+impl_inherits!(ExperienceStateCaptureService, Instance);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 #[derive(Default)]
-pub struct ExperienceStateRecordingService<I> {
-    superclass: Instance<I>,
+pub struct ExperienceStateRecordingService {
+    superclass: Instance,
 }
-impl_inherits!(ExperienceStateRecordingService<I>, Instance<I>);
+impl_inherits!(ExperienceStateRecordingService, Instance);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 #[derive(Default)]
-pub struct ExplorerFilter<I> {
-    superclass: Instance<I>,
+pub struct ExplorerFilter {
+    superclass: Instance,
 }
-impl_inherits!(ExplorerFilter<I>, Instance<I>);
+impl_inherits!(ExplorerFilter, Instance);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 #[derive(Default)]
-pub struct ExplorerFilterAutocompleter<I> {
-    superclass: Instance<I>,
+pub struct ExplorerFilterAutocompleter {
+    superclass: Instance,
 }
-impl_inherits!(ExplorerFilterAutocompleter<I>, Instance<I>);
+impl_inherits!(ExplorerFilterAutocompleter, Instance);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 #[derive(Default)]
-pub struct ExplorerServiceVisibilityService<I> {
-    superclass: Instance<I>,
+pub struct ExplorerServiceVisibilityService {
+    superclass: Instance,
 }
-impl_inherits!(ExplorerServiceVisibilityService<I>, Instance<I>);
+impl_inherits!(ExplorerServiceVisibilityService, Instance);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
-pub struct Explosion<I> {
-    superclass: Instance<I>,
+pub struct Explosion {
+    superclass: Instance,
     pub BlastPressure: f32,
     pub BlastRadius: f32,
     pub DestroyJointRadiusPercent: f32,
@@ -5752,8 +5752,8 @@ pub struct Explosion<I> {
     pub TimeScale: f32,
     pub Visible: bool,
 }
-impl_inherits!(Explosion<I>, Instance<I>);
-impl<I: Default> Default for Explosion<I> {
+impl_inherits!(Explosion, Instance);
+impl Default for Explosion {
     fn default() -> Self {
         let superclass = Object::default();
         let superclass = Instance {
@@ -5780,25 +5780,25 @@ impl<I: Default> Default for Explosion<I> {
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 #[derive(Default)]
-pub struct FaceAnimatorService<I> {
-    superclass: Instance<I>,
+pub struct FaceAnimatorService {
+    superclass: Instance,
 }
-impl_inherits!(FaceAnimatorService<I>, Instance<I>);
+impl_inherits!(FaceAnimatorService, Instance);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 #[derive(Default)]
-pub struct FaceControls<I> {
-    superclass: Instance<I>,
+pub struct FaceControls {
+    superclass: Instance,
 }
-impl_inherits!(FaceControls<I>, Instance<I>);
+impl_inherits!(FaceControls, Instance);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
-pub struct FaceInstance<I> {
-    superclass: Instance<I>,
+pub struct FaceInstance {
+    superclass: Instance,
     pub Face: enums::NormalId,
 }
-impl_inherits!(FaceInstance<I>, Instance<I>);
-impl<I: Default> Default for FaceInstance<I> {
+impl_inherits!(FaceInstance, Instance);
+impl Default for FaceInstance {
     fn default() -> Self {
         let superclass = Object::default();
         let superclass = Instance {
@@ -5819,32 +5819,32 @@ impl<I: Default> Default for FaceInstance<I> {
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 #[derive(Default)]
-pub struct FacialAgeEstimationService<I> {
-    superclass: Instance<I>,
+pub struct FacialAgeEstimationService {
+    superclass: Instance,
 }
-impl_inherits!(FacialAgeEstimationService<I>, Instance<I>);
+impl_inherits!(FacialAgeEstimationService, Instance);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 #[derive(Default)]
-pub struct FacialAnimationRecordingService<I> {
-    superclass: Instance<I>,
+pub struct FacialAnimationRecordingService {
+    superclass: Instance,
 }
-impl_inherits!(FacialAnimationRecordingService<I>, Instance<I>);
+impl_inherits!(FacialAnimationRecordingService, Instance);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 #[derive(Default)]
-pub struct FacialAnimationStreamingServiceStats<I> {
-    superclass: Instance<I>,
+pub struct FacialAnimationStreamingServiceStats {
+    superclass: Instance,
 }
-impl_inherits!(FacialAnimationStreamingServiceStats<I>, Instance<I>);
+impl_inherits!(FacialAnimationStreamingServiceStats, Instance);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
-pub struct FacialAnimationStreamingServiceV2<I> {
-    superclass: Instance<I>,
+pub struct FacialAnimationStreamingServiceV2 {
+    superclass: Instance,
     pub ServiceState: i32,
 }
-impl_inherits!(FacialAnimationStreamingServiceV2<I>, Instance<I>);
-impl<I: Default> Default for FacialAnimationStreamingServiceV2<I> {
+impl_inherits!(FacialAnimationStreamingServiceV2, Instance);
+impl Default for FacialAnimationStreamingServiceV2 {
     fn default() -> Self {
         let superclass = Object::default();
         let superclass = Instance {
@@ -5865,28 +5865,28 @@ impl<I: Default> Default for FacialAnimationStreamingServiceV2<I> {
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 #[derive(Default)]
-pub struct FacialAnimationStreamingSubsessionStats<I> {
-    superclass: Instance<I>,
+pub struct FacialAnimationStreamingSubsessionStats {
+    superclass: Instance,
 }
-impl_inherits!(FacialAnimationStreamingSubsessionStats<I>, Instance<I>);
+impl_inherits!(FacialAnimationStreamingSubsessionStats, Instance);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 #[derive(Default)]
-pub struct FacsImportData<I> {
-    superclass: BaseImportData<I>,
+pub struct FacsImportData {
+    superclass: BaseImportData,
 }
-impl_inherits!(FacsImportData<I>, BaseImportData<I>);
+impl_inherits!(FacsImportData, BaseImportData);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
-pub struct Feature<I> {
-    superclass: Instance<I>,
+pub struct Feature {
+    superclass: Instance,
     pub FaceId: enums::NormalId,
     pub InOut: enums::InOut,
     pub LeftRight: enums::LeftRight,
     pub TopBottom: enums::TopBottom,
 }
-impl_inherits!(Feature<I>, Instance<I>);
-impl<I: Default> Default for Feature<I> {
+impl_inherits!(Feature, Instance);
+impl Default for Feature {
     fn default() -> Self {
         let superclass = Object::default();
         let superclass = Instance {
@@ -5910,26 +5910,26 @@ impl<I: Default> Default for Feature<I> {
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 #[derive(Default)]
-pub struct FeatureRestrictionManager<I> {
-    superclass: Instance<I>,
+pub struct FeatureRestrictionManager {
+    superclass: Instance,
 }
-impl_inherits!(FeatureRestrictionManager<I>, Instance<I>);
+impl_inherits!(FeatureRestrictionManager, Instance);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 #[derive(Default)]
-pub struct File<I> {
-    superclass: Instance<I>,
+pub struct File {
+    superclass: Instance,
 }
-impl_inherits!(File<I>, Instance<I>);
+impl_inherits!(File, Instance);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
-pub struct FileMesh<I> {
-    superclass: DataModelMesh<I>,
+pub struct FileMesh {
+    superclass: DataModelMesh,
     pub MeshId: ContentId,
     pub TextureId: ContentId,
 }
-impl_inherits!(FileMesh<I>, DataModelMesh<I>);
-impl<I: Default> Default for FileMesh<I> {
+impl_inherits!(FileMesh, DataModelMesh);
+impl Default for FileMesh {
     fn default() -> Self {
         let superclass = Object::default();
         let superclass = Instance {
@@ -5956,15 +5956,15 @@ impl<I: Default> Default for FileMesh<I> {
 }
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
-pub struct Fire<I> {
-    superclass: Instance<I>,
+pub struct Fire {
+    superclass: Instance,
     pub Color: Color3,
     pub Enabled: bool,
     pub SecondaryColor: Color3,
     pub TimeScale: f32,
 }
-impl_inherits!(Fire<I>, Instance<I>);
-impl<I: Default> Default for Fire<I> {
+impl_inherits!(Fire, Instance);
+impl Default for Fire {
     fn default() -> Self {
         let superclass = Object::default();
         let superclass = Instance {
@@ -5987,12 +5987,12 @@ impl<I: Default> Default for Fire<I> {
 }
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
-pub struct Flag<I> {
-    superclass: Tool<I>,
+pub struct Flag {
+    superclass: Tool,
     pub TeamColor: BrickColor,
 }
-impl_inherits!(Flag<I>, Tool<I>);
-impl<I: Default> Default for Flag<I> {
+impl_inherits!(Flag, Tool);
+impl Default for Flag {
     fn default() -> Self {
         let superclass = Object::default();
         let superclass = Instance {
@@ -6038,12 +6038,12 @@ impl<I: Default> Default for Flag<I> {
 }
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
-pub struct FlagStand<I> {
-    superclass: Part<I>,
+pub struct FlagStand {
+    superclass: Part,
     pub TeamColor: BrickColor,
 }
-impl_inherits!(FlagStand<I>, Part<I>);
-impl<I: Default> Default for FlagStand<I> {
+impl_inherits!(FlagStand, Part);
+impl Default for FlagStand {
     fn default() -> Self {
         let superclass = Object::default();
         let superclass = Instance {
@@ -6114,20 +6114,20 @@ impl<I: Default> Default for FlagStand<I> {
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 #[derive(Default)]
-pub struct FlagStandService<I> {
-    superclass: Instance<I>,
+pub struct FlagStandService {
+    superclass: Instance,
 }
-impl_inherits!(FlagStandService<I>, Instance<I>);
+impl_inherits!(FlagStandService, Instance);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
-pub struct FlangeSoundEffect<I> {
-    superclass: SoundEffect<I>,
+pub struct FlangeSoundEffect {
+    superclass: SoundEffect,
     pub Depth: f32,
     pub Mix: f32,
     pub Rate: f32,
 }
-impl_inherits!(FlangeSoundEffect<I>, SoundEffect<I>);
-impl<I: Default> Default for FlangeSoundEffect<I> {
+impl_inherits!(FlangeSoundEffect, SoundEffect);
+impl Default for FlangeSoundEffect {
     fn default() -> Self {
         let superclass = Object::default();
         let superclass = Instance {
@@ -6154,12 +6154,12 @@ impl<I: Default> Default for FlangeSoundEffect<I> {
 }
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
-pub struct FloatCurve<I> {
-    superclass: Instance<I>,
+pub struct FloatCurve {
+    superclass: Instance,
     pub ValuesAndTimes: BinaryString,
 }
-impl_inherits!(FloatCurve<I>, Instance<I>);
-impl<I: Default> Default for FloatCurve<I> {
+impl_inherits!(FloatCurve, Instance);
+impl Default for FloatCurve {
     fn default() -> Self {
         let superclass = Object::default();
         let superclass = Instance {
@@ -6179,8 +6179,8 @@ impl<I: Default> Default for FloatCurve<I> {
 }
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
-pub struct FloorWire<I> {
-    superclass: GuiBase3d<I>,
+pub struct FloorWire {
+    superclass: GuiBase3d,
     pub CycleOffset: f32,
     pub From: Ref,
     pub StudsBetweenTextures: f32,
@@ -6190,8 +6190,8 @@ pub struct FloorWire<I> {
     pub Velocity: f32,
     pub WireRadius: f32,
 }
-impl_inherits!(FloorWire<I>, GuiBase3d<I>);
-impl<I: Default> Default for FloorWire<I> {
+impl_inherits!(FloorWire, GuiBase3d);
+impl Default for FloorWire {
     fn default() -> Self {
         let superclass = Object::default();
         let superclass = Instance {
@@ -6226,32 +6226,32 @@ impl<I: Default> Default for FloorWire<I> {
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 #[derive(Default)]
-pub struct FluidForceSensor<I> {
-    superclass: SensorBase<I>,
+pub struct FluidForceSensor {
+    superclass: SensorBase,
 }
-impl_inherits!(FluidForceSensor<I>, SensorBase<I>);
+impl_inherits!(FluidForceSensor, SensorBase);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 #[derive(Default)]
-pub struct FlyweightService<I> {
-    superclass: Instance<I>,
+pub struct FlyweightService {
+    superclass: Instance,
 }
-impl_inherits!(FlyweightService<I>, Instance<I>);
+impl_inherits!(FlyweightService, Instance);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 #[derive(Default)]
-pub struct Folder<I> {
-    superclass: Instance<I>,
+pub struct Folder {
+    superclass: Instance,
 }
-impl_inherits!(Folder<I>, Instance<I>);
+impl_inherits!(Folder, Instance);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
-pub struct ForceField<I> {
-    superclass: Instance<I>,
+pub struct ForceField {
+    superclass: Instance,
     pub Visible: bool,
 }
-impl_inherits!(ForceField<I>, Instance<I>);
-impl<I: Default> Default for ForceField<I> {
+impl_inherits!(ForceField, Instance);
+impl Default for ForceField {
     fn default() -> Self {
         let superclass = Object::default();
         let superclass = Instance {
@@ -6272,18 +6272,18 @@ impl<I: Default> Default for ForceField<I> {
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 #[derive(Default)]
-pub struct FormFactorPart<I> {
-    superclass: BasePart<I>,
+pub struct FormFactorPart {
+    superclass: BasePart,
 }
-impl_inherits!(FormFactorPart<I>, BasePart<I>);
+impl_inherits!(FormFactorPart, BasePart);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
-pub struct Frame<I> {
-    superclass: GuiObject<I>,
+pub struct Frame {
+    superclass: GuiObject,
     pub Style: enums::FrameStyle,
 }
-impl_inherits!(Frame<I>, GuiObject<I>);
-impl<I: Default> Default for Frame<I> {
+impl_inherits!(Frame, GuiObject);
+impl Default for Frame {
     fn default() -> Self {
         let superclass = Object::default();
         let superclass = Instance {
@@ -6343,26 +6343,26 @@ impl<I: Default> Default for Frame<I> {
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 #[derive(Default)]
-pub struct FriendPages<I> {
-    superclass: Pages<I>,
+pub struct FriendPages {
+    superclass: Pages,
 }
-impl_inherits!(FriendPages<I>, Pages<I>);
+impl_inherits!(FriendPages, Pages);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 #[derive(Default)]
-pub struct FriendService<I> {
-    superclass: Instance<I>,
+pub struct FriendService {
+    superclass: Instance,
 }
-impl_inherits!(FriendService<I>, Instance<I>);
+impl_inherits!(FriendService, Instance);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
-pub struct FunctionalTest<I> {
-    superclass: Instance<I>,
+pub struct FunctionalTest {
+    superclass: Instance,
     pub Description: String,
     pub HasMigratedSettingsToTestService: bool,
 }
-impl_inherits!(FunctionalTest<I>, Instance<I>);
-impl<I: Default> Default for FunctionalTest<I> {
+impl_inherits!(FunctionalTest, Instance);
+impl Default for FunctionalTest {
     fn default() -> Self {
         let superclass = Object::default();
         let superclass = Instance {
@@ -6384,18 +6384,18 @@ impl<I: Default> Default for FunctionalTest<I> {
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 #[derive(Default)]
-pub struct GamePassService<I> {
-    superclass: Instance<I>,
+pub struct GamePassService {
+    superclass: Instance,
 }
-impl_inherits!(GamePassService<I>, Instance<I>);
+impl_inherits!(GamePassService, Instance);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
-pub struct GameSettings<I> {
-    superclass: Instance<I>,
+pub struct GameSettings {
+    superclass: Instance,
     pub VideoCaptureEnabled: bool,
 }
-impl_inherits!(GameSettings<I>, Instance<I>);
-impl<I: Default> Default for GameSettings<I> {
+impl_inherits!(GameSettings, Instance);
+impl Default for GameSettings {
     fn default() -> Self {
         let superclass = Object::default();
         let superclass = Instance {
@@ -6415,12 +6415,12 @@ impl<I: Default> Default for GameSettings<I> {
 }
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
-pub struct GamepadService<I> {
-    superclass: Instance<I>,
+pub struct GamepadService {
+    superclass: Instance,
     pub GamepadCursorEnabled: bool,
 }
-impl_inherits!(GamepadService<I>, Instance<I>);
-impl<I: Default> Default for GamepadService<I> {
+impl_inherits!(GamepadService, Instance);
+impl Default for GamepadService {
     fn default() -> Self {
         let superclass = Object::default();
         let superclass = Instance {
@@ -6441,50 +6441,50 @@ impl<I: Default> Default for GamepadService<I> {
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 #[derive(Default)]
-pub struct GenerationService<I> {
-    superclass: Instance<I>,
+pub struct GenerationService {
+    superclass: Instance,
 }
-impl_inherits!(GenerationService<I>, Instance<I>);
+impl_inherits!(GenerationService, Instance);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 #[derive(Default)]
-pub struct GenericChallengeService<I> {
-    superclass: Instance<I>,
+pub struct GenericChallengeService {
+    superclass: Instance,
 }
-impl_inherits!(GenericChallengeService<I>, Instance<I>);
+impl_inherits!(GenericChallengeService, Instance);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 #[derive(Default)]
-pub struct GenericSettings<I> {
-    superclass: ServiceProvider<I>,
+pub struct GenericSettings {
+    superclass: ServiceProvider,
 }
-impl_inherits!(GenericSettings<I>, ServiceProvider<I>);
+impl_inherits!(GenericSettings, ServiceProvider);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 #[derive(Default)]
-pub struct Geometry<I> {
-    superclass: Instance<I>,
+pub struct Geometry {
+    superclass: Instance,
 }
-impl_inherits!(Geometry<I>, Instance<I>);
+impl_inherits!(Geometry, Instance);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 #[derive(Default)]
-pub struct GeometryService<I> {
-    superclass: Instance<I>,
+pub struct GeometryService {
+    superclass: Instance,
 }
-impl_inherits!(GeometryService<I>, Instance<I>);
+impl_inherits!(GeometryService, Instance);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
-pub struct GetTextBoundsParams<I> {
-    superclass: Instance<I>,
+pub struct GetTextBoundsParams {
+    superclass: Instance,
     pub Font: Font,
     pub RichText: bool,
     pub Size: f32,
     pub Text: String,
     pub Width: f32,
 }
-impl_inherits!(GetTextBoundsParams<I>, Instance<I>);
-impl<I: Default> Default for GetTextBoundsParams<I> {
+impl_inherits!(GetTextBoundsParams, Instance);
+impl Default for GetTextBoundsParams {
     fn default() -> Self {
         let superclass = Object::default();
         let superclass = Instance {
@@ -6513,28 +6513,28 @@ impl<I: Default> Default for GetTextBoundsParams<I> {
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 #[derive(Default)]
-pub struct GlobalDataStore<I> {
-    superclass: Instance<I>,
+pub struct GlobalDataStore {
+    superclass: Instance,
 }
-impl_inherits!(GlobalDataStore<I>, Instance<I>);
+impl_inherits!(GlobalDataStore, Instance);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 #[derive(Default)]
-pub struct GlobalSettings<I> {
-    superclass: GenericSettings<I>,
+pub struct GlobalSettings {
+    superclass: GenericSettings,
 }
-impl_inherits!(GlobalSettings<I>, GenericSettings<I>);
+impl_inherits!(GlobalSettings, GenericSettings);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
-pub struct Glue<I> {
-    superclass: JointInstance<I>,
+pub struct Glue {
+    superclass: JointInstance,
     pub F0: Vector3,
     pub F1: Vector3,
     pub F2: Vector3,
     pub F3: Vector3,
 }
-impl_inherits!(Glue<I>, JointInstance<I>);
-impl<I: Default> Default for Glue<I> {
+impl_inherits!(Glue, JointInstance);
+impl Default for Glue {
     fn default() -> Self {
         let superclass = Object::default();
         let superclass = Instance {
@@ -6565,8 +6565,8 @@ impl<I: Default> Default for Glue<I> {
 }
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
-pub struct GroundController<I> {
-    superclass: ControllerBase<I>,
+pub struct GroundController {
+    superclass: ControllerBase,
     pub AccelerationLean: f32,
     pub AccelerationTime: f32,
     pub BalanceMaxTorque: f32,
@@ -6579,8 +6579,8 @@ pub struct GroundController<I> {
     pub StandSpeed: f32,
     pub TurnSpeedFactor: f32,
 }
-impl_inherits!(GroundController<I>, ControllerBase<I>);
-impl<I: Default> Default for GroundController<I> {
+impl_inherits!(GroundController, ControllerBase);
+impl Default for GroundController {
     fn default() -> Self {
         let superclass = Object::default();
         let superclass = Instance {
@@ -6615,14 +6615,14 @@ impl<I: Default> Default for GroundController<I> {
 }
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
-pub struct GroupImportData<I> {
-    superclass: BaseImportData<I>,
+pub struct GroupImportData {
+    superclass: BaseImportData,
     pub Anchored: bool,
     pub ImportAsModelAsset: bool,
     pub InsertInWorkspace: bool,
 }
-impl_inherits!(GroupImportData<I>, BaseImportData<I>);
-impl<I: Default> Default for GroupImportData<I> {
+impl_inherits!(GroupImportData, BaseImportData);
+impl Default for GroupImportData {
     fn default() -> Self {
         let superclass = Object::default();
         let superclass = Instance {
@@ -6650,21 +6650,21 @@ impl<I: Default> Default for GroupImportData<I> {
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 #[derive(Default)]
-pub struct GroupService<I> {
-    superclass: Instance<I>,
+pub struct GroupService {
+    superclass: Instance,
 }
-impl_inherits!(GroupService<I>, Instance<I>);
+impl_inherits!(GroupService, Instance);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 #[derive(Default)]
-pub struct GuiBase<I> {
-    superclass: Instance<I>,
+pub struct GuiBase {
+    superclass: Instance,
 }
-impl_inherits!(GuiBase<I>, Instance<I>);
+impl_inherits!(GuiBase, Instance);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
-pub struct GuiBase2d<I> {
-    superclass: GuiBase<I>,
+pub struct GuiBase2d {
+    superclass: GuiBase,
     pub AutoLocalize: bool,
     pub RootLocalizationTable: Ref,
     pub SelectionBehaviorDown: enums::SelectionBehavior,
@@ -6673,8 +6673,8 @@ pub struct GuiBase2d<I> {
     pub SelectionBehaviorUp: enums::SelectionBehavior,
     pub SelectionGroup: bool,
 }
-impl_inherits!(GuiBase2d<I>, GuiBase<I>);
-impl<I: Default> Default for GuiBase2d<I> {
+impl_inherits!(GuiBase2d, GuiBase);
+impl Default for GuiBase2d {
     fn default() -> Self {
         let superclass = Object::default();
         let superclass = Instance {
@@ -6701,14 +6701,14 @@ impl<I: Default> Default for GuiBase2d<I> {
 }
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
-pub struct GuiBase3d<I> {
-    superclass: GuiBase<I>,
+pub struct GuiBase3d {
+    superclass: GuiBase,
     pub Color3: Color3,
     pub Transparency: f32,
     pub Visible: bool,
 }
-impl_inherits!(GuiBase3d<I>, GuiBase<I>);
-impl<I: Default> Default for GuiBase3d<I> {
+impl_inherits!(GuiBase3d, GuiBase);
+impl Default for GuiBase3d {
     fn default() -> Self {
         let superclass = Object::default();
         let superclass = Instance {
@@ -6731,8 +6731,8 @@ impl<I: Default> Default for GuiBase3d<I> {
 }
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
-pub struct GuiButton<I> {
-    superclass: GuiObject<I>,
+pub struct GuiButton {
+    superclass: GuiObject,
     pub AutoButtonColor: bool,
     pub HoverHapticEffect: Ref,
     pub Modal: bool,
@@ -6740,8 +6740,8 @@ pub struct GuiButton<I> {
     pub Selected: bool,
     pub Style: enums::ButtonStyle,
 }
-impl_inherits!(GuiButton<I>, GuiObject<I>);
-impl<I: Default> Default for GuiButton<I> {
+impl_inherits!(GuiButton, GuiObject);
+impl Default for GuiButton {
     fn default() -> Self {
         let superclass = Object::default();
         let superclass = Instance {
@@ -6806,21 +6806,21 @@ impl<I: Default> Default for GuiButton<I> {
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 #[derive(Default)]
-pub struct GuiLabel<I> {
-    superclass: GuiObject<I>,
+pub struct GuiLabel {
+    superclass: GuiObject,
 }
-impl_inherits!(GuiLabel<I>, GuiObject<I>);
+impl_inherits!(GuiLabel, GuiObject);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 #[derive(Default)]
-pub struct GuiMain<I> {
-    superclass: ScreenGui<I>,
+pub struct GuiMain {
+    superclass: ScreenGui,
 }
-impl_inherits!(GuiMain<I>, ScreenGui<I>);
+impl_inherits!(GuiMain, ScreenGui);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
-pub struct GuiObject<I> {
-    superclass: GuiBase2d<I>,
+pub struct GuiObject {
+    superclass: GuiBase2d,
     pub Active: bool,
     pub AnchorPoint: Vector2,
     pub AutomaticSize: enums::AutomaticSize,
@@ -6847,8 +6847,8 @@ pub struct GuiObject<I> {
     pub Visible: bool,
     pub ZIndex: i32,
 }
-impl_inherits!(GuiObject<I>, GuiBase2d<I>);
-impl<I: Default> Default for GuiObject<I> {
+impl_inherits!(GuiObject, GuiBase2d);
+impl Default for GuiObject {
     fn default() -> Self {
         let superclass = Object::default();
         let superclass = Instance {
@@ -6903,14 +6903,14 @@ impl<I: Default> Default for GuiObject<I> {
 }
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
-pub struct GuiService<I> {
-    superclass: Instance<I>,
+pub struct GuiService {
+    superclass: Instance,
     pub AutoSelectGuiEnabled: bool,
     pub GuiNavigationEnabled: bool,
     pub SelectedObject: Ref,
 }
-impl_inherits!(GuiService<I>, Instance<I>);
-impl<I: Default> Default for GuiService<I> {
+impl_inherits!(GuiService, Instance);
+impl Default for GuiService {
     fn default() -> Self {
         let superclass = Object::default();
         let superclass = Instance {
@@ -6933,21 +6933,21 @@ impl<I: Default> Default for GuiService<I> {
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 #[derive(Default)]
-pub struct GuidRegistryService<I> {
-    superclass: Instance<I>,
+pub struct GuidRegistryService {
+    superclass: Instance,
 }
-impl_inherits!(GuidRegistryService<I>, Instance<I>);
+impl_inherits!(GuidRegistryService, Instance);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 #[derive(Default)]
-pub struct HSRDataContentProvider<I> {
-    superclass: CacheableContentProvider<I>,
+pub struct HSRDataContentProvider {
+    superclass: CacheableContentProvider,
 }
-impl_inherits!(HSRDataContentProvider<I>, CacheableContentProvider<I>);
+impl_inherits!(HSRDataContentProvider, CacheableContentProvider);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
-pub struct HandRigDescription<I> {
-    superclass: Instance<I>,
+pub struct HandRigDescription {
+    superclass: Instance,
     pub Index1: Ref,
     pub Index1TposeAdjustment: CFrame,
     pub Index2: Ref,
@@ -6990,8 +6990,8 @@ pub struct HandRigDescription<I> {
     pub ThumbRange: Vector3,
     pub ThumbSize: f32,
 }
-impl_inherits!(HandRigDescription<I>, Instance<I>);
-impl<I: Default> Default for HandRigDescription<I> {
+impl_inherits!(HandRigDescription, Instance);
+impl Default for HandRigDescription {
     fn default() -> Self {
         let superclass = Object::default();
         let superclass = Instance {
@@ -7051,16 +7051,16 @@ impl<I: Default> Default for HandRigDescription<I> {
 }
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
-pub struct HandleAdornment<I> {
-    superclass: PVAdornment<I>,
+pub struct HandleAdornment {
+    superclass: PVAdornment,
     pub AdornCullingMode: enums::AdornCullingMode,
     pub AlwaysOnTop: bool,
     pub CFrame: CFrame,
     pub SizeRelativeOffset: Vector3,
     pub ZIndex: i32,
 }
-impl_inherits!(HandleAdornment<I>, PVAdornment<I>);
-impl<I: Default> Default for HandleAdornment<I> {
+impl_inherits!(HandleAdornment, PVAdornment);
+impl Default for HandleAdornment {
     fn default() -> Self {
         let superclass = Object::default();
         let superclass = Instance {
@@ -7095,13 +7095,13 @@ impl<I: Default> Default for HandleAdornment<I> {
 }
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
-pub struct Handles<I> {
-    superclass: HandlesBase<I>,
+pub struct Handles {
+    superclass: HandlesBase,
     pub Faces: Faces,
     pub Style: enums::HandlesStyle,
 }
-impl_inherits!(Handles<I>, HandlesBase<I>);
-impl<I: Default> Default for Handles<I> {
+impl_inherits!(Handles, HandlesBase);
+impl Default for Handles {
     fn default() -> Self {
         let superclass = Object::default();
         let superclass = Instance {
@@ -7135,14 +7135,14 @@ impl<I: Default> Default for Handles<I> {
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 #[derive(Default)]
-pub struct HandlesBase<I> {
-    superclass: PartAdornment<I>,
+pub struct HandlesBase {
+    superclass: PartAdornment,
 }
-impl_inherits!(HandlesBase<I>, PartAdornment<I>);
+impl_inherits!(HandlesBase, PartAdornment);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
-pub struct HapticEffect<I> {
-    superclass: Instance<I>,
+pub struct HapticEffect {
+    superclass: Instance,
     pub Looped: bool,
     pub Position: Vector3,
     pub Radius: f32,
@@ -7150,8 +7150,8 @@ pub struct HapticEffect<I> {
     pub Waveform: Ref,
     pub WaveformData: BinaryString,
 }
-impl_inherits!(HapticEffect<I>, Instance<I>);
-impl<I: Default> Default for HapticEffect<I> {
+impl_inherits!(HapticEffect, Instance);
+impl Default for HapticEffect {
     fn default() -> Self {
         let superclass = Object::default();
         let superclass = Instance {
@@ -7177,54 +7177,54 @@ impl<I: Default> Default for HapticEffect<I> {
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 #[derive(Default)]
-pub struct HapticService<I> {
-    superclass: Instance<I>,
+pub struct HapticService {
+    superclass: Instance,
 }
-impl_inherits!(HapticService<I>, Instance<I>);
+impl_inherits!(HapticService, Instance);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 #[derive(Default)]
-pub struct HarmonyService<I> {
-    superclass: Instance<I>,
+pub struct HarmonyService {
+    superclass: Instance,
 }
-impl_inherits!(HarmonyService<I>, Instance<I>);
+impl_inherits!(HarmonyService, Instance);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 #[derive(Default)]
-pub struct Hat<I> {
-    superclass: Accoutrement<I>,
+pub struct Hat {
+    superclass: Accoutrement,
 }
-impl_inherits!(Hat<I>, Accoutrement<I>);
+impl_inherits!(Hat, Accoutrement);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 #[derive(Default)]
-pub struct HeapProfilerService<I> {
-    superclass: Instance<I>,
+pub struct HeapProfilerService {
+    superclass: Instance,
 }
-impl_inherits!(HeapProfilerService<I>, Instance<I>);
+impl_inherits!(HeapProfilerService, Instance);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 #[derive(Default)]
-pub struct HeatmapService<I> {
-    superclass: Instance<I>,
+pub struct HeatmapService {
+    superclass: Instance,
 }
-impl_inherits!(HeatmapService<I>, Instance<I>);
+impl_inherits!(HeatmapService, Instance);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 #[derive(Default)]
-pub struct HeightmapImporterService<I> {
-    superclass: Instance<I>,
+pub struct HeightmapImporterService {
+    superclass: Instance,
 }
-impl_inherits!(HeightmapImporterService<I>, Instance<I>);
+impl_inherits!(HeightmapImporterService, Instance);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
-pub struct HiddenSurfaceRemovalAsset<I> {
-    superclass: Instance<I>,
+pub struct HiddenSurfaceRemovalAsset {
+    superclass: Instance,
     pub HsrData: BinaryString,
     pub HsrMeshIdData: BinaryString,
 }
-impl_inherits!(HiddenSurfaceRemovalAsset<I>, Instance<I>);
-impl<I: Default> Default for HiddenSurfaceRemovalAsset<I> {
+impl_inherits!(HiddenSurfaceRemovalAsset, Instance);
+impl Default for HiddenSurfaceRemovalAsset {
     fn default() -> Self {
         let superclass = Object::default();
         let superclass = Instance {
@@ -7245,8 +7245,8 @@ impl<I: Default> Default for HiddenSurfaceRemovalAsset<I> {
 }
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
-pub struct Highlight<I> {
-    superclass: Instance<I>,
+pub struct Highlight {
+    superclass: Instance,
     pub Adornee: Ref,
     pub DepthMode: enums::HighlightDepthMode,
     pub Enabled: bool,
@@ -7255,8 +7255,8 @@ pub struct Highlight<I> {
     pub OutlineColor: Color3,
     pub OutlineTransparency: f32,
 }
-impl_inherits!(Highlight<I>, Instance<I>);
-impl<I: Default> Default for Highlight<I> {
+impl_inherits!(Highlight, Instance);
+impl Default for Highlight {
     fn default() -> Self {
         let superclass = Object::default();
         let superclass = Instance {
@@ -7282,8 +7282,8 @@ impl<I: Default> Default for Highlight<I> {
 }
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
-pub struct HingeConstraint<I> {
-    superclass: Constraint<I>,
+pub struct HingeConstraint {
+    superclass: Constraint,
     pub ActuatorType: enums::ActuatorType,
     pub AngularResponsiveness: f32,
     pub AngularSpeed: f32,
@@ -7299,8 +7299,8 @@ pub struct HingeConstraint<I> {
     pub TargetAngle: f32,
     pub UpperAngle: f32,
 }
-impl_inherits!(HingeConstraint<I>, Constraint<I>);
-impl<I: Default> Default for HingeConstraint<I> {
+impl_inherits!(HingeConstraint, Constraint);
+impl Default for HingeConstraint {
     fn default() -> Self {
         let superclass = Object::default();
         let superclass = Instance {
@@ -7342,33 +7342,33 @@ impl<I: Default> Default for HingeConstraint<I> {
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 #[derive(Default)]
-pub struct Hint<I> {
-    superclass: Message<I>,
+pub struct Hint {
+    superclass: Message,
 }
-impl_inherits!(Hint<I>, Message<I>);
+impl_inherits!(Hint, Message);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 #[derive(Default)]
-pub struct Hole<I> {
-    superclass: Feature<I>,
+pub struct Hole {
+    superclass: Feature,
 }
-impl_inherits!(Hole<I>, Feature<I>);
+impl_inherits!(Hole, Feature);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 #[derive(Default)]
-pub struct Hopper<I> {
-    superclass: Instance<I>,
+pub struct Hopper {
+    superclass: Instance,
 }
-impl_inherits!(Hopper<I>, Instance<I>);
+impl_inherits!(Hopper, Instance);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
-pub struct HopperBin<I> {
-    superclass: BackpackItem<I>,
+pub struct HopperBin {
+    superclass: BackpackItem,
     pub Active: bool,
     pub BinType: enums::BinType,
 }
-impl_inherits!(HopperBin<I>, BackpackItem<I>);
-impl<I: Default> Default for HopperBin<I> {
+impl_inherits!(HopperBin, BackpackItem);
+impl Default for HopperBin {
     fn default() -> Self {
         let superclass = Object::default();
         let superclass = Instance {
@@ -7407,25 +7407,25 @@ impl<I: Default> Default for HopperBin<I> {
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 #[derive(Default)]
-pub struct HttpRbxApiService<I> {
-    superclass: Instance<I>,
+pub struct HttpRbxApiService {
+    superclass: Instance,
 }
-impl_inherits!(HttpRbxApiService<I>, Instance<I>);
+impl_inherits!(HttpRbxApiService, Instance);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 #[derive(Default)]
-pub struct HttpRequest<I> {
-    superclass: Instance<I>,
+pub struct HttpRequest {
+    superclass: Instance,
 }
-impl_inherits!(HttpRequest<I>, Instance<I>);
+impl_inherits!(HttpRequest, Instance);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
-pub struct HttpService<I> {
-    superclass: Instance<I>,
+pub struct HttpService {
+    superclass: Instance,
     pub HttpEnabled: bool,
 }
-impl_inherits!(HttpService<I>, Instance<I>);
-impl<I: Default> Default for HttpService<I> {
+impl_inherits!(HttpService, Instance);
+impl Default for HttpService {
     fn default() -> Self {
         let superclass = Object::default();
         let superclass = Instance {
@@ -7445,8 +7445,8 @@ impl<I: Default> Default for HttpService<I> {
 }
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
-pub struct Humanoid<I> {
-    superclass: Instance<I>,
+pub struct Humanoid {
+    superclass: Instance,
     pub AutoJumpEnabled: bool,
     pub AutoRotate: bool,
     pub AutomaticScalingEnabled: bool,
@@ -7472,8 +7472,8 @@ pub struct Humanoid<I> {
     pub UseJumpPower: bool,
     pub WalkSpeed: f32,
 }
-impl_inherits!(Humanoid<I>, Instance<I>);
-impl<I: Default> Default for Humanoid<I> {
+impl_inherits!(Humanoid, Instance);
+impl Default for Humanoid {
     fn default() -> Self {
         let superclass = Object::default();
         let superclass = Instance {
@@ -7517,14 +7517,14 @@ impl<I: Default> Default for Humanoid<I> {
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 #[derive(Default)]
-pub struct HumanoidController<I> {
-    superclass: Controller<I>,
+pub struct HumanoidController {
+    superclass: Controller,
 }
-impl_inherits!(HumanoidController<I>, Controller<I>);
+impl_inherits!(HumanoidController, Controller);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
-pub struct HumanoidDescription<I> {
-    superclass: Instance<I>,
+pub struct HumanoidDescription {
+    superclass: Instance,
     pub BodyTypeScale: f32,
     pub ClimbAnimation: i64,
     pub DepthScale: f32,
@@ -7546,8 +7546,8 @@ pub struct HumanoidDescription<I> {
     pub WalkAnimation: i64,
     pub WidthScale: f32,
 }
-impl_inherits!(HumanoidDescription<I>, Instance<I>);
-impl<I: Default> Default for HumanoidDescription<I> {
+impl_inherits!(HumanoidDescription, Instance);
+impl Default for HumanoidDescription {
     fn default() -> Self {
         let superclass = Object::default();
         let superclass = Instance {
@@ -7586,8 +7586,8 @@ impl<I: Default> Default for HumanoidDescription<I> {
 }
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
-pub struct HumanoidRigDescription<I> {
-    superclass: Instance<I>,
+pub struct HumanoidRigDescription {
+    superclass: Instance,
     pub Chest: Ref,
     pub ChestRangeMax: Vector3,
     pub ChestRangeMin: Vector3,
@@ -7700,8 +7700,8 @@ pub struct HumanoidRigDescription<I> {
     pub WaistSize: f32,
     pub WaistTposeAdjustment: CFrame,
 }
-impl_inherits!(HumanoidRigDescription<I>, Instance<I>);
-impl<I: Default> Default for HumanoidRigDescription<I> {
+impl_inherits!(HumanoidRigDescription, Instance);
+impl Default for HumanoidRigDescription {
     fn default() -> Self {
         let superclass = Object::default();
         let superclass = Instance {
@@ -7831,8 +7831,8 @@ impl<I: Default> Default for HumanoidRigDescription<I> {
 }
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
-pub struct IKControl<I> {
-    superclass: Instance<I>,
+pub struct IKControl {
+    superclass: Instance,
     pub ChainRoot: Ref,
     pub Enabled: bool,
     pub EndEffector: Ref,
@@ -7845,8 +7845,8 @@ pub struct IKControl<I> {
     pub Type: enums::IKControlType,
     pub Weight: f32,
 }
-impl_inherits!(IKControl<I>, Instance<I>);
-impl<I: Default> Default for IKControl<I> {
+impl_inherits!(IKControl, Instance);
+impl Default for IKControl {
     fn default() -> Self {
         let superclass = Object::default();
         let superclass = Instance {
@@ -7877,21 +7877,21 @@ impl<I: Default> Default for IKControl<I> {
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 #[derive(Default)]
-pub struct ILegacyStudioBridge<I> {
-    superclass: Instance<I>,
+pub struct ILegacyStudioBridge {
+    superclass: Instance,
 }
-impl_inherits!(ILegacyStudioBridge<I>, Instance<I>);
+impl_inherits!(ILegacyStudioBridge, Instance);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 #[derive(Default)]
-pub struct IXPService<I> {
-    superclass: Instance<I>,
+pub struct IXPService {
+    superclass: Instance,
 }
-impl_inherits!(IXPService<I>, Instance<I>);
+impl_inherits!(IXPService, Instance);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
-pub struct ImageButton<I> {
-    superclass: GuiButton<I>,
+pub struct ImageButton {
+    superclass: GuiButton,
     pub HoverImageContent: Content,
     pub ImageColor3: Color3,
     pub ImageContent: Content,
@@ -7905,8 +7905,8 @@ pub struct ImageButton<I> {
     pub SliceScale: f32,
     pub TileSize: UDim2,
 }
-impl_inherits!(ImageButton<I>, GuiButton<I>);
-impl<I: Default> Default for ImageButton<I> {
+impl_inherits!(ImageButton, GuiButton);
+impl Default for ImageButton {
     fn default() -> Self {
         let superclass = Object::default();
         let superclass = Instance {
@@ -7985,13 +7985,13 @@ impl<I: Default> Default for ImageButton<I> {
 }
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
-pub struct ImageHandleAdornment<I> {
-    superclass: HandleAdornment<I>,
+pub struct ImageHandleAdornment {
+    superclass: HandleAdornment,
     pub Image: ContentId,
     pub Size: Vector2,
 }
-impl_inherits!(ImageHandleAdornment<I>, HandleAdornment<I>);
-impl<I: Default> Default for ImageHandleAdornment<I> {
+impl_inherits!(ImageHandleAdornment, HandleAdornment);
+impl Default for ImageHandleAdornment {
     fn default() -> Self {
         let superclass = Object::default();
         let superclass = Instance {
@@ -8031,8 +8031,8 @@ impl<I: Default> Default for ImageHandleAdornment<I> {
 }
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
-pub struct ImageLabel<I> {
-    superclass: GuiLabel<I>,
+pub struct ImageLabel {
+    superclass: GuiLabel,
     pub ImageColor3: Color3,
     pub ImageContent: Content,
     pub ImageRectOffset: Vector2,
@@ -8044,8 +8044,8 @@ pub struct ImageLabel<I> {
     pub SliceScale: f32,
     pub TileSize: UDim2,
 }
-impl_inherits!(ImageLabel<I>, GuiLabel<I>);
-impl<I: Default> Default for ImageLabel<I> {
+impl_inherits!(ImageLabel, GuiLabel);
+impl Default for ImageLabel {
     fn default() -> Self {
         let superclass = Object::default();
         let superclass = Instance {
@@ -8115,14 +8115,14 @@ impl<I: Default> Default for ImageLabel<I> {
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 #[derive(Default)]
-pub struct ImportSession<I> {
-    superclass: Instance<I>,
+pub struct ImportSession {
+    superclass: Instance,
 }
-impl_inherits!(ImportSession<I>, Instance<I>);
+impl_inherits!(ImportSession, Instance);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
-pub struct IncrementalPatchBuilder<I> {
-    superclass: Instance<I>,
+pub struct IncrementalPatchBuilder {
+    superclass: Instance,
     pub AddPathsToBundle: bool,
     pub BuildDebouncePeriod: f64,
     pub HighCompression: bool,
@@ -8130,8 +8130,8 @@ pub struct IncrementalPatchBuilder<I> {
     pub UseFileLevelCompressionInsteadOfChunk: bool,
     pub ZstdCompression: bool,
 }
-impl_inherits!(IncrementalPatchBuilder<I>, Instance<I>);
-impl<I: Default> Default for IncrementalPatchBuilder<I> {
+impl_inherits!(IncrementalPatchBuilder, Instance);
+impl Default for IncrementalPatchBuilder {
     fn default() -> Self {
         let superclass = Object::default();
         let superclass = Instance {
@@ -8156,13 +8156,13 @@ impl<I: Default> Default for IncrementalPatchBuilder<I> {
 }
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
-pub struct InputAction<I> {
-    superclass: Instance<I>,
+pub struct InputAction {
+    superclass: Instance,
     pub Enabled: bool,
     pub Type: enums::InputActionType,
 }
-impl_inherits!(InputAction<I>, Instance<I>);
-impl<I: Default> Default for InputAction<I> {
+impl_inherits!(InputAction, Instance);
+impl Default for InputAction {
     fn default() -> Self {
         let superclass = Object::default();
         let superclass = Instance {
@@ -8183,8 +8183,8 @@ impl<I: Default> Default for InputAction<I> {
 }
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
-pub struct InputBinding<I> {
-    superclass: Instance<I>,
+pub struct InputBinding {
+    superclass: Instance,
     pub Backward: enums::KeyCode,
     pub Down: enums::KeyCode,
     pub Forward: enums::KeyCode,
@@ -8199,8 +8199,8 @@ pub struct InputBinding<I> {
     pub Up: enums::KeyCode,
     pub Vector2Scale: Vector2,
 }
-impl_inherits!(InputBinding<I>, Instance<I>);
-impl<I: Default> Default for InputBinding<I> {
+impl_inherits!(InputBinding, Instance);
+impl Default for InputBinding {
     fn default() -> Self {
         let superclass = Object::default();
         let superclass = Instance {
@@ -8232,14 +8232,14 @@ impl<I: Default> Default for InputBinding<I> {
 }
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
-pub struct InputContext<I> {
-    superclass: Instance<I>,
+pub struct InputContext {
+    superclass: Instance,
     pub Enabled: bool,
     pub Priority: i32,
     pub Sink: bool,
 }
-impl_inherits!(InputContext<I>, Instance<I>);
-impl<I: Default> Default for InputContext<I> {
+impl_inherits!(InputContext, Instance);
+impl Default for InputContext {
     fn default() -> Self {
         let superclass = Object::default();
         let superclass = Instance {
@@ -8262,19 +8262,19 @@ impl<I: Default> Default for InputContext<I> {
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 #[derive(Default)]
-pub struct InputObject<I> {
-    superclass: Instance<I>,
+pub struct InputObject {
+    superclass: Instance,
 }
-impl_inherits!(InputObject<I>, Instance<I>);
+impl_inherits!(InputObject, Instance);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
-pub struct InsertService<I> {
-    superclass: Instance<I>,
+pub struct InsertService {
+    superclass: Instance,
     pub AllowClientInsertModels: bool,
     pub AllowInsertFreeModels: bool,
 }
-impl_inherits!(InsertService<I>, Instance<I>);
-impl<I: Default> Default for InsertService<I> {
+impl_inherits!(InsertService, Instance);
+impl Default for InsertService {
     fn default() -> Self {
         let superclass = Object::default();
         let superclass = Instance {
@@ -8295,8 +8295,8 @@ impl<I: Default> Default for InsertService<I> {
 }
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
-pub struct Instance<I> {
-    superclass: Object<I>,
+pub struct Instance {
+    superclass: Object,
     pub Capabilities: SecurityCapabilities,
     pub HistoryId: UniqueId,
     pub Name: String,
@@ -8304,8 +8304,8 @@ pub struct Instance<I> {
     pub Tags: Tags,
     pub UniqueId: UniqueId,
 }
-impl_inherits!(Instance<I>, Object<I>);
-impl<I: Default> Default for Instance<I> {
+impl_inherits!(Instance, Object);
+impl Default for Instance {
     fn default() -> Self {
         let superclass = Object::default();
         Self {
@@ -8321,12 +8321,12 @@ impl<I: Default> Default for Instance<I> {
 }
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
-pub struct InstanceAdornment<I> {
-    superclass: GuiBase3d<I>,
+pub struct InstanceAdornment {
+    superclass: GuiBase3d,
     pub Adornee: Ref,
 }
-impl_inherits!(InstanceAdornment<I>, GuiBase3d<I>);
-impl<I: Default> Default for InstanceAdornment<I> {
+impl_inherits!(InstanceAdornment, GuiBase3d);
+impl Default for InstanceAdornment {
     fn default() -> Self {
         let superclass = Object::default();
         let superclass = Instance {
@@ -8354,20 +8354,20 @@ impl<I: Default> Default for InstanceAdornment<I> {
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 #[derive(Default)]
-pub struct InstanceExtensionsService<I> {
-    superclass: Instance<I>,
+pub struct InstanceExtensionsService {
+    superclass: Instance,
 }
-impl_inherits!(InstanceExtensionsService<I>, Instance<I>);
+impl_inherits!(InstanceExtensionsService, Instance);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
-pub struct IntConstrainedValue<I> {
-    superclass: ValueBase<I>,
+pub struct IntConstrainedValue {
+    superclass: ValueBase,
     pub MaxValue: i64,
     pub MinValue: i64,
     pub Value: i64,
 }
-impl_inherits!(IntConstrainedValue<I>, ValueBase<I>);
-impl<I: Default> Default for IntConstrainedValue<I> {
+impl_inherits!(IntConstrainedValue, ValueBase);
+impl Default for IntConstrainedValue {
     fn default() -> Self {
         let superclass = Object::default();
         let superclass = Instance {
@@ -8390,12 +8390,12 @@ impl<I: Default> Default for IntConstrainedValue<I> {
 }
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
-pub struct IntValue<I> {
-    superclass: ValueBase<I>,
+pub struct IntValue {
+    superclass: ValueBase,
     pub Value: i64,
 }
-impl_inherits!(IntValue<I>, ValueBase<I>);
-impl<I: Default> Default for IntValue<I> {
+impl_inherits!(IntValue, ValueBase);
+impl Default for IntValue {
     fn default() -> Self {
         let superclass = Object::default();
         let superclass = Instance {
@@ -8416,14 +8416,14 @@ impl<I: Default> Default for IntValue<I> {
 }
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
-pub struct InternalSyncItem<I> {
-    superclass: Instance<I>,
+pub struct InternalSyncItem {
+    superclass: Instance,
     pub AutoSync: bool,
     pub Enabled: bool,
     pub Path: String,
 }
-impl_inherits!(InternalSyncItem<I>, Instance<I>);
-impl<I: Default> Default for InternalSyncItem<I> {
+impl_inherits!(InternalSyncItem, Instance);
+impl Default for InternalSyncItem {
     fn default() -> Self {
         let superclass = Object::default();
         let superclass = Instance {
@@ -8446,43 +8446,43 @@ impl<I: Default> Default for InternalSyncItem<I> {
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 #[derive(Default)]
-pub struct InternalSyncService<I> {
-    superclass: Instance<I>,
+pub struct InternalSyncService {
+    superclass: Instance,
 }
-impl_inherits!(InternalSyncService<I>, Instance<I>);
+impl_inherits!(InternalSyncService, Instance);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 #[derive(Default)]
-pub struct IntersectOperation<I> {
-    superclass: PartOperation<I>,
+pub struct IntersectOperation {
+    superclass: PartOperation,
 }
-impl_inherits!(IntersectOperation<I>, PartOperation<I>);
+impl_inherits!(IntersectOperation, PartOperation);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 #[derive(Default)]
-pub struct InventoryPages<I> {
-    superclass: Pages<I>,
+pub struct InventoryPages {
+    superclass: Pages,
 }
-impl_inherits!(InventoryPages<I>, Pages<I>);
+impl_inherits!(InventoryPages, Pages);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 #[derive(Default)]
-pub struct JointImportData<I> {
-    superclass: BaseImportData<I>,
+pub struct JointImportData {
+    superclass: BaseImportData,
 }
-impl_inherits!(JointImportData<I>, BaseImportData<I>);
+impl_inherits!(JointImportData, BaseImportData);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
-pub struct JointInstance<I> {
-    superclass: Instance<I>,
+pub struct JointInstance {
+    superclass: Instance,
     pub C0: CFrame,
     pub C1: CFrame,
     pub Enabled: bool,
     pub Part0: Ref,
     pub Part1: Ref,
 }
-impl_inherits!(JointInstance<I>, Instance<I>);
-impl<I: Default> Default for JointInstance<I> {
+impl_inherits!(JointInstance, Instance);
+impl Default for JointInstance {
     fn default() -> Self {
         let superclass = Object::default();
         let superclass = Instance {
@@ -8507,25 +8507,25 @@ impl<I: Default> Default for JointInstance<I> {
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 #[derive(Default)]
-pub struct JointsService<I> {
-    superclass: Instance<I>,
+pub struct JointsService {
+    superclass: Instance,
 }
-impl_inherits!(JointsService<I>, Instance<I>);
+impl_inherits!(JointsService, Instance);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 #[derive(Default)]
-pub struct KeyboardService<I> {
-    superclass: Instance<I>,
+pub struct KeyboardService {
+    superclass: Instance,
 }
-impl_inherits!(KeyboardService<I>, Instance<I>);
+impl_inherits!(KeyboardService, Instance);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
-pub struct Keyframe<I> {
-    superclass: Instance<I>,
+pub struct Keyframe {
+    superclass: Instance,
     pub Time: f32,
 }
-impl_inherits!(Keyframe<I>, Instance<I>);
-impl<I: Default> Default for Keyframe<I> {
+impl_inherits!(Keyframe, Instance);
+impl Default for Keyframe {
     fn default() -> Self {
         let superclass = Object::default();
         let superclass = Instance {
@@ -8545,12 +8545,12 @@ impl<I: Default> Default for Keyframe<I> {
 }
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
-pub struct KeyframeMarker<I> {
-    superclass: Instance<I>,
+pub struct KeyframeMarker {
+    superclass: Instance,
     pub Value: String,
 }
-impl_inherits!(KeyframeMarker<I>, Instance<I>);
-impl<I: Default> Default for KeyframeMarker<I> {
+impl_inherits!(KeyframeMarker, Instance);
+impl Default for KeyframeMarker {
     fn default() -> Self {
         let superclass = Object::default();
         let superclass = Instance {
@@ -8570,12 +8570,12 @@ impl<I: Default> Default for KeyframeMarker<I> {
 }
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
-pub struct KeyframeSequence<I> {
-    superclass: AnimationClip<I>,
+pub struct KeyframeSequence {
+    superclass: AnimationClip,
     pub AuthoredHipHeight: f32,
 }
-impl_inherits!(KeyframeSequence<I>, AnimationClip<I>);
-impl<I: Default> Default for KeyframeSequence<I> {
+impl_inherits!(KeyframeSequence, AnimationClip);
+impl Default for KeyframeSequence {
     fn default() -> Self {
         let superclass = Object::default();
         let superclass = Instance {
@@ -8602,34 +8602,34 @@ impl<I: Default> Default for KeyframeSequence<I> {
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 #[derive(Default)]
-pub struct KeyframeSequenceProvider<I> {
-    superclass: Instance<I>,
+pub struct KeyframeSequenceProvider {
+    superclass: Instance,
 }
-impl_inherits!(KeyframeSequenceProvider<I>, Instance<I>);
+impl_inherits!(KeyframeSequenceProvider, Instance);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 #[derive(Default)]
-pub struct LSPFileSyncService<I> {
-    superclass: Instance<I>,
+pub struct LSPFileSyncService {
+    superclass: Instance,
 }
-impl_inherits!(LSPFileSyncService<I>, Instance<I>);
+impl_inherits!(LSPFileSyncService, Instance);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 #[derive(Default)]
-pub struct LanguageService<I> {
-    superclass: Instance<I>,
+pub struct LanguageService {
+    superclass: Instance,
 }
-impl_inherits!(LanguageService<I>, Instance<I>);
+impl_inherits!(LanguageService, Instance);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
-pub struct LayerCollector<I> {
-    superclass: GuiBase2d<I>,
+pub struct LayerCollector {
+    superclass: GuiBase2d,
     pub Enabled: bool,
     pub ResetOnSpawn: bool,
     pub ZIndexBehavior: enums::ZIndexBehavior,
 }
-impl_inherits!(LayerCollector<I>, GuiBase2d<I>);
-impl<I: Default> Default for LayerCollector<I> {
+impl_inherits!(LayerCollector, GuiBase2d);
+impl Default for LayerCollector {
     fn default() -> Self {
         let superclass = Object::default();
         let superclass = Instance {
@@ -8663,21 +8663,21 @@ impl<I: Default> Default for LayerCollector<I> {
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 #[derive(Default)]
-pub struct LegacyStudioBridge<I> {
-    superclass: ILegacyStudioBridge<I>,
+pub struct LegacyStudioBridge {
+    superclass: ILegacyStudioBridge,
 }
-impl_inherits!(LegacyStudioBridge<I>, ILegacyStudioBridge<I>);
+impl_inherits!(LegacyStudioBridge, ILegacyStudioBridge);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
-pub struct Light<I> {
-    superclass: Instance<I>,
+pub struct Light {
+    superclass: Instance,
     pub Brightness: f32,
     pub Color: Color3,
     pub Enabled: bool,
     pub Shadows: bool,
 }
-impl_inherits!(Light<I>, Instance<I>);
-impl<I: Default> Default for Light<I> {
+impl_inherits!(Light, Instance);
+impl Default for Light {
     fn default() -> Self {
         let superclass = Object::default();
         let superclass = Instance {
@@ -8700,8 +8700,8 @@ impl<I: Default> Default for Light<I> {
 }
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
-pub struct Lighting<I> {
-    superclass: Instance<I>,
+pub struct Lighting {
+    superclass: Instance,
     pub Ambient: Color3,
     pub Brightness: f32,
     pub ClockTime: f32,
@@ -8724,8 +8724,8 @@ pub struct Lighting<I> {
     pub Technology: enums::Technology,
     pub TimeOfDay: String,
 }
-impl_inherits!(Lighting<I>, Instance<I>);
-impl<I: Default> Default for Lighting<I> {
+impl_inherits!(Lighting, Instance);
+impl Default for Lighting {
     fn default() -> Self {
         let superclass = Object::default();
         let superclass = Instance {
@@ -8765,16 +8765,16 @@ impl<I: Default> Default for Lighting<I> {
 }
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
-pub struct LineForce<I> {
-    superclass: Constraint<I>,
+pub struct LineForce {
+    superclass: Constraint,
     pub ApplyAtCenterOfMass: bool,
     pub InverseSquareLaw: bool,
     pub Magnitude: f32,
     pub MaxForce: f32,
     pub ReactionForceEnabled: bool,
 }
-impl_inherits!(LineForce<I>, Constraint<I>);
-impl<I: Default> Default for LineForce<I> {
+impl_inherits!(LineForce, Constraint);
+impl Default for LineForce {
     fn default() -> Self {
         let superclass = Object::default();
         let superclass = Instance {
@@ -8806,13 +8806,13 @@ impl<I: Default> Default for LineForce<I> {
 }
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
-pub struct LineHandleAdornment<I> {
-    superclass: HandleAdornment<I>,
+pub struct LineHandleAdornment {
+    superclass: HandleAdornment,
     pub Length: f32,
     pub Thickness: f32,
 }
-impl_inherits!(LineHandleAdornment<I>, HandleAdornment<I>);
-impl<I: Default> Default for LineHandleAdornment<I> {
+impl_inherits!(LineHandleAdornment, HandleAdornment);
+impl Default for LineHandleAdornment {
     fn default() -> Self {
         let superclass = Object::default();
         let superclass = Instance {
@@ -8852,8 +8852,8 @@ impl<I: Default> Default for LineHandleAdornment<I> {
 }
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
-pub struct LinearVelocity<I> {
-    superclass: Constraint<I>,
+pub struct LinearVelocity {
+    superclass: Constraint,
     pub ForceLimitMode: enums::ForceLimitMode,
     pub ForceLimitsEnabled: bool,
     pub LineDirection: Vector3,
@@ -8869,8 +8869,8 @@ pub struct LinearVelocity<I> {
     pub VectorVelocity: Vector3,
     pub VelocityConstraintMode: enums::VelocityConstraintMode,
 }
-impl_inherits!(LinearVelocity<I>, Constraint<I>);
-impl<I: Default> Default for LinearVelocity<I> {
+impl_inherits!(LinearVelocity, Constraint);
+impl Default for LinearVelocity {
     fn default() -> Self {
         let superclass = Object::default();
         let superclass = Instance {
@@ -8912,61 +8912,61 @@ impl<I: Default> Default for LinearVelocity<I> {
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 #[derive(Default)]
-pub struct LinkingService<I> {
-    superclass: Instance<I>,
+pub struct LinkingService {
+    superclass: Instance,
 }
-impl_inherits!(LinkingService<I>, Instance<I>);
+impl_inherits!(LinkingService, Instance);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 #[derive(Default)]
-pub struct LiveScriptingService<I> {
-    superclass: Instance<I>,
+pub struct LiveScriptingService {
+    superclass: Instance,
 }
-impl_inherits!(LiveScriptingService<I>, Instance<I>);
+impl_inherits!(LiveScriptingService, Instance);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 #[derive(Default)]
-pub struct LiveSyncService<I> {
-    superclass: Instance<I>,
+pub struct LiveSyncService {
+    superclass: Instance,
 }
-impl_inherits!(LiveSyncService<I>, Instance<I>);
+impl_inherits!(LiveSyncService, Instance);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 #[derive(Default)]
-pub struct LocalDebuggerConnection<I> {
-    superclass: DebuggerConnection<I>,
+pub struct LocalDebuggerConnection {
+    superclass: DebuggerConnection,
 }
-impl_inherits!(LocalDebuggerConnection<I>, DebuggerConnection<I>);
+impl_inherits!(LocalDebuggerConnection, DebuggerConnection);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 #[derive(Default)]
-pub struct LocalScript<I> {
-    superclass: Script<I>,
+pub struct LocalScript {
+    superclass: Script,
 }
-impl_inherits!(LocalScript<I>, Script<I>);
+impl_inherits!(LocalScript, Script);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 #[derive(Default)]
-pub struct LocalStorageService<I> {
-    superclass: Instance<I>,
+pub struct LocalStorageService {
+    superclass: Instance,
 }
-impl_inherits!(LocalStorageService<I>, Instance<I>);
+impl_inherits!(LocalStorageService, Instance);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 #[derive(Default)]
-pub struct LocalizationService<I> {
-    superclass: Instance<I>,
+pub struct LocalizationService {
+    superclass: Instance,
 }
-impl_inherits!(LocalizationService<I>, Instance<I>);
+impl_inherits!(LocalizationService, Instance);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
-pub struct LocalizationTable<I> {
-    superclass: Instance<I>,
+pub struct LocalizationTable {
+    superclass: Instance,
     pub Contents: String,
     pub SourceLocaleId: String,
 }
-impl_inherits!(LocalizationTable<I>, Instance<I>);
-impl<I: Default> Default for LocalizationTable<I> {
+impl_inherits!(LocalizationTable, Instance);
+impl Default for LocalizationTable {
     fn default() -> Self {
         let superclass = Object::default();
         let superclass = Instance {
@@ -8988,53 +8988,53 @@ impl<I: Default> Default for LocalizationTable<I> {
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 #[derive(Default)]
-pub struct LodDataEntity<I> {
-    superclass: Instance<I>,
+pub struct LodDataEntity {
+    superclass: Instance,
 }
-impl_inherits!(LodDataEntity<I>, Instance<I>);
+impl_inherits!(LodDataEntity, Instance);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 #[derive(Default)]
-pub struct LodDataService<I> {
-    superclass: Instance<I>,
+pub struct LodDataService {
+    superclass: Instance,
 }
-impl_inherits!(LodDataService<I>, Instance<I>);
+impl_inherits!(LodDataService, Instance);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 #[derive(Default)]
-pub struct LogReporterService<I> {
-    superclass: Instance<I>,
+pub struct LogReporterService {
+    superclass: Instance,
 }
-impl_inherits!(LogReporterService<I>, Instance<I>);
+impl_inherits!(LogReporterService, Instance);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 #[derive(Default)]
-pub struct LogService<I> {
-    superclass: Instance<I>,
+pub struct LogService {
+    superclass: Instance,
 }
-impl_inherits!(LogService<I>, Instance<I>);
+impl_inherits!(LogService, Instance);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 #[derive(Default)]
-pub struct LoginService<I> {
-    superclass: Instance<I>,
+pub struct LoginService {
+    superclass: Instance,
 }
-impl_inherits!(LoginService<I>, Instance<I>);
+impl_inherits!(LoginService, Instance);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 #[derive(Default)]
-pub struct LuaSettings<I> {
-    superclass: Instance<I>,
+pub struct LuaSettings {
+    superclass: Instance,
 }
-impl_inherits!(LuaSettings<I>, Instance<I>);
+impl_inherits!(LuaSettings, Instance);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
-pub struct LuaSourceContainer<I> {
-    superclass: Instance<I>,
+pub struct LuaSourceContainer {
+    superclass: Instance,
     pub ScriptGuid: String,
 }
-impl_inherits!(LuaSourceContainer<I>, Instance<I>);
-impl<I: Default> Default for LuaSourceContainer<I> {
+impl_inherits!(LuaSourceContainer, Instance);
+impl Default for LuaSourceContainer {
     fn default() -> Self {
         let superclass = Object::default();
         let superclass = Instance {
@@ -9055,67 +9055,67 @@ impl<I: Default> Default for LuaSourceContainer<I> {
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 #[derive(Default)]
-pub struct LuaWebService<I> {
-    superclass: Instance<I>,
+pub struct LuaWebService {
+    superclass: Instance,
 }
-impl_inherits!(LuaWebService<I>, Instance<I>);
+impl_inherits!(LuaWebService, Instance);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 #[derive(Default)]
-pub struct LuauScriptAnalyzerService<I> {
-    superclass: Instance<I>,
+pub struct LuauScriptAnalyzerService {
+    superclass: Instance,
 }
-impl_inherits!(LuauScriptAnalyzerService<I>, Instance<I>);
+impl_inherits!(LuauScriptAnalyzerService, Instance);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 #[derive(Default)]
-pub struct MLModelDeliveryService<I> {
-    superclass: Instance<I>,
+pub struct MLModelDeliveryService {
+    superclass: Instance,
 }
-impl_inherits!(MLModelDeliveryService<I>, Instance<I>);
+impl_inherits!(MLModelDeliveryService, Instance);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 #[derive(Default)]
-pub struct MLService<I> {
-    superclass: Instance<I>,
+pub struct MLService {
+    superclass: Instance,
 }
-impl_inherits!(MLService<I>, Instance<I>);
+impl_inherits!(MLService, Instance);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 #[derive(Default)]
-pub struct MLSession<I> {
-    superclass: Object<I>,
+pub struct MLSession {
+    superclass: Object,
 }
-impl_inherits!(MLSession<I>, Object<I>);
+impl_inherits!(MLSession, Object);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 #[derive(Default)]
-pub struct ManualGlue<I> {
-    superclass: ManualSurfaceJointInstance<I>,
+pub struct ManualGlue {
+    superclass: ManualSurfaceJointInstance,
 }
-impl_inherits!(ManualGlue<I>, ManualSurfaceJointInstance<I>);
+impl_inherits!(ManualGlue, ManualSurfaceJointInstance);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 #[derive(Default)]
-pub struct ManualSurfaceJointInstance<I> {
-    superclass: JointInstance<I>,
+pub struct ManualSurfaceJointInstance {
+    superclass: JointInstance,
 }
-impl_inherits!(ManualSurfaceJointInstance<I>, JointInstance<I>);
+impl_inherits!(ManualSurfaceJointInstance, JointInstance);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 #[derive(Default)]
-pub struct ManualWeld<I> {
-    superclass: ManualSurfaceJointInstance<I>,
+pub struct ManualWeld {
+    superclass: ManualSurfaceJointInstance,
 }
-impl_inherits!(ManualWeld<I>, ManualSurfaceJointInstance<I>);
+impl_inherits!(ManualWeld, ManualSurfaceJointInstance);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
-pub struct MarkerCurve<I> {
-    superclass: Instance<I>,
+pub struct MarkerCurve {
+    superclass: Instance,
     pub ValuesAndTimes: BinaryString,
 }
-impl_inherits!(MarkerCurve<I>, Instance<I>);
-impl<I: Default> Default for MarkerCurve<I> {
+impl_inherits!(MarkerCurve, Instance);
+impl Default for MarkerCurve {
     fn default() -> Self {
         let superclass = Object::default();
         let superclass = Instance {
@@ -9136,36 +9136,36 @@ impl<I: Default> Default for MarkerCurve<I> {
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 #[derive(Default)]
-pub struct MarketplaceService<I> {
-    superclass: Instance<I>,
+pub struct MarketplaceService {
+    superclass: Instance,
 }
-impl_inherits!(MarketplaceService<I>, Instance<I>);
+impl_inherits!(MarketplaceService, Instance);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 #[derive(Default)]
-pub struct MatchmakingService<I> {
-    superclass: Instance<I>,
+pub struct MatchmakingService {
+    superclass: Instance,
 }
-impl_inherits!(MatchmakingService<I>, Instance<I>);
+impl_inherits!(MatchmakingService, Instance);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 #[derive(Default)]
-pub struct MaterialGenerationService<I> {
-    superclass: Instance<I>,
+pub struct MaterialGenerationService {
+    superclass: Instance,
 }
-impl_inherits!(MaterialGenerationService<I>, Instance<I>);
+impl_inherits!(MaterialGenerationService, Instance);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
-pub struct MaterialImportData<I> {
-    superclass: BaseImportData<I>,
+pub struct MaterialImportData {
+    superclass: BaseImportData,
     pub DiffuseFilePath: String,
     pub EmissiveFilePath: String,
     pub MetalnessFilePath: String,
     pub NormalFilePath: String,
     pub RoughnessFilePath: String,
 }
-impl_inherits!(MaterialImportData<I>, BaseImportData<I>);
-impl<I: Default> Default for MaterialImportData<I> {
+impl_inherits!(MaterialImportData, BaseImportData);
+impl Default for MaterialImportData {
     fn default() -> Self {
         let superclass = Object::default();
         let superclass = Instance {
@@ -9194,8 +9194,8 @@ impl<I: Default> Default for MaterialImportData<I> {
 }
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
-pub struct MaterialService<I> {
-    superclass: Instance<I>,
+pub struct MaterialService {
+    superclass: Instance,
     pub AsphaltName: String,
     pub BasaltName: String,
     pub BrickName: String,
@@ -9238,8 +9238,8 @@ pub struct MaterialService<I> {
     pub WoodName: String,
     pub WoodPlanksName: String,
 }
-impl_inherits!(MaterialService<I>, Instance<I>);
-impl<I: Default> Default for MaterialService<I> {
+impl_inherits!(MaterialService, Instance);
+impl Default for MaterialService {
     fn default() -> Self {
         let superclass = Object::default();
         let superclass = Instance {
@@ -9299,8 +9299,8 @@ impl<I: Default> Default for MaterialService<I> {
 }
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
-pub struct MaterialVariant<I> {
-    superclass: Instance<I>,
+pub struct MaterialVariant {
+    superclass: Instance,
     pub BaseMaterial: enums::Material,
     pub ColorMapContent: Content,
     pub CustomPhysicalProperties: PhysicalProperties,
@@ -9314,8 +9314,8 @@ pub struct MaterialVariant<I> {
     pub StudsPerTile: f32,
     pub TexturePack: ContentId,
 }
-impl_inherits!(MaterialVariant<I>, Instance<I>);
-impl<I: Default> Default for MaterialVariant<I> {
+impl_inherits!(MaterialVariant, Instance);
+impl Default for MaterialVariant {
     fn default() -> Self {
         let superclass = Object::default();
         let superclass = Instance {
@@ -9347,63 +9347,63 @@ impl<I: Default> Default for MaterialVariant<I> {
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 #[derive(Default)]
-pub struct MemStorageConnection<I> {
-    superclass: Instance<I>,
+pub struct MemStorageConnection {
+    superclass: Instance,
 }
-impl_inherits!(MemStorageConnection<I>, Instance<I>);
+impl_inherits!(MemStorageConnection, Instance);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 #[derive(Default)]
-pub struct MemStorageService<I> {
-    superclass: Instance<I>,
+pub struct MemStorageService {
+    superclass: Instance,
 }
-impl_inherits!(MemStorageService<I>, Instance<I>);
+impl_inherits!(MemStorageService, Instance);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 #[derive(Default)]
-pub struct MemoryStoreHashMap<I> {
-    superclass: Instance<I>,
+pub struct MemoryStoreHashMap {
+    superclass: Instance,
 }
-impl_inherits!(MemoryStoreHashMap<I>, Instance<I>);
+impl_inherits!(MemoryStoreHashMap, Instance);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 #[derive(Default)]
-pub struct MemoryStoreHashMapPages<I> {
-    superclass: Pages<I>,
+pub struct MemoryStoreHashMapPages {
+    superclass: Pages,
 }
-impl_inherits!(MemoryStoreHashMapPages<I>, Pages<I>);
+impl_inherits!(MemoryStoreHashMapPages, Pages);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 #[derive(Default)]
-pub struct MemoryStoreQueue<I> {
-    superclass: Instance<I>,
+pub struct MemoryStoreQueue {
+    superclass: Instance,
 }
-impl_inherits!(MemoryStoreQueue<I>, Instance<I>);
+impl_inherits!(MemoryStoreQueue, Instance);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 #[derive(Default)]
-pub struct MemoryStoreService<I> {
-    superclass: Instance<I>,
+pub struct MemoryStoreService {
+    superclass: Instance,
 }
-impl_inherits!(MemoryStoreService<I>, Instance<I>);
+impl_inherits!(MemoryStoreService, Instance);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 #[derive(Default)]
-pub struct MemoryStoreSortedMap<I> {
-    superclass: Instance<I>,
+pub struct MemoryStoreSortedMap {
+    superclass: Instance,
 }
-impl_inherits!(MemoryStoreSortedMap<I>, Instance<I>);
+impl_inherits!(MemoryStoreSortedMap, Instance);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 #[derive(Default)]
-pub struct MeshContentProvider<I> {
-    superclass: CacheableContentProvider<I>,
+pub struct MeshContentProvider {
+    superclass: CacheableContentProvider,
 }
-impl_inherits!(MeshContentProvider<I>, CacheableContentProvider<I>);
+impl_inherits!(MeshContentProvider, CacheableContentProvider);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
-pub struct MeshImportData<I> {
-    superclass: BaseImportData<I>,
+pub struct MeshImportData {
+    superclass: BaseImportData,
     pub Anchored: bool,
     pub CageMeshIntersectedPreview: bool,
     pub CageNonManifoldPreview: bool,
@@ -9416,8 +9416,8 @@ pub struct MeshImportData<I> {
     pub OuterCageFarExtendedFromMeshPreview: bool,
     pub UseImportedPivot: bool,
 }
-impl_inherits!(MeshImportData<I>, BaseImportData<I>);
-impl<I: Default> Default for MeshImportData<I> {
+impl_inherits!(MeshImportData, BaseImportData);
+impl Default for MeshImportData {
     fn default() -> Self {
         let superclass = Object::default();
         let superclass = Instance {
@@ -9452,8 +9452,8 @@ impl<I: Default> Default for MeshImportData<I> {
 }
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
-pub struct MeshPart<I> {
-    superclass: TriangleMeshPart<I>,
+pub struct MeshPart {
+    superclass: TriangleMeshPart,
     pub DoubleSided: bool,
     pub HasJointOffset: bool,
     pub HasSkinnedMesh: bool,
@@ -9465,8 +9465,8 @@ pub struct MeshPart<I> {
     pub TextureContent: Content,
     pub VertexCount: i32,
 }
-impl_inherits!(MeshPart<I>, TriangleMeshPart<I>);
-impl<I: Default> Default for MeshPart<I> {
+impl_inherits!(MeshPart, TriangleMeshPart);
+impl Default for MeshPart {
     fn default() -> Self {
         let superclass = Object::default();
         let superclass = Instance {
@@ -9558,12 +9558,12 @@ impl<I: Default> Default for MeshPart<I> {
 }
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
-pub struct Message<I> {
-    superclass: Instance<I>,
+pub struct Message {
+    superclass: Instance,
     pub Text: String,
 }
-impl_inherits!(Message<I>, Instance<I>);
-impl<I: Default> Default for Message<I> {
+impl_inherits!(Message, Instance);
+impl Default for Message {
     fn default() -> Self {
         let superclass = Object::default();
         let superclass = Instance {
@@ -9584,28 +9584,28 @@ impl<I: Default> Default for Message<I> {
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 #[derive(Default)]
-pub struct MessageBusConnection<I> {
-    superclass: Instance<I>,
+pub struct MessageBusConnection {
+    superclass: Instance,
 }
-impl_inherits!(MessageBusConnection<I>, Instance<I>);
+impl_inherits!(MessageBusConnection, Instance);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 #[derive(Default)]
-pub struct MessageBusService<I> {
-    superclass: Instance<I>,
+pub struct MessageBusService {
+    superclass: Instance,
 }
-impl_inherits!(MessageBusService<I>, Instance<I>);
+impl_inherits!(MessageBusService, Instance);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 #[derive(Default)]
-pub struct MessagingService<I> {
-    superclass: Instance<I>,
+pub struct MessagingService {
+    superclass: Instance,
 }
-impl_inherits!(MessagingService<I>, Instance<I>);
+impl_inherits!(MessagingService, Instance);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
-pub struct MetaBreakpoint<I> {
-    superclass: Instance<I>,
+pub struct MetaBreakpoint {
+    superclass: Instance,
     pub Condition: String,
     pub ContinueExecution: bool,
     pub Enabled: bool,
@@ -9614,8 +9614,8 @@ pub struct MetaBreakpoint<I> {
     pub RemoveOnHit: bool,
     pub Script: String,
 }
-impl_inherits!(MetaBreakpoint<I>, Instance<I>);
-impl<I: Default> Default for MetaBreakpoint<I> {
+impl_inherits!(MetaBreakpoint, Instance);
+impl Default for MetaBreakpoint {
     fn default() -> Self {
         let superclass = Object::default();
         let superclass = Instance {
@@ -9641,12 +9641,12 @@ impl<I: Default> Default for MetaBreakpoint<I> {
 }
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
-pub struct MetaBreakpointContext<I> {
-    superclass: Instance<I>,
+pub struct MetaBreakpointContext {
+    superclass: Instance,
     pub ContextDataInternal: String,
 }
-impl_inherits!(MetaBreakpointContext<I>, Instance<I>);
-impl<I: Default> Default for MetaBreakpointContext<I> {
+impl_inherits!(MetaBreakpointContext, Instance);
+impl Default for MetaBreakpointContext {
     fn default() -> Self {
         let superclass = Object::default();
         let superclass = Instance {
@@ -9667,18 +9667,18 @@ impl<I: Default> Default for MetaBreakpointContext<I> {
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 #[derive(Default)]
-pub struct MetaBreakpointManager<I> {
-    superclass: Instance<I>,
+pub struct MetaBreakpointManager {
+    superclass: Instance,
 }
-impl_inherits!(MetaBreakpointManager<I>, Instance<I>);
+impl_inherits!(MetaBreakpointManager, Instance);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
-pub struct MicroProfilerService<I> {
-    superclass: Instance<I>,
+pub struct MicroProfilerService {
+    superclass: Instance,
     pub ContextLabel: String,
 }
-impl_inherits!(MicroProfilerService<I>, Instance<I>);
-impl<I: Default> Default for MicroProfilerService<I> {
+impl_inherits!(MicroProfilerService, Instance);
+impl Default for MicroProfilerService {
     fn default() -> Self {
         let superclass = Object::default();
         let superclass = Instance {
@@ -9698,8 +9698,8 @@ impl<I: Default> Default for MicroProfilerService<I> {
 }
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
-pub struct Model<I> {
-    superclass: PVInstance<I>,
+pub struct Model {
+    superclass: PVInstance,
     pub LevelOfDetail: enums::ModelLevelOfDetail,
     pub ModelMeshCFrame: CFrame,
     pub ModelMeshData: SharedString,
@@ -9710,8 +9710,8 @@ pub struct Model<I> {
     pub SlimHash: SharedString,
     pub WorldPivotData: Option<CFrame>,
 }
-impl_inherits!(Model<I>, PVInstance<I>);
-impl<I: Default> Default for Model<I> {
+impl_inherits!(Model, PVInstance);
+impl Default for Model {
     fn default() -> Self {
         let superclass = Object::default();
         let superclass = Instance {
@@ -9741,19 +9741,19 @@ impl<I: Default> Default for Model<I> {
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 #[derive(Default)]
-pub struct ModerationService<I> {
-    superclass: Instance<I>,
+pub struct ModerationService {
+    superclass: Instance,
 }
-impl_inherits!(ModerationService<I>, Instance<I>);
+impl_inherits!(ModerationService, Instance);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
-pub struct ModuleScript<I> {
-    superclass: LuaSourceContainer<I>,
+pub struct ModuleScript {
+    superclass: LuaSourceContainer,
     pub LinkedSource: ContentId,
     pub Source: String,
 }
-impl_inherits!(ModuleScript<I>, LuaSourceContainer<I>);
-impl<I: Default> Default for ModuleScript<I> {
+impl_inherits!(ModuleScript, LuaSourceContainer);
+impl Default for ModuleScript {
     fn default() -> Self {
         let superclass = Object::default();
         let superclass = Instance {
@@ -9778,13 +9778,13 @@ impl<I: Default> Default for ModuleScript<I> {
 }
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
-pub struct Motor<I> {
-    superclass: JointInstance<I>,
+pub struct Motor {
+    superclass: JointInstance,
     pub DesiredAngle: f32,
     pub MaxVelocity: f32,
 }
-impl_inherits!(Motor<I>, JointInstance<I>);
-impl<I: Default> Default for Motor<I> {
+impl_inherits!(Motor, JointInstance);
+impl Default for Motor {
     fn default() -> Self {
         let superclass = Object::default();
         let superclass = Instance {
@@ -9814,26 +9814,26 @@ impl<I: Default> Default for Motor<I> {
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 #[derive(Default)]
-pub struct Motor6D<I> {
-    superclass: Motor<I>,
+pub struct Motor6D {
+    superclass: Motor,
 }
-impl_inherits!(Motor6D<I>, Motor<I>);
+impl_inherits!(Motor6D, Motor);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 #[derive(Default)]
-pub struct MotorFeature<I> {
-    superclass: Feature<I>,
+pub struct MotorFeature {
+    superclass: Feature,
 }
-impl_inherits!(MotorFeature<I>, Feature<I>);
+impl_inherits!(MotorFeature, Feature);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
-pub struct Mouse<I> {
-    superclass: Instance<I>,
+pub struct Mouse {
+    superclass: Instance,
     pub IconContent: Content,
     pub TargetFilter: Ref,
 }
-impl_inherits!(Mouse<I>, Instance<I>);
-impl<I: Default> Default for Mouse<I> {
+impl_inherits!(Mouse, Instance);
+impl Default for Mouse {
     fn default() -> Self {
         let superclass = Object::default();
         let superclass = Instance {
@@ -9855,25 +9855,25 @@ impl<I: Default> Default for Mouse<I> {
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 #[derive(Default)]
-pub struct MouseService<I> {
-    superclass: Instance<I>,
+pub struct MouseService {
+    superclass: Instance,
 }
-impl_inherits!(MouseService<I>, Instance<I>);
+impl_inherits!(MouseService, Instance);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 #[derive(Default)]
-pub struct MultipleDocumentInterfaceInstance<I> {
-    superclass: Instance<I>,
+pub struct MultipleDocumentInterfaceInstance {
+    superclass: Instance,
 }
-impl_inherits!(MultipleDocumentInterfaceInstance<I>, Instance<I>);
+impl_inherits!(MultipleDocumentInterfaceInstance, Instance);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
-pub struct NegateOperation<I> {
-    superclass: PartOperation<I>,
+pub struct NegateOperation {
+    superclass: PartOperation,
     pub PreviousOperation: enums::NegateOperationHiddenHistory,
 }
-impl_inherits!(NegateOperation<I>, PartOperation<I>);
-impl<I: Default> Default for NegateOperation<I> {
+impl_inherits!(NegateOperation, PartOperation);
+impl Default for NegateOperation {
     fn default() -> Self {
         let superclass = Object::default();
         let superclass = Instance {
@@ -9970,42 +9970,42 @@ impl<I: Default> Default for NegateOperation<I> {
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 #[derive(Default)]
-pub struct NetworkClient<I> {
-    superclass: NetworkPeer<I>,
+pub struct NetworkClient {
+    superclass: NetworkPeer,
 }
-impl_inherits!(NetworkClient<I>, NetworkPeer<I>);
+impl_inherits!(NetworkClient, NetworkPeer);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 #[derive(Default)]
-pub struct NetworkMarker<I> {
-    superclass: Instance<I>,
+pub struct NetworkMarker {
+    superclass: Instance,
 }
-impl_inherits!(NetworkMarker<I>, Instance<I>);
+impl_inherits!(NetworkMarker, Instance);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 #[derive(Default)]
-pub struct NetworkPeer<I> {
-    superclass: Instance<I>,
+pub struct NetworkPeer {
+    superclass: Instance,
 }
-impl_inherits!(NetworkPeer<I>, Instance<I>);
+impl_inherits!(NetworkPeer, Instance);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 #[derive(Default)]
-pub struct NetworkReplicator<I> {
-    superclass: Instance<I>,
+pub struct NetworkReplicator {
+    superclass: Instance,
 }
-impl_inherits!(NetworkReplicator<I>, Instance<I>);
+impl_inherits!(NetworkReplicator, Instance);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 #[derive(Default)]
-pub struct NetworkServer<I> {
-    superclass: NetworkPeer<I>,
+pub struct NetworkServer {
+    superclass: NetworkPeer,
 }
-impl_inherits!(NetworkServer<I>, NetworkPeer<I>);
+impl_inherits!(NetworkServer, NetworkPeer);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
-pub struct NetworkSettings<I> {
-    superclass: Instance<I>,
+pub struct NetworkSettings {
+    superclass: Instance,
     pub HttpProxyEnabled: bool,
     pub HttpProxyUrl: String,
     pub IncomingReplicationLag: f64,
@@ -10016,8 +10016,8 @@ pub struct NetworkSettings<I> {
     pub RenderStreamedRegions: bool,
     pub ShowActiveAnimationAsset: bool,
 }
-impl_inherits!(NetworkSettings<I>, Instance<I>);
-impl<I: Default> Default for NetworkSettings<I> {
+impl_inherits!(NetworkSettings, Instance);
+impl Default for NetworkSettings {
     fn default() -> Self {
         let superclass = Object::default();
         let superclass = Instance {
@@ -10045,14 +10045,14 @@ impl<I: Default> Default for NetworkSettings<I> {
 }
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
-pub struct NoCollisionConstraint<I> {
-    superclass: Instance<I>,
+pub struct NoCollisionConstraint {
+    superclass: Instance,
     pub Enabled: bool,
     pub Part0: Ref,
     pub Part1: Ref,
 }
-impl_inherits!(NoCollisionConstraint<I>, Instance<I>);
-impl<I: Default> Default for NoCollisionConstraint<I> {
+impl_inherits!(NoCollisionConstraint, Instance);
+impl Default for NoCollisionConstraint {
     fn default() -> Self {
         let superclass = Object::default();
         let superclass = Instance {
@@ -10074,13 +10074,13 @@ impl<I: Default> Default for NoCollisionConstraint<I> {
 }
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
-pub struct Noise<I> {
-    superclass: Instance<I>,
+pub struct Noise {
+    superclass: Instance,
     pub NoiseType: enums::NoiseType,
     pub Seed: i32,
 }
-impl_inherits!(Noise<I>, Instance<I>);
-impl<I: Default> Default for Noise<I> {
+impl_inherits!(Noise, Instance);
+impl Default for Noise {
     fn default() -> Self {
         let superclass = Object::default();
         let superclass = Instance {
@@ -10102,25 +10102,25 @@ impl<I: Default> Default for Noise<I> {
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 #[derive(Default)]
-pub struct NonReplicatedCSGDictionaryService<I> {
-    superclass: FlyweightService<I>,
+pub struct NonReplicatedCSGDictionaryService {
+    superclass: FlyweightService,
 }
-impl_inherits!(NonReplicatedCSGDictionaryService<I>, FlyweightService<I>);
+impl_inherits!(NonReplicatedCSGDictionaryService, FlyweightService);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 #[derive(Default)]
-pub struct NotificationService<I> {
-    superclass: Instance<I>,
+pub struct NotificationService {
+    superclass: Instance,
 }
-impl_inherits!(NotificationService<I>, Instance<I>);
+impl_inherits!(NotificationService, Instance);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
-pub struct NumberPose<I> {
-    superclass: PoseBase<I>,
+pub struct NumberPose {
+    superclass: PoseBase,
     pub Value: f64,
 }
-impl_inherits!(NumberPose<I>, PoseBase<I>);
-impl<I: Default> Default for NumberPose<I> {
+impl_inherits!(NumberPose, PoseBase);
+impl Default for NumberPose {
     fn default() -> Self {
         let superclass = Object::default();
         let superclass = Instance {
@@ -10146,12 +10146,12 @@ impl<I: Default> Default for NumberPose<I> {
 }
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
-pub struct NumberValue<I> {
-    superclass: ValueBase<I>,
+pub struct NumberValue {
+    superclass: ValueBase,
     pub Value: f64,
 }
-impl_inherits!(NumberValue<I>, ValueBase<I>);
-impl<I: Default> Default for NumberValue<I> {
+impl_inherits!(NumberValue, ValueBase);
+impl Default for NumberValue {
     fn default() -> Self {
         let superclass = Object::default();
         let superclass = Instance {
@@ -10173,18 +10173,15 @@ impl<I: Default> Default for NumberValue<I> {
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 #[derive(Default)]
-pub struct Object<I> {
-    superclass: I,
-}
-impl_inherits!(Object<I>, I);
+pub struct Object {}
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
-pub struct ObjectValue<I> {
-    superclass: ValueBase<I>,
+pub struct ObjectValue {
+    superclass: ValueBase,
     pub Value: Ref,
 }
-impl_inherits!(ObjectValue<I>, ValueBase<I>);
-impl<I: Default> Default for ObjectValue<I> {
+impl_inherits!(ObjectValue, ValueBase);
+impl Default for ObjectValue {
     fn default() -> Self {
         let superclass = Object::default();
         let superclass = Instance {
@@ -10206,53 +10203,53 @@ impl<I: Default> Default for ObjectValue<I> {
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 #[derive(Default)]
-pub struct OmniRecommendationsService<I> {
-    superclass: Instance<I>,
+pub struct OmniRecommendationsService {
+    superclass: Instance,
 }
-impl_inherits!(OmniRecommendationsService<I>, Instance<I>);
+impl_inherits!(OmniRecommendationsService, Instance);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 #[derive(Default)]
-pub struct OpenCloudApiV1<I> {
-    superclass: Instance<I>,
+pub struct OpenCloudApiV1 {
+    superclass: Instance,
 }
-impl_inherits!(OpenCloudApiV1<I>, Instance<I>);
+impl_inherits!(OpenCloudApiV1, Instance);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 #[derive(Default)]
-pub struct OpenCloudService<I> {
-    superclass: Instance<I>,
+pub struct OpenCloudService {
+    superclass: Instance,
 }
-impl_inherits!(OpenCloudService<I>, Instance<I>);
+impl_inherits!(OpenCloudService, Instance);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 #[derive(Default)]
-pub struct OperationGraph<I> {
-    superclass: Instance<I>,
+pub struct OperationGraph {
+    superclass: Instance,
 }
-impl_inherits!(OperationGraph<I>, Instance<I>);
+impl_inherits!(OperationGraph, Instance);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 #[derive(Default)]
-pub struct OrderedDataStore<I> {
-    superclass: GlobalDataStore<I>,
+pub struct OrderedDataStore {
+    superclass: GlobalDataStore,
 }
-impl_inherits!(OrderedDataStore<I>, GlobalDataStore<I>);
+impl_inherits!(OrderedDataStore, GlobalDataStore);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 #[derive(Default)]
-pub struct OutfitPages<I> {
-    superclass: Pages<I>,
+pub struct OutfitPages {
+    superclass: Pages,
 }
-impl_inherits!(OutfitPages<I>, Pages<I>);
+impl_inherits!(OutfitPages, Pages);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
-pub struct PVAdornment<I> {
-    superclass: GuiBase3d<I>,
+pub struct PVAdornment {
+    superclass: GuiBase3d,
     pub Adornee: Ref,
 }
-impl_inherits!(PVAdornment<I>, GuiBase3d<I>);
-impl<I: Default> Default for PVAdornment<I> {
+impl_inherits!(PVAdornment, GuiBase3d);
+impl Default for PVAdornment {
     fn default() -> Self {
         let superclass = Object::default();
         let superclass = Instance {
@@ -10280,22 +10277,22 @@ impl<I: Default> Default for PVAdornment<I> {
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 #[derive(Default)]
-pub struct PVInstance<I> {
-    superclass: Instance<I>,
+pub struct PVInstance {
+    superclass: Instance,
 }
-impl_inherits!(PVInstance<I>, Instance<I>);
+impl_inherits!(PVInstance, Instance);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
-pub struct PackageLink<I> {
-    superclass: Instance<I>,
+pub struct PackageLink {
+    superclass: Instance,
     pub AutoUpdate: bool,
     pub DefaultName: String,
     pub ModifiedState: i32,
     pub SerializedDefaultAttributes: BinaryString,
     pub VersionIdSerialize: i64,
 }
-impl_inherits!(PackageLink<I>, Instance<I>);
-impl<I: Default> Default for PackageLink<I> {
+impl_inherits!(PackageLink, Instance);
+impl Default for PackageLink {
     fn default() -> Self {
         let superclass = Object::default();
         let superclass = Instance {
@@ -10320,32 +10317,32 @@ impl<I: Default> Default for PackageLink<I> {
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 #[derive(Default)]
-pub struct PackageService<I> {
-    superclass: Instance<I>,
+pub struct PackageService {
+    superclass: Instance,
 }
-impl_inherits!(PackageService<I>, Instance<I>);
+impl_inherits!(PackageService, Instance);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 #[derive(Default)]
-pub struct PackageUIService<I> {
-    superclass: Instance<I>,
+pub struct PackageUIService {
+    superclass: Instance,
 }
-impl_inherits!(PackageUIService<I>, Instance<I>);
+impl_inherits!(PackageUIService, Instance);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 #[derive(Default)]
-pub struct Pages<I> {
-    superclass: Instance<I>,
+pub struct Pages {
+    superclass: Instance,
 }
-impl_inherits!(Pages<I>, Instance<I>);
+impl_inherits!(Pages, Instance);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
-pub struct Pants<I> {
-    superclass: Clothing<I>,
+pub struct Pants {
+    superclass: Clothing,
     pub PantsTemplate: ContentId,
 }
-impl_inherits!(Pants<I>, Clothing<I>);
-impl<I: Default> Default for Pants<I> {
+impl_inherits!(Pants, Clothing);
+impl Default for Pants {
     fn default() -> Self {
         let superclass = Object::default();
         let superclass = Instance {
@@ -10371,25 +10368,25 @@ impl<I: Default> Default for Pants<I> {
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 #[derive(Default)]
-pub struct ParabolaAdornment<I> {
-    superclass: PVAdornment<I>,
+pub struct ParabolaAdornment {
+    superclass: PVAdornment,
 }
-impl_inherits!(ParabolaAdornment<I>, PVAdornment<I>);
+impl_inherits!(ParabolaAdornment, PVAdornment);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 #[derive(Default)]
-pub struct Part<I> {
-    superclass: FormFactorPart<I>,
+pub struct Part {
+    superclass: FormFactorPart,
 }
-impl_inherits!(Part<I>, FormFactorPart<I>);
+impl_inherits!(Part, FormFactorPart);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
-pub struct PartAdornment<I> {
-    superclass: GuiBase3d<I>,
+pub struct PartAdornment {
+    superclass: GuiBase3d,
     pub Adornee: Ref,
 }
-impl_inherits!(PartAdornment<I>, GuiBase3d<I>);
-impl<I: Default> Default for PartAdornment<I> {
+impl_inherits!(PartAdornment, GuiBase3d);
+impl Default for PartAdornment {
     fn default() -> Self {
         let superclass = Object::default();
         let superclass = Instance {
@@ -10416,8 +10413,8 @@ impl<I: Default> Default for PartAdornment<I> {
 }
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
-pub struct PartOperation<I> {
-    superclass: TriangleMeshPart<I>,
+pub struct PartOperation {
+    superclass: TriangleMeshPart,
     pub AssetId: ContentId,
     pub ChildData: BinaryString,
     pub ChildData2: SharedString,
@@ -10433,8 +10430,8 @@ pub struct PartOperation<I> {
     pub SolidMeshHolder: NetAssetRef,
     pub UsePartColor: bool,
 }
-impl_inherits!(PartOperation<I>, TriangleMeshPart<I>);
-impl<I: Default> Default for PartOperation<I> {
+impl_inherits!(PartOperation, TriangleMeshPart);
+impl Default for PartOperation {
     fn default() -> Self {
         let superclass = Object::default();
         let superclass = Instance {
@@ -10526,13 +10523,13 @@ impl<I: Default> Default for PartOperation<I> {
 }
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
-pub struct PartOperationAsset<I> {
-    superclass: Instance<I>,
+pub struct PartOperationAsset {
+    superclass: Instance,
     pub ChildData: BinaryString,
     pub MeshData: BinaryString,
 }
-impl_inherits!(PartOperationAsset<I>, Instance<I>);
-impl<I: Default> Default for PartOperationAsset<I> {
+impl_inherits!(PartOperationAsset, Instance);
+impl Default for PartOperationAsset {
     fn default() -> Self {
         let superclass = Object::default();
         let superclass = Instance {
@@ -10553,8 +10550,8 @@ impl<I: Default> Default for PartOperationAsset<I> {
 }
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
-pub struct ParticleEmitter<I> {
-    superclass: Instance<I>,
+pub struct ParticleEmitter {
+    superclass: Instance,
     pub Acceleration: Vector3,
     pub Brightness: f32,
     pub Color: ColorSequence,
@@ -10591,8 +10588,8 @@ pub struct ParticleEmitter<I> {
     pub WindAffectsDrag: bool,
     pub ZOffset: f32,
 }
-impl_inherits!(ParticleEmitter<I>, Instance<I>);
-impl<I: Default> Default for ParticleEmitter<I> {
+impl_inherits!(ParticleEmitter, Instance);
+impl Default for ParticleEmitter {
     fn default() -> Self {
         let superclass = Object::default();
         let superclass = Instance {
@@ -10668,27 +10665,27 @@ impl<I: Default> Default for ParticleEmitter<I> {
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 #[derive(Default)]
-pub struct PartyEmulatorService<I> {
-    superclass: Instance<I>,
+pub struct PartyEmulatorService {
+    superclass: Instance,
 }
-impl_inherits!(PartyEmulatorService<I>, Instance<I>);
+impl_inherits!(PartyEmulatorService, Instance);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 #[derive(Default)]
-pub struct PatchBundlerFileWatch<I> {
-    superclass: Instance<I>,
+pub struct PatchBundlerFileWatch {
+    superclass: Instance,
 }
-impl_inherits!(PatchBundlerFileWatch<I>, Instance<I>);
+impl_inherits!(PatchBundlerFileWatch, Instance);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
-pub struct PatchMapping<I> {
-    superclass: Instance<I>,
+pub struct PatchMapping {
+    superclass: Instance,
     pub FlattenTree: bool,
     pub PatchId: String,
     pub TargetPath: String,
 }
-impl_inherits!(PatchMapping<I>, Instance<I>);
-impl<I: Default> Default for PatchMapping<I> {
+impl_inherits!(PatchMapping, Instance);
+impl Default for PatchMapping {
     fn default() -> Self {
         let superclass = Object::default();
         let superclass = Instance {
@@ -10711,14 +10708,14 @@ impl<I: Default> Default for PatchMapping<I> {
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 #[derive(Default)]
-pub struct Path<I> {
-    superclass: Instance<I>,
+pub struct Path {
+    superclass: Instance,
 }
-impl_inherits!(Path<I>, Instance<I>);
+impl_inherits!(Path, Instance);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
-pub struct Path2D<I> {
-    superclass: GuiBase<I>,
+pub struct Path2D {
+    superclass: GuiBase,
     pub Closed: bool,
     pub Color3: Color3,
     pub PropertiesSerialize: BinaryString,
@@ -10727,8 +10724,8 @@ pub struct Path2D<I> {
     pub Visible: bool,
     pub ZIndex: i32,
 }
-impl_inherits!(Path2D<I>, GuiBase<I>);
-impl<I: Default> Default for Path2D<I> {
+impl_inherits!(Path2D, GuiBase);
+impl Default for Path2D {
     fn default() -> Self {
         let superclass = Object::default();
         let superclass = Instance {
@@ -10755,15 +10752,15 @@ impl<I: Default> Default for Path2D<I> {
 }
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
-pub struct PathfindingLink<I> {
-    superclass: Instance<I>,
+pub struct PathfindingLink {
+    superclass: Instance,
     pub Attachment0: Ref,
     pub Attachment1: Ref,
     pub IsBidirectional: bool,
     pub Label: String,
 }
-impl_inherits!(PathfindingLink<I>, Instance<I>);
-impl<I: Default> Default for PathfindingLink<I> {
+impl_inherits!(PathfindingLink, Instance);
+impl Default for PathfindingLink {
     fn default() -> Self {
         let superclass = Object::default();
         let superclass = Instance {
@@ -10786,13 +10783,13 @@ impl<I: Default> Default for PathfindingLink<I> {
 }
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
-pub struct PathfindingModifier<I> {
-    superclass: Instance<I>,
+pub struct PathfindingModifier {
+    superclass: Instance,
     pub Label: String,
     pub PassThrough: bool,
 }
-impl_inherits!(PathfindingModifier<I>, Instance<I>);
-impl<I: Default> Default for PathfindingModifier<I> {
+impl_inherits!(PathfindingModifier, Instance);
+impl Default for PathfindingModifier {
     fn default() -> Self {
         let superclass = Object::default();
         let superclass = Instance {
@@ -10814,56 +10811,56 @@ impl<I: Default> Default for PathfindingModifier<I> {
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 #[derive(Default)]
-pub struct PathfindingService<I> {
-    superclass: Instance<I>,
+pub struct PathfindingService {
+    superclass: Instance,
 }
-impl_inherits!(PathfindingService<I>, Instance<I>);
+impl_inherits!(PathfindingService, Instance);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 #[derive(Default)]
-pub struct PausedState<I> {
-    superclass: Instance<I>,
+pub struct PausedState {
+    superclass: Instance,
 }
-impl_inherits!(PausedState<I>, Instance<I>);
+impl_inherits!(PausedState, Instance);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 #[derive(Default)]
-pub struct PausedStateBreakpoint<I> {
-    superclass: PausedState<I>,
+pub struct PausedStateBreakpoint {
+    superclass: PausedState,
 }
-impl_inherits!(PausedStateBreakpoint<I>, PausedState<I>);
+impl_inherits!(PausedStateBreakpoint, PausedState);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 #[derive(Default)]
-pub struct PausedStateException<I> {
-    superclass: PausedState<I>,
+pub struct PausedStateException {
+    superclass: PausedState,
 }
-impl_inherits!(PausedStateException<I>, PausedState<I>);
+impl_inherits!(PausedStateException, PausedState);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 #[derive(Default)]
-pub struct PerformanceControlService<I> {
-    superclass: Instance<I>,
+pub struct PerformanceControlService {
+    superclass: Instance,
 }
-impl_inherits!(PerformanceControlService<I>, Instance<I>);
+impl_inherits!(PerformanceControlService, Instance);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 #[derive(Default)]
-pub struct PermissionsService<I> {
-    superclass: Instance<I>,
+pub struct PermissionsService {
+    superclass: Instance,
 }
-impl_inherits!(PermissionsService<I>, Instance<I>);
+impl_inherits!(PermissionsService, Instance);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 #[derive(Default)]
-pub struct PhysicsService<I> {
-    superclass: Instance<I>,
+pub struct PhysicsService {
+    superclass: Instance,
 }
-impl_inherits!(PhysicsService<I>, Instance<I>);
+impl_inherits!(PhysicsService, Instance);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
-pub struct PhysicsSettings<I> {
-    superclass: Instance<I>,
+pub struct PhysicsSettings {
+    superclass: Instance,
     pub AllowSleep: bool,
     pub AreAnchorsShown: bool,
     pub AreAssembliesShown: bool,
@@ -10913,8 +10910,8 @@ pub struct PhysicsSettings<I> {
     pub TorqueDrawScale: f32,
     pub UseCsGv2: bool,
 }
-impl_inherits!(PhysicsSettings<I>, Instance<I>);
-impl<I: Default> Default for PhysicsSettings<I> {
+impl_inherits!(PhysicsSettings, Instance);
+impl Default for PhysicsSettings {
     fn default() -> Self {
         let superclass = Object::default();
         let superclass = Instance {
@@ -10981,12 +10978,12 @@ impl<I: Default> Default for PhysicsSettings<I> {
 }
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
-pub struct PitchShiftSoundEffect<I> {
-    superclass: SoundEffect<I>,
+pub struct PitchShiftSoundEffect {
+    superclass: SoundEffect,
     pub Octave: f32,
 }
-impl_inherits!(PitchShiftSoundEffect<I>, SoundEffect<I>);
-impl<I: Default> Default for PitchShiftSoundEffect<I> {
+impl_inherits!(PitchShiftSoundEffect, SoundEffect);
+impl Default for PitchShiftSoundEffect {
     fn default() -> Self {
         let superclass = Object::default();
         let superclass = Instance {
@@ -11012,63 +11009,63 @@ impl<I: Default> Default for PitchShiftSoundEffect<I> {
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 #[derive(Default)]
-pub struct PlaceAssetIdsService<I> {
-    superclass: Instance<I>,
+pub struct PlaceAssetIdsService {
+    superclass: Instance,
 }
-impl_inherits!(PlaceAssetIdsService<I>, Instance<I>);
+impl_inherits!(PlaceAssetIdsService, Instance);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 #[derive(Default)]
-pub struct PlaceStatsService<I> {
-    superclass: Instance<I>,
+pub struct PlaceStatsService {
+    superclass: Instance,
 }
-impl_inherits!(PlaceStatsService<I>, Instance<I>);
+impl_inherits!(PlaceStatsService, Instance);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 #[derive(Default)]
-pub struct PlacesService<I> {
-    superclass: Instance<I>,
+pub struct PlacesService {
+    superclass: Instance,
 }
-impl_inherits!(PlacesService<I>, Instance<I>);
+impl_inherits!(PlacesService, Instance);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 #[derive(Default)]
-pub struct Plane<I> {
-    superclass: PlaneConstraint<I>,
+pub struct Plane {
+    superclass: PlaneConstraint,
 }
-impl_inherits!(Plane<I>, PlaneConstraint<I>);
+impl_inherits!(Plane, PlaneConstraint);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 #[derive(Default)]
-pub struct PlaneConstraint<I> {
-    superclass: Constraint<I>,
+pub struct PlaneConstraint {
+    superclass: Constraint,
 }
-impl_inherits!(PlaneConstraint<I>, Constraint<I>);
+impl_inherits!(PlaneConstraint, Constraint);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 #[derive(Default)]
-pub struct Platform<I> {
-    superclass: Part<I>,
+pub struct Platform {
+    superclass: Part,
 }
-impl_inherits!(Platform<I>, Part<I>);
+impl_inherits!(Platform, Part);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 #[derive(Default)]
-pub struct PlatformCloudStorageService<I> {
-    superclass: Instance<I>,
+pub struct PlatformCloudStorageService {
+    superclass: Instance,
 }
-impl_inherits!(PlatformCloudStorageService<I>, Instance<I>);
+impl_inherits!(PlatformCloudStorageService, Instance);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 #[derive(Default)]
-pub struct PlatformFriendsService<I> {
-    superclass: Instance<I>,
+pub struct PlatformFriendsService {
+    superclass: Instance,
 }
-impl_inherits!(PlatformFriendsService<I>, Instance<I>);
+impl_inherits!(PlatformFriendsService, Instance);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
-pub struct Player<I> {
-    superclass: Instance<I>,
+pub struct Player {
+    superclass: Instance,
     pub AutoJumpEnabled: bool,
     pub CameraMaxZoomDistance: f32,
     pub CameraMinZoomDistance: f32,
@@ -11093,8 +11090,8 @@ pub struct Player<I> {
     pub TeamColor: BrickColor,
     pub TeleportedIn: bool,
 }
-impl_inherits!(Player<I>, Instance<I>);
-impl<I: Default> Default for Player<I> {
+impl_inherits!(Player, Instance);
+impl Default for Player {
     fn default() -> Self {
         let superclass = Object::default();
         let superclass = Instance {
@@ -11137,32 +11134,32 @@ impl<I: Default> Default for Player<I> {
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 #[derive(Default)]
-pub struct PlayerData<I> {
-    superclass: Instance<I>,
+pub struct PlayerData {
+    superclass: Instance,
 }
-impl_inherits!(PlayerData<I>, Instance<I>);
+impl_inherits!(PlayerData, Instance);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 #[derive(Default)]
-pub struct PlayerDataRecord<I> {
-    superclass: Instance<I>,
+pub struct PlayerDataRecord {
+    superclass: Instance,
 }
-impl_inherits!(PlayerDataRecord<I>, Instance<I>);
+impl_inherits!(PlayerDataRecord, Instance);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 #[derive(Default)]
-pub struct PlayerDataRecordConfig<I> {
-    superclass: Instance<I>,
+pub struct PlayerDataRecordConfig {
+    superclass: Instance,
 }
-impl_inherits!(PlayerDataRecordConfig<I>, Instance<I>);
+impl_inherits!(PlayerDataRecordConfig, Instance);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
-pub struct PlayerDataService<I> {
-    superclass: Instance<I>,
+pub struct PlayerDataService {
+    superclass: Instance,
     pub LoadFailureBehavior: enums::PlayerDataLoadFailureBehavior,
 }
-impl_inherits!(PlayerDataService<I>, Instance<I>);
-impl<I: Default> Default for PlayerDataService<I> {
+impl_inherits!(PlayerDataService, Instance);
+impl Default for PlayerDataService {
     fn default() -> Self {
         let superclass = Object::default();
         let superclass = Instance {
@@ -11182,8 +11179,8 @@ impl<I: Default> Default for PlayerDataService<I> {
 }
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
-pub struct PlayerEmulatorService<I> {
-    superclass: Instance<I>,
+pub struct PlayerEmulatorService {
+    superclass: Instance,
     pub CustomPoliciesEnabled: bool,
     pub EmulatedCountryCode: String,
     pub EmulatedGameLocale: String,
@@ -11192,8 +11189,8 @@ pub struct PlayerEmulatorService<I> {
     pub SerializedEmulatedPolicyInfo: BinaryString,
     pub TextElongationFactor: i32,
 }
-impl_inherits!(PlayerEmulatorService<I>, Instance<I>);
-impl<I: Default> Default for PlayerEmulatorService<I> {
+impl_inherits!(PlayerEmulatorService, Instance);
+impl Default for PlayerEmulatorService {
     fn default() -> Self {
         let superclass = Object::default();
         let superclass = Instance {
@@ -11219,13 +11216,13 @@ impl<I: Default> Default for PlayerEmulatorService<I> {
 }
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
-pub struct PlayerGui<I> {
-    superclass: BasePlayerGui<I>,
+pub struct PlayerGui {
+    superclass: BasePlayerGui,
     pub ScreenOrientation: enums::ScreenOrientation,
     pub SelectionImageObject: Ref,
 }
-impl_inherits!(PlayerGui<I>, BasePlayerGui<I>);
-impl<I: Default> Default for PlayerGui<I> {
+impl_inherits!(PlayerGui, BasePlayerGui);
+impl Default for PlayerGui {
     fn default() -> Self {
         let superclass = Object::default();
         let superclass = Instance {
@@ -11248,42 +11245,42 @@ impl<I: Default> Default for PlayerGui<I> {
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 #[derive(Default)]
-pub struct PlayerHydrationService<I> {
-    superclass: Instance<I>,
+pub struct PlayerHydrationService {
+    superclass: Instance,
 }
-impl_inherits!(PlayerHydrationService<I>, Instance<I>);
+impl_inherits!(PlayerHydrationService, Instance);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 #[derive(Default)]
-pub struct PlayerMouse<I> {
-    superclass: Mouse<I>,
+pub struct PlayerMouse {
+    superclass: Mouse,
 }
-impl_inherits!(PlayerMouse<I>, Mouse<I>);
+impl_inherits!(PlayerMouse, Mouse);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 #[derive(Default)]
-pub struct PlayerScripts<I> {
-    superclass: Instance<I>,
+pub struct PlayerScripts {
+    superclass: Instance,
 }
-impl_inherits!(PlayerScripts<I>, Instance<I>);
+impl_inherits!(PlayerScripts, Instance);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 #[derive(Default)]
-pub struct PlayerViewService<I> {
-    superclass: Instance<I>,
+pub struct PlayerViewService {
+    superclass: Instance,
 }
-impl_inherits!(PlayerViewService<I>, Instance<I>);
+impl_inherits!(PlayerViewService, Instance);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
-pub struct Players<I> {
-    superclass: Instance<I>,
+pub struct Players {
+    superclass: Instance,
     pub BanningEnabled: bool,
     pub CharacterAutoLoads: bool,
     pub RespawnTime: f32,
     pub UseStrafingAnimations: bool,
 }
-impl_inherits!(Players<I>, Instance<I>);
-impl<I: Default> Default for Players<I> {
+impl_inherits!(Players, Instance);
+impl Default for Players {
     fn default() -> Self {
         let superclass = Object::default();
         let superclass = Instance {
@@ -11306,13 +11303,13 @@ impl<I: Default> Default for Players<I> {
 }
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
-pub struct Plugin<I> {
-    superclass: Instance<I>,
+pub struct Plugin {
+    superclass: Instance,
     pub DisableUiDragDetectorDrags: bool,
     pub IsDebuggable: bool,
 }
-impl_inherits!(Plugin<I>, Instance<I>);
-impl<I: Default> Default for Plugin<I> {
+impl_inherits!(Plugin, Instance);
+impl Default for Plugin {
     fn default() -> Self {
         let superclass = Object::default();
         let superclass = Instance {
@@ -11334,18 +11331,18 @@ impl<I: Default> Default for Plugin<I> {
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 #[derive(Default)]
-pub struct PluginAction<I> {
-    superclass: Instance<I>,
+pub struct PluginAction {
+    superclass: Instance,
 }
-impl_inherits!(PluginAction<I>, Instance<I>);
+impl_inherits!(PluginAction, Instance);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
-pub struct PluginCapabilities<I> {
-    superclass: Instance<I>,
+pub struct PluginCapabilities {
+    superclass: Instance,
     pub Manifest: String,
 }
-impl_inherits!(PluginCapabilities<I>, Instance<I>);
-impl<I: Default> Default for PluginCapabilities<I> {
+impl_inherits!(PluginCapabilities, Instance);
+impl Default for PluginCapabilities {
     fn default() -> Self {
         let superclass = Object::default();
         let superclass = Instance {
@@ -11363,25 +11360,25 @@ impl<I: Default> Default for PluginCapabilities<I> {
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 #[derive(Default)]
-pub struct PluginDebugService<I> {
-    superclass: Instance<I>,
+pub struct PluginDebugService {
+    superclass: Instance,
 }
-impl_inherits!(PluginDebugService<I>, Instance<I>);
+impl_inherits!(PluginDebugService, Instance);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 #[derive(Default)]
-pub struct PluginDragEvent<I> {
-    superclass: Instance<I>,
+pub struct PluginDragEvent {
+    superclass: Instance,
 }
-impl_inherits!(PluginDragEvent<I>, Instance<I>);
+impl_inherits!(PluginDragEvent, Instance);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
-pub struct PluginGui<I> {
-    superclass: LayerCollector<I>,
+pub struct PluginGui {
+    superclass: LayerCollector,
     pub Title: String,
 }
-impl_inherits!(PluginGui<I>, LayerCollector<I>);
-impl<I: Default> Default for PluginGui<I> {
+impl_inherits!(PluginGui, LayerCollector);
+impl Default for PluginGui {
     fn default() -> Self {
         let superclass = Object::default();
         let superclass = Instance {
@@ -11419,74 +11416,74 @@ impl<I: Default> Default for PluginGui<I> {
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 #[derive(Default)]
-pub struct PluginGuiService<I> {
-    superclass: Instance<I>,
+pub struct PluginGuiService {
+    superclass: Instance,
 }
-impl_inherits!(PluginGuiService<I>, Instance<I>);
+impl_inherits!(PluginGuiService, Instance);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 #[derive(Default)]
-pub struct PluginManagementService<I> {
-    superclass: Instance<I>,
+pub struct PluginManagementService {
+    superclass: Instance,
 }
-impl_inherits!(PluginManagementService<I>, Instance<I>);
+impl_inherits!(PluginManagementService, Instance);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 #[derive(Default)]
-pub struct PluginManager<I> {
-    superclass: Instance<I>,
+pub struct PluginManager {
+    superclass: Instance,
 }
-impl_inherits!(PluginManager<I>, Instance<I>);
+impl_inherits!(PluginManager, Instance);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 #[derive(Default)]
-pub struct PluginManagerInterface<I> {
-    superclass: Instance<I>,
+pub struct PluginManagerInterface {
+    superclass: Instance,
 }
-impl_inherits!(PluginManagerInterface<I>, Instance<I>);
+impl_inherits!(PluginManagerInterface, Instance);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 #[derive(Default)]
-pub struct PluginMenu<I> {
-    superclass: Instance<I>,
+pub struct PluginMenu {
+    superclass: Instance,
 }
-impl_inherits!(PluginMenu<I>, Instance<I>);
+impl_inherits!(PluginMenu, Instance);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 #[derive(Default)]
-pub struct PluginMouse<I> {
-    superclass: Mouse<I>,
+pub struct PluginMouse {
+    superclass: Mouse,
 }
-impl_inherits!(PluginMouse<I>, Mouse<I>);
+impl_inherits!(PluginMouse, Mouse);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 #[derive(Default)]
-pub struct PluginPolicyService<I> {
-    superclass: Instance<I>,
+pub struct PluginPolicyService {
+    superclass: Instance,
 }
-impl_inherits!(PluginPolicyService<I>, Instance<I>);
+impl_inherits!(PluginPolicyService, Instance);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 #[derive(Default)]
-pub struct PluginToolbar<I> {
-    superclass: Instance<I>,
+pub struct PluginToolbar {
+    superclass: Instance,
 }
-impl_inherits!(PluginToolbar<I>, Instance<I>);
+impl_inherits!(PluginToolbar, Instance);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 #[derive(Default)]
-pub struct PluginToolbarButton<I> {
-    superclass: Instance<I>,
+pub struct PluginToolbarButton {
+    superclass: Instance,
 }
-impl_inherits!(PluginToolbarButton<I>, Instance<I>);
+impl_inherits!(PluginToolbarButton, Instance);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
-pub struct PointLight<I> {
-    superclass: Light<I>,
+pub struct PointLight {
+    superclass: Light,
     pub Range: f32,
 }
-impl_inherits!(PointLight<I>, Light<I>);
-impl<I: Default> Default for PointLight<I> {
+impl_inherits!(PointLight, Light);
+impl Default for PointLight {
     fn default() -> Self {
         let superclass = Object::default();
         let superclass = Instance {
@@ -11514,19 +11511,19 @@ impl<I: Default> Default for PointLight<I> {
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 #[derive(Default)]
-pub struct PointsService<I> {
-    superclass: Instance<I>,
+pub struct PointsService {
+    superclass: Instance,
 }
-impl_inherits!(PointsService<I>, Instance<I>);
+impl_inherits!(PointsService, Instance);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
-pub struct PolicyService<I> {
-    superclass: Instance<I>,
+pub struct PolicyService {
+    superclass: Instance,
     pub IsLuobuServer: enums::TriStateBoolean,
     pub LuobuWhitelisted: enums::TriStateBoolean,
 }
-impl_inherits!(PolicyService<I>, Instance<I>);
-impl<I: Default> Default for PolicyService<I> {
+impl_inherits!(PolicyService, Instance);
+impl Default for PolicyService {
     fn default() -> Self {
         let superclass = Object::default();
         let superclass = Instance {
@@ -11547,12 +11544,12 @@ impl<I: Default> Default for PolicyService<I> {
 }
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
-pub struct Pose<I> {
-    superclass: PoseBase<I>,
+pub struct Pose {
+    superclass: PoseBase,
     pub CFrame: CFrame,
 }
-impl_inherits!(Pose<I>, PoseBase<I>);
-impl<I: Default> Default for Pose<I> {
+impl_inherits!(Pose, PoseBase);
+impl Default for Pose {
     fn default() -> Self {
         let superclass = Object::default();
         let superclass = Instance {
@@ -11578,14 +11575,14 @@ impl<I: Default> Default for Pose<I> {
 }
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
-pub struct PoseBase<I> {
-    superclass: Instance<I>,
+pub struct PoseBase {
+    superclass: Instance,
     pub EasingDirection: enums::PoseEasingDirection,
     pub EasingStyle: enums::PoseEasingStyle,
     pub Weight: f32,
 }
-impl_inherits!(PoseBase<I>, Instance<I>);
-impl<I: Default> Default for PoseBase<I> {
+impl_inherits!(PoseBase, Instance);
+impl Default for PoseBase {
     fn default() -> Self {
         let superclass = Object::default();
         let superclass = Instance {
@@ -11607,12 +11604,12 @@ impl<I: Default> Default for PoseBase<I> {
 }
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
-pub struct PostEffect<I> {
-    superclass: Instance<I>,
+pub struct PostEffect {
+    superclass: Instance,
     pub Enabled: bool,
 }
-impl_inherits!(PostEffect<I>, Instance<I>);
-impl<I: Default> Default for PostEffect<I> {
+impl_inherits!(PostEffect, Instance);
+impl Default for PostEffect {
     fn default() -> Self {
         let superclass = Object::default();
         let superclass = Instance {
@@ -11633,21 +11630,21 @@ impl<I: Default> Default for PostEffect<I> {
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 #[derive(Default)]
-pub struct PrismaticConstraint<I> {
-    superclass: SlidingBallConstraint<I>,
+pub struct PrismaticConstraint {
+    superclass: SlidingBallConstraint,
 }
-impl_inherits!(PrismaticConstraint<I>, SlidingBallConstraint<I>);
+impl_inherits!(PrismaticConstraint, SlidingBallConstraint);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 #[derive(Default)]
-pub struct ProcessInstancePhysicsService<I> {
-    superclass: Instance<I>,
+pub struct ProcessInstancePhysicsService {
+    superclass: Instance,
 }
-impl_inherits!(ProcessInstancePhysicsService<I>, Instance<I>);
+impl_inherits!(ProcessInstancePhysicsService, Instance);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
-pub struct ProximityPrompt<I> {
-    superclass: Instance<I>,
+pub struct ProximityPrompt {
+    superclass: Instance,
     pub ActionText: String,
     pub AutoLocalize: bool,
     pub ClickablePrompt: bool,
@@ -11664,8 +11661,8 @@ pub struct ProximityPrompt<I> {
     pub Style: enums::ProximityPromptStyle,
     pub UiOffset: Vector2,
 }
-impl_inherits!(ProximityPrompt<I>, Instance<I>);
-impl<I: Default> Default for ProximityPrompt<I> {
+impl_inherits!(ProximityPrompt, Instance);
+impl Default for ProximityPrompt {
     fn default() -> Self {
         let superclass = Object::default();
         let superclass = Instance {
@@ -11699,14 +11696,14 @@ impl<I: Default> Default for ProximityPrompt<I> {
 }
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
-pub struct ProximityPromptService<I> {
-    superclass: Instance<I>,
+pub struct ProximityPromptService {
+    superclass: Instance,
     pub Enabled: bool,
     pub MaxIndicatorsVisible: i32,
     pub MaxPromptsVisible: i32,
 }
-impl_inherits!(ProximityPromptService<I>, Instance<I>);
-impl<I: Default> Default for ProximityPromptService<I> {
+impl_inherits!(ProximityPromptService, Instance);
+impl Default for ProximityPromptService {
     fn default() -> Self {
         let superclass = Object::default();
         let superclass = Instance {
@@ -11729,21 +11726,21 @@ impl<I: Default> Default for ProximityPromptService<I> {
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 #[derive(Default)]
-pub struct PublishService<I> {
-    superclass: Instance<I>,
+pub struct PublishService {
+    superclass: Instance,
 }
-impl_inherits!(PublishService<I>, Instance<I>);
+impl_inherits!(PublishService, Instance);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
-pub struct PyramidHandleAdornment<I> {
-    superclass: HandleAdornment<I>,
+pub struct PyramidHandleAdornment {
+    superclass: HandleAdornment,
     pub Height: f32,
     pub Shading: enums::AdornShading,
     pub Sides: i32,
     pub Size: f32,
 }
-impl_inherits!(PyramidHandleAdornment<I>, HandleAdornment<I>);
-impl<I: Default> Default for PyramidHandleAdornment<I> {
+impl_inherits!(PyramidHandleAdornment, HandleAdornment);
+impl Default for PyramidHandleAdornment {
     fn default() -> Self {
         let superclass = Object::default();
         let superclass = Instance {
@@ -11786,25 +11783,25 @@ impl<I: Default> Default for PyramidHandleAdornment<I> {
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 #[derive(Default)]
-pub struct QWidgetPluginGui<I> {
-    superclass: PluginGui<I>,
+pub struct QWidgetPluginGui {
+    superclass: PluginGui,
 }
-impl_inherits!(QWidgetPluginGui<I>, PluginGui<I>);
+impl_inherits!(QWidgetPluginGui, PluginGui);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 #[derive(Default)]
-pub struct RTAnimationTracker<I> {
-    superclass: Instance<I>,
+pub struct RTAnimationTracker {
+    superclass: Instance,
 }
-impl_inherits!(RTAnimationTracker<I>, Instance<I>);
+impl_inherits!(RTAnimationTracker, Instance);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
-pub struct RayValue<I> {
-    superclass: ValueBase<I>,
+pub struct RayValue {
+    superclass: ValueBase,
     pub Value: Ray,
 }
-impl_inherits!(RayValue<I>, ValueBase<I>);
-impl<I: Default> Default for RayValue<I> {
+impl_inherits!(RayValue, ValueBase);
+impl Default for RayValue {
     fn default() -> Self {
         let superclass = Object::default();
         let superclass = Instance {
@@ -11829,50 +11826,50 @@ impl<I: Default> Default for RayValue<I> {
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 #[derive(Default)]
-pub struct RbxAnalyticsService<I> {
-    superclass: Instance<I>,
+pub struct RbxAnalyticsService {
+    superclass: Instance,
 }
-impl_inherits!(RbxAnalyticsService<I>, Instance<I>);
+impl_inherits!(RbxAnalyticsService, Instance);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 #[derive(Default)]
-pub struct RecommendationPages<I> {
-    superclass: Pages<I>,
+pub struct RecommendationPages {
+    superclass: Pages,
 }
-impl_inherits!(RecommendationPages<I>, Pages<I>);
+impl_inherits!(RecommendationPages, Pages);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 #[derive(Default)]
-pub struct RecommendationService<I> {
-    superclass: Instance<I>,
+pub struct RecommendationService {
+    superclass: Instance,
 }
-impl_inherits!(RecommendationService<I>, Instance<I>);
+impl_inherits!(RecommendationService, Instance);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 #[derive(Default)]
-pub struct ReflectionMetadata<I> {
-    superclass: Instance<I>,
+pub struct ReflectionMetadata {
+    superclass: Instance,
 }
-impl_inherits!(ReflectionMetadata<I>, Instance<I>);
+impl_inherits!(ReflectionMetadata, Instance);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 #[derive(Default)]
-pub struct ReflectionMetadataCallbacks<I> {
-    superclass: Instance<I>,
+pub struct ReflectionMetadataCallbacks {
+    superclass: Instance,
 }
-impl_inherits!(ReflectionMetadataCallbacks<I>, Instance<I>);
+impl_inherits!(ReflectionMetadataCallbacks, Instance);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
-pub struct ReflectionMetadataClass<I> {
-    superclass: ReflectionMetadataItem<I>,
+pub struct ReflectionMetadataClass {
+    superclass: ReflectionMetadataItem,
     pub ExplorerImageIndex: i32,
     pub ExplorerOrder: i32,
     pub Insertable: bool,
     pub PreferredParent: String,
     pub ServiceVisibility: enums::ServiceVisibility,
 }
-impl_inherits!(ReflectionMetadataClass<I>, ReflectionMetadataItem<I>);
-impl<I: Default> Default for ReflectionMetadataClass<I> {
+impl_inherits!(ReflectionMetadataClass, ReflectionMetadataItem);
+impl Default for ReflectionMetadataClass {
     fn default() -> Self {
         let superclass = Object::default();
         let superclass = Instance {
@@ -11916,49 +11913,49 @@ impl<I: Default> Default for ReflectionMetadataClass<I> {
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 #[derive(Default)]
-pub struct ReflectionMetadataClasses<I> {
-    superclass: Instance<I>,
+pub struct ReflectionMetadataClasses {
+    superclass: Instance,
 }
-impl_inherits!(ReflectionMetadataClasses<I>, Instance<I>);
+impl_inherits!(ReflectionMetadataClasses, Instance);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 #[derive(Default)]
-pub struct ReflectionMetadataEnum<I> {
-    superclass: ReflectionMetadataItem<I>,
+pub struct ReflectionMetadataEnum {
+    superclass: ReflectionMetadataItem,
 }
-impl_inherits!(ReflectionMetadataEnum<I>, ReflectionMetadataItem<I>);
+impl_inherits!(ReflectionMetadataEnum, ReflectionMetadataItem);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 #[derive(Default)]
-pub struct ReflectionMetadataEnumItem<I> {
-    superclass: ReflectionMetadataItem<I>,
+pub struct ReflectionMetadataEnumItem {
+    superclass: ReflectionMetadataItem,
 }
-impl_inherits!(ReflectionMetadataEnumItem<I>, ReflectionMetadataItem<I>);
+impl_inherits!(ReflectionMetadataEnumItem, ReflectionMetadataItem);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 #[derive(Default)]
-pub struct ReflectionMetadataEnums<I> {
-    superclass: Instance<I>,
+pub struct ReflectionMetadataEnums {
+    superclass: Instance,
 }
-impl_inherits!(ReflectionMetadataEnums<I>, Instance<I>);
+impl_inherits!(ReflectionMetadataEnums, Instance);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 #[derive(Default)]
-pub struct ReflectionMetadataEvents<I> {
-    superclass: Instance<I>,
+pub struct ReflectionMetadataEvents {
+    superclass: Instance,
 }
-impl_inherits!(ReflectionMetadataEvents<I>, Instance<I>);
+impl_inherits!(ReflectionMetadataEvents, Instance);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 #[derive(Default)]
-pub struct ReflectionMetadataFunctions<I> {
-    superclass: Instance<I>,
+pub struct ReflectionMetadataFunctions {
+    superclass: Instance,
 }
-impl_inherits!(ReflectionMetadataFunctions<I>, Instance<I>);
+impl_inherits!(ReflectionMetadataFunctions, Instance);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
-pub struct ReflectionMetadataItem<I> {
-    superclass: Instance<I>,
+pub struct ReflectionMetadataItem {
+    superclass: Instance,
     pub Browsable: bool,
     pub ClassCategory: String,
     pub ClientOnly: bool,
@@ -11976,8 +11973,8 @@ pub struct ReflectionMetadataItem<I> {
     pub UiMinimum: f64,
     pub UiNumTicks: f64,
 }
-impl_inherits!(ReflectionMetadataItem<I>, Instance<I>);
-impl<I: Default> Default for ReflectionMetadataItem<I> {
+impl_inherits!(ReflectionMetadataItem, Instance);
+impl Default for ReflectionMetadataItem {
     fn default() -> Self {
         let superclass = Object::default();
         let superclass = Instance {
@@ -12013,77 +12010,77 @@ impl<I: Default> Default for ReflectionMetadataItem<I> {
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 #[derive(Default)]
-pub struct ReflectionMetadataMember<I> {
-    superclass: ReflectionMetadataItem<I>,
+pub struct ReflectionMetadataMember {
+    superclass: ReflectionMetadataItem,
 }
-impl_inherits!(ReflectionMetadataMember<I>, ReflectionMetadataItem<I>);
+impl_inherits!(ReflectionMetadataMember, ReflectionMetadataItem);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 #[derive(Default)]
-pub struct ReflectionMetadataProperties<I> {
-    superclass: Instance<I>,
+pub struct ReflectionMetadataProperties {
+    superclass: Instance,
 }
-impl_inherits!(ReflectionMetadataProperties<I>, Instance<I>);
+impl_inherits!(ReflectionMetadataProperties, Instance);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 #[derive(Default)]
-pub struct ReflectionMetadataYieldFunctions<I> {
-    superclass: Instance<I>,
+pub struct ReflectionMetadataYieldFunctions {
+    superclass: Instance,
 }
-impl_inherits!(ReflectionMetadataYieldFunctions<I>, Instance<I>);
+impl_inherits!(ReflectionMetadataYieldFunctions, Instance);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 #[derive(Default)]
-pub struct ReflectionService<I> {
-    superclass: Instance<I>,
+pub struct ReflectionService {
+    superclass: Instance,
 }
-impl_inherits!(ReflectionService<I>, Instance<I>);
+impl_inherits!(ReflectionService, Instance);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 #[derive(Default)]
-pub struct RelativeGui<I> {
-    superclass: GuiObject<I>,
+pub struct RelativeGui {
+    superclass: GuiObject,
 }
-impl_inherits!(RelativeGui<I>, GuiObject<I>);
+impl_inherits!(RelativeGui, GuiObject);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 #[derive(Default)]
-pub struct RemoteCommandService<I> {
-    superclass: Instance<I>,
+pub struct RemoteCommandService {
+    superclass: Instance,
 }
-impl_inherits!(RemoteCommandService<I>, Instance<I>);
+impl_inherits!(RemoteCommandService, Instance);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 #[derive(Default)]
-pub struct RemoteCursorService<I> {
-    superclass: Instance<I>,
+pub struct RemoteCursorService {
+    superclass: Instance,
 }
-impl_inherits!(RemoteCursorService<I>, Instance<I>);
+impl_inherits!(RemoteCursorService, Instance);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 #[derive(Default)]
-pub struct RemoteDebuggerServer<I> {
-    superclass: Instance<I>,
+pub struct RemoteDebuggerServer {
+    superclass: Instance,
 }
-impl_inherits!(RemoteDebuggerServer<I>, Instance<I>);
+impl_inherits!(RemoteDebuggerServer, Instance);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 #[derive(Default)]
-pub struct RemoteEvent<I> {
-    superclass: BaseRemoteEvent<I>,
+pub struct RemoteEvent {
+    superclass: BaseRemoteEvent,
 }
-impl_inherits!(RemoteEvent<I>, BaseRemoteEvent<I>);
+impl_inherits!(RemoteEvent, BaseRemoteEvent);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 #[derive(Default)]
-pub struct RemoteFunction<I> {
-    superclass: Instance<I>,
+pub struct RemoteFunction {
+    superclass: Instance,
 }
-impl_inherits!(RemoteFunction<I>, Instance<I>);
+impl_inherits!(RemoteFunction, Instance);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
-pub struct RenderSettings<I> {
-    superclass: Instance<I>,
+pub struct RenderSettings {
+    superclass: Instance,
     pub AutoFrmLevel: i32,
     pub EagerBulkExecution: bool,
     pub EditQualityLevel: enums::QualityLevel,
@@ -12099,8 +12096,8 @@ pub struct RenderSettings<I> {
     pub ShowBoundingBoxes: bool,
     pub ViewMode: enums::ViewMode,
 }
-impl_inherits!(RenderSettings<I>, Instance<I>);
-impl<I: Default> Default for RenderSettings<I> {
+impl_inherits!(RenderSettings, Instance);
+impl Default for RenderSettings {
     fn default() -> Self {
         let superclass = Object::default();
         let superclass = Instance {
@@ -12133,8 +12130,8 @@ impl<I: Default> Default for RenderSettings<I> {
 }
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
-pub struct RenderingTest<I> {
-    superclass: Instance<I>,
+pub struct RenderingTest {
+    superclass: Instance,
     pub CFrame: CFrame,
     pub ComparisonDiffThreshold: i32,
     pub ComparisonMethod: enums::RenderingTestComparisonMethod,
@@ -12149,8 +12146,8 @@ pub struct RenderingTest<I> {
     pub Ticket: String,
     pub Timeout: i32,
 }
-impl_inherits!(RenderingTest<I>, Instance<I>);
-impl<I: Default> Default for RenderingTest<I> {
+impl_inherits!(RenderingTest, Instance);
+impl Default for RenderingTest {
     fn default() -> Self {
         let superclass = Object::default();
         let superclass = Instance {
@@ -12183,29 +12180,29 @@ impl<I: Default> Default for RenderingTest<I> {
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 #[derive(Default)]
-pub struct ReplicatedFirst<I> {
-    superclass: Instance<I>,
+pub struct ReplicatedFirst {
+    superclass: Instance,
 }
-impl_inherits!(ReplicatedFirst<I>, Instance<I>);
+impl_inherits!(ReplicatedFirst, Instance);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 #[derive(Default)]
-pub struct ReplicatedStorage<I> {
-    superclass: Instance<I>,
+pub struct ReplicatedStorage {
+    superclass: Instance,
 }
-impl_inherits!(ReplicatedStorage<I>, Instance<I>);
+impl_inherits!(ReplicatedStorage, Instance);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
-pub struct ReverbSoundEffect<I> {
-    superclass: SoundEffect<I>,
+pub struct ReverbSoundEffect {
+    superclass: SoundEffect,
     pub DecayTime: f32,
     pub Density: f32,
     pub Diffusion: f32,
     pub DryLevel: f32,
     pub WetLevel: f32,
 }
-impl_inherits!(ReverbSoundEffect<I>, SoundEffect<I>);
-impl<I: Default> Default for ReverbSoundEffect<I> {
+impl_inherits!(ReverbSoundEffect, SoundEffect);
+impl Default for ReverbSoundEffect {
     fn default() -> Self {
         let superclass = Object::default();
         let superclass = Instance {
@@ -12235,39 +12232,39 @@ impl<I: Default> Default for ReverbSoundEffect<I> {
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 #[derive(Default)]
-pub struct RibbonNotificationService<I> {
-    superclass: Instance<I>,
+pub struct RibbonNotificationService {
+    superclass: Instance,
 }
-impl_inherits!(RibbonNotificationService<I>, Instance<I>);
+impl_inherits!(RibbonNotificationService, Instance);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 #[derive(Default)]
-pub struct RigidConstraint<I> {
-    superclass: Constraint<I>,
+pub struct RigidConstraint {
+    superclass: Constraint,
 }
-impl_inherits!(RigidConstraint<I>, Constraint<I>);
+impl_inherits!(RigidConstraint, Constraint);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 #[derive(Default)]
-pub struct RobloxPluginGuiService<I> {
-    superclass: Instance<I>,
+pub struct RobloxPluginGuiService {
+    superclass: Instance,
 }
-impl_inherits!(RobloxPluginGuiService<I>, Instance<I>);
+impl_inherits!(RobloxPluginGuiService, Instance);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 #[derive(Default)]
-pub struct RobloxReplicatedStorage<I> {
-    superclass: Instance<I>,
+pub struct RobloxReplicatedStorage {
+    superclass: Instance,
 }
-impl_inherits!(RobloxReplicatedStorage<I>, Instance<I>);
+impl_inherits!(RobloxReplicatedStorage, Instance);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
-pub struct RobloxSerializableInstance<I> {
-    superclass: Instance<I>,
+pub struct RobloxSerializableInstance {
+    superclass: Instance,
     pub Data: BinaryString,
 }
-impl_inherits!(RobloxSerializableInstance<I>, Instance<I>);
-impl<I: Default> Default for RobloxSerializableInstance<I> {
+impl_inherits!(RobloxSerializableInstance, Instance);
+impl Default for RobloxSerializableInstance {
     fn default() -> Self {
         let superclass = Object::default();
         let superclass = Instance {
@@ -12288,14 +12285,14 @@ impl<I: Default> Default for RobloxSerializableInstance<I> {
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 #[derive(Default)]
-pub struct RobloxServerStorage<I> {
-    superclass: Instance<I>,
+pub struct RobloxServerStorage {
+    superclass: Instance,
 }
-impl_inherits!(RobloxServerStorage<I>, Instance<I>);
+impl_inherits!(RobloxServerStorage, Instance);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
-pub struct RocketPropulsion<I> {
-    superclass: BodyMover<I>,
+pub struct RocketPropulsion {
+    superclass: BodyMover,
     pub CartoonFactor: f32,
     pub MaxSpeed: f32,
     pub MaxThrust: f32,
@@ -12308,8 +12305,8 @@ pub struct RocketPropulsion<I> {
     pub TurnD: f32,
     pub TurnP: f32,
 }
-impl_inherits!(RocketPropulsion<I>, BodyMover<I>);
-impl<I: Default> Default for RocketPropulsion<I> {
+impl_inherits!(RocketPropulsion, BodyMover);
+impl Default for RocketPropulsion {
     fn default() -> Self {
         let superclass = Object::default();
         let superclass = Instance {
@@ -12340,16 +12337,16 @@ impl<I: Default> Default for RocketPropulsion<I> {
 }
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
-pub struct RodConstraint<I> {
-    superclass: Constraint<I>,
+pub struct RodConstraint {
+    superclass: Constraint,
     pub Length: f32,
     pub LimitAngle0: f32,
     pub LimitAngle1: f32,
     pub LimitsEnabled: bool,
     pub Thickness: f32,
 }
-impl_inherits!(RodConstraint<I>, Constraint<I>);
-impl<I: Default> Default for RodConstraint<I> {
+impl_inherits!(RodConstraint, Constraint);
+impl Default for RodConstraint {
     fn default() -> Self {
         let superclass = Object::default();
         let superclass = Instance {
@@ -12382,21 +12379,21 @@ impl<I: Default> Default for RodConstraint<I> {
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 #[derive(Default)]
-pub struct RomarkRbxAnalyticsService<I> {
-    superclass: Instance<I>,
+pub struct RomarkRbxAnalyticsService {
+    superclass: Instance,
 }
-impl_inherits!(RomarkRbxAnalyticsService<I>, Instance<I>);
+impl_inherits!(RomarkRbxAnalyticsService, Instance);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 #[derive(Default)]
-pub struct RomarkService<I> {
-    superclass: Instance<I>,
+pub struct RomarkService {
+    superclass: Instance,
 }
-impl_inherits!(RomarkService<I>, Instance<I>);
+impl_inherits!(RomarkService, Instance);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
-pub struct RootImportData<I> {
-    superclass: BaseImportData<I>,
+pub struct RootImportData {
+    superclass: BaseImportData,
     pub AddModelToInventory: bool,
     pub Anchored: bool,
     pub AnimationIdForRestPose: f32,
@@ -12420,8 +12417,8 @@ pub struct RootImportData<I> {
     pub WorldForward: enums::NormalId,
     pub WorldUp: enums::NormalId,
 }
-impl_inherits!(RootImportData<I>, BaseImportData<I>);
-impl<I: Default> Default for RootImportData<I> {
+impl_inherits!(RootImportData, BaseImportData);
+impl Default for RootImportData {
     fn default() -> Self {
         let superclass = Object::default();
         let superclass = Instance {
@@ -12467,8 +12464,8 @@ impl<I: Default> Default for RootImportData<I> {
 }
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
-pub struct RopeConstraint<I> {
-    superclass: Constraint<I>,
+pub struct RopeConstraint {
+    superclass: Constraint,
     pub Length: f32,
     pub Restitution: f32,
     pub Thickness: f32,
@@ -12478,8 +12475,8 @@ pub struct RopeConstraint<I> {
     pub WinchSpeed: f32,
     pub WinchTarget: f32,
 }
-impl_inherits!(RopeConstraint<I>, Constraint<I>);
-impl<I: Default> Default for RopeConstraint<I> {
+impl_inherits!(RopeConstraint, Constraint);
+impl Default for RopeConstraint {
     fn default() -> Self {
         let superclass = Object::default();
         let superclass = Instance {
@@ -12515,32 +12512,32 @@ impl<I: Default> Default for RopeConstraint<I> {
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 #[derive(Default)]
-pub struct Rotate<I> {
-    superclass: JointInstance<I>,
+pub struct Rotate {
+    superclass: JointInstance,
 }
-impl_inherits!(Rotate<I>, JointInstance<I>);
+impl_inherits!(Rotate, JointInstance);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 #[derive(Default)]
-pub struct RotateP<I> {
-    superclass: DynamicRotate<I>,
+pub struct RotateP {
+    superclass: DynamicRotate,
 }
-impl_inherits!(RotateP<I>, DynamicRotate<I>);
+impl_inherits!(RotateP, DynamicRotate);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 #[derive(Default)]
-pub struct RotateV<I> {
-    superclass: DynamicRotate<I>,
+pub struct RotateV {
+    superclass: DynamicRotate,
 }
-impl_inherits!(RotateV<I>, DynamicRotate<I>);
+impl_inherits!(RotateV, DynamicRotate);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
-pub struct RotationCurve<I> {
-    superclass: Instance<I>,
+pub struct RotationCurve {
+    superclass: Instance,
     pub ValuesAndTimes: BinaryString,
 }
-impl_inherits!(RotationCurve<I>, Instance<I>);
-impl<I: Default> Default for RotationCurve<I> {
+impl_inherits!(RotationCurve, Instance);
+impl Default for RotationCurve {
     fn default() -> Self {
         let superclass = Object::default();
         let superclass = Instance {
@@ -12561,60 +12558,60 @@ impl<I: Default> Default for RotationCurve<I> {
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 #[derive(Default)]
-pub struct RtMessagingService<I> {
-    superclass: Instance<I>,
+pub struct RtMessagingService {
+    superclass: Instance,
 }
-impl_inherits!(RtMessagingService<I>, Instance<I>);
+impl_inherits!(RtMessagingService, Instance);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 #[derive(Default)]
-pub struct RunService<I> {
-    superclass: Instance<I>,
+pub struct RunService {
+    superclass: Instance,
 }
-impl_inherits!(RunService<I>, Instance<I>);
+impl_inherits!(RunService, Instance);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 #[derive(Default)]
-pub struct RunningAverageItemDouble<I> {
-    superclass: StatsItem<I>,
+pub struct RunningAverageItemDouble {
+    superclass: StatsItem,
 }
-impl_inherits!(RunningAverageItemDouble<I>, StatsItem<I>);
+impl_inherits!(RunningAverageItemDouble, StatsItem);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 #[derive(Default)]
-pub struct RunningAverageItemInt<I> {
-    superclass: StatsItem<I>,
+pub struct RunningAverageItemInt {
+    superclass: StatsItem,
 }
-impl_inherits!(RunningAverageItemInt<I>, StatsItem<I>);
+impl_inherits!(RunningAverageItemInt, StatsItem);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 #[derive(Default)]
-pub struct RunningAverageTimeIntervalItem<I> {
-    superclass: StatsItem<I>,
+pub struct RunningAverageTimeIntervalItem {
+    superclass: StatsItem,
 }
-impl_inherits!(RunningAverageTimeIntervalItem<I>, StatsItem<I>);
+impl_inherits!(RunningAverageTimeIntervalItem, StatsItem);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 #[derive(Default)]
-pub struct RuntimeContentService<I> {
-    superclass: Instance<I>,
+pub struct RuntimeContentService {
+    superclass: Instance,
 }
-impl_inherits!(RuntimeContentService<I>, Instance<I>);
+impl_inherits!(RuntimeContentService, Instance);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 #[derive(Default)]
-pub struct RuntimeScriptService<I> {
-    superclass: Instance<I>,
+pub struct RuntimeScriptService {
+    superclass: Instance,
 }
-impl_inherits!(RuntimeScriptService<I>, Instance<I>);
+impl_inherits!(RuntimeScriptService, Instance);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
-pub struct SafetyService<I> {
-    superclass: Instance<I>,
+pub struct SafetyService {
+    superclass: Instance,
     pub IsCaptureModeForReport: bool,
 }
-impl_inherits!(SafetyService<I>, Instance<I>);
-impl<I: Default> Default for SafetyService<I> {
+impl_inherits!(SafetyService, Instance);
+impl Default for SafetyService {
     fn default() -> Self {
         let superclass = Object::default();
         let superclass = Instance {
@@ -12634,15 +12631,15 @@ impl<I: Default> Default for SafetyService<I> {
 }
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
-pub struct ScreenGui<I> {
-    superclass: LayerCollector<I>,
+pub struct ScreenGui {
+    superclass: LayerCollector,
     pub ClipToDeviceSafeArea: bool,
     pub DisplayOrder: i32,
     pub SafeAreaCompatibility: enums::SafeAreaCompatibility,
     pub ScreenInsets: enums::ScreenInsets,
 }
-impl_inherits!(ScreenGui<I>, LayerCollector<I>);
-impl<I: Default> Default for ScreenGui<I> {
+impl_inherits!(ScreenGui, LayerCollector);
+impl Default for ScreenGui {
     fn default() -> Self {
         let superclass = Object::default();
         let superclass = Instance {
@@ -12683,14 +12680,14 @@ impl<I: Default> Default for ScreenGui<I> {
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 #[derive(Default)]
-pub struct ScreenshotCapture<I> {
-    superclass: Capture<I>,
+pub struct ScreenshotCapture {
+    superclass: Capture,
 }
-impl_inherits!(ScreenshotCapture<I>, Capture<I>);
+impl_inherits!(ScreenshotCapture, Capture);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
-pub struct ScreenshotHud<I> {
-    superclass: Instance<I>,
+pub struct ScreenshotHud {
+    superclass: Instance,
     pub CameraButtonIcon: ContentId,
     pub CameraButtonPosition: UDim2,
     pub CloseButtonPosition: UDim2,
@@ -12702,8 +12699,8 @@ pub struct ScreenshotHud<I> {
     pub UsernameOverlayEnabled: bool,
     pub Visible: bool,
 }
-impl_inherits!(ScreenshotHud<I>, Instance<I>);
-impl<I: Default> Default for ScreenshotHud<I> {
+impl_inherits!(ScreenshotHud, Instance);
+impl Default for ScreenshotHud {
     fn default() -> Self {
         let superclass = Object::default();
         let superclass = Instance {
@@ -12732,12 +12729,12 @@ impl<I: Default> Default for ScreenshotHud<I> {
 }
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
-pub struct Script<I> {
-    superclass: BaseScript<I>,
+pub struct Script {
+    superclass: BaseScript,
     pub Source: String,
 }
-impl_inherits!(Script<I>, BaseScript<I>);
-impl<I: Default> Default for Script<I> {
+impl_inherits!(Script, BaseScript);
+impl Default for Script {
     fn default() -> Self {
         let superclass = Object::default();
         let superclass = Instance {
@@ -12768,54 +12765,54 @@ impl<I: Default> Default for Script<I> {
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 #[derive(Default)]
-pub struct ScriptBuilder<I> {
-    superclass: Instance<I>,
+pub struct ScriptBuilder {
+    superclass: Instance,
 }
-impl_inherits!(ScriptBuilder<I>, Instance<I>);
+impl_inherits!(ScriptBuilder, Instance);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 #[derive(Default)]
-pub struct ScriptChangeService<I> {
-    superclass: Instance<I>,
+pub struct ScriptChangeService {
+    superclass: Instance,
 }
-impl_inherits!(ScriptChangeService<I>, Instance<I>);
+impl_inherits!(ScriptChangeService, Instance);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 #[derive(Default)]
-pub struct ScriptCloneWatcher<I> {
-    superclass: Instance<I>,
+pub struct ScriptCloneWatcher {
+    superclass: Instance,
 }
-impl_inherits!(ScriptCloneWatcher<I>, Instance<I>);
+impl_inherits!(ScriptCloneWatcher, Instance);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 #[derive(Default)]
-pub struct ScriptCloneWatcherHelper<I> {
-    superclass: Instance<I>,
+pub struct ScriptCloneWatcherHelper {
+    superclass: Instance,
 }
-impl_inherits!(ScriptCloneWatcherHelper<I>, Instance<I>);
+impl_inherits!(ScriptCloneWatcherHelper, Instance);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 #[derive(Default)]
-pub struct ScriptCommitService<I> {
-    superclass: Instance<I>,
+pub struct ScriptCommitService {
+    superclass: Instance,
 }
-impl_inherits!(ScriptCommitService<I>, Instance<I>);
+impl_inherits!(ScriptCommitService, Instance);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 #[derive(Default)]
-pub struct ScriptContext<I> {
-    superclass: Instance<I>,
+pub struct ScriptContext {
+    superclass: Instance,
 }
-impl_inherits!(ScriptContext<I>, Instance<I>);
+impl_inherits!(ScriptContext, Instance);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
-pub struct ScriptDebugger<I> {
-    superclass: Instance<I>,
+pub struct ScriptDebugger {
+    superclass: Instance,
     pub CoreScriptIdentifier: String,
     pub ScriptGuid: String,
 }
-impl_inherits!(ScriptDebugger<I>, Instance<I>);
-impl<I: Default> Default for ScriptDebugger<I> {
+impl_inherits!(ScriptDebugger, Instance);
+impl Default for ScriptDebugger {
     fn default() -> Self {
         let superclass = Object::default();
         let superclass = Instance {
@@ -12837,49 +12834,49 @@ impl<I: Default> Default for ScriptDebugger<I> {
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 #[derive(Default)]
-pub struct ScriptDocument<I> {
-    superclass: Instance<I>,
+pub struct ScriptDocument {
+    superclass: Instance,
 }
-impl_inherits!(ScriptDocument<I>, Instance<I>);
+impl_inherits!(ScriptDocument, Instance);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 #[derive(Default)]
-pub struct ScriptEditorService<I> {
-    superclass: Instance<I>,
+pub struct ScriptEditorService {
+    superclass: Instance,
 }
-impl_inherits!(ScriptEditorService<I>, Instance<I>);
+impl_inherits!(ScriptEditorService, Instance);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 #[derive(Default)]
-pub struct ScriptProfilerService<I> {
-    superclass: Instance<I>,
+pub struct ScriptProfilerService {
+    superclass: Instance,
 }
-impl_inherits!(ScriptProfilerService<I>, Instance<I>);
+impl_inherits!(ScriptProfilerService, Instance);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 #[derive(Default)]
-pub struct ScriptRegistrationService<I> {
-    superclass: Instance<I>,
+pub struct ScriptRegistrationService {
+    superclass: Instance,
 }
-impl_inherits!(ScriptRegistrationService<I>, Instance<I>);
+impl_inherits!(ScriptRegistrationService, Instance);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 #[derive(Default)]
-pub struct ScriptRuntime<I> {
-    superclass: Instance<I>,
+pub struct ScriptRuntime {
+    superclass: Instance,
 }
-impl_inherits!(ScriptRuntime<I>, Instance<I>);
+impl_inherits!(ScriptRuntime, Instance);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 #[derive(Default)]
-pub struct ScriptService<I> {
-    superclass: Instance<I>,
+pub struct ScriptService {
+    superclass: Instance,
 }
-impl_inherits!(ScriptService<I>, Instance<I>);
+impl_inherits!(ScriptService, Instance);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
-pub struct ScrollingFrame<I> {
-    superclass: GuiObject<I>,
+pub struct ScrollingFrame {
+    superclass: GuiObject,
     pub AutomaticCanvasSize: enums::AutomaticSize,
     pub BottomImageContent: Content,
     pub CanvasPosition: Vector2,
@@ -12896,8 +12893,8 @@ pub struct ScrollingFrame<I> {
     pub VerticalScrollBarInset: enums::ScrollBarInset,
     pub VerticalScrollBarPosition: enums::VerticalScrollBarPosition,
 }
-impl_inherits!(ScrollingFrame<I>, GuiObject<I>);
-impl<I: Default> Default for ScrollingFrame<I> {
+impl_inherits!(ScrollingFrame, GuiObject);
+impl Default for ScrollingFrame {
     fn default() -> Self {
         let superclass = Object::default();
         let superclass = Instance {
@@ -12972,12 +12969,12 @@ impl<I: Default> Default for ScrollingFrame<I> {
 }
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
-pub struct Seat<I> {
-    superclass: Part<I>,
+pub struct Seat {
+    superclass: Part,
     pub Disabled: bool,
 }
-impl_inherits!(Seat<I>, Part<I>);
-impl<I: Default> Default for Seat<I> {
+impl_inherits!(Seat, Part);
+impl Default for Seat {
     fn default() -> Self {
         let superclass = Object::default();
         let superclass = Instance {
@@ -13048,21 +13045,21 @@ impl<I: Default> Default for Seat<I> {
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 #[derive(Default)]
-pub struct Selection<I> {
-    superclass: Instance<I>,
+pub struct Selection {
+    superclass: Instance,
 }
-impl_inherits!(Selection<I>, Instance<I>);
+impl_inherits!(Selection, Instance);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
-pub struct SelectionBox<I> {
-    superclass: InstanceAdornment<I>,
+pub struct SelectionBox {
+    superclass: InstanceAdornment,
     pub LineThickness: f32,
     pub StudioSelectionBox: bool,
     pub SurfaceColor3: Color3,
     pub SurfaceTransparency: f32,
 }
-impl_inherits!(SelectionBox<I>, InstanceAdornment<I>);
-impl<I: Default> Default for SelectionBox<I> {
+impl_inherits!(SelectionBox, InstanceAdornment);
+impl Default for SelectionBox {
     fn default() -> Self {
         let superclass = Object::default();
         let superclass = Instance {
@@ -13097,18 +13094,18 @@ impl<I: Default> Default for SelectionBox<I> {
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 #[derive(Default)]
-pub struct SelectionHighlightManager<I> {
-    superclass: Instance<I>,
+pub struct SelectionHighlightManager {
+    superclass: Instance,
 }
-impl_inherits!(SelectionHighlightManager<I>, Instance<I>);
+impl_inherits!(SelectionHighlightManager, Instance);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
-pub struct SelectionLasso<I> {
-    superclass: GuiBase3d<I>,
+pub struct SelectionLasso {
+    superclass: GuiBase3d,
     pub Humanoid: Ref,
 }
-impl_inherits!(SelectionLasso<I>, GuiBase3d<I>);
-impl<I: Default> Default for SelectionLasso<I> {
+impl_inherits!(SelectionLasso, GuiBase3d);
+impl Default for SelectionLasso {
     fn default() -> Self {
         let superclass = Object::default();
         let superclass = Instance {
@@ -13135,12 +13132,12 @@ impl<I: Default> Default for SelectionLasso<I> {
 }
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
-pub struct SelectionPartLasso<I> {
-    superclass: SelectionLasso<I>,
+pub struct SelectionPartLasso {
+    superclass: SelectionLasso,
     pub Part: Ref,
 }
-impl_inherits!(SelectionPartLasso<I>, SelectionLasso<I>);
-impl<I: Default> Default for SelectionPartLasso<I> {
+impl_inherits!(SelectionPartLasso, SelectionLasso);
+impl Default for SelectionPartLasso {
     fn default() -> Self {
         let superclass = Object::default();
         let superclass = Instance {
@@ -13171,12 +13168,12 @@ impl<I: Default> Default for SelectionPartLasso<I> {
 }
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
-pub struct SelectionPointLasso<I> {
-    superclass: SelectionLasso<I>,
+pub struct SelectionPointLasso {
+    superclass: SelectionLasso,
     pub Point: Vector3,
 }
-impl_inherits!(SelectionPointLasso<I>, SelectionLasso<I>);
-impl<I: Default> Default for SelectionPointLasso<I> {
+impl_inherits!(SelectionPointLasso, SelectionLasso);
+impl Default for SelectionPointLasso {
     fn default() -> Self {
         let superclass = Object::default();
         let superclass = Instance {
@@ -13207,13 +13204,13 @@ impl<I: Default> Default for SelectionPointLasso<I> {
 }
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
-pub struct SelectionSphere<I> {
-    superclass: PVAdornment<I>,
+pub struct SelectionSphere {
+    superclass: PVAdornment,
     pub SurfaceColor3: Color3,
     pub SurfaceTransparency: f32,
 }
-impl_inherits!(SelectionSphere<I>, PVAdornment<I>);
-impl<I: Default> Default for SelectionSphere<I> {
+impl_inherits!(SelectionSphere, PVAdornment);
+impl Default for SelectionSphere {
     fn default() -> Self {
         let superclass = Object::default();
         let superclass = Instance {
@@ -13245,12 +13242,12 @@ impl<I: Default> Default for SelectionSphere<I> {
 }
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
-pub struct SensorBase<I> {
-    superclass: Instance<I>,
+pub struct SensorBase {
+    superclass: Instance,
     pub UpdateType: enums::SensorUpdateType,
 }
-impl_inherits!(SensorBase<I>, Instance<I>);
-impl<I: Default> Default for SensorBase<I> {
+impl_inherits!(SensorBase, Instance);
+impl Default for SensorBase {
     fn default() -> Self {
         let superclass = Object::default();
         let superclass = Instance {
@@ -13271,25 +13268,25 @@ impl<I: Default> Default for SensorBase<I> {
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 #[derive(Default)]
-pub struct SerializationService<I> {
-    superclass: Instance<I>,
+pub struct SerializationService {
+    superclass: Instance,
 }
-impl_inherits!(SerializationService<I>, Instance<I>);
+impl_inherits!(SerializationService, Instance);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 #[derive(Default)]
-pub struct ServerReplicator<I> {
-    superclass: NetworkReplicator<I>,
+pub struct ServerReplicator {
+    superclass: NetworkReplicator,
 }
-impl_inherits!(ServerReplicator<I>, NetworkReplicator<I>);
+impl_inherits!(ServerReplicator, NetworkReplicator);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
-pub struct ServerScriptService<I> {
-    superclass: Instance<I>,
+pub struct ServerScriptService {
+    superclass: Instance,
     pub LoadStringEnabled: bool,
 }
-impl_inherits!(ServerScriptService<I>, Instance<I>);
-impl<I: Default> Default for ServerScriptService<I> {
+impl_inherits!(ServerScriptService, Instance);
+impl Default for ServerScriptService {
     fn default() -> Self {
         let superclass = Object::default();
         let superclass = Instance {
@@ -13310,26 +13307,26 @@ impl<I: Default> Default for ServerScriptService<I> {
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 #[derive(Default)]
-pub struct ServerStorage<I> {
-    superclass: Instance<I>,
+pub struct ServerStorage {
+    superclass: Instance,
 }
-impl_inherits!(ServerStorage<I>, Instance<I>);
+impl_inherits!(ServerStorage, Instance);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 #[derive(Default)]
-pub struct ServiceProvider<I> {
-    superclass: Instance<I>,
+pub struct ServiceProvider {
+    superclass: Instance,
 }
-impl_inherits!(ServiceProvider<I>, Instance<I>);
+impl_inherits!(ServiceProvider, Instance);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
-pub struct ServiceVisibilityService<I> {
-    superclass: Instance<I>,
+pub struct ServiceVisibilityService {
+    superclass: Instance,
     pub HiddenServices: BinaryString,
     pub VisibleServices: BinaryString,
 }
-impl_inherits!(ServiceVisibilityService<I>, Instance<I>);
-impl<I: Default> Default for ServiceVisibilityService<I> {
+impl_inherits!(ServiceVisibilityService, Instance);
+impl Default for ServiceVisibilityService {
     fn default() -> Self {
         let superclass = Object::default();
         let superclass = Instance {
@@ -13351,32 +13348,32 @@ impl<I: Default> Default for ServiceVisibilityService<I> {
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 #[derive(Default)]
-pub struct SessionCheckService<I> {
-    superclass: Instance<I>,
+pub struct SessionCheckService {
+    superclass: Instance,
 }
-impl_inherits!(SessionCheckService<I>, Instance<I>);
+impl_inherits!(SessionCheckService, Instance);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 #[derive(Default)]
-pub struct SessionService<I> {
-    superclass: Instance<I>,
+pub struct SessionService {
+    superclass: Instance,
 }
-impl_inherits!(SessionService<I>, Instance<I>);
+impl_inherits!(SessionService, Instance);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 #[derive(Default)]
-pub struct SharedTableRegistry<I> {
-    superclass: Instance<I>,
+pub struct SharedTableRegistry {
+    superclass: Instance,
 }
-impl_inherits!(SharedTableRegistry<I>, Instance<I>);
+impl_inherits!(SharedTableRegistry, Instance);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
-pub struct Shirt<I> {
-    superclass: Clothing<I>,
+pub struct Shirt {
+    superclass: Clothing,
     pub ShirtTemplate: ContentId,
 }
-impl_inherits!(Shirt<I>, Clothing<I>);
-impl<I: Default> Default for Shirt<I> {
+impl_inherits!(Shirt, Clothing);
+impl Default for Shirt {
     fn default() -> Self {
         let superclass = Object::default();
         let superclass = Instance {
@@ -13401,13 +13398,13 @@ impl<I: Default> Default for Shirt<I> {
 }
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
-pub struct ShirtGraphic<I> {
-    superclass: CharacterAppearance<I>,
+pub struct ShirtGraphic {
+    superclass: CharacterAppearance,
     pub Color3: Color3,
     pub Graphic: ContentId,
 }
-impl_inherits!(ShirtGraphic<I>, CharacterAppearance<I>);
-impl<I: Default> Default for ShirtGraphic<I> {
+impl_inherits!(ShirtGraphic, CharacterAppearance);
+impl Default for ShirtGraphic {
     fn default() -> Self {
         let superclass = Object::default();
         let superclass = Instance {
@@ -13430,20 +13427,20 @@ impl<I: Default> Default for ShirtGraphic<I> {
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 #[derive(Default)]
-pub struct SkateboardController<I> {
-    superclass: Controller<I>,
+pub struct SkateboardController {
+    superclass: Controller,
 }
-impl_inherits!(SkateboardController<I>, Controller<I>);
+impl_inherits!(SkateboardController, Controller);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
-pub struct SkateboardPlatform<I> {
-    superclass: Part<I>,
+pub struct SkateboardPlatform {
+    superclass: Part,
     pub Steer: i32,
     pub StickyWheels: bool,
     pub Throttle: i32,
 }
-impl_inherits!(SkateboardPlatform<I>, Part<I>);
-impl<I: Default> Default for SkateboardPlatform<I> {
+impl_inherits!(SkateboardPlatform, Part);
+impl Default for SkateboardPlatform {
     fn default() -> Self {
         let superclass = Object::default();
         let superclass = Instance {
@@ -13515,12 +13512,12 @@ impl<I: Default> Default for SkateboardPlatform<I> {
 }
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
-pub struct Skin<I> {
-    superclass: CharacterAppearance<I>,
+pub struct Skin {
+    superclass: CharacterAppearance,
     pub SkinColor: BrickColor,
 }
-impl_inherits!(Skin<I>, CharacterAppearance<I>);
-impl<I: Default> Default for Skin<I> {
+impl_inherits!(Skin, CharacterAppearance);
+impl Default for Skin {
     fn default() -> Self {
         let superclass = Object::default();
         let superclass = Instance {
@@ -13541,8 +13538,8 @@ impl<I: Default> Default for Skin<I> {
 }
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
-pub struct Sky<I> {
-    superclass: Instance<I>,
+pub struct Sky {
+    superclass: Instance,
     pub CelestialBodiesShown: bool,
     pub MoonAngularSize: f32,
     pub MoonTextureId: ContentId,
@@ -13557,8 +13554,8 @@ pub struct Sky<I> {
     pub SunAngularSize: f32,
     pub SunTextureId: ContentId,
 }
-impl_inherits!(Sky<I>, Instance<I>);
-impl<I: Default> Default for Sky<I> {
+impl_inherits!(Sky, Instance);
+impl Default for Sky {
     fn default() -> Self {
         let superclass = Object::default();
         let superclass = Instance {
@@ -13590,8 +13587,8 @@ impl<I: Default> Default for Sky<I> {
 }
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
-pub struct SlidingBallConstraint<I> {
-    superclass: Constraint<I>,
+pub struct SlidingBallConstraint {
+    superclass: Constraint,
     pub ActuatorType: enums::ActuatorType,
     pub LimitsEnabled: bool,
     pub LinearResponsiveness: f32,
@@ -13607,8 +13604,8 @@ pub struct SlidingBallConstraint<I> {
     pub UpperLimit: f32,
     pub Velocity: f32,
 }
-impl_inherits!(SlidingBallConstraint<I>, Constraint<I>);
-impl<I: Default> Default for SlidingBallConstraint<I> {
+impl_inherits!(SlidingBallConstraint, Constraint);
+impl Default for SlidingBallConstraint {
     fn default() -> Self {
         let superclass = Object::default();
         let superclass = Instance {
@@ -13650,27 +13647,27 @@ impl<I: Default> Default for SlidingBallConstraint<I> {
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 #[derive(Default)]
-pub struct SlimContentProvider<I> {
-    superclass: CacheableContentProvider<I>,
+pub struct SlimContentProvider {
+    superclass: CacheableContentProvider,
 }
-impl_inherits!(SlimContentProvider<I>, CacheableContentProvider<I>);
+impl_inherits!(SlimContentProvider, CacheableContentProvider);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 #[derive(Default)]
-pub struct SlimService<I> {
-    superclass: Instance<I>,
+pub struct SlimService {
+    superclass: Instance,
 }
-impl_inherits!(SlimService<I>, Instance<I>);
+impl_inherits!(SlimService, Instance);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
-pub struct Smoke<I> {
-    superclass: Instance<I>,
+pub struct Smoke {
+    superclass: Instance,
     pub Color: Color3,
     pub Enabled: bool,
     pub TimeScale: f32,
 }
-impl_inherits!(Smoke<I>, Instance<I>);
-impl<I: Default> Default for Smoke<I> {
+impl_inherits!(Smoke, Instance);
+impl Default for Smoke {
     fn default() -> Self {
         let superclass = Object::default();
         let superclass = Instance {
@@ -13693,42 +13690,42 @@ impl<I: Default> Default for Smoke<I> {
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 #[derive(Default)]
-pub struct SmoothVoxelsUpgraderService<I> {
-    superclass: Instance<I>,
+pub struct SmoothVoxelsUpgraderService {
+    superclass: Instance,
 }
-impl_inherits!(SmoothVoxelsUpgraderService<I>, Instance<I>);
+impl_inherits!(SmoothVoxelsUpgraderService, Instance);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 #[derive(Default)]
-pub struct Snap<I> {
-    superclass: JointInstance<I>,
+pub struct Snap {
+    superclass: JointInstance,
 }
-impl_inherits!(Snap<I>, JointInstance<I>);
+impl_inherits!(Snap, JointInstance);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 #[derive(Default)]
-pub struct SnippetService<I> {
-    superclass: Instance<I>,
+pub struct SnippetService {
+    superclass: Instance,
 }
-impl_inherits!(SnippetService<I>, Instance<I>);
+impl_inherits!(SnippetService, Instance);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 #[derive(Default)]
-pub struct SocialService<I> {
-    superclass: Instance<I>,
+pub struct SocialService {
+    superclass: Instance,
 }
-impl_inherits!(SocialService<I>, Instance<I>);
+impl_inherits!(SocialService, Instance);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 #[derive(Default)]
-pub struct SolidModelContentProvider<I> {
-    superclass: CacheableContentProvider<I>,
+pub struct SolidModelContentProvider {
+    superclass: CacheableContentProvider,
 }
-impl_inherits!(SolidModelContentProvider<I>, CacheableContentProvider<I>);
+impl_inherits!(SolidModelContentProvider, CacheableContentProvider);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
-pub struct Sound<I> {
-    superclass: Instance<I>,
+pub struct Sound {
+    superclass: Instance,
     pub AudioContent: Content,
     pub IsMutedForCapture: bool,
     pub LoopRegion: NumberRange,
@@ -13743,8 +13740,8 @@ pub struct Sound<I> {
     pub TimePosition: f64,
     pub Volume: f32,
 }
-impl_inherits!(Sound<I>, Instance<I>);
-impl<I: Default> Default for Sound<I> {
+impl_inherits!(Sound, Instance);
+impl Default for Sound {
     fn default() -> Self {
         let superclass = Object::default();
         let superclass = Instance {
@@ -13776,13 +13773,13 @@ impl<I: Default> Default for Sound<I> {
 }
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
-pub struct SoundEffect<I> {
-    superclass: Instance<I>,
+pub struct SoundEffect {
+    superclass: Instance,
     pub Enabled: bool,
     pub Priority: i32,
 }
-impl_inherits!(SoundEffect<I>, Instance<I>);
-impl<I: Default> Default for SoundEffect<I> {
+impl_inherits!(SoundEffect, Instance);
+impl Default for SoundEffect {
     fn default() -> Self {
         let superclass = Object::default();
         let superclass = Instance {
@@ -13803,12 +13800,12 @@ impl<I: Default> Default for SoundEffect<I> {
 }
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
-pub struct SoundGroup<I> {
-    superclass: Instance<I>,
+pub struct SoundGroup {
+    superclass: Instance,
     pub Volume: f32,
 }
-impl_inherits!(SoundGroup<I>, Instance<I>);
-impl<I: Default> Default for SoundGroup<I> {
+impl_inherits!(SoundGroup, Instance);
+impl Default for SoundGroup {
     fn default() -> Self {
         let superclass = Object::default();
         let superclass = Instance {
@@ -13828,8 +13825,8 @@ impl<I: Default> Default for SoundGroup<I> {
 }
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
-pub struct SoundService<I> {
-    superclass: Instance<I>,
+pub struct SoundService {
+    superclass: Instance,
     pub AcousticSimulationEnabled: bool,
     pub AmbientReverb: enums::ReverbType,
     pub AudioApiByDefault: enums::RolloutState,
@@ -13842,8 +13839,8 @@ pub struct SoundService<I> {
     pub RolloffScale: f32,
     pub VolumetricAudio: enums::VolumetricAudio,
 }
-impl_inherits!(SoundService<I>, Instance<I>);
-impl<I: Default> Default for SoundService<I> {
+impl_inherits!(SoundService, Instance);
+impl Default for SoundService {
     fn default() -> Self {
         let superclass = Object::default();
         let superclass = Instance {
@@ -13874,20 +13871,20 @@ impl<I: Default> Default for SoundService<I> {
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 #[derive(Default)]
-pub struct SoundShimService<I> {
-    superclass: Instance<I>,
+pub struct SoundShimService {
+    superclass: Instance,
 }
-impl_inherits!(SoundShimService<I>, Instance<I>);
+impl_inherits!(SoundShimService, Instance);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
-pub struct Sparkles<I> {
-    superclass: Instance<I>,
+pub struct Sparkles {
+    superclass: Instance,
     pub Enabled: bool,
     pub SparkleColor: Color3,
     pub TimeScale: f32,
 }
-impl_inherits!(Sparkles<I>, Instance<I>);
-impl<I: Default> Default for Sparkles<I> {
+impl_inherits!(Sparkles, Instance);
+impl Default for Sparkles {
     fn default() -> Self {
         let superclass = Object::default();
         let superclass = Instance {
@@ -13909,16 +13906,16 @@ impl<I: Default> Default for Sparkles<I> {
 }
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
-pub struct SpawnLocation<I> {
-    superclass: Part<I>,
+pub struct SpawnLocation {
+    superclass: Part,
     pub AllowTeamChangeOnTouch: bool,
     pub Duration: i32,
     pub Enabled: bool,
     pub Neutral: bool,
     pub TeamColor: BrickColor,
 }
-impl_inherits!(SpawnLocation<I>, Part<I>);
-impl<I: Default> Default for SpawnLocation<I> {
+impl_inherits!(SpawnLocation, Part);
+impl Default for SpawnLocation {
     fn default() -> Self {
         let superclass = Object::default();
         let superclass = Instance {
@@ -13993,18 +13990,18 @@ impl<I: Default> Default for SpawnLocation<I> {
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 #[derive(Default)]
-pub struct SpawnerService<I> {
-    superclass: Instance<I>,
+pub struct SpawnerService {
+    superclass: Instance,
 }
-impl_inherits!(SpawnerService<I>, Instance<I>);
+impl_inherits!(SpawnerService, Instance);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
-pub struct SpecialMesh<I> {
-    superclass: FileMesh<I>,
+pub struct SpecialMesh {
+    superclass: FileMesh,
     pub MeshType: enums::MeshType,
 }
-impl_inherits!(SpecialMesh<I>, FileMesh<I>);
-impl<I: Default> Default for SpecialMesh<I> {
+impl_inherits!(SpecialMesh, FileMesh);
+impl Default for SpecialMesh {
     fn default() -> Self {
         let superclass = Object::default();
         let superclass = Instance {
@@ -14035,13 +14032,13 @@ impl<I: Default> Default for SpecialMesh<I> {
 }
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
-pub struct SphereHandleAdornment<I> {
-    superclass: HandleAdornment<I>,
+pub struct SphereHandleAdornment {
+    superclass: HandleAdornment,
     pub Radius: f32,
     pub Shading: enums::AdornShading,
 }
-impl_inherits!(SphereHandleAdornment<I>, HandleAdornment<I>);
-impl<I: Default> Default for SphereHandleAdornment<I> {
+impl_inherits!(SphereHandleAdornment, HandleAdornment);
+impl Default for SphereHandleAdornment {
     fn default() -> Self {
         let superclass = Object::default();
         let superclass = Instance {
@@ -14081,14 +14078,14 @@ impl<I: Default> Default for SphereHandleAdornment<I> {
 }
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
-pub struct SpotLight<I> {
-    superclass: Light<I>,
+pub struct SpotLight {
+    superclass: Light,
     pub Angle: f32,
     pub Face: enums::NormalId,
     pub Range: f32,
 }
-impl_inherits!(SpotLight<I>, Light<I>);
-impl<I: Default> Default for SpotLight<I> {
+impl_inherits!(SpotLight, Light);
+impl Default for SpotLight {
     fn default() -> Self {
         let superclass = Object::default();
         let superclass = Instance {
@@ -14117,8 +14114,8 @@ impl<I: Default> Default for SpotLight<I> {
 }
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
-pub struct SpringConstraint<I> {
-    superclass: Constraint<I>,
+pub struct SpringConstraint {
+    superclass: Constraint,
     pub Coils: f32,
     pub Damping: f32,
     pub FreeLength: f32,
@@ -14130,8 +14127,8 @@ pub struct SpringConstraint<I> {
     pub Stiffness: f32,
     pub Thickness: f32,
 }
-impl_inherits!(SpringConstraint<I>, Constraint<I>);
-impl<I: Default> Default for SpringConstraint<I> {
+impl_inherits!(SpringConstraint, Constraint);
+impl Default for SpringConstraint {
     fn default() -> Self {
         let superclass = Object::default();
         let superclass = Instance {
@@ -14169,49 +14166,49 @@ impl<I: Default> Default for SpringConstraint<I> {
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 #[derive(Default)]
-pub struct StackFrame<I> {
-    superclass: Instance<I>,
+pub struct StackFrame {
+    superclass: Instance,
 }
-impl_inherits!(StackFrame<I>, Instance<I>);
+impl_inherits!(StackFrame, Instance);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 #[derive(Default)]
-pub struct StandalonePluginScripts<I> {
-    superclass: Instance<I>,
+pub struct StandalonePluginScripts {
+    superclass: Instance,
 }
-impl_inherits!(StandalonePluginScripts<I>, Instance<I>);
+impl_inherits!(StandalonePluginScripts, Instance);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 #[derive(Default)]
-pub struct StandardPages<I> {
-    superclass: Pages<I>,
+pub struct StandardPages {
+    superclass: Pages,
 }
-impl_inherits!(StandardPages<I>, Pages<I>);
+impl_inherits!(StandardPages, Pages);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 #[derive(Default)]
-pub struct StartPageService<I> {
-    superclass: Instance<I>,
+pub struct StartPageService {
+    superclass: Instance,
 }
-impl_inherits!(StartPageService<I>, Instance<I>);
+impl_inherits!(StartPageService, Instance);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 #[derive(Default)]
-pub struct StarterCharacterScripts<I> {
-    superclass: StarterPlayerScripts<I>,
+pub struct StarterCharacterScripts {
+    superclass: StarterPlayerScripts,
 }
-impl_inherits!(StarterCharacterScripts<I>, StarterPlayerScripts<I>);
+impl_inherits!(StarterCharacterScripts, StarterPlayerScripts);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 #[derive(Default)]
-pub struct StarterGear<I> {
-    superclass: Instance<I>,
+pub struct StarterGear {
+    superclass: Instance,
 }
-impl_inherits!(StarterGear<I>, Instance<I>);
+impl_inherits!(StarterGear, Instance);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
-pub struct StarterGui<I> {
-    superclass: BasePlayerGui<I>,
+pub struct StarterGui {
+    superclass: BasePlayerGui,
     pub ResetPlayerGuiOnSpawn: bool,
     pub RtlTextSupport: enums::RtlTextSupport,
     pub ScreenOrientation: enums::ScreenOrientation,
@@ -14220,8 +14217,8 @@ pub struct StarterGui<I> {
     pub StudioInsertWidgetLayerCollectorAutoLinkStyleSheet: Ref,
     pub VirtualCursorMode: enums::VirtualCursorMode,
 }
-impl_inherits!(StarterGui<I>, BasePlayerGui<I>);
-impl<I: Default> Default for StarterGui<I> {
+impl_inherits!(StarterGui, BasePlayerGui);
+impl Default for StarterGui {
     fn default() -> Self {
         let superclass = Object::default();
         let superclass = Instance {
@@ -14249,14 +14246,14 @@ impl<I: Default> Default for StarterGui<I> {
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 #[derive(Default)]
-pub struct StarterPack<I> {
-    superclass: Instance<I>,
+pub struct StarterPack {
+    superclass: Instance,
 }
-impl_inherits!(StarterPack<I>, Instance<I>);
+impl_inherits!(StarterPack, Instance);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
-pub struct StarterPlayer<I> {
-    superclass: Instance<I>,
+pub struct StarterPlayer {
+    superclass: Instance,
     pub AllowCustomAnimations: bool,
     pub AutoJumpEnabled: bool,
     pub AvatarJointUpgradeSerializedRollout: enums::RolloutState,
@@ -14302,8 +14299,8 @@ pub struct StarterPlayer<I> {
     pub NameDisplayDistance: f32,
     pub UserEmotesEnabled: bool,
 }
-impl_inherits!(StarterPlayer<I>, Instance<I>);
-impl<I: Default> Default for StarterPlayer<I> {
+impl_inherits!(StarterPlayer, Instance);
+impl Default for StarterPlayer {
     fn default() -> Self {
         let superclass = Object::default();
         let superclass = Instance {
@@ -14367,60 +14364,60 @@ impl<I: Default> Default for StarterPlayer<I> {
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 #[derive(Default)]
-pub struct StarterPlayerScripts<I> {
-    superclass: Instance<I>,
+pub struct StarterPlayerScripts {
+    superclass: Instance,
 }
-impl_inherits!(StarterPlayerScripts<I>, Instance<I>);
+impl_inherits!(StarterPlayerScripts, Instance);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 #[derive(Default)]
-pub struct StartupMessageService<I> {
-    superclass: Instance<I>,
+pub struct StartupMessageService {
+    superclass: Instance,
 }
-impl_inherits!(StartupMessageService<I>, Instance<I>);
+impl_inherits!(StartupMessageService, Instance);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 #[derive(Default)]
-pub struct Stats<I> {
-    superclass: Instance<I>,
+pub struct Stats {
+    superclass: Instance,
 }
-impl_inherits!(Stats<I>, Instance<I>);
+impl_inherits!(Stats, Instance);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 #[derive(Default)]
-pub struct StatsItem<I> {
-    superclass: Instance<I>,
+pub struct StatsItem {
+    superclass: Instance,
 }
-impl_inherits!(StatsItem<I>, Instance<I>);
+impl_inherits!(StatsItem, Instance);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 #[derive(Default)]
-pub struct Status<I> {
-    superclass: Model<I>,
+pub struct Status {
+    superclass: Model,
 }
-impl_inherits!(Status<I>, Model<I>);
+impl_inherits!(Status, Model);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 #[derive(Default)]
-pub struct StopWatchReporter<I> {
-    superclass: Instance<I>,
+pub struct StopWatchReporter {
+    superclass: Instance,
 }
-impl_inherits!(StopWatchReporter<I>, Instance<I>);
+impl_inherits!(StopWatchReporter, Instance);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 #[derive(Default)]
-pub struct StreamingService<I> {
-    superclass: Instance<I>,
+pub struct StreamingService {
+    superclass: Instance,
 }
-impl_inherits!(StreamingService<I>, Instance<I>);
+impl_inherits!(StreamingService, Instance);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
-pub struct StringValue<I> {
-    superclass: ValueBase<I>,
+pub struct StringValue {
+    superclass: ValueBase,
     pub Value: String,
 }
-impl_inherits!(StringValue<I>, ValueBase<I>);
-impl<I: Default> Default for StringValue<I> {
+impl_inherits!(StringValue, ValueBase);
+impl Default for StringValue {
     fn default() -> Self {
         let superclass = Object::default();
         let superclass = Instance {
@@ -14441,8 +14438,8 @@ impl<I: Default> Default for StringValue<I> {
 }
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
-pub struct Studio<I> {
-    superclass: Instance<I>,
+pub struct Studio {
+    superclass: Instance,
     pub ActionOnAutoResumeSync: enums::ActionOnAutoResumeSync,
     pub ActionOnStopSync: enums::ActionOnStopSync,
     pub ActiveColor: Color3,
@@ -14566,8 +14563,8 @@ pub struct Studio<I> {
     pub TextWrapping: bool,
     pub UseBoundingBoxMoveHandles: bool,
 }
-impl_inherits!(Studio<I>, Instance<I>);
-impl<I: Default> Default for Studio<I> {
+impl_inherits!(Studio, Instance);
+impl Default for Studio {
     fn default() -> Self {
         let superclass = Object::default();
         let superclass = Instance {
@@ -14709,22 +14706,22 @@ impl<I: Default> Default for Studio<I> {
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 #[derive(Default)]
-pub struct StudioAssetService<I> {
-    superclass: Instance<I>,
+pub struct StudioAssetService {
+    superclass: Instance,
 }
-impl_inherits!(StudioAssetService<I>, Instance<I>);
+impl_inherits!(StudioAssetService, Instance);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
-pub struct StudioAttachment<I> {
-    superclass: Instance<I>,
+pub struct StudioAttachment {
+    superclass: Instance,
     pub AutoHideParent: bool,
     pub IsArrowVisible: bool,
     pub Offset: Vector2,
     pub SourceAnchorPoint: Vector2,
     pub TargetAnchorPoint: Vector2,
 }
-impl_inherits!(StudioAttachment<I>, Instance<I>);
-impl<I: Default> Default for StudioAttachment<I> {
+impl_inherits!(StudioAttachment, Instance);
+impl Default for StudioAttachment {
     fn default() -> Self {
         let superclass = Object::default();
         let superclass = Instance {
@@ -14749,19 +14746,19 @@ impl<I: Default> Default for StudioAttachment<I> {
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 #[derive(Default)]
-pub struct StudioCallout<I> {
-    superclass: Instance<I>,
+pub struct StudioCallout {
+    superclass: Instance,
 }
-impl_inherits!(StudioCallout<I>, Instance<I>);
+impl_inherits!(StudioCallout, Instance);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
-pub struct StudioCameraService<I> {
-    superclass: Instance<I>,
+pub struct StudioCameraService {
+    superclass: Instance,
     pub LockCameraSpeed: bool,
     pub LoggingEnabled: bool,
 }
-impl_inherits!(StudioCameraService<I>, Instance<I>);
-impl<I: Default> Default for StudioCameraService<I> {
+impl_inherits!(StudioCameraService, Instance);
+impl Default for StudioCameraService {
     fn default() -> Self {
         let superclass = Object::default();
         let superclass = Instance {
@@ -14782,12 +14779,12 @@ impl<I: Default> Default for StudioCameraService<I> {
 }
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
-pub struct StudioData<I> {
-    superclass: Instance<I>,
+pub struct StudioData {
+    superclass: Instance,
     pub EnableScriptCollabByDefaultOnLoad: bool,
 }
-impl_inherits!(StudioData<I>, Instance<I>);
-impl<I: Default> Default for StudioData<I> {
+impl_inherits!(StudioData, Instance);
+impl Default for StudioData {
     fn default() -> Self {
         let superclass = Object::default();
         let superclass = Instance {
@@ -14808,25 +14805,25 @@ impl<I: Default> Default for StudioData<I> {
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 #[derive(Default)]
-pub struct StudioDeviceEmulatorService<I> {
-    superclass: Instance<I>,
+pub struct StudioDeviceEmulatorService {
+    superclass: Instance,
 }
-impl_inherits!(StudioDeviceEmulatorService<I>, Instance<I>);
+impl_inherits!(StudioDeviceEmulatorService, Instance);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 #[derive(Default)]
-pub struct StudioObjectBase<I> {
-    superclass: Instance<I>,
+pub struct StudioObjectBase {
+    superclass: Instance,
 }
-impl_inherits!(StudioObjectBase<I>, Instance<I>);
+impl_inherits!(StudioObjectBase, Instance);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
-pub struct StudioPublishService<I> {
-    superclass: Instance<I>,
+pub struct StudioPublishService {
+    superclass: Instance,
     pub PublishLocked: bool,
 }
-impl_inherits!(StudioPublishService<I>, Instance<I>);
-impl<I: Default> Default for StudioPublishService<I> {
+impl_inherits!(StudioPublishService, Instance);
+impl Default for StudioPublishService {
     fn default() -> Self {
         let superclass = Object::default();
         let superclass = Instance {
@@ -14847,25 +14844,25 @@ impl<I: Default> Default for StudioPublishService<I> {
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 #[derive(Default)]
-pub struct StudioScriptDebugEventListener<I> {
-    superclass: Instance<I>,
+pub struct StudioScriptDebugEventListener {
+    superclass: Instance,
 }
-impl_inherits!(StudioScriptDebugEventListener<I>, Instance<I>);
+impl_inherits!(StudioScriptDebugEventListener, Instance);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 #[derive(Default)]
-pub struct StudioSdkService<I> {
-    superclass: Instance<I>,
+pub struct StudioSdkService {
+    superclass: Instance,
 }
-impl_inherits!(StudioSdkService<I>, Instance<I>);
+impl_inherits!(StudioSdkService, Instance);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
-pub struct StudioService<I> {
-    superclass: Instance<I>,
+pub struct StudioService {
+    superclass: Instance,
     pub Secrets: String,
 }
-impl_inherits!(StudioService<I>, Instance<I>);
-impl<I: Default> Default for StudioService<I> {
+impl_inherits!(StudioService, Instance);
+impl Default for StudioService {
     fn default() -> Self {
         let superclass = Object::default();
         let superclass = Instance {
@@ -14886,54 +14883,54 @@ impl<I: Default> Default for StudioService<I> {
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 #[derive(Default)]
-pub struct StudioTestService<I> {
-    superclass: Instance<I>,
+pub struct StudioTestService {
+    superclass: Instance,
 }
-impl_inherits!(StudioTestService<I>, Instance<I>);
+impl_inherits!(StudioTestService, Instance);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 #[derive(Default)]
-pub struct StudioTheme<I> {
-    superclass: Instance<I>,
+pub struct StudioTheme {
+    superclass: Instance,
 }
-impl_inherits!(StudioTheme<I>, Instance<I>);
+impl_inherits!(StudioTheme, Instance);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 #[derive(Default)]
-pub struct StudioUserService<I> {
-    superclass: Instance<I>,
+pub struct StudioUserService {
+    superclass: Instance,
 }
-impl_inherits!(StudioUserService<I>, Instance<I>);
+impl_inherits!(StudioUserService, Instance);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 #[derive(Default)]
-pub struct StudioWidget<I> {
-    superclass: StudioObjectBase<I>,
+pub struct StudioWidget {
+    superclass: StudioObjectBase,
 }
-impl_inherits!(StudioWidget<I>, StudioObjectBase<I>);
+impl_inherits!(StudioWidget, StudioObjectBase);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 #[derive(Default)]
-pub struct StudioWidgetsService<I> {
-    superclass: Instance<I>,
+pub struct StudioWidgetsService {
+    superclass: Instance,
 }
-impl_inherits!(StudioWidgetsService<I>, Instance<I>);
+impl_inherits!(StudioWidgetsService, Instance);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 #[derive(Default)]
-pub struct StyleBase<I> {
-    superclass: Instance<I>,
+pub struct StyleBase {
+    superclass: Instance,
 }
-impl_inherits!(StyleBase<I>, Instance<I>);
+impl_inherits!(StyleBase, Instance);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
-pub struct StyleDerive<I> {
-    superclass: Instance<I>,
+pub struct StyleDerive {
+    superclass: Instance,
     pub Priority: i32,
     pub StyleSheet: Ref,
 }
-impl_inherits!(StyleDerive<I>, Instance<I>);
-impl<I: Default> Default for StyleDerive<I> {
+impl_inherits!(StyleDerive, Instance);
+impl Default for StyleDerive {
     fn default() -> Self {
         let superclass = Object::default();
         let superclass = Instance {
@@ -14954,12 +14951,12 @@ impl<I: Default> Default for StyleDerive<I> {
 }
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
-pub struct StyleLink<I> {
-    superclass: Instance<I>,
+pub struct StyleLink {
+    superclass: Instance,
     pub StyleSheet: Ref,
 }
-impl_inherits!(StyleLink<I>, Instance<I>);
-impl<I: Default> Default for StyleLink<I> {
+impl_inherits!(StyleLink, Instance);
+impl Default for StyleLink {
     fn default() -> Self {
         let superclass = Object::default();
         let superclass = Instance {
@@ -14979,15 +14976,15 @@ impl<I: Default> Default for StyleLink<I> {
 }
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
-pub struct StyleQuery<I> {
-    superclass: Instance<I>,
+pub struct StyleQuery {
+    superclass: Instance,
     pub AspectRatioRange: NumberRange,
     pub ConditionsSerialize: BinaryString,
     pub MaxSize: Vector2,
     pub MinSize: Vector2,
 }
-impl_inherits!(StyleQuery<I>, Instance<I>);
-impl<I: Default> Default for StyleQuery<I> {
+impl_inherits!(StyleQuery, Instance);
+impl Default for StyleQuery {
     fn default() -> Self {
         let superclass = Object::default();
         let superclass = Instance {
@@ -15010,13 +15007,13 @@ impl<I: Default> Default for StyleQuery<I> {
 }
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
-pub struct StyleRule<I> {
-    superclass: StyleBase<I>,
+pub struct StyleRule {
+    superclass: StyleBase,
     pub Priority: i32,
     pub Selector: String,
 }
-impl_inherits!(StyleRule<I>, StyleBase<I>);
-impl<I: Default> Default for StyleRule<I> {
+impl_inherits!(StyleRule, StyleBase);
+impl Default for StyleRule {
     fn default() -> Self {
         let superclass = Object::default();
         let superclass = Instance {
@@ -15039,26 +15036,26 @@ impl<I: Default> Default for StyleRule<I> {
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 #[derive(Default)]
-pub struct StyleSheet<I> {
-    superclass: StyleBase<I>,
+pub struct StyleSheet {
+    superclass: StyleBase,
 }
-impl_inherits!(StyleSheet<I>, StyleBase<I>);
+impl_inherits!(StyleSheet, StyleBase);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 #[derive(Default)]
-pub struct StylingService<I> {
-    superclass: Instance<I>,
+pub struct StylingService {
+    superclass: Instance,
 }
-impl_inherits!(StylingService<I>, Instance<I>);
+impl_inherits!(StylingService, Instance);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
-pub struct SunRaysEffect<I> {
-    superclass: PostEffect<I>,
+pub struct SunRaysEffect {
+    superclass: PostEffect,
     pub Intensity: f32,
     pub Spread: f32,
 }
-impl_inherits!(SunRaysEffect<I>, PostEffect<I>);
-impl<I: Default> Default for SunRaysEffect<I> {
+impl_inherits!(SunRaysEffect, PostEffect);
+impl Default for SunRaysEffect {
     fn default() -> Self {
         let superclass = Object::default();
         let superclass = Instance {
@@ -15083,8 +15080,8 @@ impl<I: Default> Default for SunRaysEffect<I> {
 }
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
-pub struct SurfaceAppearance<I> {
-    superclass: Instance<I>,
+pub struct SurfaceAppearance {
+    superclass: Instance,
     pub AlphaMode: enums::AlphaMode,
     pub Color: Color3,
     pub ColorMapContent: Content,
@@ -15096,8 +15093,8 @@ pub struct SurfaceAppearance<I> {
     pub RoughnessMapContent: Content,
     pub TexturePack: ContentId,
 }
-impl_inherits!(SurfaceAppearance<I>, Instance<I>);
-impl<I: Default> Default for SurfaceAppearance<I> {
+impl_inherits!(SurfaceAppearance, Instance);
+impl Default for SurfaceAppearance {
     fn default() -> Self {
         let superclass = Object::default();
         let superclass = Instance {
@@ -15126,8 +15123,8 @@ impl<I: Default> Default for SurfaceAppearance<I> {
 }
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
-pub struct SurfaceGui<I> {
-    superclass: SurfaceGuiBase<I>,
+pub struct SurfaceGui {
+    superclass: SurfaceGuiBase,
     pub AlwaysOnTop: bool,
     pub Brightness: f32,
     pub CanvasSize: Vector2,
@@ -15139,8 +15136,8 @@ pub struct SurfaceGui<I> {
     pub ToolPunchThroughDistance: f32,
     pub ZOffset: f32,
 }
-impl_inherits!(SurfaceGui<I>, SurfaceGuiBase<I>);
-impl<I: Default> Default for SurfaceGui<I> {
+impl_inherits!(SurfaceGui, SurfaceGuiBase);
+impl Default for SurfaceGui {
     fn default() -> Self {
         let superclass = Object::default();
         let superclass = Instance {
@@ -15192,14 +15189,14 @@ impl<I: Default> Default for SurfaceGui<I> {
 }
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
-pub struct SurfaceGuiBase<I> {
-    superclass: LayerCollector<I>,
+pub struct SurfaceGuiBase {
+    superclass: LayerCollector,
     pub Active: bool,
     pub Adornee: Ref,
     pub Face: enums::NormalId,
 }
-impl_inherits!(SurfaceGuiBase<I>, LayerCollector<I>);
-impl<I: Default> Default for SurfaceGuiBase<I> {
+impl_inherits!(SurfaceGuiBase, LayerCollector);
+impl Default for SurfaceGuiBase {
     fn default() -> Self {
         let superclass = Object::default();
         let superclass = Instance {
@@ -15238,14 +15235,14 @@ impl<I: Default> Default for SurfaceGuiBase<I> {
 }
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
-pub struct SurfaceLight<I> {
-    superclass: Light<I>,
+pub struct SurfaceLight {
+    superclass: Light,
     pub Angle: f32,
     pub Face: enums::NormalId,
     pub Range: f32,
 }
-impl_inherits!(SurfaceLight<I>, Light<I>);
-impl<I: Default> Default for SurfaceLight<I> {
+impl_inherits!(SurfaceLight, Light);
+impl Default for SurfaceLight {
     fn default() -> Self {
         let superclass = Object::default();
         let superclass = Instance {
@@ -15274,12 +15271,12 @@ impl<I: Default> Default for SurfaceLight<I> {
 }
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
-pub struct SurfaceSelection<I> {
-    superclass: PartAdornment<I>,
+pub struct SurfaceSelection {
+    superclass: PartAdornment,
     pub TargetSurface: enums::NormalId,
 }
-impl_inherits!(SurfaceSelection<I>, PartAdornment<I>);
-impl<I: Default> Default for SurfaceSelection<I> {
+impl_inherits!(SurfaceSelection, PartAdornment);
+impl Default for SurfaceSelection {
     fn default() -> Self {
         let superclass = Object::default();
         let superclass = Instance {
@@ -15310,16 +15307,16 @@ impl<I: Default> Default for SurfaceSelection<I> {
 }
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
-pub struct SwimController<I> {
-    superclass: ControllerBase<I>,
+pub struct SwimController {
+    superclass: ControllerBase,
     pub AccelerationTime: f32,
     pub PitchMaxTorque: f32,
     pub PitchSpeedFactor: f32,
     pub RollMaxTorque: f32,
     pub RollSpeedFactor: f32,
 }
-impl_inherits!(SwimController<I>, ControllerBase<I>);
-impl<I: Default> Default for SwimController<I> {
+impl_inherits!(SwimController, ControllerBase);
+impl Default for SwimController {
     fn default() -> Self {
         let superclass = Object::default();
         let superclass = Instance {
@@ -15348,16 +15345,16 @@ impl<I: Default> Default for SwimController<I> {
 }
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
-pub struct SyncScriptBuilder<I> {
-    superclass: ScriptBuilder<I>,
+pub struct SyncScriptBuilder {
+    superclass: ScriptBuilder,
     pub CompileTarget: enums::CompileTarget,
     pub CoverageInfo: bool,
     pub DebugInfo: bool,
     pub PackAsSource: bool,
     pub RawBytecode: bool,
 }
-impl_inherits!(SyncScriptBuilder<I>, ScriptBuilder<I>);
-impl<I: Default> Default for SyncScriptBuilder<I> {
+impl_inherits!(SyncScriptBuilder, ScriptBuilder);
+impl Default for SyncScriptBuilder {
     fn default() -> Self {
         let superclass = Object::default();
         let superclass = Instance {
@@ -15383,18 +15380,18 @@ impl<I: Default> Default for SyncScriptBuilder<I> {
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 #[derive(Default)]
-pub struct SystemThemeService<I> {
-    superclass: Instance<I>,
+pub struct SystemThemeService {
+    superclass: Instance,
 }
-impl_inherits!(SystemThemeService<I>, Instance<I>);
+impl_inherits!(SystemThemeService, Instance);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
-pub struct TaskScheduler<I> {
-    superclass: Instance<I>,
+pub struct TaskScheduler {
+    superclass: Instance,
     pub ThreadPoolConfig: enums::ThreadPoolConfig,
 }
-impl_inherits!(TaskScheduler<I>, Instance<I>);
-impl<I: Default> Default for TaskScheduler<I> {
+impl_inherits!(TaskScheduler, Instance);
+impl Default for TaskScheduler {
     fn default() -> Self {
         let superclass = Object::default();
         let superclass = Instance {
@@ -15414,13 +15411,13 @@ impl<I: Default> Default for TaskScheduler<I> {
 }
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
-pub struct Team<I> {
-    superclass: Instance<I>,
+pub struct Team {
+    superclass: Instance,
     pub AutoAssignable: bool,
     pub TeamColor: BrickColor,
 }
-impl_inherits!(Team<I>, Instance<I>);
-impl<I: Default> Default for Team<I> {
+impl_inherits!(Team, Instance);
+impl Default for Team {
     fn default() -> Self {
         let superclass = Object::default();
         let superclass = Instance {
@@ -15442,55 +15439,55 @@ impl<I: Default> Default for Team<I> {
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 #[derive(Default)]
-pub struct TeamCreateData<I> {
-    superclass: Instance<I>,
+pub struct TeamCreateData {
+    superclass: Instance,
 }
-impl_inherits!(TeamCreateData<I>, Instance<I>);
+impl_inherits!(TeamCreateData, Instance);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 #[derive(Default)]
-pub struct TeamCreatePublishService<I> {
-    superclass: Instance<I>,
+pub struct TeamCreatePublishService {
+    superclass: Instance,
 }
-impl_inherits!(TeamCreatePublishService<I>, Instance<I>);
+impl_inherits!(TeamCreatePublishService, Instance);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 #[derive(Default)]
-pub struct TeamCreateService<I> {
-    superclass: Instance<I>,
+pub struct TeamCreateService {
+    superclass: Instance,
 }
-impl_inherits!(TeamCreateService<I>, Instance<I>);
+impl_inherits!(TeamCreateService, Instance);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 #[derive(Default)]
-pub struct Teams<I> {
-    superclass: Instance<I>,
+pub struct Teams {
+    superclass: Instance,
 }
-impl_inherits!(Teams<I>, Instance<I>);
+impl_inherits!(Teams, Instance);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 #[derive(Default)]
-pub struct TelemetryService<I> {
-    superclass: Instance<I>,
+pub struct TelemetryService {
+    superclass: Instance,
 }
-impl_inherits!(TelemetryService<I>, Instance<I>);
+impl_inherits!(TelemetryService, Instance);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 #[derive(Default)]
-pub struct TeleportAsyncResult<I> {
-    superclass: Instance<I>,
+pub struct TeleportAsyncResult {
+    superclass: Instance,
 }
-impl_inherits!(TeleportAsyncResult<I>, Instance<I>);
+impl_inherits!(TeleportAsyncResult, Instance);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
-pub struct TeleportOptions<I> {
-    superclass: Instance<I>,
+pub struct TeleportOptions {
+    superclass: Instance,
     pub ReservedServerAccessCode: String,
     pub ServerInstanceId: String,
     pub ShouldReserveServer: bool,
 }
-impl_inherits!(TeleportOptions<I>, Instance<I>);
-impl<I: Default> Default for TeleportOptions<I> {
+impl_inherits!(TeleportOptions, Instance);
+impl Default for TeleportOptions {
     fn default() -> Self {
         let superclass = Object::default();
         let superclass = Instance {
@@ -15513,28 +15510,28 @@ impl<I: Default> Default for TeleportOptions<I> {
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 #[derive(Default)]
-pub struct TeleportService<I> {
-    superclass: Instance<I>,
+pub struct TeleportService {
+    superclass: Instance,
 }
-impl_inherits!(TeleportService<I>, Instance<I>);
+impl_inherits!(TeleportService, Instance);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 #[derive(Default)]
-pub struct TemporaryCageMeshProvider<I> {
-    superclass: Instance<I>,
+pub struct TemporaryCageMeshProvider {
+    superclass: Instance,
 }
-impl_inherits!(TemporaryCageMeshProvider<I>, Instance<I>);
+impl_inherits!(TemporaryCageMeshProvider, Instance);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 #[derive(Default)]
-pub struct TemporaryScriptService<I> {
-    superclass: Instance<I>,
+pub struct TemporaryScriptService {
+    superclass: Instance,
 }
-impl_inherits!(TemporaryScriptService<I>, Instance<I>);
+impl_inherits!(TemporaryScriptService, Instance);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
-pub struct Terrain<I> {
-    superclass: BasePart<I>,
+pub struct Terrain {
+    superclass: BasePart,
     pub AcquisitionMethod: enums::TerrainAcquisitionMethod,
     pub Decoration: bool,
     pub GrassLength: f32,
@@ -15548,8 +15545,8 @@ pub struct Terrain<I> {
     pub WaterWaveSize: f32,
     pub WaterWaveSpeed: f32,
 }
-impl_inherits!(Terrain<I>, BasePart<I>);
-impl<I: Default> Default for Terrain<I> {
+impl_inherits!(Terrain, BasePart);
+impl Default for Terrain {
     fn default() -> Self {
         let superclass = Object::default();
         let superclass = Instance {
@@ -15628,8 +15625,8 @@ impl<I: Default> Default for Terrain<I> {
 }
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
-pub struct TerrainDetail<I> {
-    superclass: Instance<I>,
+pub struct TerrainDetail {
+    superclass: Instance,
     pub ColorMapContent: Content,
     pub EmissiveMaskContent: Content,
     pub EmissiveStrength: f32,
@@ -15642,8 +15639,8 @@ pub struct TerrainDetail<I> {
     pub StudsPerTile: f32,
     pub TexturePack: ContentId,
 }
-impl_inherits!(TerrainDetail<I>, Instance<I>);
-impl<I: Default> Default for TerrainDetail<I> {
+impl_inherits!(TerrainDetail, Instance);
+impl Default for TerrainDetail {
     fn default() -> Self {
         let superclass = Object::default();
         let superclass = Instance {
@@ -15674,34 +15671,34 @@ impl<I: Default> Default for TerrainDetail<I> {
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 #[derive(Default)]
-pub struct TerrainIterateOperation<I> {
-    superclass: Object<I>,
+pub struct TerrainIterateOperation {
+    superclass: Object,
 }
-impl_inherits!(TerrainIterateOperation<I>, Object<I>);
+impl_inherits!(TerrainIterateOperation, Object);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 #[derive(Default)]
-pub struct TerrainModifyOperation<I> {
-    superclass: Object<I>,
+pub struct TerrainModifyOperation {
+    superclass: Object,
 }
-impl_inherits!(TerrainModifyOperation<I>, Object<I>);
+impl_inherits!(TerrainModifyOperation, Object);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 #[derive(Default)]
-pub struct TerrainReadOperation<I> {
-    superclass: Object<I>,
+pub struct TerrainReadOperation {
+    superclass: Object,
 }
-impl_inherits!(TerrainReadOperation<I>, Object<I>);
+impl_inherits!(TerrainReadOperation, Object);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
-pub struct TerrainRegion<I> {
-    superclass: Instance<I>,
+pub struct TerrainRegion {
+    superclass: Instance,
     pub ExtentsMax: Vector3int16,
     pub ExtentsMin: Vector3int16,
     pub SmoothGrid: BinaryString,
 }
-impl_inherits!(TerrainRegion<I>, Instance<I>);
-impl<I: Default> Default for TerrainRegion<I> {
+impl_inherits!(TerrainRegion, Instance);
+impl Default for TerrainRegion {
     fn default() -> Self {
         let superclass = Object::default();
         let superclass = Instance {
@@ -15724,14 +15721,14 @@ impl<I: Default> Default for TerrainRegion<I> {
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 #[derive(Default)]
-pub struct TerrainWriteOperation<I> {
-    superclass: Object<I>,
+pub struct TerrainWriteOperation {
+    superclass: Object,
 }
-impl_inherits!(TerrainWriteOperation<I>, Object<I>);
+impl_inherits!(TerrainWriteOperation, Object);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
-pub struct TestService<I> {
-    superclass: Instance<I>,
+pub struct TestService {
+    superclass: Instance,
     pub AutoRuns: bool,
     pub Description: String,
     pub ExecuteWithStudioRun: bool,
@@ -15742,8 +15739,8 @@ pub struct TestService<I> {
     pub ThrottlePhysicsToRealtime: bool,
     pub Timeout: f64,
 }
-impl_inherits!(TestService<I>, Instance<I>);
-impl<I: Default> Default for TestService<I> {
+impl_inherits!(TestService, Instance);
+impl Default for TestService {
     fn default() -> Self {
         let superclass = Object::default();
         let superclass = Instance {
@@ -15771,8 +15768,8 @@ impl<I: Default> Default for TestService<I> {
 }
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
-pub struct TextBox<I> {
-    superclass: GuiObject<I>,
+pub struct TextBox {
+    superclass: GuiObject,
     pub ClearTextOnFocus: bool,
     pub FontFace: Font,
     pub LineHeight: f32,
@@ -15799,8 +15796,8 @@ pub struct TextBox<I> {
     pub TextXAlignment: enums::TextXAlignment,
     pub TextYAlignment: enums::TextYAlignment,
 }
-impl_inherits!(TextBox<I>, GuiObject<I>);
-impl<I: Default> Default for TextBox<I> {
+impl_inherits!(TextBox, GuiObject);
+impl Default for TextBox {
     fn default() -> Self {
         let superclass = Object::default();
         let superclass = Instance {
@@ -15889,14 +15886,14 @@ impl<I: Default> Default for TextBox<I> {
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 #[derive(Default)]
-pub struct TextBoxService<I> {
-    superclass: Instance<I>,
+pub struct TextBoxService {
+    superclass: Instance,
 }
-impl_inherits!(TextBoxService<I>, Instance<I>);
+impl_inherits!(TextBoxService, Instance);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
-pub struct TextButton<I> {
-    superclass: GuiButton<I>,
+pub struct TextButton {
+    superclass: GuiButton,
     pub FontFace: Font,
     pub LineHeight: f32,
     pub LocalizationMatchIdentifier: String,
@@ -15917,8 +15914,8 @@ pub struct TextButton<I> {
     pub TextXAlignment: enums::TextXAlignment,
     pub TextYAlignment: enums::TextYAlignment,
 }
-impl_inherits!(TextButton<I>, GuiButton<I>);
-impl<I: Default> Default for TextButton<I> {
+impl_inherits!(TextButton, GuiButton);
+impl Default for TextButton {
     fn default() -> Self {
         let superclass = Object::default();
         let superclass = Instance {
@@ -16010,21 +16007,21 @@ impl<I: Default> Default for TextButton<I> {
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 #[derive(Default)]
-pub struct TextChannel<I> {
-    superclass: Instance<I>,
+pub struct TextChannel {
+    superclass: Instance,
 }
-impl_inherits!(TextChannel<I>, Instance<I>);
+impl_inherits!(TextChannel, Instance);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
-pub struct TextChatCommand<I> {
-    superclass: Instance<I>,
+pub struct TextChatCommand {
+    superclass: Instance,
     pub AutocompleteVisible: bool,
     pub Enabled: bool,
     pub PrimaryAlias: String,
     pub SecondaryAlias: String,
 }
-impl_inherits!(TextChatCommand<I>, Instance<I>);
-impl<I: Default> Default for TextChatCommand<I> {
+impl_inherits!(TextChatCommand, Instance);
+impl Default for TextChatCommand {
     fn default() -> Self {
         let superclass = Object::default();
         let superclass = Instance {
@@ -16048,21 +16045,21 @@ impl<I: Default> Default for TextChatCommand<I> {
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 #[derive(Default)]
-pub struct TextChatConfigurations<I> {
-    superclass: Instance<I>,
+pub struct TextChatConfigurations {
+    superclass: Instance,
 }
-impl_inherits!(TextChatConfigurations<I>, Instance<I>);
+impl_inherits!(TextChatConfigurations, Instance);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
-pub struct TextChatMessage<I> {
-    superclass: Instance<I>,
+pub struct TextChatMessage {
+    superclass: Instance,
     pub BubbleChatMessageProperties: Ref,
     pub ChatWindowMessageProperties: Ref,
     pub TextChannel: Ref,
     pub TextSource: Ref,
 }
-impl_inherits!(TextChatMessage<I>, Instance<I>);
-impl<I: Default> Default for TextChatMessage<I> {
+impl_inherits!(TextChatMessage, Instance);
+impl Default for TextChatMessage {
     fn default() -> Self {
         let superclass = Object::default();
         let superclass = Instance {
@@ -16086,14 +16083,14 @@ impl<I: Default> Default for TextChatMessage<I> {
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 #[derive(Default)]
-pub struct TextChatMessageProperties<I> {
-    superclass: Instance<I>,
+pub struct TextChatMessageProperties {
+    superclass: Instance,
 }
-impl_inherits!(TextChatMessageProperties<I>, Instance<I>);
+impl_inherits!(TextChatMessageProperties, Instance);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
-pub struct TextChatService<I> {
-    superclass: Instance<I>,
+pub struct TextChatService {
+    superclass: Instance,
     pub ChatTranslationFtuxShown: bool,
     pub ChatTranslationToggleEnabled: bool,
     pub ChatVersion: enums::ChatVersion,
@@ -16102,8 +16099,8 @@ pub struct TextChatService<I> {
     pub HasSeenDeprecationDialog: bool,
     pub IsLegacyChatDisabled: bool,
 }
-impl_inherits!(TextChatService<I>, Instance<I>);
-impl<I: Default> Default for TextChatService<I> {
+impl_inherits!(TextChatService, Instance);
+impl Default for TextChatService {
     fn default() -> Self {
         let superclass = Object::default();
         let superclass = Instance {
@@ -16130,28 +16127,28 @@ impl<I: Default> Default for TextChatService<I> {
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 #[derive(Default)]
-pub struct TextFilterResult<I> {
-    superclass: Instance<I>,
+pub struct TextFilterResult {
+    superclass: Instance,
 }
-impl_inherits!(TextFilterResult<I>, Instance<I>);
+impl_inherits!(TextFilterResult, Instance);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 #[derive(Default)]
-pub struct TextFilterTranslatedResult<I> {
-    superclass: Instance<I>,
+pub struct TextFilterTranslatedResult {
+    superclass: Instance,
 }
-impl_inherits!(TextFilterTranslatedResult<I>, Instance<I>);
+impl_inherits!(TextFilterTranslatedResult, Instance);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
-pub struct TextGenerator<I> {
-    superclass: Instance<I>,
+pub struct TextGenerator {
+    superclass: Instance,
     pub Seed: i32,
     pub SystemPrompt: String,
     pub Temperature: f32,
     pub TopP: f32,
 }
-impl_inherits!(TextGenerator<I>, Instance<I>);
-impl<I: Default> Default for TextGenerator<I> {
+impl_inherits!(TextGenerator, Instance);
+impl Default for TextGenerator {
     fn default() -> Self {
         let superclass = Object::default();
         let superclass = Instance {
@@ -16174,8 +16171,8 @@ impl<I: Default> Default for TextGenerator<I> {
 }
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
-pub struct TextLabel<I> {
-    superclass: GuiLabel<I>,
+pub struct TextLabel {
+    superclass: GuiLabel,
     pub FontFace: Font,
     pub LineHeight: f32,
     pub LocalizationMatchIdentifier: String,
@@ -16196,8 +16193,8 @@ pub struct TextLabel<I> {
     pub TextXAlignment: enums::TextXAlignment,
     pub TextYAlignment: enums::TextYAlignment,
 }
-impl_inherits!(TextLabel<I>, GuiLabel<I>);
-impl<I: Default> Default for TextLabel<I> {
+impl_inherits!(TextLabel, GuiLabel);
+impl Default for TextLabel {
     fn default() -> Self {
         let superclass = Object::default();
         let superclass = Instance {
@@ -16281,18 +16278,18 @@ impl<I: Default> Default for TextLabel<I> {
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 #[derive(Default)]
-pub struct TextService<I> {
-    superclass: Instance<I>,
+pub struct TextService {
+    superclass: Instance,
 }
-impl_inherits!(TextService<I>, Instance<I>);
+impl_inherits!(TextService, Instance);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
-pub struct TextSource<I> {
-    superclass: Instance<I>,
+pub struct TextSource {
+    superclass: Instance,
     pub CanSend: bool,
 }
-impl_inherits!(TextSource<I>, Instance<I>);
-impl<I: Default> Default for TextSource<I> {
+impl_inherits!(TextSource, Instance);
+impl Default for TextSource {
     fn default() -> Self {
         let superclass = Object::default();
         let superclass = Instance {
@@ -16312,15 +16309,15 @@ impl<I: Default> Default for TextSource<I> {
 }
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
-pub struct Texture<I> {
-    superclass: Decal<I>,
+pub struct Texture {
+    superclass: Decal,
     pub OffsetStudsU: f32,
     pub OffsetStudsV: f32,
     pub StudsPerTileU: f32,
     pub StudsPerTileV: f32,
 }
-impl_inherits!(Texture<I>, Decal<I>);
-impl<I: Default> Default for Texture<I> {
+impl_inherits!(Texture, Decal);
+impl Default for Texture {
     fn default() -> Self {
         let superclass = Object::default();
         let superclass = Instance {
@@ -16362,56 +16359,56 @@ impl<I: Default> Default for Texture<I> {
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 #[derive(Default)]
-pub struct TextureGenerationPartGroup<I> {
-    superclass: Instance<I>,
+pub struct TextureGenerationPartGroup {
+    superclass: Instance,
 }
-impl_inherits!(TextureGenerationPartGroup<I>, Instance<I>);
+impl_inherits!(TextureGenerationPartGroup, Instance);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 #[derive(Default)]
-pub struct TextureGenerationService<I> {
-    superclass: Instance<I>,
+pub struct TextureGenerationService {
+    superclass: Instance,
 }
-impl_inherits!(TextureGenerationService<I>, Instance<I>);
+impl_inherits!(TextureGenerationService, Instance);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 #[derive(Default)]
-pub struct TextureGenerationUnwrappingRequest<I> {
-    superclass: Instance<I>,
+pub struct TextureGenerationUnwrappingRequest {
+    superclass: Instance,
 }
-impl_inherits!(TextureGenerationUnwrappingRequest<I>, Instance<I>);
+impl_inherits!(TextureGenerationUnwrappingRequest, Instance);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 #[derive(Default)]
-pub struct ThirdPartyUserService<I> {
-    superclass: Instance<I>,
+pub struct ThirdPartyUserService {
+    superclass: Instance,
 }
-impl_inherits!(ThirdPartyUserService<I>, Instance<I>);
+impl_inherits!(ThirdPartyUserService, Instance);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 #[derive(Default)]
-pub struct ThreadState<I> {
-    superclass: Instance<I>,
+pub struct ThreadState {
+    superclass: Instance,
 }
-impl_inherits!(ThreadState<I>, Instance<I>);
+impl_inherits!(ThreadState, Instance);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 #[derive(Default)]
-pub struct TimerService<I> {
-    superclass: Instance<I>,
+pub struct TimerService {
+    superclass: Instance,
 }
-impl_inherits!(TimerService<I>, Instance<I>);
+impl_inherits!(TimerService, Instance);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 #[derive(Default)]
-pub struct ToastNotificationService<I> {
-    superclass: Instance<I>,
+pub struct ToastNotificationService {
+    superclass: Instance,
 }
-impl_inherits!(ToastNotificationService<I>, Instance<I>);
+impl_inherits!(ToastNotificationService, Instance);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
-pub struct Tool<I> {
-    superclass: BackpackItem<I>,
+pub struct Tool {
+    superclass: BackpackItem,
     pub CanBeDropped: bool,
     pub Enabled: bool,
     pub Grip: CFrame,
@@ -16419,8 +16416,8 @@ pub struct Tool<I> {
     pub RequiresHandle: bool,
     pub ToolTip: String,
 }
-impl_inherits!(Tool<I>, BackpackItem<I>);
-impl<I: Default> Default for Tool<I> {
+impl_inherits!(Tool, BackpackItem);
+impl Default for Tool {
     fn default() -> Self {
         let superclass = Object::default();
         let superclass = Instance {
@@ -16462,13 +16459,13 @@ impl<I: Default> Default for Tool<I> {
 }
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
-pub struct Torque<I> {
-    superclass: Constraint<I>,
+pub struct Torque {
+    superclass: Constraint,
     pub RelativeTo: enums::ActuatorRelativeTo,
     pub Torque: Vector3,
 }
-impl_inherits!(Torque<I>, Constraint<I>);
-impl<I: Default> Default for Torque<I> {
+impl_inherits!(Torque, Constraint);
+impl Default for Torque {
     fn default() -> Self {
         let superclass = Object::default();
         let superclass = Instance {
@@ -16497,8 +16494,8 @@ impl<I: Default> Default for Torque<I> {
 }
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
-pub struct TorsionSpringConstraint<I> {
-    superclass: Constraint<I>,
+pub struct TorsionSpringConstraint {
+    superclass: Constraint,
     pub Coils: f32,
     pub Damping: f32,
     pub LimitEnabled: bool,
@@ -16509,8 +16506,8 @@ pub struct TorsionSpringConstraint<I> {
     pub Restitution: f32,
     pub Stiffness: f32,
 }
-impl_inherits!(TorsionSpringConstraint<I>, Constraint<I>);
-impl<I: Default> Default for TorsionSpringConstraint<I> {
+impl_inherits!(TorsionSpringConstraint, Constraint);
+impl Default for TorsionSpringConstraint {
     fn default() -> Self {
         let superclass = Object::default();
         let superclass = Instance {
@@ -16547,42 +16544,42 @@ impl<I: Default> Default for TorsionSpringConstraint<I> {
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 #[derive(Default)]
-pub struct TotalCountTimeIntervalItem<I> {
-    superclass: StatsItem<I>,
+pub struct TotalCountTimeIntervalItem {
+    superclass: StatsItem,
 }
-impl_inherits!(TotalCountTimeIntervalItem<I>, StatsItem<I>);
+impl_inherits!(TotalCountTimeIntervalItem, StatsItem);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 #[derive(Default)]
-pub struct TouchInputService<I> {
-    superclass: Instance<I>,
+pub struct TouchInputService {
+    superclass: Instance,
 }
-impl_inherits!(TouchInputService<I>, Instance<I>);
+impl_inherits!(TouchInputService, Instance);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 #[derive(Default)]
-pub struct TouchTransmitter<I> {
-    superclass: Instance<I>,
+pub struct TouchTransmitter {
+    superclass: Instance,
 }
-impl_inherits!(TouchTransmitter<I>, Instance<I>);
+impl_inherits!(TouchTransmitter, Instance);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 #[derive(Default)]
-pub struct TracerService<I> {
-    superclass: Instance<I>,
+pub struct TracerService {
+    superclass: Instance,
 }
-impl_inherits!(TracerService<I>, Instance<I>);
+impl_inherits!(TracerService, Instance);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
-pub struct TrackerLodController<I> {
-    superclass: Instance<I>,
+pub struct TrackerLodController {
+    superclass: Instance,
     pub AudioMode: enums::TrackerLodFlagMode,
     pub VideoExtrapolationMode: enums::TrackerExtrapolationFlagMode,
     pub VideoLodMode: enums::TrackerLodValueMode,
     pub VideoMode: enums::TrackerLodFlagMode,
 }
-impl_inherits!(TrackerLodController<I>, Instance<I>);
-impl<I: Default> Default for TrackerLodController<I> {
+impl_inherits!(TrackerLodController, Instance);
+impl Default for TrackerLodController {
     fn default() -> Self {
         let superclass = Object::default();
         let superclass = Instance {
@@ -16606,14 +16603,14 @@ impl<I: Default> Default for TrackerLodController<I> {
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 #[derive(Default)]
-pub struct TrackerStreamAnimation<I> {
-    superclass: Instance<I>,
+pub struct TrackerStreamAnimation {
+    superclass: Instance,
 }
-impl_inherits!(TrackerStreamAnimation<I>, Instance<I>);
+impl_inherits!(TrackerStreamAnimation, Instance);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
-pub struct Trail<I> {
-    superclass: Instance<I>,
+pub struct Trail {
+    superclass: Instance,
     pub Attachment0: Ref,
     pub Attachment1: Ref,
     pub Brightness: f32,
@@ -16631,8 +16628,8 @@ pub struct Trail<I> {
     pub Transparency: NumberSequence,
     pub WidthScale: NumberSequence,
 }
-impl_inherits!(Trail<I>, Instance<I>);
-impl<I: Default> Default for Trail<I> {
+impl_inherits!(Trail, Instance);
+impl Default for Trail {
     fn default() -> Self {
         let superclass = Object::default();
         let superclass = Instance {
@@ -16683,20 +16680,20 @@ impl<I: Default> Default for Trail<I> {
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 #[derive(Default)]
-pub struct Translator<I> {
-    superclass: Instance<I>,
+pub struct Translator {
+    superclass: Instance,
 }
-impl_inherits!(Translator<I>, Instance<I>);
+impl_inherits!(Translator, Instance);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
-pub struct TremoloSoundEffect<I> {
-    superclass: SoundEffect<I>,
+pub struct TremoloSoundEffect {
+    superclass: SoundEffect,
     pub Depth: f32,
     pub Duty: f32,
     pub Frequency: f32,
 }
-impl_inherits!(TremoloSoundEffect<I>, SoundEffect<I>);
-impl<I: Default> Default for TremoloSoundEffect<I> {
+impl_inherits!(TremoloSoundEffect, SoundEffect);
+impl Default for TremoloSoundEffect {
     fn default() -> Self {
         let superclass = Object::default();
         let superclass = Instance {
@@ -16723,8 +16720,8 @@ impl<I: Default> Default for TremoloSoundEffect<I> {
 }
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
-pub struct TriangleMeshPart<I> {
-    superclass: BasePart<I>,
+pub struct TriangleMeshPart {
+    superclass: BasePart,
     pub AeroMeshData: SharedString,
     pub FluidFidelityInternal: enums::FluidFidelity,
     pub InertiaMigrated: bool,
@@ -16734,8 +16731,8 @@ pub struct TriangleMeshPart<I> {
     pub UnscaledVolInertiaOffDiags: Vector3,
     pub UnscaledVolume: f32,
 }
-impl_inherits!(TriangleMeshPart<I>, BasePart<I>);
-impl<I: Default> Default for TriangleMeshPart<I> {
+impl_inherits!(TriangleMeshPart, BasePart);
+impl Default for TriangleMeshPart {
     fn default() -> Self {
         let superclass = Object::default();
         let superclass = Instance {
@@ -16810,12 +16807,12 @@ impl<I: Default> Default for TriangleMeshPart<I> {
 }
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
-pub struct TrussPart<I> {
-    superclass: BasePart<I>,
+pub struct TrussPart {
+    superclass: BasePart,
     pub Style: enums::Style,
 }
-impl_inherits!(TrussPart<I>, BasePart<I>);
-impl<I: Default> Default for TrussPart<I> {
+impl_inherits!(TrussPart, BasePart);
+impl Default for TrussPart {
     fn default() -> Self {
         let superclass = Object::default();
         let superclass = Instance {
@@ -16884,55 +16881,55 @@ impl<I: Default> Default for TrussPart<I> {
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 #[derive(Default)]
-pub struct TutorialService<I> {
-    superclass: Instance<I>,
+pub struct TutorialService {
+    superclass: Instance,
 }
-impl_inherits!(TutorialService<I>, Instance<I>);
+impl_inherits!(TutorialService, Instance);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 #[derive(Default)]
-pub struct Tween<I> {
-    superclass: TweenBase<I>,
+pub struct Tween {
+    superclass: TweenBase,
 }
-impl_inherits!(Tween<I>, TweenBase<I>);
+impl_inherits!(Tween, TweenBase);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 #[derive(Default)]
-pub struct TweenBase<I> {
-    superclass: Instance<I>,
+pub struct TweenBase {
+    superclass: Instance,
 }
-impl_inherits!(TweenBase<I>, Instance<I>);
+impl_inherits!(TweenBase, Instance);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 #[derive(Default)]
-pub struct TweenService<I> {
-    superclass: Instance<I>,
+pub struct TweenService {
+    superclass: Instance,
 }
-impl_inherits!(TweenService<I>, Instance<I>);
+impl_inherits!(TweenService, Instance);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 #[derive(Default)]
-pub struct UGCAvatarService<I> {
-    superclass: Instance<I>,
+pub struct UGCAvatarService {
+    superclass: Instance,
 }
-impl_inherits!(UGCAvatarService<I>, Instance<I>);
+impl_inherits!(UGCAvatarService, Instance);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 #[derive(Default)]
-pub struct UGCValidationService<I> {
-    superclass: Instance<I>,
+pub struct UGCValidationService {
+    superclass: Instance,
 }
-impl_inherits!(UGCValidationService<I>, Instance<I>);
+impl_inherits!(UGCValidationService, Instance);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
-pub struct UIAspectRatioConstraint<I> {
-    superclass: UIConstraint<I>,
+pub struct UIAspectRatioConstraint {
+    superclass: UIConstraint,
     pub AspectRatio: f32,
     pub AspectType: enums::AspectType,
     pub DominantAxis: enums::DominantAxis,
 }
-impl_inherits!(UIAspectRatioConstraint<I>, UIConstraint<I>);
-impl<I: Default> Default for UIAspectRatioConstraint<I> {
+impl_inherits!(UIAspectRatioConstraint, UIConstraint);
+impl Default for UIAspectRatioConstraint {
     fn default() -> Self {
         let superclass = Object::default();
         let superclass = Instance {
@@ -16958,32 +16955,32 @@ impl<I: Default> Default for UIAspectRatioConstraint<I> {
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 #[derive(Default)]
-pub struct UIBase<I> {
-    superclass: Instance<I>,
+pub struct UIBase {
+    superclass: Instance,
 }
-impl_inherits!(UIBase<I>, Instance<I>);
+impl_inherits!(UIBase, Instance);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 #[derive(Default)]
-pub struct UIComponent<I> {
-    superclass: UIBase<I>,
+pub struct UIComponent {
+    superclass: UIBase,
 }
-impl_inherits!(UIComponent<I>, UIBase<I>);
+impl_inherits!(UIComponent, UIBase);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 #[derive(Default)]
-pub struct UIConstraint<I> {
-    superclass: UIComponent<I>,
+pub struct UIConstraint {
+    superclass: UIComponent,
 }
-impl_inherits!(UIConstraint<I>, UIComponent<I>);
+impl_inherits!(UIConstraint, UIComponent);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
-pub struct UICorner<I> {
-    superclass: UIComponent<I>,
+pub struct UICorner {
+    superclass: UIComponent,
     pub CornerRadius: UDim,
 }
-impl_inherits!(UICorner<I>, UIComponent<I>);
-impl<I: Default> Default for UICorner<I> {
+impl_inherits!(UICorner, UIComponent);
+impl Default for UICorner {
     fn default() -> Self {
         let superclass = Object::default();
         let superclass = Instance {
@@ -17005,8 +17002,8 @@ impl<I: Default> Default for UICorner<I> {
 }
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
-pub struct UIDragDetector<I> {
-    superclass: UIComponent<I>,
+pub struct UIDragDetector {
+    superclass: UIComponent,
     pub ActivatedCursorIconContent: Content,
     pub BoundingBehavior: enums::UIDragDetectorBoundingBehavior,
     pub BoundingUi: Ref,
@@ -17028,8 +17025,8 @@ pub struct UIDragDetector<I> {
     pub SelectionModeRotateSpeed: f32,
     pub UiDragSpeedAxisMapping: enums::UIDragSpeedAxisMapping,
 }
-impl_inherits!(UIDragDetector<I>, UIComponent<I>);
-impl<I: Default> Default for UIDragDetector<I> {
+impl_inherits!(UIDragDetector, UIComponent);
+impl Default for UIDragDetector {
     fn default() -> Self {
         let superclass = Object::default();
         let superclass = Instance {
@@ -17071,21 +17068,21 @@ impl<I: Default> Default for UIDragDetector<I> {
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 #[derive(Default)]
-pub struct UIDragDetectorService<I> {
-    superclass: Instance<I>,
+pub struct UIDragDetectorService {
+    superclass: Instance,
 }
-impl_inherits!(UIDragDetectorService<I>, Instance<I>);
+impl_inherits!(UIDragDetectorService, Instance);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
-pub struct UIFlexItem<I> {
-    superclass: UIComponent<I>,
+pub struct UIFlexItem {
+    superclass: UIComponent,
     pub FlexMode: enums::UIFlexMode,
     pub GrowRatio: f32,
     pub ItemLineAlignment: enums::ItemLineAlignment,
     pub ShrinkRatio: f32,
 }
-impl_inherits!(UIFlexItem<I>, UIComponent<I>);
-impl<I: Default> Default for UIFlexItem<I> {
+impl_inherits!(UIFlexItem, UIComponent);
+impl Default for UIFlexItem {
     fn default() -> Self {
         let superclass = Object::default();
         let superclass = Instance {
@@ -17110,16 +17107,16 @@ impl<I: Default> Default for UIFlexItem<I> {
 }
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
-pub struct UIGradient<I> {
-    superclass: UIComponent<I>,
+pub struct UIGradient {
+    superclass: UIComponent,
     pub Color: ColorSequence,
     pub Enabled: bool,
     pub Offset: Vector2,
     pub Rotation: f32,
     pub Transparency: NumberSequence,
 }
-impl_inherits!(UIGradient<I>, UIComponent<I>);
-impl<I: Default> Default for UIGradient<I> {
+impl_inherits!(UIGradient, UIComponent);
+impl Default for UIGradient {
     fn default() -> Self {
         let superclass = Object::default();
         let superclass = Instance {
@@ -17155,15 +17152,15 @@ impl<I: Default> Default for UIGradient<I> {
 }
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
-pub struct UIGridLayout<I> {
-    superclass: UIGridStyleLayout<I>,
+pub struct UIGridLayout {
+    superclass: UIGridStyleLayout,
     pub CellPadding: UDim2,
     pub CellSize: UDim2,
     pub FillDirectionMaxCells: i32,
     pub StartCorner: enums::StartCorner,
 }
-impl_inherits!(UIGridLayout<I>, UIGridStyleLayout<I>);
-impl<I: Default> Default for UIGridLayout<I> {
+impl_inherits!(UIGridLayout, UIGridStyleLayout);
+impl Default for UIGridLayout {
     fn default() -> Self {
         let superclass = Object::default();
         let superclass = Instance {
@@ -17196,15 +17193,15 @@ impl<I: Default> Default for UIGridLayout<I> {
 }
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
-pub struct UIGridStyleLayout<I> {
-    superclass: UILayout<I>,
+pub struct UIGridStyleLayout {
+    superclass: UILayout,
     pub FillDirection: enums::FillDirection,
     pub HorizontalAlignment: enums::HorizontalAlignment,
     pub SortOrder: enums::SortOrder,
     pub VerticalAlignment: enums::VerticalAlignment,
 }
-impl_inherits!(UIGridStyleLayout<I>, UILayout<I>);
-impl<I: Default> Default for UIGridStyleLayout<I> {
+impl_inherits!(UIGridStyleLayout, UILayout);
+impl Default for UIGridStyleLayout {
     fn default() -> Self {
         let superclass = Object::default();
         let superclass = Instance {
@@ -17231,22 +17228,22 @@ impl<I: Default> Default for UIGridStyleLayout<I> {
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 #[derive(Default)]
-pub struct UILayout<I> {
-    superclass: UIComponent<I>,
+pub struct UILayout {
+    superclass: UIComponent,
 }
-impl_inherits!(UILayout<I>, UIComponent<I>);
+impl_inherits!(UILayout, UIComponent);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
-pub struct UIListLayout<I> {
-    superclass: UIGridStyleLayout<I>,
+pub struct UIListLayout {
+    superclass: UIGridStyleLayout,
     pub HorizontalFlex: enums::UIFlexAlignment,
     pub ItemLineAlignment: enums::ItemLineAlignment,
     pub Padding: UDim,
     pub VerticalFlex: enums::UIFlexAlignment,
     pub Wraps: bool,
 }
-impl_inherits!(UIListLayout<I>, UIGridStyleLayout<I>);
-impl<I: Default> Default for UIListLayout<I> {
+impl_inherits!(UIListLayout, UIGridStyleLayout);
+impl Default for UIListLayout {
     fn default() -> Self {
         let superclass = Object::default();
         let superclass = Instance {
@@ -17280,15 +17277,15 @@ impl<I: Default> Default for UIListLayout<I> {
 }
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
-pub struct UIPadding<I> {
-    superclass: UIComponent<I>,
+pub struct UIPadding {
+    superclass: UIComponent,
     pub PaddingBottom: UDim,
     pub PaddingLeft: UDim,
     pub PaddingRight: UDim,
     pub PaddingTop: UDim,
 }
-impl_inherits!(UIPadding<I>, UIComponent<I>);
-impl<I: Default> Default for UIPadding<I> {
+impl_inherits!(UIPadding, UIComponent);
+impl Default for UIPadding {
     fn default() -> Self {
         let superclass = Object::default();
         let superclass = Instance {
@@ -17313,8 +17310,8 @@ impl<I: Default> Default for UIPadding<I> {
 }
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
-pub struct UIPageLayout<I> {
-    superclass: UIGridStyleLayout<I>,
+pub struct UIPageLayout {
+    superclass: UIGridStyleLayout,
     pub Animated: bool,
     pub Circular: bool,
     pub EasingDirection: enums::EasingDirection,
@@ -17325,8 +17322,8 @@ pub struct UIPageLayout<I> {
     pub TouchInputEnabled: bool,
     pub TweenTime: f32,
 }
-impl_inherits!(UIPageLayout<I>, UIGridStyleLayout<I>);
-impl<I: Default> Default for UIPageLayout<I> {
+impl_inherits!(UIPageLayout, UIGridStyleLayout);
+impl Default for UIPageLayout {
     fn default() -> Self {
         let superclass = Object::default();
         let superclass = Instance {
@@ -17364,12 +17361,12 @@ impl<I: Default> Default for UIPageLayout<I> {
 }
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
-pub struct UIScale<I> {
-    superclass: UIComponent<I>,
+pub struct UIScale {
+    superclass: UIComponent,
     pub Scale: f32,
 }
-impl_inherits!(UIScale<I>, UIComponent<I>);
-impl<I: Default> Default for UIScale<I> {
+impl_inherits!(UIScale, UIComponent);
+impl Default for UIScale {
     fn default() -> Self {
         let superclass = Object::default();
         let superclass = Instance {
@@ -17391,13 +17388,13 @@ impl<I: Default> Default for UIScale<I> {
 }
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
-pub struct UISizeConstraint<I> {
-    superclass: UIConstraint<I>,
+pub struct UISizeConstraint {
+    superclass: UIConstraint,
     pub MaxSize: Vector2,
     pub MinSize: Vector2,
 }
-impl_inherits!(UISizeConstraint<I>, UIConstraint<I>);
-impl<I: Default> Default for UISizeConstraint<I> {
+impl_inherits!(UISizeConstraint, UIConstraint);
+impl Default for UISizeConstraint {
     fn default() -> Self {
         let superclass = Object::default();
         let superclass = Instance {
@@ -17421,8 +17418,8 @@ impl<I: Default> Default for UISizeConstraint<I> {
 }
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
-pub struct UIStroke<I> {
-    superclass: UIComponent<I>,
+pub struct UIStroke {
+    superclass: UIComponent,
     pub ApplyStrokeMode: enums::ApplyStrokeMode,
     pub BorderOffset: UDim,
     pub BorderStrokePosition: enums::BorderStrokePosition,
@@ -17434,8 +17431,8 @@ pub struct UIStroke<I> {
     pub Transparency: f32,
     pub ZIndex: i32,
 }
-impl_inherits!(UIStroke<I>, UIComponent<I>);
-impl<I: Default> Default for UIStroke<I> {
+impl_inherits!(UIStroke, UIComponent);
+impl Default for UIStroke {
     fn default() -> Self {
         let superclass = Object::default();
         let superclass = Instance {
@@ -17466,15 +17463,15 @@ impl<I: Default> Default for UIStroke<I> {
 }
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
-pub struct UITableLayout<I> {
-    superclass: UIGridStyleLayout<I>,
+pub struct UITableLayout {
+    superclass: UIGridStyleLayout,
     pub FillEmptySpaceColumns: bool,
     pub FillEmptySpaceRows: bool,
     pub MajorAxis: enums::TableMajorAxis,
     pub Padding: UDim2,
 }
-impl_inherits!(UITableLayout<I>, UIGridStyleLayout<I>);
-impl<I: Default> Default for UITableLayout<I> {
+impl_inherits!(UITableLayout, UIGridStyleLayout);
+impl Default for UITableLayout {
     fn default() -> Self {
         let superclass = Object::default();
         let superclass = Instance {
@@ -17507,13 +17504,13 @@ impl<I: Default> Default for UITableLayout<I> {
 }
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
-pub struct UITextSizeConstraint<I> {
-    superclass: UIConstraint<I>,
+pub struct UITextSizeConstraint {
+    superclass: UIConstraint,
     pub MaxTextSize: i32,
     pub MinTextSize: i32,
 }
-impl_inherits!(UITextSizeConstraint<I>, UIConstraint<I>);
-impl<I: Default> Default for UITextSizeConstraint<I> {
+impl_inherits!(UITextSizeConstraint, UIConstraint);
+impl Default for UITextSizeConstraint {
     fn default() -> Self {
         let superclass = Object::default();
         let superclass = Instance {
@@ -17538,28 +17535,28 @@ impl<I: Default> Default for UITextSizeConstraint<I> {
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 #[derive(Default)]
-pub struct UnionOperation<I> {
-    superclass: PartOperation<I>,
+pub struct UnionOperation {
+    superclass: PartOperation,
 }
-impl_inherits!(UnionOperation<I>, PartOperation<I>);
+impl_inherits!(UnionOperation, PartOperation);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 #[derive(Default)]
-pub struct UniqueIdLookupService<I> {
-    superclass: Instance<I>,
+pub struct UniqueIdLookupService {
+    superclass: Instance,
 }
-impl_inherits!(UniqueIdLookupService<I>, Instance<I>);
+impl_inherits!(UniqueIdLookupService, Instance);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
-pub struct UniversalConstraint<I> {
-    superclass: Constraint<I>,
+pub struct UniversalConstraint {
+    superclass: Constraint,
     pub LimitsEnabled: bool,
     pub MaxAngle: f32,
     pub Radius: f32,
     pub Restitution: f32,
 }
-impl_inherits!(UniversalConstraint<I>, Constraint<I>);
-impl<I: Default> Default for UniversalConstraint<I> {
+impl_inherits!(UniversalConstraint, Constraint);
+impl Default for UniversalConstraint {
     fn default() -> Self {
         let superclass = Object::default();
         let superclass = Instance {
@@ -17591,18 +17588,18 @@ impl<I: Default> Default for UniversalConstraint<I> {
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 #[derive(Default)]
-pub struct UnreliableRemoteEvent<I> {
-    superclass: BaseRemoteEvent<I>,
+pub struct UnreliableRemoteEvent {
+    superclass: BaseRemoteEvent,
 }
-impl_inherits!(UnreliableRemoteEvent<I>, BaseRemoteEvent<I>);
+impl_inherits!(UnreliableRemoteEvent, BaseRemoteEvent);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
-pub struct UnvalidatedAssetService<I> {
-    superclass: Instance<I>,
+pub struct UnvalidatedAssetService {
+    superclass: Instance,
     pub CachedData: String,
 }
-impl_inherits!(UnvalidatedAssetService<I>, Instance<I>);
-impl<I: Default> Default for UnvalidatedAssetService<I> {
+impl_inherits!(UnvalidatedAssetService, Instance);
+impl Default for UnvalidatedAssetService {
     fn default() -> Self {
         let superclass = Object::default();
         let superclass = Instance {
@@ -17623,8 +17620,8 @@ impl<I: Default> Default for UnvalidatedAssetService<I> {
 }
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
-pub struct UserGameSettings<I> {
-    superclass: Instance<I>,
+pub struct UserGameSettings {
+    superclass: Instance,
     pub AllTutorialsDisabled: bool,
     pub BadgeVisible: bool,
     pub CameraMode: enums::CustomCameraMode,
@@ -17693,8 +17690,8 @@ pub struct UserGameSettings<I> {
     pub VrThirdPersonFollowCamEnabled: bool,
     pub VrThirdPersonFollowCamEnabledCustomOption: bool,
 }
-impl_inherits!(UserGameSettings<I>, Instance<I>);
-impl<I: Default> Default for UserGameSettings<I> {
+impl_inherits!(UserGameSettings, Instance);
+impl Default for UserGameSettings {
     fn default() -> Self {
         let superclass = Object::default();
         let superclass = Instance {
@@ -17780,15 +17777,15 @@ impl<I: Default> Default for UserGameSettings<I> {
 }
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
-pub struct UserInputService<I> {
-    superclass: Instance<I>,
+pub struct UserInputService {
+    superclass: Instance,
     pub LegacyInputEventsEnabled: bool,
     pub MouseBehavior: enums::MouseBehavior,
     pub MouseIconContent: Content,
     pub MouseIconEnabled: bool,
 }
-impl_inherits!(UserInputService<I>, Instance<I>);
-impl<I: Default> Default for UserInputService<I> {
+impl_inherits!(UserInputService, Instance);
+impl Default for UserInputService {
     fn default() -> Self {
         let superclass = Object::default();
         let superclass = Instance {
@@ -17812,36 +17809,36 @@ impl<I: Default> Default for UserInputService<I> {
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 #[derive(Default)]
-pub struct UserService<I> {
-    superclass: Instance<I>,
+pub struct UserService {
+    superclass: Instance,
 }
-impl_inherits!(UserService<I>, Instance<I>);
+impl_inherits!(UserService, Instance);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 #[derive(Default)]
-pub struct UserSettings<I> {
-    superclass: GenericSettings<I>,
+pub struct UserSettings {
+    superclass: GenericSettings,
 }
-impl_inherits!(UserSettings<I>, GenericSettings<I>);
+impl_inherits!(UserSettings, GenericSettings);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 #[derive(Default)]
-pub struct UserStorageService<I> {
-    superclass: LocalStorageService<I>,
+pub struct UserStorageService {
+    superclass: LocalStorageService,
 }
-impl_inherits!(UserStorageService<I>, LocalStorageService<I>);
+impl_inherits!(UserStorageService, LocalStorageService);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
-pub struct VRService<I> {
-    superclass: Instance<I>,
+pub struct VRService {
+    superclass: Instance,
     pub AutomaticScaling: enums::VRScaling,
     pub AvatarGestures: bool,
     pub ControllerModels: enums::VRControllerModelMode,
     pub FadeOutViewOnCollision: bool,
     pub LaserPointer: enums::VRLaserPointerMode,
 }
-impl_inherits!(VRService<I>, Instance<I>);
-impl<I: Default> Default for VRService<I> {
+impl_inherits!(VRService, Instance);
+impl Default for VRService {
     fn default() -> Self {
         let superclass = Object::default();
         let superclass = Instance {
@@ -17866,25 +17863,25 @@ impl<I: Default> Default for VRService<I> {
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 #[derive(Default)]
-pub struct VRStatusService<I> {
-    superclass: Instance<I>,
+pub struct VRStatusService {
+    superclass: Instance,
 }
-impl_inherits!(VRStatusService<I>, Instance<I>);
+impl_inherits!(VRStatusService, Instance);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 #[derive(Default)]
-pub struct ValueBase<I> {
-    superclass: Instance<I>,
+pub struct ValueBase {
+    superclass: Instance,
 }
-impl_inherits!(ValueBase<I>, Instance<I>);
+impl_inherits!(ValueBase, Instance);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
-pub struct ValueCurve<I> {
-    superclass: Instance<I>,
+pub struct ValueCurve {
+    superclass: Instance,
     pub ValuesAndTimes: BinaryString,
 }
-impl_inherits!(ValueCurve<I>, Instance<I>);
-impl<I: Default> Default for ValueCurve<I> {
+impl_inherits!(ValueCurve, Instance);
+impl Default for ValueCurve {
     fn default() -> Self {
         let superclass = Object::default();
         let superclass = Instance {
@@ -17905,18 +17902,18 @@ impl<I: Default> Default for ValueCurve<I> {
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 #[derive(Default)]
-pub struct Vector3Curve<I> {
-    superclass: Instance<I>,
+pub struct Vector3Curve {
+    superclass: Instance,
 }
-impl_inherits!(Vector3Curve<I>, Instance<I>);
+impl_inherits!(Vector3Curve, Instance);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
-pub struct Vector3Value<I> {
-    superclass: ValueBase<I>,
+pub struct Vector3Value {
+    superclass: ValueBase,
     pub Value: Vector3,
 }
-impl_inherits!(Vector3Value<I>, ValueBase<I>);
-impl<I: Default> Default for Vector3Value<I> {
+impl_inherits!(Vector3Value, ValueBase);
+impl Default for Vector3Value {
     fn default() -> Self {
         let superclass = Object::default();
         let superclass = Instance {
@@ -17937,14 +17934,14 @@ impl<I: Default> Default for Vector3Value<I> {
 }
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
-pub struct VectorForce<I> {
-    superclass: Constraint<I>,
+pub struct VectorForce {
+    superclass: Constraint,
     pub ApplyAtCenterOfMass: bool,
     pub Force: Vector3,
     pub RelativeTo: enums::ActuatorRelativeTo,
 }
-impl_inherits!(VectorForce<I>, Constraint<I>);
-impl<I: Default> Default for VectorForce<I> {
+impl_inherits!(VectorForce, Constraint);
+impl Default for VectorForce {
     fn default() -> Self {
         let superclass = Object::default();
         let superclass = Instance {
@@ -17975,14 +17972,14 @@ impl<I: Default> Default for VectorForce<I> {
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 #[derive(Default)]
-pub struct VehicleController<I> {
-    superclass: Controller<I>,
+pub struct VehicleController {
+    superclass: Controller,
 }
-impl_inherits!(VehicleController<I>, Controller<I>);
+impl_inherits!(VehicleController, Controller);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
-pub struct VehicleSeat<I> {
-    superclass: BasePart<I>,
+pub struct VehicleSeat {
+    superclass: BasePart,
     pub Disabled: bool,
     pub HeadsUpDisplay: bool,
     pub MaxSpeed: f32,
@@ -17993,8 +17990,8 @@ pub struct VehicleSeat<I> {
     pub Torque: f32,
     pub TurnSpeed: f32,
 }
-impl_inherits!(VehicleSeat<I>, BasePart<I>);
-impl<I: Default> Default for VehicleSeat<I> {
+impl_inherits!(VehicleSeat, BasePart);
+impl Default for VehicleSeat {
     fn default() -> Self {
         let superclass = Object::default();
         let superclass = Instance {
@@ -18070,15 +18067,15 @@ impl<I: Default> Default for VehicleSeat<I> {
 }
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
-pub struct VelocityMotor<I> {
-    superclass: JointInstance<I>,
+pub struct VelocityMotor {
+    superclass: JointInstance,
     pub CurrentAngle: f32,
     pub DesiredAngle: f32,
     pub Hole: Ref,
     pub MaxVelocity: f32,
 }
-impl_inherits!(VelocityMotor<I>, JointInstance<I>);
-impl<I: Default> Default for VelocityMotor<I> {
+impl_inherits!(VelocityMotor, JointInstance);
+impl Default for VelocityMotor {
     fn default() -> Self {
         let superclass = Object::default();
         let superclass = Instance {
@@ -18110,34 +18107,34 @@ impl<I: Default> Default for VelocityMotor<I> {
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 #[derive(Default)]
-pub struct VersionControlService<I> {
-    superclass: Instance<I>,
+pub struct VersionControlService {
+    superclass: Instance,
 }
-impl_inherits!(VersionControlService<I>, Instance<I>);
+impl_inherits!(VersionControlService, Instance);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 #[derive(Default)]
-pub struct VideoCapture<I> {
-    superclass: Capture<I>,
+pub struct VideoCapture {
+    superclass: Capture,
 }
-impl_inherits!(VideoCapture<I>, Capture<I>);
+impl_inherits!(VideoCapture, Capture);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 #[derive(Default)]
-pub struct VideoCaptureService<I> {
-    superclass: Instance<I>,
+pub struct VideoCaptureService {
+    superclass: Instance,
 }
-impl_inherits!(VideoCaptureService<I>, Instance<I>);
+impl_inherits!(VideoCaptureService, Instance);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
-pub struct VideoDeviceInput<I> {
-    superclass: Instance<I>,
+pub struct VideoDeviceInput {
+    superclass: Instance,
     pub Active: bool,
     pub CameraId: String,
     pub CaptureQuality: enums::VideoDeviceCaptureQuality,
 }
-impl_inherits!(VideoDeviceInput<I>, Instance<I>);
-impl<I: Default> Default for VideoDeviceInput<I> {
+impl_inherits!(VideoDeviceInput, Instance);
+impl Default for VideoDeviceInput {
     fn default() -> Self {
         let superclass = Object::default();
         let superclass = Instance {
@@ -18159,8 +18156,8 @@ impl<I: Default> Default for VideoDeviceInput<I> {
 }
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
-pub struct VideoDisplay<I> {
-    superclass: GuiObject<I>,
+pub struct VideoDisplay {
+    superclass: GuiObject,
     pub ResampleMode: enums::ResamplerMode,
     pub ScaleType: enums::ScaleType,
     pub TileSize: UDim2,
@@ -18169,8 +18166,8 @@ pub struct VideoDisplay<I> {
     pub VideoRectSize: Vector2,
     pub VideoTransparency: f32,
 }
-impl_inherits!(VideoDisplay<I>, GuiObject<I>);
-impl<I: Default> Default for VideoDisplay<I> {
+impl_inherits!(VideoDisplay, GuiObject);
+impl Default for VideoDisplay {
     fn default() -> Self {
         let superclass = Object::default();
         let superclass = Instance {
@@ -18235,16 +18232,16 @@ impl<I: Default> Default for VideoDisplay<I> {
 }
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
-pub struct VideoFrame<I> {
-    superclass: GuiObject<I>,
+pub struct VideoFrame {
+    superclass: GuiObject,
     pub Looped: bool,
     pub Playing: bool,
     pub TimePosition: f64,
     pub VideoContent: Content,
     pub Volume: f32,
 }
-impl_inherits!(VideoFrame<I>, GuiObject<I>);
-impl<I: Default> Default for VideoFrame<I> {
+impl_inherits!(VideoFrame, GuiObject);
+impl Default for VideoFrame {
     fn default() -> Self {
         let superclass = Object::default();
         let superclass = Instance {
@@ -18307,16 +18304,16 @@ impl<I: Default> Default for VideoFrame<I> {
 }
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
-pub struct VideoPlayer<I> {
-    superclass: Instance<I>,
+pub struct VideoPlayer {
+    superclass: Instance,
     pub Looping: bool,
     pub PlaybackSpeed: f32,
     pub TimePosition: f64,
     pub VideoContent: Content,
     pub Volume: f32,
 }
-impl_inherits!(VideoPlayer<I>, Instance<I>);
-impl<I: Default> Default for VideoPlayer<I> {
+impl_inherits!(VideoPlayer, Instance);
+impl Default for VideoPlayer {
     fn default() -> Self {
         let superclass = Object::default();
         let superclass = Instance {
@@ -18341,28 +18338,28 @@ impl<I: Default> Default for VideoPlayer<I> {
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 #[derive(Default)]
-pub struct VideoSampler<I> {
-    superclass: Object<I>,
+pub struct VideoSampler {
+    superclass: Object,
 }
-impl_inherits!(VideoSampler<I>, Object<I>);
+impl_inherits!(VideoSampler, Object);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 #[derive(Default)]
-pub struct VideoScreenCaptureService<I> {
-    superclass: Instance<I>,
+pub struct VideoScreenCaptureService {
+    superclass: Instance,
 }
-impl_inherits!(VideoScreenCaptureService<I>, Instance<I>);
+impl_inherits!(VideoScreenCaptureService, Instance);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 #[derive(Default)]
-pub struct VideoService<I> {
-    superclass: Instance<I>,
+pub struct VideoService {
+    superclass: Instance,
 }
-impl_inherits!(VideoService<I>, Instance<I>);
+impl_inherits!(VideoService, Instance);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
-pub struct ViewportFrame<I> {
-    superclass: GuiObject<I>,
+pub struct ViewportFrame {
+    superclass: GuiObject,
     pub Ambient: Color3,
     pub CameraCFrame: CFrame,
     pub CameraFieldOfView: f32,
@@ -18371,8 +18368,8 @@ pub struct ViewportFrame<I> {
     pub LightColor: Color3,
     pub LightDirection: Vector3,
 }
-impl_inherits!(ViewportFrame<I>, GuiObject<I>);
-impl<I: Default> Default for ViewportFrame<I> {
+impl_inherits!(ViewportFrame, GuiObject);
+impl Default for ViewportFrame {
     fn default() -> Self {
         let superclass = Object::default();
         let superclass = Instance {
@@ -18438,41 +18435,41 @@ impl<I: Default> Default for ViewportFrame<I> {
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 #[derive(Default)]
-pub struct VirtualInputManager<I> {
-    superclass: Instance<I>,
+pub struct VirtualInputManager {
+    superclass: Instance,
 }
-impl_inherits!(VirtualInputManager<I>, Instance<I>);
+impl_inherits!(VirtualInputManager, Instance);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 #[derive(Default)]
-pub struct VirtualUser<I> {
-    superclass: Instance<I>,
+pub struct VirtualUser {
+    superclass: Instance,
 }
-impl_inherits!(VirtualUser<I>, Instance<I>);
+impl_inherits!(VirtualUser, Instance);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 #[derive(Default)]
-pub struct VisibilityCheckDispatcher<I> {
-    superclass: Instance<I>,
+pub struct VisibilityCheckDispatcher {
+    superclass: Instance,
 }
-impl_inherits!(VisibilityCheckDispatcher<I>, Instance<I>);
+impl_inherits!(VisibilityCheckDispatcher, Instance);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 #[derive(Default)]
-pub struct Visit<I> {
-    superclass: Instance<I>,
+pub struct Visit {
+    superclass: Instance,
 }
-impl_inherits!(Visit<I>, Instance<I>);
+impl_inherits!(Visit, Instance);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
-pub struct VisualizationMode<I> {
-    superclass: Instance<I>,
+pub struct VisualizationMode {
+    superclass: Instance,
     pub Enabled: bool,
     pub Title: String,
     pub ToolTip: String,
 }
-impl_inherits!(VisualizationMode<I>, Instance<I>);
-impl<I: Default> Default for VisualizationMode<I> {
+impl_inherits!(VisualizationMode, Instance);
+impl Default for VisualizationMode {
     fn default() -> Self {
         let superclass = Object::default();
         let superclass = Instance {
@@ -18494,13 +18491,13 @@ impl<I: Default> Default for VisualizationMode<I> {
 }
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
-pub struct VisualizationModeCategory<I> {
-    superclass: Instance<I>,
+pub struct VisualizationModeCategory {
+    superclass: Instance,
     pub Enabled: bool,
     pub Title: String,
 }
-impl_inherits!(VisualizationModeCategory<I>, Instance<I>);
-impl<I: Default> Default for VisualizationModeCategory<I> {
+impl_inherits!(VisualizationModeCategory, Instance);
+impl Default for VisualizationModeCategory {
     fn default() -> Self {
         let superclass = Object::default();
         let superclass = Instance {
@@ -18522,27 +18519,27 @@ impl<I: Default> Default for VisualizationModeCategory<I> {
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 #[derive(Default)]
-pub struct VisualizationModeService<I> {
-    superclass: Instance<I>,
+pub struct VisualizationModeService {
+    superclass: Instance,
 }
-impl_inherits!(VisualizationModeService<I>, Instance<I>);
+impl_inherits!(VisualizationModeService, Instance);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 #[derive(Default)]
-pub struct VoiceChatInternal<I> {
-    superclass: Instance<I>,
+pub struct VoiceChatInternal {
+    superclass: Instance,
 }
-impl_inherits!(VoiceChatInternal<I>, Instance<I>);
+impl_inherits!(VoiceChatInternal, Instance);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
-pub struct VoiceChatService<I> {
-    superclass: Instance<I>,
+pub struct VoiceChatService {
+    superclass: Instance,
     pub DefaultDistanceAttenuation: enums::VoiceChatDistanceAttenuationType,
     pub EnableDefaultVoice: bool,
     pub UseAudioApi: enums::AudioApiRollout,
 }
-impl_inherits!(VoiceChatService<I>, Instance<I>);
-impl<I: Default> Default for VoiceChatService<I> {
+impl_inherits!(VoiceChatService, Instance);
+impl Default for VoiceChatService {
     fn default() -> Self {
         let superclass = Object::default();
         let superclass = Instance {
@@ -18565,54 +18562,54 @@ impl<I: Default> Default for VoiceChatService<I> {
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 #[derive(Default)]
-pub struct WebSocketClient<I> {
-    superclass: Instance<I>,
+pub struct WebSocketClient {
+    superclass: Instance,
 }
-impl_inherits!(WebSocketClient<I>, Instance<I>);
+impl_inherits!(WebSocketClient, Instance);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 #[derive(Default)]
-pub struct WebSocketService<I> {
-    superclass: Instance<I>,
+pub struct WebSocketService {
+    superclass: Instance,
 }
-impl_inherits!(WebSocketService<I>, Instance<I>);
+impl_inherits!(WebSocketService, Instance);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 #[derive(Default)]
-pub struct WebStreamClient<I> {
-    superclass: Object<I>,
+pub struct WebStreamClient {
+    superclass: Object,
 }
-impl_inherits!(WebStreamClient<I>, Object<I>);
+impl_inherits!(WebStreamClient, Object);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 #[derive(Default)]
-pub struct WebViewService<I> {
-    superclass: Instance<I>,
+pub struct WebViewService {
+    superclass: Instance,
 }
-impl_inherits!(WebViewService<I>, Instance<I>);
+impl_inherits!(WebViewService, Instance);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 #[derive(Default)]
-pub struct WedgePart<I> {
-    superclass: FormFactorPart<I>,
+pub struct WedgePart {
+    superclass: FormFactorPart,
 }
-impl_inherits!(WedgePart<I>, FormFactorPart<I>);
+impl_inherits!(WedgePart, FormFactorPart);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 #[derive(Default)]
-pub struct Weld<I> {
-    superclass: JointInstance<I>,
+pub struct Weld {
+    superclass: JointInstance,
 }
-impl_inherits!(Weld<I>, JointInstance<I>);
+impl_inherits!(Weld, JointInstance);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
-pub struct WeldConstraint<I> {
-    superclass: Instance<I>,
+pub struct WeldConstraint {
+    superclass: Instance,
     pub CFrame0: CFrame,
     pub State: i32,
 }
-impl_inherits!(WeldConstraint<I>, Instance<I>);
-impl<I: Default> Default for WeldConstraint<I> {
+impl_inherits!(WeldConstraint, Instance);
+impl Default for WeldConstraint {
     fn default() -> Self {
         let superclass = Object::default();
         let superclass = Instance {
@@ -18633,15 +18630,15 @@ impl<I: Default> Default for WeldConstraint<I> {
 }
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
-pub struct Wire<I> {
-    superclass: Instance<I>,
+pub struct Wire {
+    superclass: Instance,
     pub SourceInstance: Ref,
     pub SourceName: String,
     pub TargetInstance: Ref,
     pub TargetName: String,
 }
-impl_inherits!(Wire<I>, Instance<I>);
-impl<I: Default> Default for Wire<I> {
+impl_inherits!(Wire, Instance);
+impl Default for Wire {
     fn default() -> Self {
         let superclass = Object::default();
         let superclass = Instance {
@@ -18664,13 +18661,13 @@ impl<I: Default> Default for Wire<I> {
 }
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
-pub struct WireframeHandleAdornment<I> {
-    superclass: HandleAdornment<I>,
+pub struct WireframeHandleAdornment {
+    superclass: HandleAdornment,
     pub Scale: Vector3,
     pub Thickness: f32,
 }
-impl_inherits!(WireframeHandleAdornment<I>, HandleAdornment<I>);
-impl<I: Default> Default for WireframeHandleAdornment<I> {
+impl_inherits!(WireframeHandleAdornment, HandleAdornment);
+impl Default for WireframeHandleAdornment {
     fn default() -> Self {
         let superclass = Object::default();
         let superclass = Instance {
@@ -18710,8 +18707,8 @@ impl<I: Default> Default for WireframeHandleAdornment<I> {
 }
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
-pub struct Workspace<I> {
-    superclass: WorldRoot<I>,
+pub struct Workspace {
+    superclass: WorldRoot,
     pub AirDensity: f32,
     pub AirTurbulenceIntensity: f32,
     pub AllowThirdPartySales: bool,
@@ -18753,8 +18750,8 @@ pub struct Workspace<I> {
     pub TouchesUseCollisionGroups: bool,
     pub UseNewLuauTypeSolver: enums::RolloutState,
 }
-impl_inherits!(Workspace<I>, WorldRoot<I>);
-impl<I: Default> Default for Workspace<I> {
+impl_inherits!(Workspace, WorldRoot);
+impl Default for Workspace {
     fn default() -> Self {
         let superclass = Object::default();
         let superclass = Instance {
@@ -18830,35 +18827,35 @@ impl<I: Default> Default for Workspace<I> {
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 #[derive(Default)]
-pub struct WorkspaceAnnotation<I> {
-    superclass: Annotation<I>,
+pub struct WorkspaceAnnotation {
+    superclass: Annotation,
 }
-impl_inherits!(WorkspaceAnnotation<I>, Annotation<I>);
+impl_inherits!(WorkspaceAnnotation, Annotation);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 #[derive(Default)]
-pub struct WorldModel<I> {
-    superclass: WorldRoot<I>,
+pub struct WorldModel {
+    superclass: WorldRoot,
 }
-impl_inherits!(WorldModel<I>, WorldRoot<I>);
+impl_inherits!(WorldModel, WorldRoot);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 #[derive(Default)]
-pub struct WorldRoot<I> {
-    superclass: Model<I>,
+pub struct WorldRoot {
+    superclass: Model,
 }
-impl_inherits!(WorldRoot<I>, Model<I>);
+impl_inherits!(WorldRoot, Model);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 #[derive(Default)]
-pub struct WrapDeformer<I> {
-    superclass: BaseWrap<I>,
+pub struct WrapDeformer {
+    superclass: BaseWrap,
 }
-impl_inherits!(WrapDeformer<I>, BaseWrap<I>);
+impl_inherits!(WrapDeformer, BaseWrap);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
-pub struct WrapLayer<I> {
-    superclass: BaseWrap<I>,
+pub struct WrapLayer {
+    superclass: BaseWrap,
     pub AutoSkin: enums::WrapLayerAutoSkin,
     pub BindOffset: CFrame,
     pub Enabled: bool,
@@ -18869,8 +18866,8 @@ pub struct WrapLayer<I> {
     pub ShrinkFactor: f32,
     pub TemporaryReferenceId: ContentId,
 }
-impl_inherits!(WrapLayer<I>, BaseWrap<I>);
-impl<I: Default> Default for WrapLayer<I> {
+impl_inherits!(WrapLayer, BaseWrap);
+impl Default for WrapLayer {
     fn default() -> Self {
         let superclass = Object::default();
         let superclass = Instance {
@@ -18908,12 +18905,12 @@ impl<I: Default> Default for WrapLayer<I> {
 }
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
-pub struct WrapTarget<I> {
-    superclass: BaseWrap<I>,
+pub struct WrapTarget {
+    superclass: BaseWrap,
     pub Stiffness: f32,
 }
-impl_inherits!(WrapTarget<I>, BaseWrap<I>);
-impl<I: Default> Default for WrapTarget<I> {
+impl_inherits!(WrapTarget, BaseWrap);
+impl Default for WrapTarget {
     fn default() -> Self {
         let superclass = Object::default();
         let superclass = Instance {
@@ -18943,14 +18940,14 @@ impl<I: Default> Default for WrapTarget<I> {
 }
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
-pub struct WrapTextureTransfer<I> {
-    superclass: Instance<I>,
+pub struct WrapTextureTransfer {
+    superclass: Instance,
     pub ReferenceCageMeshContent: Content,
     pub UvMaxBound: Vector2,
     pub UvMinBound: Vector2,
 }
-impl_inherits!(WrapTextureTransfer<I>, Instance<I>);
-impl<I: Default> Default for WrapTextureTransfer<I> {
+impl_inherits!(WrapTextureTransfer, Instance);
+impl Default for WrapTextureTransfer {
     fn default() -> Self {
         let superclass = Object::default();
         let superclass = Instance {
