@@ -1,4 +1,5 @@
 mod dom;
+mod class;
 mod instance;
 
 pub use dom::StrongDom;

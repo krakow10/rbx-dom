@@ -3,7 +3,7 @@ use std::collections::VecDeque;
 use ahash::{AHashMap, AHashSet};
 use rbx_types::{Ref, UniqueId};
 
-use crate::instance::Class;
+use crate::class::Class;
 use crate::instance::Instance;
 use crate::instance::InstanceBuilder;
 
