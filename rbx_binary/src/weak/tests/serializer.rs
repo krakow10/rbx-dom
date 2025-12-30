@@ -1,6 +1,6 @@
 use rbx_dom_weak::{InstanceBuilder, WeakDom};
 use rbx_types::{
-    BrickColor, CFrame, Color3, Color3uint8, Enum, Font, Ref, Region3, SharedString, Variant,
+    BrickColor, CFrame, Color3, Color3uint8, Enum, Font, Ref, Region3, SharedString, UDim, Variant,
     Vector3,
 };
 
