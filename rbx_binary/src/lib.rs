@@ -16,6 +16,11 @@ mod weak;
 #[cfg(feature = "weak")]
 pub use weak::*;
 
+#[cfg(feature = "strong")]
+mod strong;
+#[cfg(feature = "strong")]
+pub use strong::*;
+
 #[cfg(any(test, feature = "unstable_text_format"))]
 mod text_deserializer;
 /// An unstable textual format that can be used to debug binary models.
