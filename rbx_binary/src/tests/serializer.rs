@@ -1,10 +1,8 @@
-use rbx_dom_weak::{
-    types::{
-        BrickColor, CFrame, Color3, Color3uint8, Enum, Font, Ref, Region3, SharedString, UDim,
-        Variant, Vector3,
-    },
-    InstanceBuilder, WeakDom,
+use rbx_dom_weak::types::{
+    BrickColor, CFrame, Color3, Color3uint8, Enum, Font, Ref, Region3, SharedString, UDim, Variant,
+    Vector3,
 };
+use rbx_dom_weak::{InstanceBuilder, WeakDom};
 
 use crate::{text_deserializer::DecodedModel, to_writer, Deserializer, Serializer};
 
