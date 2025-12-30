@@ -1,0 +1,13 @@
+---
+source: rbx_binary/src/weak/tests/util.rs
+expression: decoded_viewed
+---
+- referent: referent-0
+  name: Folder
+  class: Folder
+  properties:
+    Attributes:
+      Attributes: {}
+    Tags:
+      Tags: []
+  children: []
