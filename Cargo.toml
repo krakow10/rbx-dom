@@ -8,6 +8,7 @@ members = [
 	"rbx_reflection",
 	"rbx_reflection_database",
 	"rbx_types",
+	"rbx_classes",
 	"rbx_xml",
 	"rbx_util",
 ]
