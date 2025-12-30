@@ -1,10 +1,13 @@
 use criterion::{measurement::Measurement, BatchSize, BenchmarkGroup, Throughput};
 
 pub(crate) fn bench<T: Measurement>(group: &mut BenchmarkGroup<T>, bench_file: &'static [u8]) {
+    #[cfg(feature = "weak")]
     serialize_bench(group, bench_file);
+    #[cfg(feature = "weak")]
     deserialize_bench(group, bench_file);
 }
 
+#[cfg(feature = "weak")]
 fn serialize_bench<T: Measurement>(group: &mut BenchmarkGroup<T>, buffer: &[u8]) {
     let tree = rbx_binary::from_reader(buffer).unwrap();
     let root_ref = tree.root_ref();
@@ -31,6 +34,7 @@ fn serialize_bench<T: Measurement>(group: &mut BenchmarkGroup<T>, buffer: &[u8])
         });
 }
 
+#[cfg(feature = "weak")]
 fn deserialize_bench<T: Measurement>(group: &mut BenchmarkGroup<T>, buffer: &[u8]) {
     group
         .throughput(Throughput::Bytes(buffer.len() as u64))

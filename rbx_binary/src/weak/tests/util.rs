@@ -2,7 +2,8 @@ use std::{fs, path::Path};
 
 use rbx_dom_weak::DomViewer;
 
-use crate::{from_reader, text_deserializer::DecodedModel, to_writer};
+use crate::text_deserializer::DecodedModel;
+use crate::weak::{from_reader, to_writer};
 
 /// Run a basic gauntlet of tests to verify that the serializer and deserializer
 /// can handle this model correctly.

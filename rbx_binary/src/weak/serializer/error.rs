@@ -1,6 +1,6 @@
 use std::io;
 
-use rbx_dom_weak::types::Ref;
+use rbx_types::Ref;
 use thiserror::Error;
 
 /// Represents an error that occurred during serialization.

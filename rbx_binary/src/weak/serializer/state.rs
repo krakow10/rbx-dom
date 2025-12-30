@@ -5,15 +5,13 @@ use std::{
 };
 
 use ahash::{HashMap, HashMapExt};
-use rbx_dom_weak::{
-    types::{
-        Attributes, Axes, BinaryString, BrickColor, CFrame, Color3, Color3uint8, ColorSequence,
-        ColorSequenceKeypoint, Content, ContentId, ContentType, Enum, EnumItem, Faces, Font,
-        MaterialColors, Matrix3, NetAssetRef, NumberRange, NumberSequence, NumberSequenceKeypoint,
-        PhysicalProperties, Ray, Rect, Ref, SecurityCapabilities, SharedString, Tags, UDim, UDim2,
-        UniqueId, Variant, VariantType, Vector2, Vector3, Vector3int16,
-    },
-    Instance, Ustr, UstrMap, WeakDom,
+use rbx_dom_weak::{Instance, Ustr, UstrMap, WeakDom};
+use rbx_types::{
+    Attributes, Axes, BinaryString, BrickColor, CFrame, Color3, Color3uint8, ColorSequence,
+    ColorSequenceKeypoint, Content, ContentId, ContentType, Enum, EnumItem, Faces, Font,
+    MaterialColors, Matrix3, NetAssetRef, NumberRange, NumberSequence, NumberSequenceKeypoint,
+    PhysicalProperties, Ray, Rect, Ref, SecurityCapabilities, SharedString, Tags, UDim, UDim2,
+    UniqueId, Variant, VariantType, Vector2, Vector3, Vector3int16,
 };
 
 use rbx_reflection::{
