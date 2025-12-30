@@ -15,7 +15,7 @@ authors = [
 edition = "2018"
 
 [features]
-default = ["weak"]
+default = ["weak", "strong"] # TEMP: Enable strong for testing
 weak = ["dep:rbx_dom_weak"]
 strong = ["dep:rbx_dom_strong"]
 unstable_text_format = ["serde"]
