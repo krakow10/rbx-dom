@@ -3,6 +3,7 @@ resolver = "2"
 members = [
 	"rbx_binary",
 	"rbx_binary_core",
+	"rbx_binary_strong",
 	"rbx_classes",
 	"rbx_dom_strong",
 	"rbx_dom_weak",
