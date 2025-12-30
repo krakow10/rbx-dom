@@ -29,6 +29,12 @@ impl MaterialColors {
         }
     }
 
+    #[inline]
+    pub fn is_empty(&self) -> bool {
+        IntoIterator::into_iter(MATERIAL_ORDER)
+            .all(|material| self.get_color(material) == material.default_color())
+    }
+
     /// Retrieves the set color for the given material, or the default if
     /// none is set.
     #[inline]
