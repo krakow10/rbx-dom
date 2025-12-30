@@ -17,10 +17,12 @@ edition = "2018"
 [features]
 default = ["weak"]
 weak = ["dep:rbx_dom_weak"]
+strong = ["dep:rbx_dom_strong"]
 unstable_text_format = ["serde"]
 
 [dependencies]
 rbx_dom_weak = { version = "4.1.0", path = "../rbx_dom_weak", optional = true }
+rbx_dom_strong = { version = "0.1.0", path = "../rbx_dom_strong", optional = true }
 rbx_reflection = { version = "6.1.0", path = "../rbx_reflection" }
 rbx_reflection_database = { version = "2.0.2", path = "../rbx_reflection_database" }
 rbx_types = { version = "3.1.0", path = "../rbx_types" }
