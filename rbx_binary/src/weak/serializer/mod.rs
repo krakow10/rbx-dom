@@ -3,8 +3,11 @@ mod state;
 
 use std::io::Write;
 
-use rbx_dom_weak::{types::Ref, WeakDom};
+use rbx_dom_weak::WeakDom;
 use rbx_reflection::ReflectionDatabase;
+use rbx_types::Ref;
+
+use crate::chunk::CompressionType;
 
 use self::state::SerializerState;
 
@@ -98,16 +101,4 @@ impl Default for Serializer<'_> {
     fn default() -> Self {
         Self::new()
     }
-}
-
-/// Indicates the types of compression that files can be written with.
-#[derive(Debug, PartialEq, Eq, Clone, Copy, Default)]
-pub enum CompressionType {
-    /// LZ4 compression. This is what Roblox uses by default.
-    #[default]
-    Lz4,
-    /// No compression.
-    None,
-    /// ZSTD compression.
-    Zstd,
 }

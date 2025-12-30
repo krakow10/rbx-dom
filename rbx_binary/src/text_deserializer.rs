@@ -11,7 +11,7 @@ use std::{
     io::Read,
 };
 
-use rbx_dom_weak::types::{
+use rbx_types::{
     Axes, BrickColor, CFrame, Color3, Color3uint8, ColorSequence, ColorSequenceKeypoint,
     CustomPhysicalProperties, Enum, Faces, Font, FontStyle, FontWeight, Matrix3, NumberRange,
     NumberSequence, NumberSequenceKeypoint, PhysicalProperties, Ray, Rect, SecurityCapabilities,
@@ -19,7 +19,7 @@ use rbx_dom_weak::types::{
 };
 use serde::{ser::SerializeSeq, Serialize, Serializer};
 
-use crate::{chunk::Chunk, core::RbxReadExt, deserializer::FileHeader, types::Type};
+use crate::{chunk::Chunk, core::RbxReadExt, header::FileHeader, types::Type};
 
 #[derive(Debug, Serialize)]
 pub struct DecodedModel {

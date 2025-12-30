@@ -1,11 +1,10 @@
-use rbx_dom_weak::{
-    types::{
-        BrickColor, CFrame, Color3, Color3uint8, Enum, Font, Ref, Region3, SharedString, Vector3,
-    },
-    InstanceBuilder, WeakDom,
+use rbx_dom_weak::{InstanceBuilder, WeakDom};
+use rbx_types::{
+    BrickColor, CFrame, Color3, Color3uint8, Enum, Font, Ref, Region3, SharedString, Vector3,
 };
 
-use crate::{text_deserializer::DecodedModel, to_writer};
+use crate::text_deserializer::DecodedModel;
+use crate::weak::to_writer;
 
 /// A basic test to make sure we can serialize the simplest instance: a Folder.
 #[test]

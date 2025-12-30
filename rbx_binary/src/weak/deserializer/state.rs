@@ -1,26 +1,24 @@
 use std::{borrow::Cow, collections::VecDeque, convert::TryInto, io::Read};
 
 use ahash::{HashMap, HashMapExt, HashSet, HashSetExt};
-use rbx_dom_weak::{
-    types::{
-        Attributes, Axes, BinaryString, BrickColor, CFrame, Color3, Color3uint8, ColorSequence,
-        ColorSequenceKeypoint, Content, ContentId, CustomPhysicalProperties, Enum, Faces, Font,
-        FontStyle, FontWeight, MaterialColors, Matrix3, NetAssetRef, NumberRange, NumberSequence,
-        NumberSequenceKeypoint, PhysicalProperties, Ray, Rect, Ref, SecurityCapabilities,
-        SharedString, Tags, UDim, UDim2, UniqueId, Variant, VariantType, Vector2, Vector3,
-        Vector3int16,
-    },
-    InstanceBuilder, Ustr, WeakDom,
-};
+use rbx_dom_weak::{InstanceBuilder, Ustr, WeakDom};
 use rbx_reflection::{ClassDescriptor, PropertyKind, PropertySerialization, ReflectionDatabase};
+use rbx_types::{
+    Attributes, Axes, BinaryString, BrickColor, CFrame, Color3, Color3uint8, ColorSequence,
+    ColorSequenceKeypoint, Content, ContentId, CustomPhysicalProperties, Enum, Faces, Font,
+    FontStyle, FontWeight, MaterialColors, Matrix3, NetAssetRef, NumberRange, NumberSequence,
+    NumberSequenceKeypoint, PhysicalProperties, Ray, Rect, Ref, SecurityCapabilities, SharedString,
+    Tags, UDim, UDim2, UniqueId, Variant, VariantType, Vector2, Vector3, Vector3int16,
+};
 
 use crate::{
     chunk::Chunk,
     core::{find_property_descriptors, RbxReadExt},
+    header::FileHeader,
     types::Type,
 };
 
-use super::{error::InnerError, header::FileHeader, Deserializer};
+use super::{error::InnerError, Deserializer};
 
 pub(super) struct DeserializerState<'db, R> {
     /// The user-provided configuration that we should use.
