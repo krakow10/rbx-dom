@@ -1,9 +1,8 @@
-use std::{collections::BTreeMap, convert::TryFrom, convert::TryInto, str::FromStr};
+use std::{collections::BTreeMap, str::FromStr};
 
 use thiserror::Error;
 
 use crate::Color3uint8;
-use crate::TerrainMaterials;
 
 use crate::Error as CrateError;
 
@@ -17,7 +16,7 @@ use crate::Error as CrateError;
 pub struct MaterialColors {
     /// The underlying map used by this struct. A `BTreeMap` is used
     /// over a `HashMap` to ensure serialization with serde is ordered.
-    inner: BTreeMap<TerrainColorMaterial, Color3uint8>,
+    inner: BTreeMap<TerrainMaterials, Color3uint8>,
 }
 
 impl MaterialColors {
@@ -33,12 +32,7 @@ impl MaterialColors {
     /// Retrieves the set color for the given material, or the default if
     /// none is set.
     #[inline]
-    pub fn get_color(&self, material: TerrainMaterials) -> Result<Color3uint8, CrateError> {
-        Ok(self.get_color_internal(material.try_into()?))
-    }
-
-    #[inline]
-    fn get_color_internal(&self, material: TerrainColorMaterial) -> Color3uint8 {
+    pub fn get_color(&self, material: TerrainMaterials) -> Color3uint8 {
         if let Some(color) = self.inner.get(&material) {
             *color
         } else {
@@ -48,16 +42,7 @@ impl MaterialColors {
 
     /// Sets the color for the given material.
     #[inline]
-    pub fn set_color(
-        &mut self,
-        material: TerrainMaterials,
-        color: Color3uint8,
-    ) -> Result<(), CrateError> {
-        self.set_color_internal(material.try_into()?, color);
-        Ok(())
-    }
-
-    fn set_color_internal(&mut self, material: TerrainColorMaterial, color: Color3uint8) {
+    pub fn set_color(&mut self, material: TerrainMaterials, color: Color3uint8) {
         self.inner.insert(material, color);
     }
 
@@ -69,7 +54,7 @@ impl MaterialColors {
         buffer.extend_from_slice(&[0; 6]);
 
         for color in MATERIAL_ORDER {
-            let color = self.get_color_internal(color);
+            let color = self.get_color(color);
             buffer.extend_from_slice(&[color.r, color.g, color.b])
         }
 
@@ -98,21 +83,12 @@ where
 {
     fn from(value: T) -> Self {
         Self {
-            inner: value
-                .into()
-                .iter()
-                .filter_map(|x| {
-                    let Ok(material) = TerrainColorMaterial::try_from(*x.0) else {
-                        return None;
-                    };
-                    Some((material, *x.1))
-                })
-                .collect(),
+            inner: value.into(),
         }
     }
 }
 
-/// An error that can occur when deserializing or working with MaterialColors and TerrainColorMaterial.
+/// An error that can occur when deserializing or working with MaterialColors and TerrainMaterials.
 #[derive(Debug, Error)]
 pub(crate) enum MaterialColorsError {
     /// The `MaterialColors` blob was the wrong number of bytes.
@@ -120,13 +96,13 @@ pub(crate) enum MaterialColorsError {
         "MaterialColors blob was the wrong length (expected it to be 69 bytes, it was {0} bytes)"
     )]
     WrongLength(usize),
-    /// The argument provided to `from_str`, or the argument for conversion
-    /// from `TerrainMaterials`, did not correspond to a known TerrainColorMaterial.
-    #[error("cannot convert `{0}` into TerrainColorMaterial")]
+    /// The argument provided to `from_str` did not correspond to a known
+    /// TerrainMaterial.
+    #[error("cannot convert `{0}` into TerrainMaterial")]
     UnknownMaterial(String),
 }
 
-/// Constructs an enum named `TerrainColorMaterial` for all values contained in
+/// Constructs an enum named `TerrainMaterials` for all values contained in
 /// `MaterialColors` alongside a mapping for a default color for that material.
 ///
 /// Additionally, makes a constant named `MATERIAL_ORDER` that indicates what
@@ -138,9 +114,9 @@ macro_rules! material_colors {
         // all have tangible downsides.
         // See: https://danielkeep.github.io/tlborm/book/blk-counting.html
 
-        /// A list of all `TerrainColorMaterial` in the order they must be read
+        /// A list of all `TerrainMaterials` in the order they must be read
         /// and written.
-        const MATERIAL_ORDER: [TerrainColorMaterial; 21] = [$(TerrainColorMaterial::$name,)*];
+        const MATERIAL_ORDER: [TerrainMaterials; 21] = [$(TerrainMaterials::$name,)*];
 
         /// All materials that are represented by `MaterialColors`.
         ///
@@ -152,14 +128,14 @@ macro_rules! material_colors {
             derive(serde::Serialize, serde::Deserialize),
         )]
         #[non_exhaustive]
-        enum TerrainColorMaterial {
+        pub enum TerrainMaterials {
             $(
                 $name,
             )*
         }
 
-        impl TerrainColorMaterial {
-            /// Returns the default color for the given `TerrainColorMaterial`.
+        impl TerrainMaterials {
+            /// Returns the default color for the given `TerrainMaterial`.
             pub fn default_color(&self) -> Color3uint8 {
                 match self {
                     $(
@@ -169,7 +145,7 @@ macro_rules! material_colors {
             }
         }
 
-        impl FromStr for TerrainColorMaterial {
+        impl FromStr for TerrainMaterials {
             type Err = CrateError;
 
             fn from_str(s: &str) -> Result<Self, Self::Err> {
@@ -177,20 +153,6 @@ macro_rules! material_colors {
                     stringify!($name) => Ok(Self::$name),
                 )*
                     _ => Err(MaterialColorsError::UnknownMaterial(s.to_string()).into()),
-                }
-            }
-        }
-
-        impl TryFrom<TerrainMaterials> for TerrainColorMaterial {
-            type Error = CrateError;
-
-            fn try_from(value: TerrainMaterials) -> Result<Self, Self::Error> {
-                use TerrainMaterials::*;
-                match value {
-                    $(
-                        $name => Ok(Self::$name),
-                    )*
-                    _ => Err(MaterialColorsError::UnknownMaterial(value.to_string()).into())
                 }
             }
         }
@@ -235,17 +197,17 @@ mod test {
         let expected: MaterialColors = serde_json::from_str(serialized).unwrap();
 
         assert_eq!(
-            expected.get_color(TerrainMaterials::Grass).unwrap(),
+            expected.get_color(TerrainMaterials::Grass),
             Color3uint8::new(10, 20, 30),
         );
         assert_eq!(
-            expected.get_color(TerrainMaterials::Mud).unwrap(),
+            expected.get_color(TerrainMaterials::Mud),
             Color3uint8::new(255, 0, 127),
         );
 
         assert_eq!(
-            expected.get_color(TerrainMaterials::Brick).unwrap(),
-            TerrainColorMaterial::Brick.default_color()
+            expected.get_color(TerrainMaterials::Brick),
+            TerrainMaterials::Brick.default_color()
         );
     }
 
@@ -253,12 +215,8 @@ mod test {
     #[cfg(feature = "serde")]
     fn serialize() {
         let mut colors = MaterialColors::new();
-        colors
-            .set_color(TerrainMaterials::Grass, Color3uint8::new(10, 20, 30))
-            .unwrap();
-        colors
-            .set_color(TerrainMaterials::Mud, Color3uint8::new(255, 0, 127))
-            .unwrap();
+        colors.set_color(TerrainMaterials::Grass, Color3uint8::new(10, 20, 30));
+        colors.set_color(TerrainMaterials::Mud, Color3uint8::new(255, 0, 127));
 
         assert_eq!(
             serde_json::to_string(&colors).unwrap(),
@@ -274,7 +232,7 @@ mod test {
 
         for color in MATERIAL_ORDER {
             assert_eq!(
-                colors.get_color_internal(color),
+                colors.get_color(color),
                 color.default_color(),
                 "{color:?} did not match"
             )
@@ -295,7 +253,7 @@ mod test {
             let g = u8::try_from(n * 3 + 2).unwrap();
             let b = u8::try_from(n * 3 + 3).unwrap();
             assert_eq!(
-                colors.get_color_internal(*color),
+                colors.get_color(*color),
                 Color3uint8::new(r, g, b),
                 "{color:?} did not match"
             );
@@ -321,7 +279,7 @@ mod test {
             let g = u8::try_from(n * 3 + 2).unwrap();
             let b = u8::try_from(n * 3 + 3).unwrap();
 
-            colors.set_color_internal(*color, Color3uint8::new(r, g, b))
+            colors.set_color(*color, Color3uint8::new(r, g, b))
         }
         let blob = base64::encode(colors.encode());
 
@@ -330,17 +288,15 @@ mod test {
 
     #[test]
     fn from_str_materials() {
-        assert!(TerrainColorMaterial::from_str("Grass").is_ok());
-        assert!(TerrainColorMaterial::from_str("Concrete").is_ok());
-        assert!(TerrainColorMaterial::from_str("Rock").is_ok());
-        assert!(TerrainColorMaterial::from_str("Asphalt").is_ok());
-        assert!(TerrainColorMaterial::from_str("Salt").is_ok());
-        assert!(TerrainColorMaterial::from_str("Pavement").is_ok());
+        assert!(TerrainMaterials::from_str("Grass").is_ok());
+        assert!(TerrainMaterials::from_str("Concrete").is_ok());
+        assert!(TerrainMaterials::from_str("Rock").is_ok());
+        assert!(TerrainMaterials::from_str("Asphalt").is_ok());
+        assert!(TerrainMaterials::from_str("Salt").is_ok());
+        assert!(TerrainMaterials::from_str("Pavement").is_ok());
 
-        assert!(
-            TerrainColorMaterial::from_str("A name I am certain Roblox will never add").is_err()
-        );
+        assert!(TerrainMaterials::from_str("A name I am certain Roblox will never add").is_err());
         // `from_str` is case-sensitive
-        assert!(TerrainColorMaterial::from_str("gRaSs").is_err());
+        assert!(TerrainMaterials::from_str("gRaSs").is_err());
     }
 }

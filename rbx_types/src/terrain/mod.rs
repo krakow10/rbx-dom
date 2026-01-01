@@ -9,42 +9,8 @@ mod smooth_grid;
 pub use self::material_colors::*;
 pub use self::smooth_grid::*;
 
-use std::fmt;
 use std::io::{Read, Result, Write};
 use std::mem;
-
-#[derive(Debug, PartialEq, Eq, PartialOrd, Ord, Clone, Copy)]
-pub enum TerrainMaterials {
-    Air,
-    Water,
-    Grass,
-    Slate,
-    Concrete,
-    Brick,
-    Sand,
-    WoodPlanks,
-    Rock,
-    Glacier,
-    Snow,
-    Sandstone,
-    Mud,
-    Basalt,
-    Ground,
-    CrackedLava,
-    Asphalt,
-    Cobblestone,
-    Ice,
-    LeafyGrass,
-    Salt,
-    Limestone,
-    Pavement,
-}
-
-impl fmt::Display for TerrainMaterials {
-    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        write!(f, "{:?}", self)
-    }
-}
 
 /// Takes `values` and writes it as a blob of data with each value
 /// interleaved by `N` bytes.
@@ -131,11 +97,11 @@ mod test {
     #[test]
     fn test_grid_encode() {
         let mut terr = SmoothGrid::new();
-        let mut chunk = Chunk::new_with_base(TerrainMaterials::Air);
+        let mut chunk = Chunk::new_with_base(TerrainGridMaterial::Air);
 
-        let mut voxel = Voxel::new_with_water(TerrainMaterials::Water, u8::MAX, 128);
+        let mut voxel = Voxel::new_with_water(TerrainGridMaterial::Water, u8::MAX, 128);
         chunk.write_voxel(&VoxelCoordinates::new(0, 0, 0), voxel);
-        voxel.set_material(TerrainMaterials::Pavement);
+        voxel.set_material(TerrainMaterials::Pavement.into());
         chunk.write_voxel(&VoxelCoordinates::new(1, 0, 0), voxel);
 
         terr.write_chunk(&ChunkCoordinates::default(), chunk.clone());
