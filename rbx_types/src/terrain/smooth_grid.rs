@@ -226,8 +226,8 @@ pub(crate) enum SmoothGridError {
 #[derive(Debug, PartialEq, Clone, Copy)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub struct Voxel {
-    solid_occupancy: f32,
-    water_occupancy: f32,
+    solid_occupancy: u8,
+    water_occupancy: u8,
     material: TerrainGridMaterial,
 }
 
@@ -242,13 +242,13 @@ impl Voxel {
     /// Constructs a new `Voxel` with a material and occupancy percentage.
     /// Equivalent to data writeable from Roblox's `Terrain:WriteVoxels`.
     /// Occupancy values are between `0.0` and `1.0`, as a percentage of the voxel.
-    pub fn new(material: TerrainMaterials, solid_occupancy: f32) -> Self {
+    pub fn new(material: TerrainMaterials, solid_occupancy: u8) -> Self {
         let mut voxel = Self {
             material: material.into(),
-            solid_occupancy: 0.0,
-            water_occupancy: 0.0,
+            solid_occupancy: 0,
+            water_occupancy: 0,
         };
-        voxel.set_occupancy(solid_occupancy, 0.0);
+        voxel.set_occupancy(solid_occupancy, 0);
 
         voxel
     }
@@ -259,24 +259,17 @@ impl Voxel {
     /// Occupancy values are between `0.0` and `1.0`, as a percentage of the voxel.
     pub fn new_with_water(
         material: TerrainMaterials,
-        solid_occupancy: f32,
-        water_occupancy: f32,
+        solid_occupancy: u8,
+        water_occupancy: u8,
     ) -> Self {
         let mut voxel = Self {
             material: material.into(),
-            solid_occupancy: 0.0,
-            water_occupancy: 0.0,
+            solid_occupancy: 0,
+            water_occupancy: 0,
         };
         voxel.set_occupancy(solid_occupancy, water_occupancy);
 
         voxel
-    }
-
-    fn get_encode_data(&self) -> (u8, u8) {
-        (
-            (self.solid_occupancy * 255.0) as u8,
-            (self.water_occupancy * 255.0) as u8,
-        )
     }
 
     fn encode_run_length(&self, count: u16) -> Vec<u8> {
@@ -286,7 +279,7 @@ impl Voxel {
             count
         );
 
-        let (solid_occupancy, water_occupancy) = self.get_encode_data();
+        let (solid_occupancy, water_occupancy) = (self.solid_occupancy, self.water_occupancy);
         let mut flag = self.material as u8;
 
         // The first value is a placeholder that'll be replaced with the `flag` later
@@ -325,26 +318,23 @@ impl Voxel {
     }
 
     /// Sets occupancy data for a `Voxel`. Water occupancy is from the
-    /// Shorelines feature. Occupancy values are between `0.0` and `1.0`,
+    /// Shorelines feature. Occupancy values are between `0` and `u8::MAX`,
     /// as a percentage of the voxel.
-    pub fn set_occupancy(&mut self, solid_occupancy: f32, water_occupancy: f32) {
-        let solid_occupancy = solid_occupancy.clamp(0.0, 1.0);
-        let water_occupancy = water_occupancy.clamp(0.0, 1.0);
-
+    pub fn set_occupancy(&mut self, solid_occupancy: u8, water_occupancy: u8) {
         // If we have nothing in there, it should just be air.
-        if solid_occupancy == 0.0 && water_occupancy == 0.0 {
-            self.solid_occupancy = 1.0;
-            self.water_occupancy = 0.0;
+        if solid_occupancy == 0 && water_occupancy == 0 {
+            self.solid_occupancy = u8::MAX;
+            self.water_occupancy = 0;
             self.material = TerrainGridMaterial::Air;
             return;
         }
 
         // We should encode water as a normal, non-shorelines voxel if there's no solids.
-        if (solid_occupancy == 0.0 || self.material == TerrainGridMaterial::Air)
-            && water_occupancy > 0.0
+        if (solid_occupancy == 0 || self.material == TerrainGridMaterial::Air)
+            && water_occupancy > 0
         {
             self.solid_occupancy = water_occupancy;
-            self.water_occupancy = 0.0;
+            self.water_occupancy = 0;
             self.material = TerrainGridMaterial::Water;
             return;
         }
@@ -352,8 +342,8 @@ impl Voxel {
         self.solid_occupancy = solid_occupancy;
 
         // Full with a solid (non-air) material? We can't have any water.
-        if solid_occupancy == 1.0 {
-            self.water_occupancy = 0.0
+        if solid_occupancy == u8::MAX {
+            self.water_occupancy = 0
         } else {
             self.water_occupancy = water_occupancy;
         }
@@ -437,8 +427,8 @@ impl Chunk {
         let mut data = Vec::with_capacity(512);
 
         let base_voxel = Voxel {
-            solid_occupancy: 1.0,
-            water_occupancy: 0.0,
+            solid_occupancy: u8::MAX,
+            water_occupancy: 0,
             material: self.base_material,
         };
 
@@ -508,9 +498,9 @@ impl Chunk {
             let byte_material = curr_byte & !VoxelFlags::all().bits();
             let material = TerrainGridMaterial::try_from(byte_material)?;
 
-            let mut occupancy: Option<f32> = None;
+            let mut occupancy: Option<u8> = None;
             let mut count: Option<u8> = None;
-            let mut water_occupancy: Option<f32> = None;
+            let mut water_occupancy: Option<u8> = None;
 
             if voxel_flag.contains(VoxelFlags::HAS_OCCUPANCY) {
                 let mut occupancy_buffer = [0u8];
@@ -518,7 +508,7 @@ impl Chunk {
                     return Err(SmoothGridError::from(e).into());
                 }
 
-                occupancy = Some(occupancy_buffer[0] as f32 / 255.0);
+                occupancy = Some(occupancy_buffer[0]);
             }
             if voxel_flag.contains(VoxelFlags::HAS_COUNT) {
                 let mut count_buffer = [0u8];
@@ -532,7 +522,7 @@ impl Chunk {
                         return Err(SmoothGridError::from(e).into());
                     }
 
-                    water_occupancy = Some(water_occupancy_buffer[0] as f32 / 255.0)
+                    water_occupancy = Some(water_occupancy_buffer[0])
                 } else {
                     count = Some(count_buffer[0]);
                 }
@@ -544,8 +534,8 @@ impl Chunk {
                     &voxel_position,
                     Voxel {
                         material,
-                        solid_occupancy: occupancy.unwrap_or(0.0),
-                        water_occupancy: water_occupancy.unwrap_or(0.0),
+                        solid_occupancy: occupancy.unwrap_or(0),
+                        water_occupancy: water_occupancy.unwrap_or(0),
                     },
                 );
                 voxel_count += 1;

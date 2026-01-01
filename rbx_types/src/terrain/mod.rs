@@ -133,7 +133,7 @@ mod test {
         let mut terr = SmoothGrid::new();
         let mut chunk = Chunk::new_with_base(TerrainMaterials::Air);
 
-        let mut voxel = Voxel::new_with_water(TerrainMaterials::Water, 1.0, 0.5);
+        let mut voxel = Voxel::new_with_water(TerrainMaterials::Water, u8::MAX, 128);
         chunk.write_voxel(&VoxelCoordinates::new(0, 0, 0), voxel);
         voxel.set_material(TerrainMaterials::Pavement);
         chunk.write_voxel(&VoxelCoordinates::new(1, 0, 0), voxel);
