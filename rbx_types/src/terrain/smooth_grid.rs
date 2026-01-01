@@ -109,10 +109,9 @@ impl ChunkCoordinates {
 }
 
 #[repr(u8)]
-#[derive(Debug, Default, Clone, Copy, PartialEq, Eq)]
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub(super) enum TerrainGridMaterial {
-    #[default]
     Air = 0x00,
     Water = 0x01,
     Grass = 0x02,
@@ -224,7 +223,7 @@ pub(crate) enum SmoothGridError {
 }
 
 /// A container for a voxel of terrain, used in the `Chunk` object.
-#[derive(Debug, Default, PartialEq, Clone, Copy)]
+#[derive(Debug, PartialEq, Clone, Copy)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub struct Voxel {
     solid_occupancy: f32,
@@ -246,7 +245,8 @@ impl Voxel {
     pub fn new(material: TerrainMaterials, solid_occupancy: f32) -> Self {
         let mut voxel = Self {
             material: material.into(),
-            ..Default::default()
+            solid_occupancy: 0.0,
+            water_occupancy: 0.0,
         };
         voxel.set_occupancy(solid_occupancy, 0.0);
 
@@ -264,7 +264,8 @@ impl Voxel {
     ) -> Self {
         let mut voxel = Self {
             material: material.into(),
-            ..Default::default()
+            solid_occupancy: 0.0,
+            water_occupancy: 0.0,
         };
         voxel.set_occupancy(solid_occupancy, water_occupancy);
 
@@ -367,7 +368,7 @@ impl Voxel {
 }
 
 /// A container for a chunk of terrain, used in the `Terrain` object.
-#[derive(Debug, Default, Clone, PartialEq)]
+#[derive(Debug, Clone, PartialEq)]
 pub struct Chunk {
     grid: HashMap<VoxelCoordinates, Voxel>,
     /// For all empty voxels in the chunk, we will write this material
