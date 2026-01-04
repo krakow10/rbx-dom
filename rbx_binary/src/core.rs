@@ -1,4 +1,4 @@
-use std::io::{self, Read, Write};
+use std::io::{self, Write};
 
 use rbx_reflection::{
     ClassDescriptor, PropertyDescriptor, PropertyKind, PropertySerialization, ReflectionDatabase,
@@ -39,61 +39,38 @@ impl<'a, const N: usize> Iterator for ReadInterleavedBytesIter<'a, N> {
     }
 }
 
-pub trait RbxReadExt: Read {
+pub trait RbxReadExt<'a>: ReadSlice<'a> {
     fn read_le_u32(&mut self) -> io::Result<u32> {
-        let mut buffer = [0; 4];
-        self.read_exact(&mut buffer)?;
-
-        Ok(u32::from_le_bytes(buffer))
+        Ok(u32::from_le_bytes(*self.read_ref()?))
     }
 
     fn read_le_u16(&mut self) -> io::Result<u16> {
-        let mut bytes = [0; 2];
-        self.read_exact(&mut bytes)?;
-
-        Ok(u16::from_le_bytes(bytes))
+        Ok(u16::from_le_bytes(*self.read_ref()?))
     }
 
     fn read_le_i16(&mut self) -> io::Result<i16> {
-        let mut bytes = [0; 2];
-        self.read_exact(&mut bytes)?;
-
-        Ok(i16::from_le_bytes(bytes))
+        Ok(i16::from_le_bytes(*self.read_ref()?))
     }
 
     fn read_le_f32(&mut self) -> io::Result<f32> {
-        let mut buffer = [0u8; 4];
-        self.read_exact(&mut buffer)?;
-
-        Ok(f32::from_le_bytes(buffer))
+        Ok(f32::from_le_bytes(*self.read_ref()?))
     }
 
     fn read_le_f64(&mut self) -> io::Result<f64> {
-        let mut bytes = [0; 8];
-        self.read_exact(&mut bytes)?;
-
-        Ok(f64::from_le_bytes(bytes))
+        Ok(f64::from_le_bytes(*self.read_ref()?))
     }
 
     fn read_be_u32(&mut self) -> io::Result<u32> {
-        let mut bytes = [0; 4];
-        self.read_exact(&mut bytes)?;
-
-        Ok(u32::from_be_bytes(bytes))
+        Ok(u32::from_be_bytes(*self.read_ref()?))
     }
 
     fn read_be_i64(&mut self) -> io::Result<i64> {
-        let mut bytes = [0; 8];
-        self.read_exact(&mut bytes)?;
-
-        Ok(i64::from_be_bytes(bytes))
+        Ok(i64::from_be_bytes(*self.read_ref()?))
     }
 
     fn read_u8(&mut self) -> io::Result<u8> {
-        let mut buffer = [0u8];
-        self.read_exact(&mut buffer)?;
-
-        Ok(buffer[0])
+        let byte = *self.read_ref()?;
+        Ok(byte)
     }
 
     /// Read a binary "string" in the format that Roblox's model files use.
@@ -102,10 +79,7 @@ pub trait RbxReadExt: Read {
     /// no guarantees about encoding of things it calls strings. rbx_binary
     /// makes a semantic differentiation between strings and binary buffers,
     /// which makes it more strict than Roblox but more likely to be correct.
-    fn read_binary_string<'a>(&mut self) -> io::Result<&'a [u8]>
-    where
-        Self: ReadSlice<'a>,
-    {
+    fn read_binary_string(&mut self) -> io::Result<&'a [u8]> {
         let length = self.read_le_u32()?;
         let out = self.read_slice(length as usize)?;
         Ok(out)
@@ -114,10 +88,7 @@ pub trait RbxReadExt: Read {
     /// Read a UTF-8 encoded string encoded how Roblox model files encode
     /// strings. This function isn't always appropriate because Roblox's formats
     /// generally aren't dilligent about data being valid Unicode.
-    fn read_string<'a>(&mut self) -> io::Result<&'a str>
-    where
-        Self: ReadSlice<'a>,
-    {
+    fn read_string(&mut self) -> io::Result<&'a str> {
         let out = self.read_binary_string()?;
 
         core::str::from_utf8(out).map_err(|_| {
@@ -202,13 +173,21 @@ pub trait RbxReadInterleaved<'a>: ReadSlice<'a> {
     }
 }
 
-impl<R> RbxReadExt for R where R: Read {}
+impl<'a, R> RbxReadExt<'a> for R where R: ReadSlice<'a> {}
 impl<'a, R> RbxReadInterleaved<'a> for R where R: ReadSlice<'a> {}
 
 pub trait ReadSlice<'a> {
     /// Read a slice of length `len`, or return
     /// an error if the length overruns the source data.
     fn read_slice(&mut self, len: usize) -> io::Result<&'a [u8]>;
+    /// Read a value using the FromBytes trait
+    fn read_ref<T>(&mut self) -> io::Result<&T>
+    where
+        T: 'a,
+        T: Sized,
+        T: zerocopy::FromBytes,
+        T: zerocopy::KnownLayout,
+        T: zerocopy::Immutable;
 }
 
 #[cold]
@@ -223,6 +202,18 @@ impl<'a> ReadSlice<'a> for &'a [u8] {
         (out, *self) = self.split_at_checked(len).ok_or_else(unexpected_eof)?;
 
         Ok(out)
+    }
+    fn read_ref<T>(&mut self) -> io::Result<&'a T>
+    where
+        T: 'a,
+        T: Sized,
+        T: zerocopy::FromBytes,
+        T: zerocopy::KnownLayout,
+        T: zerocopy::Immutable,
+    {
+        let value;
+        (value, *self) = T::ref_from_prefix(self).map_err(|_| unexpected_eof())?;
+        Ok(value)
     }
 }
 

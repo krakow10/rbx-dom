@@ -5,7 +5,7 @@ use std::{
 };
 
 use crate::{
-    core::{RbxReadExt, RbxWriteExt},
+    core::{RbxWriteExt, ReadSlice},
     serializer::CompressionType,
 };
 
@@ -133,7 +133,8 @@ impl Write for ChunkBuilder {
     }
 }
 
-#[derive(Debug)]
+#[derive(Clone, Copy, Debug, zerocopy::FromBytes, zerocopy::Immutable, zerocopy::KnownLayout)]
+#[repr(C)]
 struct ChunkHeader {
     /// 4-byte short name for the chunk, like "INST" or "PRNT"
     name: [u8; 4],
@@ -167,24 +168,21 @@ impl fmt::Display for ChunkHeader {
 }
 
 fn decode_chunk_header<R: Read>(source: &mut R) -> io::Result<ChunkHeader> {
-    let mut name = [0; 4];
-    source.read_exact(&mut name)?;
+    // Read a buffer the same length as the header
+    let mut data = [0; size_of::<ChunkHeader>()];
+    source.read_exact(&mut data)?;
 
-    let compressed_len = source.read_le_u32()?;
-    let len = source.read_le_u32()?;
-    let reserved = source.read_le_u32()?;
+    // Read the fields off of a slice
+    let mut slice: &[u8] = &data;
 
-    if reserved != 0 {
+    let header: &ChunkHeader = slice.read_ref()?;
+
+    if header.reserved != 0 {
         panic!(
             "Chunk reserved space was not zero, it was {}. This chunk may be malformed.",
-            reserved
+            header.reserved
         );
     }
 
-    Ok(ChunkHeader {
-        name,
-        compressed_len,
-        len,
-        reserved,
-    })
+    Ok(*header)
 }
