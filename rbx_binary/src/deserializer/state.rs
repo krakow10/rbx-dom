@@ -16,7 +16,7 @@ use rbx_reflection::{ClassDescriptor, PropertyKind, PropertySerialization, Refle
 
 use crate::{
     chunk::Chunk,
-    core::{find_property_descriptors, RbxReadExt, ReadSlice},
+    core::{find_property_descriptors, RbxReadExt, RbxReadInterleaved, ReadSlice},
     types::Type,
 };
 
@@ -1412,7 +1412,7 @@ rbx-dom may require changes to fully support this property. Please open an issue
                     let mut objects: VecDeque<i32> =
                         chunk.read_referent_array(object_count)?.collect();
 
-                    let external_count = chunk.read_le_u32()? as usize;
+                    let external_count = chunk.read_le_u32().unwrap() as usize;
                     // We are advised by Roblox to just ignore this, as it's
                     // meant for internal use. If we want to use it in the
                     // future, it's a referent array.
