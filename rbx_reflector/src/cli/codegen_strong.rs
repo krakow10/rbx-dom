@@ -78,6 +78,16 @@ impl CodegenStrongSubcommand {
     }
 }
 
+fn new_ident(ident: &str) -> syn::Ident {
+    let ident = match ident {
+        // StudioScriptEditorColorCategories has this variant
+        "Self" => "Self_",
+        other => other,
+    };
+    syn::parse_str(ident).unwrap()
+    // .unwrap_or_else(|_| syn::Ident::new_raw(ident, proc_macro2::Span::call_site()))
+}
+
 fn generate_data_type(data_type: &DataType) -> syn::Type {
     match data_type {
         DataType::Value(rbx_types::VariantType::Axes) => syn::parse_quote!(Axes),
@@ -566,10 +576,8 @@ fn get_fields_info<'db>(
                     enum_variant_name
                 };
 
-                let fixed_variant_name = fix_enum_ident(enum_variant_name);
                 let enum_name = syn::Ident::new(enum_name, proc_macro2::Span::call_site());
-                let variant_name =
-                    syn::Ident::new(fixed_variant_name, proc_macro2::Span::call_site());
+                let variant_name = new_ident(enum_variant_name);
 
                 syn::parse_quote! {
                     #ident: enums::#enum_name::#variant_name
@@ -780,14 +788,6 @@ impl ToTokens for Sorted<StrongInstancesCollector> {
     }
 }
 
-fn fix_enum_ident(ident: &str) -> &str {
-    match ident {
-        // StudioScriptEditorColorCategories has this variant
-        "Self" => "Self_",
-        other => other,
-    }
-}
-
 struct EnumCollector {
     enums: Vec<syn::ItemEnum>,
 }
@@ -802,7 +802,7 @@ impl EnumCollector {
         let mut items: Vec<_> = descriptor
             .items
             .iter()
-            .map(|(name, &value)| (fix_enum_ident(name), value))
+            .map(|(name, &value)| (name, value))
             .collect();
 
         // sort variants by discriminant for consistency
@@ -810,7 +810,7 @@ impl EnumCollector {
 
         // generate fields
         let variants = items.into_iter().map(|(name, value)| {
-            let ident = syn::Ident::new(name, proc_macro2::Span::call_site());
+            let ident = new_ident(name);
             let discriminant = syn::parse_str(&value.to_string()).unwrap();
             syn::Variant {
                 attrs: Vec::new(),
