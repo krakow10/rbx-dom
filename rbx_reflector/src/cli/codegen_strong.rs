@@ -716,7 +716,8 @@ impl StrongInstancesCollector {
         // superclass field is added to the top
         let superclass_field = superclass_ident.map(|superclass_ident| {
             syn::parse_quote! {
-                superclass: #superclass_ident
+                #[doc(hidden)]
+                pub superclass: #superclass_ident
             }
         });
 
