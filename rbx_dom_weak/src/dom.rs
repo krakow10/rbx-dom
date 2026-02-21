@@ -198,40 +198,83 @@ impl WeakDom {
             parent: Ref,
             builder: InstanceBuilder,
         }
+
+        // monomorphization to factor 'if parent.is_some()' out of insert
+        trait PushChild {
+            fn referent(&self) -> Option<Ref>;
+            fn push_child(self, instances: &mut AHashMap<Ref, Instance>, child_ref: Ref);
+        }
+
+        struct SomeParent(Ref);
+        impl PushChild for SomeParent {
+            fn referent(&self) -> Option<Ref> {
+                Some(self.0)
+            }
+            fn push_child(self, instances: &mut AHashMap<Ref, Instance>, child_ref: Ref) {
+                instances
+                    .get_mut(&self.0)
+                    .unwrap_or_else(|| panic!("cannot insert into parent that does not exist"))
+                    .children
+                    .push(child_ref);
+            }
+        }
+
+        struct OptionalParent(Option<Ref>);
+        impl PushChild for OptionalParent {
+            fn referent(&self) -> Option<Ref> {
+                self.0
+            }
+            fn push_child(self, instances: &mut AHashMap<Ref, Instance>, child_ref: Ref) {
+                if let OptionalParent(Some(parent_ref)) = self {
+                    SomeParent(parent_ref).push_child(instances, child_ref);
+                }
+            }
+        }
+
+        // monomorphization to factor 'if queue.is_some()' out of insert
+        trait ExtendQueue {
+            fn extend_queue(self, referent: Ref, children: Vec<InstanceBuilder>);
+        }
+
+        struct NoneQueue;
+        impl ExtendQueue for NoneQueue {
+            fn extend_queue(self, _referent: Ref, _children: Vec<InstanceBuilder>) {}
+        }
+
+        struct SomeQueue<'a>(&'a mut VecDeque<PendingInsert>);
+        impl ExtendQueue for SomeQueue<'_> {
+            fn extend_queue(self, referent: Ref, children: Vec<InstanceBuilder>) {
+                let SomeQueue(queue) = self;
+                queue.extend(children.into_iter().map(|child| PendingInsert {
+                    parent: referent,
+                    builder: child,
+                }));
+            }
+        }
+
         fn insert(
             dom: &mut WeakDom,
             builder: InstanceBuilder,
-            parent: Option<Ref>,
-            queue: Option<&mut VecDeque<PendingInsert>>,
+            parent: impl PushChild,
+            queue: impl ExtendQueue,
         ) {
             dom.inner_insert(
                 builder.referent,
                 Instance {
                     referent: builder.referent,
                     children: Vec::with_capacity(builder.children.len()),
-                    parent,
+                    parent: parent.referent(),
                     name: builder.name,
                     class: builder.class,
                     properties: builder.properties.into_iter().collect(),
                 },
             );
 
-            if let Some(parent_ref) = parent {
-                dom.instances
-                    .get_mut(&parent_ref)
-                    .unwrap_or_else(|| panic!("cannot insert into parent that does not exist"))
-                    .children
-                    .push(builder.referent);
-            }
+            // monomorphized
+            parent.push_child(&mut dom.instances, builder.referent);
 
-            if let Some(queue) = queue {
-                for child in builder.children {
-                    queue.push_back(PendingInsert {
-                        parent: builder.referent,
-                        builder: child,
-                    });
-                }
-            }
+            // monomorphized
+            queue.extend_queue(builder.referent, builder.children);
         }
 
         let parent_ref = parent_ref.into();
@@ -241,16 +284,21 @@ impl WeakDom {
         // construct a queue to keep track of descendants for insertion, avoiding a heap
         // allocation.
         if root_builder.children.is_empty() {
-            insert(self, root_builder, parent_ref, None);
+            insert(self, root_builder, OptionalParent(parent_ref), NoneQueue);
         } else {
             // Rather than performing this movement recursively, we instead use a
             // queue that we load the children of each `InstanceBuilder` into.
             // Then we can just iter through that.
-            let mut queue = VecDeque::with_capacity(1);
-            insert(self, root_builder, parent_ref, Some(&mut queue));
+            let mut queue = VecDeque::new();
+            insert(
+                self,
+                root_builder,
+                OptionalParent(parent_ref),
+                SomeQueue(&mut queue),
+            );
 
             while let Some(PendingInsert { parent, builder }) = queue.pop_front() {
-                insert(self, builder, Some(parent), Some(&mut queue));
+                insert(self, builder, SomeParent(parent), SomeQueue(&mut queue));
             }
         }
 
