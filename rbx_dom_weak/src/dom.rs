@@ -18,6 +18,20 @@ pub struct WeakDom {
     instances: AHashMap<Ref, Instance>,
     root_ref: Ref,
     unique_ids: AHashSet<UniqueId>,
+    strings: Strings,
+}
+
+// Store ustr values to avoid per-instance hashing of constant strings
+#[derive(Debug)]
+struct Strings {
+    unique_id: ustr::Ustr,
+}
+impl Strings {
+    fn new() -> Self {
+        Self {
+            unique_id: ustr("UniqueId"),
+        }
+    }
 }
 
 impl WeakDom {
@@ -27,6 +41,7 @@ impl WeakDom {
             instances: AHashMap::new(),
             root_ref: builder.referent,
             unique_ids: AHashSet::new(),
+            strings: Strings::new(),
         };
 
         dom.insert(Ref::none(), builder);
@@ -52,11 +67,12 @@ impl WeakDom {
             instances.contains_key(&root_ref),
             "the provided `instances` map does not contain the `root_ref`"
         );
+        let strings = Strings::new();
         let mut unique_ids = AHashSet::with_capacity(instances.len());
         for inst in instances.values() {
             // This `if` cannot be collapsed into the match with an if guard.
             #[expect(clippy::collapsible_match)]
-            match inst.properties.get(&ustr("UniqueId")) {
+            match inst.properties.get(&strings.unique_id) {
                 Some(Variant::UniqueId(id)) => {
                     if !unique_ids.insert(*id) {
                         panic!(
@@ -77,6 +93,7 @@ impl WeakDom {
             instances,
             root_ref,
             unique_ids,
+            strings,
         }
     }
 
@@ -124,7 +141,7 @@ impl WeakDom {
     /// exists.
     pub fn get_unique_id(&self, referent: Ref) -> Option<UniqueId> {
         let inst = self.instances.get(&referent)?;
-        match inst.properties.get(&ustr("UniqueId")) {
+        match inst.properties.get(&self.strings.unique_id) {
             Some(Variant::UniqueId(id)) => Some(*id),
             _ => None,
         }
@@ -461,7 +478,8 @@ impl WeakDom {
 
         // Unwrap is safe because we just inserted this referent into the instance map
         let instance = self.instances.get_mut(&referent).unwrap();
-        if let Some(Variant::UniqueId(unique_id)) = instance.properties.get(&ustr("UniqueId")) {
+        if let Some(Variant::UniqueId(unique_id)) = instance.properties.get(&self.strings.unique_id)
+        {
             if self.unique_ids.contains(unique_id) {
                 // We found a collision! We need to replace the UniqueId property with
                 // a new value.
@@ -473,7 +491,7 @@ impl WeakDom {
                 self.unique_ids.insert(new_unique_id);
                 instance
                     .properties
-                    .insert(ustr("UniqueId"), Variant::UniqueId(new_unique_id));
+                    .insert(self.strings.unique_id, Variant::UniqueId(new_unique_id));
             } else {
                 self.unique_ids.insert(*unique_id);
             };
@@ -486,7 +504,8 @@ impl WeakDom {
             .remove(&referent)
             .unwrap_or_else(|| panic!("cannot remove an instance that does not exist"));
 
-        if let Some(Variant::UniqueId(unique_id)) = instance.properties.get(&ustr("UniqueId")) {
+        if let Some(Variant::UniqueId(unique_id)) = instance.properties.get(&self.strings.unique_id)
+        {
             self.unique_ids.remove(unique_id);
         }
 
@@ -523,6 +542,7 @@ impl Default for WeakDom {
             instances: AHashMap::new(),
             root_ref: Ref::none(),
             unique_ids: AHashSet::new(),
+            strings: Strings::new(),
         }
     }
 }
