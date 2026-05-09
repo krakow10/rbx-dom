@@ -13,6 +13,7 @@ authors = [
     "Ken Loeffler <kenloef@gmail.com>",
 ]
 edition = "2018"
+exclude = ["benches", "src/tests/snapshots"]
 
 [features]
 unstable_text_format = ["serde"]
