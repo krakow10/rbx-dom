@@ -508,7 +508,7 @@ struct FieldInfo {
 fn get_fields_info<'db>(
     print_once: &mut std::collections::HashSet<&'db str>,
     descriptor: &'db ClassDescriptor<'db>,
-    default_properties: &std::collections::HashMap<std::borrow::Cow<'db, str>, Variant>,
+    default_properties: &std::collections::HashMap<&'db str, Variant>,
     database: &'db ReflectionDatabase<'db>,
 ) -> Vec<FieldInfo> {
     // generate fields
@@ -521,7 +521,7 @@ fn get_fields_info<'db>(
             // skip properties which are migrated or serialize as something else
             _ => continue,
         }
-        let field_name = heck::ToUpperCamelCase::to_upper_camel_case(prop.name.as_ref());
+        let field_name = heck::ToUpperCamelCase::to_upper_camel_case(prop.name);
         let ident = syn::Ident::new(&field_name, proc_macro2::Span::call_site());
         let ty = generate_data_type(&prop.data_type);
         let field = syn::Field {
@@ -534,7 +534,7 @@ fn get_fields_info<'db>(
         };
 
         let default_value_variant = default_properties
-            .get(prop.name.as_ref())
+            .get(prop.name)
             .unwrap_or_else(|| prop.data_type.ty().fallback_default_value().unwrap());
         let default_value: syn::FieldValue = match &prop.data_type {
             DataType::Value(_) => {
@@ -629,7 +629,7 @@ impl StrongInstancesCollector {
         );
 
         // struct ident
-        let ident = syn::Ident::new(&descriptor.name, proc_macro2::Span::call_site());
+        let ident = syn::Ident::new(descriptor.name, proc_macro2::Span::call_site());
 
         // add a superclass field if this instance has a superclass
         let superclass_ident: Option<syn::Ident> = descriptor
@@ -662,7 +662,7 @@ impl StrongInstancesCollector {
             superclasses.reverse();
 
             let mut iter = superclasses.into_iter().map(|class| {
-                let ident = syn::parse_str(&class.name).unwrap();
+                let ident = syn::parse_str(class.name).unwrap();
                 // this is duplicating a lot of work, but whatever
                 let fields =
                     get_fields_info(print_once, class, &descriptor.default_properties, database);
@@ -821,7 +821,7 @@ impl EnumCollector {
         });
 
         // enum ident
-        let ident = syn::Ident::new(&descriptor.name, proc_macro2::Span::call_site());
+        let ident = syn::Ident::new(descriptor.name, proc_macro2::Span::call_site());
 
         // generate the enum
         let mut item_enum: syn::ItemEnum = syn::parse_quote! {
@@ -855,15 +855,15 @@ fn generate_macros(database: &ReflectionDatabase<'_>) -> proc_macro2::TokenStrea
     let mut enums: Vec<_> = database
         .enums
         .values()
-        .map(|e| syn::parse_str::<syn::Ident>(&e.name).unwrap())
+        .map(|e| syn::parse_str::<syn::Ident>(e.name).unwrap())
         .collect();
     enums.sort();
     let mut classes: Vec<_> = database
         .classes
         .values()
-        .map(|c| (c, syn::parse_str::<syn::Ident>(&c.name).unwrap()))
+        .map(|c| (c, syn::parse_str::<syn::Ident>(c.name).unwrap()))
         .collect();
-    classes.sort_by_key(|(c, _)| c.name.as_ref());
+    classes.sort_by_key(|(c, _)| c.name);
 
     // generate enums macro
     let iter = enums.into_iter();
