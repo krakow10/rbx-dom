@@ -5,6 +5,8 @@ use rbx_types::CFrame;
 
 use crate::core::RbxReadExt;
 
+// === GENERATED ===
+
 struct DeserializerClassPropertyChunks {
     Part: Option<PartPropertyChunks>,
     WedgePart: Option<WedgePartPropertyChunks>,
@@ -25,6 +27,9 @@ struct WedgePartPropertyChunks {
     superclass: BasePartPropertyChunks,
 }
 
+// === HAND WRITTEN ===
+
+/// Deserialize a property of a specific instance index from a transformed prop chunk
 trait DeserializeProperty {
     type Property;
     type PropertyError;
@@ -34,6 +39,7 @@ trait DeserializeProperty {
     ) -> Result<Self::Property, Self::PropertyError>;
 }
 
+/// Transform a prop chunk into a form which can be deserialized in parallel
 trait DeserializeState {
     /// Many properties cannot be decoded in parallel, such as Name.
     /// This is intended to contain the data that must be decoded sequentially required to reach a parallel decoding implementation.
