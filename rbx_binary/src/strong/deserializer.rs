@@ -34,7 +34,7 @@ struct WedgePartPropertyChunks {
 // === HAND WRITTEN ===
 
 /// Transform a prop chunk into a form which can be deserialized in parallel
-trait DeserializeState: Sized {
+trait IntoPropertyChunkState: Sized {
     /// Many properties cannot be decoded in parallel, such as Name.
     /// This is intended to contain the data that must be decoded sequentially required to reach a parallel decoding implementation.
     #[cfg(not(feature = "rayon"))]
@@ -43,18 +43,18 @@ trait DeserializeState: Sized {
     type State: IntoParallelIterator<Item = Self>;
     type Error;
     /// All fallible operations must happen ahead of iteration
-    fn decode_state(chunk: Vec<u8>, len: usize) -> Result<Self::State, Self::Error>;
+    fn into_state(chunk: Vec<u8>, len: usize) -> Result<Self::State, Self::Error>;
 }
 
-struct PropertyChunk<T: DeserializeState> {
+struct PropertyChunk<T: IntoPropertyChunkState> {
     state: T::State,
 }
 
-impl DeserializeState for String {
+impl IntoPropertyChunkState for String {
     type State = Vec<String>;
     type Error = io::Error;
 
-    fn decode_state(chunk: Vec<u8>, len: usize) -> Result<Self::State, Self::Error> {
+    fn into_state(chunk: Vec<u8>, len: usize) -> Result<Self::State, Self::Error> {
         // The length of every string must be determined.  May as well store slice windows.
         let mut values = Vec::with_capacity(len);
 
@@ -68,11 +68,11 @@ impl DeserializeState for String {
     }
 }
 
-impl DeserializeState for CFrame {
+impl IntoPropertyChunkState for CFrame {
     type State = Vec<CFrame>;
     type Error = io::Error;
 
-    fn decode_state(chunk: Vec<u8>, len: usize) -> Result<Self::State, Self::Error> {
+    fn into_state(chunk: Vec<u8>, len: usize) -> Result<Self::State, Self::Error> {
         let mut rotations = Vec::with_capacity(len);
 
         let mut slice = chunk.as_slice();
@@ -119,11 +119,11 @@ impl DeserializeState for CFrame {
     }
 }
 
-impl DeserializeState for enums::FormFactor {
+impl IntoPropertyChunkState for enums::FormFactor {
     type State = Vec<enums::FormFactor>;
     type Error = io::Error;
 
-    fn decode_state(chunk: Vec<u8>, len: usize) -> Result<Self::State, Self::Error> {
+    fn into_state(chunk: Vec<u8>, len: usize) -> Result<Self::State, Self::Error> {
         let mut slice = chunk.as_slice();
         // TODO: use PR #592 RbxReadInterleaved Trait
         let values = slice.read_interleaved_u32_array(len)?;
