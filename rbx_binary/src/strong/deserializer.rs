@@ -123,11 +123,10 @@ impl IntoPropertyChunkState for enums::FormFactor {
     type Error = io::Error;
 
     fn into_state(chunk: Vec<u8>, len: usize) -> Result<Self::State, Self::Error> {
-        let mut slice = chunk.as_slice();
         // TODO: use PR #592 RbxReadInterleaved Trait
-        let values = slice.read_interleaved_u32_array(len)?;
-
-        Ok(values
+        Ok(chunk
+            .as_slice()
+            .read_interleaved_u32_array(len)?
             .map(|value| {
                 // TODO: TryFrom<u32>
                 Some(match value {
