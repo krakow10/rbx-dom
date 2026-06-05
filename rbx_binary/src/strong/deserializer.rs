@@ -49,12 +49,8 @@ struct PropertyChunk<T: DeserializeState> {
     state: T::State,
 }
 
-struct StringState {
-    strings: Vec<String>,
-}
-
 impl DeserializeState for String {
-    type State = StringState;
+    type State = Vec<String>;
     type Error = io::Error;
 
     fn decode_state(chunk: Vec<u8>, len: usize) -> Result<Self::State, Self::Error> {
@@ -67,25 +63,6 @@ impl DeserializeState for String {
             strings.push(slice.read_string()?);
         }
 
-        Ok(StringState { strings })
-    }
-}
-
-impl IntoIterator for StringState {
-    type Item = String;
-    type IntoIter = std::vec::IntoIter<String>;
-
-    fn into_iter(self) -> Self::IntoIter {
-        self.strings.into_iter()
-    }
-}
-
-#[cfg(feature = "rayon")]
-impl IntoParallelIterator for StringState {
-    type Item = String;
-    type Iter = rayon::vec::IntoIter<String>;
-
-    fn into_par_iter(self) -> Self::Iter {
-        self.strings.into_par_iter()
+        Ok(strings)
     }
 }
