@@ -10,6 +10,7 @@ use rayon::iter::IntoParallelIterator;
 
 // === GENERATED ===
 
+// This will be populated with chunk decoders by decode_prop_chunk
 struct DeserializerClassPropertyChunks {
     Part: Option<PartPropertyChunks>,
     WedgePart: Option<WedgePartPropertyChunks>,
