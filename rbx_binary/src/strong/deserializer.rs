@@ -5,8 +5,10 @@ use rbx_types::{CFrame, Matrix3, Vector3};
 
 use crate::core::RbxReadExt;
 
+#[cfg(not(feature = "rayon"))]
+use core::iter::IntoIterator as IntoIter;
 #[cfg(feature = "rayon")]
-use rayon::iter::IntoParallelIterator;
+use rayon::iter::IntoParallelIterator as IntoIter;
 
 // === GENERATED ===
 
@@ -37,10 +39,7 @@ struct WedgePartPropertyChunks {
 trait IntoPropertyChunkState: Sized {
     /// Many properties cannot be decoded in parallel, such as Name.
     /// This is intended to contain the data that must be decoded sequentially required to reach a parallel decoding implementation.
-    #[cfg(not(feature = "rayon"))]
-    type State: IntoIterator<Item = Self>;
-    #[cfg(feature = "rayon")]
-    type State: IntoParallelIterator<Item = Self>;
+    type State: IntoIter<Item = Self>;
     type Error;
     /// All fallible operations must happen ahead of iteration
     fn into_state(chunk: Vec<u8>, len: usize) -> Result<Self::State, Self::Error>;
