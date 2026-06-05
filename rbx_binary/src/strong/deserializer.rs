@@ -1,7 +1,7 @@
 use std::io;
 
 use rbx_dom_strong::enums;
-use rbx_types::CFrame;
+use rbx_types::{CFrame, Matrix3, Vector3};
 
 use crate::core::RbxReadExt;
 
@@ -55,14 +55,65 @@ impl DeserializeState for String {
 
     fn decode_state(chunk: Vec<u8>, len: usize) -> Result<Self::State, Self::Error> {
         // The length of every string must be determined.  May as well store slice windows.
-        let mut strings = Vec::with_capacity(len);
+        let mut values = Vec::with_capacity(len);
 
         let mut slice = chunk.as_slice();
         // TODO: use PR #592 RbxReadInterleaved Trait
         for _ in 0..len {
-            strings.push(slice.read_string()?);
+            values.push(slice.read_string()?);
         }
 
-        Ok(strings)
+        Ok(values)
+    }
+}
+
+impl DeserializeState for CFrame {
+    type State = Vec<CFrame>;
+    type Error = io::Error;
+
+    fn decode_state(chunk: Vec<u8>, len: usize) -> Result<Self::State, Self::Error> {
+        let mut rotations = Vec::with_capacity(len);
+
+        let mut slice = chunk.as_slice();
+
+        for _ in 0..len {
+            let id = slice.read_u8()?;
+            if id == 0 {
+                rotations.push(Matrix3::new(
+                    Vector3::new(
+                        slice.read_le_f32()?,
+                        slice.read_le_f32()?,
+                        slice.read_le_f32()?,
+                    ),
+                    Vector3::new(
+                        slice.read_le_f32()?,
+                        slice.read_le_f32()?,
+                        slice.read_le_f32()?,
+                    ),
+                    Vector3::new(
+                        slice.read_le_f32()?,
+                        slice.read_le_f32()?,
+                        slice.read_le_f32()?,
+                    ),
+                ));
+            } else if let Ok(basic_rotation) = Matrix3::from_basic_rotation_id(id) {
+                rotations.push(basic_rotation);
+            } else {
+                todo!("Errors");
+            }
+        }
+
+        let x = slice.read_interleaved_f32_array(len)?;
+        let y = slice.read_interleaved_f32_array(len)?;
+        let z = slice.read_interleaved_f32_array(len)?;
+
+        let values = x
+            .zip(y)
+            .zip(z)
+            .map(|((x, y), z)| Vector3::new(x, y, z))
+            .zip(rotations)
+            .map(|(position, rotation)| CFrame::new(position, rotation));
+
+        Ok(values.collect())
     }
 }
