@@ -117,3 +117,28 @@ impl DeserializeState for CFrame {
         Ok(values.collect())
     }
 }
+
+impl DeserializeState for enums::FormFactor {
+    type State = Vec<enums::FormFactor>;
+    type Error = io::Error;
+
+    fn decode_state(chunk: Vec<u8>, len: usize) -> Result<Self::State, Self::Error> {
+        let mut slice = chunk.as_slice();
+        // TODO: use PR #592 RbxReadInterleaved Trait
+        let values = slice.read_interleaved_u32_array(len)?;
+
+        Ok(values
+            .map(|value| {
+                // TODO: TryFrom<u32>
+                Some(match value {
+                    0 => enums::FormFactor::Symmetric,
+                    1 => enums::FormFactor::Brick,
+                    2 => enums::FormFactor::Plate,
+                    3 => enums::FormFactor::Custom,
+                    _ => return None,
+                })
+            })
+            .collect::<Option<Vec<_>>>()
+            .expect("Invalid Enum"))
+    }
+}
