@@ -183,6 +183,7 @@ impl Default for AdGui {
             superclass,
             Enabled: false,
             ResetOnSpawn: false,
+            TabKeyboardNavigation: false,
             ZIndexBehavior: enums::ZIndexBehavior::Global,
         };
         let superclass = SurfaceGuiBase {
@@ -594,6 +595,7 @@ pub struct AnimationNodeDefinition {
     #[doc(hidden)]
     pub superclass: Instance,
     pub InputPinData: BinaryString,
+    pub NodeId: String,
     pub NodeType: enums::AnimationNodeType,
 }
 impl_inherits!(AnimationNodeDefinition, Instance);
@@ -612,6 +614,7 @@ impl Default for AnimationNodeDefinition {
         Self {
             superclass,
             InputPinData: b"\x01\0\0\0\0\0\0\0".as_slice().into(),
+            NodeId: "".to_owned(),
             NodeType: enums::AnimationNodeType::InvalidNode,
         }
     }
@@ -621,6 +624,7 @@ impl Default for AnimationNodeDefinition {
 pub struct AnimationRigData {
     #[doc(hidden)]
     pub superclass: Instance,
+    pub Generic: BinaryString,
     pub Label: BinaryString,
     pub Name: BinaryString,
     pub Parent: BinaryString,
@@ -641,7 +645,7 @@ impl Default for AnimationRigData {
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
         };
-        Self { superclass , Label : b"\x01\0\0\0\x01\0\0\0\0\0\0\0" . as_slice () . into () , Name : b"\x01\0\0\0\x01\0\0\0\0\0\0\0" . as_slice () . into () , Parent : b"\x01\0\0\0\x01\0\0\0\0\0" . as_slice () . into () , PostTransform : b"\x01\0\0\0\x01\0\0\0\0\0\x80?\0\0\0\0\0\0\0\0\0\0\0\0\0\0\x80?\0\0\0\0\0\0\0\0\0\0\0\0\0\0\x80?\0\0\0\0\0\0\0\0\0\0\0\0" . as_slice () . into () , PreTransform : b"\x01\0\0\0\x01\0\0\0\0\0\x80?\0\0\0\0\0\0\0\0\0\0\0\0\0\0\x80?\0\0\0\0\0\0\0\0\0\0\0\0\0\0\x80?\0\0\0\0\0\0\0\0\0\0\0\0" . as_slice () . into () , Transform : b"\x01\0\0\0\x01\0\0\0\0\0\x80?\0\0\0\0\0\0\0\0\0\0\0\0\0\0\x80?\0\0\0\0\0\0\0\0\0\0\0\0\0\0\x80?\0\0\0\0\0\0\0\0\0\0\0\0" . as_slice () . into () }
+        Self { superclass , Generic : b"\xFF\xFF\xFF\xFF\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\x80?\0\0\0\0\0\0\0\0\0\0\0\0\0" . as_slice () . into () , Label : b"\x02\0\0\0\x01\0\0\0\0\0\0\0" . as_slice () . into () , Name : b"\x01\0\0\0\x01\0\0\0\0\0\0\0" . as_slice () . into () , Parent : b"\x01\0\0\0\x01\0\0\0\0\0" . as_slice () . into () , PostTransform : b"\x02\0\0\0\x01\0\0\0\0\0\x80?\0\0\0\0\0\0\0\0\0\0\0\0\0\0\x80?\0\0\0\0\0\0\0\0\0\0\0\0\0\0\x80?\0\0\0\0\0\0\0\0\0\0\0\0" . as_slice () . into () , PreTransform : b"\x02\0\0\0\x01\0\0\0\0\0\x80?\0\0\0\0\0\0\0\0\0\0\0\0\0\0\x80?\0\0\0\0\0\0\0\0\0\0\0\0\0\0\x80?\0\0\0\0\0\0\0\0\0\0\0\0" . as_slice () . into () , Transform : b"\x02\0\0\0\x01\0\0\0\0\0\x80?\0\0\0\0\0\0\0\0\0\0\0\0\0\0\x80?\0\0\0\0\0\0\0\0\0\0\0\0\0\0\x80?\0\0\0\0\0\0\0\0\0\0\0\0" . as_slice () . into () }
     }
 }
 #[derive(Debug, Clone)]
@@ -720,6 +724,14 @@ pub struct AnnotationsService {
     pub superclass: Instance,
 }
 impl_inherits!(AnnotationsService, Instance);
+#[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
+#[derive(Default)]
+pub struct AppAgeSignalsService {
+    #[doc(hidden)]
+    pub superclass: Instance,
+}
+impl_inherits!(AppAgeSignalsService, Instance);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 #[derive(Default)]
@@ -882,6 +894,14 @@ impl Default for AssetPatchSettings {
         }
     }
 }
+#[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
+#[derive(Default)]
+pub struct AssetQualityService {
+    #[doc(hidden)]
+    pub superclass: Instance,
+}
+impl_inherits!(AssetQualityService, Instance);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct AssetService {
@@ -1576,7 +1596,6 @@ pub struct AudioPlayer {
     pub AudioContent: Content,
     pub AutoLoad: bool,
     pub AutoPlay: bool,
-    pub IsMutedForCapture: bool,
     pub LoopRegion: NumberRange,
     pub Looping: bool,
     pub PlaybackRegion: NumberRange,
@@ -1602,7 +1621,6 @@ impl Default for AudioPlayer {
             AudioContent: Content::none(),
             AutoLoad: true,
             AutoPlay: false,
-            IsMutedForCapture: false,
             LoopRegion: NumberRange::new(0f32, 60000f32),
             Looping: false,
             PlaybackRegion: NumberRange::new(0f32, 60000f32),
@@ -1945,6 +1963,46 @@ impl Default for AuroraService {
             IgnoreRotation: false,
             LockStepIdOffset: false,
             RollbackOffset: 0i32,
+        }
+    }
+}
+#[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
+pub struct AvatarAbilityRules {
+    #[doc(hidden)]
+    pub superclass: Instance,
+    pub CharacterControllerMode: enums::AvatarSettingsCharacterControllerMode,
+    pub EnableClimbing: bool,
+    pub EnableFallingDown: bool,
+    pub EnableGettingUp: bool,
+    pub EnableJumping: bool,
+    pub EnableRunning: bool,
+    pub EnableSitting: bool,
+    pub EnableSwimming: bool,
+}
+impl_inherits!(AvatarAbilityRules, Instance);
+impl Default for AvatarAbilityRules {
+    fn default() -> Self {
+        let superclass = Object::default();
+        let superclass = Instance {
+            superclass,
+            Capabilities: SecurityCapabilities::from_bits(0u64),
+            HistoryId: UniqueId::nil(),
+            Name: "".to_owned(),
+            SourceAssetId: -1i64,
+            Tags: Tags::new(),
+            UniqueId: UniqueId::nil(),
+        };
+        Self {
+            superclass,
+            CharacterControllerMode: enums::AvatarSettingsCharacterControllerMode::LegacyHumanoid,
+            EnableClimbing: true,
+            EnableFallingDown: true,
+            EnableGettingUp: true,
+            EnableJumping: true,
+            EnableRunning: true,
+            EnableSitting: true,
+            EnableSwimming: true,
         }
     }
 }
@@ -2461,6 +2519,32 @@ pub struct BanHistoryPages {
 impl_inherits!(BanHistoryPages, Pages);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
+pub struct BaseCoreGuiConfiguration {
+    #[doc(hidden)]
+    pub superclass: Instance,
+    pub Enabled: bool,
+}
+impl_inherits!(BaseCoreGuiConfiguration, Instance);
+impl Default for BaseCoreGuiConfiguration {
+    fn default() -> Self {
+        let superclass = Object::default();
+        let superclass = Instance {
+            superclass,
+            Capabilities: SecurityCapabilities::from_bits(0u64),
+            HistoryId: UniqueId::nil(),
+            Name: "".to_owned(),
+            SourceAssetId: 0i64,
+            Tags: Tags::new(),
+            UniqueId: UniqueId::nil(),
+        };
+        Self {
+            superclass,
+            Enabled: false,
+        }
+    }
+}
+#[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct BaseImportData {
     #[doc(hidden)]
     pub superclass: Instance,
@@ -2846,6 +2930,7 @@ impl Default for BillboardGui {
             superclass,
             Enabled: true,
             ResetOnSpawn: true,
+            TabKeyboardNavigation: false,
             ZIndexBehavior: enums::ZIndexBehavior::Global,
         };
         Self {
@@ -3642,6 +3727,7 @@ impl Default for CanvasGroup {
             BorderSizePixel: 1i32,
             ClipsDescendants: true,
             Draggable: false,
+            InputSink: enums::InputSink::None,
             Interactable: true,
             LayoutOrder: 0i32,
             NextSelectionDown: Ref::none(),
@@ -3689,6 +3775,36 @@ pub struct CapturesPages {
     pub superclass: Pages,
 }
 impl_inherits!(CapturesPages, Pages);
+#[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
+pub struct CapturesViewConfiguration {
+    #[doc(hidden)]
+    pub superclass: BaseCoreGuiConfiguration,
+    pub Open: bool,
+}
+impl_inherits!(CapturesViewConfiguration, BaseCoreGuiConfiguration);
+impl Default for CapturesViewConfiguration {
+    fn default() -> Self {
+        let superclass = Object::default();
+        let superclass = Instance {
+            superclass,
+            Capabilities: SecurityCapabilities::from_bits(0u64),
+            HistoryId: UniqueId::nil(),
+            Name: "".to_owned(),
+            SourceAssetId: 0i64,
+            Tags: Tags::new(),
+            UniqueId: UniqueId::nil(),
+        };
+        let superclass = BaseCoreGuiConfiguration {
+            superclass,
+            Enabled: false,
+        };
+        Self {
+            superclass,
+            Open: false,
+        }
+    }
+}
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 #[derive(Default)]
@@ -3808,9 +3924,12 @@ impl_inherits!(CharacterAppearance, Instance);
 pub struct CharacterMesh {
     #[doc(hidden)]
     pub superclass: CharacterAppearance,
+    pub BaseTextureContent: Content,
     pub BaseTextureId: i64,
     pub BodyPart: enums::BodyPart,
+    pub MeshContent: Content,
     pub MeshId: i64,
+    pub OverlayTextureContent: Content,
     pub OverlayTextureId: i64,
 }
 impl_inherits!(CharacterMesh, CharacterAppearance);
@@ -3829,9 +3948,12 @@ impl Default for CharacterMesh {
         let superclass = CharacterAppearance { superclass };
         Self {
             superclass,
+            BaseTextureContent: Content::none(),
             BaseTextureId: 0i64,
             BodyPart: enums::BodyPart::Head,
+            MeshContent: Content::none(),
             MeshId: 0i64,
+            OverlayTextureContent: Content::none(),
             OverlayTextureId: 0i64,
         }
     }
@@ -3984,14 +4106,6 @@ pub struct ChatWindowMessageProperties {
 impl_inherits!(ChatWindowMessageProperties, TextChatMessageProperties);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
-#[derive(Default)]
-pub struct ChatbotUIService {
-    #[doc(hidden)]
-    pub superclass: Instance,
-}
-impl_inherits!(ChatbotUIService, Instance);
-#[derive(Debug, Clone)]
-#[allow(nonstandard_style)]
 pub struct ChorusSoundEffect {
     #[doc(hidden)]
     pub superclass: SoundEffect,
@@ -4133,6 +4247,14 @@ pub struct CloudCRUDService {
     pub superclass: Instance,
 }
 impl_inherits!(CloudCRUDService, Instance);
+#[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
+#[derive(Default)]
+pub struct CloudExecutionService {
+    #[doc(hidden)]
+    pub superclass: Instance,
+}
+impl_inherits!(CloudExecutionService, Instance);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 #[derive(Default)]
@@ -4306,6 +4428,32 @@ pub struct CommerceService {
     pub superclass: Instance,
 }
 impl_inherits!(CommerceService, Instance);
+#[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
+pub struct CompositeValueCurve {
+    #[doc(hidden)]
+    pub superclass: Instance,
+    pub CurveType: enums::CompositeValueCurveType,
+}
+impl_inherits!(CompositeValueCurve, Instance);
+impl Default for CompositeValueCurve {
+    fn default() -> Self {
+        let superclass = Object::default();
+        let superclass = Instance {
+            superclass,
+            Capabilities: SecurityCapabilities::from_bits(0u64),
+            HistoryId: UniqueId::nil(),
+            Name: "".to_owned(),
+            SourceAssetId: -1i64,
+            Tags: Tags::new(),
+            UniqueId: UniqueId::nil(),
+        };
+        Self {
+            superclass,
+            CurveType: enums::CompositeValueCurveType::NumberRange,
+        }
+    }
+}
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct CompressorSoundEffect {
@@ -4573,7 +4721,10 @@ pub struct ControllerPartSensor {
     pub superclass: ControllerSensor,
     pub HitFrame: CFrame,
     pub HitNormal: Vector3,
+    pub LadderSearchHeight: f32,
+    pub LadderSearchOffset: f32,
     pub SearchDistance: f32,
+    pub SensedMaterial: enums::Material,
     pub SensedPart: Ref,
     pub SensorMode: enums::SensorMode,
 }
@@ -4599,7 +4750,10 @@ impl Default for ControllerPartSensor {
             superclass,
             HitFrame: CFrame::identity(),
             HitNormal: Vector3::new(0f32, 0f32, 0f32),
+            LadderSearchHeight: 6f32,
+            LadderSearchOffset: 5f32,
             SearchDistance: 0f32,
+            SensedMaterial: enums::Material::Air,
             SensedPart: Ref::none(),
             SensorMode: enums::SensorMode::Floor,
         }
@@ -4621,14 +4775,6 @@ pub struct ControllerService {
     pub superclass: Instance,
 }
 impl_inherits!(ControllerService, Instance);
-#[derive(Debug, Clone)]
-#[allow(nonstandard_style)]
-#[derive(Default)]
-pub struct ConversationalAIAcceptanceService {
-    #[doc(hidden)]
-    pub superclass: Instance,
-}
-impl_inherits!(ConversationalAIAcceptanceService, Instance);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 #[derive(Default)]
@@ -4661,6 +4807,36 @@ impl Default for CoreGui {
         Self {
             superclass,
             SelectionImageObject: Ref::none(),
+        }
+    }
+}
+#[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
+pub struct CoreGuiConfiguration {
+    #[doc(hidden)]
+    pub superclass: Instance,
+    pub CapturesViewConfiguration: Ref,
+    pub PlayerListConfiguration: Ref,
+    pub SelfViewConfiguration: Ref,
+}
+impl_inherits!(CoreGuiConfiguration, Instance);
+impl Default for CoreGuiConfiguration {
+    fn default() -> Self {
+        let superclass = Object::default();
+        let superclass = Instance {
+            superclass,
+            Capabilities: SecurityCapabilities::from_bits(0u64),
+            HistoryId: UniqueId::nil(),
+            Name: "".to_owned(),
+            SourceAssetId: 0i64,
+            Tags: Tags::new(),
+            UniqueId: UniqueId::nil(),
+        };
+        Self {
+            superclass,
+            CapturesViewConfiguration: Ref::none(),
+            PlayerListConfiguration: Ref::none(),
+            SelfViewConfiguration: Ref::none(),
         }
     }
 }
@@ -5366,6 +5542,7 @@ pub struct Decal {
     pub Color3: Color3,
     pub MetalnessMapContent: Content,
     pub NormalMapContent: Content,
+    pub Rotation: f32,
     pub RoughnessMapContent: Content,
     pub TextureContent: Content,
     pub TexturePack: ContentId,
@@ -5397,6 +5574,7 @@ impl Default for Decal {
             Color3: Color3::new(1f32, 1f32, 1f32),
             MetalnessMapContent: Content::none(),
             NormalMapContent: Content::none(),
+            Rotation: 0f32,
             RoughnessMapContent: Content::none(),
             TextureContent: Content::none(),
             TexturePack: "".into(),
@@ -5408,6 +5586,14 @@ impl Default for Decal {
         }
     }
 }
+#[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
+#[derive(Default)]
+pub struct DeferredAssetManagerService {
+    #[doc(hidden)]
+    pub superclass: Instance,
+}
+impl_inherits!(DeferredAssetManagerService, Instance);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct DepthOfFieldEffect {
@@ -5523,6 +5709,112 @@ impl Default for DialogChoice {
             GoodbyeDialog: "".to_owned(),
             ResponseDialog: "".to_owned(),
             UserDialog: "".to_owned(),
+        }
+    }
+}
+#[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
+pub struct DigitsRigDescription {
+    #[doc(hidden)]
+    pub superclass: Instance,
+    pub Index1: Ref,
+    pub Index1TposeAdjustment: CFrame,
+    pub Index2: Ref,
+    pub Index2TposeAdjustment: CFrame,
+    pub Index3: Ref,
+    pub Index3TposeAdjustment: CFrame,
+    pub IndexRange: Vector3,
+    pub IndexSize: f32,
+    pub Middle1: Ref,
+    pub Middle1TposeAdjustment: CFrame,
+    pub Middle2: Ref,
+    pub Middle2TposeAdjustment: CFrame,
+    pub Middle3: Ref,
+    pub Middle3TposeAdjustment: CFrame,
+    pub MiddleRange: Vector3,
+    pub MiddleSize: f32,
+    pub Pinky1: Ref,
+    pub Pinky1TposeAdjustment: CFrame,
+    pub Pinky2: Ref,
+    pub Pinky2TposeAdjustment: CFrame,
+    pub Pinky3: Ref,
+    pub Pinky3TposeAdjustment: CFrame,
+    pub PinkyRange: Vector3,
+    pub PinkySize: f32,
+    pub Ring1: Ref,
+    pub Ring1TposeAdjustment: CFrame,
+    pub Ring2: Ref,
+    pub Ring2TposeAdjustment: CFrame,
+    pub Ring3: Ref,
+    pub Ring3TposeAdjustment: CFrame,
+    pub RingRange: Vector3,
+    pub RingSize: f32,
+    pub Side: enums::DigitsRigDescriptionSide,
+    pub Thumb1: Ref,
+    pub Thumb1TposeAdjustment: CFrame,
+    pub Thumb2: Ref,
+    pub Thumb2TposeAdjustment: CFrame,
+    pub Thumb3: Ref,
+    pub Thumb3TposeAdjustment: CFrame,
+    pub ThumbRange: Vector3,
+    pub ThumbSize: f32,
+}
+impl_inherits!(DigitsRigDescription, Instance);
+impl Default for DigitsRigDescription {
+    fn default() -> Self {
+        let superclass = Object::default();
+        let superclass = Instance {
+            superclass,
+            Capabilities: SecurityCapabilities::from_bits(0u64),
+            HistoryId: UniqueId::nil(),
+            Name: "".to_owned(),
+            SourceAssetId: -1i64,
+            Tags: Tags::new(),
+            UniqueId: UniqueId::nil(),
+        };
+        Self {
+            superclass,
+            Index1: Ref::none(),
+            Index1TposeAdjustment: CFrame::identity(),
+            Index2: Ref::none(),
+            Index2TposeAdjustment: CFrame::identity(),
+            Index3: Ref::none(),
+            Index3TposeAdjustment: CFrame::identity(),
+            IndexRange: Vector3::new(0f32, 0f32, 0f32),
+            IndexSize: 0f32,
+            Middle1: Ref::none(),
+            Middle1TposeAdjustment: CFrame::identity(),
+            Middle2: Ref::none(),
+            Middle2TposeAdjustment: CFrame::identity(),
+            Middle3: Ref::none(),
+            Middle3TposeAdjustment: CFrame::identity(),
+            MiddleRange: Vector3::new(0f32, 0f32, 0f32),
+            MiddleSize: 0f32,
+            Pinky1: Ref::none(),
+            Pinky1TposeAdjustment: CFrame::identity(),
+            Pinky2: Ref::none(),
+            Pinky2TposeAdjustment: CFrame::identity(),
+            Pinky3: Ref::none(),
+            Pinky3TposeAdjustment: CFrame::identity(),
+            PinkyRange: Vector3::new(0f32, 0f32, 0f32),
+            PinkySize: 0f32,
+            Ring1: Ref::none(),
+            Ring1TposeAdjustment: CFrame::identity(),
+            Ring2: Ref::none(),
+            Ring2TposeAdjustment: CFrame::identity(),
+            Ring3: Ref::none(),
+            Ring3TposeAdjustment: CFrame::identity(),
+            RingRange: Vector3::new(0f32, 0f32, 0f32),
+            RingSize: 0f32,
+            Side: enums::DigitsRigDescriptionSide::None,
+            Thumb1: Ref::none(),
+            Thumb1TposeAdjustment: CFrame::identity(),
+            Thumb2: Ref::none(),
+            Thumb2TposeAdjustment: CFrame::identity(),
+            Thumb3: Ref::none(),
+            Thumb3TposeAdjustment: CFrame::identity(),
+            ThumbRange: Vector3::new(0f32, 0f32, 0f32),
+            ThumbSize: 0f32,
         }
     }
 }
@@ -5811,14 +6103,6 @@ impl_inherits!(EditableService, Instance);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 #[derive(Default)]
-pub struct EmotesPages {
-    #[doc(hidden)]
-    pub superclass: InventoryPages,
-}
-impl_inherits!(EmotesPages, InventoryPages);
-#[derive(Debug, Clone)]
-#[allow(nonstandard_style)]
-#[derive(Default)]
 pub struct EncodingService {
     #[doc(hidden)]
     pub superclass: Instance,
@@ -6053,12 +6337,30 @@ pub struct FaceAnimatorService {
 impl_inherits!(FaceAnimatorService, Instance);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
-#[derive(Default)]
 pub struct FaceControls {
     #[doc(hidden)]
     pub superclass: Instance,
+    pub InternalOverrideFacsData: BinaryString,
 }
 impl_inherits!(FaceControls, Instance);
+impl Default for FaceControls {
+    fn default() -> Self {
+        let superclass = Object::default();
+        let superclass = Instance {
+            superclass,
+            Capabilities: SecurityCapabilities::from_bits(0u64),
+            HistoryId: UniqueId::nil(),
+            Name: "".to_owned(),
+            SourceAssetId: -1i64,
+            Tags: Tags::new(),
+            UniqueId: UniqueId::nil(),
+        };
+        Self {
+            superclass,
+            InternalOverrideFacsData: b"".as_slice().into(),
+        }
+    }
+}
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct FaceInstance {
@@ -6199,6 +6501,14 @@ pub struct File {
     pub superclass: Instance,
 }
 impl_inherits!(File, Instance);
+#[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
+#[derive(Default)]
+pub struct FileManagerService {
+    #[doc(hidden)]
+    pub superclass: Instance,
+}
+impl_inherits!(FileManagerService, Instance);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct FileMesh {
@@ -6610,6 +6920,7 @@ impl Default for Frame {
             BorderSizePixel: 1i32,
             ClipsDescendants: false,
             Draggable: false,
+            InputSink: enums::InputSink::None,
             Interactable: true,
             LayoutOrder: 0i32,
             NextSelectionDown: Ref::none(),
@@ -6736,6 +7047,14 @@ impl Default for GamepadService {
         }
     }
 }
+#[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
+#[derive(Default)]
+pub struct GeneratedFolder {
+    #[doc(hidden)]
+    pub superclass: Folder,
+}
+impl_inherits!(GeneratedFolder, Folder);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 #[derive(Default)]
@@ -6870,6 +7189,14 @@ impl Default for Glue {
         }
     }
 }
+#[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
+#[derive(Default)]
+pub struct GongService {
+    #[doc(hidden)]
+    pub superclass: Instance,
+}
+impl_inherits!(GongService, Instance);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct GroundController {
@@ -7090,6 +7417,7 @@ impl Default for GuiButton {
             BorderSizePixel: 0i32,
             ClipsDescendants: false,
             Draggable: false,
+            InputSink: enums::InputSink::None,
             Interactable: false,
             LayoutOrder: 0i32,
             NextSelectionDown: Ref::none(),
@@ -7148,6 +7476,7 @@ pub struct GuiObject {
     pub BorderSizePixel: i32,
     pub ClipsDescendants: bool,
     pub Draggable: bool,
+    pub InputSink: enums::InputSink,
     pub Interactable: bool,
     pub LayoutOrder: i32,
     pub NextSelectionDown: Ref,
@@ -7200,6 +7529,7 @@ impl Default for GuiObject {
             BorderSizePixel: 0i32,
             ClipsDescendants: false,
             Draggable: false,
+            InputSink: enums::InputSink::None,
             Interactable: false,
             LayoutOrder: 0i32,
             NextSelectionDown: Ref::none(),
@@ -7224,6 +7554,7 @@ pub struct GuiService {
     #[doc(hidden)]
     pub superclass: Instance,
     pub AutoSelectGuiEnabled: bool,
+    pub DisplayScalingMode: enums::DisplayScalingMode,
     pub GuiNavigationEnabled: bool,
     pub SelectedObject: Ref,
 }
@@ -7243,6 +7574,7 @@ impl Default for GuiService {
         Self {
             superclass,
             AutoSelectGuiEnabled: false,
+            DisplayScalingMode: enums::DisplayScalingMode::Default,
             GuiNavigationEnabled: false,
             SelectedObject: Ref::none(),
         }
@@ -7264,112 +7596,6 @@ pub struct HSRDataContentProvider {
     pub superclass: CacheableContentProvider,
 }
 impl_inherits!(HSRDataContentProvider, CacheableContentProvider);
-#[derive(Debug, Clone)]
-#[allow(nonstandard_style)]
-pub struct HandRigDescription {
-    #[doc(hidden)]
-    pub superclass: Instance,
-    pub Index1: Ref,
-    pub Index1TposeAdjustment: CFrame,
-    pub Index2: Ref,
-    pub Index2TposeAdjustment: CFrame,
-    pub Index3: Ref,
-    pub Index3TposeAdjustment: CFrame,
-    pub IndexRange: Vector3,
-    pub IndexSize: f32,
-    pub Middle1: Ref,
-    pub Middle1TposeAdjustment: CFrame,
-    pub Middle2: Ref,
-    pub Middle2TposeAdjustment: CFrame,
-    pub Middle3: Ref,
-    pub Middle3TposeAdjustment: CFrame,
-    pub MiddleRange: Vector3,
-    pub MiddleSize: f32,
-    pub Pinky1: Ref,
-    pub Pinky1TposeAdjustment: CFrame,
-    pub Pinky2: Ref,
-    pub Pinky2TposeAdjustment: CFrame,
-    pub Pinky3: Ref,
-    pub Pinky3TposeAdjustment: CFrame,
-    pub PinkyRange: Vector3,
-    pub PinkySize: f32,
-    pub Ring1: Ref,
-    pub Ring1TposeAdjustment: CFrame,
-    pub Ring2: Ref,
-    pub Ring2TposeAdjustment: CFrame,
-    pub Ring3: Ref,
-    pub Ring3TposeAdjustment: CFrame,
-    pub RingRange: Vector3,
-    pub RingSize: f32,
-    pub Side: enums::HandRigDescriptionSide,
-    pub Thumb1: Ref,
-    pub Thumb1TposeAdjustment: CFrame,
-    pub Thumb2: Ref,
-    pub Thumb2TposeAdjustment: CFrame,
-    pub Thumb3: Ref,
-    pub Thumb3TposeAdjustment: CFrame,
-    pub ThumbRange: Vector3,
-    pub ThumbSize: f32,
-}
-impl_inherits!(HandRigDescription, Instance);
-impl Default for HandRigDescription {
-    fn default() -> Self {
-        let superclass = Object::default();
-        let superclass = Instance {
-            superclass,
-            Capabilities: SecurityCapabilities::from_bits(0u64),
-            HistoryId: UniqueId::nil(),
-            Name: "".to_owned(),
-            SourceAssetId: -1i64,
-            Tags: Tags::new(),
-            UniqueId: UniqueId::nil(),
-        };
-        Self {
-            superclass,
-            Index1: Ref::none(),
-            Index1TposeAdjustment: CFrame::identity(),
-            Index2: Ref::none(),
-            Index2TposeAdjustment: CFrame::identity(),
-            Index3: Ref::none(),
-            Index3TposeAdjustment: CFrame::identity(),
-            IndexRange: Vector3::new(0f32, 0f32, 0f32),
-            IndexSize: 0f32,
-            Middle1: Ref::none(),
-            Middle1TposeAdjustment: CFrame::identity(),
-            Middle2: Ref::none(),
-            Middle2TposeAdjustment: CFrame::identity(),
-            Middle3: Ref::none(),
-            Middle3TposeAdjustment: CFrame::identity(),
-            MiddleRange: Vector3::new(0f32, 0f32, 0f32),
-            MiddleSize: 0f32,
-            Pinky1: Ref::none(),
-            Pinky1TposeAdjustment: CFrame::identity(),
-            Pinky2: Ref::none(),
-            Pinky2TposeAdjustment: CFrame::identity(),
-            Pinky3: Ref::none(),
-            Pinky3TposeAdjustment: CFrame::identity(),
-            PinkyRange: Vector3::new(0f32, 0f32, 0f32),
-            PinkySize: 0f32,
-            Ring1: Ref::none(),
-            Ring1TposeAdjustment: CFrame::identity(),
-            Ring2: Ref::none(),
-            Ring2TposeAdjustment: CFrame::identity(),
-            Ring3: Ref::none(),
-            Ring3TposeAdjustment: CFrame::identity(),
-            RingRange: Vector3::new(0f32, 0f32, 0f32),
-            RingSize: 0f32,
-            Side: enums::HandRigDescriptionSide::None,
-            Thumb1: Ref::none(),
-            Thumb1TposeAdjustment: CFrame::identity(),
-            Thumb2: Ref::none(),
-            Thumb2TposeAdjustment: CFrame::identity(),
-            Thumb3: Ref::none(),
-            Thumb3TposeAdjustment: CFrame::identity(),
-            ThumbRange: Vector3::new(0f32, 0f32, 0f32),
-            ThumbSize: 0f32,
-        }
-    }
-}
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct HandleAdornment {
@@ -7472,7 +7698,6 @@ pub struct HapticEffect {
     pub Position: Vector3,
     pub Radius: f32,
     pub Type: enums::HapticEffectType,
-    pub Waveform: Ref,
     pub WaveformData: BinaryString,
 }
 impl_inherits!(HapticEffect, Instance);
@@ -7494,7 +7719,6 @@ impl Default for HapticEffect {
             Position: Vector3::new(0f32, 0f32, 0f32),
             Radius: 3f32,
             Type: enums::HapticEffectType::UIClick,
-            Waveform: Ref::none(),
             WaveformData: b"".as_slice().into(),
         }
     }
@@ -7886,7 +8110,9 @@ pub struct HumanoidDescription {
     pub ProportionScale: f32,
     pub RunAnimation: i64,
     pub Shirt: i64,
+    pub StaticFacialAnimation: bool,
     pub SwimAnimation: i64,
+    pub UseAvatarSettings: bool,
     pub WalkAnimation: i64,
     pub WidthScale: f32,
 }
@@ -7922,7 +8148,9 @@ impl Default for HumanoidDescription {
             ProportionScale: 1f32,
             RunAnimation: 0i64,
             Shirt: 0i64,
+            StaticFacialAnimation: false,
             SwimAnimation: 0i64,
+            UseAvatarSettings: false,
             WalkAnimation: 0i64,
             WidthScale: 1f32,
         }
@@ -7973,11 +8201,11 @@ pub struct HumanoidRigDescription {
     pub LeftShoulderRangeMin: Vector3,
     pub LeftShoulderSize: f32,
     pub LeftShoulderTposeAdjustment: CFrame,
-    pub LeftToes: Ref,
-    pub LeftToesRangeMax: Vector3,
-    pub LeftToesRangeMin: Vector3,
-    pub LeftToesSize: f32,
-    pub LeftToesTposeAdjustment: CFrame,
+    pub LeftToeBase: Ref,
+    pub LeftToeBaseRangeMax: Vector3,
+    pub LeftToeBaseRangeMin: Vector3,
+    pub LeftToeBaseSize: f32,
+    pub LeftToeBaseTposeAdjustment: CFrame,
     pub LeftWrist: Ref,
     pub LeftWristRangeMax: Vector3,
     pub LeftWristRangeMin: Vector3,
@@ -7989,11 +8217,6 @@ pub struct HumanoidRigDescription {
     pub NeckSize: f32,
     pub NeckTposeAdjustment: CFrame,
     pub OriginOffset: CFrame,
-    pub Pelvis: Ref,
-    pub PelvisRangeMax: Vector3,
-    pub PelvisRangeMin: Vector3,
-    pub PelvisSize: f32,
-    pub PelvisTposeAdjustment: CFrame,
     pub RightAnkle: Ref,
     pub RightAnkleRangeMax: Vector3,
     pub RightAnkleRangeMin: Vector3,
@@ -8024,11 +8247,11 @@ pub struct HumanoidRigDescription {
     pub RightShoulderRangeMin: Vector3,
     pub RightShoulderSize: f32,
     pub RightShoulderTposeAdjustment: CFrame,
-    pub RightToes: Ref,
-    pub RightToesRangeMax: Vector3,
-    pub RightToesRangeMin: Vector3,
-    pub RightToesSize: f32,
-    pub RightToesTposeAdjustment: CFrame,
+    pub RightToeBase: Ref,
+    pub RightToeBaseRangeMax: Vector3,
+    pub RightToeBaseRangeMin: Vector3,
+    pub RightToeBaseSize: f32,
+    pub RightToeBaseTposeAdjustment: CFrame,
     pub RightWrist: Ref,
     pub RightWristRangeMax: Vector3,
     pub RightWristRangeMin: Vector3,
@@ -8039,6 +8262,11 @@ pub struct HumanoidRigDescription {
     pub RootRangeMin: Vector3,
     pub RootSize: f32,
     pub RootTposeAdjustment: CFrame,
+    pub Spine: Ref,
+    pub SpineRangeMax: Vector3,
+    pub SpineRangeMin: Vector3,
+    pub SpineSize: f32,
+    pub SpineTposeAdjustment: CFrame,
     pub Waist: Ref,
     pub WaistRangeMax: Vector3,
     pub WaistRangeMin: Vector3,
@@ -8100,11 +8328,11 @@ impl Default for HumanoidRigDescription {
             LeftShoulderRangeMin: Vector3::new(0f32, 0f32, 0f32),
             LeftShoulderSize: 0f32,
             LeftShoulderTposeAdjustment: CFrame::identity(),
-            LeftToes: Ref::none(),
-            LeftToesRangeMax: Vector3::new(0f32, 0f32, 0f32),
-            LeftToesRangeMin: Vector3::new(0f32, 0f32, 0f32),
-            LeftToesSize: 0f32,
-            LeftToesTposeAdjustment: CFrame::identity(),
+            LeftToeBase: Ref::none(),
+            LeftToeBaseRangeMax: Vector3::new(0f32, 0f32, 0f32),
+            LeftToeBaseRangeMin: Vector3::new(0f32, 0f32, 0f32),
+            LeftToeBaseSize: 0f32,
+            LeftToeBaseTposeAdjustment: CFrame::identity(),
             LeftWrist: Ref::none(),
             LeftWristRangeMax: Vector3::new(0f32, 0f32, 0f32),
             LeftWristRangeMin: Vector3::new(0f32, 0f32, 0f32),
@@ -8116,11 +8344,6 @@ impl Default for HumanoidRigDescription {
             NeckSize: 0f32,
             NeckTposeAdjustment: CFrame::identity(),
             OriginOffset: CFrame::identity(),
-            Pelvis: Ref::none(),
-            PelvisRangeMax: Vector3::new(0f32, 0f32, 0f32),
-            PelvisRangeMin: Vector3::new(0f32, 0f32, 0f32),
-            PelvisSize: 0f32,
-            PelvisTposeAdjustment: CFrame::identity(),
             RightAnkle: Ref::none(),
             RightAnkleRangeMax: Vector3::new(0f32, 0f32, 0f32),
             RightAnkleRangeMin: Vector3::new(0f32, 0f32, 0f32),
@@ -8151,11 +8374,11 @@ impl Default for HumanoidRigDescription {
             RightShoulderRangeMin: Vector3::new(0f32, 0f32, 0f32),
             RightShoulderSize: 0f32,
             RightShoulderTposeAdjustment: CFrame::identity(),
-            RightToes: Ref::none(),
-            RightToesRangeMax: Vector3::new(0f32, 0f32, 0f32),
-            RightToesRangeMin: Vector3::new(0f32, 0f32, 0f32),
-            RightToesSize: 0f32,
-            RightToesTposeAdjustment: CFrame::identity(),
+            RightToeBase: Ref::none(),
+            RightToeBaseRangeMax: Vector3::new(0f32, 0f32, 0f32),
+            RightToeBaseRangeMin: Vector3::new(0f32, 0f32, 0f32),
+            RightToeBaseSize: 0f32,
+            RightToeBaseTposeAdjustment: CFrame::identity(),
             RightWrist: Ref::none(),
             RightWristRangeMax: Vector3::new(0f32, 0f32, 0f32),
             RightWristRangeMin: Vector3::new(0f32, 0f32, 0f32),
@@ -8166,6 +8389,11 @@ impl Default for HumanoidRigDescription {
             RootRangeMin: Vector3::new(0f32, 0f32, 0f32),
             RootSize: 0f32,
             RootTposeAdjustment: CFrame::identity(),
+            Spine: Ref::none(),
+            SpineRangeMax: Vector3::new(0f32, 0f32, 0f32),
+            SpineRangeMin: Vector3::new(0f32, 0f32, 0f32),
+            SpineSize: 0f32,
+            SpineTposeAdjustment: CFrame::identity(),
             Waist: Ref::none(),
             WaistRangeMax: Vector3::new(0f32, 0f32, 0f32),
             WaistRangeMin: Vector3::new(0f32, 0f32, 0f32),
@@ -8290,6 +8518,7 @@ impl Default for ImageButton {
             BorderSizePixel: 1i32,
             ClipsDescendants: false,
             Draggable: false,
+            InputSink: enums::InputSink::None,
             Interactable: true,
             LayoutOrder: 0i32,
             NextSelectionDown: Ref::none(),
@@ -8431,6 +8660,7 @@ impl Default for ImageLabel {
             BorderSizePixel: 1i32,
             ClipsDescendants: false,
             Draggable: false,
+            InputSink: enums::InputSink::None,
             Interactable: true,
             LayoutOrder: 0i32,
             NextSelectionDown: Ref::none(),
@@ -8463,6 +8693,14 @@ impl Default for ImageLabel {
         }
     }
 }
+#[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
+#[derive(Default)]
+pub struct ImageScreenCaptureService {
+    #[doc(hidden)]
+    pub superclass: Instance,
+}
+impl_inherits!(ImageScreenCaptureService, Instance);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 #[derive(Default)]
@@ -8541,18 +8779,23 @@ pub struct InputBinding {
     #[doc(hidden)]
     pub superclass: Instance,
     pub Backward: enums::KeyCode,
+    pub ClampMagnitudeToOne: bool,
     pub Down: enums::KeyCode,
     pub Forward: enums::KeyCode,
     pub KeyCode: enums::KeyCode,
     pub Left: enums::KeyCode,
+    pub PointerIndex: i32,
     pub PressedThreshold: f32,
+    pub PrimaryModifier: enums::KeyCode,
     pub ReleasedThreshold: f32,
     pub ResponseCurve: f32,
     pub Right: enums::KeyCode,
     pub Scale: f32,
+    pub SecondaryModifier: enums::KeyCode,
     pub UiButton: Ref,
     pub Up: enums::KeyCode,
     pub Vector2Scale: Vector2,
+    pub Vector3Scale: Vector3,
 }
 impl_inherits!(InputBinding, Instance);
 impl Default for InputBinding {
@@ -8570,18 +8813,23 @@ impl Default for InputBinding {
         Self {
             superclass,
             Backward: enums::KeyCode::Unknown,
+            ClampMagnitudeToOne: true,
             Down: enums::KeyCode::Unknown,
             Forward: enums::KeyCode::Unknown,
             KeyCode: enums::KeyCode::Unknown,
             Left: enums::KeyCode::Unknown,
+            PointerIndex: 0i32,
             PressedThreshold: 0.5f32,
+            PrimaryModifier: enums::KeyCode::Unknown,
             ReleasedThreshold: 0.2f32,
             ResponseCurve: 1f32,
             Right: enums::KeyCode::Unknown,
             Scale: 1f32,
+            SecondaryModifier: enums::KeyCode::Unknown,
             UiButton: Ref::none(),
             Up: enums::KeyCode::Unknown,
             Vector2Scale: Vector2::new(1f32, 1f32),
+            Vector3Scale: Vector3::new(1f32, 1f32, 1f32),
         }
     }
 }
@@ -8721,6 +8969,14 @@ pub struct InstanceExtensionsService {
 impl_inherits!(InstanceExtensionsService, Instance);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
+#[derive(Default)]
+pub struct InstanceFileSyncService {
+    #[doc(hidden)]
+    pub superclass: Instance,
+}
+impl_inherits!(InstanceFileSyncService, Instance);
+#[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct IntConstrainedValue {
     #[doc(hidden)]
     pub superclass: ValueBase,
@@ -8777,6 +9033,22 @@ impl Default for IntValue {
         }
     }
 }
+#[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
+#[derive(Default)]
+pub struct InternalMessagingService {
+    #[doc(hidden)]
+    pub superclass: Instance,
+}
+impl_inherits!(InternalMessagingService, Instance);
+#[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
+#[derive(Default)]
+pub struct InternalMessagingServiceVerifier {
+    #[doc(hidden)]
+    pub superclass: Instance,
+}
+impl_inherits!(InternalMessagingServiceVerifier, Instance);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct InternalSyncItem {
@@ -9004,6 +9276,7 @@ pub struct LayerCollector {
     pub superclass: GuiBase2d,
     pub Enabled: bool,
     pub ResetOnSpawn: bool,
+    pub TabKeyboardNavigation: bool,
     pub ZIndexBehavior: enums::ZIndexBehavior,
 }
 impl_inherits!(LayerCollector, GuiBase2d);
@@ -9034,6 +9307,7 @@ impl Default for LayerCollector {
             superclass,
             Enabled: false,
             ResetOnSpawn: false,
+            TabKeyboardNavigation: false,
             ZIndexBehavior: enums::ZIndexBehavior::Global,
         }
     }
@@ -9493,6 +9767,38 @@ pub struct MLSession {
 impl_inherits!(MLSession, Object);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
+pub struct MakeupDescription {
+    #[doc(hidden)]
+    pub superclass: Instance,
+    pub AssetId: i64,
+    pub Instance: Ref,
+    pub MakeupType: enums::MakeupType,
+    pub Order: i32,
+}
+impl_inherits!(MakeupDescription, Instance);
+impl Default for MakeupDescription {
+    fn default() -> Self {
+        let superclass = Object::default();
+        let superclass = Instance {
+            superclass,
+            Capabilities: SecurityCapabilities::from_bits(0u64),
+            HistoryId: UniqueId::nil(),
+            Name: "".to_owned(),
+            SourceAssetId: -1i64,
+            Tags: Tags::new(),
+            UniqueId: UniqueId::nil(),
+        };
+        Self {
+            superclass,
+            AssetId: 0i64,
+            Instance: Ref::none(),
+            MakeupType: enums::MakeupType::Face,
+            Order: 0i32,
+        }
+    }
+}
+#[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 #[derive(Default)]
 pub struct ManualGlue {
     #[doc(hidden)]
@@ -9715,6 +10021,7 @@ impl Default for MaterialService {
 pub struct MaterialVariant {
     #[doc(hidden)]
     pub superclass: Instance,
+    pub AlphaMode: enums::AlphaMode,
     pub BaseMaterial: enums::Material,
     pub ColorMapContent: Content,
     pub CustomPhysicalProperties: PhysicalProperties,
@@ -9743,6 +10050,7 @@ impl Default for MaterialVariant {
         };
         Self {
             superclass,
+            AlphaMode: enums::AlphaMode::Opaque,
             BaseMaterial: enums::Material::Plastic,
             ColorMapContent: Content::none(),
             CustomPhysicalProperties: PhysicalProperties::Default,
@@ -9955,7 +10263,7 @@ impl Default for MeshPart {
             AeroMeshData: SharedString::new(b"".to_vec()),
             FluidFidelityInternal: enums::FluidFidelity::Automatic,
             InertiaMigrated: true,
-            PhysicalConfigData: SharedString::new(b"".to_vec()),
+            PhysicalConfigData: SharedString::new(b"CSGPHS\0\0\0\0BLOCK".to_vec()),
             UnscaledCofm: Vector3::new(0f32, 0f32, 0f32),
             UnscaledVolInertiaDiags: Vector3::new(
                 0.00000000000000000000000000000016666664f32,
@@ -10380,7 +10688,7 @@ impl Default for NegateOperation {
             AeroMeshData: SharedString::new(b"".to_vec()),
             FluidFidelityInternal: enums::FluidFidelity::Automatic,
             InertiaMigrated: true,
-            PhysicalConfigData: SharedString::new(b"".to_vec()),
+            PhysicalConfigData: SharedString::new(b"CSGPHS\0\0\0\0BLOCK".to_vec()),
             UnscaledCofm: Vector3::new(0f32, 0f32, 0f32),
             UnscaledVolInertiaDiags: Vector3::new(0.16666666f32, 0.16666666f32, 0.16666666f32),
             UnscaledVolInertiaOffDiags: Vector3::new(0f32, 0f32, 0f32),
@@ -10456,7 +10764,13 @@ pub struct NetworkSettings {
     pub superclass: Instance,
     pub HttpProxyEnabled: bool,
     pub HttpProxyUrl: String,
+    pub InboundNetworkJitterMs: f32,
+    pub InboundNetworkLossPercent: f32,
+    pub InboundNetworkMinDelayMs: f32,
     pub IncomingReplicationLag: f64,
+    pub OutboundNetworkJitterMs: f32,
+    pub OutboundNetworkLossPercent: f32,
+    pub OutboundNetworkMinDelayMs: f32,
     pub PrintJoinSizeBreakdown: bool,
     pub PrintPhysicsErrors: bool,
     pub PrintStreamInstanceQuota: bool,
@@ -10481,7 +10795,13 @@ impl Default for NetworkSettings {
             superclass,
             HttpProxyEnabled: false,
             HttpProxyUrl: "".to_owned(),
+            InboundNetworkJitterMs: 0f32,
+            InboundNetworkLossPercent: 0f32,
+            InboundNetworkMinDelayMs: 0f32,
             IncomingReplicationLag: 0f64,
+            OutboundNetworkJitterMs: 0f32,
+            OutboundNetworkLossPercent: 0f32,
+            OutboundNetworkMinDelayMs: 0f32,
             PrintJoinSizeBreakdown: false,
             PrintPhysicsErrors: false,
             PrintStreamInstanceQuota: false,
@@ -10705,6 +11025,14 @@ pub struct OutfitPages {
 impl_inherits!(OutfitPages, Pages);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
+#[derive(Default)]
+pub struct OutputLink {
+    #[doc(hidden)]
+    pub superclass: Object,
+}
+impl_inherits!(OutputLink, Object);
+#[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct PVAdornment {
     #[doc(hidden)]
     pub superclass: GuiBase3d,
@@ -10794,6 +11122,36 @@ pub struct PackageUIService {
     pub superclass: Instance,
 }
 impl_inherits!(PackageUIService, Instance);
+#[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
+pub struct Packages {
+    #[doc(hidden)]
+    pub superclass: Instance,
+    pub IsDehydrated: bool,
+    pub ShellPackagesCount: i32,
+    pub SkippedInstancesCount: i32,
+}
+impl_inherits!(Packages, Instance);
+impl Default for Packages {
+    fn default() -> Self {
+        let superclass = Object::default();
+        let superclass = Instance {
+            superclass,
+            Capabilities: SecurityCapabilities::from_bits(0u64),
+            HistoryId: UniqueId::nil(),
+            Name: "".to_owned(),
+            SourceAssetId: -1i64,
+            Tags: Tags::new(),
+            UniqueId: UniqueId::nil(),
+        };
+        Self {
+            superclass,
+            IsDehydrated: false,
+            ShellPackagesCount: 0i32,
+            SkippedInstancesCount: 0i32,
+        }
+    }
+}
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 #[derive(Default)]
@@ -10968,7 +11326,7 @@ impl Default for PartOperation {
             AeroMeshData: SharedString::new(b"".to_vec()),
             FluidFidelityInternal: enums::FluidFidelity::Automatic,
             InertiaMigrated: true,
-            PhysicalConfigData: SharedString::new(b"".to_vec()),
+            PhysicalConfigData: SharedString::new(b"CSGPHS\0\0\0\0BLOCK".to_vec()),
             UnscaledCofm: Vector3::new(0f32, 0f32, 0f32),
             UnscaledVolInertiaDiags: Vector3::new(0.16666666f32, 0.16666666f32, 0.16666666f32),
             UnscaledVolInertiaOffDiags: Vector3::new(0f32, 0f32, 0f32),
@@ -11032,6 +11390,7 @@ pub struct ParticleEmitter {
     pub Drag: f32,
     pub EmissionDirection: enums::NormalId,
     pub Enabled: bool,
+    pub FlipbookBlendFrames: bool,
     pub FlipbookFramerate: NumberRange,
     pub FlipbookIncompatible: String,
     pub FlipbookLayout: enums::ParticleFlipbookLayout,
@@ -11088,6 +11447,7 @@ impl Default for ParticleEmitter {
             Drag: 0f32,
             EmissionDirection: enums::NormalId::Top,
             Enabled: true,
+            FlipbookBlendFrames: true,
             FlipbookFramerate: NumberRange::new(1f32, 1f32),
             FlipbookIncompatible: "Particle texture must be 1024 by 1024 to use flipbooks."
                 .to_owned(),
@@ -11562,6 +11922,14 @@ pub struct PlatformFriendsService {
 impl_inherits!(PlatformFriendsService, Instance);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
+#[derive(Default)]
+pub struct PlatformLibraries {
+    #[doc(hidden)]
+    pub superclass: Instance,
+}
+impl_inherits!(PlatformLibraries, Instance);
+#[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct Player {
     #[doc(hidden)]
     pub superclass: Instance,
@@ -11579,6 +11947,7 @@ pub struct Player {
     pub DevTouchCameraMode: enums::DevTouchCameraMovementMode,
     pub DevTouchMovementMode: enums::DevTouchMovementMode,
     pub HealthDisplayDistance: f32,
+    pub InputLatency: i32,
     pub NameDisplayDistance: f32,
     pub Neutral: bool,
     pub RawJoinData: BinaryString,
@@ -11618,6 +11987,7 @@ impl Default for Player {
             DevTouchCameraMode: enums::DevTouchCameraMovementMode::UserChoice,
             DevTouchMovementMode: enums::DevTouchMovementMode::UserChoice,
             HealthDisplayDistance: 0f32,
+            InputLatency: 0i32,
             NameDisplayDistance: 0f32,
             Neutral: false,
             RawJoinData: b"".as_slice().into(),
@@ -11757,6 +12127,36 @@ pub struct PlayerHydrationService {
 impl_inherits!(PlayerHydrationService, Instance);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
+pub struct PlayerListConfiguration {
+    #[doc(hidden)]
+    pub superclass: BaseCoreGuiConfiguration,
+    pub Open: bool,
+}
+impl_inherits!(PlayerListConfiguration, BaseCoreGuiConfiguration);
+impl Default for PlayerListConfiguration {
+    fn default() -> Self {
+        let superclass = Object::default();
+        let superclass = Instance {
+            superclass,
+            Capabilities: SecurityCapabilities::from_bits(0u64),
+            HistoryId: UniqueId::nil(),
+            Name: "".to_owned(),
+            SourceAssetId: 0i64,
+            Tags: Tags::new(),
+            UniqueId: UniqueId::nil(),
+        };
+        let superclass = BaseCoreGuiConfiguration {
+            superclass,
+            Enabled: false,
+        };
+        Self {
+            superclass,
+            Open: false,
+        }
+    }
+}
+#[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 #[derive(Default)]
 pub struct PlayerMouse {
     #[doc(hidden)]
@@ -11873,6 +12273,22 @@ impl Default for PluginCapabilities {
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 #[derive(Default)]
+pub struct PluginConnection {
+    #[doc(hidden)]
+    pub superclass: Object,
+}
+impl_inherits!(PluginConnection, Object);
+#[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
+#[derive(Default)]
+pub struct PluginConnectionService {
+    #[doc(hidden)]
+    pub superclass: Instance,
+}
+impl_inherits!(PluginConnectionService, Instance);
+#[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
+#[derive(Default)]
 pub struct PluginDebugService {
     #[doc(hidden)]
     pub superclass: Instance,
@@ -11921,6 +12337,7 @@ impl Default for PluginGui {
             superclass,
             Enabled: false,
             ResetOnSpawn: false,
+            TabKeyboardNavigation: false,
             ZIndexBehavior: enums::ZIndexBehavior::Global,
         };
         Self {
@@ -11963,12 +12380,30 @@ pub struct PluginManagerInterface {
 impl_inherits!(PluginManagerInterface, Instance);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
-#[derive(Default)]
 pub struct PluginMenu {
     #[doc(hidden)]
     pub superclass: Instance,
+    pub Visible: bool,
 }
 impl_inherits!(PluginMenu, Instance);
+impl Default for PluginMenu {
+    fn default() -> Self {
+        let superclass = Object::default();
+        let superclass = Instance {
+            superclass,
+            Capabilities: SecurityCapabilities::from_bits(0u64),
+            HistoryId: UniqueId::nil(),
+            Name: "".to_owned(),
+            SourceAssetId: 0i64,
+            Tags: Tags::new(),
+            UniqueId: UniqueId::nil(),
+        };
+        Self {
+            superclass,
+            Visible: false,
+        }
+    }
+}
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 #[derive(Default)]
@@ -12161,11 +12596,70 @@ impl Default for PostEffect {
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 #[derive(Default)]
+pub struct Preloaded {
+    #[doc(hidden)]
+    pub superclass: Instance,
+}
+impl_inherits!(Preloaded, Instance);
+#[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
+#[derive(Default)]
 pub struct PrismaticConstraint {
     #[doc(hidden)]
     pub superclass: SlidingBallConstraint,
 }
 impl_inherits!(PrismaticConstraint, SlidingBallConstraint);
+#[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
+#[derive(Default)]
+pub struct ProceduralBehaviorSchedulerService {
+    #[doc(hidden)]
+    pub superclass: Instance,
+}
+impl_inherits!(ProceduralBehaviorSchedulerService, Instance);
+#[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
+pub struct ProceduralModel {
+    #[doc(hidden)]
+    pub superclass: Model,
+    pub Dirty: bool,
+    pub Generator: Ref,
+    pub Size: Vector3,
+}
+impl_inherits!(ProceduralModel, Model);
+impl Default for ProceduralModel {
+    fn default() -> Self {
+        let superclass = Object::default();
+        let superclass = Instance {
+            superclass,
+            Capabilities: SecurityCapabilities::from_bits(0u64),
+            HistoryId: UniqueId::nil(),
+            Name: "".to_owned(),
+            SourceAssetId: -1i64,
+            Tags: Tags::new(),
+            UniqueId: UniqueId::nil(),
+        };
+        let superclass = PVInstance { superclass };
+        let superclass = Model {
+            superclass,
+            LevelOfDetail: enums::ModelLevelOfDetail::Automatic,
+            ModelMeshCFrame: CFrame::identity(),
+            ModelMeshData: SharedString::new(b"".to_vec()),
+            ModelMeshSize: Vector3::new(0f32, 0f32, 0f32),
+            ModelStreamingMode: enums::ModelStreamingMode::Default,
+            NeedsPivotMigration: false,
+            PrimaryPart: Ref::none(),
+            SlimHash: SharedString::new(b"".to_vec()),
+            WorldPivotData: None,
+        };
+        Self {
+            superclass,
+            Dirty: false,
+            Generator: Ref::none(),
+            Size: Vector3::new(12f32, 12f32, 12f32),
+        }
+    }
+}
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 #[derive(Default)]
@@ -12371,6 +12865,32 @@ pub struct RbxAnalyticsService {
     pub superclass: Instance,
 }
 impl_inherits!(RbxAnalyticsService, Instance);
+#[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
+pub struct RealtimeMedia {
+    #[doc(hidden)]
+    pub superclass: Instance,
+    pub ForwardInput: bool,
+}
+impl_inherits!(RealtimeMedia, Instance);
+impl Default for RealtimeMedia {
+    fn default() -> Self {
+        let superclass = Object::default();
+        let superclass = Instance {
+            superclass,
+            Capabilities: SecurityCapabilities::from_bits(0u64),
+            HistoryId: UniqueId::nil(),
+            Name: "".to_owned(),
+            SourceAssetId: -1i64,
+            Tags: Tags::new(),
+            UniqueId: UniqueId::nil(),
+        };
+        Self {
+            superclass,
+            ForwardInput: false,
+        }
+    }
+}
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 #[derive(Default)]
@@ -12954,6 +13474,72 @@ impl Default for RodConstraint {
 }
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
+pub struct RolloutValidation {
+    #[doc(hidden)]
+    pub superclass: Instance,
+    pub AdditionalFluffOne: i32,
+    pub AdditionalFluffThree: f32,
+    pub AdditionalFluffTwo: bool,
+    pub CreationVersion: i32,
+    pub FirstBinaryExpectedValue: String,
+    pub FirstBinaryString: BinaryString,
+    pub FirstSharedExpectedValue: String,
+    pub FirstSharedString: SharedString,
+    pub GenerationStrategy: i32,
+    pub SecondBinaryExpectedValue: String,
+    pub SecondBinaryString: BinaryString,
+    pub SecondSharedExpectedValue: String,
+    pub SecondSharedString: SharedString,
+    pub ThirdBinaryExpectedValue: String,
+    pub ThirdBinaryString: BinaryString,
+    pub ThirdSharedExpectedValue: String,
+    pub ThirdSharedString: SharedString,
+}
+impl_inherits!(RolloutValidation, Instance);
+impl Default for RolloutValidation {
+    fn default() -> Self {
+        let superclass = Object::default();
+        let superclass = Instance {
+            superclass,
+            Capabilities: SecurityCapabilities::from_bits(0u64),
+            HistoryId: UniqueId::nil(),
+            Name: "".to_owned(),
+            SourceAssetId: -1i64,
+            Tags: Tags::new(),
+            UniqueId: UniqueId::nil(),
+        };
+        Self {
+            superclass,
+            AdditionalFluffOne: 0i32,
+            AdditionalFluffThree: 0f32,
+            AdditionalFluffTwo: false,
+            CreationVersion: 0i32,
+            FirstBinaryExpectedValue: "".to_owned(),
+            FirstBinaryString: b"".as_slice().into(),
+            FirstSharedExpectedValue: "".to_owned(),
+            FirstSharedString: SharedString::new(b"".to_vec()),
+            GenerationStrategy: 0i32,
+            SecondBinaryExpectedValue: "".to_owned(),
+            SecondBinaryString: b"".as_slice().into(),
+            SecondSharedExpectedValue: "".to_owned(),
+            SecondSharedString: SharedString::new(b"".to_vec()),
+            ThirdBinaryExpectedValue: "".to_owned(),
+            ThirdBinaryString: b"".as_slice().into(),
+            ThirdSharedExpectedValue: "".to_owned(),
+            ThirdSharedString: SharedString::new(b"".to_vec()),
+        }
+    }
+}
+#[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
+#[derive(Default)]
+pub struct RolloutValidationService {
+    #[doc(hidden)]
+    pub superclass: Instance,
+}
+impl_inherits!(RolloutValidationService, Instance);
+#[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 #[derive(Default)]
 pub struct RomarkRbxAnalyticsService {
     #[doc(hidden)]
@@ -12984,15 +13570,18 @@ pub struct RootImportData {
     pub InvertNegativeFaces: bool,
     pub KeepZeroInfluenceBones: bool,
     pub MergeMeshes: bool,
+    pub PhysicalConstraintType: enums::PhysicalConstraintType,
     pub PreferredUploadId: i64,
     pub RestPose: enums::RestPose,
     pub RigScale: enums::RigScale,
     pub RigType: enums::RigType,
     pub RigVisualization: bool,
+    pub ScaleFactor: f32,
     pub ScaleUnit: enums::MeshScaleUnit,
     pub UseSceneOriginAsPivot: bool,
     pub UsesCages: bool,
     pub ValidateUgcBody: bool,
+    pub VersionedAssetId: i64,
     pub WorldForward: enums::NormalId,
     pub WorldUp: enums::NormalId,
 }
@@ -13027,15 +13616,18 @@ impl Default for RootImportData {
             InvertNegativeFaces: false,
             KeepZeroInfluenceBones: false,
             MergeMeshes: false,
+            PhysicalConstraintType: enums::PhysicalConstraintType::AnimationConstraint,
             PreferredUploadId: 0i64,
             RestPose: enums::RestPose::Default,
             RigScale: enums::RigScale::Default,
             RigType: enums::RigType::R15,
             RigVisualization: false,
+            ScaleFactor: 0f32,
             ScaleUnit: enums::MeshScaleUnit::Stud,
             UseSceneOriginAsPivot: false,
             UsesCages: false,
             ValidateUgcBody: false,
+            VersionedAssetId: 0i64,
             WorldForward: enums::NormalId::Right,
             WorldUp: enums::NormalId::Right,
         }
@@ -13223,6 +13815,14 @@ impl Default for SafetyService {
 }
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
+#[derive(Default)]
+pub struct SceneAnalysisService {
+    #[doc(hidden)]
+    pub superclass: Instance,
+}
+impl_inherits!(SceneAnalysisService, Instance);
+#[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct ScreenGui {
     #[doc(hidden)]
     pub superclass: LayerCollector,
@@ -13259,6 +13859,7 @@ impl Default for ScreenGui {
             superclass,
             Enabled: true,
             ResetOnSpawn: true,
+            TabKeyboardNavigation: false,
             ZIndexBehavior: enums::ZIndexBehavior::Global,
         };
         Self {
@@ -13437,6 +14038,14 @@ impl Default for ScriptDebugger {
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 #[derive(Default)]
+pub struct ScriptDebuggerService {
+    #[doc(hidden)]
+    pub superclass: Instance,
+}
+impl_inherits!(ScriptDebuggerService, Instance);
+#[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
+#[derive(Default)]
 pub struct ScriptDocument {
     #[doc(hidden)]
     pub superclass: Instance,
@@ -13539,6 +14148,7 @@ impl Default for ScrollingFrame {
             BorderSizePixel: 1i32,
             ClipsDescendants: true,
             Draggable: false,
+            InputSink: enums::InputSink::None,
             Interactable: true,
             LayoutOrder: 0i32,
             NextSelectionDown: Ref::none(),
@@ -13860,6 +14470,36 @@ impl Default for SelectionSphere {
 }
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
+pub struct SelfViewConfiguration {
+    #[doc(hidden)]
+    pub superclass: BaseCoreGuiConfiguration,
+    pub Open: bool,
+}
+impl_inherits!(SelfViewConfiguration, BaseCoreGuiConfiguration);
+impl Default for SelfViewConfiguration {
+    fn default() -> Self {
+        let superclass = Object::default();
+        let superclass = Instance {
+            superclass,
+            Capabilities: SecurityCapabilities::from_bits(0u64),
+            HistoryId: UniqueId::nil(),
+            Name: "".to_owned(),
+            SourceAssetId: 0i64,
+            Tags: Tags::new(),
+            UniqueId: UniqueId::nil(),
+        };
+        let superclass = BaseCoreGuiConfiguration {
+            superclass,
+            Enabled: false,
+        };
+        Self {
+            superclass,
+            Open: false,
+        }
+    }
+}
+#[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct SensorBase {
     #[doc(hidden)]
     pub superclass: Instance,
@@ -14176,16 +14816,24 @@ pub struct Sky {
     pub superclass: Instance,
     pub CelestialBodiesShown: bool,
     pub MoonAngularSize: f32,
+    pub MoonTextureContent: Content,
     pub MoonTextureId: ContentId,
+    pub SkyboxBackContent: Content,
     pub SkyboxBk: ContentId,
     pub SkyboxDn: ContentId,
+    pub SkyboxDownContent: Content,
+    pub SkyboxFrontContent: Content,
     pub SkyboxFt: ContentId,
+    pub SkyboxLeftContent: Content,
     pub SkyboxLf: ContentId,
     pub SkyboxOrientation: Vector3,
+    pub SkyboxRightContent: Content,
     pub SkyboxRt: ContentId,
     pub SkyboxUp: ContentId,
+    pub SkyboxUpContent: Content,
     pub StarCount: i32,
     pub SunAngularSize: f32,
+    pub SunTextureContent: Content,
     pub SunTextureId: ContentId,
 }
 impl_inherits!(Sky, Instance);
@@ -14205,16 +14853,24 @@ impl Default for Sky {
             superclass,
             CelestialBodiesShown: true,
             MoonAngularSize: 11f32,
+            MoonTextureContent: Content::none(),
             MoonTextureId: "rbxasset://sky/moon.jpg".into(),
+            SkyboxBackContent: Content::none(),
             SkyboxBk: "rbxasset://textures/sky/sky512_bk.tex".into(),
             SkyboxDn: "rbxasset://textures/sky/sky512_dn.tex".into(),
+            SkyboxDownContent: Content::none(),
+            SkyboxFrontContent: Content::none(),
             SkyboxFt: "rbxasset://textures/sky/sky512_ft.tex".into(),
+            SkyboxLeftContent: Content::none(),
             SkyboxLf: "rbxasset://textures/sky/sky512_lf.tex".into(),
             SkyboxOrientation: Vector3::new(0f32, 0f32, 0f32),
+            SkyboxRightContent: Content::none(),
             SkyboxRt: "rbxasset://textures/sky/sky512_rt.tex".into(),
             SkyboxUp: "rbxasset://textures/sky/sky512_up.tex".into(),
+            SkyboxUpContent: Content::none(),
             StarCount: 3000i32,
             SunAngularSize: 21f32,
+            SunTextureContent: Content::none(),
             SunTextureId: "rbxasset://sky/sun.jpg".into(),
         }
     }
@@ -14282,11 +14938,35 @@ impl Default for SlidingBallConstraint {
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 #[derive(Default)]
+pub struct SlimAnimationDataEntity {
+    #[doc(hidden)]
+    pub superclass: Instance,
+}
+impl_inherits!(SlimAnimationDataEntity, Instance);
+#[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
+#[derive(Default)]
+pub struct SlimAnimationReplicationService {
+    #[doc(hidden)]
+    pub superclass: Instance,
+}
+impl_inherits!(SlimAnimationReplicationService, Instance);
+#[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
+#[derive(Default)]
 pub struct SlimContentProvider {
     #[doc(hidden)]
     pub superclass: CacheableContentProvider,
 }
 impl_inherits!(SlimContentProvider, CacheableContentProvider);
+#[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
+#[derive(Default)]
+pub struct SlimReplicationService {
+    #[doc(hidden)]
+    pub superclass: Instance,
+}
+impl_inherits!(SlimReplicationService, Instance);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 #[derive(Default)]
@@ -14370,8 +15050,8 @@ impl_inherits!(SolidModelContentProvider, CacheableContentProvider);
 pub struct Sound {
     #[doc(hidden)]
     pub superclass: Instance,
+    pub AcousticSimulationEnabled: bool,
     pub AudioContent: Content,
-    pub IsMutedForCapture: bool,
     pub LoopRegion: NumberRange,
     pub Looped: bool,
     pub PlayOnRemove: bool,
@@ -14399,8 +15079,8 @@ impl Default for Sound {
         };
         Self {
             superclass,
+            AcousticSimulationEnabled: true,
             AudioContent: Content::none(),
-            IsMutedForCapture: false,
             LoopRegion: NumberRange::new(0f32, 60000f32),
             Looped: false,
             PlayOnRemove: false,
@@ -14920,7 +15600,6 @@ pub struct StarterPlayer {
     pub superclass: Instance,
     pub AllowCustomAnimations: bool,
     pub AutoJumpEnabled: bool,
-    pub AvatarJointUpgradeSerializedRollout: enums::RolloutState,
     pub CameraMaxZoomDistance: f32,
     pub CameraMinZoomDistance: f32,
     pub CameraMode: enums::CameraMode,
@@ -14980,7 +15659,6 @@ impl Default for StarterPlayer {
             superclass,
             AllowCustomAnimations: true,
             AutoJumpEnabled: true,
-            AvatarJointUpgradeSerializedRollout: enums::RolloutState::Default,
             CameraMaxZoomDistance: 400f32,
             CameraMinZoomDistance: 0.5f32,
             CameraMode: enums::CameraMode::Classic,
@@ -15075,14 +15753,6 @@ pub struct StopWatchReporter {
 impl_inherits!(StopWatchReporter, Instance);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
-#[derive(Default)]
-pub struct StreamingService {
-    #[doc(hidden)]
-    pub superclass: Instance,
-}
-impl_inherits!(StreamingService, Instance);
-#[derive(Debug, Clone)]
-#[allow(nonstandard_style)]
 pub struct StringValue {
     #[doc(hidden)]
     pub superclass: ValueBase,
@@ -15132,7 +15802,9 @@ pub struct Studio {
     pub AutomaticallyTriggerAiCodeCompletion: bool,
     pub BasicObjectsDisplayMode: enums::ListDisplayMode,
     pub CameraAdaptiveSpeed: bool,
+    pub CameraMouseMultiplier: f32,
     pub CameraMouseWheelSpeed: f32,
+    pub CameraNavigationModel: enums::CameraNavigationModel,
     pub CameraOrbitSensitivity: f32,
     pub CameraPanSensitivity: f32,
     pub CameraPanSpeed: f32,
@@ -15140,22 +15812,29 @@ pub struct Studio {
     pub CameraShiftSpeed: f32,
     pub CameraSpeed: f32,
     pub CameraSpeedAdjustBinding: enums::CameraSpeedAdjustBinding,
-    pub CameraSpeedLockDefault: bool,
     pub CameraTweenFocus: bool,
     pub CameraZoomSpeed: f32,
     pub CameraZoomToMousePosition: bool,
     pub ClearOutputOnStart: bool,
+    pub CommandBarEnterExec: bool,
     pub CommandBarLocalState: bool,
     pub DefaultScriptSyncFileType: enums::DefaultScriptSyncFileType,
     pub DeprecatedObjectsShown: bool,
     pub DisplayLanguage: String,
     pub DraggerActiveColor: Color3,
+    pub DraggerLengthFactor: f32,
     pub DraggerMajorGridIncrement: i32,
     pub DraggerMaxSoftSnaps: i32,
     pub DraggerPassiveColor: Color3,
+    pub DraggerScaleFactor: f32,
+    pub DraggerShowAxisTicks: bool,
     pub DraggerShowHoverRuler: bool,
     pub DraggerShowMeasurement: bool,
+    pub DraggerShowNegativeAxes: bool,
+    pub DraggerShowPlanes: bool,
     pub DraggerShowTargetSnap: bool,
+    pub DraggerShowTrackball: bool,
+    pub DraggerShowWhileDragging: bool,
     pub DraggerSoftSnapMarginFactor: f32,
     pub DraggerSummonMarginFactor: f32,
     pub DraggerTiltRotateDuration: f32,
@@ -15178,6 +15857,7 @@ pub struct Studio {
     pub EnableTemporaryTabs: bool,
     pub EnableTemporaryTabsInExplorer: bool,
     pub EnableTypeHover: bool,
+    pub ExternalEditorMode: enums::ExternalEditorMode,
     pub FormatOnPaste: bool,
     pub FormatOnType: bool,
     pub HighlightCurrentLine: bool,
@@ -15203,6 +15883,7 @@ pub struct Studio {
     pub PhysicalDraggersSelectScopeByDefault: bool,
     pub PivotSnapToGeometryColor: Color3,
     pub PluginDebuggingEnabled: bool,
+    pub PreferredTextSize: enums::PreferredTextSize,
     pub ReloadBuiltinPluginsOnChange: bool,
     pub ReloadLocalPluginsOnChange: bool,
     pub RespectStudioShortcutsWhenGameHasFocus: bool,
@@ -15235,6 +15916,11 @@ pub struct Studio {
     pub TabWidth: i32,
     pub TextWrapping: bool,
     pub UseBoundingBoxMoveHandles: bool,
+    pub UseDefaultExternalEditor: bool,
+    pub VAxisColor: Color3,
+    pub XAxisColor: Color3,
+    pub YAxisColor: Color3,
+    pub ZAxisColor: Color3,
 }
 impl_inherits!(Studio, Instance);
 impl Default for Studio {
@@ -15270,7 +15956,9 @@ impl Default for Studio {
             AutomaticallyTriggerAiCodeCompletion: false,
             BasicObjectsDisplayMode: enums::ListDisplayMode::Horizontal,
             CameraAdaptiveSpeed: false,
+            CameraMouseMultiplier: 0f32,
             CameraMouseWheelSpeed: 0f32,
+            CameraNavigationModel: enums::CameraNavigationModel::Roblox,
             CameraOrbitSensitivity: 0f32,
             CameraPanSensitivity: 0f32,
             CameraPanSpeed: 0f32,
@@ -15278,22 +15966,29 @@ impl Default for Studio {
             CameraShiftSpeed: 0f32,
             CameraSpeed: 0f32,
             CameraSpeedAdjustBinding: enums::CameraSpeedAdjustBinding::None,
-            CameraSpeedLockDefault: false,
             CameraTweenFocus: false,
             CameraZoomSpeed: 0f32,
             CameraZoomToMousePosition: false,
             ClearOutputOnStart: false,
+            CommandBarEnterExec: false,
             CommandBarLocalState: false,
             DefaultScriptSyncFileType: enums::DefaultScriptSyncFileType::Lua,
             DeprecatedObjectsShown: false,
             DisplayLanguage: "".to_owned(),
             DraggerActiveColor: Color3::new(0f32, 0f32, 0f32),
+            DraggerLengthFactor: 0f32,
             DraggerMajorGridIncrement: 0i32,
             DraggerMaxSoftSnaps: 0i32,
             DraggerPassiveColor: Color3::new(0f32, 0f32, 0f32),
+            DraggerScaleFactor: 0f32,
+            DraggerShowAxisTicks: false,
             DraggerShowHoverRuler: false,
             DraggerShowMeasurement: false,
+            DraggerShowNegativeAxes: false,
+            DraggerShowPlanes: false,
             DraggerShowTargetSnap: false,
+            DraggerShowTrackball: false,
+            DraggerShowWhileDragging: false,
             DraggerSoftSnapMarginFactor: 0f32,
             DraggerSummonMarginFactor: 0f32,
             DraggerTiltRotateDuration: 0f32,
@@ -15316,6 +16011,7 @@ impl Default for Studio {
             EnableTemporaryTabs: false,
             EnableTemporaryTabsInExplorer: false,
             EnableTypeHover: false,
+            ExternalEditorMode: enums::ExternalEditorMode::SystemDefault,
             FormatOnPaste: false,
             FormatOnType: false,
             HighlightCurrentLine: false,
@@ -15341,6 +16037,7 @@ impl Default for Studio {
             PhysicalDraggersSelectScopeByDefault: false,
             PivotSnapToGeometryColor: Color3::new(0f32, 0f32, 0f32),
             PluginDebuggingEnabled: false,
+            PreferredTextSize: enums::PreferredTextSize::Medium,
             ReloadBuiltinPluginsOnChange: false,
             ReloadLocalPluginsOnChange: false,
             RespectStudioShortcutsWhenGameHasFocus: false,
@@ -15373,6 +16070,11 @@ impl Default for Studio {
             TabWidth: 0i32,
             TextWrapping: false,
             UseBoundingBoxMoveHandles: false,
+            UseDefaultExternalEditor: false,
+            VAxisColor: Color3::new(0f32, 0f32, 0f32),
+            XAxisColor: Color3::new(0f32, 0f32, 0f32),
+            YAxisColor: Color3::new(0f32, 0f32, 0f32),
+            ZAxisColor: Color3::new(0f32, 0f32, 0f32),
         }
     }
 }
@@ -15431,6 +16133,7 @@ impl_inherits!(StudioCallout, Instance);
 pub struct StudioCameraService {
     #[doc(hidden)]
     pub superclass: Instance,
+    pub FocusDistance: f32,
     pub LockCameraSpeed: bool,
     pub LoggingEnabled: bool,
 }
@@ -15449,11 +16152,20 @@ impl Default for StudioCameraService {
         };
         Self {
             superclass,
+            FocusDistance: 0f32,
             LockCameraSpeed: false,
             LoggingEnabled: false,
         }
     }
 }
+#[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
+#[derive(Default)]
+pub struct StudioCaptureService {
+    #[doc(hidden)]
+    pub superclass: Instance,
+}
+impl_inherits!(StudioCaptureService, Instance);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct StudioData {
@@ -15491,6 +16203,14 @@ impl_inherits!(StudioDeviceEmulatorService, Instance);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 #[derive(Default)]
+pub struct StudioDeviceSimulatorService {
+    #[doc(hidden)]
+    pub superclass: Instance,
+}
+impl_inherits!(StudioDeviceSimulatorService, Instance);
+#[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
+#[derive(Default)]
 pub struct StudioObjectBase {
     #[doc(hidden)]
     pub superclass: Instance,
@@ -15522,6 +16242,14 @@ impl Default for StudioPublishService {
         }
     }
 }
+#[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
+#[derive(Default)]
+pub struct StudioScreenshotCapture {
+    #[doc(hidden)]
+    pub superclass: Instance,
+}
+impl_inherits!(StudioScreenshotCapture, Instance);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 #[derive(Default)]
@@ -15566,12 +16294,30 @@ impl Default for StudioService {
 }
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
-#[derive(Default)]
 pub struct StudioTestService {
     #[doc(hidden)]
     pub superclass: Instance,
+    pub EditModeActive: bool,
 }
 impl_inherits!(StudioTestService, Instance);
+impl Default for StudioTestService {
+    fn default() -> Self {
+        let superclass = Object::default();
+        let superclass = Instance {
+            superclass,
+            Capabilities: SecurityCapabilities::from_bits(0u64),
+            HistoryId: UniqueId::nil(),
+            Name: "".to_owned(),
+            SourceAssetId: 0i64,
+            Tags: Tags::new(),
+            UniqueId: UniqueId::nil(),
+        };
+        Self {
+            superclass,
+            EditModeActive: false,
+        }
+    }
+}
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 #[derive(Default)]
@@ -15671,10 +16417,7 @@ impl Default for StyleLink {
 pub struct StyleQuery {
     #[doc(hidden)]
     pub superclass: Instance,
-    pub AspectRatioRange: NumberRange,
     pub ConditionsSerialize: BinaryString,
-    pub MaxSize: Vector2,
-    pub MinSize: Vector2,
 }
 impl_inherits!(StyleQuery, Instance);
 impl Default for StyleQuery {
@@ -15685,16 +16428,13 @@ impl Default for StyleQuery {
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
-            SourceAssetId: 0i64,
+            SourceAssetId: -1i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
         };
         Self {
             superclass,
-            AspectRatioRange: NumberRange::new(0f32, 0f32),
-            ConditionsSerialize: b"".as_slice().into(),
-            MaxSize: Vector2::new(0f32, 0f32),
-            MinSize: Vector2::new(0f32, 0f32),
+            ConditionsSerialize: b"\0\0\0\0".as_slice().into(),
         }
     }
 }
@@ -15704,6 +16444,7 @@ pub struct StyleRule {
     #[doc(hidden)]
     pub superclass: StyleBase,
     pub Priority: i32,
+    pub PropertyTransitionsSerialize: BinaryString,
     pub Selector: String,
 }
 impl_inherits!(StyleRule, StyleBase);
@@ -15723,6 +16464,7 @@ impl Default for StyleRule {
         Self {
             superclass,
             Priority: 0i32,
+            PropertyTransitionsSerialize: b"".as_slice().into(),
             Selector: "".to_owned(),
         }
     }
@@ -15788,6 +16530,7 @@ pub struct SurfaceAppearance {
     pub EmissiveTint: Color3,
     pub MetalnessMapContent: Content,
     pub NormalMapContent: Content,
+    pub ResampleMode: enums::ResamplerMode,
     pub RoughnessMapContent: Content,
     pub TexturePack: ContentId,
 }
@@ -15814,6 +16557,7 @@ impl Default for SurfaceAppearance {
             EmissiveTint: Color3::new(1f32, 1f32, 1f32),
             MetalnessMapContent: Content::none(),
             NormalMapContent: Content::none(),
+            ResampleMode: enums::ResamplerMode::Default,
             RoughnessMapContent: Content::none(),
             TexturePack: "".into(),
         }
@@ -15863,6 +16607,7 @@ impl Default for SurfaceGui {
             superclass,
             Enabled: true,
             ResetOnSpawn: true,
+            TabKeyboardNavigation: false,
             ZIndexBehavior: enums::ZIndexBehavior::Global,
         };
         let superclass = SurfaceGuiBase {
@@ -15923,6 +16668,7 @@ impl Default for SurfaceGuiBase {
             superclass,
             Enabled: false,
             ResetOnSpawn: false,
+            TabKeyboardNavigation: false,
             ZIndexBehavior: enums::ZIndexBehavior::Global,
         };
         Self {
@@ -16254,6 +17000,7 @@ pub struct Terrain {
     pub Decoration: bool,
     pub GrassLength: f32,
     pub MaterialColors: MaterialColors,
+    pub Materials: SharedString,
     pub PhysicsGrid: BinaryString,
     pub SmoothGrid: BinaryString,
     pub SmoothVoxelsUpgraded: bool,
@@ -16330,6 +17077,7 @@ impl Default for Terrain {
             Decoration: false,
             GrassLength: 0.7f32,
             MaterialColors: MaterialColors::new(),
+            Materials: SharedString::new(b"".to_vec()),
             PhysicsGrid: b"\x02\x03\0\0\0\0\0\0\0\0\0\0\0\0".as_slice().into(),
             SmoothGrid: b"\x01\x05".as_slice().into(),
             SmoothVoxelsUpgraded: false,
@@ -16451,6 +17199,14 @@ pub struct TerrainWriteOperation {
 impl_inherits!(TerrainWriteOperation, Object);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
+#[derive(Default)]
+pub struct TestCase {
+    #[doc(hidden)]
+    pub superclass: Instance,
+}
+impl_inherits!(TestCase, Instance);
+#[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub struct TestService {
     #[doc(hidden)]
     pub superclass: Instance,
@@ -16558,6 +17314,7 @@ impl Default for TextBox {
             BorderSizePixel: 1i32,
             ClipsDescendants: false,
             Draggable: false,
+            InputSink: enums::InputSink::None,
             Interactable: true,
             LayoutOrder: 0i32,
             NextSelectionDown: Ref::none(),
@@ -16589,7 +17346,7 @@ impl Default for TextBox {
             MaxVisibleGraphemes: -1i32,
             MultiLine: false,
             OpenTypeFeatures: "".to_owned(),
-            PlaceholderColor3: Color3::new(0.7f32, 0.7f32, 0.7f32),
+            PlaceholderColor3: Color3::new(0.5f32, 0.5f32, 0.5f32),
             PlaceholderText: "".to_owned(),
             RichText: false,
             ShowNativeInput: true,
@@ -16678,6 +17435,7 @@ impl Default for TextButton {
             BorderSizePixel: 1i32,
             ClipsDescendants: false,
             Draggable: false,
+            InputSink: enums::InputSink::None,
             Interactable: true,
             LayoutOrder: 0i32,
             NextSelectionDown: Ref::none(),
@@ -16967,6 +17725,7 @@ impl Default for TextLabel {
             BorderSizePixel: 1i32,
             ClipsDescendants: false,
             Draggable: false,
+            InputSink: enums::InputSink::None,
             Interactable: true,
             LayoutOrder: 0i32,
             NextSelectionDown: Ref::none(),
@@ -17079,6 +17838,7 @@ impl Default for Texture {
             Color3: Color3::new(1f32, 1f32, 1f32),
             MetalnessMapContent: Content::none(),
             NormalMapContent: Content::none(),
+            Rotation: 0f32,
             RoughnessMapContent: Content::none(),
             TextureContent: Content::none(),
             TexturePack: "".into(),
@@ -17316,6 +18076,14 @@ pub struct TouchTransmitter {
     pub superclass: Instance,
 }
 impl_inherits!(TouchTransmitter, Instance);
+#[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
+#[derive(Default)]
+pub struct TraceRouteService {
+    #[doc(hidden)]
+    pub superclass: Instance,
+}
+impl_inherits!(TraceRouteService, Instance);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 #[derive(Default)]
@@ -17750,7 +18518,10 @@ impl_inherits!(UIConstraint, UIComponent);
 pub struct UICorner {
     #[doc(hidden)]
     pub superclass: UIComponent,
-    pub CornerRadius: UDim,
+    pub BottomLeftRadius: UDim,
+    pub BottomRightRadius: UDim,
+    pub TopLeftRadius: UDim,
+    pub TopRightRadius: UDim,
 }
 impl_inherits!(UICorner, UIComponent);
 impl Default for UICorner {
@@ -17769,7 +18540,10 @@ impl Default for UICorner {
         let superclass = UIComponent { superclass };
         Self {
             superclass,
-            CornerRadius: UDim::new(0f32, 8i32),
+            BottomLeftRadius: UDim::new(0f32, 8i32),
+            BottomRightRadius: UDim::new(0f32, 8i32),
+            TopLeftRadius: UDim::new(0f32, 8i32),
+            TopRightRadius: UDim::new(0f32, 8i32),
         }
     }
 }
@@ -18167,6 +18941,44 @@ impl Default for UIScale {
         Self {
             superclass,
             Scale: 1f32,
+        }
+    }
+}
+#[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
+pub struct UIShadow {
+    #[doc(hidden)]
+    pub superclass: UIComponent,
+    pub BlurRadius: UDim,
+    pub Color: Color3,
+    pub Offset: UDim2,
+    pub Spread: UDim2,
+    pub Transparency: f32,
+    pub ZIndex: i32,
+}
+impl_inherits!(UIShadow, UIComponent);
+impl Default for UIShadow {
+    fn default() -> Self {
+        let superclass = Object::default();
+        let superclass = Instance {
+            superclass,
+            Capabilities: SecurityCapabilities::from_bits(0u64),
+            HistoryId: UniqueId::nil(),
+            Name: "".to_owned(),
+            SourceAssetId: -1i64,
+            Tags: Tags::new(),
+            UniqueId: UniqueId::nil(),
+        };
+        let superclass = UIBase { superclass };
+        let superclass = UIComponent { superclass };
+        Self {
+            superclass,
+            BlurRadius: UDim::new(0f32, 0i32),
+            Color: Color3::new(0f32, 0f32, 0f32),
+            Offset: UDim2::new(UDim::new(0f32, 0i32), UDim::new(0f32, 0i32)),
+            Spread: UDim2::new(UDim::new(0f32, 0i32), UDim::new(0f32, 0i32)),
+            Transparency: 0f32,
+            ZIndex: -1i32,
         }
     }
 }
@@ -19015,6 +19827,7 @@ impl Default for VideoDisplay {
             BorderSizePixel: 1i32,
             ClipsDescendants: false,
             Draggable: false,
+            InputSink: enums::InputSink::None,
             Interactable: true,
             LayoutOrder: 0i32,
             NextSelectionDown: Ref::none(),
@@ -19049,7 +19862,11 @@ pub struct VideoFrame {
     #[doc(hidden)]
     pub superclass: GuiObject,
     pub Looped: bool,
+    pub MaximumResolution: enums::VideoSampleSize,
     pub Playing: bool,
+    pub RollOffMaxDistance: f32,
+    pub RollOffMinDistance: f32,
+    pub RollOffMode: enums::RollOffMode,
     pub TimePosition: f64,
     pub VideoContent: Content,
     pub Volume: f32,
@@ -19090,6 +19907,7 @@ impl Default for VideoFrame {
             BorderSizePixel: 1i32,
             ClipsDescendants: false,
             Draggable: false,
+            InputSink: enums::InputSink::None,
             Interactable: true,
             LayoutOrder: 0i32,
             NextSelectionDown: Ref::none(),
@@ -19109,7 +19927,11 @@ impl Default for VideoFrame {
         Self {
             superclass,
             Looped: false,
+            MaximumResolution: enums::VideoSampleSize::Full,
             Playing: false,
+            RollOffMaxDistance: 10000f32,
+            RollOffMinDistance: 1f32,
+            RollOffMode: enums::RollOffMode::Inverse,
             TimePosition: 0f64,
             VideoContent: Content::none(),
             Volume: 1f32,
@@ -19122,6 +19944,7 @@ pub struct VideoPlayer {
     #[doc(hidden)]
     pub superclass: Instance,
     pub Looping: bool,
+    pub MaximumResolution: enums::VideoSampleSize,
     pub PlaybackSpeed: f32,
     pub TimePosition: f64,
     pub VideoContent: Content,
@@ -19143,6 +19966,7 @@ impl Default for VideoPlayer {
         Self {
             superclass,
             Looping: false,
+            MaximumResolution: enums::VideoSampleSize::Full,
             PlaybackSpeed: 1f32,
             TimePosition: 0f64,
             VideoContent: Content::none(),
@@ -19223,6 +20047,7 @@ impl Default for ViewportFrame {
             BorderSizePixel: 1i32,
             ClipsDescendants: false,
             Draggable: false,
+            InputSink: enums::InputSink::None,
             Interactable: true,
             LayoutOrder: 0i32,
             NextSelectionDown: Ref::none(),
@@ -19251,6 +20076,14 @@ impl Default for ViewportFrame {
         }
     }
 }
+#[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
+#[derive(Default)]
+pub struct VirtualInput {
+    #[doc(hidden)]
+    pub superclass: Object,
+}
+impl_inherits!(VirtualInput, Object);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 #[derive(Default)]
@@ -19387,6 +20220,14 @@ impl Default for VoiceChatService {
         }
     }
 }
+#[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
+#[derive(Default)]
+pub struct VoxelBuffer {
+    #[doc(hidden)]
+    pub superclass: Object,
+}
+impl_inherits!(VoxelBuffer, Object);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 #[derive(Default)]
@@ -19557,6 +20398,7 @@ pub struct Workspace {
     pub CollisionGroups: String,
     pub CurrentCamera: Ref,
     pub DistributedGameTime: f64,
+    pub EnableSlimAvatars: enums::RolloutState,
     pub ExplicitAutoJoints: bool,
     pub FallHeightEnabled: bool,
     pub FallenPartsDestroyHeight: f32,
@@ -19564,14 +20406,17 @@ pub struct Workspace {
     pub GlobalWind: Vector3,
     pub Gravity: f32,
     pub IkControlConstraintSupport: enums::IKControlConstraintSupport,
+    pub LayeredClothingCacheOptimizations: enums::RolloutState,
     pub LuauTypeCheckMode: enums::LuauTypeCheckMode,
     pub MeshPartHeadsAndAccessories: enums::MeshPartHeadsAndAccessories,
+    pub MeshStreamingAndImprovedLods: enums::RolloutState,
     pub ModelStreamingBehavior: enums::ModelStreamingBehavior,
-    pub MoverConstraintRootBehavior: enums::MoverConstraintRootBehaviorMode,
+    pub NextGenerationReplication: enums::RolloutState,
     pub PathfindingUseImprovedSearch: enums::PathfindingUseImprovedSearch,
     pub PhysicsImprovedSleep: enums::RolloutState,
     pub PhysicsSteppingMethod: enums::PhysicsSteppingMethod,
     pub PlayerCharacterDestroyBehavior: enums::PlayerCharacterDestroyBehavior,
+    pub PlayerScriptsUseInputActionSystem: enums::RolloutState,
     pub PrimalPhysicsSolver: enums::PrimalPhysicsSolver,
     pub RejectCharacterDeletions: enums::RejectCharacterDeletions,
     pub RenderingCacheOptimizations: enums::RenderingCacheOptimizationMode,
@@ -19586,7 +20431,9 @@ pub struct Workspace {
     pub TerrainWeldsFixed: bool,
     pub TouchEventsUseCollisionGroups: enums::RolloutState,
     pub TouchesUseCollisionGroups: bool,
+    pub UseFixedSimulation: enums::RolloutState,
     pub UseNewLuauTypeSolver: enums::RolloutState,
+    pub ValidateEnabledProximityPrompt: enums::RolloutState,
 }
 impl_inherits!(Workspace, WorldRoot);
 impl Default for Workspace {
@@ -19629,6 +20476,7 @@ impl Default for Workspace {
             CollisionGroups: "".to_owned(),
             CurrentCamera: Ref::none(),
             DistributedGameTime: 0f64,
+            EnableSlimAvatars: enums::RolloutState::Default,
             ExplicitAutoJoints: true,
             FallHeightEnabled: true,
             FallenPartsDestroyHeight: -500f32,
@@ -19636,14 +20484,17 @@ impl Default for Workspace {
             GlobalWind: Vector3::new(0f32, 0f32, 0f32),
             Gravity: 196.2f32,
             IkControlConstraintSupport: enums::IKControlConstraintSupport::Default,
+            LayeredClothingCacheOptimizations: enums::RolloutState::Default,
             LuauTypeCheckMode: enums::LuauTypeCheckMode::Default,
             MeshPartHeadsAndAccessories: enums::MeshPartHeadsAndAccessories::Default,
+            MeshStreamingAndImprovedLods: enums::RolloutState::Default,
             ModelStreamingBehavior: enums::ModelStreamingBehavior::Default,
-            MoverConstraintRootBehavior: enums::MoverConstraintRootBehaviorMode::Default,
+            NextGenerationReplication: enums::RolloutState::Default,
             PathfindingUseImprovedSearch: enums::PathfindingUseImprovedSearch::Default,
             PhysicsImprovedSleep: enums::RolloutState::Default,
             PhysicsSteppingMethod: enums::PhysicsSteppingMethod::Default,
             PlayerCharacterDestroyBehavior: enums::PlayerCharacterDestroyBehavior::Default,
+            PlayerScriptsUseInputActionSystem: enums::RolloutState::Default,
             PrimalPhysicsSolver: enums::PrimalPhysicsSolver::Default,
             RejectCharacterDeletions: enums::RejectCharacterDeletions::Default,
             RenderingCacheOptimizations: enums::RenderingCacheOptimizationMode::Default,
@@ -19658,7 +20509,9 @@ impl Default for Workspace {
             TerrainWeldsFixed: true,
             TouchEventsUseCollisionGroups: enums::RolloutState::Default,
             TouchesUseCollisionGroups: false,
+            UseFixedSimulation: enums::RolloutState::Default,
             UseNewLuauTypeSolver: enums::RolloutState::Enabled,
+            ValidateEnabledProximityPrompt: enums::RolloutState::Default,
         }
     }
 }
@@ -19686,6 +20539,14 @@ pub struct WorldRoot {
     pub superclass: Model,
 }
 impl_inherits!(WorldRoot, Model);
+#[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
+#[derive(Default)]
+pub struct WrapDeformMeshProvider {
+    #[doc(hidden)]
+    pub superclass: Instance,
+}
+impl_inherits!(WrapDeformMeshProvider, Instance);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 #[derive(Default)]

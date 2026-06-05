@@ -53,6 +53,16 @@ pub enum ActionType {
 }
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
+pub enum ActivePayerStatus {
+    Unknown = 0,
+    Never = 1,
+    Lapsed = 2,
+    Casual50Percent = 3,
+    Intermediate35Percent = 4,
+    Top15Percent = 5,
+}
+#[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub enum ActuatorRelativeTo {
     Attachment0 = 0,
     Attachment1 = 1,
@@ -161,6 +171,7 @@ pub enum AlphaMode {
     Overlay = 0,
     Transparency = 1,
     TintMask = 2,
+    Opaque = 3,
 }
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
@@ -237,6 +248,25 @@ pub enum AnimationClipFromVideoStatus {
 }
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
+pub enum AnimationNodeBlend2DInputMode {
+    Cartesian = 0,
+    Polar = 1,
+}
+#[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
+pub enum AnimationNodeInterruptible {
+    Always = 0,
+    Finished = 1,
+    Trigger = 2,
+}
+#[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
+pub enum AnimationNodePhaseSync {
+    Synced = 0,
+    Unsynced = 1,
+}
+#[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub enum AnimationNodePlayMode {
     Loop = 0,
     PingPong = 1,
@@ -255,7 +285,7 @@ pub enum AnimationNodeTransitionType {
 pub enum AnimationNodeType {
     InvalidNode = 0,
     AddNode = 1,
-    BlendNode = 2,
+    OverNode = 2,
     Blend1DNode = 3,
     Blend2DNode = 4,
     ClipNode = 5,
@@ -267,6 +297,12 @@ pub enum AnimationNodeType {
     SequenceNode = 11,
     SpeedNode = 12,
     SubtractNode = 13,
+}
+#[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
+pub enum AnimationNodeWaitFor {
+    Finished = 0,
+    Trigger = 1,
 }
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
@@ -328,6 +364,12 @@ pub enum AnnotationRequestType {
 }
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
+pub enum AntiAliasing {
+    Disabled = 0,
+    Enabled = 1,
+}
+#[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub enum AppLifecycleManagerState {
     Detached = 0,
     Active = 1,
@@ -348,6 +390,7 @@ pub enum AppShellActionType {
     GamePageLoaded = 8,
     HomePageLoaded = 9,
     AvatarEditorPageLoaded = 10,
+    HomePageInteractive = 11,
 }
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
@@ -397,6 +440,12 @@ pub enum AssetFetchStatus {
     None = 2,
     Loading = 3,
     TimedOut = 4,
+}
+#[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
+pub enum AssetRepresentation {
+    FullLength = 0,
+    ShortPreview = 1,
 }
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
@@ -463,6 +512,7 @@ pub enum AssetType {
     FaceMakeup = 88,
     LipMakeup = 89,
     EyeMakeup = 90,
+    VoxelFragment = 91,
 }
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
@@ -684,6 +734,12 @@ pub enum AvatarSettingsBuildMode {
 }
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
+pub enum AvatarSettingsCharacterControllerMode {
+    LegacyHumanoid = 0,
+    LuaCharacterController = 1,
+}
+#[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub enum AvatarSettingsClothingMode {
     PlayerChoice = 0,
     CustomLimit = 1,
@@ -878,6 +934,12 @@ pub enum CameraMode {
 }
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
+pub enum CameraNavigationModel {
+    Roblox = 0,
+    IndustryCompatible = 1,
+}
+#[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub enum CameraPanMode {
     Classic = 0,
     EdgeBump = 1,
@@ -900,6 +962,18 @@ pub enum CameraType {
     Custom = 5,
     Scriptable = 6,
     Orbital = 7,
+}
+#[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
+pub enum CanCollaborateError {
+    Invalid = 0,
+    None = 1,
+    NotAgeVerified = 2,
+    OutsideAgeBucket = 3,
+    TooManyCollaborators = 4,
+    PCBlock = 5,
+    NotFound = 6,
+    OutsideOwnerAgeBucket = 7,
 }
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
@@ -941,12 +1015,6 @@ pub enum CatalogSortType {
     MostFavorited = 5,
     RecentlyCreated = 6,
     Bestselling = 7,
-}
-#[derive(Debug, Clone)]
-#[allow(nonstandard_style)]
-pub enum CatalogTimedOptionFilter {
-    All = 1,
-    TimedOptionOnly = 2,
 }
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
@@ -1084,6 +1152,7 @@ pub enum CollisionFidelity {
     Hull = 1,
     Box = 2,
     PreciseConvexDecomposition = 3,
+    Scalable = 4,
 }
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
@@ -1157,6 +1226,18 @@ pub enum CompletionTriggerKind {
     Invoked = 1,
     TriggerCharacter = 2,
     TriggerForIncompleteCompletions = 3,
+}
+#[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
+pub enum CompositeValueCurveType {
+    ColorRGB = 0,
+    ColorHSV = 1,
+    NumberRange = 2,
+    Rect = 3,
+    UDim = 4,
+    UDim2 = 5,
+    Vector2 = 6,
+    Vector3 = 7,
 }
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
@@ -1251,6 +1332,11 @@ pub enum ConnectionError {
     ScreentimeLockoutKick = 307,
     DisconnectionNotification = 308,
     DisconnectVerboselyModeratedGame = 309,
+    DisconnectCollaboratorNotAgeVerified = 310,
+    DisconnectCollaboratorTrustedConnectionsRequired = 311,
+    DisconnectCollaboratorOwnerActionRequired = 312,
+    DisconnectCollaboratorTooManyCollaborators = 313,
+    DisconnectCollaboratorUnknownError = 314,
     PlacelaunchErrors = 512,
     PlacelaunchDisabled = 515,
     PlacelaunchError = 516,
@@ -1265,7 +1351,12 @@ pub enum ConnectionError {
     PlacelaunchPartyCannotFit = 528,
     PlacelaunchHttpError = 529,
     PlacelaunchUserPrivacyUnauthorized = 533,
+    PlacelaunchVipOwnerNotPresent = 541,
+    PlacelaunchAgeVerificationRequired = 542,
+    PlacelaunchParentalApprovalRequired = 543,
+    PlacelaunchCoreGated = 544,
     PlacelaunchCreatorBan = 600,
+    PlacelaunchDeviceBlock = 601,
     PlacelaunchCustomMessage = 610,
     PlacelaunchOtherError = 611,
     TeleportErrors = 768,
@@ -1321,6 +1412,8 @@ pub enum CoreGuiType {
     EmotesMenu = 5,
     SelfView = 6,
     Captures = 7,
+    AvatarSwitcher = 8,
+    ExperienceShop = 9,
 }
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
@@ -1329,6 +1422,15 @@ pub enum CreateAssetResult {
     PermissionDenied = 2,
     UploadFailed = 3,
     Unknown = 4,
+}
+#[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
+pub enum CreateContentResult {
+    Success = 1,
+    PermissionDenied = 2,
+    UploadFailed = 3,
+    StorageLimitExceeded = 4,
+    Unknown = 5,
 }
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
@@ -1366,6 +1468,13 @@ pub enum CustomCameraMode {
 }
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
+pub enum DataModelExtractorFileType {
+    PlaceFile = 0,
+    FirstSlice = 1,
+    NonFirstSlice = 2,
+}
+#[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub enum DataStoreRequestType {
     GetAsync = 0,
     SetIncrementAsync = 1,
@@ -1384,6 +1493,13 @@ pub enum DataStoreRequestType {
     OrderedWrite = 14,
     OrderedList = 15,
     OrderedRemove = 16,
+}
+#[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
+pub enum DebugBreakModeType {
+    Never = 0,
+    Always = 1,
+    Unhandled = 2,
 }
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
@@ -1419,6 +1535,14 @@ pub enum DebuggerPauseReason {
     Exception = 3,
     SingleStep = 4,
     Entrypoint = 5,
+}
+#[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
+pub enum DebuggerResumeType {
+    StepInto = 0,
+    StepOut = 1,
+    StepOver = 2,
+    Resume = 3,
 }
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
@@ -1533,11 +1657,19 @@ pub enum DeviceLevel {
 }
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
+pub enum DeviceSimulatorScalingMode {
+    ScaleToPhysicalSize = 0,
+    ActualResolution = 1,
+    FitToWindow = 2,
+}
+#[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub enum DeviceType {
     Unknown = 0,
     Desktop = 1,
     Tablet = 2,
     Phone = 3,
+    TV = 4,
 }
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
@@ -1561,10 +1693,36 @@ pub enum DialogTone {
 }
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
+pub enum DigitsRigDescriptionSide {
+    None = 0,
+    Left = 1,
+    Right = 2,
+}
+#[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
+pub enum DiscountType {
+    Uncategorized = 0,
+}
+#[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
+pub enum DisplayScalingMode {
+    Default = 0,
+    Legacy = 1,
+    Responsive = 2,
+}
+#[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub enum DisplaySize {
     Small = 0,
     Medium = 1,
     Large = 2,
+}
+#[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
+pub enum DomainType {
+    EXPERIENCE = 1,
+    GROUP = 2,
+    OAUTH = 3,
 }
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
@@ -1664,6 +1822,13 @@ pub enum ElasticBehavior {
 }
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
+pub enum EngineFolder {
+    Screenshots = 0,
+    Videos = 1,
+    Logs = 2,
+}
+#[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub enum EnviromentalPhysicsThrottle {
     DefaultAuto = 0,
     Disabled = 1,
@@ -1720,6 +1885,12 @@ pub enum ExperienceStateRecordingPlaybackMode {
 pub enum ExplosionType {
     NoCraters = 0,
     Craters = 1,
+}
+#[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
+pub enum ExternalEditorMode {
+    SystemDefault = 0,
+    UserSelectedEditor = 1,
 }
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
@@ -1845,6 +2016,12 @@ pub enum FilterErrorType {
 pub enum FilterResult {
     Accepted = 0,
     Rejected = 1,
+}
+#[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
+pub enum FilterType {
+    Exclude = 0,
+    Include = 1,
 }
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
@@ -2113,13 +2290,6 @@ pub enum GuiType {
 }
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
-pub enum HandRigDescriptionSide {
-    None = 0,
-    Left = 1,
-    Right = 2,
-}
-#[derive(Debug, Clone)]
-#[allow(nonstandard_style)]
 pub enum HandlesStyle {
     Resize = 0,
     Movement = 1,
@@ -2208,6 +2378,8 @@ pub enum HttpError {
     ConnectionClosed = 13,
     ServerProtocolError = 14,
     CreatorEnvironmentsNotSupportedByService = 15,
+    InactivityTimeout = 16,
+    TooManyOutstandingRequests = 17,
 }
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
@@ -2315,6 +2487,7 @@ pub enum ImageCombineType {
     Add = 3,
     Multiply = 4,
     AlphaBlend = 5,
+    NormalMapBlend = 6,
 }
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
@@ -2352,10 +2525,26 @@ pub enum InputActionType {
 }
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
+pub enum InputSink {
+    None = 0,
+    Activate = 1,
+    All = 100,
+}
+#[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub enum InputType {
     NoInput = 0,
     Constant = 12,
     Sin = 13,
+}
+#[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
+pub enum InstanceFileSyncStatus {
+    NotSynced = 0,
+    Errored = 1,
+    SyncedAsRoot = 2,
+    SyncedAsDescendant = 3,
+    AncestorErrored = 4,
 }
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
@@ -2671,6 +2860,13 @@ pub enum KeyCode {
     MouseX = 1031,
     MouseY = 1032,
     MousePosition = 1033,
+    TouchPosition = 1034,
+    MouseWheel = 1035,
+    TrackpadPan = 1040,
+    TrackpadPinch = 1045,
+    MouseDelta = 1048,
+    TouchDelta = 1049,
+    TouchPinch = 1050,
 }
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
@@ -2812,6 +3008,13 @@ pub enum LuauTypeCheckMode {
 }
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
+pub enum MakeupType {
+    Face = 0,
+    Lip = 1,
+    Eye = 2,
+}
+#[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub enum MarketplaceBulkPurchasePromptStatus {
     Completed = 1,
     Aborted = 2,
@@ -2926,6 +3129,11 @@ pub enum MeshPartDetailLevel {
     Level02 = 3,
     Level03 = 4,
     Level04 = 5,
+    Level05 = 6,
+    Level06 = 7,
+    Level07 = 8,
+    Level08 = 9,
+    Level09 = 10,
 }
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
@@ -3046,13 +3254,6 @@ pub enum MoveState {
     Pushing = 2,
     Stopping = 3,
     AirFree = 4,
-}
-#[derive(Debug, Clone)]
-#[allow(nonstandard_style)]
-pub enum MoverConstraintRootBehaviorMode {
-    Default = 0,
-    Disabled = 1,
-    Enabled = 2,
 }
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
@@ -3273,6 +3474,12 @@ pub enum PermissionLevelShown {
 }
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
+pub enum PhysicalConstraintType {
+    AnimationConstraint = 0,
+    Motor6D = 1,
+}
+#[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub enum PhysicsSimulationRate {
     Fixed240Hz = 0,
     Fixed120Hz = 1,
@@ -3324,7 +3531,8 @@ pub enum Platform {
     UWP = 18,
     PS5 = 19,
     MetaOS = 20,
-    None = 21,
+    Web = 21,
+    None = 22,
 }
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
@@ -3383,6 +3591,19 @@ pub enum PlayerExitReason {
 }
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
+pub enum PlayerPlatformSpenderStatus {
+    Unknown = 0,
+    Active = 1,
+    OtherPayer = 2,
+}
+#[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
+pub enum PluginConnectionTargetType {
+    Edit = 0,
+    Test = 1,
+}
+#[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub enum PoseEasingDirection {
     In = 0,
     Out = 1,
@@ -3432,6 +3653,14 @@ pub enum PreferredTextSize {
     Large = 2,
     Larger = 3,
     Largest = 4,
+}
+#[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
+pub enum PrefetchDownloadStatus {
+    NotStarted = 0,
+    InProgress = 1,
+    Completed = 2,
+    Failed = 3,
 }
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
@@ -3562,6 +3791,12 @@ pub enum ProximityPromptStyle {
 }
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
+pub enum PurchaseOption {
+    TimedOption = 1,
+    Permanent = 2,
+}
+#[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub enum QualityLevel {
     Automatic = 0,
     Level01 = 1,
@@ -3606,6 +3841,19 @@ pub enum ReadCapturesFromGalleryResult {
 }
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
+pub enum ReceiptDecision {
+    NotProcessedYet = 0,
+    Processed = 1,
+}
+#[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
+pub enum ReceiptType {
+    DeveloperProduct = 0,
+    RobuxTransferSender = 1,
+    RobuxTransferReceiver = 2,
+}
+#[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub enum RecommendationActionType {
     AddReaction = 0,
     RemoveReaction = 1,
@@ -3640,6 +3888,21 @@ pub enum RecommendationItemContentType {
 pub enum RecommendationItemVisibility {
     Private = 0,
     Public = 1,
+}
+#[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
+pub enum RecommendationPreferenceTargetType {
+    User = 0,
+    Universe = 1,
+    CustomTag = 2,
+}
+#[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
+pub enum RecommendationPreferenceType {
+    AddFollow = 0,
+    RemoveFollow = 1,
+    AddMute = 2,
+    RemoveMute = 3,
 }
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
@@ -3697,6 +3960,7 @@ pub enum ReservedHighlightId {
     Active = 131072,
     Hover = 262144,
     Selection = 524288,
+    NegatedPart = 1048576,
 }
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
@@ -3704,6 +3968,12 @@ pub enum RestPose {
     Default = 0,
     RotationsReset = 1,
     Custom = 2,
+}
+#[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
+pub enum RestPoseModel {
+    FromRigInACE = 0,
+    FromRigInFile = 1,
 }
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
@@ -3764,6 +4034,48 @@ pub enum RibbonTool {
     Ungroup = 8,
     None = 9,
     PivotEditor = 10,
+}
+#[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
+pub enum RigLabel {
+    Invalid = 0,
+    Root = 2,
+    LeftHip = 3,
+    LeftKnee = 4,
+    LeftAnkle = 5,
+    RightHip = 7,
+    RightKnee = 8,
+    RightAnkle = 9,
+    Waist = 11,
+    LeftShoulder = 12,
+    LeftElbow = 13,
+    LeftWrist = 14,
+    RightShoulder = 16,
+    RightElbow = 17,
+    RightWrist = 18,
+    Neck = 20,
+    Spine = 23,
+    Chest = 24,
+    HeadBase = 25,
+    LeftClavicle = 26,
+    RightClavicle = 27,
+    LeftToeBase = 28,
+    RightToeBase = 29,
+    Thumb1 = 30,
+    Thumb2 = 31,
+    Thumb3 = 32,
+    Index1 = 33,
+    Index2 = 34,
+    Index3 = 35,
+    Middle1 = 36,
+    Middle2 = 37,
+    Middle3 = 38,
+    Ring1 = 39,
+    Ring2 = 40,
+    Ring3 = 41,
+    Pinky1 = 42,
+    Pinky2 = 43,
+    Pinky3 = 44,
 }
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
@@ -3939,6 +4251,30 @@ pub enum ScreenOrientation {
 }
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
+pub enum ScreenshotCaptureResult {
+    Success = 0,
+    OtherError = 1,
+    NoDeviceSupport = 2,
+    NoSpaceOnDevice = 3,
+}
+#[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
+pub enum ScriptStoppedReason {
+    Breakpoint = 0,
+    Exception = 1,
+    Pause = 2,
+    Step = 3,
+    Entry = 4,
+}
+#[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
+pub enum ScriptVariableScope {
+    Local = 0,
+    Upvalue = 1,
+    Global = 2,
+}
+#[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub enum ScrollBarInset {
     None = 0,
     ScrollBar = 1,
@@ -3987,6 +4323,26 @@ pub enum SecurityCapability {
     PluginOrOpenCloud = 30,
     Assistant = 31,
     RemoteCommand = 32,
+    AssetRead = 33,
+    AssetManagement = 34,
+    DynamicGeneration = 35,
+    PlatformAvatarEditing = 36,
+    AssetCreateUpdate = 37,
+    Capture = 38,
+    SensitiveInput = 39,
+    Monetization = 40,
+    LoadOwnedAsset = 41,
+    Social = 42,
+    ServerCommunication = 43,
+    Logging = 44,
+    PromptExternalPurchase = 45,
+    Groups = 46,
+    Teleport = 47,
+    Consequences = 48,
+    Material = 49,
+    AvatarBehavior = 50,
+    AvatarAppearance = 51,
+    LoadUnownedAsset = 52,
 }
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
@@ -4015,6 +4371,8 @@ pub enum SelfViewPosition {
 pub enum SensorMode {
     Floor = 0,
     Ladder = 1,
+    ClassicFloor = 2,
+    ClassicLadder = 3,
 }
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
@@ -4068,6 +4426,13 @@ pub enum SizeConstraint {
     RelativeXY = 0,
     RelativeXX = 1,
     RelativeYY = 2,
+}
+#[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
+pub enum SolidPrimitiveType {
+    Capsule = 5,
+    Cone = 6,
+    RoundedBox = 7,
 }
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
@@ -4169,6 +4534,20 @@ pub enum StreamingPauseMode {
 pub enum StrokeSizingMode {
     FixedSize = 0,
     ScaledSize = 1,
+}
+#[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
+pub enum StudioCaptureBufferStatus {
+    NotStarted = 0,
+    Pending = 1,
+    Ready = 2,
+    Error = 3,
+}
+#[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
+pub enum StudioCaptureScreenshotFormat {
+    RGBA8 = 0,
+    PNG = 1,
 }
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
@@ -4491,6 +4870,9 @@ pub enum TableMajorAxis {
 }
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
+pub enum TagReplicability {}
+#[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub enum TeamCreateErrorState {
     PlaceSizeTooLarge = 0,
     PlaceSizeApproachingLimit = 1,
@@ -4600,6 +4982,28 @@ pub enum TerrainFace {
 }
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
+pub enum TerrainLiquidMergeOperation {
+    None = 0,
+    Source = 1,
+    Union = 2,
+    Difference = 3,
+    Intersect = 4,
+}
+#[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
+pub enum TerrainSolidMergeOperation {
+    None = 0,
+    Paint = 1,
+    Source = 2,
+    Union = 3,
+    Dig = 4,
+    Difference = 5,
+    Intersect = 6,
+    Cut = 7,
+    Place = 8,
+}
+#[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub enum TextChatMessageStatus {
     Unknown = 1,
     Success = 2,
@@ -4636,6 +5040,8 @@ pub enum TextInputType {
     PasswordShown = 6,
     Username = 7,
     OneTimePassword = 8,
+    NewPassword = 9,
+    NewPasswordShown = 10,
 }
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
@@ -4929,6 +5335,8 @@ pub enum UploadCaptureResult {
     CaptureNotInGallery = 3,
     IneligibleCapture = 4,
     UploadQuotaReached = 5,
+    UploadPending = 6,
+    UploadFailed = 7,
 }
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
@@ -5190,6 +5598,14 @@ pub enum VoiceControlPath {
 }
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
+pub enum VoiceRccReconnectReason {
+    Unknown = 0,
+    Migration = 1,
+    CloseRoom = 2,
+    FAEUpdate = 3,
+}
+#[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub enum VolumetricAudio {
     Disabled = 0,
     Automatic = 1,
@@ -5246,6 +5662,16 @@ pub enum WeldConstraintPreserve {
 }
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
+pub enum WhenUserFirstPlayed {
+    Unknown = 0,
+    Days0To30 = 1,
+    Days31To90 = 2,
+    Days91To180 = 3,
+    Days181To365 = 4,
+    Days366Plus = 5,
+}
+#[derive(Debug, Clone)]
+#[allow(nonstandard_style)]
 pub enum WhisperChatPrivacyMode {
     AllUsers = 0,
     NoOne = 1,
@@ -5275,6 +5701,7 @@ pub enum WrapLayerDebugMode {
     LayerCageFittedToBase = 12,
     LayerCageFittedToPrev = 13,
     PreWrapDeformerOuterCage = 14,
+    SkinningTransfer = 15,
 }
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
