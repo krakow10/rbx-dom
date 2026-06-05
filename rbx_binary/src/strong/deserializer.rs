@@ -5,6 +5,9 @@ use rbx_types::CFrame;
 
 use crate::core::RbxReadExt;
 
+#[cfg(feature = "rayon")]
+use rayon::iter::{IntoParallelIterator, ParallelIterator};
+
 // === GENERATED ===
 
 struct DeserializerClassPropertyChunks {
@@ -29,22 +32,16 @@ struct WedgePartPropertyChunks {
 
 // === HAND WRITTEN ===
 
-/// Deserialize a property of a specific instance index from a transformed prop chunk
-trait DeserializeProperty {
-    type Property;
-    type PropertyError;
-    fn decode_one_property(
-        &self,
-        instance_index: usize,
-    ) -> Result<Self::Property, Self::PropertyError>;
-}
-
 /// Transform a prop chunk into a form which can be deserialized in parallel
-trait DeserializeState {
+trait DeserializeState: Sized {
     /// Many properties cannot be decoded in parallel, such as Name.
     /// This is intended to contain the data that must be decoded sequentially required to reach a parallel decoding implementation.
-    type State: DeserializeProperty<Property = Self>;
+    #[cfg(not(feature = "rayon"))]
+    type State: IntoIterator<Item = Result<Self, Self::PropertyError>>;
+    #[cfg(feature = "rayon")]
+    type State: IntoParallelIterator<Item = Result<Self, Self::PropertyError>>;
     type StateError;
+    type PropertyError;
     fn decode_state(chunk: Vec<u8>, len: usize) -> Result<Self::State, Self::StateError>;
 }
 
@@ -52,15 +49,13 @@ struct PropertyChunk<T: DeserializeState> {
     state: T::State,
 }
 
-/// The index is out of range.
-struct IndexError;
-
 struct StringState {
     strings: Vec<String>,
 }
 
 impl DeserializeState for String {
     type State = StringState;
+    type PropertyError = ();
     type StateError = io::Error;
 
     fn decode_state(chunk: Vec<u8>, len: usize) -> Result<Self::State, Self::StateError> {
@@ -77,14 +72,23 @@ impl DeserializeState for String {
     }
 }
 
-impl DeserializeProperty for StringState {
-    type Property = String;
-    type PropertyError = IndexError;
+impl IntoIterator for StringState {
+    type Item = Result<String, ()>;
+    type IntoIter =
+        core::iter::Map<std::vec::IntoIter<String>, fn(std::string::String) -> Self::Item>;
 
-    fn decode_one_property(
-        &self,
-        instance_index: usize,
-    ) -> Result<Self::Property, Self::PropertyError> {
-        self.strings.get(instance_index).cloned().ok_or(IndexError)
+    fn into_iter(self) -> Self::IntoIter {
+        self.strings.into_iter().map(Ok)
+    }
+}
+
+#[cfg(feature = "rayon")]
+impl IntoParallelIterator for StringState {
+    type Item = Result<String, ()>;
+    type Iter =
+        rayon::iter::Map<rayon::vec::IntoIter<String>, fn(std::string::String) -> Self::Item>;
+
+    fn into_par_iter(self) -> Self::Iter {
+        self.strings.into_par_iter().map(Ok)
     }
 }
