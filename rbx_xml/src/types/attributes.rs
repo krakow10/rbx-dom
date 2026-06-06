@@ -21,7 +21,7 @@ pub fn write_attributes<W: Write>(
     }
 
     writer.write(XmlWriteEvent::start_element(XML_TAG_NAME).attr("name", property_name))?;
-    writer.write_string(&base64::encode(&buffer))?;
+    writer.write_base64(&buffer)?;
     writer.write(XmlWriteEvent::end_element())?;
 
     Ok(())

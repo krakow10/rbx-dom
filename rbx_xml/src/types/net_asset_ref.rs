@@ -28,7 +28,7 @@ pub fn write_net_asset_ref<W: Write>(
     let truncated_hash = &full_hash.as_bytes()[..16];
 
     writer.write(XmlWriteEvent::start_element(XML_TAG_NAME).attr("name", property_name))?;
-    writer.write_string(&base64::encode(truncated_hash))?;
+    writer.write_base64(truncated_hash)?;
     writer.write(XmlWriteEvent::end_element())?;
 
     Ok(())

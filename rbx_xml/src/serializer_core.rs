@@ -1,5 +1,6 @@
 use std::{fmt::Write as FmtWrite, io::Write};
 
+use base64::engine::{general_purpose::STANDARD as BASE64, Engine};
 use xml::writer::{EmitterConfig, EventWriter};
 
 pub use xml::writer::XmlEvent as XmlWriteEvent;
@@ -52,6 +53,13 @@ impl<W: Write> XmlEventWriter<W> {
     /// Writes a string slice to the output stream as characters or CDATA.
     pub fn write_string(&mut self, value: &str) -> Result<(), NewEncodeError> {
         write_characters_or_cdata(&mut self.inner, value)
+    }
+    pub fn write_base64(&mut self, value: impl AsRef<[u8]>) -> Result<(), NewEncodeError> {
+        BASE64.encode_string(value, &mut self.character_buffer);
+        write_characters_or_cdata(&mut self.inner, &self.character_buffer)?;
+        self.character_buffer.clear();
+
+        Ok(())
     }
 
     /// Writes a value that implements `Display` as characters or CDATA. Resuses

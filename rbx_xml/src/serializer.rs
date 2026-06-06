@@ -289,7 +289,7 @@ fn serialize_shared_strings<W: Write>(
                 .attr("md5", &base64::encode(truncated_hash)),
         )?;
 
-        writer.write_string(&base64::encode(value.data()))?;
+        writer.write_base64(value.data())?;
         writer.end_element()?;
     }
 
