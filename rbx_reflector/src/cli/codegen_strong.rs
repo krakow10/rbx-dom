@@ -516,7 +516,9 @@ fn get_fields_info<'db>(
     for prop in descriptor.properties.values() {
         match &prop.kind {
             rbx_reflection::PropertyKind::Canonical {
-                serialization: rbx_reflection::PropertySerialization::Serializes,
+                serialization:
+                    rbx_reflection::PropertySerialization::Serializes
+                    | rbx_reflection::PropertySerialization::SerializesAs(_),
             } => (),
             // skip properties which are migrated or serialize as something else
             _ => continue,
