@@ -1,14 +1,16 @@
 use std::io;
 
-use rbx_dom_strong::enums;
+use rbx_dom_strong::{classes, enums};
 use rbx_types::{CFrame, Matrix3, Vector3};
 
 use crate::core::RbxReadExt;
 
 #[cfg(not(feature = "rayon"))]
 use core::iter::IntoIterator as IntoIter;
+use rayon::iter::plumbing::{bridge, Consumer, ProducerCallback, UnindexedConsumer};
 #[cfg(feature = "rayon")]
 use rayon::iter::IntoParallelIterator as IntoIter;
+use rayon::iter::{IndexedParallelIterator, ParallelIterator};
 
 // === GENERATED ===
 
@@ -18,17 +20,130 @@ struct DeserializerClassPropertyChunks {
     WedgePart: Option<WedgePartPropertyChunks>,
 }
 
+struct InstanceIter {
+    Name: <<String as IntoPropertyChunkState>::State as IntoIter>::Iter,
+}
+impl ParallelIterator for InstanceIter {
+    type Item = classes::Instance;
+
+    fn drive_unindexed<C>(self, consumer: C) -> C::Result
+    where
+        C: UnindexedConsumer<Self::Item>,
+    {
+        bridge(self, consumer)
+    }
+
+    fn opt_len(&self) -> Option<usize> {
+        Some(self.len())
+    }
+}
+impl IndexedParallelIterator for InstanceIter {
+    fn drive<C>(self, consumer: C) -> C::Result
+    where
+        C: Consumer<Self::Item>,
+    {
+        bridge(self, consumer)
+    }
+
+    fn len(&self) -> usize {
+        self.Name.len()
+    }
+
+    fn with_producer<CB>(self, callback: CB) -> CB::Output
+    where
+        CB: ProducerCallback<Self::Item>,
+    {
+        // Drain every item, and then the vector only needs to free its buffer.
+        self.Name
+            .map(|name| classes::Instance {
+                Name: name,
+                ..Default::default()
+            })
+            .with_producer(callback)
+    }
+}
 struct InstancePropertyChunks {
     Name: Option<PropertyChunk<String>>,
 }
+impl IntoIter for InstancePropertyChunks {
+    type Item = classes::Instance;
+    type Iter = InstanceIter;
+    fn into_par_iter(self) -> Self::Iter {
+        Self::Iter {
+            Name: self.Name.unwrap().state.into_par_iter(),
+        }
+    }
+}
+
+struct BasePartIter {
+    superclass: InstanceIter,
+    CFrame: <<CFrame as IntoPropertyChunkState>::State as IntoIter>::Iter,
+}
+impl ParallelIterator for BasePartIter {
+    type Item = classes::BasePart;
+
+    fn drive_unindexed<C>(self, consumer: C) -> C::Result
+    where
+        C: UnindexedConsumer<Self::Item>,
+    {
+        bridge(self, consumer)
+    }
+
+    fn opt_len(&self) -> Option<usize> {
+        Some(self.len())
+    }
+}
+impl IndexedParallelIterator for BasePartIter {
+    fn drive<C>(self, consumer: C) -> C::Result
+    where
+        C: Consumer<Self::Item>,
+    {
+        bridge(self, consumer)
+    }
+
+    fn len(&self) -> usize {
+        self.superclass.len()
+    }
+
+    fn with_producer<CB>(self, callback: CB) -> CB::Output
+    where
+        CB: ProducerCallback<Self::Item>,
+    {
+        // Drain every item, and then the vector only needs to free its buffer.
+        self.superclass
+            .zip_eq(self.CFrame)
+            .map(|(superclass, cframe)| classes::BasePart {
+                superclass: classes::PVInstance {
+                    superclass,
+                    ..Default::default()
+                },
+                CFrame: cframe,
+                ..Default::default()
+            })
+            .with_producer(callback)
+    }
+}
+
 struct BasePartPropertyChunks {
     superclass: InstancePropertyChunks,
     CFrame: Option<PropertyChunk<CFrame>>,
 }
+impl IntoIter for BasePartPropertyChunks {
+    type Item = classes::BasePart;
+    type Iter = BasePartIter;
+    fn into_par_iter(self) -> Self::Iter {
+        Self::Iter {
+            superclass: self.superclass.into_par_iter(),
+            CFrame: self.CFrame.unwrap().state.into_par_iter(),
+        }
+    }
+}
+
 struct PartPropertyChunks {
     superclass: BasePartPropertyChunks,
     Shape: Option<PropertyChunk<enums::FormFactor>>,
 }
+
 struct WedgePartPropertyChunks {
     superclass: BasePartPropertyChunks,
 }
@@ -39,7 +154,7 @@ struct WedgePartPropertyChunks {
 trait IntoPropertyChunkState: Sized {
     /// Many properties cannot be decoded in parallel, such as Name.
     /// This is intended to contain the data that must be decoded sequentially required to reach a parallel decoding implementation.
-    type State: IntoIter<Item = Self>;
+    type State: IntoIter<Item = Self, Iter: IndexedParallelIterator>;
     type Error;
     /// All fallible operations must happen ahead of iteration
     fn into_state(chunk: Vec<u8>, len: usize) -> Result<Self::State, Self::Error>;
