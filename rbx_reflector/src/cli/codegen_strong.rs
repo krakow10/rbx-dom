@@ -3,7 +3,7 @@ use std::path::PathBuf;
 use clap::Parser;
 use quote::ToTokens;
 use rbx_reflection::{ClassDescriptor, DataType, EnumDescriptor, ReflectionDatabase};
-use rbx_types::Variant;
+use rbx_types::{Variant, VariantType};
 
 /// Generate strong types for all classes and enums.
 #[derive(Debug, Parser)]
@@ -208,6 +208,13 @@ impl ToTokens for WrapToTokens<&rbx_types::Color3> {
         append(quote::quote! {Color3::new(#r,#g,#b)});
     }
 }
+impl ToTokens for WrapToTokens<&rbx_types::Color3uint8> {
+    fn to_tokens(&self, tokens: &mut proc_macro2::TokenStream) {
+        let mut append = |tt| tokens.extend(tt);
+        let &WrapToTokens(rbx_types::Color3uint8 { r, g, b }) = self;
+        append(quote::quote! {Color3uint8::new(#r,#g,#b)});
+    }
+}
 
 impl ToTokens for WrapToTokens<rbx_types::FontWeight> {
     fn to_tokens(&self, tokens: &mut proc_macro2::TokenStream) {
@@ -409,10 +416,8 @@ impl ToTokens for WrapToTokens<&Variant> {
                 rbx_types::PhysicalProperties::Default => append(q! {PhysicalProperties::Default}),
             },
             Variant::Color3uint8(value) => {
-                let r = value.r;
-                let g = value.g;
-                let b = value.b;
-                append(q! {Color3uint8::new(#r,#g,#b)});
+                let value = WrapToTokens(value);
+                append(q! {#value});
             }
             Variant::Int64(value) => append(q! {#value}),
             Variant::SharedString(value) => {
@@ -539,12 +544,22 @@ fn get_fields_info<'db>(
             .get(prop.name)
             .unwrap_or_else(|| prop.data_type.ty().fallback_default_value().unwrap());
         let default_value: syn::FieldValue = match &prop.data_type {
-            DataType::Value(_) => {
-                let value = WrapToTokens(default_value_variant);
-                syn::parse_quote! {
-                    #ident: #value
+            &DataType::Value(expected_type) => match (default_value_variant, expected_type) {
+                (actual, expected) if actual.ty() == expected => {
+                    let value = WrapToTokens(default_value_variant);
+                    syn::parse_quote! {
+                        #ident: #value
+                    }
                 }
-            }
+                // Special case for incorrect default value type in BasePart.Color
+                (Variant::Color3uint8(color3uint8), VariantType::Color3) => {
+                    let value = WrapToTokens(color3uint8);
+                    syn::parse_quote! {
+                        #ident: #value.into()
+                    }
+                }
+                _ => panic!("Default value type does not match prop type!"),
+            },
             DataType::Enum(enum_name) => {
                 let Variant::Enum(value) = default_value_variant else {
                     panic!("Data type is Enum but default value is not Enum");
