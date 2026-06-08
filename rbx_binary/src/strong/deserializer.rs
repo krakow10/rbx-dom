@@ -133,7 +133,9 @@ impl IntoIter for BasePartPropertyChunks {
     type Iter = BasePartIter;
     fn into_par_iter(self) -> Self::Iter {
         Self::Iter {
+            // This is illegal! The BasePart defaults for Instance must be filled in.
             superclass: self.superclass.into_par_iter(),
+            // TODO: use serialize code to generate a PropertyChunk<CFrame> full of default values for this type
             CFrame: self.CFrame.unwrap().state.into_par_iter(),
         }
     }
