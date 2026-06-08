@@ -451,7 +451,7 @@ impl ToTokens for WrapToTokens<&Variant> {
                     let iter_v = value.iter().map(|(_, v)| WrapToTokens(v));
                     append(q! {
                         Attributes::from_iter([
-                            #((#iter_k.to_owned(),#iter_v)),*
+                            #((#iter_k.to_owned(),#iter_v.into())),*
                         ])
                     })
                 }
