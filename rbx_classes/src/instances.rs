@@ -29,9 +29,12 @@ impl Default for Accessory {
         let superclass = Object::default();
         let superclass = Instance {
             superclass,
+            Archivable: true,
+            Attributes: Attributes::new(),
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
+            Sandboxed: false,
             SourceAssetId: -1i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
@@ -67,9 +70,12 @@ impl Default for AccessoryDescription {
         let superclass = Object::default();
         let superclass = Instance {
             superclass,
+            Archivable: true,
+            Attributes: Attributes::new(),
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
+            Sandboxed: false,
             SourceAssetId: -1i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
@@ -109,9 +115,12 @@ impl Default for Accoutrement {
         let superclass = Object::default();
         let superclass = Instance {
             superclass,
+            Archivable: true,
+            Attributes: Attributes::new(),
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
+            Sandboxed: false,
             SourceAssetId: -1i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
@@ -161,9 +170,12 @@ impl Default for AdGui {
         let superclass = Object::default();
         let superclass = Instance {
             superclass,
+            Archivable: true,
+            Attributes: Attributes::new(),
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
+            Sandboxed: false,
             SourceAssetId: 0i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
@@ -243,9 +255,12 @@ impl Default for AirController {
         let superclass = Object::default();
         let superclass = Instance {
             superclass,
+            Archivable: true,
+            Attributes: Attributes::new(),
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
+            Sandboxed: false,
             SourceAssetId: -1i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
@@ -288,9 +303,12 @@ impl Default for AlignOrientation {
         let superclass = Object::default();
         let superclass = Instance {
             superclass,
+            Archivable: true,
+            Attributes: Attributes::new(),
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
+            Sandboxed: false,
             SourceAssetId: -1i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
@@ -340,9 +358,12 @@ impl Default for AlignPosition {
         let superclass = Object::default();
         let superclass = Instance {
             superclass,
+            Archivable: true,
+            Attributes: Attributes::new(),
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
+            Sandboxed: false,
             SourceAssetId: -1i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
@@ -384,9 +405,12 @@ impl Default for AnalyticsService {
         let superclass = Object::default();
         let superclass = Instance {
             superclass,
+            Archivable: true,
+            Attributes: Attributes::new(),
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
+            Sandboxed: false,
             SourceAssetId: 0i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
@@ -413,9 +437,12 @@ impl Default for AngularVelocity {
         let superclass = Object::default();
         let superclass = Instance {
             superclass,
+            Archivable: true,
+            Attributes: Attributes::new(),
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
+            Sandboxed: false,
             SourceAssetId: -1i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
@@ -450,9 +477,12 @@ impl Default for Animation {
         let superclass = Object::default();
         let superclass = Instance {
             superclass,
+            Archivable: true,
+            Attributes: Attributes::new(),
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
+            Sandboxed: false,
             SourceAssetId: -1i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
@@ -478,9 +508,12 @@ impl Default for AnimationClip {
         let superclass = Object::default();
         let superclass = Instance {
             superclass,
+            Archivable: true,
+            Attributes: Attributes::new(),
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
+            Sandboxed: false,
             SourceAssetId: 0i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
@@ -517,9 +550,12 @@ impl Default for AnimationConstraint {
         let superclass = Object::default();
         let superclass = Instance {
             superclass,
+            Archivable: true,
+            Attributes: Attributes::new(),
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
+            Sandboxed: false,
             SourceAssetId: -1i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
@@ -604,9 +640,12 @@ impl Default for AnimationNodeDefinition {
         let superclass = Object::default();
         let superclass = Instance {
             superclass,
+            Archivable: true,
+            Attributes: Attributes::new(),
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
+            Sandboxed: false,
             SourceAssetId: -1i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
@@ -638,9 +677,12 @@ impl Default for AnimationRigData {
         let superclass = Object::default();
         let superclass = Instance {
             superclass,
+            Archivable: true,
+            Attributes: Attributes::new(),
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
+            Sandboxed: false,
             SourceAssetId: -1i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
@@ -669,9 +711,12 @@ impl Default for AnimationTrack {
         let superclass = Object::default();
         let superclass = Instance {
             superclass,
+            Archivable: true,
+            Attributes: Attributes::new(),
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
+            Sandboxed: false,
             SourceAssetId: 0i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
@@ -695,9 +740,12 @@ impl Default for Animator {
         let superclass = Object::default();
         let superclass = Instance {
             superclass,
+            Archivable: true,
+            Attributes: Attributes::new(),
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
+            Sandboxed: false,
             SourceAssetId: -1i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
@@ -777,9 +825,12 @@ impl Default for ArcHandles {
         let superclass = Object::default();
         let superclass = Instance {
             superclass,
+            Archivable: true,
+            Attributes: Attributes::new(),
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
+            Sandboxed: false,
             SourceAssetId: -1i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
@@ -825,9 +876,12 @@ impl Default for AssetDeliveryProxy {
         let superclass = Object::default();
         let superclass = Instance {
             superclass,
+            Archivable: true,
+            Attributes: Attributes::new(),
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
+            Sandboxed: false,
             SourceAssetId: 0i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
@@ -879,9 +933,12 @@ impl Default for AssetPatchSettings {
         let superclass = Object::default();
         let superclass = Instance {
             superclass,
+            Archivable: true,
+            Attributes: Attributes::new(),
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
+            Sandboxed: false,
             SourceAssetId: 0i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
@@ -915,9 +972,12 @@ impl Default for AssetService {
         let superclass = Object::default();
         let superclass = Instance {
             superclass,
+            Archivable: true,
+            Attributes: Attributes::new(),
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
+            Sandboxed: false,
             SourceAssetId: -1i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
@@ -954,9 +1014,12 @@ impl Default for Atmosphere {
         let superclass = Object::default();
         let superclass = Instance {
             superclass,
+            Archivable: true,
+            Attributes: Attributes::new(),
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
+            Sandboxed: false,
             SourceAssetId: -1i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
@@ -994,9 +1057,12 @@ impl Default for Attachment {
         let superclass = Object::default();
         let superclass = Instance {
             superclass,
+            Archivable: true,
+            Attributes: Attributes::new(),
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
+            Sandboxed: false,
             SourceAssetId: -1i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
@@ -1022,9 +1088,12 @@ impl Default for AudioAnalyzer {
         let superclass = Object::default();
         let superclass = Instance {
             superclass,
+            Archivable: true,
+            Attributes: Attributes::new(),
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
+            Sandboxed: false,
             SourceAssetId: -1i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
@@ -1049,9 +1118,12 @@ impl Default for AudioChannelMixer {
         let superclass = Object::default();
         let superclass = Instance {
             superclass,
+            Archivable: true,
+            Attributes: Attributes::new(),
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
+            Sandboxed: false,
             SourceAssetId: -1i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
@@ -1075,9 +1147,12 @@ impl Default for AudioChannelSplitter {
         let superclass = Object::default();
         let superclass = Instance {
             superclass,
+            Archivable: true,
+            Attributes: Attributes::new(),
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
+            Sandboxed: false,
             SourceAssetId: -1i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
@@ -1104,9 +1179,12 @@ impl Default for AudioChorus {
         let superclass = Object::default();
         let superclass = Instance {
             superclass,
+            Archivable: true,
+            Attributes: Attributes::new(),
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
+            Sandboxed: false,
             SourceAssetId: -1i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
@@ -1138,9 +1216,12 @@ impl Default for AudioCompressor {
         let superclass = Object::default();
         let superclass = Instance {
             superclass,
+            Archivable: true,
+            Attributes: Attributes::new(),
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
+            Sandboxed: false,
             SourceAssetId: -1i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
@@ -1173,9 +1254,12 @@ impl Default for AudioDeviceInput {
         let superclass = Object::default();
         let superclass = Instance {
             superclass,
+            Archivable: true,
+            Attributes: Attributes::new(),
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
+            Sandboxed: false,
             SourceAssetId: -1i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
@@ -1203,9 +1287,12 @@ impl Default for AudioDeviceOutput {
         let superclass = Object::default();
         let superclass = Instance {
             superclass,
+            Archivable: true,
+            Attributes: Attributes::new(),
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
+            Sandboxed: false,
             SourceAssetId: -1i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
@@ -1230,9 +1317,12 @@ impl Default for AudioDistortion {
         let superclass = Object::default();
         let superclass = Instance {
             superclass,
+            Archivable: true,
+            Attributes: Attributes::new(),
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
+            Sandboxed: false,
             SourceAssetId: -1i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
@@ -1262,9 +1352,12 @@ impl Default for AudioEcho {
         let superclass = Object::default();
         let superclass = Instance {
             superclass,
+            Archivable: true,
+            Attributes: Attributes::new(),
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
+            Sandboxed: false,
             SourceAssetId: -1i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
@@ -1298,9 +1391,12 @@ impl Default for AudioEmitter {
         let superclass = Object::default();
         let superclass = Instance {
             superclass,
+            Archivable: true,
+            Attributes: Attributes::new(),
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
+            Sandboxed: false,
             SourceAssetId: -1i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
@@ -1333,9 +1429,12 @@ impl Default for AudioEqualizer {
         let superclass = Object::default();
         let superclass = Instance {
             superclass,
+            Archivable: true,
+            Attributes: Attributes::new(),
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
+            Sandboxed: false,
             SourceAssetId: -1i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
@@ -1364,9 +1463,12 @@ impl Default for AudioFader {
         let superclass = Object::default();
         let superclass = Instance {
             superclass,
+            Archivable: true,
+            Attributes: Attributes::new(),
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
+            Sandboxed: false,
             SourceAssetId: -1i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
@@ -1395,9 +1497,12 @@ impl Default for AudioFilter {
         let superclass = Object::default();
         let superclass = Instance {
             superclass,
+            Archivable: true,
+            Attributes: Attributes::new(),
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
+            Sandboxed: false,
             SourceAssetId: -1i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
@@ -1428,9 +1533,12 @@ impl Default for AudioFlanger {
         let superclass = Object::default();
         let superclass = Instance {
             superclass,
+            Archivable: true,
+            Attributes: Attributes::new(),
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
+            Sandboxed: false,
             SourceAssetId: -1i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
@@ -1468,9 +1576,12 @@ impl Default for AudioGate {
         let superclass = Object::default();
         let superclass = Instance {
             superclass,
+            Archivable: true,
+            Attributes: Attributes::new(),
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
+            Sandboxed: false,
             SourceAssetId: -1i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
@@ -1499,9 +1610,12 @@ impl Default for AudioLimiter {
         let superclass = Object::default();
         let superclass = Instance {
             superclass,
+            Archivable: true,
+            Attributes: Attributes::new(),
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
+            Sandboxed: false,
             SourceAssetId: -1i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
@@ -1532,9 +1646,12 @@ impl Default for AudioListener {
         let superclass = Object::default();
         let superclass = Instance {
             superclass,
+            Archivable: true,
+            Attributes: Attributes::new(),
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
+            Sandboxed: false,
             SourceAssetId: -1i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
@@ -1573,9 +1690,12 @@ impl Default for AudioPitchShifter {
         let superclass = Object::default();
         let superclass = Instance {
             superclass,
+            Archivable: true,
+            Attributes: Attributes::new(),
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
+            Sandboxed: false,
             SourceAssetId: -1i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
@@ -1609,9 +1729,12 @@ impl Default for AudioPlayer {
         let superclass = Object::default();
         let superclass = Instance {
             superclass,
+            Archivable: true,
+            Attributes: Attributes::new(),
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
+            Sandboxed: false,
             SourceAssetId: -1i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
@@ -1643,9 +1766,12 @@ impl Default for AudioRecorder {
         let superclass = Object::default();
         let superclass = Instance {
             superclass,
+            Archivable: true,
+            Attributes: Attributes::new(),
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
+            Sandboxed: false,
             SourceAssetId: -1i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
@@ -1681,9 +1807,12 @@ impl Default for AudioReverb {
         let superclass = Object::default();
         let superclass = Instance {
             superclass,
+            Archivable: true,
+            Attributes: Attributes::new(),
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
+            Sandboxed: false,
             SourceAssetId: -1i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
@@ -1726,9 +1855,12 @@ impl Default for AudioSearchParams {
         let superclass = Object::default();
         let superclass = Instance {
             superclass,
+            Archivable: true,
+            Attributes: Attributes::new(),
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
+            Sandboxed: false,
             SourceAssetId: 0i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
@@ -1760,9 +1892,12 @@ impl Default for AudioSpeechToText {
         let superclass = Object::default();
         let superclass = Instance {
             superclass,
+            Archivable: true,
+            Attributes: Attributes::new(),
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
+            Sandboxed: false,
             SourceAssetId: -1i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
@@ -1794,9 +1929,12 @@ impl Default for AudioTextToSpeech {
         let superclass = Object::default();
         let superclass = Instance {
             superclass,
+            Archivable: true,
+            Attributes: Attributes::new(),
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
+            Sandboxed: false,
             SourceAssetId: -1i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
@@ -1833,9 +1971,12 @@ impl Default for AudioTremolo {
         let superclass = Object::default();
         let superclass = Instance {
             superclass,
+            Archivable: true,
+            Attributes: Attributes::new(),
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
+            Sandboxed: false,
             SourceAssetId: -1i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
@@ -1870,9 +2011,12 @@ impl Default for AuroraScript {
         let superclass = Object::default();
         let superclass = Instance {
             superclass,
+            Archivable: true,
+            Attributes: Attributes::new(),
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
+            Sandboxed: false,
             SourceAssetId: 0i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
@@ -1909,9 +2053,12 @@ impl Default for AuroraScriptObject {
         let superclass = Object::default();
         let superclass = Instance {
             superclass,
+            Archivable: true,
+            Attributes: Attributes::new(),
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
+            Sandboxed: false,
             SourceAssetId: 0i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
@@ -1950,9 +2097,12 @@ impl Default for AuroraService {
         let superclass = Object::default();
         let superclass = Instance {
             superclass,
+            Archivable: true,
+            Attributes: Attributes::new(),
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
+            Sandboxed: false,
             SourceAssetId: 0i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
@@ -1986,9 +2136,12 @@ impl Default for AvatarAbilityRules {
         let superclass = Object::default();
         let superclass = Instance {
             superclass,
+            Archivable: true,
+            Attributes: Attributes::new(),
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
+            Sandboxed: false,
             SourceAssetId: -1i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
@@ -2040,9 +2193,12 @@ impl Default for AvatarAccessoryRules {
         let superclass = Object::default();
         let superclass = Instance {
             superclass,
+            Archivable: true,
+            Attributes: Attributes::new(),
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
+            Sandboxed: false,
             SourceAssetId: -1i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
@@ -2108,9 +2264,12 @@ impl Default for AvatarAnimationRules {
         let superclass = Object::default();
         let superclass = Instance {
             superclass,
+            Archivable: true,
+            Attributes: Attributes::new(),
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
+            Sandboxed: false,
             SourceAssetId: -1i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
@@ -2186,9 +2345,12 @@ impl Default for AvatarBodyRules {
         let superclass = Object::default();
         let superclass = Instance {
             superclass,
+            Archivable: true,
+            Attributes: Attributes::new(),
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
+            Sandboxed: false,
             SourceAssetId: -1i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
@@ -2277,9 +2439,12 @@ impl Default for AvatarClothingRules {
         let superclass = Object::default();
         let superclass = Instance {
             superclass,
+            Archivable: true,
+            Attributes: Attributes::new(),
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
+            Sandboxed: false,
             SourceAssetId: -1i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
@@ -2332,9 +2497,12 @@ impl Default for AvatarCollisionRules {
         let superclass = Object::default();
         let superclass = Instance {
             superclass,
+            Archivable: true,
+            Attributes: Attributes::new(),
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
+            Sandboxed: false,
             SourceAssetId: -1i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
@@ -2385,9 +2553,12 @@ impl Default for AvatarRules {
         let superclass = Object::default();
         let superclass = Instance {
             superclass,
+            Archivable: true,
+            Attributes: Attributes::new(),
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
+            Sandboxed: false,
             SourceAssetId: -1i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
@@ -2427,9 +2598,12 @@ impl Default for BackpackItem {
         let superclass = Object::default();
         let superclass = Instance {
             superclass,
+            Archivable: true,
+            Attributes: Attributes::new(),
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
+            Sandboxed: false,
             SourceAssetId: 0i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
@@ -2444,6 +2618,7 @@ impl Default for BackpackItem {
             ModelStreamingMode: enums::ModelStreamingMode::Default,
             NeedsPivotMigration: false,
             PrimaryPart: Ref::none(),
+            Scale: 0f32,
             SlimHash: SharedString::new(b"".to_vec()),
             WorldPivotData: None,
         };
@@ -2481,9 +2656,12 @@ impl Default for BallSocketConstraint {
         let superclass = Object::default();
         let superclass = Instance {
             superclass,
+            Archivable: true,
+            Attributes: Attributes::new(),
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
+            Sandboxed: false,
             SourceAssetId: -1i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
@@ -2530,9 +2708,12 @@ impl Default for BaseCoreGuiConfiguration {
         let superclass = Object::default();
         let superclass = Instance {
             superclass,
+            Archivable: true,
+            Attributes: Attributes::new(),
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
+            Sandboxed: false,
             SourceAssetId: 0i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
@@ -2557,9 +2738,12 @@ impl Default for BaseImportData {
         let superclass = Object::default();
         let superclass = Instance {
             superclass,
+            Archivable: true,
+            Attributes: Attributes::new(),
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
+            Sandboxed: false,
             SourceAssetId: 0i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
@@ -2593,6 +2777,7 @@ pub struct BasePart {
     pub CastShadow: bool,
     pub CollisionGroup: String,
     pub CollisionGroupId: i32,
+    pub Color: Color3,
     pub CustomPhysicalProperties: PhysicalProperties,
     pub EnableFluidForces: bool,
     pub FrontParamA: f32,
@@ -2606,6 +2791,7 @@ pub struct BasePart {
     pub Locked: bool,
     pub Massless: bool,
     pub Material: enums::Material,
+    pub MaterialVariant: String,
     pub PivotOffset: CFrame,
     pub Reflectance: f32,
     pub RightParamA: f32,
@@ -2614,6 +2800,7 @@ pub struct BasePart {
     pub RightSurfaceInput: enums::InputType,
     pub RootPriority: i32,
     pub RotVelocity: Vector3,
+    pub Size: Vector3,
     pub TopParamA: f32,
     pub TopParamB: f32,
     pub TopSurface: enums::SurfaceType,
@@ -2627,9 +2814,12 @@ impl Default for BasePart {
         let superclass = Object::default();
         let superclass = Instance {
             superclass,
+            Archivable: true,
+            Attributes: Attributes::new(),
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
+            Sandboxed: false,
             SourceAssetId: 0i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
@@ -2654,6 +2844,7 @@ impl Default for BasePart {
             CastShadow: false,
             CollisionGroup: "".to_owned(),
             CollisionGroupId: 0i32,
+            Color: Color3::new(0f32, 0f32, 0f32),
             CustomPhysicalProperties: PhysicalProperties::Default,
             EnableFluidForces: false,
             FrontParamA: 0f32,
@@ -2667,6 +2858,7 @@ impl Default for BasePart {
             Locked: false,
             Massless: false,
             Material: enums::Material::Plastic,
+            MaterialVariant: "".to_owned(),
             PivotOffset: CFrame::identity(),
             Reflectance: 0f32,
             RightParamA: 0f32,
@@ -2675,6 +2867,7 @@ impl Default for BasePart {
             RightSurfaceInput: enums::InputType::NoInput,
             RootPriority: 0i32,
             RotVelocity: Vector3::new(0f32, 0f32, 0f32),
+            Size: Vector3::new(0f32, 0f32, 0f32),
             TopParamA: 0f32,
             TopParamB: 0f32,
             TopSurface: enums::SurfaceType::Smooth,
@@ -2715,9 +2908,12 @@ impl Default for BaseScript {
         let superclass = Object::default();
         let superclass = Instance {
             superclass,
+            Archivable: true,
+            Attributes: Attributes::new(),
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
+            Sandboxed: false,
             SourceAssetId: 0i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
@@ -2753,9 +2949,12 @@ impl Default for BaseWrap {
         let superclass = Object::default();
         let superclass = Instance {
             superclass,
+            Archivable: true,
+            Attributes: Attributes::new(),
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
+            Sandboxed: false,
             SourceAssetId: 0i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
@@ -2803,9 +3002,12 @@ impl Default for Beam {
         let superclass = Object::default();
         let superclass = Instance {
             superclass,
+            Archivable: true,
+            Attributes: Attributes::new(),
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
+            Sandboxed: false,
             SourceAssetId: -1i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
@@ -2859,9 +3061,12 @@ impl Default for BevelMesh {
         let superclass = Object::default();
         let superclass = Instance {
             superclass,
+            Archivable: true,
+            Attributes: Attributes::new(),
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
+            Sandboxed: false,
             SourceAssetId: 0i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
@@ -2908,9 +3113,12 @@ impl Default for BillboardGui {
         let superclass = Object::default();
         let superclass = Instance {
             superclass,
+            Archivable: true,
+            Attributes: Attributes::new(),
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
+            Sandboxed: false,
             SourceAssetId: -1i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
@@ -2967,9 +3175,12 @@ impl Default for BinaryStringValue {
         let superclass = Object::default();
         let superclass = Instance {
             superclass,
+            Archivable: true,
+            Attributes: Attributes::new(),
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
+            Sandboxed: false,
             SourceAssetId: -1i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
@@ -3020,9 +3231,12 @@ impl Default for BloomEffect {
         let superclass = Object::default();
         let superclass = Instance {
             superclass,
+            Archivable: true,
+            Attributes: Attributes::new(),
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
+            Sandboxed: false,
             SourceAssetId: -1i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
@@ -3052,9 +3266,12 @@ impl Default for BlurEffect {
         let superclass = Object::default();
         let superclass = Instance {
             superclass,
+            Archivable: true,
+            Attributes: Attributes::new(),
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
+            Sandboxed: false,
             SourceAssetId: -1i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
@@ -3084,9 +3301,12 @@ impl Default for BodyAngularVelocity {
         let superclass = Object::default();
         let superclass = Instance {
             superclass,
+            Archivable: true,
+            Attributes: Attributes::new(),
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
+            Sandboxed: false,
             SourceAssetId: -1i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
@@ -3118,9 +3338,12 @@ impl Default for BodyColors {
         let superclass = Object::default();
         let superclass = Instance {
             superclass,
+            Archivable: true,
+            Attributes: Attributes::new(),
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
+            Sandboxed: false,
             SourceAssetId: -1i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
@@ -3150,9 +3373,12 @@ impl Default for BodyForce {
         let superclass = Object::default();
         let superclass = Instance {
             superclass,
+            Archivable: true,
+            Attributes: Attributes::new(),
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
+            Sandboxed: false,
             SourceAssetId: -1i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
@@ -3180,9 +3406,12 @@ impl Default for BodyGyro {
         let superclass = Object::default();
         let superclass = Instance {
             superclass,
+            Archivable: true,
+            Attributes: Attributes::new(),
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
+            Sandboxed: false,
             SourceAssetId: -1i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
@@ -3222,9 +3451,12 @@ impl Default for BodyPartDescription {
         let superclass = Object::default();
         let superclass = Instance {
             superclass,
+            Archivable: true,
+            Attributes: Attributes::new(),
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
+            Sandboxed: false,
             SourceAssetId: -1i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
@@ -3255,9 +3487,12 @@ impl Default for BodyPosition {
         let superclass = Object::default();
         let superclass = Instance {
             superclass,
+            Archivable: true,
+            Attributes: Attributes::new(),
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
+            Sandboxed: false,
             SourceAssetId: -1i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
@@ -3286,9 +3521,12 @@ impl Default for BodyThrust {
         let superclass = Object::default();
         let superclass = Instance {
             superclass,
+            Archivable: true,
+            Attributes: Attributes::new(),
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
+            Sandboxed: false,
             SourceAssetId: -1i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
@@ -3316,9 +3554,12 @@ impl Default for BodyVelocity {
         let superclass = Object::default();
         let superclass = Instance {
             superclass,
+            Archivable: true,
+            Attributes: Attributes::new(),
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
+            Sandboxed: false,
             SourceAssetId: -1i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
@@ -3353,9 +3594,12 @@ impl Default for BoolValue {
         let superclass = Object::default();
         let superclass = Instance {
             superclass,
+            Archivable: true,
+            Attributes: Attributes::new(),
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
+            Sandboxed: false,
             SourceAssetId: -1i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
@@ -3381,9 +3625,12 @@ impl Default for BoxHandleAdornment {
         let superclass = Object::default();
         let superclass = Instance {
             superclass,
+            Archivable: true,
+            Attributes: Attributes::new(),
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
+            Sandboxed: false,
             SourceAssetId: -1i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
@@ -3435,9 +3682,12 @@ impl Default for BrickColorValue {
         let superclass = Object::default();
         let superclass = Instance {
             superclass,
+            Archivable: true,
+            Attributes: Attributes::new(),
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
+            Sandboxed: false,
             SourceAssetId: -1i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
@@ -3485,9 +3735,12 @@ impl Default for BubbleChatConfiguration {
         let superclass = Object::default();
         let superclass = Instance {
             superclass,
+            Archivable: true,
+            Attributes: Attributes::new(),
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
+            Sandboxed: false,
             SourceAssetId: -1i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
@@ -3557,9 +3810,12 @@ impl Default for BuoyancySensor {
         let superclass = Object::default();
         let superclass = Instance {
             superclass,
+            Archivable: true,
+            Attributes: Attributes::new(),
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
+            Sandboxed: false,
             SourceAssetId: -1i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
@@ -3588,9 +3844,12 @@ impl Default for CFrameValue {
         let superclass = Object::default();
         let superclass = Instance {
             superclass,
+            Archivable: true,
+            Attributes: Attributes::new(),
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
+            Sandboxed: false,
             SourceAssetId: -1i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
@@ -3647,9 +3906,12 @@ impl Default for Camera {
         let superclass = Object::default();
         let superclass = Instance {
             superclass,
+            Archivable: true,
+            Attributes: Attributes::new(),
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
+            Sandboxed: false,
             SourceAssetId: -1i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
@@ -3697,9 +3959,12 @@ impl Default for CanvasGroup {
         let superclass = Object::default();
         let superclass = Instance {
             superclass,
+            Archivable: true,
+            Attributes: Attributes::new(),
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
+            Sandboxed: false,
             SourceAssetId: -1i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
@@ -3788,9 +4053,12 @@ impl Default for CapturesViewConfiguration {
         let superclass = Object::default();
         let superclass = Instance {
             superclass,
+            Archivable: true,
+            Attributes: Attributes::new(),
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
+            Sandboxed: false,
             SourceAssetId: 0i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
@@ -3842,9 +4110,12 @@ impl Default for ChannelSelectorSoundEffect {
         let superclass = Object::default();
         let superclass = Instance {
             superclass,
+            Archivable: true,
+            Attributes: Attributes::new(),
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
+            Sandboxed: false,
             SourceAssetId: -1i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
@@ -3883,9 +4154,12 @@ impl Default for ChannelTabsConfiguration {
         let superclass = Object::default();
         let superclass = Instance {
             superclass,
+            Archivable: true,
+            Attributes: Attributes::new(),
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
+            Sandboxed: false,
             SourceAssetId: -1i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
@@ -3938,9 +4212,12 @@ impl Default for CharacterMesh {
         let superclass = Object::default();
         let superclass = Instance {
             superclass,
+            Archivable: true,
+            Attributes: Attributes::new(),
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
+            Sandboxed: false,
             SourceAssetId: -1i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
@@ -3973,9 +4250,12 @@ impl Default for Chat {
         let superclass = Object::default();
         let superclass = Instance {
             superclass,
+            Archivable: true,
+            Attributes: Attributes::new(),
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
+            Sandboxed: false,
             SourceAssetId: -1i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
@@ -4012,9 +4292,12 @@ impl Default for ChatInputBarConfiguration {
         let superclass = Object::default();
         let superclass = Instance {
             superclass,
+            Archivable: true,
+            Attributes: Attributes::new(),
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
+            Sandboxed: false,
             SourceAssetId: -1i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
@@ -4066,9 +4349,12 @@ impl Default for ChatWindowConfiguration {
         let superclass = Object::default();
         let superclass = Instance {
             superclass,
+            Archivable: true,
+            Attributes: Attributes::new(),
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
+            Sandboxed: false,
             SourceAssetId: -1i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
@@ -4119,9 +4405,12 @@ impl Default for ChorusSoundEffect {
         let superclass = Object::default();
         let superclass = Instance {
             superclass,
+            Archivable: true,
+            Attributes: Attributes::new(),
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
+            Sandboxed: false,
             SourceAssetId: -1i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
@@ -4153,9 +4442,12 @@ impl Default for ClickDetector {
         let superclass = Object::default();
         let superclass = Instance {
             superclass,
+            Archivable: true,
+            Attributes: Attributes::new(),
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
+            Sandboxed: false,
             SourceAssetId: -1i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
@@ -4191,9 +4483,12 @@ impl Default for ClimbController {
         let superclass = Object::default();
         let superclass = Instance {
             superclass,
+            Archivable: true,
+            Attributes: Attributes::new(),
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
+            Sandboxed: false,
             SourceAssetId: -1i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
@@ -4225,9 +4520,12 @@ impl Default for Clothing {
         let superclass = Object::default();
         let superclass = Instance {
             superclass,
+            Archivable: true,
+            Attributes: Attributes::new(),
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
+            Sandboxed: false,
             SourceAssetId: 0i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
@@ -4279,9 +4577,12 @@ impl Default for Clouds {
         let superclass = Object::default();
         let superclass = Instance {
             superclass,
+            Archivable: true,
+            Attributes: Attributes::new(),
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
+            Sandboxed: false,
             SourceAssetId: -1i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
@@ -4340,9 +4641,12 @@ impl Default for Color3Value {
         let superclass = Object::default();
         let superclass = Instance {
             superclass,
+            Archivable: true,
+            Attributes: Attributes::new(),
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
+            Sandboxed: false,
             SourceAssetId: -1i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
@@ -4370,9 +4674,12 @@ impl Default for ColorCorrectionEffect {
         let superclass = Object::default();
         let superclass = Instance {
             superclass,
+            Archivable: true,
+            Attributes: Attributes::new(),
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
+            Sandboxed: false,
             SourceAssetId: -1i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
@@ -4403,9 +4710,12 @@ impl Default for ColorGradingEffect {
         let superclass = Object::default();
         let superclass = Instance {
             superclass,
+            Archivable: true,
+            Attributes: Attributes::new(),
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
+            Sandboxed: false,
             SourceAssetId: -1i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
@@ -4441,9 +4751,12 @@ impl Default for CompositeValueCurve {
         let superclass = Object::default();
         let superclass = Instance {
             superclass,
+            Archivable: true,
+            Attributes: Attributes::new(),
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
+            Sandboxed: false,
             SourceAssetId: -1i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
@@ -4472,9 +4785,12 @@ impl Default for CompressorSoundEffect {
         let superclass = Object::default();
         let superclass = Instance {
             superclass,
+            Archivable: true,
+            Attributes: Attributes::new(),
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
+            Sandboxed: false,
             SourceAssetId: -1i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
@@ -4511,9 +4827,12 @@ impl Default for ConeHandleAdornment {
         let superclass = Object::default();
         let superclass = Instance {
             superclass,
+            Archivable: true,
+            Attributes: Attributes::new(),
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
+            Sandboxed: false,
             SourceAssetId: -1i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
@@ -4603,9 +4922,12 @@ impl Default for Constraint {
         let superclass = Object::default();
         let superclass = Instance {
             superclass,
+            Archivable: true,
+            Attributes: Attributes::new(),
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
+            Sandboxed: false,
             SourceAssetId: 0i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
@@ -4658,9 +4980,12 @@ impl Default for ControllerBase {
         let superclass = Object::default();
         let superclass = Instance {
             superclass,
+            Archivable: true,
+            Attributes: Attributes::new(),
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
+            Sandboxed: false,
             SourceAssetId: 0i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
@@ -4693,9 +5018,12 @@ impl Default for ControllerManager {
         let superclass = Object::default();
         let superclass = Instance {
             superclass,
+            Archivable: true,
+            Attributes: Attributes::new(),
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
+            Sandboxed: false,
             SourceAssetId: -1i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
@@ -4734,9 +5062,12 @@ impl Default for ControllerPartSensor {
         let superclass = Object::default();
         let superclass = Instance {
             superclass,
+            Archivable: true,
+            Attributes: Attributes::new(),
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
+            Sandboxed: false,
             SourceAssetId: -1i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
@@ -4796,9 +5127,12 @@ impl Default for CoreGui {
         let superclass = Object::default();
         let superclass = Instance {
             superclass,
+            Archivable: true,
+            Attributes: Attributes::new(),
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
+            Sandboxed: false,
             SourceAssetId: 0i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
@@ -4825,9 +5159,12 @@ impl Default for CoreGuiConfiguration {
         let superclass = Object::default();
         let superclass = Instance {
             superclass,
+            Archivable: true,
+            Attributes: Attributes::new(),
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
+            Sandboxed: false,
             SourceAssetId: 0i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
@@ -4925,9 +5262,12 @@ impl Default for CustomEvent {
         let superclass = Object::default();
         let superclass = Instance {
             superclass,
+            Archivable: true,
+            Attributes: Attributes::new(),
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
+            Sandboxed: false,
             SourceAssetId: -1i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
@@ -4951,9 +5291,12 @@ impl Default for CustomEventReceiver {
         let superclass = Object::default();
         let superclass = Instance {
             superclass,
+            Archivable: true,
+            Attributes: Attributes::new(),
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
+            Sandboxed: false,
             SourceAssetId: -1i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
@@ -4997,9 +5340,12 @@ impl Default for CylinderHandleAdornment {
         let superclass = Object::default();
         let superclass = Instance {
             superclass,
+            Archivable: true,
+            Attributes: Attributes::new(),
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
+            Sandboxed: false,
             SourceAssetId: -1i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
@@ -5068,9 +5414,12 @@ impl Default for CylindricalConstraint {
         let superclass = Object::default();
         let superclass = Instance {
             superclass,
+            Archivable: true,
+            Attributes: Attributes::new(),
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
+            Sandboxed: false,
             SourceAssetId: -1i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
@@ -5143,9 +5492,12 @@ impl Default for DataModelMesh {
         let superclass = Object::default();
         let superclass = Instance {
             superclass,
+            Archivable: true,
+            Attributes: Attributes::new(),
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
+            Sandboxed: false,
             SourceAssetId: 0i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
@@ -5195,9 +5547,12 @@ impl Default for DataStoreGetOptions {
         let superclass = Object::default();
         let superclass = Instance {
             superclass,
+            Archivable: true,
+            Attributes: Attributes::new(),
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
+            Sandboxed: false,
             SourceAssetId: 0i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
@@ -5277,9 +5632,12 @@ impl Default for DataStoreOptions {
         let superclass = Object::default();
         let superclass = Instance {
             superclass,
+            Archivable: true,
+            Attributes: Attributes::new(),
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
+            Sandboxed: false,
             SourceAssetId: 0i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
@@ -5312,9 +5670,12 @@ impl Default for DataStoreService {
         let superclass = Object::default();
         let superclass = Instance {
             superclass,
+            Archivable: true,
+            Attributes: Attributes::new(),
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
+            Sandboxed: false,
             SourceAssetId: -1i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
@@ -5355,9 +5716,12 @@ impl Default for Debris {
         let superclass = Object::default();
         let superclass = Instance {
             superclass,
+            Archivable: true,
+            Attributes: Attributes::new(),
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
+            Sandboxed: false,
             SourceAssetId: -1i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
@@ -5383,9 +5747,12 @@ impl Default for DebugSettings {
         let superclass = Object::default();
         let superclass = Instance {
             superclass,
+            Archivable: true,
+            Attributes: Attributes::new(),
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
+            Sandboxed: false,
             SourceAssetId: 0i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
@@ -5424,9 +5791,12 @@ impl Default for DebuggerBreakpoint {
         let superclass = Object::default();
         let superclass = Instance {
             superclass,
+            Archivable: true,
+            Attributes: Attributes::new(),
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
+            Sandboxed: false,
             SourceAssetId: 0i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
@@ -5463,9 +5833,12 @@ impl Default for DebuggerConnectionManager {
         let superclass = Object::default();
         let superclass = Instance {
             superclass,
+            Archivable: true,
+            Attributes: Attributes::new(),
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
+            Sandboxed: false,
             SourceAssetId: 0i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
@@ -5521,9 +5894,12 @@ impl Default for DebuggerWatch {
         let superclass = Object::default();
         let superclass = Instance {
             superclass,
+            Archivable: true,
+            Attributes: Attributes::new(),
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
+            Sandboxed: false,
             SourceAssetId: 0i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
@@ -5558,9 +5934,12 @@ impl Default for Decal {
         let superclass = Object::default();
         let superclass = Instance {
             superclass,
+            Archivable: true,
+            Attributes: Attributes::new(),
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
+            Sandboxed: false,
             SourceAssetId: -1i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
@@ -5610,9 +5989,12 @@ impl Default for DepthOfFieldEffect {
         let superclass = Object::default();
         let superclass = Instance {
             superclass,
+            Archivable: true,
+            Attributes: Attributes::new(),
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
+            Sandboxed: false,
             SourceAssetId: -1i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
@@ -5659,9 +6041,12 @@ impl Default for Dialog {
         let superclass = Object::default();
         let superclass = Instance {
             superclass,
+            Archivable: true,
+            Attributes: Attributes::new(),
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
+            Sandboxed: false,
             SourceAssetId: -1i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
@@ -5696,9 +6081,12 @@ impl Default for DialogChoice {
         let superclass = Object::default();
         let superclass = Instance {
             superclass,
+            Archivable: true,
+            Attributes: Attributes::new(),
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
+            Sandboxed: false,
             SourceAssetId: -1i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
@@ -5765,9 +6153,12 @@ impl Default for DigitsRigDescription {
         let superclass = Object::default();
         let superclass = Instance {
             superclass,
+            Archivable: true,
+            Attributes: Attributes::new(),
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
+            Sandboxed: false,
             SourceAssetId: -1i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
@@ -5831,9 +6222,12 @@ impl Default for DistortionSoundEffect {
         let superclass = Object::default();
         let superclass = Instance {
             superclass,
+            Archivable: true,
+            Attributes: Attributes::new(),
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
+            Sandboxed: false,
             SourceAssetId: -1i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
@@ -5872,9 +6266,12 @@ impl Default for DoubleConstrainedValue {
         let superclass = Object::default();
         let superclass = Instance {
             superclass,
+            Archivable: true,
+            Attributes: Attributes::new(),
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
+            Sandboxed: false,
             SourceAssetId: -1i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
@@ -5930,9 +6327,12 @@ impl Default for DragDetector {
         let superclass = Object::default();
         let superclass = Instance {
             superclass,
+            Archivable: true,
+            Attributes: Attributes::new(),
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
+            Sandboxed: false,
             SourceAssetId: -1i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
@@ -5998,9 +6398,12 @@ impl Default for DynamicRotate {
         let superclass = Object::default();
         let superclass = Instance {
             superclass,
+            Archivable: true,
+            Attributes: Attributes::new(),
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
+            Sandboxed: false,
             SourceAssetId: 0i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
@@ -6035,9 +6438,12 @@ impl Default for EchoSoundEffect {
         let superclass = Object::default();
         let superclass = Instance {
             superclass,
+            Archivable: true,
+            Attributes: Attributes::new(),
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
+            Sandboxed: false,
             SourceAssetId: -1i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
@@ -6123,9 +6529,12 @@ impl Default for EqualizerSoundEffect {
         let superclass = Object::default();
         let superclass = Instance {
             superclass,
+            Archivable: true,
+            Attributes: Attributes::new(),
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
+            Sandboxed: false,
             SourceAssetId: -1i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
@@ -6156,9 +6565,12 @@ impl Default for EulerRotationCurve {
         let superclass = Object::default();
         let superclass = Instance {
             superclass,
+            Archivable: true,
+            Attributes: Attributes::new(),
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
+            Sandboxed: false,
             SourceAssetId: -1i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
@@ -6217,9 +6629,12 @@ impl Default for ExperienceInviteOptions {
         let superclass = Object::default();
         let superclass = Instance {
             superclass,
+            Archivable: true,
+            Attributes: Attributes::new(),
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
+            Sandboxed: false,
             SourceAssetId: 0i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
@@ -6308,9 +6723,12 @@ impl Default for Explosion {
         let superclass = Object::default();
         let superclass = Instance {
             superclass,
+            Archivable: true,
+            Attributes: Attributes::new(),
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
+            Sandboxed: false,
             SourceAssetId: -1i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
@@ -6348,9 +6766,12 @@ impl Default for FaceControls {
         let superclass = Object::default();
         let superclass = Instance {
             superclass,
+            Archivable: true,
+            Attributes: Attributes::new(),
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
+            Sandboxed: false,
             SourceAssetId: -1i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
@@ -6374,9 +6795,12 @@ impl Default for FaceInstance {
         let superclass = Object::default();
         let superclass = Instance {
             superclass,
+            Archivable: true,
+            Attributes: Attributes::new(),
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
+            Sandboxed: false,
             SourceAssetId: 0i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
@@ -6424,9 +6848,12 @@ impl Default for FacialAnimationStreamingServiceV2 {
         let superclass = Object::default();
         let superclass = Instance {
             superclass,
+            Archivable: true,
+            Attributes: Attributes::new(),
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
+            Sandboxed: false,
             SourceAssetId: 0i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
@@ -6469,9 +6896,12 @@ impl Default for Feature {
         let superclass = Object::default();
         let superclass = Instance {
             superclass,
+            Archivable: true,
+            Attributes: Attributes::new(),
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
+            Sandboxed: false,
             SourceAssetId: 0i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
@@ -6523,9 +6953,12 @@ impl Default for FileMesh {
         let superclass = Object::default();
         let superclass = Instance {
             superclass,
+            Archivable: true,
+            Attributes: Attributes::new(),
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
+            Sandboxed: false,
             SourceAssetId: -1i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
@@ -6550,7 +6983,9 @@ pub struct Fire {
     pub superclass: Instance,
     pub Color: Color3,
     pub Enabled: bool,
+    pub Heat: f32,
     pub SecondaryColor: Color3,
+    pub Size: f32,
     pub TimeScale: f32,
 }
 impl_inherits!(Fire, Instance);
@@ -6559,9 +6994,12 @@ impl Default for Fire {
         let superclass = Object::default();
         let superclass = Instance {
             superclass,
+            Archivable: true,
+            Attributes: Attributes::new(),
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
+            Sandboxed: false,
             SourceAssetId: -1i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
@@ -6570,7 +7008,9 @@ impl Default for Fire {
             superclass,
             Color: Color3::new(0.92549026f32, 0.54509807f32, 0.27450982f32),
             Enabled: true,
+            Heat: 9f32,
             SecondaryColor: Color3::new(0.54509807f32, 0.3137255f32, 0.21568629f32),
+            Size: 5f32,
             TimeScale: 1f32,
         }
     }
@@ -6588,9 +7028,12 @@ impl Default for Flag {
         let superclass = Object::default();
         let superclass = Instance {
             superclass,
+            Archivable: true,
+            Attributes: Attributes::new(),
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
+            Sandboxed: false,
             SourceAssetId: -1i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
@@ -6605,6 +7048,7 @@ impl Default for Flag {
             ModelStreamingMode: enums::ModelStreamingMode::Default,
             NeedsPivotMigration: false,
             PrimaryPart: Ref::none(),
+            Scale: 1f32,
             SlimHash: SharedString::new(b"".to_vec()),
             WorldPivotData: None,
         };
@@ -6640,9 +7084,12 @@ impl Default for FlagStand {
         let superclass = Object::default();
         let superclass = Instance {
             superclass,
+            Archivable: true,
+            Attributes: Attributes::new(),
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
+            Sandboxed: false,
             SourceAssetId: -1i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
@@ -6667,6 +7114,7 @@ impl Default for FlagStand {
             CastShadow: true,
             CollisionGroup: "Default".to_owned(),
             CollisionGroupId: 0i32,
+            Color: Color3uint8::new(163u8, 162u8, 165u8),
             CustomPhysicalProperties: PhysicalProperties::Default,
             EnableFluidForces: true,
             FrontParamA: -0.5f32,
@@ -6680,6 +7128,7 @@ impl Default for FlagStand {
             Locked: false,
             Massless: false,
             Material: enums::Material::Plastic,
+            MaterialVariant: "".to_owned(),
             PivotOffset: CFrame::identity(),
             Reflectance: 0f32,
             RightParamA: -0.5f32,
@@ -6688,6 +7137,7 @@ impl Default for FlagStand {
             RightSurfaceInput: enums::InputType::NoInput,
             RootPriority: 0i32,
             RotVelocity: Vector3::new(0f32, 0f32, 0f32),
+            Size: Vector3::new(4f32, 1.2f32, 2f32),
             TopParamA: -0.5f32,
             TopParamB: 0.5f32,
             TopSurface: enums::SurfaceType::Studs,
@@ -6695,8 +7145,14 @@ impl Default for FlagStand {
             Transparency: 0f32,
             Velocity: Vector3::new(0f32, 0f32, 0f32),
         };
-        let superclass = FormFactorPart { superclass };
-        let superclass = Part { superclass };
+        let superclass = FormFactorPart {
+            superclass,
+            FormFactor: enums::FormFactor::Brick,
+        };
+        let superclass = Part {
+            superclass,
+            Shape: enums::PartType::Block,
+        };
         Self {
             superclass,
             TeamColor: BrickColor::from_number(194u16).unwrap(),
@@ -6726,9 +7182,12 @@ impl Default for FlangeSoundEffect {
         let superclass = Object::default();
         let superclass = Instance {
             superclass,
+            Archivable: true,
+            Attributes: Attributes::new(),
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
+            Sandboxed: false,
             SourceAssetId: -1i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
@@ -6759,9 +7218,12 @@ impl Default for FloatCurve {
         let superclass = Object::default();
         let superclass = Instance {
             superclass,
+            Archivable: true,
+            Attributes: Attributes::new(),
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
+            Sandboxed: false,
             SourceAssetId: -1i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
@@ -6792,9 +7254,12 @@ impl Default for FloorWire {
         let superclass = Object::default();
         let superclass = Instance {
             superclass,
+            Archivable: true,
+            Attributes: Attributes::new(),
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
+            Sandboxed: false,
             SourceAssetId: -1i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
@@ -6856,9 +7321,12 @@ impl Default for ForceField {
         let superclass = Object::default();
         let superclass = Instance {
             superclass,
+            Archivable: true,
+            Attributes: Attributes::new(),
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
+            Sandboxed: false,
             SourceAssetId: -1i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
@@ -6871,12 +7339,84 @@ impl Default for ForceField {
 }
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
-#[derive(Default)]
 pub struct FormFactorPart {
     #[doc(hidden)]
     pub superclass: BasePart,
+    pub FormFactor: enums::FormFactor,
 }
 impl_inherits!(FormFactorPart, BasePart);
+impl Default for FormFactorPart {
+    fn default() -> Self {
+        let superclass = Object::default();
+        let superclass = Instance {
+            superclass,
+            Archivable: true,
+            Attributes: Attributes::new(),
+            Capabilities: SecurityCapabilities::from_bits(0u64),
+            HistoryId: UniqueId::nil(),
+            Name: "".to_owned(),
+            Sandboxed: false,
+            SourceAssetId: 0i64,
+            Tags: Tags::new(),
+            UniqueId: UniqueId::nil(),
+        };
+        let superclass = PVInstance { superclass };
+        let superclass = BasePart {
+            superclass,
+            Anchored: false,
+            AudioCanCollide: false,
+            BackParamA: 0f32,
+            BackParamB: 0f32,
+            BackSurface: enums::SurfaceType::Smooth,
+            BackSurfaceInput: enums::InputType::NoInput,
+            BottomParamA: 0f32,
+            BottomParamB: 0f32,
+            BottomSurface: enums::SurfaceType::Smooth,
+            BottomSurfaceInput: enums::InputType::NoInput,
+            CFrame: CFrame::identity(),
+            CanCollide: false,
+            CanQuery: false,
+            CanTouch: false,
+            CastShadow: false,
+            CollisionGroup: "".to_owned(),
+            CollisionGroupId: 0i32,
+            Color: Color3::new(0f32, 0f32, 0f32),
+            CustomPhysicalProperties: PhysicalProperties::Default,
+            EnableFluidForces: false,
+            FrontParamA: 0f32,
+            FrontParamB: 0f32,
+            FrontSurface: enums::SurfaceType::Smooth,
+            FrontSurfaceInput: enums::InputType::NoInput,
+            LeftParamA: 0f32,
+            LeftParamB: 0f32,
+            LeftSurface: enums::SurfaceType::Smooth,
+            LeftSurfaceInput: enums::InputType::NoInput,
+            Locked: false,
+            Massless: false,
+            Material: enums::Material::Plastic,
+            MaterialVariant: "".to_owned(),
+            PivotOffset: CFrame::identity(),
+            Reflectance: 0f32,
+            RightParamA: 0f32,
+            RightParamB: 0f32,
+            RightSurface: enums::SurfaceType::Smooth,
+            RightSurfaceInput: enums::InputType::NoInput,
+            RootPriority: 0i32,
+            RotVelocity: Vector3::new(0f32, 0f32, 0f32),
+            Size: Vector3::new(0f32, 0f32, 0f32),
+            TopParamA: 0f32,
+            TopParamB: 0f32,
+            TopSurface: enums::SurfaceType::Smooth,
+            TopSurfaceInput: enums::InputType::NoInput,
+            Transparency: 0f32,
+            Velocity: Vector3::new(0f32, 0f32, 0f32),
+        };
+        Self {
+            superclass,
+            FormFactor: enums::FormFactor::Symmetric,
+        }
+    }
+}
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct Frame {
@@ -6890,9 +7430,12 @@ impl Default for Frame {
         let superclass = Object::default();
         let superclass = Instance {
             superclass,
+            Archivable: true,
+            Attributes: Attributes::new(),
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
+            Sandboxed: false,
             SourceAssetId: -1i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
@@ -6973,9 +7516,12 @@ impl Default for FunctionalTest {
         let superclass = Object::default();
         let superclass = Instance {
             superclass,
+            Archivable: true,
+            Attributes: Attributes::new(),
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
+            Sandboxed: false,
             SourceAssetId: -1i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
@@ -7008,9 +7554,12 @@ impl Default for GameSettings {
         let superclass = Object::default();
         let superclass = Instance {
             superclass,
+            Archivable: true,
+            Attributes: Attributes::new(),
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
+            Sandboxed: false,
             SourceAssetId: 0i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
@@ -7034,9 +7583,12 @@ impl Default for GamepadService {
         let superclass = Object::default();
         let superclass = Instance {
             superclass,
+            Archivable: true,
+            Attributes: Attributes::new(),
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
+            Sandboxed: false,
             SourceAssetId: 0i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
@@ -7112,9 +7664,12 @@ impl Default for GetTextBoundsParams {
         let superclass = Object::default();
         let superclass = Instance {
             superclass,
+            Archivable: true,
+            Attributes: Attributes::new(),
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
+            Sandboxed: false,
             SourceAssetId: 0i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
@@ -7165,9 +7720,12 @@ impl Default for Glue {
         let superclass = Object::default();
         let superclass = Instance {
             superclass,
+            Archivable: true,
+            Attributes: Attributes::new(),
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
+            Sandboxed: false,
             SourceAssetId: -1i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
@@ -7220,9 +7778,12 @@ impl Default for GroundController {
         let superclass = Object::default();
         let superclass = Instance {
             superclass,
+            Archivable: true,
+            Attributes: Attributes::new(),
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
+            Sandboxed: false,
             SourceAssetId: -1i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
@@ -7263,9 +7824,12 @@ impl Default for GroupImportData {
         let superclass = Object::default();
         let superclass = Instance {
             superclass,
+            Archivable: true,
+            Attributes: Attributes::new(),
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
+            Sandboxed: false,
             SourceAssetId: 0i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
@@ -7318,9 +7882,12 @@ impl Default for GuiBase2d {
         let superclass = Object::default();
         let superclass = Instance {
             superclass,
+            Archivable: true,
+            Attributes: Attributes::new(),
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
+            Sandboxed: false,
             SourceAssetId: 0i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
@@ -7353,9 +7920,12 @@ impl Default for GuiBase3d {
         let superclass = Object::default();
         let superclass = Instance {
             superclass,
+            Archivable: true,
+            Attributes: Attributes::new(),
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
+            Sandboxed: false,
             SourceAssetId: 0i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
@@ -7387,9 +7957,12 @@ impl Default for GuiButton {
         let superclass = Object::default();
         let superclass = Instance {
             superclass,
+            Archivable: true,
+            Attributes: Attributes::new(),
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
+            Sandboxed: false,
             SourceAssetId: 0i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
@@ -7499,9 +8072,12 @@ impl Default for GuiObject {
         let superclass = Object::default();
         let superclass = Instance {
             superclass,
+            Archivable: true,
+            Attributes: Attributes::new(),
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
+            Sandboxed: false,
             SourceAssetId: 0i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
@@ -7564,9 +8140,12 @@ impl Default for GuiService {
         let superclass = Object::default();
         let superclass = Instance {
             superclass,
+            Archivable: true,
+            Attributes: Attributes::new(),
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
+            Sandboxed: false,
             SourceAssetId: 0i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
@@ -7613,9 +8192,12 @@ impl Default for HandleAdornment {
         let superclass = Object::default();
         let superclass = Instance {
             superclass,
+            Archivable: true,
+            Attributes: Attributes::new(),
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
+            Sandboxed: false,
             SourceAssetId: 0i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
@@ -7655,9 +8237,12 @@ impl Default for Handles {
         let superclass = Object::default();
         let superclass = Instance {
             superclass,
+            Archivable: true,
+            Attributes: Attributes::new(),
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
+            Sandboxed: false,
             SourceAssetId: -1i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
@@ -7706,9 +8291,12 @@ impl Default for HapticEffect {
         let superclass = Object::default();
         let superclass = Instance {
             superclass,
+            Archivable: true,
+            Attributes: Attributes::new(),
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
+            Sandboxed: false,
             SourceAssetId: -1i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
@@ -7785,9 +8373,12 @@ impl Default for HiddenSurfaceRemovalAsset {
         let superclass = Object::default();
         let superclass = Instance {
             superclass,
+            Archivable: true,
+            Attributes: Attributes::new(),
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
+            Sandboxed: false,
             SourceAssetId: -1i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
@@ -7818,9 +8409,12 @@ impl Default for Highlight {
         let superclass = Object::default();
         let superclass = Instance {
             superclass,
+            Archivable: true,
+            Attributes: Attributes::new(),
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
+            Sandboxed: false,
             SourceAssetId: -1i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
@@ -7863,9 +8457,12 @@ impl Default for HingeConstraint {
         let superclass = Object::default();
         let superclass = Instance {
             superclass,
+            Archivable: true,
+            Attributes: Attributes::new(),
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
+            Sandboxed: false,
             SourceAssetId: -1i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
@@ -7935,9 +8532,12 @@ impl Default for HopperBin {
         let superclass = Object::default();
         let superclass = Instance {
             superclass,
+            Archivable: true,
+            Attributes: Attributes::new(),
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
+            Sandboxed: false,
             SourceAssetId: -1i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
@@ -7952,6 +8552,7 @@ impl Default for HopperBin {
             ModelStreamingMode: enums::ModelStreamingMode::Default,
             NeedsPivotMigration: false,
             PrimaryPart: Ref::none(),
+            Scale: 1f32,
             SlimHash: SharedString::new(b"".to_vec()),
             WorldPivotData: None,
         };
@@ -7995,9 +8596,12 @@ impl Default for HttpService {
         let superclass = Object::default();
         let superclass = Instance {
             superclass,
+            Archivable: true,
+            Attributes: Attributes::new(),
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
+            Sandboxed: false,
             SourceAssetId: -1i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
@@ -8044,9 +8648,12 @@ impl Default for Humanoid {
         let superclass = Object::default();
         let superclass = Instance {
             superclass,
+            Archivable: true,
+            Attributes: Attributes::new(),
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
+            Sandboxed: false,
             SourceAssetId: -1i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
@@ -8122,9 +8729,12 @@ impl Default for HumanoidDescription {
         let superclass = Object::default();
         let superclass = Instance {
             superclass,
+            Archivable: true,
+            Attributes: Attributes::new(),
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
+            Sandboxed: false,
             SourceAssetId: -1i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
@@ -8279,9 +8889,12 @@ impl Default for HumanoidRigDescription {
         let superclass = Object::default();
         let superclass = Instance {
             superclass,
+            Archivable: true,
+            Attributes: Attributes::new(),
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
+            Sandboxed: false,
             SourceAssetId: -1i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
@@ -8425,9 +9038,12 @@ impl Default for IKControl {
         let superclass = Object::default();
         let superclass = Instance {
             superclass,
+            Archivable: true,
+            Attributes: Attributes::new(),
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
+            Sandboxed: false,
             SourceAssetId: -1i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
@@ -8488,9 +9104,12 @@ impl Default for ImageButton {
         let superclass = Object::default();
         let superclass = Instance {
             superclass,
+            Archivable: true,
+            Attributes: Attributes::new(),
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
+            Sandboxed: false,
             SourceAssetId: -1i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
@@ -8575,9 +9194,12 @@ impl Default for ImageHandleAdornment {
         let superclass = Object::default();
         let superclass = Instance {
             superclass,
+            Archivable: true,
+            Attributes: Attributes::new(),
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
+            Sandboxed: false,
             SourceAssetId: -1i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
@@ -8630,9 +9252,12 @@ impl Default for ImageLabel {
         let superclass = Object::default();
         let superclass = Instance {
             superclass,
+            Archivable: true,
+            Attributes: Attributes::new(),
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
+            Sandboxed: false,
             SourceAssetId: -1i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
@@ -8727,9 +9352,12 @@ impl Default for IncrementalPatchBuilder {
         let superclass = Object::default();
         let superclass = Instance {
             superclass,
+            Archivable: true,
+            Attributes: Attributes::new(),
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
+            Sandboxed: false,
             SourceAssetId: 0i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
@@ -8759,9 +9387,12 @@ impl Default for InputAction {
         let superclass = Object::default();
         let superclass = Instance {
             superclass,
+            Archivable: true,
+            Attributes: Attributes::new(),
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
+            Sandboxed: false,
             SourceAssetId: -1i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
@@ -8803,9 +9434,12 @@ impl Default for InputBinding {
         let superclass = Object::default();
         let superclass = Instance {
             superclass,
+            Archivable: true,
+            Attributes: Attributes::new(),
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
+            Sandboxed: false,
             SourceAssetId: -1i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
@@ -8848,9 +9482,12 @@ impl Default for InputContext {
         let superclass = Object::default();
         let superclass = Instance {
             superclass,
+            Archivable: true,
+            Attributes: Attributes::new(),
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
+            Sandboxed: false,
             SourceAssetId: -1i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
@@ -8885,9 +9522,12 @@ impl Default for InsertService {
         let superclass = Object::default();
         let superclass = Instance {
             superclass,
+            Archivable: true,
+            Attributes: Attributes::new(),
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
+            Sandboxed: false,
             SourceAssetId: -1i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
@@ -8904,9 +9544,12 @@ impl Default for InsertService {
 pub struct Instance {
     #[doc(hidden)]
     pub superclass: Object,
+    pub Archivable: bool,
+    pub Attributes: Attributes,
     pub Capabilities: SecurityCapabilities,
     pub HistoryId: UniqueId,
     pub Name: String,
+    pub Sandboxed: bool,
     pub SourceAssetId: i64,
     pub Tags: Tags,
     pub UniqueId: UniqueId,
@@ -8917,9 +9560,12 @@ impl Default for Instance {
         let superclass = Object::default();
         Self {
             superclass,
+            Archivable: true,
+            Attributes: Attributes::new(),
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
+            Sandboxed: false,
             SourceAssetId: 0i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
@@ -8939,9 +9585,12 @@ impl Default for InstanceAdornment {
         let superclass = Object::default();
         let superclass = Instance {
             superclass,
+            Archivable: true,
+            Attributes: Attributes::new(),
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
+            Sandboxed: false,
             SourceAssetId: 0i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
@@ -8990,9 +9639,12 @@ impl Default for IntConstrainedValue {
         let superclass = Object::default();
         let superclass = Instance {
             superclass,
+            Archivable: true,
+            Attributes: Attributes::new(),
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
+            Sandboxed: false,
             SourceAssetId: -1i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
@@ -9019,9 +9671,12 @@ impl Default for IntValue {
         let superclass = Object::default();
         let superclass = Instance {
             superclass,
+            Archivable: true,
+            Attributes: Attributes::new(),
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
+            Sandboxed: false,
             SourceAssetId: -1i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
@@ -9064,9 +9719,12 @@ impl Default for InternalSyncItem {
         let superclass = Object::default();
         let superclass = Instance {
             superclass,
+            Archivable: true,
+            Attributes: Attributes::new(),
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
+            Sandboxed: false,
             SourceAssetId: 0i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
@@ -9128,9 +9786,12 @@ impl Default for JointInstance {
         let superclass = Object::default();
         let superclass = Instance {
             superclass,
+            Archivable: true,
+            Attributes: Attributes::new(),
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
+            Sandboxed: false,
             SourceAssetId: 0i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
@@ -9174,9 +9835,12 @@ impl Default for Keyframe {
         let superclass = Object::default();
         let superclass = Instance {
             superclass,
+            Archivable: true,
+            Attributes: Attributes::new(),
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
+            Sandboxed: false,
             SourceAssetId: -1i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
@@ -9200,9 +9864,12 @@ impl Default for KeyframeMarker {
         let superclass = Object::default();
         let superclass = Instance {
             superclass,
+            Archivable: true,
+            Attributes: Attributes::new(),
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
+            Sandboxed: false,
             SourceAssetId: -1i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
@@ -9226,9 +9893,12 @@ impl Default for KeyframeSequence {
         let superclass = Object::default();
         let superclass = Instance {
             superclass,
+            Archivable: true,
+            Attributes: Attributes::new(),
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
+            Sandboxed: false,
             SourceAssetId: -1i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
@@ -9285,9 +9955,12 @@ impl Default for LayerCollector {
         let superclass = Object::default();
         let superclass = Instance {
             superclass,
+            Archivable: true,
+            Attributes: Attributes::new(),
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
+            Sandboxed: false,
             SourceAssetId: 0i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
@@ -9336,9 +10009,12 @@ impl Default for Light {
         let superclass = Object::default();
         let superclass = Instance {
             superclass,
+            Archivable: true,
+            Attributes: Attributes::new(),
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
+            Sandboxed: false,
             SourceAssetId: 0i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
@@ -9385,9 +10061,18 @@ impl Default for Lighting {
         let superclass = Object::default();
         let superclass = Instance {
             superclass,
+            Archivable: true,
+            Attributes: Attributes::from_iter([
+                ("RBX_BackupBrightness".to_owned(), 1f32),
+                ("RBX_BackupExposureCompensation".to_owned(), 0f32),
+                ("RBX_LightingCompatibilityMigrated".to_owned(), true),
+                ("RBX_LightingTechnologyUnifiedMigration".to_owned(), true),
+                ("RBX_OriginalTechnologyOnFileLoad".to_owned(), 2i32),
+            ]),
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
+            Sandboxed: false,
             SourceAssetId: -1i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
@@ -9435,9 +10120,12 @@ impl Default for LineForce {
         let superclass = Object::default();
         let superclass = Instance {
             superclass,
+            Archivable: true,
+            Attributes: Attributes::new(),
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
+            Sandboxed: false,
             SourceAssetId: -1i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
@@ -9474,9 +10162,12 @@ impl Default for LineHandleAdornment {
         let superclass = Object::default();
         let superclass = Instance {
             superclass,
+            Archivable: true,
+            Attributes: Attributes::new(),
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
+            Sandboxed: false,
             SourceAssetId: -1i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
@@ -9533,9 +10224,12 @@ impl Default for LinearVelocity {
         let superclass = Object::default();
         let superclass = Instance {
             superclass,
+            Archivable: true,
+            Attributes: Attributes::new(),
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
+            Sandboxed: false,
             SourceAssetId: -1i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
@@ -9637,9 +10331,12 @@ impl Default for LocalizationTable {
         let superclass = Object::default();
         let superclass = Instance {
             superclass,
+            Archivable: true,
+            Attributes: Attributes::new(),
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
+            Sandboxed: false,
             SourceAssetId: -1i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
@@ -9712,9 +10409,12 @@ impl Default for LuaSourceContainer {
         let superclass = Object::default();
         let superclass = Instance {
             superclass,
+            Archivable: true,
+            Attributes: Attributes::new(),
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
+            Sandboxed: false,
             SourceAssetId: 0i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
@@ -9781,9 +10481,12 @@ impl Default for MakeupDescription {
         let superclass = Object::default();
         let superclass = Instance {
             superclass,
+            Archivable: true,
+            Attributes: Attributes::new(),
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
+            Sandboxed: false,
             SourceAssetId: -1i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
@@ -9834,9 +10537,12 @@ impl Default for MarkerCurve {
         let superclass = Object::default();
         let superclass = Instance {
             superclass,
+            Archivable: true,
+            Attributes: Attributes::new(),
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
+            Sandboxed: false,
             SourceAssetId: -1i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
@@ -9888,9 +10594,12 @@ impl Default for MaterialImportData {
         let superclass = Object::default();
         let superclass = Instance {
             superclass,
+            Archivable: true,
+            Attributes: Attributes::new(),
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
+            Sandboxed: false,
             SourceAssetId: 0i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
@@ -9953,6 +10662,7 @@ pub struct MaterialService {
     pub SlateName: String,
     pub SmoothPlasticName: String,
     pub SnowName: String,
+    pub Use2022Materials: bool,
     pub Use2022MaterialsXml: bool,
     pub WoodName: String,
     pub WoodPlanksName: String,
@@ -9963,9 +10673,12 @@ impl Default for MaterialService {
         let superclass = Object::default();
         let superclass = Instance {
             superclass,
+            Archivable: true,
+            Attributes: Attributes::new(),
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
+            Sandboxed: false,
             SourceAssetId: -1i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
@@ -10010,6 +10723,7 @@ impl Default for MaterialService {
             SlateName: "Slate".to_owned(),
             SmoothPlasticName: "SmoothPlastic".to_owned(),
             SnowName: "Snow".to_owned(),
+            Use2022Materials: false,
             Use2022MaterialsXml: false,
             WoodName: "Wood".to_owned(),
             WoodPlanksName: "WoodPlanks".to_owned(),
@@ -10041,9 +10755,12 @@ impl Default for MaterialVariant {
         let superclass = Object::default();
         let superclass = Instance {
             superclass,
+            Archivable: true,
+            Attributes: Attributes::new(),
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
+            Sandboxed: false,
             SourceAssetId: -1i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
@@ -10153,9 +10870,12 @@ impl Default for MeshImportData {
         let superclass = Object::default();
         let superclass = Instance {
             superclass,
+            Archivable: true,
+            Attributes: Attributes::new(),
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
+            Sandboxed: false,
             SourceAssetId: 0i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
@@ -10203,9 +10923,12 @@ impl Default for MeshPart {
         let superclass = Object::default();
         let superclass = Instance {
             superclass,
+            Archivable: true,
+            Attributes: Attributes::new(),
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
+            Sandboxed: false,
             SourceAssetId: -1i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
@@ -10230,6 +10953,7 @@ impl Default for MeshPart {
             CastShadow: true,
             CollisionGroup: "Default".to_owned(),
             CollisionGroupId: 0i32,
+            Color: Color3uint8::new(163u8, 162u8, 165u8),
             CustomPhysicalProperties: PhysicalProperties::Default,
             EnableFluidForces: true,
             FrontParamA: -0.5f32,
@@ -10243,6 +10967,7 @@ impl Default for MeshPart {
             Locked: false,
             Massless: false,
             Material: enums::Material::Plastic,
+            MaterialVariant: "".to_owned(),
             PivotOffset: CFrame::identity(),
             Reflectance: 0f32,
             RightParamA: -0.5f32,
@@ -10251,6 +10976,7 @@ impl Default for MeshPart {
             RightSurfaceInput: enums::InputType::NoInput,
             RootPriority: 0i32,
             RotVelocity: Vector3::new(0f32, 0f32, 0f32),
+            Size: Vector3::new(4f32, 1.2f32, 2f32),
             TopParamA: -0.5f32,
             TopParamB: 0.5f32,
             TopSurface: enums::SurfaceType::Smooth,
@@ -10301,9 +11027,12 @@ impl Default for Message {
         let superclass = Object::default();
         let superclass = Instance {
             superclass,
+            Archivable: true,
+            Attributes: Attributes::new(),
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
+            Sandboxed: false,
             SourceAssetId: -1i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
@@ -10357,9 +11086,12 @@ impl Default for MetaBreakpoint {
         let superclass = Object::default();
         let superclass = Instance {
             superclass,
+            Archivable: true,
+            Attributes: Attributes::new(),
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
+            Sandboxed: false,
             SourceAssetId: -1i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
@@ -10389,9 +11121,12 @@ impl Default for MetaBreakpointContext {
         let superclass = Object::default();
         let superclass = Instance {
             superclass,
+            Archivable: true,
+            Attributes: Attributes::new(),
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
+            Sandboxed: false,
             SourceAssetId: -1i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
@@ -10423,9 +11158,12 @@ impl Default for MicroProfilerService {
         let superclass = Object::default();
         let superclass = Instance {
             superclass,
+            Archivable: true,
+            Attributes: Attributes::new(),
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
+            Sandboxed: false,
             SourceAssetId: 0i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
@@ -10448,6 +11186,7 @@ pub struct Model {
     pub ModelStreamingMode: enums::ModelStreamingMode,
     pub NeedsPivotMigration: bool,
     pub PrimaryPart: Ref,
+    pub Scale: f32,
     pub SlimHash: SharedString,
     pub WorldPivotData: Option<CFrame>,
 }
@@ -10457,9 +11196,12 @@ impl Default for Model {
         let superclass = Object::default();
         let superclass = Instance {
             superclass,
+            Archivable: true,
+            Attributes: Attributes::new(),
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
+            Sandboxed: false,
             SourceAssetId: -1i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
@@ -10474,6 +11216,7 @@ impl Default for Model {
             ModelStreamingMode: enums::ModelStreamingMode::Default,
             NeedsPivotMigration: false,
             PrimaryPart: Ref::none(),
+            Scale: 1f32,
             SlimHash: SharedString::new(b"".to_vec()),
             WorldPivotData: None,
         }
@@ -10501,9 +11244,12 @@ impl Default for ModuleScript {
         let superclass = Object::default();
         let superclass = Instance {
             superclass,
+            Archivable: true,
+            Attributes: Attributes::new(),
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
+            Sandboxed: false,
             SourceAssetId: -1i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
@@ -10533,9 +11279,12 @@ impl Default for Motor {
         let superclass = Object::default();
         let superclass = Instance {
             superclass,
+            Archivable: true,
+            Attributes: Attributes::new(),
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
+            Sandboxed: false,
             SourceAssetId: -1i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
@@ -10585,9 +11334,12 @@ impl Default for Mouse {
         let superclass = Object::default();
         let superclass = Instance {
             superclass,
+            Archivable: true,
+            Attributes: Attributes::new(),
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
+            Sandboxed: false,
             SourceAssetId: 0i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
@@ -10628,9 +11380,12 @@ impl Default for NegateOperation {
         let superclass = Object::default();
         let superclass = Instance {
             superclass,
+            Archivable: true,
+            Attributes: Attributes::new(),
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
+            Sandboxed: false,
             SourceAssetId: -1i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
@@ -10655,6 +11410,7 @@ impl Default for NegateOperation {
             CastShadow: true,
             CollisionGroup: "Default".to_owned(),
             CollisionGroupId: 0i32,
+            Color: Color3uint8::new(255u8, 255u8, 255u8),
             CustomPhysicalProperties: PhysicalProperties::Default,
             EnableFluidForces: true,
             FrontParamA: -0.5f32,
@@ -10668,6 +11424,7 @@ impl Default for NegateOperation {
             Locked: false,
             Massless: false,
             Material: enums::Material::Plastic,
+            MaterialVariant: "".to_owned(),
             PivotOffset: CFrame::identity(),
             Reflectance: 0f32,
             RightParamA: -0.5f32,
@@ -10676,6 +11433,7 @@ impl Default for NegateOperation {
             RightSurfaceInput: enums::InputType::NoInput,
             RootPriority: 0i32,
             RotVelocity: Vector3::new(0f32, 0f32, 0f32),
+            Size: Vector3::new(4f32, 1.2f32, 2f32),
             TopParamA: -0.5f32,
             TopParamB: 0.5f32,
             TopSurface: enums::SurfaceType::Smooth,
@@ -10784,9 +11542,12 @@ impl Default for NetworkSettings {
         let superclass = Object::default();
         let superclass = Instance {
             superclass,
+            Archivable: true,
+            Attributes: Attributes::new(),
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
+            Sandboxed: false,
             SourceAssetId: 0i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
@@ -10826,9 +11587,12 @@ impl Default for NoCollisionConstraint {
         let superclass = Object::default();
         let superclass = Instance {
             superclass,
+            Archivable: true,
+            Attributes: Attributes::new(),
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
+            Sandboxed: false,
             SourceAssetId: -1i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
@@ -10855,9 +11619,12 @@ impl Default for Noise {
         let superclass = Object::default();
         let superclass = Instance {
             superclass,
+            Archivable: true,
+            Attributes: Attributes::new(),
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
+            Sandboxed: false,
             SourceAssetId: 0i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
@@ -10898,9 +11665,12 @@ impl Default for NumberPose {
         let superclass = Object::default();
         let superclass = Instance {
             superclass,
+            Archivable: true,
+            Attributes: Attributes::new(),
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
+            Sandboxed: false,
             SourceAssetId: -1i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
@@ -10930,9 +11700,12 @@ impl Default for NumberValue {
         let superclass = Object::default();
         let superclass = Instance {
             superclass,
+            Archivable: true,
+            Attributes: Attributes::new(),
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
+            Sandboxed: false,
             SourceAssetId: -1i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
@@ -10961,9 +11734,12 @@ impl Default for ObjectValue {
         let superclass = Object::default();
         let superclass = Instance {
             superclass,
+            Archivable: true,
+            Attributes: Attributes::new(),
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
+            Sandboxed: false,
             SourceAssetId: -1i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
@@ -11044,9 +11820,12 @@ impl Default for PVAdornment {
         let superclass = Object::default();
         let superclass = Instance {
             superclass,
+            Archivable: true,
+            Attributes: Attributes::new(),
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
+            Sandboxed: false,
             SourceAssetId: 0i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
@@ -11080,6 +11859,7 @@ pub struct PackageLink {
     pub AutoUpdate: bool,
     pub DefaultName: String,
     pub ModifiedState: i32,
+    pub PackageId: ContentId,
     pub SerializedDefaultAttributes: BinaryString,
     pub VersionIdSerialize: i64,
 }
@@ -11089,9 +11869,12 @@ impl Default for PackageLink {
         let superclass = Object::default();
         let superclass = Instance {
             superclass,
+            Archivable: true,
+            Attributes: Attributes::new(),
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
+            Sandboxed: false,
             SourceAssetId: 0i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
@@ -11101,6 +11884,7 @@ impl Default for PackageLink {
             AutoUpdate: false,
             DefaultName: "".to_owned(),
             ModifiedState: 0i32,
+            PackageId: "".into(),
             SerializedDefaultAttributes: b"".as_slice().into(),
             VersionIdSerialize: 0i64,
         }
@@ -11137,9 +11921,12 @@ impl Default for Packages {
         let superclass = Object::default();
         let superclass = Instance {
             superclass,
+            Archivable: true,
+            Attributes: Attributes::new(),
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
+            Sandboxed: false,
             SourceAssetId: -1i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
@@ -11173,9 +11960,12 @@ impl Default for Pants {
         let superclass = Object::default();
         let superclass = Instance {
             superclass,
+            Archivable: true,
+            Attributes: Attributes::new(),
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
+            Sandboxed: false,
             SourceAssetId: -1i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
@@ -11201,12 +11991,88 @@ pub struct ParabolaAdornment {
 impl_inherits!(ParabolaAdornment, PVAdornment);
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
-#[derive(Default)]
 pub struct Part {
     #[doc(hidden)]
     pub superclass: FormFactorPart,
+    pub Shape: enums::PartType,
 }
 impl_inherits!(Part, FormFactorPart);
+impl Default for Part {
+    fn default() -> Self {
+        let superclass = Object::default();
+        let superclass = Instance {
+            superclass,
+            Archivable: true,
+            Attributes: Attributes::new(),
+            Capabilities: SecurityCapabilities::from_bits(0u64),
+            HistoryId: UniqueId::nil(),
+            Name: "".to_owned(),
+            Sandboxed: false,
+            SourceAssetId: -1i64,
+            Tags: Tags::new(),
+            UniqueId: UniqueId::nil(),
+        };
+        let superclass = PVInstance { superclass };
+        let superclass = BasePart {
+            superclass,
+            Anchored: false,
+            AudioCanCollide: true,
+            BackParamA: -0.5f32,
+            BackParamB: 0.5f32,
+            BackSurface: enums::SurfaceType::Smooth,
+            BackSurfaceInput: enums::InputType::NoInput,
+            BottomParamA: -0.5f32,
+            BottomParamB: 0.5f32,
+            BottomSurface: enums::SurfaceType::Inlet,
+            BottomSurfaceInput: enums::InputType::NoInput,
+            CFrame: CFrame::identity(),
+            CanCollide: true,
+            CanQuery: true,
+            CanTouch: true,
+            CastShadow: true,
+            CollisionGroup: "Default".to_owned(),
+            CollisionGroupId: 0i32,
+            Color: Color3uint8::new(163u8, 162u8, 165u8),
+            CustomPhysicalProperties: PhysicalProperties::Default,
+            EnableFluidForces: true,
+            FrontParamA: -0.5f32,
+            FrontParamB: 0.5f32,
+            FrontSurface: enums::SurfaceType::Smooth,
+            FrontSurfaceInput: enums::InputType::NoInput,
+            LeftParamA: -0.5f32,
+            LeftParamB: 0.5f32,
+            LeftSurface: enums::SurfaceType::Smooth,
+            LeftSurfaceInput: enums::InputType::NoInput,
+            Locked: false,
+            Massless: false,
+            Material: enums::Material::Plastic,
+            MaterialVariant: "".to_owned(),
+            PivotOffset: CFrame::identity(),
+            Reflectance: 0f32,
+            RightParamA: -0.5f32,
+            RightParamB: 0.5f32,
+            RightSurface: enums::SurfaceType::Smooth,
+            RightSurfaceInput: enums::InputType::NoInput,
+            RootPriority: 0i32,
+            RotVelocity: Vector3::new(0f32, 0f32, 0f32),
+            Size: Vector3::new(4f32, 1.2f32, 2f32),
+            TopParamA: -0.5f32,
+            TopParamB: 0.5f32,
+            TopSurface: enums::SurfaceType::Studs,
+            TopSurfaceInput: enums::InputType::NoInput,
+            Transparency: 0f32,
+            Velocity: Vector3::new(0f32, 0f32, 0f32),
+        };
+        let superclass = FormFactorPart {
+            superclass,
+            FormFactor: enums::FormFactor::Brick,
+        };
+        Self {
+            superclass,
+            Shape: enums::PartType::Block,
+        }
+    }
+}
 #[derive(Debug, Clone)]
 #[allow(nonstandard_style)]
 pub struct PartAdornment {
@@ -11220,9 +12086,12 @@ impl Default for PartAdornment {
         let superclass = Object::default();
         let superclass = Instance {
             superclass,
+            Archivable: true,
+            Attributes: Attributes::new(),
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
+            Sandboxed: false,
             SourceAssetId: 0i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
@@ -11266,9 +12135,12 @@ impl Default for PartOperation {
         let superclass = Object::default();
         let superclass = Instance {
             superclass,
+            Archivable: true,
+            Attributes: Attributes::new(),
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
+            Sandboxed: false,
             SourceAssetId: -1i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
@@ -11293,6 +12165,7 @@ impl Default for PartOperation {
             CastShadow: true,
             CollisionGroup: "Default".to_owned(),
             CollisionGroupId: 0i32,
+            Color: Color3uint8::new(255u8, 255u8, 255u8),
             CustomPhysicalProperties: PhysicalProperties::Default,
             EnableFluidForces: true,
             FrontParamA: -0.5f32,
@@ -11306,6 +12179,7 @@ impl Default for PartOperation {
             Locked: false,
             Massless: false,
             Material: enums::Material::Plastic,
+            MaterialVariant: "".to_owned(),
             PivotOffset: CFrame::identity(),
             Reflectance: 0f32,
             RightParamA: -0.5f32,
@@ -11314,6 +12188,7 @@ impl Default for PartOperation {
             RightSurfaceInput: enums::InputType::NoInput,
             RootPriority: 0i32,
             RotVelocity: Vector3::new(0f32, 0f32, 0f32),
+            Size: Vector3::new(4f32, 1.2f32, 2f32),
             TopParamA: -0.5f32,
             TopParamB: 0.5f32,
             TopSurface: enums::SurfaceType::Smooth,
@@ -11365,9 +12240,12 @@ impl Default for PartOperationAsset {
         let superclass = Object::default();
         let superclass = Instance {
             superclass,
+            Archivable: true,
+            Attributes: Attributes::new(),
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
+            Sandboxed: false,
             SourceAssetId: -1i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
@@ -11427,9 +12305,12 @@ impl Default for ParticleEmitter {
         let superclass = Object::default();
         let superclass = Instance {
             superclass,
+            Archivable: true,
+            Attributes: Attributes::new(),
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
+            Sandboxed: false,
             SourceAssetId: -1i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
@@ -11527,9 +12408,12 @@ impl Default for PatchMapping {
         let superclass = Object::default();
         let superclass = Instance {
             superclass,
+            Archivable: true,
+            Attributes: Attributes::new(),
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
+            Sandboxed: false,
             SourceAssetId: 0i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
@@ -11569,9 +12453,12 @@ impl Default for Path2D {
         let superclass = Object::default();
         let superclass = Instance {
             superclass,
+            Archivable: true,
+            Attributes: Attributes::new(),
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
+            Sandboxed: false,
             SourceAssetId: -1i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
@@ -11605,9 +12492,12 @@ impl Default for PathfindingLink {
         let superclass = Object::default();
         let superclass = Instance {
             superclass,
+            Archivable: true,
+            Attributes: Attributes::new(),
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
+            Sandboxed: false,
             SourceAssetId: -1i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
@@ -11635,9 +12525,12 @@ impl Default for PathfindingModifier {
         let superclass = Object::default();
         let superclass = Instance {
             superclass,
+            Archivable: true,
+            Attributes: Attributes::new(),
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
+            Sandboxed: false,
             SourceAssetId: -1i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
@@ -11765,9 +12658,12 @@ impl Default for PhysicsSettings {
         let superclass = Object::default();
         let superclass = Instance {
             superclass,
+            Archivable: true,
+            Attributes: Attributes::new(),
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
+            Sandboxed: false,
             SourceAssetId: 0i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
@@ -11838,9 +12734,12 @@ impl Default for PitchShiftSoundEffect {
         let superclass = Object::default();
         let superclass = Instance {
             superclass,
+            Archivable: true,
+            Attributes: Attributes::new(),
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
+            Sandboxed: false,
             SourceAssetId: -1i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
@@ -11964,9 +12863,12 @@ impl Default for Player {
         let superclass = Object::default();
         let superclass = Instance {
             superclass,
+            Archivable: true,
+            Attributes: Attributes::new(),
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
+            Sandboxed: false,
             SourceAssetId: 0i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
@@ -12037,9 +12939,12 @@ impl Default for PlayerDataService {
         let superclass = Object::default();
         let superclass = Instance {
             superclass,
+            Archivable: true,
+            Attributes: Attributes::new(),
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
+            Sandboxed: false,
             SourceAssetId: -1i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
@@ -12069,9 +12974,12 @@ impl Default for PlayerEmulatorService {
         let superclass = Object::default();
         let superclass = Instance {
             superclass,
+            Archivable: true,
+            Attributes: Attributes::new(),
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
+            Sandboxed: false,
             SourceAssetId: -1i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
@@ -12102,9 +13010,12 @@ impl Default for PlayerGui {
         let superclass = Object::default();
         let superclass = Instance {
             superclass,
+            Archivable: true,
+            Attributes: Attributes::new(),
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
+            Sandboxed: false,
             SourceAssetId: 0i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
@@ -12138,9 +13049,12 @@ impl Default for PlayerListConfiguration {
         let superclass = Object::default();
         let superclass = Instance {
             superclass,
+            Archivable: true,
+            Attributes: Attributes::new(),
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
+            Sandboxed: false,
             SourceAssetId: 0i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
@@ -12186,6 +13100,8 @@ pub struct Players {
     pub superclass: Instance,
     pub BanningEnabled: bool,
     pub CharacterAutoLoads: bool,
+    pub MaxPlayers: i32,
+    pub PreferredPlayers: i32,
     pub RespawnTime: f32,
     pub UseStrafingAnimations: bool,
 }
@@ -12195,9 +13111,12 @@ impl Default for Players {
         let superclass = Object::default();
         let superclass = Instance {
             superclass,
+            Archivable: true,
+            Attributes: Attributes::new(),
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
+            Sandboxed: false,
             SourceAssetId: -1i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
@@ -12206,6 +13125,8 @@ impl Default for Players {
             superclass,
             BanningEnabled: true,
             CharacterAutoLoads: true,
+            MaxPlayers: 12i32,
+            PreferredPlayers: 0i32,
             RespawnTime: 5f32,
             UseStrafingAnimations: false,
         }
@@ -12225,9 +13146,12 @@ impl Default for Plugin {
         let superclass = Object::default();
         let superclass = Instance {
             superclass,
+            Archivable: true,
+            Attributes: Attributes::new(),
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
+            Sandboxed: false,
             SourceAssetId: 0i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
@@ -12260,9 +13184,12 @@ impl Default for PluginCapabilities {
         let superclass = Object::default();
         let superclass = Instance {
             superclass,
+            Archivable: true,
+            Attributes: Attributes::new(),
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
+            Sandboxed: false,
             SourceAssetId: -1i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
@@ -12315,9 +13242,12 @@ impl Default for PluginGui {
         let superclass = Object::default();
         let superclass = Instance {
             superclass,
+            Archivable: true,
+            Attributes: Attributes::new(),
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
+            Sandboxed: false,
             SourceAssetId: 0i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
@@ -12391,9 +13321,12 @@ impl Default for PluginMenu {
         let superclass = Object::default();
         let superclass = Instance {
             superclass,
+            Archivable: true,
+            Attributes: Attributes::new(),
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
+            Sandboxed: false,
             SourceAssetId: 0i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
@@ -12449,9 +13382,12 @@ impl Default for PointLight {
         let superclass = Object::default();
         let superclass = Instance {
             superclass,
+            Archivable: true,
+            Attributes: Attributes::new(),
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
+            Sandboxed: false,
             SourceAssetId: -1i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
@@ -12491,9 +13427,12 @@ impl Default for PolicyService {
         let superclass = Object::default();
         let superclass = Instance {
             superclass,
+            Archivable: true,
+            Attributes: Attributes::new(),
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
+            Sandboxed: false,
             SourceAssetId: 0i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
@@ -12518,9 +13457,12 @@ impl Default for Pose {
         let superclass = Object::default();
         let superclass = Instance {
             superclass,
+            Archivable: true,
+            Attributes: Attributes::new(),
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
+            Sandboxed: false,
             SourceAssetId: -1i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
@@ -12552,9 +13494,12 @@ impl Default for PoseBase {
         let superclass = Object::default();
         let superclass = Instance {
             superclass,
+            Archivable: true,
+            Attributes: Attributes::new(),
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
+            Sandboxed: false,
             SourceAssetId: 0i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
@@ -12580,9 +13525,12 @@ impl Default for PostEffect {
         let superclass = Object::default();
         let superclass = Instance {
             superclass,
+            Archivable: true,
+            Attributes: Attributes::new(),
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
+            Sandboxed: false,
             SourceAssetId: 0i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
@@ -12632,9 +13580,12 @@ impl Default for ProceduralModel {
         let superclass = Object::default();
         let superclass = Instance {
             superclass,
+            Archivable: true,
+            Attributes: Attributes::new(),
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
+            Sandboxed: false,
             SourceAssetId: -1i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
@@ -12649,6 +13600,7 @@ impl Default for ProceduralModel {
             ModelStreamingMode: enums::ModelStreamingMode::Default,
             NeedsPivotMigration: false,
             PrimaryPart: Ref::none(),
+            Scale: 1f32,
             SlimHash: SharedString::new(b"".to_vec()),
             WorldPivotData: None,
         };
@@ -12695,9 +13647,12 @@ impl Default for ProximityPrompt {
         let superclass = Object::default();
         let superclass = Instance {
             superclass,
+            Archivable: true,
+            Attributes: Attributes::new(),
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
+            Sandboxed: false,
             SourceAssetId: -1i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
@@ -12737,9 +13692,12 @@ impl Default for ProximityPromptService {
         let superclass = Object::default();
         let superclass = Instance {
             superclass,
+            Archivable: true,
+            Attributes: Attributes::new(),
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
+            Sandboxed: false,
             SourceAssetId: -1i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
@@ -12776,9 +13734,12 @@ impl Default for PyramidHandleAdornment {
         let superclass = Object::default();
         let superclass = Instance {
             superclass,
+            Archivable: true,
+            Attributes: Attributes::new(),
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
+            Sandboxed: false,
             SourceAssetId: -1i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
@@ -12840,9 +13801,12 @@ impl Default for RayValue {
         let superclass = Object::default();
         let superclass = Instance {
             superclass,
+            Archivable: true,
+            Attributes: Attributes::new(),
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
+            Sandboxed: false,
             SourceAssetId: -1i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
@@ -12878,9 +13842,12 @@ impl Default for RealtimeMedia {
         let superclass = Object::default();
         let superclass = Instance {
             superclass,
+            Archivable: true,
+            Attributes: Attributes::new(),
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
+            Sandboxed: false,
             SourceAssetId: -1i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
@@ -12940,9 +13907,12 @@ impl Default for ReflectionMetadataClass {
         let superclass = Object::default();
         let superclass = Instance {
             superclass,
+            Archivable: true,
+            Attributes: Attributes::new(),
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
+            Sandboxed: false,
             SourceAssetId: -1i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
@@ -13052,9 +14022,12 @@ impl Default for ReflectionMetadataItem {
         let superclass = Object::default();
         let superclass = Instance {
             superclass,
+            Archivable: true,
+            Attributes: Attributes::new(),
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
+            Sandboxed: false,
             SourceAssetId: 0i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
@@ -13186,9 +14159,12 @@ impl Default for RenderSettings {
         let superclass = Object::default();
         let superclass = Instance {
             superclass,
+            Archivable: true,
+            Attributes: Attributes::new(),
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
+            Sandboxed: false,
             SourceAssetId: 0i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
@@ -13237,9 +14213,12 @@ impl Default for RenderingTest {
         let superclass = Object::default();
         let superclass = Instance {
             superclass,
+            Archivable: true,
+            Attributes: Attributes::new(),
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
+            Sandboxed: false,
             SourceAssetId: -1i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
@@ -13295,9 +14274,12 @@ impl Default for ReverbSoundEffect {
         let superclass = Object::default();
         let superclass = Instance {
             superclass,
+            Archivable: true,
+            Attributes: Attributes::new(),
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
+            Sandboxed: false,
             SourceAssetId: -1i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
@@ -13362,9 +14344,12 @@ impl Default for RobloxSerializableInstance {
         let superclass = Object::default();
         let superclass = Instance {
             superclass,
+            Archivable: true,
+            Attributes: Attributes::new(),
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
+            Sandboxed: false,
             SourceAssetId: -1i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
@@ -13406,9 +14391,12 @@ impl Default for RocketPropulsion {
         let superclass = Object::default();
         let superclass = Instance {
             superclass,
+            Archivable: true,
+            Attributes: Attributes::new(),
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
+            Sandboxed: false,
             SourceAssetId: -1i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
@@ -13447,9 +14435,12 @@ impl Default for RodConstraint {
         let superclass = Object::default();
         let superclass = Instance {
             superclass,
+            Archivable: true,
+            Attributes: Attributes::new(),
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
+            Sandboxed: false,
             SourceAssetId: -1i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
@@ -13501,9 +14492,12 @@ impl Default for RolloutValidation {
         let superclass = Object::default();
         let superclass = Instance {
             superclass,
+            Archivable: true,
+            Attributes: Attributes::new(),
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
+            Sandboxed: false,
             SourceAssetId: -1i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
@@ -13591,9 +14585,12 @@ impl Default for RootImportData {
         let superclass = Object::default();
         let superclass = Instance {
             superclass,
+            Archivable: true,
+            Attributes: Attributes::new(),
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
+            Sandboxed: false,
             SourceAssetId: 0i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
@@ -13653,9 +14650,12 @@ impl Default for RopeConstraint {
         let superclass = Object::default();
         let superclass = Instance {
             superclass,
+            Archivable: true,
+            Attributes: Attributes::new(),
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
+            Sandboxed: false,
             SourceAssetId: -1i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
@@ -13718,9 +14718,12 @@ impl Default for RotationCurve {
         let superclass = Object::default();
         let superclass = Instance {
             superclass,
+            Archivable: true,
+            Attributes: Attributes::new(),
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
+            Sandboxed: false,
             SourceAssetId: -1i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
@@ -13800,9 +14803,12 @@ impl Default for SafetyService {
         let superclass = Object::default();
         let superclass = Instance {
             superclass,
+            Archivable: true,
+            Attributes: Attributes::new(),
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
+            Sandboxed: false,
             SourceAssetId: 0i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
@@ -13837,9 +14843,12 @@ impl Default for ScreenGui {
         let superclass = Object::default();
         let superclass = Instance {
             superclass,
+            Archivable: true,
+            Attributes: Attributes::new(),
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
+            Sandboxed: false,
             SourceAssetId: -1i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
@@ -13901,9 +14910,12 @@ impl Default for ScreenshotHud {
         let superclass = Object::default();
         let superclass = Instance {
             superclass,
+            Archivable: true,
+            Attributes: Attributes::new(),
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
+            Sandboxed: false,
             SourceAssetId: 0i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
@@ -13936,9 +14948,12 @@ impl Default for Script {
         let superclass = Object::default();
         let superclass = Instance {
             superclass,
+            Archivable: true,
+            Attributes: Attributes::new(),
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
+            Sandboxed: false,
             SourceAssetId: -1i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
@@ -14021,9 +15036,12 @@ impl Default for ScriptDebugger {
         let superclass = Object::default();
         let superclass = Instance {
             superclass,
+            Archivable: true,
+            Attributes: Attributes::new(),
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
+            Sandboxed: false,
             SourceAssetId: 0i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
@@ -14118,9 +15136,12 @@ impl Default for ScrollingFrame {
         let superclass = Object::default();
         let superclass = Instance {
             superclass,
+            Archivable: true,
+            Attributes: Attributes::new(),
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
+            Sandboxed: false,
             SourceAssetId: -1i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
@@ -14200,9 +15221,12 @@ impl Default for Seat {
         let superclass = Object::default();
         let superclass = Instance {
             superclass,
+            Archivable: true,
+            Attributes: Attributes::new(),
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
+            Sandboxed: false,
             SourceAssetId: -1i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
@@ -14227,6 +15251,7 @@ impl Default for Seat {
             CastShadow: true,
             CollisionGroup: "Default".to_owned(),
             CollisionGroupId: 0i32,
+            Color: Color3uint8::new(163u8, 162u8, 165u8),
             CustomPhysicalProperties: PhysicalProperties::Default,
             EnableFluidForces: true,
             FrontParamA: -0.5f32,
@@ -14240,6 +15265,7 @@ impl Default for Seat {
             Locked: false,
             Massless: false,
             Material: enums::Material::Plastic,
+            MaterialVariant: "".to_owned(),
             PivotOffset: CFrame::identity(),
             Reflectance: 0f32,
             RightParamA: -0.5f32,
@@ -14248,6 +15274,7 @@ impl Default for Seat {
             RightSurfaceInput: enums::InputType::NoInput,
             RootPriority: 0i32,
             RotVelocity: Vector3::new(0f32, 0f32, 0f32),
+            Size: Vector3::new(4f32, 1.2f32, 2f32),
             TopParamA: -0.5f32,
             TopParamB: 0.5f32,
             TopSurface: enums::SurfaceType::Studs,
@@ -14255,8 +15282,14 @@ impl Default for Seat {
             Transparency: 0f32,
             Velocity: Vector3::new(0f32, 0f32, 0f32),
         };
-        let superclass = FormFactorPart { superclass };
-        let superclass = Part { superclass };
+        let superclass = FormFactorPart {
+            superclass,
+            FormFactor: enums::FormFactor::Brick,
+        };
+        let superclass = Part {
+            superclass,
+            Shape: enums::PartType::Block,
+        };
         Self {
             superclass,
             Disabled: false,
@@ -14287,9 +15320,12 @@ impl Default for SelectionBox {
         let superclass = Object::default();
         let superclass = Instance {
             superclass,
+            Archivable: true,
+            Attributes: Attributes::new(),
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
+            Sandboxed: false,
             SourceAssetId: -1i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
@@ -14335,9 +15371,12 @@ impl Default for SelectionLasso {
         let superclass = Object::default();
         let superclass = Instance {
             superclass,
+            Archivable: true,
+            Attributes: Attributes::new(),
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
+            Sandboxed: false,
             SourceAssetId: 0i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
@@ -14368,9 +15407,12 @@ impl Default for SelectionPartLasso {
         let superclass = Object::default();
         let superclass = Instance {
             superclass,
+            Archivable: true,
+            Attributes: Attributes::new(),
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
+            Sandboxed: false,
             SourceAssetId: -1i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
@@ -14405,9 +15447,12 @@ impl Default for SelectionPointLasso {
         let superclass = Object::default();
         let superclass = Instance {
             superclass,
+            Archivable: true,
+            Attributes: Attributes::new(),
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
+            Sandboxed: false,
             SourceAssetId: -1i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
@@ -14443,9 +15488,12 @@ impl Default for SelectionSphere {
         let superclass = Object::default();
         let superclass = Instance {
             superclass,
+            Archivable: true,
+            Attributes: Attributes::new(),
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
+            Sandboxed: false,
             SourceAssetId: -1i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
@@ -14481,9 +15529,12 @@ impl Default for SelfViewConfiguration {
         let superclass = Object::default();
         let superclass = Instance {
             superclass,
+            Archivable: true,
+            Attributes: Attributes::new(),
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
+            Sandboxed: false,
             SourceAssetId: 0i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
@@ -14511,9 +15562,12 @@ impl Default for SensorBase {
         let superclass = Object::default();
         let superclass = Instance {
             superclass,
+            Archivable: true,
+            Attributes: Attributes::new(),
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
+            Sandboxed: false,
             SourceAssetId: 0i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
@@ -14553,9 +15607,12 @@ impl Default for ServerScriptService {
         let superclass = Object::default();
         let superclass = Instance {
             superclass,
+            Archivable: true,
+            Attributes: Attributes::new(),
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
+            Sandboxed: false,
             SourceAssetId: -1i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
@@ -14596,9 +15653,12 @@ impl Default for ServiceVisibilityService {
         let superclass = Object::default();
         let superclass = Instance {
             superclass,
+            Archivable: true,
+            Attributes: Attributes::new(),
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
+            Sandboxed: false,
             SourceAssetId: -1i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
@@ -14647,9 +15707,12 @@ impl Default for Shirt {
         let superclass = Object::default();
         let superclass = Instance {
             superclass,
+            Archivable: true,
+            Attributes: Attributes::new(),
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
+            Sandboxed: false,
             SourceAssetId: -1i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
@@ -14679,9 +15742,12 @@ impl Default for ShirtGraphic {
         let superclass = Object::default();
         let superclass = Instance {
             superclass,
+            Archivable: true,
+            Attributes: Attributes::new(),
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
+            Sandboxed: false,
             SourceAssetId: -1i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
@@ -14717,9 +15783,12 @@ impl Default for SkateboardPlatform {
         let superclass = Object::default();
         let superclass = Instance {
             superclass,
+            Archivable: true,
+            Attributes: Attributes::new(),
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
+            Sandboxed: false,
             SourceAssetId: -1i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
@@ -14744,6 +15813,7 @@ impl Default for SkateboardPlatform {
             CastShadow: true,
             CollisionGroup: "Default".to_owned(),
             CollisionGroupId: 0i32,
+            Color: Color3uint8::new(163u8, 162u8, 165u8),
             CustomPhysicalProperties: PhysicalProperties::Default,
             EnableFluidForces: true,
             FrontParamA: -0.5f32,
@@ -14757,6 +15827,7 @@ impl Default for SkateboardPlatform {
             Locked: false,
             Massless: false,
             Material: enums::Material::Plastic,
+            MaterialVariant: "".to_owned(),
             PivotOffset: CFrame::identity(),
             Reflectance: 0f32,
             RightParamA: -0.5f32,
@@ -14765,6 +15836,7 @@ impl Default for SkateboardPlatform {
             RightSurfaceInput: enums::InputType::NoInput,
             RootPriority: 0i32,
             RotVelocity: Vector3::new(0f32, 0f32, 0f32),
+            Size: Vector3::new(4f32, 1.2f32, 2f32),
             TopParamA: -0.5f32,
             TopParamB: 0.5f32,
             TopSurface: enums::SurfaceType::Studs,
@@ -14772,8 +15844,14 @@ impl Default for SkateboardPlatform {
             Transparency: 0f32,
             Velocity: Vector3::new(0f32, 0f32, 0f32),
         };
-        let superclass = FormFactorPart { superclass };
-        let superclass = Part { superclass };
+        let superclass = FormFactorPart {
+            superclass,
+            FormFactor: enums::FormFactor::Brick,
+        };
+        let superclass = Part {
+            superclass,
+            Shape: enums::PartType::Block,
+        };
         Self {
             superclass,
             Steer: 0i32,
@@ -14795,9 +15873,12 @@ impl Default for Skin {
         let superclass = Object::default();
         let superclass = Instance {
             superclass,
+            Archivable: true,
+            Attributes: Attributes::new(),
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
+            Sandboxed: false,
             SourceAssetId: -1i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
@@ -14842,9 +15923,12 @@ impl Default for Sky {
         let superclass = Object::default();
         let superclass = Instance {
             superclass,
+            Archivable: true,
+            Attributes: Attributes::new(),
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
+            Sandboxed: false,
             SourceAssetId: -1i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
@@ -14901,9 +15985,12 @@ impl Default for SlidingBallConstraint {
         let superclass = Object::default();
         let superclass = Instance {
             superclass,
+            Archivable: true,
+            Attributes: Attributes::new(),
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
+            Sandboxed: false,
             SourceAssetId: 0i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
@@ -14982,6 +16069,9 @@ pub struct Smoke {
     pub superclass: Instance,
     pub Color: Color3,
     pub Enabled: bool,
+    pub Opacity: f32,
+    pub RiseVelocity: f32,
+    pub Size: f32,
     pub TimeScale: f32,
 }
 impl_inherits!(Smoke, Instance);
@@ -14990,9 +16080,12 @@ impl Default for Smoke {
         let superclass = Object::default();
         let superclass = Instance {
             superclass,
+            Archivable: true,
+            Attributes: Attributes::new(),
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
+            Sandboxed: false,
             SourceAssetId: -1i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
@@ -15001,6 +16094,9 @@ impl Default for Smoke {
             superclass,
             Color: Color3::new(1f32, 1f32, 1f32),
             Enabled: true,
+            Opacity: 0.5f32,
+            RiseVelocity: 1f32,
+            Size: 1f32,
             TimeScale: 1f32,
         }
     }
@@ -15054,11 +16150,14 @@ pub struct Sound {
     pub AudioContent: Content,
     pub LoopRegion: NumberRange,
     pub Looped: bool,
+    pub MaxDistance: f32,
     pub PlayOnRemove: bool,
     pub PlaybackRegion: NumberRange,
     pub PlaybackRegionsEnabled: bool,
     pub PlaybackSpeed: f32,
     pub Playing: bool,
+    pub RollOffMaxDistance: f32,
+    pub RollOffMinDistance: f32,
     pub RollOffMode: enums::RollOffMode,
     pub SoundGroup: Ref,
     pub TimePosition: f64,
@@ -15070,9 +16169,12 @@ impl Default for Sound {
         let superclass = Object::default();
         let superclass = Instance {
             superclass,
+            Archivable: true,
+            Attributes: Attributes::new(),
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
+            Sandboxed: false,
             SourceAssetId: -1i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
@@ -15083,11 +16185,14 @@ impl Default for Sound {
             AudioContent: Content::none(),
             LoopRegion: NumberRange::new(0f32, 60000f32),
             Looped: false,
+            MaxDistance: 0f32,
             PlayOnRemove: false,
             PlaybackRegion: NumberRange::new(0f32, 60000f32),
             PlaybackRegionsEnabled: false,
             PlaybackSpeed: 1f32,
             Playing: false,
+            RollOffMaxDistance: 10000f32,
+            RollOffMinDistance: 10f32,
             RollOffMode: enums::RollOffMode::Inverse,
             SoundGroup: Ref::none(),
             TimePosition: 0f64,
@@ -15109,9 +16214,12 @@ impl Default for SoundEffect {
         let superclass = Object::default();
         let superclass = Instance {
             superclass,
+            Archivable: true,
+            Attributes: Attributes::new(),
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
+            Sandboxed: false,
             SourceAssetId: 0i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
@@ -15136,9 +16244,12 @@ impl Default for SoundGroup {
         let superclass = Object::default();
         let superclass = Instance {
             superclass,
+            Archivable: true,
+            Attributes: Attributes::new(),
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
+            Sandboxed: false,
             SourceAssetId: -1i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
@@ -15172,9 +16283,12 @@ impl Default for SoundService {
         let superclass = Object::default();
         let superclass = Instance {
             superclass,
+            Archivable: true,
+            Attributes: Attributes::new(),
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
+            Sandboxed: false,
             SourceAssetId: -1i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
@@ -15218,9 +16332,12 @@ impl Default for Sparkles {
         let superclass = Object::default();
         let superclass = Instance {
             superclass,
+            Archivable: true,
+            Attributes: Attributes::new(),
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
+            Sandboxed: false,
             SourceAssetId: -1i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
@@ -15250,9 +16367,12 @@ impl Default for SpawnLocation {
         let superclass = Object::default();
         let superclass = Instance {
             superclass,
+            Archivable: true,
+            Attributes: Attributes::new(),
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
+            Sandboxed: false,
             SourceAssetId: -1i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
@@ -15277,6 +16397,7 @@ impl Default for SpawnLocation {
             CastShadow: true,
             CollisionGroup: "Default".to_owned(),
             CollisionGroupId: 0i32,
+            Color: Color3uint8::new(163u8, 162u8, 165u8),
             CustomPhysicalProperties: PhysicalProperties::Default,
             EnableFluidForces: true,
             FrontParamA: -0.5f32,
@@ -15290,6 +16411,7 @@ impl Default for SpawnLocation {
             Locked: false,
             Massless: false,
             Material: enums::Material::Plastic,
+            MaterialVariant: "".to_owned(),
             PivotOffset: CFrame::identity(),
             Reflectance: 0f32,
             RightParamA: -0.5f32,
@@ -15298,6 +16420,7 @@ impl Default for SpawnLocation {
             RightSurfaceInput: enums::InputType::NoInput,
             RootPriority: 0i32,
             RotVelocity: Vector3::new(0f32, 0f32, 0f32),
+            Size: Vector3::new(4f32, 1.2f32, 2f32),
             TopParamA: -0.5f32,
             TopParamB: 0.5f32,
             TopSurface: enums::SurfaceType::Studs,
@@ -15305,8 +16428,14 @@ impl Default for SpawnLocation {
             Transparency: 0f32,
             Velocity: Vector3::new(0f32, 0f32, 0f32),
         };
-        let superclass = FormFactorPart { superclass };
-        let superclass = Part { superclass };
+        let superclass = FormFactorPart {
+            superclass,
+            FormFactor: enums::FormFactor::Brick,
+        };
+        let superclass = Part {
+            superclass,
+            Shape: enums::PartType::Block,
+        };
         Self {
             superclass,
             AllowTeamChangeOnTouch: false,
@@ -15338,9 +16467,12 @@ impl Default for SpecialMesh {
         let superclass = Object::default();
         let superclass = Instance {
             superclass,
+            Archivable: true,
+            Attributes: Attributes::new(),
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
+            Sandboxed: false,
             SourceAssetId: -1i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
@@ -15376,9 +16508,12 @@ impl Default for SphereHandleAdornment {
         let superclass = Object::default();
         let superclass = Instance {
             superclass,
+            Archivable: true,
+            Attributes: Attributes::new(),
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
+            Sandboxed: false,
             SourceAssetId: -1i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
@@ -15424,9 +16559,12 @@ impl Default for SpotLight {
         let superclass = Object::default();
         let superclass = Instance {
             superclass,
+            Archivable: true,
+            Attributes: Attributes::new(),
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
+            Sandboxed: false,
             SourceAssetId: -1i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
@@ -15468,9 +16606,12 @@ impl Default for SpringConstraint {
         let superclass = Object::default();
         let superclass = Instance {
             superclass,
+            Archivable: true,
+            Attributes: Attributes::new(),
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
+            Sandboxed: false,
             SourceAssetId: -1i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
@@ -15565,9 +16706,12 @@ impl Default for StarterGui {
         let superclass = Object::default();
         let superclass = Instance {
             superclass,
+            Archivable: true,
+            Attributes: Attributes::new(),
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
+            Sandboxed: false,
             SourceAssetId: -1i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
@@ -15600,6 +16744,7 @@ pub struct StarterPlayer {
     pub superclass: Instance,
     pub AllowCustomAnimations: bool,
     pub AutoJumpEnabled: bool,
+    pub AvatarJointUpgrade: enums::RolloutState,
     pub CameraMaxZoomDistance: f32,
     pub CameraMinZoomDistance: f32,
     pub CameraMode: enums::CameraMode,
@@ -15648,9 +16793,12 @@ impl Default for StarterPlayer {
         let superclass = Object::default();
         let superclass = Instance {
             superclass,
+            Archivable: true,
+            Attributes: Attributes::new(),
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
+            Sandboxed: false,
             SourceAssetId: -1i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
@@ -15659,6 +16807,7 @@ impl Default for StarterPlayer {
             superclass,
             AllowCustomAnimations: true,
             AutoJumpEnabled: true,
+            AvatarJointUpgrade: enums::RolloutState::Default,
             CameraMaxZoomDistance: 400f32,
             CameraMinZoomDistance: 0.5f32,
             CameraMode: enums::CameraMode::Classic,
@@ -15764,9 +16913,12 @@ impl Default for StringValue {
         let superclass = Object::default();
         let superclass = Instance {
             superclass,
+            Archivable: true,
+            Attributes: Attributes::new(),
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
+            Sandboxed: false,
             SourceAssetId: -1i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
@@ -15928,9 +17080,12 @@ impl Default for Studio {
         let superclass = Object::default();
         let superclass = Instance {
             superclass,
+            Archivable: true,
+            Attributes: Attributes::new(),
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
+            Sandboxed: false,
             SourceAssetId: 0i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
@@ -16103,9 +17258,12 @@ impl Default for StudioAttachment {
         let superclass = Object::default();
         let superclass = Instance {
             superclass,
+            Archivable: true,
+            Attributes: Attributes::new(),
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
+            Sandboxed: false,
             SourceAssetId: 0i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
@@ -16143,9 +17301,12 @@ impl Default for StudioCameraService {
         let superclass = Object::default();
         let superclass = Instance {
             superclass,
+            Archivable: true,
+            Attributes: Attributes::new(),
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
+            Sandboxed: false,
             SourceAssetId: 0i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
@@ -16179,9 +17340,12 @@ impl Default for StudioData {
         let superclass = Object::default();
         let superclass = Instance {
             superclass,
+            Archivable: true,
+            Attributes: Attributes::new(),
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
+            Sandboxed: false,
             SourceAssetId: -1i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
@@ -16229,9 +17393,12 @@ impl Default for StudioPublishService {
         let superclass = Object::default();
         let superclass = Instance {
             superclass,
+            Archivable: true,
+            Attributes: Attributes::new(),
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
+            Sandboxed: false,
             SourceAssetId: 0i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
@@ -16279,9 +17446,12 @@ impl Default for StudioService {
         let superclass = Object::default();
         let superclass = Instance {
             superclass,
+            Archivable: true,
+            Attributes: Attributes::new(),
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
+            Sandboxed: false,
             SourceAssetId: 0i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
@@ -16305,9 +17475,12 @@ impl Default for StudioTestService {
         let superclass = Object::default();
         let superclass = Instance {
             superclass,
+            Archivable: true,
+            Attributes: Attributes::new(),
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
+            Sandboxed: false,
             SourceAssetId: 0i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
@@ -16372,9 +17545,12 @@ impl Default for StyleDerive {
         let superclass = Object::default();
         let superclass = Instance {
             superclass,
+            Archivable: true,
+            Attributes: Attributes::new(),
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
+            Sandboxed: false,
             SourceAssetId: -1i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
@@ -16399,9 +17575,12 @@ impl Default for StyleLink {
         let superclass = Object::default();
         let superclass = Instance {
             superclass,
+            Archivable: true,
+            Attributes: Attributes::new(),
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
+            Sandboxed: false,
             SourceAssetId: -1i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
@@ -16425,9 +17604,12 @@ impl Default for StyleQuery {
         let superclass = Object::default();
         let superclass = Instance {
             superclass,
+            Archivable: true,
+            Attributes: Attributes::new(),
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
+            Sandboxed: false,
             SourceAssetId: -1i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
@@ -16444,6 +17626,7 @@ pub struct StyleRule {
     #[doc(hidden)]
     pub superclass: StyleBase,
     pub Priority: i32,
+    pub Properties: Attributes,
     pub PropertyTransitionsSerialize: BinaryString,
     pub Selector: String,
 }
@@ -16453,9 +17636,12 @@ impl Default for StyleRule {
         let superclass = Object::default();
         let superclass = Instance {
             superclass,
+            Archivable: true,
+            Attributes: Attributes::new(),
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
+            Sandboxed: false,
             SourceAssetId: -1i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
@@ -16464,6 +17650,7 @@ impl Default for StyleRule {
         Self {
             superclass,
             Priority: 0i32,
+            Properties: Attributes::new(),
             PropertyTransitionsSerialize: b"".as_slice().into(),
             Selector: "".to_owned(),
         }
@@ -16499,9 +17686,12 @@ impl Default for SunRaysEffect {
         let superclass = Object::default();
         let superclass = Instance {
             superclass,
+            Archivable: true,
+            Attributes: Attributes::new(),
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
+            Sandboxed: false,
             SourceAssetId: -1i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
@@ -16540,9 +17730,12 @@ impl Default for SurfaceAppearance {
         let superclass = Object::default();
         let superclass = Instance {
             superclass,
+            Archivable: true,
+            Attributes: Attributes::new(),
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
+            Sandboxed: false,
             SourceAssetId: -1i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
@@ -16585,9 +17778,12 @@ impl Default for SurfaceGui {
         let superclass = Object::default();
         let superclass = Instance {
             superclass,
+            Archivable: true,
+            Attributes: Attributes::new(),
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
+            Sandboxed: false,
             SourceAssetId: -1i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
@@ -16646,9 +17842,12 @@ impl Default for SurfaceGuiBase {
         let superclass = Object::default();
         let superclass = Instance {
             superclass,
+            Archivable: true,
+            Attributes: Attributes::new(),
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
+            Sandboxed: false,
             SourceAssetId: 0i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
@@ -16694,9 +17893,12 @@ impl Default for SurfaceLight {
         let superclass = Object::default();
         let superclass = Instance {
             superclass,
+            Archivable: true,
+            Attributes: Attributes::new(),
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
+            Sandboxed: false,
             SourceAssetId: -1i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
@@ -16729,9 +17931,12 @@ impl Default for SurfaceSelection {
         let superclass = Object::default();
         let superclass = Instance {
             superclass,
+            Archivable: true,
+            Attributes: Attributes::new(),
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
+            Sandboxed: false,
             SourceAssetId: -1i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
@@ -16770,9 +17975,12 @@ impl Default for SwimController {
         let superclass = Object::default();
         let superclass = Instance {
             superclass,
+            Archivable: true,
+            Attributes: Attributes::new(),
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
+            Sandboxed: false,
             SourceAssetId: -1i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
@@ -16809,9 +18017,12 @@ impl Default for SyncScriptBuilder {
         let superclass = Object::default();
         let superclass = Instance {
             superclass,
+            Archivable: true,
+            Attributes: Attributes::new(),
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
+            Sandboxed: false,
             SourceAssetId: 0i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
@@ -16848,9 +18059,12 @@ impl Default for TaskScheduler {
         let superclass = Object::default();
         let superclass = Instance {
             superclass,
+            Archivable: true,
+            Attributes: Attributes::new(),
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
+            Sandboxed: false,
             SourceAssetId: 0i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
@@ -16875,9 +18089,12 @@ impl Default for Team {
         let superclass = Object::default();
         let superclass = Instance {
             superclass,
+            Archivable: true,
+            Attributes: Attributes::new(),
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
+            Sandboxed: false,
             SourceAssetId: -1i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
@@ -16952,9 +18169,12 @@ impl Default for TeleportOptions {
         let superclass = Object::default();
         let superclass = Instance {
             superclass,
+            Archivable: true,
+            Attributes: Attributes::new(),
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
+            Sandboxed: false,
             SourceAssetId: -1i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
@@ -17016,9 +18236,12 @@ impl Default for Terrain {
         let superclass = Object::default();
         let superclass = Instance {
             superclass,
+            Archivable: true,
+            Attributes: Attributes::new(),
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
+            Sandboxed: false,
             SourceAssetId: -1i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
@@ -17043,6 +18266,7 @@ impl Default for Terrain {
             CastShadow: true,
             CollisionGroup: "Default".to_owned(),
             CollisionGroupId: 0i32,
+            Color: Color3uint8::new(163u8, 162u8, 165u8),
             CustomPhysicalProperties: PhysicalProperties::Default,
             EnableFluidForces: true,
             FrontParamA: -0.5f32,
@@ -17056,6 +18280,7 @@ impl Default for Terrain {
             Locked: true,
             Massless: false,
             Material: enums::Material::Plastic,
+            MaterialVariant: "".to_owned(),
             PivotOffset: CFrame::identity(),
             Reflectance: 0f32,
             RightParamA: -0.5f32,
@@ -17064,6 +18289,7 @@ impl Default for Terrain {
             RightSurfaceInput: enums::InputType::NoInput,
             RootPriority: 0i32,
             RotVelocity: Vector3::new(0f32, 0f32, 0f32),
+            Size: Vector3::new(2044f32, 252f32, 2044f32),
             TopParamA: -0.5f32,
             TopParamB: 0.5f32,
             TopSurface: enums::SurfaceType::Studs,
@@ -17112,9 +18338,12 @@ impl Default for TerrainDetail {
         let superclass = Object::default();
         let superclass = Instance {
             superclass,
+            Archivable: true,
+            Attributes: Attributes::new(),
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
+            Sandboxed: false,
             SourceAssetId: -1i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
@@ -17174,9 +18403,12 @@ impl Default for TerrainRegion {
         let superclass = Object::default();
         let superclass = Instance {
             superclass,
+            Archivable: true,
+            Attributes: Attributes::new(),
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
+            Sandboxed: false,
             SourceAssetId: -1i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
@@ -17226,9 +18458,12 @@ impl Default for TestService {
         let superclass = Object::default();
         let superclass = Instance {
             superclass,
+            Archivable: true,
+            Attributes: Attributes::new(),
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
+            Sandboxed: false,
             SourceAssetId: -1i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
@@ -17284,9 +18519,12 @@ impl Default for TextBox {
         let superclass = Object::default();
         let superclass = Instance {
             superclass,
+            Archivable: true,
+            Attributes: Attributes::new(),
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
+            Sandboxed: false,
             SourceAssetId: -1i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
@@ -17405,9 +18643,12 @@ impl Default for TextButton {
         let superclass = Object::default();
         let superclass = Instance {
             superclass,
+            Archivable: true,
+            Attributes: Attributes::new(),
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
+            Sandboxed: false,
             SourceAssetId: -1i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
@@ -17514,9 +18755,12 @@ impl Default for TextChatCommand {
         let superclass = Object::default();
         let superclass = Instance {
             superclass,
+            Archivable: true,
+            Attributes: Attributes::new(),
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
+            Sandboxed: false,
             SourceAssetId: -1i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
@@ -17554,9 +18798,12 @@ impl Default for TextChatMessage {
         let superclass = Object::default();
         let superclass = Instance {
             superclass,
+            Archivable: true,
+            Attributes: Attributes::new(),
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
+            Sandboxed: false,
             SourceAssetId: 0i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
@@ -17597,9 +18844,12 @@ impl Default for TextChatService {
         let superclass = Object::default();
         let superclass = Instance {
             superclass,
+            Archivable: true,
+            Attributes: Attributes::new(),
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
+            Sandboxed: false,
             SourceAssetId: -1i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
@@ -17648,9 +18898,12 @@ impl Default for TextGenerator {
         let superclass = Object::default();
         let superclass = Instance {
             superclass,
+            Archivable: true,
+            Attributes: Attributes::new(),
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
+            Sandboxed: false,
             SourceAssetId: -1i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
@@ -17695,9 +18948,12 @@ impl Default for TextLabel {
         let superclass = Object::default();
         let superclass = Instance {
             superclass,
+            Archivable: true,
+            Attributes: Attributes::new(),
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
+            Sandboxed: false,
             SourceAssetId: -1i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
@@ -17793,9 +19049,12 @@ impl Default for TextSource {
         let superclass = Object::default();
         let superclass = Instance {
             superclass,
+            Archivable: true,
+            Attributes: Attributes::new(),
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
+            Sandboxed: false,
             SourceAssetId: 0i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
@@ -17822,9 +19081,12 @@ impl Default for Texture {
         let superclass = Object::default();
         let superclass = Instance {
             superclass,
+            Archivable: true,
+            Attributes: Attributes::new(),
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
+            Sandboxed: false,
             SourceAssetId: -1i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
@@ -17931,9 +19193,12 @@ impl Default for Tool {
         let superclass = Object::default();
         let superclass = Instance {
             superclass,
+            Archivable: true,
+            Attributes: Attributes::new(),
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
+            Sandboxed: false,
             SourceAssetId: -1i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
@@ -17948,6 +19213,7 @@ impl Default for Tool {
             ModelStreamingMode: enums::ModelStreamingMode::Default,
             NeedsPivotMigration: false,
             PrimaryPart: Ref::none(),
+            Scale: 1f32,
             SlimHash: SharedString::new(b"".to_vec()),
             WorldPivotData: None,
         };
@@ -17980,9 +19246,12 @@ impl Default for Torque {
         let superclass = Object::default();
         let superclass = Instance {
             superclass,
+            Archivable: true,
+            Attributes: Attributes::new(),
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
+            Sandboxed: false,
             SourceAssetId: -1i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
@@ -18023,9 +19292,12 @@ impl Default for TorsionSpringConstraint {
         let superclass = Object::default();
         let superclass = Instance {
             superclass,
+            Archivable: true,
+            Attributes: Attributes::new(),
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
+            Sandboxed: false,
             SourceAssetId: -1i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
@@ -18108,9 +19380,12 @@ impl Default for TrackerLodController {
         let superclass = Object::default();
         let superclass = Instance {
             superclass,
+            Archivable: true,
+            Attributes: Attributes::new(),
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
+            Sandboxed: false,
             SourceAssetId: 0i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
@@ -18160,9 +19435,12 @@ impl Default for Trail {
         let superclass = Object::default();
         let superclass = Instance {
             superclass,
+            Archivable: true,
+            Attributes: Attributes::new(),
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
+            Sandboxed: false,
             SourceAssetId: -1i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
@@ -18226,9 +19504,12 @@ impl Default for TremoloSoundEffect {
         let superclass = Object::default();
         let superclass = Instance {
             superclass,
+            Archivable: true,
+            Attributes: Attributes::new(),
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
+            Sandboxed: false,
             SourceAssetId: -1i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
@@ -18266,9 +19547,12 @@ impl Default for TriangleMeshPart {
         let superclass = Object::default();
         let superclass = Instance {
             superclass,
+            Archivable: true,
+            Attributes: Attributes::new(),
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
+            Sandboxed: false,
             SourceAssetId: 0i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
@@ -18293,6 +19577,7 @@ impl Default for TriangleMeshPart {
             CastShadow: false,
             CollisionGroup: "".to_owned(),
             CollisionGroupId: 0i32,
+            Color: Color3::new(0f32, 0f32, 0f32),
             CustomPhysicalProperties: PhysicalProperties::Default,
             EnableFluidForces: false,
             FrontParamA: 0f32,
@@ -18306,6 +19591,7 @@ impl Default for TriangleMeshPart {
             Locked: false,
             Massless: false,
             Material: enums::Material::Plastic,
+            MaterialVariant: "".to_owned(),
             PivotOffset: CFrame::identity(),
             Reflectance: 0f32,
             RightParamA: 0f32,
@@ -18314,6 +19600,7 @@ impl Default for TriangleMeshPart {
             RightSurfaceInput: enums::InputType::NoInput,
             RootPriority: 0i32,
             RotVelocity: Vector3::new(0f32, 0f32, 0f32),
+            Size: Vector3::new(0f32, 0f32, 0f32),
             TopParamA: 0f32,
             TopParamB: 0f32,
             TopSurface: enums::SurfaceType::Smooth,
@@ -18347,9 +19634,12 @@ impl Default for TrussPart {
         let superclass = Object::default();
         let superclass = Instance {
             superclass,
+            Archivable: true,
+            Attributes: Attributes::new(),
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
+            Sandboxed: false,
             SourceAssetId: -1i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
@@ -18374,6 +19664,7 @@ impl Default for TrussPart {
             CastShadow: true,
             CollisionGroup: "Default".to_owned(),
             CollisionGroupId: 0i32,
+            Color: Color3uint8::new(163u8, 162u8, 165u8),
             CustomPhysicalProperties: PhysicalProperties::Default,
             EnableFluidForces: true,
             FrontParamA: -0.5f32,
@@ -18387,6 +19678,7 @@ impl Default for TrussPart {
             Locked: false,
             Massless: false,
             Material: enums::Material::Plastic,
+            MaterialVariant: "".to_owned(),
             PivotOffset: CFrame::identity(),
             Reflectance: 0f32,
             RightParamA: -0.5f32,
@@ -18395,6 +19687,7 @@ impl Default for TrussPart {
             RightSurfaceInput: enums::InputType::NoInput,
             RootPriority: 0i32,
             RotVelocity: Vector3::new(0f32, 0f32, 0f32),
+            Size: Vector3::new(2f32, 2f32, 2f32),
             TopParamA: -0.5f32,
             TopParamB: 0.5f32,
             TopSurface: enums::SurfaceType::Universal,
@@ -18471,9 +19764,12 @@ impl Default for UIAspectRatioConstraint {
         let superclass = Object::default();
         let superclass = Instance {
             superclass,
+            Archivable: true,
+            Attributes: Attributes::new(),
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
+            Sandboxed: false,
             SourceAssetId: -1i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
@@ -18529,9 +19825,12 @@ impl Default for UICorner {
         let superclass = Object::default();
         let superclass = Instance {
             superclass,
+            Archivable: true,
+            Attributes: Attributes::new(),
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
+            Sandboxed: false,
             SourceAssetId: -1i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
@@ -18579,9 +19878,12 @@ impl Default for UIDragDetector {
         let superclass = Object::default();
         let superclass = Instance {
             superclass,
+            Archivable: true,
+            Attributes: Attributes::new(),
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
+            Sandboxed: false,
             SourceAssetId: -1i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
@@ -18637,9 +19939,12 @@ impl Default for UIFlexItem {
         let superclass = Object::default();
         let superclass = Instance {
             superclass,
+            Archivable: true,
+            Attributes: Attributes::new(),
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
+            Sandboxed: false,
             SourceAssetId: -1i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
@@ -18672,9 +19977,12 @@ impl Default for UIGradient {
         let superclass = Object::default();
         let superclass = Instance {
             superclass,
+            Archivable: true,
+            Attributes: Attributes::new(),
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
+            Sandboxed: false,
             SourceAssetId: -1i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
@@ -18717,9 +20025,12 @@ impl Default for UIGridLayout {
         let superclass = Object::default();
         let superclass = Instance {
             superclass,
+            Archivable: true,
+            Attributes: Attributes::new(),
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
+            Sandboxed: false,
             SourceAssetId: -1i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
@@ -18759,9 +20070,12 @@ impl Default for UIGridStyleLayout {
         let superclass = Object::default();
         let superclass = Instance {
             superclass,
+            Archivable: true,
+            Attributes: Attributes::new(),
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
+            Sandboxed: false,
             SourceAssetId: 0i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
@@ -18803,9 +20117,12 @@ impl Default for UIListLayout {
         let superclass = Object::default();
         let superclass = Instance {
             superclass,
+            Archivable: true,
+            Attributes: Attributes::new(),
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
+            Sandboxed: false,
             SourceAssetId: -1i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
@@ -18846,9 +20163,12 @@ impl Default for UIPadding {
         let superclass = Object::default();
         let superclass = Instance {
             superclass,
+            Archivable: true,
+            Attributes: Attributes::new(),
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
+            Sandboxed: false,
             SourceAssetId: -1i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
@@ -18885,9 +20205,12 @@ impl Default for UIPageLayout {
         let superclass = Object::default();
         let superclass = Instance {
             superclass,
+            Archivable: true,
+            Attributes: Attributes::new(),
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
+            Sandboxed: false,
             SourceAssetId: -1i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
@@ -18929,9 +20252,12 @@ impl Default for UIScale {
         let superclass = Object::default();
         let superclass = Instance {
             superclass,
+            Archivable: true,
+            Attributes: Attributes::new(),
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
+            Sandboxed: false,
             SourceAssetId: -1i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
@@ -18962,9 +20288,12 @@ impl Default for UIShadow {
         let superclass = Object::default();
         let superclass = Instance {
             superclass,
+            Archivable: true,
+            Attributes: Attributes::new(),
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
+            Sandboxed: false,
             SourceAssetId: -1i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
@@ -18996,9 +20325,12 @@ impl Default for UISizeConstraint {
         let superclass = Object::default();
         let superclass = Instance {
             superclass,
+            Archivable: true,
+            Attributes: Attributes::new(),
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
+            Sandboxed: false,
             SourceAssetId: -1i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
@@ -19035,9 +20367,12 @@ impl Default for UIStroke {
         let superclass = Object::default();
         let superclass = Instance {
             superclass,
+            Archivable: true,
+            Attributes: Attributes::new(),
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
+            Sandboxed: false,
             SourceAssetId: -1i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
@@ -19075,9 +20410,12 @@ impl Default for UITableLayout {
         let superclass = Object::default();
         let superclass = Instance {
             superclass,
+            Archivable: true,
+            Attributes: Attributes::new(),
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
+            Sandboxed: false,
             SourceAssetId: -1i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
@@ -19115,9 +20453,12 @@ impl Default for UITextSizeConstraint {
         let superclass = Object::default();
         let superclass = Instance {
             superclass,
+            Archivable: true,
+            Attributes: Attributes::new(),
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
+            Sandboxed: false,
             SourceAssetId: -1i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
@@ -19164,9 +20505,12 @@ impl Default for UniversalConstraint {
         let superclass = Object::default();
         let superclass = Instance {
             superclass,
+            Archivable: true,
+            Attributes: Attributes::new(),
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
+            Sandboxed: false,
             SourceAssetId: -1i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
@@ -19209,9 +20553,12 @@ impl Default for UnvalidatedAssetService {
         let superclass = Object::default();
         let superclass = Instance {
             superclass,
+            Archivable: true,
+            Attributes: Attributes::new(),
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
+            Sandboxed: false,
             SourceAssetId: -1i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
@@ -19302,9 +20649,12 @@ impl Default for UserGameSettings {
         let superclass = Object::default();
         let superclass = Instance {
             superclass,
+            Archivable: true,
+            Attributes: Attributes::new(),
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
+            Sandboxed: false,
             SourceAssetId: 0i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
@@ -19397,9 +20747,12 @@ impl Default for UserInputService {
         let superclass = Object::default();
         let superclass = Instance {
             superclass,
+            Archivable: true,
+            Attributes: Attributes::new(),
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
+            Sandboxed: false,
             SourceAssetId: 0i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
@@ -19454,9 +20807,12 @@ impl Default for VRService {
         let superclass = Object::default();
         let superclass = Instance {
             superclass,
+            Archivable: true,
+            Attributes: Attributes::new(),
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
+            Sandboxed: false,
             SourceAssetId: -1i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
@@ -19500,9 +20856,12 @@ impl Default for ValueCurve {
         let superclass = Object::default();
         let superclass = Instance {
             superclass,
+            Archivable: true,
+            Attributes: Attributes::new(),
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
+            Sandboxed: false,
             SourceAssetId: -1i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
@@ -19534,9 +20893,12 @@ impl Default for Vector3Value {
         let superclass = Object::default();
         let superclass = Instance {
             superclass,
+            Archivable: true,
+            Attributes: Attributes::new(),
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
+            Sandboxed: false,
             SourceAssetId: -1i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
@@ -19563,9 +20925,12 @@ impl Default for VectorForce {
         let superclass = Object::default();
         let superclass = Instance {
             superclass,
+            Archivable: true,
+            Attributes: Attributes::new(),
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
+            Sandboxed: false,
             SourceAssetId: -1i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
@@ -19615,9 +20980,12 @@ impl Default for VehicleSeat {
         let superclass = Object::default();
         let superclass = Instance {
             superclass,
+            Archivable: true,
+            Attributes: Attributes::new(),
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
+            Sandboxed: false,
             SourceAssetId: -1i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
@@ -19642,6 +21010,7 @@ impl Default for VehicleSeat {
             CastShadow: true,
             CollisionGroup: "Default".to_owned(),
             CollisionGroupId: 0i32,
+            Color: Color3uint8::new(163u8, 162u8, 165u8),
             CustomPhysicalProperties: PhysicalProperties::Default,
             EnableFluidForces: true,
             FrontParamA: -0.5f32,
@@ -19655,6 +21024,7 @@ impl Default for VehicleSeat {
             Locked: false,
             Massless: false,
             Material: enums::Material::Plastic,
+            MaterialVariant: "".to_owned(),
             PivotOffset: CFrame::identity(),
             Reflectance: 0f32,
             RightParamA: -0.5f32,
@@ -19663,6 +21033,7 @@ impl Default for VehicleSeat {
             RightSurfaceInput: enums::InputType::NoInput,
             RootPriority: 0i32,
             RotVelocity: Vector3::new(0f32, 0f32, 0f32),
+            Size: Vector3::new(4f32, 1.2f32, 2f32),
             TopParamA: -0.5f32,
             TopParamB: 0.5f32,
             TopSurface: enums::SurfaceType::Studs,
@@ -19700,9 +21071,12 @@ impl Default for VelocityMotor {
         let superclass = Object::default();
         let superclass = Instance {
             superclass,
+            Archivable: true,
+            Attributes: Attributes::new(),
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
+            Sandboxed: false,
             SourceAssetId: -1i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
@@ -19763,9 +21137,12 @@ impl Default for VideoDeviceInput {
         let superclass = Object::default();
         let superclass = Instance {
             superclass,
+            Archivable: true,
+            Attributes: Attributes::new(),
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
+            Sandboxed: false,
             SourceAssetId: 0i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
@@ -19797,9 +21174,12 @@ impl Default for VideoDisplay {
         let superclass = Object::default();
         let superclass = Instance {
             superclass,
+            Archivable: true,
+            Attributes: Attributes::new(),
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
+            Sandboxed: false,
             SourceAssetId: -1i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
@@ -19877,9 +21257,12 @@ impl Default for VideoFrame {
         let superclass = Object::default();
         let superclass = Instance {
             superclass,
+            Archivable: true,
+            Attributes: Attributes::new(),
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
+            Sandboxed: false,
             SourceAssetId: -1i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
@@ -19956,9 +21339,12 @@ impl Default for VideoPlayer {
         let superclass = Object::default();
         let superclass = Instance {
             superclass,
+            Archivable: true,
+            Attributes: Attributes::new(),
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
+            Sandboxed: false,
             SourceAssetId: -1i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
@@ -20017,9 +21403,12 @@ impl Default for ViewportFrame {
         let superclass = Object::default();
         let superclass = Instance {
             superclass,
+            Archivable: true,
+            Attributes: Attributes::new(),
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
+            Sandboxed: false,
             SourceAssetId: -1i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
@@ -20131,9 +21520,12 @@ impl Default for VisualizationMode {
         let superclass = Object::default();
         let superclass = Instance {
             superclass,
+            Archivable: true,
+            Attributes: Attributes::new(),
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
+            Sandboxed: false,
             SourceAssetId: -1i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
@@ -20160,9 +21552,12 @@ impl Default for VisualizationModeCategory {
         let superclass = Object::default();
         let superclass = Instance {
             superclass,
+            Archivable: true,
+            Attributes: Attributes::new(),
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
+            Sandboxed: false,
             SourceAssetId: -1i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
@@ -20205,9 +21600,12 @@ impl Default for VoiceChatService {
         let superclass = Object::default();
         let superclass = Instance {
             superclass,
+            Archivable: true,
+            Attributes: Attributes::new(),
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
+            Sandboxed: false,
             SourceAssetId: -1i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
@@ -20282,6 +21680,8 @@ pub struct WeldConstraint {
     #[doc(hidden)]
     pub superclass: Instance,
     pub CFrame0: CFrame,
+    pub Part0: Ref,
+    pub Part1: Ref,
     pub State: i32,
 }
 impl_inherits!(WeldConstraint, Instance);
@@ -20290,9 +21690,12 @@ impl Default for WeldConstraint {
         let superclass = Object::default();
         let superclass = Instance {
             superclass,
+            Archivable: true,
+            Attributes: Attributes::new(),
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
+            Sandboxed: false,
             SourceAssetId: -1i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
@@ -20300,6 +21703,8 @@ impl Default for WeldConstraint {
         Self {
             superclass,
             CFrame0: CFrame::identity(),
+            Part0: Ref::none(),
+            Part1: Ref::none(),
             State: 3i32,
         }
     }
@@ -20320,9 +21725,12 @@ impl Default for Wire {
         let superclass = Object::default();
         let superclass = Instance {
             superclass,
+            Archivable: true,
+            Attributes: Attributes::new(),
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
+            Sandboxed: false,
             SourceAssetId: -1i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
@@ -20350,9 +21758,12 @@ impl Default for WireframeHandleAdornment {
         let superclass = Object::default();
         let superclass = Instance {
             superclass,
+            Archivable: true,
+            Attributes: Attributes::new(),
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
+            Sandboxed: false,
             SourceAssetId: -1i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
@@ -20423,6 +21834,7 @@ pub struct Workspace {
     pub ReplicateInstanceDestroySetting: enums::ReplicateInstanceDestroySetting,
     pub Retargeting: enums::AnimatorRetargetingMode,
     pub SandboxedInstanceMode: enums::SandboxedInstanceMode,
+    pub SignalBehavior: enums::SignalBehavior,
     pub StreamOutBehavior: enums::StreamOutBehavior,
     pub StreamingEnabled: bool,
     pub StreamingIntegrityMode: enums::StreamingIntegrityMode,
@@ -20441,9 +21853,12 @@ impl Default for Workspace {
         let superclass = Object::default();
         let superclass = Instance {
             superclass,
+            Archivable: true,
+            Attributes: Attributes::new(),
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
+            Sandboxed: false,
             SourceAssetId: -1i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
@@ -20458,6 +21873,7 @@ impl Default for Workspace {
             ModelStreamingMode: enums::ModelStreamingMode::Default,
             NeedsPivotMigration: false,
             PrimaryPart: Ref::none(),
+            Scale: 1f32,
             SlimHash: SharedString::new(b"".to_vec()),
             WorldPivotData: None,
         };
@@ -20501,6 +21917,7 @@ impl Default for Workspace {
             ReplicateInstanceDestroySetting: enums::ReplicateInstanceDestroySetting::Default,
             Retargeting: enums::AnimatorRetargetingMode::Default,
             SandboxedInstanceMode: enums::SandboxedInstanceMode::Default,
+            SignalBehavior: enums::SignalBehavior::Default,
             StreamOutBehavior: enums::StreamOutBehavior::Default,
             StreamingEnabled: false,
             StreamingIntegrityMode: enums::StreamingIntegrityMode::Default,
@@ -20576,9 +21993,12 @@ impl Default for WrapLayer {
         let superclass = Object::default();
         let superclass = Instance {
             superclass,
+            Archivable: true,
+            Attributes: Attributes::new(),
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
+            Sandboxed: false,
             SourceAssetId: -1i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
@@ -20620,9 +22040,12 @@ impl Default for WrapTarget {
         let superclass = Object::default();
         let superclass = Instance {
             superclass,
+            Archivable: true,
+            Attributes: Attributes::new(),
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
+            Sandboxed: false,
             SourceAssetId: -1i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
@@ -20658,9 +22081,12 @@ impl Default for WrapTextureTransfer {
         let superclass = Object::default();
         let superclass = Instance {
             superclass,
+            Archivable: true,
+            Attributes: Attributes::new(),
             Capabilities: SecurityCapabilities::from_bits(0u64),
             HistoryId: UniqueId::nil(),
             Name: "".to_owned(),
+            Sandboxed: false,
             SourceAssetId: -1i64,
             Tags: Tags::new(),
             UniqueId: UniqueId::nil(),
