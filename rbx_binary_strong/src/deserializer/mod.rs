@@ -9,6 +9,21 @@ use state::{Chunk, DeserializerState};
 
 pub use error::Error;
 
+/// Describes the strategy that rbx_binary_strong should use when deserializing
+/// properties.
+#[derive(Debug, Clone, Copy, PartialEq, Eq, Hash)]
+enum DecodePropertyBehavior {
+    /// Ignores properties that aren't known by rbx_binary_strong.
+    ///
+    /// The default and safest option. With this set, properties that are newer
+    /// than the current version of the strong types will be ignored.
+    IgnoreUnknown,
+
+    /// Returns an error if any properties are found that aren't known by
+    /// rbx_binary_strong.
+    ErrorOnUnknown,
+}
+
 pub struct Deserializer {}
 
 impl Deserializer {
