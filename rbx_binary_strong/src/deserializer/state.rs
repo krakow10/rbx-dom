@@ -4,27 +4,44 @@ use rbx_dom_strong::{classes, enums};
 use rbx_types::{CFrame, Matrix3, SharedString, Vector3};
 
 use rbx_binary_core::{
-    chunk::ChunkIter,
+    chunk::{ChunkIter, CompressedChunk},
     core::{RbxReadExt, RbxReadInterleaved},
     header::FileHeader,
 };
 
-use super::error::InnerError;
+use super::error::{Error, InnerError};
 
 #[cfg(not(feature = "rayon"))]
 use core::iter::IntoIterator as IntoIter;
 #[cfg(feature = "rayon")]
 use rayon::iter::IntoParallelIterator as IntoIter;
+#[cfg(feature = "rayon")]
 use rayon::iter::plumbing::{Consumer, ProducerCallback, UnindexedConsumer, bridge};
+#[cfg(feature = "rayon")]
 use rayon::iter::{IndexedParallelIterator, ParallelIterator};
+
+struct DuplicateProp;
+impl From<DuplicateProp> for InnerError {
+    fn from(_value: DuplicateProp) -> Self {
+        InnerError::DuplicatePropChunk {
+            prop_name: "TODO".to_owned(),
+        }
+    }
+}
+fn err_if_some<T>(value: Option<T>) -> Result<(), DuplicateProp> {
+    match value {
+        Some(_) => Err(DuplicateProp),
+        None => Ok(()),
+    }
+}
 
 // === GENERATED ===
 
 // This will be populated with chunk decoders by decode_prop_chunk
 #[derive(Default)]
 struct DeserializerClassPropertyChunks {
-    Part: Option<PartPropertyChunks>,
-    WedgePart: Option<WedgePartPropertyChunks>,
+    Part: PartPropertyChunks,
+    WedgePart: WedgePartPropertyChunks,
 }
 
 struct InstanceIter {
@@ -69,8 +86,19 @@ impl IndexedParallelIterator for InstanceIter {
             .with_producer(callback)
     }
 }
+
+#[derive(Default)]
 struct InstancePropertyChunks {
     Name: Option<PropertyChunk<String>>,
+}
+impl InstancePropertyChunks {
+    fn try_push(&mut self, prop_chunk: InstancePropertyChunk) -> Result<(), DuplicateProp> {
+        match prop_chunk {
+            InstancePropertyChunk::Name(property_chunk) => {
+                err_if_some(self.Name.replace(property_chunk))
+            }
+        }
+    }
 }
 impl IntoIter for InstancePropertyChunks {
     type Item = classes::Instance;
@@ -131,9 +159,22 @@ impl IndexedParallelIterator for BasePartIter {
     }
 }
 
+#[derive(Default)]
 struct BasePartPropertyChunks {
     superclass: InstancePropertyChunks,
     CFrame: Option<PropertyChunk<CFrame>>,
+}
+impl BasePartPropertyChunks {
+    fn try_push(&mut self, prop_chunk: BasePartPropertyChunk) -> Result<(), DuplicateProp> {
+        match prop_chunk {
+            BasePartPropertyChunk::Superclass(instance_property_chunk) => {
+                self.superclass.try_push(instance_property_chunk)
+            }
+            BasePartPropertyChunk::CFrame(property_chunk) => {
+                err_if_some(self.CFrame.replace(property_chunk))
+            }
+        }
+    }
 }
 impl IntoIter for BasePartPropertyChunks {
     type Item = classes::BasePart;
@@ -150,13 +191,71 @@ impl IntoIter for BasePartPropertyChunks {
     }
 }
 
+#[derive(Default)]
 struct PartPropertyChunks {
     superclass: BasePartPropertyChunks,
     Shape: Option<PropertyChunk<enums::FormFactor>>,
 }
+impl PartPropertyChunks {
+    fn try_push(&mut self, prop_chunk: PartPropertyChunk) -> Result<(), DuplicateProp> {
+        match prop_chunk {
+            PartPropertyChunk::Superclass(base_part_property_chunk) => {
+                self.superclass.try_push(base_part_property_chunk)
+            }
+            PartPropertyChunk::Shape(property_chunk) => {
+                err_if_some(self.Shape.replace(property_chunk))
+            }
+        }
+    }
+}
 
+#[derive(Default)]
 struct WedgePartPropertyChunks {
     superclass: BasePartPropertyChunks,
+}
+impl WedgePartPropertyChunks {
+    fn try_push(&mut self, prop_chunk: WedgePartPropertyChunk) -> Result<(), DuplicateProp> {
+        match prop_chunk {
+            WedgePartPropertyChunk::Superclass(base_part_property_chunk) => {
+                self.superclass.try_push(base_part_property_chunk)
+            }
+        }
+    }
+}
+
+enum InstancePropertyChunk {
+    Name(PropertyChunk<String>),
+}
+
+enum BasePartPropertyChunk {
+    Superclass(InstancePropertyChunk),
+    CFrame(PropertyChunk<CFrame>),
+}
+
+enum PartPropertyChunk {
+    Superclass(BasePartPropertyChunk),
+    Shape(PropertyChunk<enums::FormFactor>),
+}
+enum WedgePartPropertyChunk {
+    Superclass(BasePartPropertyChunk),
+}
+
+enum ClassPropertyChunk {
+    PartPropertyChunk(PartPropertyChunk),
+    WedgePartPropertyChunk(WedgePartPropertyChunk),
+}
+
+impl DeserializerClassPropertyChunks {
+    fn try_push(&mut self, prop_chunk: PropChunk) -> Result<(), DuplicateProp> {
+        match prop_chunk.class_property {
+            ClassPropertyChunk::PartPropertyChunk(part_property_chunk) => {
+                self.Part.try_push(part_property_chunk)
+            }
+            ClassPropertyChunk::WedgePartPropertyChunk(wedge_part_property_chunk) => {
+                self.WedgePart.try_push(wedge_part_property_chunk)
+            }
+        }
+    }
 }
 
 // === HAND WRITTEN ===
@@ -166,10 +265,10 @@ pub(super) struct DeserializerState {
     /// The SharedStrings contained in the file, if any, in the order that they
     /// appear in the file.
     shared_strings: Vec<SharedString>,
-    inst: Vec<u8>,
+    inst: Option<Vec<u8>>,
     prop: DeserializerClassPropertyChunks,
-    prnt: Vec<u8>,
-    end: Vec<u8>,
+    prnt: Option<Vec<u8>>,
+    end: Option<Vec<u8>>,
 }
 impl DeserializerState {
     pub(super) fn new(mut input: &[u8]) -> Result<(Self, ChunkIter<'_>), InnerError> {
@@ -179,13 +278,55 @@ impl DeserializerState {
             DeserializerState {
                 header,
                 shared_strings: Vec::new(),
-                inst: Vec::new(),
+                inst: None,
                 prop: DeserializerClassPropertyChunks::default(),
-                prnt: Vec::new(),
-                end: Vec::new(),
+                prnt: None,
+                end: None,
             },
             ChunkIter::new(input),
         ))
+    }
+    pub(super) fn try_push(&mut self, chunk: Chunk) -> Result<(), InnerError> {
+        Ok(match chunk {
+            Chunk::Meta(meta_chunk) => todo!(),
+            Chunk::Sstr(sstr_chunk) => todo!(),
+            Chunk::Inst(inst_chunk) => todo!(),
+            Chunk::Prop(prop_chunk) => self.prop.try_push(prop_chunk)?,
+            Chunk::Prnt(prnt_chunk) => todo!(),
+            Chunk::End(end_chunk) => todo!(),
+        })
+    }
+}
+
+struct MetaChunk {}
+struct SstrChunk {}
+struct InstChunk {}
+struct PropChunk {
+    class_property: ClassPropertyChunk,
+}
+struct PrntChunk {}
+struct EndChunk {}
+
+pub(super) enum Chunk {
+    Meta(MetaChunk),
+    Sstr(SstrChunk),
+    Inst(InstChunk),
+    Prop(PropChunk),
+    Prnt(PrntChunk),
+    End(EndChunk),
+}
+impl Chunk {
+    pub(super) fn decode(compressed_chunk: io::Result<CompressedChunk<'_>>) -> Result<Self, Error> {
+        let compressed_chunk = compressed_chunk.map_err(InnerError::from)?;
+        let chunk = compressed_chunk.decode().map_err(InnerError::from)?;
+        match &chunk.name {
+            b"META" => MetaChunk::new(chunk.data)?,
+            b"SSTR" => SstrChunk::new(chunk.data)?,
+            b"INST" => InstChunk::new(chunk.data)?,
+            b"PROP" => PropChunk::new(chunk.data)?,
+            b"PRNT" => PrntChunk::new(chunk.data)?,
+            b"END\0" => EndChunk::new(chunk.data)?,
+        }
     }
 }
 
@@ -201,6 +342,12 @@ trait IntoPropertyChunkState: Sized {
 
 struct PropertyChunk<T: IntoPropertyChunkState> {
     state: T::State,
+}
+impl<T: IntoPropertyChunkState> PropertyChunk<T> {
+    fn new(chunk: Vec<u8>, len: usize) -> Result<Self, T::Error> {
+        let state = T::into_state(chunk, len)?;
+        Ok(Self { state })
+    }
 }
 
 impl IntoPropertyChunkState for String {

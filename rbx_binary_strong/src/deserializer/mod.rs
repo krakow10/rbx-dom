@@ -1,14 +1,12 @@
 mod error;
 mod state;
 
-use std::str;
-
 #[cfg(feature = "rayon")]
 use rayon::iter::{ParallelBridge, ParallelIterator};
-
 use rbx_dom_strong::StrongDom;
 
-use state::DeserializerState;
+use error::InnerError;
+use state::{Chunk, DeserializerState};
 
 pub use error::Error;
 
@@ -25,14 +23,20 @@ impl Deserializer {
     pub fn deserialize(&self, data: &[u8]) -> Result<StrongDom, Error> {
         let (mut deserializer, chunks) = DeserializerState::new(data)?;
 
-        let it = chunks;
         #[cfg(feature = "rayon")]
-        let it = it.par_bridge();
+        let chunks = chunks.par_bridge();
 
         // Parallelize per chunk.
         // This decodes non-parallelizable properties.
-        for chunk in it.map(decode_chunk) {
-            deserializer.receive_chunk(chunk)?;
+        let chunks = chunks.map(Chunk::decode);
+
+        // rayon cannot fold single threaded.
+        #[cfg(feature = "rayon")]
+        let chunks: Vec<_> = chunks.collect();
+
+        for chunk in chunks {
+            let chunk = chunk?;
+            deserializer.try_push(chunk)?;
         }
 
         // Parallelize per instance
