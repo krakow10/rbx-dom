@@ -2,7 +2,9 @@ use std::io;
 
 use thiserror::Error;
 
-use rbx_binary_core::{header::HeaderError, types::InvalidTypeError};
+use rbx_binary_core::{chunk::ChunkSlicesError, header::HeaderError};
+
+use super::state::ClassType;
 
 /// Represents an error that occurred during deserialization.
 #[derive(Debug, Error)]
@@ -29,6 +31,16 @@ impl From<HeaderError> for InnerError {
         }
     }
 }
+impl From<ChunkSlicesError> for InnerError {
+    fn from(error: ChunkSlicesError) -> Self {
+        match error {
+            ChunkSlicesError::Io { source } => InnerError::Io { source },
+            ChunkSlicesError::UnexpectedChunk { expected, actual } => {
+                InnerError::UnexpectedChunk { expected, actual }
+            }
+        }
+    }
+}
 
 #[derive(Debug, Error)]
 pub(crate) enum InnerError {
@@ -50,30 +62,16 @@ pub(crate) enum InnerError {
         version: u32,
     },
 
-    #[error(transparent)]
-    InvalidTypeError {
-        #[from]
-        source: InvalidTypeError,
+    #[error("Unexpected chunk {actual}, expected {expected}")]
+    UnexpectedChunk {
+        expected: &'static str,
+        actual: String,
     },
 
-    #[error(
-        "Type mismatch: Property {type_name}.{prop_name} should be {valid_type_names}, but it was {actual_type_name}"
-    )]
-    PropTypeMismatch {
-        type_name: String,
-        prop_name: String,
-        valid_type_names: &'static str,
-        actual_type_name: String,
-    },
-
-    #[error(
-        "Invalid property data: Property {type_name}.{prop_name} was expected to be {valid_value}, but it was {actual_value}"
-    )]
-    InvalidPropData {
-        type_name: String,
-        prop_name: String,
-        valid_value: &'static str,
-        actual_value: String,
+    #[error("Property {class_type:?}.{property_name} is unknown")]
+    UnknownProperty {
+        class_type: ClassType,
+        property_name: String,
     },
 
     #[error("File referred to type ID {type_id}, which was not declared")]
@@ -109,6 +107,8 @@ pub(crate) enum InnerError {
     #[error("Malformed file: INST Chunk with type_id {type_id} has already appeared in the file")]
     DuplicateInstChunk { type_id: u32 },
 
-    #[error("Malformed file: PROP Chunk with prop_name {prop_name} has already appeared in the file")]
+    #[error(
+        "Malformed file: PROP Chunk with prop_name {prop_name} has already appeared in the file"
+    )]
     DuplicatePropChunk { prop_name: String },
 }

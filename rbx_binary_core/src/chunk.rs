@@ -63,28 +63,6 @@ impl Chunk {
             data,
         })
     }
-    fn new(header: &ChunkHeader, compressed_data: &[u8]) -> io::Result<Chunk> {
-        let data = if header.compressed_len == 0 {
-            log::trace!("No compression");
-            compressed_data.to_owned()
-        } else {
-            if &compressed_data[0..4] == ZSTD_MAGIC_NUMBER {
-                log::trace!("ZSTD compression");
-                zstd::bulk::decompress(compressed_data, header.len as usize)?
-            } else {
-                log::trace!("LZ4 compression");
-                lz4_flex::block::decompress(compressed_data, header.len as usize)
-                    .map_err(io::Error::other)?
-            }
-        };
-
-        assert_eq!(data.len(), header.len as usize);
-
-        Ok(Chunk {
-            name: header.name,
-            data,
-        })
-    }
 }
 
 /// Holds a chunk that is currently being written.
@@ -168,7 +146,7 @@ impl RbxWriteInterleaved for ChunkBuilder {
     }
 }
 
-#[derive(Clone, Copy, Debug)]
+#[derive(Clone, Debug)]
 struct ChunkHeader {
     /// 4-byte short name for the chunk, like "INST" or "PRNT"
     name: [u8; 4],
@@ -224,7 +202,7 @@ fn decode_chunk_header<R: Read>(source: &mut R) -> io::Result<ChunkHeader> {
     })
 }
 
-#[derive(Clone, Copy, Debug)]
+#[derive(Clone, Debug)]
 pub struct CompressedChunk<'a> {
     header: ChunkHeader,
     /// The chunk payload data
@@ -234,8 +212,24 @@ impl CompressedChunk<'_> {
     const fn name(&self) -> &[u8; 4] {
         &self.header.name
     }
-    pub fn decode(&self) -> io::Result<Chunk> {
-        Chunk::new(&self.header, self.data)
+    pub fn decode(&self) -> io::Result<Vec<u8>> {
+        let data = if self.header.compressed_len == 0 {
+            log::trace!("No compression");
+            self.data.to_owned()
+        } else {
+            if &self.data[0..4] == ZSTD_MAGIC_NUMBER {
+                log::trace!("ZSTD compression");
+                zstd::bulk::decompress(self.data, self.header.len as usize)?
+            } else {
+                log::trace!("LZ4 compression");
+                lz4_flex::block::decompress(self.data, self.header.len as usize)
+                    .map_err(io::Error::other)?
+            }
+        };
+
+        assert_eq!(data.len(), self.header.len as usize);
+
+        Ok(data)
     }
 }
 
@@ -324,12 +318,12 @@ impl From<UnexpectedChunk> for ChunkSlicesError {
 }
 
 pub struct ChunkSlices<'a> {
-    meta: Option<CompressedChunk<'a>>,
-    sstr: Option<CompressedChunk<'a>>,
-    inst: Vec<CompressedChunk<'a>>,
-    prop: Vec<CompressedChunk<'a>>,
-    prnt: CompressedChunk<'a>,
-    end: CompressedChunk<'a>,
+    pub meta: Option<CompressedChunk<'a>>,
+    pub sstr: Option<CompressedChunk<'a>>,
+    pub inst: Vec<CompressedChunk<'a>>,
+    pub prop: Vec<CompressedChunk<'a>>,
+    pub prnt: CompressedChunk<'a>,
+    pub end: CompressedChunk<'a>,
 }
 impl<'a> ChunkSlices<'a> {
     pub fn new(header: &FileHeader, data: &'a [u8]) -> Result<Self, ChunkSlicesError> {
@@ -359,23 +353,5 @@ impl<'a> ChunkSlices<'a> {
             prnt,
             end,
         })
-    }
-    pub const fn meta(&self) -> Option<CompressedChunk<'_>> {
-        self.meta
-    }
-    pub const fn sstr(&self) -> Option<CompressedChunk<'_>> {
-        self.sstr
-    }
-    pub const fn inst(&self) -> &[CompressedChunk<'_>] {
-        self.inst.as_slice()
-    }
-    pub const fn prop(&self) -> &[CompressedChunk<'_>] {
-        self.prop.as_slice()
-    }
-    pub const fn prnt(&self) -> CompressedChunk<'_> {
-        self.prnt
-    }
-    pub const fn end(&self) -> CompressedChunk<'_> {
-        self.end
     }
 }

@@ -1,10 +1,11 @@
+use std::collections::HashMap;
 use std::io;
 
 use rbx_dom_strong::{StrongDom, classes, enums};
 use rbx_types::{CFrame, Matrix3, SharedString, Vector3};
 
 use rbx_binary_core::{
-    chunk::{ChunkIter, CompressedChunk},
+    chunk::ChunkSlices,
     core::{RbxReadExt, RbxReadInterleaved},
     header::FileHeader,
 };
@@ -37,7 +38,8 @@ fn err_if_some<T>(value: Option<T>) -> Result<(), DuplicateProp> {
 
 // === GENERATED ===
 
-enum ClassType {
+#[derive(Debug, Clone, Copy)]
+pub(super) enum ClassType {
     Part,
     WedgePart,
 }
@@ -50,17 +52,17 @@ enum ClassPropertyChunk {
 impl ClassPropertyChunk {
     fn new(
         data: Vec<u8>,
-        class_type: ClassType,
-        prop_name: &str,
         len: usize,
-    ) -> Result<Self, Error> {
+        prop_name: &str,
+        class_type: ClassType,
+    ) -> Result<Self, InnerError> {
         Ok(match class_type {
             ClassType::Part => {
-                Self::PartPropertyChunk(PartPropertyChunk::new(data, prop_name, len)?)
+                Self::PartPropertyChunk(PartPropertyChunk::new(data, len, prop_name, class_type)?)
             }
-            ClassType::WedgePart => {
-                Self::WedgePartPropertyChunk(WedgePartPropertyChunk::new(data, prop_name, len)?)
-            }
+            ClassType::WedgePart => Self::WedgePartPropertyChunk(WedgePartPropertyChunk::new(
+                data, len, prop_name, class_type,
+            )?),
         })
     }
 }
@@ -73,8 +75,8 @@ struct ClassPropertyChunks {
 }
 
 impl ClassPropertyChunks {
-    fn try_push(&mut self, prop_chunk: PropChunk) -> Result<(), DuplicateProp> {
-        match prop_chunk.class_property {
+    fn try_push(&mut self, prop_chunk: ClassPropertyChunk) -> Result<(), DuplicateProp> {
+        match prop_chunk {
             ClassPropertyChunk::PartPropertyChunk(part_property_chunk) => {
                 self.Part.try_push(part_property_chunk)
             }
@@ -268,9 +270,20 @@ enum InstancePropertyChunk {
     Name(PropertyChunk<String>),
 }
 impl InstancePropertyChunk {
-    fn new(data: Vec<u8>, prop_name: &str, len: usize) -> Result<Self, InnerError> {
+    fn new(
+        data: Vec<u8>,
+        len: usize,
+        prop_name: &str,
+        class_type: ClassType,
+    ) -> Result<Self, InnerError> {
         Ok(match prop_name {
             "Name" => Self::Name(PropertyChunk::new(data, len)?),
+            other => {
+                return Err(InnerError::UnknownProperty {
+                    class_type,
+                    property_name: other.to_owned(),
+                });
+            }
         })
     }
 }
@@ -280,10 +293,15 @@ enum BasePartPropertyChunk {
     CFrame(PropertyChunk<CFrame>),
 }
 impl BasePartPropertyChunk {
-    fn new(data: Vec<u8>, prop_name: &str, len: usize) -> Result<Self, InnerError> {
+    fn new(
+        data: Vec<u8>,
+        len: usize,
+        prop_name: &str,
+        class_type: ClassType,
+    ) -> Result<Self, InnerError> {
         Ok(match prop_name {
             "CFrame" => Self::CFrame(PropertyChunk::new(data, len)?),
-            other => Self::Superclass(InstancePropertyChunk::new(data, other, len)?),
+            other => Self::Superclass(InstancePropertyChunk::new(data, len, other, class_type)?),
         })
     }
 }
@@ -293,10 +311,15 @@ enum PartPropertyChunk {
     Shape(PropertyChunk<enums::FormFactor>),
 }
 impl PartPropertyChunk {
-    fn new(data: Vec<u8>, prop_name: &str, len: usize) -> Result<Self, InnerError> {
+    fn new(
+        data: Vec<u8>,
+        len: usize,
+        prop_name: &str,
+        class_type: ClassType,
+    ) -> Result<Self, InnerError> {
         Ok(match prop_name {
             "shape" => Self::Shape(PropertyChunk::new(data, len)?),
-            other => Self::Superclass(BasePartPropertyChunk::new(data, other, len)?),
+            other => Self::Superclass(BasePartPropertyChunk::new(data, len, other, class_type)?),
         })
     }
 }
@@ -304,49 +327,62 @@ enum WedgePartPropertyChunk {
     Superclass(BasePartPropertyChunk),
 }
 impl WedgePartPropertyChunk {
-    fn new(data: Vec<u8>, prop_name: &str, len: usize) -> Result<Self, InnerError> {
+    fn new(
+        data: Vec<u8>,
+        len: usize,
+        prop_name: &str,
+        class_type: ClassType,
+    ) -> Result<Self, InnerError> {
         Ok(match prop_name {
-            other => Self::Superclass(BasePartPropertyChunk::new(data, other, len)?),
+            other => Self::Superclass(BasePartPropertyChunk::new(data, len, other, class_type)?),
         })
     }
 }
 
 // === HAND WRITTEN ===
 
-pub(super) struct DeserializerState {
+struct TypeInfo {
+    class_type: ClassType,
+    referents: Vec<i32>,
+}
+
+pub(super) struct ParallelState {
     header: FileHeader,
     /// The SharedStrings contained in the file, if any, in the order that they
     /// appear in the file.
     shared_strings: Vec<SharedString>,
-    inst: Option<Vec<u8>>,
+    /// All of the property data is collected here.
     prop: ClassPropertyChunks,
     prnt: Option<Vec<u8>>,
     end: Option<Vec<u8>>,
 }
-impl DeserializerState {
-    pub(super) fn new(mut input: &[u8]) -> Result<(Self, ChunkIter<'_>), InnerError> {
+impl ParallelState {
+    pub(super) fn new(mut input: &[u8]) -> Result<Self, InnerError> {
         let header = FileHeader::decode(&mut input)?;
+        let chunks = ChunkSlices::new(&header, input)?;
 
-        Ok((
-            DeserializerState {
-                header,
-                shared_strings: Vec::new(),
-                inst: None,
-                prop: ClassPropertyChunks::default(),
-                prnt: None,
-                end: None,
-            },
-            ChunkIter::new(input),
-        ))
-    }
-    pub(super) fn try_push(&mut self, chunk: Chunk) -> Result<(), InnerError> {
-        Ok(match chunk {
-            Chunk::Meta(meta_chunk) => todo!(),
-            Chunk::Sstr(sstr_chunk) => todo!(),
-            Chunk::Inst(inst_chunk) => todo!(),
-            Chunk::Prop(prop_chunk) => self.prop.try_push(prop_chunk)?,
-            Chunk::Prnt(prnt_chunk) => todo!(),
-            Chunk::End(end_chunk) => todo!(),
+        chunks.meta;
+        chunks.sstr;
+
+        /// All of the instance types described by the file so far.
+        /// The index is the type_id.
+        let type_infos = HashMap::with_capacity(header.num_types() as usize);
+
+        chunks.inst;
+        for prop_chunk in chunks.prop {
+            let data = prop_chunk.decode()?;
+            decode_prop_chunk(data, &type_infos)?;
+        }
+
+        chunks.prnt;
+        chunks.end;
+
+        Ok(ParallelState {
+            header,
+            shared_strings: Vec::new(),
+            prop: ClassPropertyChunks::default(),
+            prnt: None,
+            end: None,
         })
     }
     pub(super) fn finish(self) -> Result<StrongDom, InnerError> {
@@ -354,42 +390,26 @@ impl DeserializerState {
     }
 }
 
-struct MetaChunk {}
-struct SstrChunk {}
-struct InstChunk {}
-struct PropChunk {
-    class_property: ClassPropertyChunk,
-}
-impl PropChunk {
-    fn new(data: Vec<u8>) -> Result<Self, Error> {
-        let class_property = ClassPropertyChunk::new(data)?;
-        Ok(Self { class_property })
-    }
-}
-struct PrntChunk {}
-struct EndChunk {}
+fn decode_prop_chunk(
+    data: Vec<u8>,
+    type_infos: &HashMap<u32, TypeInfo>,
+) -> Result<ClassPropertyChunk, InnerError> {
+    let mut chunk = data.as_slice();
+    let type_id = chunk.read_le_u32()?;
+    let prop_name = chunk.read_string()?;
 
-pub(super) enum Chunk {
-    Meta(MetaChunk),
-    Sstr(SstrChunk),
-    Inst(InstChunk),
-    Prop(PropChunk),
-    Prnt(PrntChunk),
-    End(EndChunk),
-}
-impl Chunk {
-    pub(super) fn decode(compressed_chunk: io::Result<CompressedChunk<'_>>) -> Result<Self, Error> {
-        let compressed_chunk = compressed_chunk.map_err(InnerError::from)?;
-        let chunk = compressed_chunk.decode().map_err(InnerError::from)?;
-        match &chunk.name {
-            b"META" => MetaChunk::new(chunk.data),
-            b"SSTR" => SstrChunk::new(chunk.data),
-            b"INST" => InstChunk::new(chunk.data),
-            b"PROP" => PropChunk::new(chunk.data),
-            b"PRNT" => PrntChunk::new(chunk.data),
-            b"END\0" => EndChunk::new(chunk.data),
-        }
-    }
+    let type_info = type_infos
+        .get(&type_id)
+        .ok_or(InnerError::InvalidTypeId { type_id })?;
+
+    let class_property = ClassPropertyChunk::new(
+        data,
+        type_info.referents.len(),
+        prop_name,
+        type_info.class_type,
+    )?;
+
+    Ok(class_property)
 }
 
 /// Transform a prop chunk into a form which can be deserialized in parallel
