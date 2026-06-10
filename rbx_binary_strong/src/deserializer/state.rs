@@ -1,9 +1,15 @@
 use std::io;
 
 use rbx_dom_strong::{classes, enums};
-use rbx_types::{CFrame, Matrix3, Vector3};
+use rbx_types::{CFrame, Matrix3, SharedString, Vector3};
 
-use rbx_binary_core::core::{RbxReadExt, RbxReadInterleaved};
+use rbx_binary_core::{
+    chunk::ChunkIter,
+    core::{RbxReadExt, RbxReadInterleaved},
+    header::FileHeader,
+};
+
+use super::error::InnerError;
 
 #[cfg(not(feature = "rayon"))]
 use core::iter::IntoIterator as IntoIter;
@@ -15,6 +21,7 @@ use rayon::iter::{IndexedParallelIterator, ParallelIterator};
 // === GENERATED ===
 
 // This will be populated with chunk decoders by decode_prop_chunk
+#[derive(Default)]
 struct DeserializerClassPropertyChunks {
     Part: Option<PartPropertyChunks>,
     WedgePart: Option<WedgePartPropertyChunks>,
@@ -155,12 +162,31 @@ struct WedgePartPropertyChunks {
 // === HAND WRITTEN ===
 
 pub(super) struct DeserializerState {
-    meta: Option<Vec<u8>>,
-    sstr: Option<Vec<u8>>,
+    header: FileHeader,
+    /// The SharedStrings contained in the file, if any, in the order that they
+    /// appear in the file.
+    shared_strings: Vec<SharedString>,
     inst: Vec<u8>,
     prop: DeserializerClassPropertyChunks,
     prnt: Vec<u8>,
     end: Vec<u8>,
+}
+impl DeserializerState {
+    pub(super) fn new(mut input: &[u8]) -> Result<(Self, ChunkIter<'_>), InnerError> {
+        let header = FileHeader::decode(&mut input)?;
+
+        Ok((
+            DeserializerState {
+                header,
+                shared_strings: Vec::new(),
+                inst: Vec::new(),
+                prop: DeserializerClassPropertyChunks::default(),
+                prnt: Vec::new(),
+                end: Vec::new(),
+            },
+            ChunkIter::new(input),
+        ))
+    }
 }
 
 /// Transform a prop chunk into a form which can be deserialized in parallel

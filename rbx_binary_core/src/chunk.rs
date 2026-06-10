@@ -4,7 +4,7 @@ use std::{
     str,
 };
 
-use crate::core::{RbxReadExt, RbxWriteExt, RbxWriteInterleaved};
+use crate::core::{RbxReadExt, RbxWriteExt, RbxWriteInterleaved, ReadSlice};
 
 const ZSTD_MAGIC_NUMBER: &[u8] = &[0x28, 0xb5, 0x2f, 0xfd];
 
@@ -51,6 +51,28 @@ impl Chunk {
             } else {
                 log::trace!("LZ4 compression");
                 lz4_flex::block::decompress(&compressed_data, header.len as usize)
+                    .map_err(io::Error::other)?
+            }
+        };
+
+        assert_eq!(data.len(), header.len as usize);
+
+        Ok(Chunk {
+            name: header.name,
+            data,
+        })
+    }
+    fn new(header: &ChunkHeader, compressed_data: &[u8]) -> io::Result<Chunk> {
+        let data = if header.compressed_len == 0 {
+            log::trace!("No compression");
+            compressed_data.to_owned()
+        } else {
+            if &compressed_data[0..4] == ZSTD_MAGIC_NUMBER {
+                log::trace!("ZSTD compression");
+                zstd::bulk::decompress(compressed_data, header.len as usize)?
+            } else {
+                log::trace!("LZ4 compression");
+                lz4_flex::block::decompress(compressed_data, header.len as usize)
                     .map_err(io::Error::other)?
             }
         };
@@ -199,4 +221,40 @@ fn decode_chunk_header<R: Read>(source: &mut R) -> io::Result<ChunkHeader> {
         len,
         reserved,
     })
+}
+
+pub struct CompressedChunk<'a> {
+    header: ChunkHeader,
+    /// The chunk payload data
+    data: &'a [u8],
+}
+impl CompressedChunk<'_> {
+    pub fn decode(&self) -> io::Result<Chunk> {
+        Chunk::new(&self.header, self.data)
+    }
+}
+
+pub struct ChunkIter<'a> {
+    data: &'a [u8],
+}
+impl<'a> ChunkIter<'a> {
+    pub const fn new(data: &'a [u8]) -> Self {
+        Self { data }
+    }
+}
+impl<'a> Iterator for ChunkIter<'a> {
+    type Item = io::Result<CompressedChunk<'a>>;
+    fn next(&mut self) -> Option<Self::Item> {
+        let header = match decode_chunk_header(&mut self.data) {
+            Ok(header) => header,
+            Err(e) => return Some(Err(e)),
+        };
+
+        let data = match self.data.read_slice(header.compressed_len as usize) {
+            Ok(data) => data,
+            Err(e) => return Some(Err(e)),
+        };
+
+        Some(Ok(CompressedChunk { header, data }))
+    }
 }
