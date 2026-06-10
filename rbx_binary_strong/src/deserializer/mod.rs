@@ -5,7 +5,6 @@ mod state;
 use rayon::iter::{ParallelBridge, ParallelIterator};
 use rbx_dom_strong::StrongDom;
 
-use error::InnerError;
 use state::{Chunk, DeserializerState};
 
 pub use error::Error;
@@ -41,6 +40,6 @@ impl Deserializer {
 
         // Parallelize per instance
         // This decodes parallelizable properties.
-        Ok(deserializer.finish())
+        Ok(deserializer.finish()?)
     }
 }

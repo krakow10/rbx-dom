@@ -1,6 +1,6 @@
 use std::io;
 
-use rbx_dom_strong::{classes, enums};
+use rbx_dom_strong::{StrongDom, classes, enums};
 use rbx_types::{CFrame, Matrix3, SharedString, Vector3};
 
 use rbx_binary_core::{
@@ -37,11 +37,52 @@ fn err_if_some<T>(value: Option<T>) -> Result<(), DuplicateProp> {
 
 // === GENERATED ===
 
+enum ClassType {
+    Part,
+    WedgePart,
+}
+
+// A parallelizable chunk of property values which knows which class and property it is for.
+enum ClassPropertyChunk {
+    PartPropertyChunk(PartPropertyChunk),
+    WedgePartPropertyChunk(WedgePartPropertyChunk),
+}
+impl ClassPropertyChunk {
+    fn new(
+        data: Vec<u8>,
+        class_type: ClassType,
+        prop_name: &str,
+        len: usize,
+    ) -> Result<Self, Error> {
+        Ok(match class_type {
+            ClassType::Part => {
+                Self::PartPropertyChunk(PartPropertyChunk::new(data, prop_name, len)?)
+            }
+            ClassType::WedgePart => {
+                Self::WedgePartPropertyChunk(WedgePartPropertyChunk::new(data, prop_name, len)?)
+            }
+        })
+    }
+}
+
 // This will be populated with chunk decoders by decode_prop_chunk
 #[derive(Default)]
 struct DeserializerClassPropertyChunks {
     Part: PartPropertyChunks,
     WedgePart: WedgePartPropertyChunks,
+}
+
+impl DeserializerClassPropertyChunks {
+    fn try_push(&mut self, prop_chunk: PropChunk) -> Result<(), DuplicateProp> {
+        match prop_chunk.class_property {
+            ClassPropertyChunk::PartPropertyChunk(part_property_chunk) => {
+                self.Part.try_push(part_property_chunk)
+            }
+            ClassPropertyChunk::WedgePartPropertyChunk(wedge_part_property_chunk) => {
+                self.WedgePart.try_push(wedge_part_property_chunk)
+            }
+        }
+    }
 }
 
 struct InstanceIter {
@@ -226,35 +267,47 @@ impl WedgePartPropertyChunks {
 enum InstancePropertyChunk {
     Name(PropertyChunk<String>),
 }
+impl InstancePropertyChunk {
+    fn new(data: Vec<u8>, prop_name: &str, len: usize) -> Result<Self, InnerError> {
+        Ok(match prop_name {
+            "Name" => Self::Name(PropertyChunk::new(data, len)?),
+        })
+    }
+}
 
 enum BasePartPropertyChunk {
     Superclass(InstancePropertyChunk),
     CFrame(PropertyChunk<CFrame>),
+}
+impl BasePartPropertyChunk {
+    fn new(data: Vec<u8>, prop_name: &str, len: usize) -> Result<Self, InnerError> {
+        Ok(match prop_name {
+            "CFrame" => Self::CFrame(PropertyChunk::new(data, len)?),
+            other => Self::Superclass(InstancePropertyChunk::new(data, other, len)?),
+        })
+    }
 }
 
 enum PartPropertyChunk {
     Superclass(BasePartPropertyChunk),
     Shape(PropertyChunk<enums::FormFactor>),
 }
+impl PartPropertyChunk {
+    fn new(data: Vec<u8>, prop_name: &str, len: usize) -> Result<Self, InnerError> {
+        Ok(match prop_name {
+            "shape" => Self::Shape(PropertyChunk::new(data, len)?),
+            other => Self::Superclass(BasePartPropertyChunk::new(data, other, len)?),
+        })
+    }
+}
 enum WedgePartPropertyChunk {
     Superclass(BasePartPropertyChunk),
 }
-
-enum ClassPropertyChunk {
-    PartPropertyChunk(PartPropertyChunk),
-    WedgePartPropertyChunk(WedgePartPropertyChunk),
-}
-
-impl DeserializerClassPropertyChunks {
-    fn try_push(&mut self, prop_chunk: PropChunk) -> Result<(), DuplicateProp> {
-        match prop_chunk.class_property {
-            ClassPropertyChunk::PartPropertyChunk(part_property_chunk) => {
-                self.Part.try_push(part_property_chunk)
-            }
-            ClassPropertyChunk::WedgePartPropertyChunk(wedge_part_property_chunk) => {
-                self.WedgePart.try_push(wedge_part_property_chunk)
-            }
-        }
+impl WedgePartPropertyChunk {
+    fn new(data: Vec<u8>, prop_name: &str, len: usize) -> Result<Self, InnerError> {
+        Ok(match prop_name {
+            other => Self::Superclass(BasePartPropertyChunk::new(data, other, len)?),
+        })
     }
 }
 
@@ -296,6 +349,9 @@ impl DeserializerState {
             Chunk::End(end_chunk) => todo!(),
         })
     }
+    pub(super) fn finish(self) -> Result<StrongDom, InnerError> {
+        todo!()
+    }
 }
 
 struct MetaChunk {}
@@ -303,6 +359,12 @@ struct SstrChunk {}
 struct InstChunk {}
 struct PropChunk {
     class_property: ClassPropertyChunk,
+}
+impl PropChunk {
+    fn new(data: Vec<u8>) -> Result<Self, Error> {
+        let class_property = ClassPropertyChunk::new(data)?;
+        Ok(Self { class_property })
+    }
 }
 struct PrntChunk {}
 struct EndChunk {}
@@ -320,12 +382,12 @@ impl Chunk {
         let compressed_chunk = compressed_chunk.map_err(InnerError::from)?;
         let chunk = compressed_chunk.decode().map_err(InnerError::from)?;
         match &chunk.name {
-            b"META" => MetaChunk::new(chunk.data)?,
-            b"SSTR" => SstrChunk::new(chunk.data)?,
-            b"INST" => InstChunk::new(chunk.data)?,
-            b"PROP" => PropChunk::new(chunk.data)?,
-            b"PRNT" => PrntChunk::new(chunk.data)?,
-            b"END\0" => EndChunk::new(chunk.data)?,
+            b"META" => MetaChunk::new(chunk.data),
+            b"SSTR" => SstrChunk::new(chunk.data),
+            b"INST" => InstChunk::new(chunk.data),
+            b"PROP" => PropChunk::new(chunk.data),
+            b"PRNT" => PrntChunk::new(chunk.data),
+            b"END\0" => EndChunk::new(chunk.data),
         }
     }
 }
