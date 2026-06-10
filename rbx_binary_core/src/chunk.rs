@@ -229,6 +229,9 @@ pub struct CompressedChunk<'a> {
     data: &'a [u8],
 }
 impl CompressedChunk<'_> {
+    pub const fn name(&self) -> &[u8; 4] {
+        &self.header.name
+    }
     pub fn decode(&self) -> io::Result<Chunk> {
         Chunk::new(&self.header, self.data)
     }
