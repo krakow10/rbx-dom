@@ -67,12 +67,12 @@ impl ClassPropertyChunk {
 
 // This will be populated with chunk decoders by decode_prop_chunk
 #[derive(Default)]
-struct DeserializerClassPropertyChunks {
+struct ClassPropertyChunks {
     Part: PartPropertyChunks,
     WedgePart: WedgePartPropertyChunks,
 }
 
-impl DeserializerClassPropertyChunks {
+impl ClassPropertyChunks {
     fn try_push(&mut self, prop_chunk: PropChunk) -> Result<(), DuplicateProp> {
         match prop_chunk.class_property {
             ClassPropertyChunk::PartPropertyChunk(part_property_chunk) => {
@@ -319,7 +319,7 @@ pub(super) struct DeserializerState {
     /// appear in the file.
     shared_strings: Vec<SharedString>,
     inst: Option<Vec<u8>>,
-    prop: DeserializerClassPropertyChunks,
+    prop: ClassPropertyChunks,
     prnt: Option<Vec<u8>>,
     end: Option<Vec<u8>>,
 }
@@ -332,7 +332,7 @@ impl DeserializerState {
                 header,
                 shared_strings: Vec::new(),
                 inst: None,
-                prop: DeserializerClassPropertyChunks::default(),
+                prop: ClassPropertyChunks::default(),
                 prnt: None,
                 end: None,
             },
