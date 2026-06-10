@@ -5,6 +5,7 @@ use std::{
 };
 
 use crate::core::{RbxReadExt, RbxWriteExt, RbxWriteInterleaved, ReadSlice};
+use crate::header::FileHeader;
 
 const ZSTD_MAGIC_NUMBER: &[u8] = &[0x28, 0xb5, 0x2f, 0xfd];
 
@@ -167,7 +168,7 @@ impl RbxWriteInterleaved for ChunkBuilder {
     }
 }
 
-#[derive(Debug)]
+#[derive(Clone, Copy, Debug)]
 struct ChunkHeader {
     /// 4-byte short name for the chunk, like "INST" or "PRNT"
     name: [u8; 4],
@@ -223,13 +224,14 @@ fn decode_chunk_header<R: Read>(source: &mut R) -> io::Result<ChunkHeader> {
     })
 }
 
+#[derive(Clone, Copy, Debug)]
 pub struct CompressedChunk<'a> {
     header: ChunkHeader,
     /// The chunk payload data
     data: &'a [u8],
 }
 impl CompressedChunk<'_> {
-    pub const fn name(&self) -> &[u8; 4] {
+    const fn name(&self) -> &[u8; 4] {
         &self.header.name
     }
     pub fn decode(&self) -> io::Result<Chunk> {
@@ -237,27 +239,143 @@ impl CompressedChunk<'_> {
     }
 }
 
-pub struct ChunkIter<'a> {
+struct UnexpectedChunk {
+    expected: &'static str,
+    actual: String,
+}
+
+struct ChunkParser<'a> {
     data: &'a [u8],
 }
-impl<'a> ChunkIter<'a> {
-    pub const fn new(data: &'a [u8]) -> Self {
+impl<'a> ChunkParser<'a> {
+    const fn new(data: &'a [u8]) -> Self {
         Self { data }
     }
+    fn next_chunk(&mut self) -> io::Result<CompressedChunk<'a>> {
+        let header = decode_chunk_header(&mut self.data)?;
+
+        let data = self.data.read_slice(header.compressed_len as usize)?;
+
+        Ok(CompressedChunk { header, data })
+    }
+    // returns (Option<expected_chunk>, next_chunk)
+    fn decode_optional(
+        &mut self,
+        expected: &[u8; 4],
+        chunk: CompressedChunk<'a>,
+    ) -> io::Result<(Option<CompressedChunk<'a>>, CompressedChunk<'a>)> {
+        if chunk.name() == expected {
+            let next_chunk = self.next_chunk()?;
+            Ok((Some(chunk), next_chunk))
+        } else {
+            Ok((None, chunk))
+        }
+    }
+    // populates `chunks` and returns next_chunk
+    fn decode_repeated(
+        &mut self,
+        expected: &[u8; 4],
+        mut chunk: CompressedChunk<'a>,
+        chunks: &mut Vec<CompressedChunk<'a>>,
+    ) -> io::Result<CompressedChunk<'a>> {
+        while chunk.name() == expected {
+            chunks.push(chunk);
+            chunk = self.next_chunk()?;
+        }
+        Ok(chunk)
+    }
+    // returns (Option<expected_chunk>, next_chunk)
+    fn decode_once(
+        &mut self,
+        expected: &'static str,
+        chunk: CompressedChunk<'a>,
+    ) -> Result<CompressedChunk<'a>, UnexpectedChunk> {
+        if chunk.name() != expected.as_bytes() {
+            return Err(UnexpectedChunk {
+                expected,
+                actual: core::str::from_utf8(chunk.name())
+                    .unwrap_or_default()
+                    .to_owned(),
+            });
+        }
+        Ok(chunk)
+    }
 }
-impl<'a> Iterator for ChunkIter<'a> {
-    type Item = io::Result<CompressedChunk<'a>>;
-    fn next(&mut self) -> Option<Self::Item> {
-        let header = match decode_chunk_header(&mut self.data) {
-            Ok(header) => header,
-            Err(e) => return Some(Err(e)),
-        };
 
-        let data = match self.data.read_slice(header.compressed_len as usize) {
-            Ok(data) => data,
-            Err(e) => return Some(Err(e)),
-        };
+use thiserror::Error;
+#[derive(Debug, Error)]
+pub enum ChunkSlicesError {
+    #[error(transparent)]
+    Io {
+        #[from]
+        source: std::io::Error,
+    },
 
-        Some(Ok(CompressedChunk { header, data }))
+    #[error("Unexpected chunk {actual}, expected {expected}")]
+    UnexpectedChunk {
+        expected: &'static str,
+        actual: String,
+    },
+}
+impl From<UnexpectedChunk> for ChunkSlicesError {
+    fn from(UnexpectedChunk { expected, actual }: UnexpectedChunk) -> Self {
+        Self::UnexpectedChunk { expected, actual }
+    }
+}
+
+pub struct ChunkSlices<'a> {
+    meta: Option<CompressedChunk<'a>>,
+    sstr: Option<CompressedChunk<'a>>,
+    inst: Vec<CompressedChunk<'a>>,
+    prop: Vec<CompressedChunk<'a>>,
+    prnt: CompressedChunk<'a>,
+    end: CompressedChunk<'a>,
+}
+impl<'a> ChunkSlices<'a> {
+    pub fn new(header: &FileHeader, data: &'a [u8]) -> Result<Self, ChunkSlicesError> {
+        let mut chunks = ChunkParser::new(data);
+
+        let chunk = chunks.next_chunk()?;
+
+        let (meta, chunk) = chunks.decode_optional(b"META", chunk)?;
+        let (sstr, chunk) = chunks.decode_optional(b"SSTR", chunk)?;
+
+        let mut inst = Vec::with_capacity(header.num_types() as usize);
+        let chunk = chunks.decode_repeated(b"INST", chunk, &mut inst)?;
+
+        let mut prop = Vec::new();
+        let chunk = chunks.decode_repeated(b"PROP", chunk, &mut prop)?;
+
+        let prnt = chunks.decode_once("PRNT", chunk)?;
+
+        let chunk = chunks.next_chunk()?;
+        let end = chunks.decode_once("END\0", chunk)?;
+
+        Ok(ChunkSlices {
+            meta,
+            sstr,
+            inst,
+            prop,
+            prnt,
+            end,
+        })
+    }
+    pub const fn meta(&self) -> Option<CompressedChunk<'_>> {
+        self.meta
+    }
+    pub const fn sstr(&self) -> Option<CompressedChunk<'_>> {
+        self.sstr
+    }
+    pub const fn inst(&self) -> &[CompressedChunk<'_>] {
+        self.inst.as_slice()
+    }
+    pub const fn prop(&self) -> &[CompressedChunk<'_>] {
+        self.prop.as_slice()
+    }
+    pub const fn prnt(&self) -> CompressedChunk<'_> {
+        self.prnt
+    }
+    pub const fn end(&self) -> CompressedChunk<'_> {
+        self.end
     }
 }
