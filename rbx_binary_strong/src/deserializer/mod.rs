@@ -3,6 +3,9 @@ mod state;
 
 use std::str;
 
+#[cfg(feature = "rayon")]
+use rayon::iter::{ParallelBridge, ParallelIterator};
+
 use rbx_dom_strong::StrongDom;
 
 use state::DeserializerState;
@@ -20,28 +23,20 @@ impl Deserializer {
     /// Deserialize a Roblox binary model or place from the given stream using
     /// this deserializer.
     pub fn deserialize(&self, data: &[u8]) -> Result<StrongDom, Error> {
-        let mut deserializer = DeserializerState::new(data)?;
+        let (mut deserializer, chunks) = DeserializerState::new(data)?;
 
-        loop {
-            let chunk = deserializer.next_chunk()?;
+        let it = chunks;
+        #[cfg(feature = "rayon")]
+        let it = it.par_bridge();
 
-            match &chunk.name {
-                b"META" => deserializer.decode_meta_chunk(&chunk.data)?,
-                b"SSTR" => deserializer.decode_sstr_chunk(&chunk.data)?,
-                b"INST" => deserializer.decode_inst_chunk(&chunk.data)?,
-                b"PROP" => deserializer.decode_prop_chunk(&chunk.data)?,
-                b"PRNT" => deserializer.decode_prnt_chunk(&chunk.data)?,
-                b"END\0" => {
-                    deserializer.decode_end_chunk(&chunk.data)?;
-                    break;
-                }
-                _ => match str::from_utf8(&chunk.name) {
-                    Ok(name) => log::info!("Unknown binary chunk name {name}"),
-                    Err(_) => log::info!("Unknown binary chunk name {:?}", chunk.name),
-                },
-            }
+        // Parallelize per chunk.
+        // This decodes non-parallelizable properties.
+        for chunk in it.map(decode_chunk) {
+            deserializer.receive_chunk(chunk)?;
         }
 
+        // Parallelize per instance
+        // This decodes parallelizable properties.
         Ok(deserializer.finish())
     }
 }
