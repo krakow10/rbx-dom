@@ -1,18 +1,17 @@
 mod error;
 mod state;
 
-use std::{io::Read, str};
+use std::{str};
 
-use rbx_dom_weak::WeakDom;
-use rbx_reflection::ReflectionDatabase;
+use rbx_dom_strong::StrongDom;
 
-use self::state::DeserializerState;
+use state::DeserializerState;
 
-pub use self::error::Error;
+pub use error::Error;
 
-pub struct Deserializer<'db> {}
+pub struct Deserializer {}
 
-impl<'db> Deserializer<'db> {
+impl Deserializer {
     /// Create a new `Deserializer` with the default settings.
     pub fn new() -> Self {
         Self {
