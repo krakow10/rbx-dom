@@ -1,7 +1,7 @@
 mod error;
 mod state;
 
-use std::{str};
+use std::str;
 
 use rbx_dom_strong::StrongDom;
 
@@ -14,14 +14,13 @@ pub struct Deserializer {}
 impl Deserializer {
     /// Create a new `Deserializer` with the default settings.
     pub fn new() -> Self {
-        Self {
-        }
+        Self {}
     }
 
     /// Deserialize a Roblox binary model or place from the given stream using
     /// this deserializer.
-    pub fn deserialize(&self, data:&[u8]) -> Result<StrongDom, Error> {
-        let mut deserializer = DeserializerState::new(self, reader)?;
+    pub fn deserialize(&self, data: &[u8]) -> Result<StrongDom, Error> {
+        let mut deserializer = DeserializerState::new(data)?;
 
         loop {
             let chunk = deserializer.next_chunk()?;

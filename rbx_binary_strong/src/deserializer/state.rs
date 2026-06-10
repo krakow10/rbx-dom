@@ -3,13 +3,13 @@ use std::io;
 use rbx_dom_strong::{classes, enums};
 use rbx_types::{CFrame, Matrix3, Vector3};
 
-use crate::core::RbxReadExt;
+use rbx_binary_core::core::{RbxReadExt, RbxReadInterleaved};
 
 #[cfg(not(feature = "rayon"))]
 use core::iter::IntoIterator as IntoIter;
-use rayon::iter::plumbing::{bridge, Consumer, ProducerCallback, UnindexedConsumer};
 #[cfg(feature = "rayon")]
 use rayon::iter::IntoParallelIterator as IntoIter;
+use rayon::iter::plumbing::{Consumer, ProducerCallback, UnindexedConsumer, bridge};
 use rayon::iter::{IndexedParallelIterator, ParallelIterator};
 
 // === GENERATED ===
@@ -154,6 +154,15 @@ struct WedgePartPropertyChunks {
 
 // === HAND WRITTEN ===
 
+pub(super) struct DeserializerState {
+    meta: Option<Vec<u8>>,
+    sstr: Option<Vec<u8>>,
+    inst: Vec<u8>,
+    prop: DeserializerClassPropertyChunks,
+    prnt: Vec<u8>,
+    end: Vec<u8>,
+}
+
 /// Transform a prop chunk into a form which can be deserialized in parallel
 trait IntoPropertyChunkState: Sized {
     /// Many properties cannot be decoded in parallel, such as Name.
@@ -179,7 +188,7 @@ impl IntoPropertyChunkState for String {
         let mut slice = chunk.as_slice();
         // TODO: use PR #592 RbxReadInterleaved Trait
         for _ in 0..len {
-            values.push(slice.read_string()?);
+            values.push(slice.read_string()?.to_owned());
         }
 
         Ok(values)
