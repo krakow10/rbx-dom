@@ -62,7 +62,7 @@ impl Chunk {
 /// automatically.
 #[must_use]
 pub struct ChunkBuilder {
-    chunk_name: &'static [u8],
+    chunk_name: &'static [u8; 4],
     compression: CompressionType,
     buffer: Vec<u8>,
 }
@@ -70,7 +70,7 @@ pub struct ChunkBuilder {
 impl ChunkBuilder {
     /// Creates a new `ChunkBuilder` with the given name and compression
     /// setting.
-    pub fn new(chunk_name: &'static [u8], compression: CompressionType) -> Self {
+    pub fn new(chunk_name: &'static [u8; 4], compression: CompressionType) -> Self {
         ChunkBuilder {
             chunk_name,
             compression,
