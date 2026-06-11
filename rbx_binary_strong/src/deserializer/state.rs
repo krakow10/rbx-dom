@@ -10,7 +10,7 @@ use rbx_binary_core::{
     header::FileHeader,
 };
 
-use super::error::{Error, InnerError};
+use super::error::InnerError;
 
 #[cfg(not(feature = "rayon"))]
 use core::iter::IntoIterator as IntoIter;
@@ -364,8 +364,8 @@ impl ParallelState {
         chunks.meta;
         chunks.sstr;
 
-        /// All of the instance types described by the file so far.
-        /// The index is the type_id.
+        // All of the instance types described by the file so far.
+        // The index is the type_id.
         let type_infos = HashMap::with_capacity(header.num_types() as usize);
 
         chunks.inst;
