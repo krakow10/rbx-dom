@@ -209,8 +209,8 @@ pub struct CompressedChunk<'a> {
     data: &'a [u8],
 }
 impl CompressedChunk<'_> {
-    const fn name(&self) -> &[u8; 4] {
-        &self.header.name
+    const fn name(&self) -> [u8; 4] {
+        self.header.name
     }
     pub fn decode(&self) -> io::Result<Vec<u8>> {
         let data = if self.header.compressed_len == 0 {
@@ -255,7 +255,7 @@ impl<'a> ChunkParser<'a> {
     // returns (Option<expected_chunk>, next_chunk)
     fn decode_optional(
         &mut self,
-        expected: &[u8; 4],
+        expected: [u8; 4],
         chunk: CompressedChunk<'a>,
     ) -> io::Result<(Option<CompressedChunk<'a>>, CompressedChunk<'a>)> {
         if chunk.name() == expected {
@@ -268,7 +268,7 @@ impl<'a> ChunkParser<'a> {
     // populates `chunks` and returns next_chunk
     fn decode_repeated(
         &mut self,
-        expected: &[u8; 4],
+        expected: [u8; 4],
         mut chunk: CompressedChunk<'a>,
         chunks: &mut Vec<CompressedChunk<'a>>,
     ) -> io::Result<CompressedChunk<'a>> {
@@ -287,7 +287,7 @@ impl<'a> ChunkParser<'a> {
         if chunk.name() != expected.as_bytes() {
             return Err(UnexpectedChunk {
                 expected,
-                actual: core::str::from_utf8(chunk.name())
+                actual: core::str::from_utf8(&chunk.name())
                     .unwrap_or_default()
                     .to_owned(),
             });
@@ -331,14 +331,14 @@ impl<'a> ChunkSlices<'a> {
 
         let chunk = chunks.next_chunk()?;
 
-        let (meta, chunk) = chunks.decode_optional(b"META", chunk)?;
-        let (sstr, chunk) = chunks.decode_optional(b"SSTR", chunk)?;
+        let (meta, chunk) = chunks.decode_optional(*b"META", chunk)?;
+        let (sstr, chunk) = chunks.decode_optional(*b"SSTR", chunk)?;
 
         let mut inst = Vec::with_capacity(header.num_types() as usize);
-        let chunk = chunks.decode_repeated(b"INST", chunk, &mut inst)?;
+        let chunk = chunks.decode_repeated(*b"INST", chunk, &mut inst)?;
 
         let mut prop = Vec::new();
-        let chunk = chunks.decode_repeated(b"PROP", chunk, &mut prop)?;
+        let chunk = chunks.decode_repeated(*b"PROP", chunk, &mut prop)?;
 
         let prnt = chunks.decode_once("PRNT", chunk)?;
 
