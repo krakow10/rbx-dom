@@ -248,7 +248,13 @@ impl<'a> ChunkParser<'a> {
     fn next_chunk(&mut self) -> io::Result<CompressedChunk<'a>> {
         let header = decode_chunk_header(&mut self.data)?;
 
-        let data = self.data.read_slice(header.compressed_len as usize)?;
+        let len = if header.compressed_len == 0 {
+            header.len
+        } else {
+            header.compressed_len
+        };
+
+        let data = self.data.read_slice(len as usize)?;
 
         Ok(CompressedChunk { header, data })
     }
