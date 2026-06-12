@@ -396,7 +396,8 @@ fn decode_prop_chunk(
 ) -> Result<ClassPropertyChunk, InnerError> {
     let mut chunk = data.as_slice();
     let type_id = chunk.read_le_u32()?;
-    let prop_name = chunk.read_string()?;
+    // TODO: figure out borrow checker and drop .to_owned()
+    let prop_name = &chunk.read_string()?.to_owned();
 
     let type_info = type_infos
         .get(&type_id)
