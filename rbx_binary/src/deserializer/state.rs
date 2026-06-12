@@ -193,13 +193,6 @@ where
     }
 }
 
-fn some_iter_from_fn<F, T>(f: F) -> SomeFromFn<F>
-where
-    F: FnMut() -> T,
-{
-    SomeFromFn(f)
-}
-
 fn add_properties<'a, IntoVariant, Zip>(
     zip: Zip,
     canonical_property: &CanonicalProperty,
@@ -473,7 +466,7 @@ This may cause unexpected or broken behavior in your final results if you rely o
         match binary_type {
             Type::String => match canonical_type {
                 VariantType::String => {
-                    let values = some_iter_from_fn(|| {
+                    let values = SomeFromFn(|| {
                         let binary_string = chunk.read_binary_string()?;
                         let value: String = match std::str::from_utf8(&binary_string) {
                             Ok(value) => value.into(),
@@ -495,18 +488,17 @@ This may cause unexpected or broken behavior in your final results if you rely o
                     add_properties(values.zip(instances), &property)?;
                 }
                 VariantType::ContentId => {
-                    let values = some_iter_from_fn(|| Ok(ContentId::from(chunk.read_string()?)));
+                    let values = SomeFromFn(|| Ok(ContentId::from(chunk.read_string()?)));
                     add_properties(values.zip(instances), &property)?;
                 }
 
                 VariantType::BinaryString => {
-                    let values =
-                        some_iter_from_fn(|| Ok(BinaryString::from(chunk.read_binary_string()?)));
+                    let values = SomeFromFn(|| Ok(BinaryString::from(chunk.read_binary_string()?)));
                     add_properties(values.zip(instances), &property)?;
                 }
 
                 VariantType::Tags => {
-                    let values = some_iter_from_fn(|| {
+                    let values = SomeFromFn(|| {
                         let buffer = chunk.read_binary_string()?;
 
                         let value = Tags::decode(buffer.as_ref()).map_err(|_| {
@@ -524,7 +516,7 @@ This may cause unexpected or broken behavior in your final results if you rely o
                     add_properties(values.zip(instances), &property)?;
                 }
                 VariantType::Attributes => {
-                    let values = some_iter_from_fn(|| {
+                    let values = SomeFromFn(|| {
                         let buffer = chunk.read_binary_string()?;
 
                         match Attributes::from_reader(buffer.as_slice()) {
@@ -546,7 +538,7 @@ rbx-dom may require changes to fully support this property. Please open an issue
                     add_properties(values.zip(instances), &property)?;
                 }
                 VariantType::MaterialColors => {
-                    let values = some_iter_from_fn(|| {
+                    let values = SomeFromFn(|| {
                         let buffer = chunk.read_binary_string()?;
                         match MaterialColors::decode(&buffer) {
                             Ok(value) => Ok(Variant::from(value)),
@@ -578,7 +570,7 @@ rbx-dom may require changes to fully support this property. Please open an issue
             },
             Type::Bool => match canonical_type {
                 VariantType::Bool => {
-                    let values = some_iter_from_fn(|| Ok(chunk.read_bool()?));
+                    let values = SomeFromFn(|| Ok(chunk.read_bool()?));
                     add_properties(values.zip(instances), &property)?;
                 }
                 invalid_type => {
@@ -632,7 +624,7 @@ rbx-dom may require changes to fully support this property. Please open an issue
             },
             Type::Float64 => match canonical_type {
                 VariantType::Float64 => {
-                    let values = some_iter_from_fn(|| Ok(chunk.read_le_f64()?));
+                    let values = SomeFromFn(|| Ok(chunk.read_le_f64()?));
                     add_properties(values.zip(instances), &property)?;
                 }
 
@@ -706,7 +698,7 @@ rbx-dom may require changes to fully support this property. Please open an issue
             },
             Type::Ray => match canonical_type {
                 VariantType::Ray => {
-                    let values = some_iter_from_fn(|| {
+                    let values = SomeFromFn(|| {
                         let origin_x = chunk.read_le_f32()?;
                         let origin_y = chunk.read_le_f32()?;
                         let origin_z = chunk.read_le_f32()?;
@@ -733,7 +725,7 @@ rbx-dom may require changes to fully support this property. Please open an issue
             },
             Type::Faces => match canonical_type {
                 VariantType::Faces => {
-                    let values = some_iter_from_fn(|| {
+                    let values = SomeFromFn(|| {
                         let value = chunk.read_u8()?;
                         let faces =
                             Faces::from_bits(value).ok_or_else(|| InnerError::InvalidPropData {
@@ -759,7 +751,7 @@ rbx-dom may require changes to fully support this property. Please open an issue
             },
             Type::Axes => match canonical_type {
                 VariantType::Axes => {
-                    let values = some_iter_from_fn(|| {
+                    let values = SomeFromFn(|| {
                         let value = chunk.read_u8()?;
 
                         let axes =
@@ -964,7 +956,7 @@ rbx-dom may require changes to fully support this property. Please open an issue
             },
             Type::Vector3int16 => match canonical_type {
                 VariantType::Vector3int16 => {
-                    let values = some_iter_from_fn(|| {
+                    let values = SomeFromFn(|| {
                         Ok(Vector3int16::new(
                             chunk.read_le_i16()?,
                             chunk.read_le_i16()?,
@@ -985,7 +977,7 @@ rbx-dom may require changes to fully support this property. Please open an issue
             },
             Type::Font => match canonical_type {
                 VariantType::Font => {
-                    let values = some_iter_from_fn(|| {
+                    let values = SomeFromFn(|| {
                         let family = chunk.read_string()?;
                         let weight = FontWeight::from_u16(chunk.read_le_u16()?).unwrap_or_default();
                         let style = FontStyle::from_u8(chunk.read_u8()?).unwrap_or_default();
@@ -1018,7 +1010,7 @@ rbx-dom may require changes to fully support this property. Please open an issue
             },
             Type::NumberSequence => match canonical_type {
                 VariantType::NumberSequence => {
-                    let values = some_iter_from_fn(|| {
+                    let values = SomeFromFn(|| {
                         let keypoint_count = chunk.read_le_u32()?;
                         let mut keypoints = Vec::with_capacity(keypoint_count as usize);
 
@@ -1046,7 +1038,7 @@ rbx-dom may require changes to fully support this property. Please open an issue
             },
             Type::ColorSequence => match canonical_type {
                 VariantType::ColorSequence => {
-                    let values = some_iter_from_fn(|| {
+                    let values = SomeFromFn(|| {
                         let keypoint_count = chunk.read_le_u32()? as usize;
                         let mut keypoints = Vec::with_capacity(keypoint_count);
 
@@ -1080,7 +1072,7 @@ rbx-dom may require changes to fully support this property. Please open an issue
             },
             Type::NumberRange => match canonical_type {
                 VariantType::NumberRange => {
-                    let values = some_iter_from_fn(|| {
+                    let values = SomeFromFn(|| {
                         Ok(NumberRange::new(chunk.read_le_f32()?, chunk.read_le_f32()?))
                     });
 
@@ -1125,7 +1117,7 @@ rbx-dom may require changes to fully support this property. Please open an issue
             },
             Type::PhysicalProperties => match canonical_type {
                 VariantType::PhysicalProperties => {
-                    let values = some_iter_from_fn(|| {
+                    let values = SomeFromFn(|| {
                         let discriminator = chunk.read_u8()?;
                         let value = match discriminator {
                             0b00 | 0b10 => Variant::PhysicalProperties(PhysicalProperties::Default),
