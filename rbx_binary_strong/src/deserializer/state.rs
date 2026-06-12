@@ -384,7 +384,7 @@ impl Chunks {
         }
         Ok(chunk)
     }
-    // returns (expected_chunk, next_chunk)
+    // returns expected_chunk
     fn once(chunk: Chunk, expected: &'static str) -> Result<Chunk, UnexpectedChunk> {
         if chunk.name != expected.as_bytes() {
             return Err(UnexpectedChunk {
