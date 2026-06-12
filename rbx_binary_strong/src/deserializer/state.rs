@@ -357,45 +357,45 @@ impl From<UnexpectedChunk> for InnerError {
     }
 }
 
-type ChunkIter = std::vec::IntoIter<io::Result<Chunk>>;
+struct Chunks {
+    chunks: std::vec::IntoIter<io::Result<Chunk>>,
+}
 
-// returns (Option<expected_chunk>, next_chunk)
-fn decode_optional(
-    chunk: Chunk,
-    expected: [u8; 4],
-    chunks: &mut ChunkIter,
-) -> io::Result<(Option<Chunk>, Chunk)> {
-    if chunk.name == expected {
-        let next_chunk = chunks.next().unwrap()?;
-        Ok((Some(chunk), next_chunk))
-    } else {
-        Ok((None, chunk))
+impl Chunks {
+    // returns (Option<expected_chunk>, next_chunk)
+    fn optional(&mut self, chunk: Chunk, expected: [u8; 4]) -> io::Result<(Option<Chunk>, Chunk)> {
+        if chunk.name == expected {
+            let next_chunk = self.chunks.next().unwrap()?;
+            Ok((Some(chunk), next_chunk))
+        } else {
+            Ok((None, chunk))
+        }
     }
-}
-// populates `chunks` and returns next_chunk
-fn decode_repeated(
-    mut chunk: Chunk,
-    expected: [u8; 4],
-    chunks: &mut ChunkIter,
-    chunks_out: &mut Vec<Chunk>,
-) -> io::Result<Chunk> {
-    while chunk.name == expected {
-        chunks_out.push(chunk);
-        chunk = chunks.next().unwrap()?;
+    // populates `chunks` and returns next_chunk
+    fn repeated(
+        &mut self,
+        mut chunk: Chunk,
+        expected: [u8; 4],
+        chunks_out: &mut Vec<Chunk>,
+    ) -> io::Result<Chunk> {
+        while chunk.name == expected {
+            chunks_out.push(chunk);
+            chunk = self.chunks.next().unwrap()?;
+        }
+        Ok(chunk)
     }
-    Ok(chunk)
-}
-// returns (expected_chunk, next_chunk)
-fn decode_once(chunk: Chunk, expected: &'static str) -> Result<Chunk, UnexpectedChunk> {
-    if chunk.name != expected.as_bytes() {
-        return Err(UnexpectedChunk {
-            expected,
-            actual: core::str::from_utf8(&chunk.name)
-                .unwrap_or_default()
-                .to_owned(),
-        });
+    // returns (expected_chunk, next_chunk)
+    fn once(chunk: Chunk, expected: &'static str) -> Result<Chunk, UnexpectedChunk> {
+        if chunk.name != expected.as_bytes() {
+            return Err(UnexpectedChunk {
+                expected,
+                actual: core::str::from_utf8(&chunk.name)
+                    .unwrap_or_default()
+                    .to_owned(),
+            });
+        }
+        Ok(chunk)
     }
-    Ok(chunk)
 }
 
 pub(super) struct ParallelState {
@@ -413,24 +413,26 @@ impl ParallelState {
         let chunks = parse_chunks(input)?;
 
         #[cfg(not(feature = "rayon"))]
-        let mut chunks = chunks.into_iter().map(|c| c.decode());
+        let chunks = chunks.into_iter().map(|c| c.decode());
 
         // decompress all chunks in parallel
         #[cfg(feature = "rayon")]
-        let mut chunks = chunks
+        let chunks = chunks
             .into_par_iter()
             .map(|c| c.decode())
             .collect::<Vec<_>>()
             .into_iter();
 
         let chunks_len = chunks.len();
-        let chunk = chunks.next().unwrap()?;
+        let mut chunks = Chunks { chunks };
 
-        let (meta, chunk) = decode_optional(chunk, *b"META", &mut chunks)?;
-        let (sstr, chunk) = decode_optional(chunk, *b"SSTR", &mut chunks)?;
+        let chunk = chunks.chunks.next().unwrap()?;
+
+        let (meta, chunk) = chunks.optional(chunk, *b"META")?;
+        let (sstr, chunk) = chunks.optional(chunk, *b"SSTR")?;
 
         let mut inst = Vec::with_capacity(header.num_types() as usize);
-        let chunk = decode_repeated(chunk, *b"INST", &mut chunks, &mut inst)?;
+        let chunk = chunks.repeated(chunk, *b"INST", &mut inst)?;
 
         // calculate capacity by deduction
         let mut prop = Vec::with_capacity(chunks_len.saturating_sub(
@@ -439,12 +441,12 @@ impl ParallelState {
                 + (sstr.is_some() as usize)
                 + header.num_types() as usize,
         ));
-        let chunk = decode_repeated(chunk, *b"PROP", &mut chunks, &mut prop)?;
+        let chunk = chunks.repeated(chunk, *b"PROP", &mut prop)?;
 
-        let prnt = decode_once(chunk, "PRNT")?;
+        let prnt = Chunks::once(chunk, "PRNT")?;
 
-        let chunk = chunks.next().unwrap()?;
-        let end = decode_once(chunk, "END\0")?;
+        let chunk = chunks.chunks.next().unwrap()?;
+        let end = Chunks::once(chunk, "END\0")?;
 
         meta;
         sstr;
@@ -452,8 +454,8 @@ impl ParallelState {
         // All of the instance types described by the file so far.
         // The index is the type_id.
         let type_infos = HashMap::with_capacity(header.num_types() as usize);
-
         inst;
+
         for prop_chunk in prop {
             decode_prop_chunk(&prop_chunk.data, &type_infos)?;
         }
