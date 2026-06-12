@@ -1,4 +1,4 @@
-use std::{borrow::Cow, collections::VecDeque, convert::TryInto, io::Read};
+use std::{collections::VecDeque, convert::TryInto, io::Read};
 
 use ahash::{HashMap, HashMapExt, HashSet, HashSetExt};
 use rbx_dom_weak::{
@@ -179,19 +179,39 @@ fn find_canonical_property<'de>(
     }
 }
 
-fn add_fallible_properties<DecodeValue, IntoVariant>(
-    instances: &mut [Instance],
+// helper to create value iterators
+struct SomeFromFn<F>(F);
+
+impl<T, F> Iterator for SomeFromFn<F>
+where
+    F: FnMut() -> T,
+{
+    type Item = T;
+
+    fn next(&mut self) -> Option<Self::Item> {
+        Some((self.0)())
+    }
+}
+
+fn some_iter_from_fn<F, T>(f: F) -> SomeFromFn<F>
+where
+    F: FnMut() -> T,
+{
+    SomeFromFn(f)
+}
+
+fn add_fallible_properties<'a, IntoVariant, Zip>(
+    zip: Zip,
     canonical_property: &CanonicalProperty,
-    mut decode_value: DecodeValue,
 ) -> Result<(), InnerError>
 where
     IntoVariant: Into<Variant>,
-    DecodeValue: FnMut() -> Result<IntoVariant, InnerError>,
+    Zip: Iterator<Item = (Result<IntoVariant, InnerError>, &'a mut Instance)>,
 {
     if let Some(PropertySerialization::Migrate(migration)) = canonical_property.migration {
         let old_property_name = canonical_property.name;
-        for instance in instances {
-            let value = decode_value()?.into();
+        for (fallible_value, instance) in zip {
+            let value = fallible_value?.into();
             match migration.perform(&value) {
                 Ok(new_value) => {
                     for &new_property_name in migration.new_property_names() {
@@ -213,8 +233,8 @@ where
             }
         }
     } else {
-        for instance in instances {
-            let value = decode_value()?;
+        for (fallible_value, instance) in zip {
+            let value = fallible_value?;
             instance
                 .builder
                 .add_property(canonical_property.name, value);
@@ -465,7 +485,7 @@ This may cause unexpected or broken behavior in your final results if you rely o
                             prop_name
                         );
 
-                        String::from_utf8_lossy(binary_string.as_ref()).into()
+                        String::from_utf8_lossy(binary_string.as_ref()).into_owned()
                     }
                 };
                 instance.builder.set_name(value);
@@ -490,7 +510,7 @@ This may cause unexpected or broken behavior in your final results if you rely o
         match binary_type {
             Type::String => match canonical_type {
                 VariantType::String => {
-                    add_fallible_properties(instances, &property, || {
+                    let values = some_iter_from_fn(|| {
                         let binary_string = chunk.read_binary_string()?;
                         let value: String = match std::str::from_utf8(&binary_string) {
                             Ok(value) => value.into(),
@@ -507,18 +527,23 @@ This may cause unexpected or broken behavior in your final results if you rely o
                         };
 
                         Ok(value)
-                    })?;
-                }
-                VariantType::ContentId => add_fallible_properties(instances, &property, || {
-                    Ok(ContentId::from(chunk.read_string()?))
-                })?,
+                    });
 
-                VariantType::BinaryString => add_fallible_properties(instances, &property, || {
-                    Ok(BinaryString::from(chunk.read_binary_string()?))
-                })?,
+                    add_fallible_properties(values.zip(instances), &property)?;
+                }
+                VariantType::ContentId => {
+                    let values = some_iter_from_fn(|| Ok(ContentId::from(chunk.read_string()?)));
+                    add_fallible_properties(values.zip(instances), &property)?;
+                }
+
+                VariantType::BinaryString => {
+                    let values =
+                        some_iter_from_fn(|| Ok(BinaryString::from(chunk.read_binary_string()?)));
+                    add_fallible_properties(values.zip(instances), &property)?;
+                }
 
                 VariantType::Tags => {
-                    add_fallible_properties(instances, &property, || {
+                    let values = some_iter_from_fn(|| {
                         let buffer = chunk.read_binary_string()?;
 
                         let value = Tags::decode(buffer.as_ref()).map_err(|_| {
@@ -531,10 +556,12 @@ This may cause unexpected or broken behavior in your final results if you rely o
                         })?;
 
                         Ok(value)
-                    })?;
+                    });
+
+                    add_fallible_properties(values.zip(instances), &property)?;
                 }
                 VariantType::Attributes => {
-                    add_fallible_properties(instances, &property, || {
+                    let values = some_iter_from_fn(|| {
                         let buffer = chunk.read_binary_string()?;
 
                         match Attributes::from_reader(buffer.as_slice()) {
@@ -551,10 +578,12 @@ rbx-dom may require changes to fully support this property. Please open an issue
                                 Ok(Variant::from(BinaryString::from(buffer)))
                             }
                         }
-                    })?;
+                    });
+
+                    add_fallible_properties(values.zip(instances), &property)?;
                 }
                 VariantType::MaterialColors => {
-                    add_fallible_properties(instances, &property, || {
+                    let values = some_iter_from_fn(|| {
                         let buffer = chunk.read_binary_string()?;
                         match MaterialColors::decode(&buffer) {
                             Ok(value) => Ok(Variant::from(value)),
@@ -570,7 +599,9 @@ rbx-dom may require changes to fully support this property. Please open an issue
                                 Ok(Variant::from(BinaryString::from(buffer)))
                             }
                         }
-                    })?;
+                    });
+
+                    add_fallible_properties(values.zip(instances), &property)?;
                 }
                 invalid_type => {
                     return Err(InnerError::PropTypeMismatch {
@@ -584,7 +615,8 @@ rbx-dom may require changes to fully support this property. Please open an issue
             },
             Type::Bool => match canonical_type {
                 VariantType::Bool => {
-                    add_fallible_properties(instances, &property, || Ok(chunk.read_bool()?))?;
+                    let values = some_iter_from_fn(|| Ok(chunk.read_bool()?));
+                    add_fallible_properties(values.zip(instances), &property)?;
                 }
                 invalid_type => {
                     return Err(InnerError::PropTypeMismatch {
@@ -637,7 +669,8 @@ rbx-dom may require changes to fully support this property. Please open an issue
             },
             Type::Float64 => match canonical_type {
                 VariantType::Float64 => {
-                    add_fallible_properties(instances, &property, || Ok(chunk.read_le_f64()?))?
+                    let values = some_iter_from_fn(|| Ok(chunk.read_le_f64()?));
+                    add_fallible_properties(values.zip(instances), &property)?;
                 }
 
                 // This branch allows values serialized as Float32 to be converted to Float64 when we expect a Float64
@@ -710,7 +743,7 @@ rbx-dom may require changes to fully support this property. Please open an issue
             },
             Type::Ray => match canonical_type {
                 VariantType::Ray => {
-                    add_fallible_properties(instances, &property, || {
+                    let values = some_iter_from_fn(|| {
                         let origin_x = chunk.read_le_f32()?;
                         let origin_y = chunk.read_le_f32()?;
                         let origin_z = chunk.read_le_f32()?;
@@ -722,7 +755,9 @@ rbx-dom may require changes to fully support this property. Please open an issue
                             Vector3::new(origin_x, origin_y, origin_z),
                             Vector3::new(direction_x, direction_y, direction_z),
                         ))
-                    })?;
+                    });
+
+                    add_fallible_properties(values.zip(instances), &property)?;
                 }
                 invalid_type => {
                     return Err(InnerError::PropTypeMismatch {
@@ -735,7 +770,7 @@ rbx-dom may require changes to fully support this property. Please open an issue
             },
             Type::Faces => match canonical_type {
                 VariantType::Faces => {
-                    add_fallible_properties(instances, &property, || {
+                    let values = some_iter_from_fn(|| {
                         let value = chunk.read_u8()?;
                         let faces =
                             Faces::from_bits(value).ok_or_else(|| InnerError::InvalidPropData {
@@ -746,7 +781,9 @@ rbx-dom may require changes to fully support this property. Please open an issue
                             })?;
 
                         Ok(faces)
-                    })?;
+                    });
+
+                    add_fallible_properties(values.zip(instances), &property)?;
                 }
                 invalid_type => {
                     return Err(InnerError::PropTypeMismatch {
@@ -759,7 +796,7 @@ rbx-dom may require changes to fully support this property. Please open an issue
             },
             Type::Axes => match canonical_type {
                 VariantType::Axes => {
-                    add_fallible_properties(instances, &property, || {
+                    let values = some_iter_from_fn(|| {
                         let value = chunk.read_u8()?;
 
                         let axes =
@@ -771,7 +808,9 @@ rbx-dom may require changes to fully support this property. Please open an issue
                             })?;
 
                         Ok(axes)
-                    })?;
+                    });
+
+                    add_fallible_properties(values.zip(instances), &property)?;
                 }
                 invalid_type => {
                     return Err(InnerError::PropTypeMismatch {
@@ -784,22 +823,22 @@ rbx-dom may require changes to fully support this property. Please open an issue
             },
             Type::BrickColor => match canonical_type {
                 VariantType::BrickColor => {
-                    let values = chunk.read_interleaved_u32_array(instances.len())?;
+                    let values = chunk
+                        .read_interleaved_u32_array(instances.len())?
+                        .map(|value| {
+                            value
+                                .try_into()
+                                .ok()
+                                .and_then(BrickColor::from_number)
+                                .ok_or_else(|| InnerError::InvalidPropData {
+                                    type_name: type_name.to_string(),
+                                    prop_name: prop_name.clone(),
+                                    valid_value: "a valid BrickColor",
+                                    actual_value: value.to_string(),
+                                })
+                        });
 
-                    for (value, instance) in values.zip(instances) {
-                        let color = value
-                            .try_into()
-                            .ok()
-                            .and_then(BrickColor::from_number)
-                            .ok_or_else(|| InnerError::InvalidPropData {
-                                type_name: type_name.to_string(),
-                                prop_name: prop_name.clone(),
-                                valid_value: "a valid BrickColor",
-                                actual_value: value.to_string(),
-                            })?;
-
-                        add_property(instance, &property, color.into());
-                    }
+                    add_fallible_properties(values.zip(instances), &property)?;
                 }
                 invalid_type => {
                     return Err(InnerError::PropTypeMismatch {
@@ -942,8 +981,9 @@ rbx-dom may require changes to fully support this property. Please open an issue
             },
             Type::Ref => match canonical_type {
                 VariantType::Ref => {
+                    let instance_key_by_ref = &self.instance_key_by_ref;
                     let values = chunk.read_referent_array(instances.len())?.map(|value| {
-                        self.instance_key_by_ref
+                        instance_key_by_ref
                             .get(&value)
                             .map_or(Ref::none(), |key| key.referent)
                     });
@@ -961,13 +1001,15 @@ rbx-dom may require changes to fully support this property. Please open an issue
             },
             Type::Vector3int16 => match canonical_type {
                 VariantType::Vector3int16 => {
-                    add_fallible_properties(instances, &property, || {
+                    let values = some_iter_from_fn(|| {
                         Ok(Vector3int16::new(
                             chunk.read_le_i16()?,
                             chunk.read_le_i16()?,
                             chunk.read_le_i16()?,
                         ))
-                    })?;
+                    });
+
+                    add_fallible_properties(values.zip(instances), &property)?;
                 }
                 invalid_type => {
                     return Err(InnerError::PropTypeMismatch {
@@ -980,7 +1022,7 @@ rbx-dom may require changes to fully support this property. Please open an issue
             },
             Type::Font => match canonical_type {
                 VariantType::Font => {
-                    add_fallible_properties(instances, &property, || {
+                    let values = some_iter_from_fn(|| {
                         let family = chunk.read_string()?;
                         let weight = FontWeight::from_u16(chunk.read_le_u16()?).unwrap_or_default();
                         let style = FontStyle::from_u8(chunk.read_u8()?).unwrap_or_default();
@@ -998,7 +1040,9 @@ rbx-dom may require changes to fully support this property. Please open an issue
                             style,
                             cached_face_id,
                         })
-                    })?;
+                    });
+
+                    add_fallible_properties(values.zip(instances), &property)?;
                 }
                 invalid_type => {
                     return Err(InnerError::PropTypeMismatch {
@@ -1011,7 +1055,7 @@ rbx-dom may require changes to fully support this property. Please open an issue
             },
             Type::NumberSequence => match canonical_type {
                 VariantType::NumberSequence => {
-                    add_fallible_properties(instances, &property, || {
+                    let values = some_iter_from_fn(|| {
                         let keypoint_count = chunk.read_le_u32()?;
                         let mut keypoints = Vec::with_capacity(keypoint_count as usize);
 
@@ -1024,7 +1068,9 @@ rbx-dom may require changes to fully support this property. Please open an issue
                         }
 
                         Ok(NumberSequence { keypoints })
-                    })?;
+                    });
+
+                    add_fallible_properties(values.zip(instances), &property)?;
                 }
                 invalid_type => {
                     return Err(InnerError::PropTypeMismatch {
@@ -1037,7 +1083,7 @@ rbx-dom may require changes to fully support this property. Please open an issue
             },
             Type::ColorSequence => match canonical_type {
                 VariantType::ColorSequence => {
-                    add_fallible_properties(instances, &property, || {
+                    let values = some_iter_from_fn(|| {
                         let keypoint_count = chunk.read_le_u32()? as usize;
                         let mut keypoints = Vec::with_capacity(keypoint_count);
 
@@ -1056,7 +1102,9 @@ rbx-dom may require changes to fully support this property. Please open an issue
                         }
 
                         Ok(ColorSequence { keypoints })
-                    })?;
+                    });
+
+                    add_fallible_properties(values.zip(instances), &property)?;
                 }
                 invalid_type => {
                     return Err(InnerError::PropTypeMismatch {
@@ -1069,9 +1117,11 @@ rbx-dom may require changes to fully support this property. Please open an issue
             },
             Type::NumberRange => match canonical_type {
                 VariantType::NumberRange => {
-                    add_fallible_properties(instances, &property, || {
+                    let values = some_iter_from_fn(|| {
                         Ok(NumberRange::new(chunk.read_le_f32()?, chunk.read_le_f32()?))
-                    })?;
+                    });
+
+                    add_fallible_properties(values.zip(instances), &property)?;
                 }
                 invalid_type => {
                     return Err(InnerError::PropTypeMismatch {
@@ -1109,7 +1159,7 @@ rbx-dom may require changes to fully support this property. Please open an issue
             },
             Type::PhysicalProperties => match canonical_type {
                 VariantType::PhysicalProperties => {
-                    add_fallible_properties(instances, &property, || {
+                    let values = some_iter_from_fn(|| {
                         let discriminator = chunk.read_u8()?;
                         let value = match discriminator {
                             0b00 | 0b10 => Variant::PhysicalProperties(PhysicalProperties::Default),
@@ -1137,7 +1187,9 @@ rbx-dom may require changes to fully support this property. Please open an issue
                         };
 
                         Ok(value)
-                    })?;
+                    });
+
+                    add_fallible_properties(values.zip(instances), &property)?;
                 }
                 invalid_type => {
                     return Err(InnerError::PropTypeMismatch {
@@ -1193,40 +1245,42 @@ rbx-dom may require changes to fully support this property. Please open an issue
             },
             Type::SharedString => match canonical_type {
                 VariantType::SharedString => {
-                    let values = chunk.read_interleaved_u32_array(instances.len())?;
-
-                    for (value, instance) in values.zip(instances) {
-                        let shared_string =
-                            self.shared_strings.get(value as usize).ok_or_else(|| {
-                                InnerError::InvalidPropData {
-                                    type_name: type_name.to_string(),
-                                    prop_name: prop_name.clone(),
-                                    valid_value: "a valid SharedString",
-                                    actual_value: format!("{value:?}"),
-                                }
-                            })?;
-
-                        add_property(instance, &property, shared_string.clone().into());
-                    }
-                }
-                VariantType::NetAssetRef => {
-                    let values = chunk.read_interleaved_u32_array(instances.len())?;
-
-                    for (value, instance) in values.zip(instances) {
-                        let net_asset = NetAssetRef::from(
-                            self.shared_strings
+                    let shared_strings = &self.shared_strings;
+                    let values = chunk
+                        .read_interleaved_u32_array(instances.len())?
+                        .map(|value| {
+                            Ok(shared_strings
                                 .get(value as usize)
                                 .ok_or_else(|| InnerError::InvalidPropData {
                                     type_name: type_name.to_string(),
                                     prop_name: prop_name.clone(),
-                                    valid_value: "a valid NetAssetRef",
+                                    valid_value: "a valid SharedString",
                                     actual_value: format!("{value:?}"),
                                 })?
-                                .clone(),
-                        );
+                                .clone())
+                        });
 
-                        add_property(instance, &property, net_asset.into());
-                    }
+                    add_fallible_properties(values.zip(instances), &property)?;
+                }
+                VariantType::NetAssetRef => {
+                    let shared_strings = &self.shared_strings;
+                    let values = chunk
+                        .read_interleaved_u32_array(instances.len())?
+                        .map(|value| {
+                            Ok(NetAssetRef::from(
+                                shared_strings
+                                    .get(value as usize)
+                                    .ok_or_else(|| InnerError::InvalidPropData {
+                                        type_name: type_name.to_string(),
+                                        prop_name: prop_name.clone(),
+                                        valid_value: "a valid NetAssetRef",
+                                        actual_value: format!("{value:?}"),
+                                    })?
+                                    .clone(),
+                            ))
+                        });
+
+                    add_fallible_properties(values.zip(instances), &property)?;
                 }
                 invalid_type => {
                     return Err(InnerError::PropTypeMismatch {
@@ -1327,21 +1381,16 @@ rbx-dom may require changes to fully support this property. Please open an issue
             Type::UniqueId => match canonical_type {
                 VariantType::UniqueId => {
                     let n = instances.len();
-                    let values = chunk.read_interleaved_bytes::<16>(n)?;
-
-                    for (value, instance) in values.zip(instances) {
+                    let values = chunk.read_interleaved_bytes::<16>(n)?.map(|value| {
                         let mut value = value.as_slice();
-                        add_property(
-                            instance,
-                            &property,
-                            UniqueId::new(
-                                value.read_be_u32()?,
-                                value.read_be_u32()?,
-                                value.read_be_i64()?.rotate_right(1),
-                            )
-                            .into(),
-                        )
-                    }
+                        Ok(UniqueId::new(
+                            value.read_be_u32()?,
+                            value.read_be_u32()?,
+                            value.read_be_i64()?.rotate_right(1),
+                        ))
+                    });
+
+                    add_fallible_properties(values.zip(instances), &property)?;
                 }
                 invalid_type => {
                     return Err(InnerError::PropTypeMismatch {
@@ -1390,22 +1439,24 @@ rbx-dom may require changes to fully support this property. Please open an issue
                     let mut bytes = vec![0; external_count * 4];
                     chunk.read_to_end(&mut bytes)?;
 
-                    for (ty, instance) in values.zip(instances) {
-                        let value = match ty {
+                    let instance_key_by_ref = &self.instance_key_by_ref;
+                    let values = values.map(|ty| {
+                        Ok(match ty {
                             0 => Content::none(),
                             1 => Content::from_uri(uris.pop_back().unwrap()),
                             2 => {
                                 let read_value = objects.pop_back().unwrap();
-                                if let Some(key) = self.instance_key_by_ref.get(&read_value) {
+                                if let Some(key) = instance_key_by_ref.get(&read_value) {
                                     Content::from_referent(key.referent)
                                 } else {
                                     Content::none()
                                 }
                             }
                             n => return Err(InnerError::BadContentType(n)),
-                        };
-                        add_property(instance, &property, value.into())
-                    }
+                        })
+                    });
+
+                    add_fallible_properties(values.zip(instances), &property)?;
                 }
                 invalid_type => {
                     return Err(InnerError::PropTypeMismatch {
