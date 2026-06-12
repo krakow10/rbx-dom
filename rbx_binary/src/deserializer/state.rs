@@ -193,18 +193,17 @@ where
     }
 }
 
-fn add_properties<'a, IntoVariant, Zip>(
+fn add_properties<'a, Zip>(
     zip: Zip,
     canonical_property: &CanonicalProperty,
 ) -> Result<(), InnerError>
 where
-    IntoVariant: Into<Variant>,
-    Zip: Iterator<Item = (Result<IntoVariant, InnerError>, &'a mut Instance)>,
+    Zip: Iterator<Item = (Result<Variant, InnerError>, &'a mut Instance)>,
 {
     if let Some(PropertySerialization::Migrate(migration)) = canonical_property.migration {
         let old_property_name = canonical_property.name;
         for (fallible_value, instance) in zip {
-            let value = fallible_value?.into();
+            let value = fallible_value?;
             match migration.perform(&value) {
                 Ok(new_value) => {
                     for &new_property_name in migration.new_property_names() {
@@ -482,18 +481,19 @@ This may cause unexpected or broken behavior in your final results if you rely o
                             }
                         };
 
-                        Ok(value)
+                        Ok(value.into())
                     });
 
                     add_properties(values.zip(instances), &property)?;
                 }
                 VariantType::ContentId => {
-                    let values = SomeFromFn(|| Ok(ContentId::from(chunk.read_string()?)));
+                    let values = SomeFromFn(|| Ok(ContentId::from(chunk.read_string()?).into()));
                     add_properties(values.zip(instances), &property)?;
                 }
 
                 VariantType::BinaryString => {
-                    let values = SomeFromFn(|| Ok(BinaryString::from(chunk.read_binary_string()?)));
+                    let values =
+                        SomeFromFn(|| Ok(BinaryString::from(chunk.read_binary_string()?).into()));
                     add_properties(values.zip(instances), &property)?;
                 }
 
@@ -510,7 +510,7 @@ This may cause unexpected or broken behavior in your final results if you rely o
                             }
                         })?;
 
-                        Ok(value)
+                        Ok(value.into())
                     });
 
                     add_properties(values.zip(instances), &property)?;
@@ -570,7 +570,7 @@ rbx-dom may require changes to fully support this property. Please open an issue
             },
             Type::Bool => match canonical_type {
                 VariantType::Bool => {
-                    let values = SomeFromFn(|| Ok(chunk.read_bool()?));
+                    let values = SomeFromFn(|| Ok(chunk.read_bool()?.into()));
                     add_properties(values.zip(instances), &property)?;
                 }
                 invalid_type => {
@@ -584,7 +584,9 @@ rbx-dom may require changes to fully support this property. Please open an issue
             },
             Type::Int32 => match canonical_type {
                 VariantType::Int32 => {
-                    let values = chunk.read_interleaved_i32_array(instances.len())?.map(Ok);
+                    let values = chunk
+                        .read_interleaved_i32_array(instances.len())?
+                        .map(|value| Ok(value.into()));
 
                     add_properties(values.zip(instances), &property)?;
                 }
@@ -594,7 +596,7 @@ rbx-dom may require changes to fully support this property. Please open an issue
                 VariantType::Int64 => {
                     let values = chunk
                         .read_interleaved_i32_array(instances.len())?
-                        .map(|value| Ok(i64::from(value)));
+                        .map(|value| Ok(i64::from(value).into()));
 
                     add_properties(values.zip(instances), &property)?;
                 }
@@ -609,7 +611,9 @@ rbx-dom may require changes to fully support this property. Please open an issue
             },
             Type::Float32 => match canonical_type {
                 VariantType::Float32 => {
-                    let values = chunk.read_interleaved_f32_array(instances.len())?.map(Ok);
+                    let values = chunk
+                        .read_interleaved_f32_array(instances.len())?
+                        .map(|value| Ok(value.into()));
 
                     add_properties(values.zip(instances), &property)?;
                 }
@@ -624,7 +628,7 @@ rbx-dom may require changes to fully support this property. Please open an issue
             },
             Type::Float64 => match canonical_type {
                 VariantType::Float64 => {
-                    let values = SomeFromFn(|| Ok(chunk.read_le_f64()?));
+                    let values = SomeFromFn(|| Ok(chunk.read_le_f64()?.into()));
                     add_properties(values.zip(instances), &property)?;
                 }
 
@@ -634,7 +638,7 @@ rbx-dom may require changes to fully support this property. Please open an issue
                 VariantType::Float32 => {
                     let values = chunk
                         .read_interleaved_f32_array(instances.len())?
-                        .map(|value| Ok(f64::from(value)));
+                        .map(|value| Ok(f64::from(value).into()));
 
                     add_properties(values.zip(instances), &property)?;
                 }
@@ -654,7 +658,7 @@ rbx-dom may require changes to fully support this property. Please open an issue
 
                     let values = scales
                         .zip(offsets)
-                        .map(|(scale, offset)| Ok(UDim::new(scale, offset)));
+                        .map(|(scale, offset)| Ok(UDim::new(scale, offset).into()));
 
                     add_properties(values.zip(instances), &property)?;
                 }
@@ -683,7 +687,7 @@ rbx-dom may require changes to fully support this property. Please open an issue
                         .zip(offset_y)
                         .map(|(scale, offset)| UDim::new(scale, offset));
 
-                    let values = x.zip(y).map(|(x, y)| Ok(UDim2::new(x, y)));
+                    let values = x.zip(y).map(|(x, y)| Ok(UDim2::new(x, y).into()));
 
                     add_properties(values.zip(instances), &property)?;
                 }
@@ -709,7 +713,8 @@ rbx-dom may require changes to fully support this property. Please open an issue
                         Ok(Ray::new(
                             Vector3::new(origin_x, origin_y, origin_z),
                             Vector3::new(direction_x, direction_y, direction_z),
-                        ))
+                        )
+                        .into())
                     });
 
                     add_properties(values.zip(instances), &property)?;
@@ -735,7 +740,7 @@ rbx-dom may require changes to fully support this property. Please open an issue
                                 actual_value: value.to_string(),
                             })?;
 
-                        Ok(faces)
+                        Ok(faces.into())
                     });
 
                     add_properties(values.zip(instances), &property)?;
@@ -762,7 +767,7 @@ rbx-dom may require changes to fully support this property. Please open an issue
                                 actual_value: value.to_string(),
                             })?;
 
-                        Ok(axes)
+                        Ok(axes.into())
                     });
 
                     add_properties(values.zip(instances), &property)?;
@@ -781,7 +786,7 @@ rbx-dom may require changes to fully support this property. Please open an issue
                     let values = chunk
                         .read_interleaved_u32_array(instances.len())?
                         .map(|value| {
-                            value
+                            Ok(value
                                 .try_into()
                                 .ok()
                                 .and_then(BrickColor::from_number)
@@ -790,7 +795,8 @@ rbx-dom may require changes to fully support this property. Please open an issue
                                     prop_name: prop_name.clone(),
                                     valid_value: "a valid BrickColor",
                                     actual_value: value.to_string(),
-                                })
+                                })?
+                                .into())
                         });
 
                     add_properties(values.zip(instances), &property)?;
@@ -810,7 +816,10 @@ rbx-dom may require changes to fully support this property. Please open an issue
                     let g = chunk.read_interleaved_f32_array(instances.len())?;
                     let b = chunk.read_interleaved_f32_array(instances.len())?;
 
-                    let values = r.zip(g).zip(b).map(|((r, g), b)| Ok(Color3::new(r, g, b)));
+                    let values = r
+                        .zip(g)
+                        .zip(b)
+                        .map(|((r, g), b)| Ok(Color3::new(r, g, b).into()));
 
                     add_properties(values.zip(instances), &property)?;
                 }
@@ -828,7 +837,7 @@ rbx-dom may require changes to fully support this property. Please open an issue
                     let x = chunk.read_interleaved_f32_array(instances.len())?;
                     let y = chunk.read_interleaved_f32_array(instances.len())?;
 
-                    let values = x.zip(y).map(|(x, y)| Ok(Vector2::new(x, y)));
+                    let values = x.zip(y).map(|(x, y)| Ok(Vector2::new(x, y).into()));
 
                     add_properties(values.zip(instances), &property)?;
                 }
@@ -847,7 +856,10 @@ rbx-dom may require changes to fully support this property. Please open an issue
                     let y = chunk.read_interleaved_f32_array(instances.len())?;
                     let z = chunk.read_interleaved_f32_array(instances.len())?;
 
-                    let values = x.zip(y).zip(z).map(|((x, y), z)| Ok(Vector3::new(x, y, z)));
+                    let values = x
+                        .zip(y)
+                        .zip(z)
+                        .map(|((x, y), z)| Ok(Vector3::new(x, y, z).into()));
 
                     add_properties(values.zip(instances), &property)?;
                 }
@@ -904,7 +916,7 @@ rbx-dom may require changes to fully support this property. Please open an issue
                         .zip(z)
                         .map(|((x, y), z)| Vector3::new(x, y, z))
                         .zip(rotations)
-                        .map(|(position, rotation)| Ok(CFrame::new(position, rotation)));
+                        .map(|(position, rotation)| Ok(CFrame::new(position, rotation).into()));
 
                     add_properties(values.zip(instances), &property)?;
                 }
@@ -921,7 +933,7 @@ rbx-dom may require changes to fully support this property. Please open an issue
                 VariantType::Enum => {
                     let values = chunk
                         .read_interleaved_u32_array(instances.len())?
-                        .map(|value| Ok(Enum::from_u32(value)));
+                        .map(|value| Ok(Enum::from_u32(value).into()));
 
                     add_properties(values.zip(instances), &property)?;
                 }
@@ -940,7 +952,8 @@ rbx-dom may require changes to fully support this property. Please open an issue
                     let values = chunk.read_referent_array(instances.len())?.map(|value| {
                         Ok(instance_key_by_ref
                             .get(&value)
-                            .map_or(Ref::none(), |key| key.referent))
+                            .map_or(Ref::none(), |key| key.referent)
+                            .into())
                     });
 
                     add_properties(values.zip(instances), &property)?;
@@ -961,7 +974,8 @@ rbx-dom may require changes to fully support this property. Please open an issue
                             chunk.read_le_i16()?,
                             chunk.read_le_i16()?,
                             chunk.read_le_i16()?,
-                        ))
+                        )
+                        .into())
                     });
 
                     add_properties(values.zip(instances), &property)?;
@@ -994,7 +1008,8 @@ rbx-dom may require changes to fully support this property. Please open an issue
                             weight,
                             style,
                             cached_face_id,
-                        })
+                        }
+                        .into())
                     });
 
                     add_properties(values.zip(instances), &property)?;
@@ -1022,7 +1037,7 @@ rbx-dom may require changes to fully support this property. Please open an issue
                             ))
                         }
 
-                        Ok(NumberSequence { keypoints })
+                        Ok(NumberSequence { keypoints }.into())
                     });
 
                     add_properties(values.zip(instances), &property)?;
@@ -1056,7 +1071,7 @@ rbx-dom may require changes to fully support this property. Please open an issue
                             chunk.read_le_f32()?;
                         }
 
-                        Ok(ColorSequence { keypoints })
+                        Ok(ColorSequence { keypoints }.into())
                     });
 
                     add_properties(values.zip(instances), &property)?;
@@ -1073,7 +1088,7 @@ rbx-dom may require changes to fully support this property. Please open an issue
             Type::NumberRange => match canonical_type {
                 VariantType::NumberRange => {
                     let values = SomeFromFn(|| {
-                        Ok(NumberRange::new(chunk.read_le_f32()?, chunk.read_le_f32()?))
+                        Ok(NumberRange::new(chunk.read_le_f32()?, chunk.read_le_f32()?).into())
                     });
 
                     add_properties(values.zip(instances), &property)?;
@@ -1097,10 +1112,10 @@ rbx-dom may require changes to fully support this property. Please open an issue
 
                     let values = x_min.zip(y_min).zip(x_max).zip(y_max).map(
                         |(((x_min, y_min), x_max), y_max)| {
-                            Ok(Rect::new(
-                                Vector2::new(x_min, y_min),
-                                Vector2::new(x_max, y_max),
-                            ))
+                            Ok(
+                                Rect::new(Vector2::new(x_min, y_min), Vector2::new(x_max, y_max))
+                                    .into(),
+                            )
                         },
                     );
 
@@ -1173,7 +1188,7 @@ rbx-dom may require changes to fully support this property. Please open an issue
                         .into_iter()
                         .zip(g)
                         .zip(b)
-                        .map(|((r, g), b)| Ok(Color3uint8::new(r, g, b)));
+                        .map(|((r, g), b)| Ok(Color3uint8::new(r, g, b).into()));
 
                     add_properties(values.zip(instances), &property)?;
                 }
@@ -1188,7 +1203,9 @@ rbx-dom may require changes to fully support this property. Please open an issue
             },
             Type::Int64 => match canonical_type {
                 VariantType::Int64 => {
-                    let values = chunk.read_interleaved_i64_array(instances.len())?.map(Ok);
+                    let values = chunk
+                        .read_interleaved_i64_array(instances.len())?
+                        .map(|value| Ok(value.into()));
 
                     add_properties(values.zip(instances), &property)?;
                 }
@@ -1215,7 +1232,8 @@ rbx-dom may require changes to fully support this property. Please open an issue
                                     valid_value: "a valid SharedString",
                                     actual_value: format!("{value:?}"),
                                 })?
-                                .clone())
+                                .clone()
+                                .into())
                         });
 
                     add_properties(values.zip(instances), &property)?;
@@ -1235,7 +1253,8 @@ rbx-dom may require changes to fully support this property. Please open an issue
                                         actual_value: format!("{value:?}"),
                                     })?
                                     .clone(),
-                            ))
+                            )
+                            .into())
                         });
 
                     add_properties(values.zip(instances), &property)?;
@@ -1322,7 +1341,8 @@ rbx-dom may require changes to fully support this property. Please open an issue
                                 None
                             } else {
                                 Some(CFrame::new(position, rotation))
-                            })
+                            }
+                            .into())
                         });
 
                     add_properties(values.zip(instances), &property)?;
@@ -1345,7 +1365,8 @@ rbx-dom may require changes to fully support this property. Please open an issue
                             value.read_be_u32()?,
                             value.read_be_u32()?,
                             value.read_be_i64()?.rotate_right(1),
-                        ))
+                        )
+                        .into())
                     });
 
                     add_properties(values.zip(instances), &property)?;
@@ -1363,7 +1384,7 @@ rbx-dom may require changes to fully support this property. Please open an issue
                 VariantType::SecurityCapabilities => {
                     let values = chunk
                         .read_interleaved_i64_array(instances.len())?
-                        .map(|value| Ok(SecurityCapabilities::from_bits(value as u64)));
+                        .map(|value| Ok(SecurityCapabilities::from_bits(value as u64).into()));
 
                     add_properties(values.zip(instances), &property)?;
                 }
@@ -1411,7 +1432,8 @@ rbx-dom may require changes to fully support this property. Please open an issue
                                 }
                             }
                             n => return Err(InnerError::BadContentType(n)),
-                        })
+                        }
+                        .into())
                     });
 
                     add_properties(values.zip(instances), &property)?;
