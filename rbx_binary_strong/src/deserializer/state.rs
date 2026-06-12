@@ -5,7 +5,7 @@ use rbx_dom_strong::{StrongDom, classes, enums};
 use rbx_types::{CFrame, Matrix3, SharedString, Vector3};
 
 use rbx_binary_core::{
-    chunk::ChunkSlices,
+    chunk::{Chunk, parse_chunks},
     core::{RbxReadExt, RbxReadInterleaved},
     header::FileHeader,
 };
@@ -51,7 +51,7 @@ enum ClassPropertyChunk {
 }
 impl ClassPropertyChunk {
     fn new(
-        data: Vec<u8>,
+        data: &[u8],
         len: usize,
         prop_name: &str,
         class_type: ClassType,
@@ -271,7 +271,7 @@ enum InstancePropertyChunk {
 }
 impl InstancePropertyChunk {
     fn new(
-        data: Vec<u8>,
+        data: &[u8],
         len: usize,
         prop_name: &str,
         class_type: ClassType,
@@ -294,7 +294,7 @@ enum BasePartPropertyChunk {
 }
 impl BasePartPropertyChunk {
     fn new(
-        data: Vec<u8>,
+        data: &[u8],
         len: usize,
         prop_name: &str,
         class_type: ClassType,
@@ -312,7 +312,7 @@ enum PartPropertyChunk {
 }
 impl PartPropertyChunk {
     fn new(
-        data: Vec<u8>,
+        data: &[u8],
         len: usize,
         prop_name: &str,
         class_type: ClassType,
@@ -328,7 +328,7 @@ enum WedgePartPropertyChunk {
 }
 impl WedgePartPropertyChunk {
     fn new(
-        data: Vec<u8>,
+        data: &[u8],
         len: usize,
         prop_name: &str,
         class_type: ClassType,
@@ -346,6 +346,58 @@ struct TypeInfo {
     referents: Vec<i32>,
 }
 
+struct UnexpectedChunk {
+    expected: &'static str,
+    actual: String,
+}
+
+impl From<UnexpectedChunk> for InnerError {
+    fn from(UnexpectedChunk { expected, actual }: UnexpectedChunk) -> Self {
+        Self::UnexpectedChunk { expected, actual }
+    }
+}
+
+type ChunkIter = std::vec::IntoIter<io::Result<Chunk>>;
+
+// returns (Option<expected_chunk>, next_chunk)
+fn decode_optional(
+    chunk: Chunk,
+    expected: [u8; 4],
+    chunks: &mut ChunkIter,
+) -> io::Result<(Option<Chunk>, Chunk)> {
+    if chunk.name == expected {
+        let next_chunk = chunks.next().unwrap()?;
+        Ok((Some(chunk), next_chunk))
+    } else {
+        Ok((None, chunk))
+    }
+}
+// populates `chunks` and returns next_chunk
+fn decode_repeated(
+    mut chunk: Chunk,
+    expected: [u8; 4],
+    chunks: &mut ChunkIter,
+    chunks_out: &mut Vec<Chunk>,
+) -> io::Result<Chunk> {
+    while chunk.name == expected {
+        chunks_out.push(chunk);
+        chunk = chunks.next().unwrap()?;
+    }
+    Ok(chunk)
+}
+// returns (expected_chunk, next_chunk)
+fn decode_once(chunk: Chunk, expected: &'static str) -> Result<Chunk, UnexpectedChunk> {
+    if chunk.name != expected.as_bytes() {
+        return Err(UnexpectedChunk {
+            expected,
+            actual: core::str::from_utf8(&chunk.name)
+                .unwrap_or_default()
+                .to_owned(),
+        });
+    }
+    Ok(chunk)
+}
+
 pub(super) struct ParallelState {
     header: FileHeader,
     /// The SharedStrings contained in the file, if any, in the order that they
@@ -354,35 +406,66 @@ pub(super) struct ParallelState {
     /// All of the property data is collected here.
     prop: ClassPropertyChunks,
     prnt: Option<Vec<u8>>,
-    end: Option<Vec<u8>>,
 }
 impl ParallelState {
     pub(super) fn new(mut input: &[u8]) -> Result<Self, InnerError> {
         let header = FileHeader::decode(&mut input)?;
-        let chunks = ChunkSlices::new(&header, input)?;
+        let chunks = parse_chunks(input)?;
 
-        chunks.meta;
-        chunks.sstr;
+        #[cfg(not(feature = "rayon"))]
+        let mut chunks = chunks.into_iter().map(|c| c.decode());
+
+        // decompress all chunks in parallel
+        #[cfg(feature = "rayon")]
+        let mut chunks = chunks
+            .into_par_iter()
+            .map(|c| c.decode())
+            .collect::<Vec<_>>()
+            .into_iter();
+
+        let chunks_len = chunks.len();
+        let chunk = chunks.next().unwrap()?;
+
+        let (meta, chunk) = decode_optional(chunk, *b"META", &mut chunks)?;
+        let (sstr, chunk) = decode_optional(chunk, *b"SSTR", &mut chunks)?;
+
+        let mut inst = Vec::with_capacity(header.num_types() as usize);
+        let chunk = decode_repeated(chunk, *b"INST", &mut chunks, &mut inst)?;
+
+        // calculate capacity by deduction
+        let mut prop = Vec::with_capacity(chunks_len.saturating_sub(
+            1 + 1
+                + (meta.is_some() as usize)
+                + (sstr.is_some() as usize)
+                + header.num_types() as usize,
+        ));
+        let chunk = decode_repeated(chunk, *b"PROP", &mut chunks, &mut prop)?;
+
+        let prnt = decode_once(chunk, "PRNT")?;
+
+        let chunk = chunks.next().unwrap()?;
+        let end = decode_once(chunk, "END\0")?;
+
+        meta;
+        sstr;
 
         // All of the instance types described by the file so far.
         // The index is the type_id.
         let type_infos = HashMap::with_capacity(header.num_types() as usize);
 
-        chunks.inst;
-        for prop_chunk in chunks.prop {
-            let data = prop_chunk.decode()?;
-            decode_prop_chunk(data, &type_infos)?;
+        inst;
+        for prop_chunk in prop {
+            decode_prop_chunk(&prop_chunk.data, &type_infos)?;
         }
 
-        chunks.prnt;
-        chunks.end;
+        prnt;
+        end;
 
         Ok(ParallelState {
             header,
             shared_strings: Vec::new(),
             prop: ClassPropertyChunks::default(),
             prnt: None,
-            end: None,
         })
     }
     pub(super) fn finish(self) -> Result<StrongDom, InnerError> {
@@ -391,20 +474,18 @@ impl ParallelState {
 }
 
 fn decode_prop_chunk(
-    data: Vec<u8>,
+    mut chunk: &[u8],
     type_infos: &HashMap<u32, TypeInfo>,
 ) -> Result<ClassPropertyChunk, InnerError> {
-    let mut chunk = data.as_slice();
     let type_id = chunk.read_le_u32()?;
-    // TODO: figure out borrow checker and drop .to_owned()
-    let prop_name = &chunk.read_string()?.to_owned();
+    let prop_name = chunk.read_string()?;
 
     let type_info = type_infos
         .get(&type_id)
         .ok_or(InnerError::InvalidTypeId { type_id })?;
 
     let class_property = ClassPropertyChunk::new(
-        data,
+        chunk,
         type_info.referents.len(),
         prop_name,
         type_info.class_type,
@@ -420,14 +501,14 @@ trait IntoPropertyChunkState: Sized {
     type State: IntoIter<Item = Self, Iter: IndexedParallelIterator>;
     type Error;
     /// All fallible operations must happen ahead of iteration
-    fn into_state(chunk: Vec<u8>, len: usize) -> Result<Self::State, Self::Error>;
+    fn into_state(chunk: &[u8], len: usize) -> Result<Self::State, Self::Error>;
 }
 
 struct PropertyChunk<T: IntoPropertyChunkState> {
     state: T::State,
 }
 impl<T: IntoPropertyChunkState> PropertyChunk<T> {
-    fn new(chunk: Vec<u8>, len: usize) -> Result<Self, T::Error> {
+    fn new(chunk: &[u8], len: usize) -> Result<Self, T::Error> {
         let state = T::into_state(chunk, len)?;
         Ok(Self { state })
     }
@@ -437,14 +518,13 @@ impl IntoPropertyChunkState for String {
     type State = Vec<String>;
     type Error = io::Error;
 
-    fn into_state(chunk: Vec<u8>, len: usize) -> Result<Self::State, Self::Error> {
+    fn into_state(mut chunk: &[u8], len: usize) -> Result<Self::State, Self::Error> {
         // The length of every string must be determined.  May as well store slice windows.
         let mut values = Vec::with_capacity(len);
 
-        let mut slice = chunk.as_slice();
         // TODO: use PR #592 RbxReadInterleaved Trait
         for _ in 0..len {
-            values.push(slice.read_string()?.to_owned());
+            values.push(chunk.read_string()?.to_owned());
         }
 
         Ok(values)
@@ -455,29 +535,27 @@ impl IntoPropertyChunkState for CFrame {
     type State = Vec<CFrame>;
     type Error = io::Error;
 
-    fn into_state(chunk: Vec<u8>, len: usize) -> Result<Self::State, Self::Error> {
+    fn into_state(mut chunk: &[u8], len: usize) -> Result<Self::State, Self::Error> {
         let mut rotations = Vec::with_capacity(len);
 
-        let mut slice = chunk.as_slice();
-
         for _ in 0..len {
-            let id = slice.read_u8()?;
+            let id = chunk.read_u8()?;
             if id == 0 {
                 rotations.push(Matrix3::new(
                     Vector3::new(
-                        slice.read_le_f32()?,
-                        slice.read_le_f32()?,
-                        slice.read_le_f32()?,
+                        chunk.read_le_f32()?,
+                        chunk.read_le_f32()?,
+                        chunk.read_le_f32()?,
                     ),
                     Vector3::new(
-                        slice.read_le_f32()?,
-                        slice.read_le_f32()?,
-                        slice.read_le_f32()?,
+                        chunk.read_le_f32()?,
+                        chunk.read_le_f32()?,
+                        chunk.read_le_f32()?,
                     ),
                     Vector3::new(
-                        slice.read_le_f32()?,
-                        slice.read_le_f32()?,
-                        slice.read_le_f32()?,
+                        chunk.read_le_f32()?,
+                        chunk.read_le_f32()?,
+                        chunk.read_le_f32()?,
                     ),
                 ));
             } else if let Ok(basic_rotation) = Matrix3::from_basic_rotation_id(id) {
@@ -487,9 +565,9 @@ impl IntoPropertyChunkState for CFrame {
             }
         }
 
-        let x = slice.read_interleaved_f32_array(len)?;
-        let y = slice.read_interleaved_f32_array(len)?;
-        let z = slice.read_interleaved_f32_array(len)?;
+        let x = chunk.read_interleaved_f32_array(len)?;
+        let y = chunk.read_interleaved_f32_array(len)?;
+        let z = chunk.read_interleaved_f32_array(len)?;
 
         let values = x
             .zip(y)
@@ -506,10 +584,9 @@ impl IntoPropertyChunkState for enums::FormFactor {
     type State = Vec<enums::FormFactor>;
     type Error = io::Error;
 
-    fn into_state(chunk: Vec<u8>, len: usize) -> Result<Self::State, Self::Error> {
+    fn into_state(mut chunk: &[u8], len: usize) -> Result<Self::State, Self::Error> {
         // TODO: use PR #592 RbxReadInterleaved Trait
         Ok(chunk
-            .as_slice()
             .read_interleaved_u32_array(len)?
             .map(|value| {
                 // TODO: TryFrom<u32>

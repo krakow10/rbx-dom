@@ -2,7 +2,7 @@ use std::io;
 
 use thiserror::Error;
 
-use rbx_binary_core::{chunk::ChunkSlicesError, header::HeaderError};
+use rbx_binary_core::header::HeaderError;
 
 use super::state::ClassType;
 
@@ -27,16 +27,6 @@ impl From<HeaderError> for InnerError {
             HeaderError::BadHeader => InnerError::BadHeader,
             HeaderError::UnknownFileVersion { version } => {
                 InnerError::UnknownFileVersion { version }
-            }
-        }
-    }
-}
-impl From<ChunkSlicesError> for InnerError {
-    fn from(error: ChunkSlicesError) -> Self {
-        match error {
-            ChunkSlicesError::Io { source } => InnerError::Io { source },
-            ChunkSlicesError::UnexpectedChunk { expected, actual } => {
-                InnerError::UnexpectedChunk { expected, actual }
             }
         }
     }
