@@ -217,7 +217,7 @@ impl CompressedChunk<'_> {
             log::trace!("No compression");
             self.data.to_owned()
         } else {
-            if &self.data[0..4] == ZSTD_MAGIC_NUMBER {
+            if self.data.get(0..4) == Some(ZSTD_MAGIC_NUMBER) {
                 log::trace!("ZSTD compression");
                 zstd::bulk::decompress(self.data, self.header.len as usize)?
             } else {
