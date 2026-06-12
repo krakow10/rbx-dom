@@ -278,7 +278,7 @@ impl<'a> ChunkParser<'a> {
         }
         Ok(chunk)
     }
-    // returns (Option<expected_chunk>, next_chunk)
+    // returns (expected_chunk, next_chunk)
     fn decode_once(
         &mut self,
         expected: &'static str,
