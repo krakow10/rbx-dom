@@ -229,6 +229,7 @@ impl<'db> DeserializerState<'db> {
         let chunks_len = chunks.len();
         let mut chunks = Chunks::new(chunks);
 
+        // Expect chunks to appear in a particular order
         let chunk = chunks.try_next()?;
 
         let (meta, chunk) = chunks.optional(chunk, *b"META")?;
@@ -250,6 +251,8 @@ impl<'db> DeserializerState<'db> {
 
         let chunk = chunks.try_next()?;
         let end = chunk.once("END\0")?;
+
+        // Do the rest of the preparation work for parallel decoding
 
         let mut tree = WeakDom::new(InstanceBuilder::new("DataModel"));
         tree.reserve(header.num_instances as usize);
