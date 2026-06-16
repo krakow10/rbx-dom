@@ -25,12 +25,9 @@ use super::{error::InnerError, header::FileHeader, Deserializer};
 #[cfg(feature = "rayon")]
 use rayon::iter::{IntoParallelIterator, ParallelIterator};
 
-pub(super) struct DeserializerState<'db, R> {
+pub(super) struct DeserializerState<'db> {
     /// The user-provided configuration that we should use.
     deserializer: &'db Deserializer<'db>,
-
-    /// The input data encoded as a binary model.
-    input: R,
 
     /// The tree that instances should be written into. Eventually returned to
     /// the user.
@@ -211,13 +208,11 @@ fn add_property(instance: &mut Instance, canonical_property: &CanonicalProperty,
     }
 }
 
-impl<'db, R: Read> DeserializerState<'db, R> {
-    pub(super) fn new(
+impl<'db> DeserializerState<'db> {
+    pub(super) fn new<R: Read>(
         deserializer: &'db Deserializer<'db>,
         mut input: R,
     ) -> Result<Self, InnerError> {
-        let mut tree = WeakDom::new(InstanceBuilder::new("DataModel"));
-
         let header = FileHeader::decode(&mut input)?;
         let chunks = parse_chunks(input)?;
 
@@ -256,26 +251,15 @@ impl<'db, R: Read> DeserializerState<'db, R> {
         let chunk = chunks.try_next()?;
         let end = chunk.once("END\0")?;
 
-        meta;
-        sstr;
-
-        // All of the instance types described by the file so far.
-        // The index is the type_id.
-        let type_infos = HashMap::with_capacity(header.num_types as usize);
-        inst;
-        prop;
-        prnt;
-        end;
+        let mut tree = WeakDom::new(InstanceBuilder::new("DataModel"));
+        tree.reserve(header.num_instances as usize);
 
         let type_infos = HashMap::with_capacity(header.num_types as usize);
         let instance_key_by_ref = HashMap::with_capacity(1 + header.num_instances as usize);
         let instances = Vec::with_capacity(1 + header.num_instances as usize);
 
-        tree.reserve(header.num_instances as usize);
-
-        Ok(DeserializerState {
+        let mut state = DeserializerState {
             deserializer,
-            input,
             tree,
             metadata: HashMap::new(),
             shared_strings: Vec::new(),
@@ -284,7 +268,21 @@ impl<'db, R: Read> DeserializerState<'db, R> {
             instances,
             root_instance_refs: Vec::new(),
             unknown_type_ids: HashSet::new(),
-        })
+        };
+
+        if let Some(chunk) = meta {
+            state.decode_meta_chunk(&chunk)?;
+        }
+        if let Some(chunk) = sstr {
+            state.decode_meta_chunk(&chunk)?;
+        }
+
+        inst;
+        prop;
+        prnt;
+        end;
+
+        Ok(state)
     }
 
     #[profiling::function]
