@@ -26,6 +26,6 @@ A massive nested structure of parallel iterators is constructed, and run with pe
 
 Each variant of `TypeChunk` has its own implementation of IndexedParallelIterator which yields items of that Type.  For example, the variant `CFrame(VecIntoIter<CFrame>)` simply contains `Vec<CFrame>.into_par_iter()`, which is the CFrame value for each Part instance.
 
-The property iterators are driven together to yield an iterator of complete instances of that class.  The class instance iterators are ultimately converted into rbx_dom_weak::Instance, and then flattened together into a fantastically large iterator, which is collected into WeakDom in parallel.
+The property iterators are driven together to yield an iterator of complete instances of that class.  The class instance iterators from type_infos are ultimately converted into rbx_dom_weak::Instance, and then flattened together into a fantastically large iterator, which is collected into WeakDom in parallel.
 
 ### Decoding is complete!
