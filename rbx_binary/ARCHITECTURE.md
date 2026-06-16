@@ -16,7 +16,8 @@ Decoding is split into two stages: per-chunk parallel, and per-instance parallel
   - PROP chunk header is parsed, property type is determined
   - The data for each chunk is placed into type_info.properties which has the type `UStrMap<TypeChunk>`
   - The `TypeChunk` variant is chosen based on the binary type and canonical type
-  - Most property types such as `CFrame` must be decoded sequentially because the position of each value is not known before decoding the previous value.  These are decoded with per-chunk parallelism within this stage.
+  - Many property types such as `CFrame` must be decoded sequentially because the position of each value is not known before decoding the previous value.  These are decoded with per-chunk parallelism within this stage.  These are converted into their respective TypeChunk variant.
+  - Property types which the chunk layout can be known ahead of time require very little processing in this stage.  These are converted into their respective TypeChunk variant.
 
 ### DeserializerState is ready!
 
