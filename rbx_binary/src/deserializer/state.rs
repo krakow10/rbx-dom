@@ -10,7 +10,7 @@ use rbx_dom_weak::{
         SharedString, Tags, UDim, UDim2, UniqueId, Variant, VariantType, Vector2, Vector3,
         Vector3int16,
     },
-    InstanceBuilder, Ustr, WeakDom,
+    InstanceBuilder, Ustr, UstrMap, WeakDom,
 };
 use rbx_reflection::{ClassDescriptor, PropertyKind, PropertySerialization, ReflectionDatabase};
 
@@ -62,18 +62,59 @@ pub(super) struct DeserializerState<'db> {
     unknown_type_ids: HashSet<u8>,
 }
 
+enum TypeChunk<'dom> {
+    // These chunks are decoded in stage 1
+    String(Vec<&'dom str>),
+    BinaryString(Vec<&'dom [u8]>),
+    ContentId(Vec<ContentId>),
+    Tags(Vec<Tags>),
+    MaterialColors(Vec<MaterialColors>),
+    SharedString(Vec<SharedString>),
+    NetAssetRef(Vec<NetAssetRef>),
+    Faces(Vec<Faces>),
+    Axes(Vec<Axes>),
+    BrickColor(Vec<BrickColor>),
+    CFrame(Vec<CFrame>),
+    NumberSequence(Vec<NumberSequence>),
+    ColorSequence(Vec<ColorSequence>),
+    NumberRange(Vec<NumberRange>),
+    PhysicalProperties(Vec<PhysicalProperties>),
+    OptionalCFrame(Vec<Option<CFrame>>),
+    UniqueId(Vec<UniqueId>),
+    Font(Vec<Font>),
+    Content(Vec<Content>),
+    // These chunks are decoded in stage 2
+    Bool(BoolIter<'dom>),
+    Int32(Int32Iter<'dom>),
+    Float32(Float32Iter<'dom>),
+    Float64(Float64Iter<'dom>),
+    UDim(UDimIter<'dom>),
+    UDim2(UDim2Iter<'dom>),
+    Ray(RayIter<'dom>),
+    Color3(Color3Iter<'dom>),
+    Vector2(Vector2Iter<'dom>),
+    Vector3(Vector3Iter<'dom>),
+    Enum(EnumIter<'dom>),
+    Ref(RefIter<'dom>),
+    Vector3int16(Vector3int16Iter<'dom>),
+    Rect(RectIter<'dom>),
+    Color3uint8(Color3uint8Iter<'dom>),
+    Int64(Int64Iter<'dom>),
+    SecurityCapabilities(SecurityCapabilitiesIter<'dom>),
+}
+
 /// Represents a unique instance class. Binary models define all their instance
 /// types up front and give them a short u32 identifier.
-struct TypeInfo<'db> {
+struct TypeInfo<'dom> {
     /// The common name for this type like `Folder` or `UserInputService`.
     type_name: Ustr,
 
-    /// A slice of `instances` which contains every instance of this class.
-    instances: core::ops::Range<usize>,
+    /// A collection of the property chunks for this type, readily convertible into a parallel iterator.
+    properties: UstrMap<TypeChunk<'dom>>,
 
     /// A reference to the type's class descriptor from rbx_reflection, if this
     /// is a known class.
-    class_descriptor: Option<&'db ClassDescriptor<'db>>,
+    class_descriptor: Option<&'dom ClassDescriptor<'dom>>,
 }
 
 /// A key into an array of instances which also contains the instance ref
