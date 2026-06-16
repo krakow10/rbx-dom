@@ -25,7 +25,7 @@ pub struct Chunk {
 
 impl Chunk {
     // returns expected_chunk
-    pub fn once(self, expected: &'static str) -> Result<Self, UnexpectedChunk> {
+    pub fn once(self, expected: &'static str) -> Result<Vec<u8>, UnexpectedChunk> {
         if self.name != expected.as_bytes() {
             return Err(UnexpectedChunk {
                 expected,
@@ -34,7 +34,7 @@ impl Chunk {
                     .to_owned(),
             });
         }
-        Ok(self)
+        Ok(self.data)
     }
 }
 
@@ -266,10 +266,10 @@ impl<I: Iterator<Item = io::Result<Chunk>>> Chunks<I> {
         &mut self,
         chunk: Chunk,
         expected: [u8; 4],
-    ) -> io::Result<(Option<Chunk>, Chunk)> {
+    ) -> io::Result<(Option<Vec<u8>>, Chunk)> {
         if chunk.name == expected {
             let next_chunk = self.try_next()?;
-            Ok((Some(chunk), next_chunk))
+            Ok((Some(chunk.data), next_chunk))
         } else {
             Ok((None, chunk))
         }
@@ -279,10 +279,10 @@ impl<I: Iterator<Item = io::Result<Chunk>>> Chunks<I> {
         &mut self,
         mut chunk: Chunk,
         expected: [u8; 4],
-        chunks_out: &mut Vec<Chunk>,
+        chunks_out: &mut Vec<Vec<u8>>,
     ) -> io::Result<Chunk> {
         while chunk.name == expected {
-            chunks_out.push(chunk);
+            chunks_out.push(chunk.data);
             chunk = self.try_next()?;
         }
         Ok(chunk)
