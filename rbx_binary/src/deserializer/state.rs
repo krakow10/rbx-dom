@@ -231,7 +231,7 @@ impl<'db, R: Read> DeserializerState<'db, R> {
         let chunks_len = chunks.len();
         let mut chunks = Chunks::new(chunks);
 
-        let chunk = chunks.chunks.next().unwrap()?;
+        let chunk = chunks.try_next()?;
 
         let (meta, chunk) = chunks.optional(chunk, *b"META")?;
         let (sstr, chunk) = chunks.optional(chunk, *b"SSTR")?;
@@ -248,10 +248,10 @@ impl<'db, R: Read> DeserializerState<'db, R> {
         ));
         let chunk = chunks.repeated(chunk, *b"PROP", &mut prop)?;
 
-        let prnt = Chunks::once(chunk, "PRNT")?;
+        let prnt = chunk.once("PRNT")?;
 
-        let chunk = chunks.chunks.next().unwrap()?;
-        let end = Chunks::once(chunk, "END\0")?;
+        let chunk = chunks.try_next()?;
+        let end = chunk.once("END\0")?;
 
         meta;
         sstr;

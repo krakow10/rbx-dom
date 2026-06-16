@@ -5,7 +5,7 @@ use std::{
 };
 
 use crate::{
-    core::{RbxReadExt, RbxWriteExt},
+    core::{unexpected_eof, RbxReadExt, RbxWriteExt},
     serializer::CompressionType,
 };
 
@@ -292,6 +292,9 @@ impl<I: Iterator<Item = io::Result<Chunk>>> Chunks<I> {
             chunks: chunks.into_iter(),
         }
     }
+    pub fn try_next(&mut self) -> io::Result<Chunk> {
+        self.chunks.next().ok_or_else(unexpected_eof)?
+    }
     // returns (Option<expected_chunk>, next_chunk)
     pub fn optional(
         &mut self,
@@ -299,7 +302,7 @@ impl<I: Iterator<Item = io::Result<Chunk>>> Chunks<I> {
         expected: [u8; 4],
     ) -> io::Result<(Option<Chunk>, Chunk)> {
         if chunk.name == expected {
-            let next_chunk = self.chunks.next().unwrap()?;
+            let next_chunk = self.try_next()?;
             Ok((Some(chunk), next_chunk))
         } else {
             Ok((None, chunk))
@@ -314,7 +317,7 @@ impl<I: Iterator<Item = io::Result<Chunk>>> Chunks<I> {
     ) -> io::Result<Chunk> {
         while chunk.name == expected {
             chunks_out.push(chunk);
-            chunk = self.chunks.next().unwrap()?;
+            chunk = self.try_next()?;
         }
         Ok(chunk)
     }

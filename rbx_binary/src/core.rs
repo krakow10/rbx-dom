@@ -241,7 +241,7 @@ pub trait ReadSlice<'a> {
 }
 
 #[cold]
-fn unexpected_eof() -> io::Error {
+pub (crate) fn unexpected_eof() -> io::Error {
     io::Error::new(io::ErrorKind::UnexpectedEof, "failed to fill whole buffer")
 }
 
