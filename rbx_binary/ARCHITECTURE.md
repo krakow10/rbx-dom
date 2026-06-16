@@ -9,13 +9,13 @@ Decoding is split into two stages: per-chunk parallel, and per-instance parallel
   - This sets us up for parallel chunk decompression
 ### Decompress all chunks in parallel
 ### Categorize chunks
-  - Chunks are categorized into META, SSTR, INST, PROP, PRNT, END and placed into local variables
+  - Chunks are categorized into META, SSTR, INST, PROP, PRNT, END and expected to appear in that order
 ### Construct type_infos from INST chunks in parallel
   - INST chunks are decoded in parallel and assembled into type_infos HashMap
 ### Populate type_info.properties HashMap from PROP chunks in parallel
   - PROP chunk header is parsed, property type is determined
-  - The data for each chunk is placed into type_info.properties which has the type UStrMap<TypeChunk>
-  - The TypeChunk variant is chosen based on the binary type and canonical type
+  - The data for each chunk is placed into type_info.properties which has the type `UStrMap<TypeChunk>`
+  - The `TypeChunk` variant is chosen based on the binary type and canonical type
   - Most property types such as `CFrame` must be decoded sequentially because the position of each value is not known before decoding the previous value.  These are decoded with per-chunk parallelism within this stage.
 
 ### DeserializerState is ready!
