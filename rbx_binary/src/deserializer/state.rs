@@ -24,6 +24,10 @@ use super::{error::InnerError, header::FileHeader, Deserializer};
 
 #[cfg(feature = "rayon")]
 use rayon::iter::{IntoParallelIterator, ParallelIterator};
+#[cfg(feature = "rayon")]
+type VecIntoIter<T> = rayon::vec::IntoIter<T>;
+#[cfg(not(feature = "rayon"))]
+type VecIntoIter<T> = std::vec::IntoIter<T>;
 
 pub(super) struct DeserializerState<'db> {
     /// The user-provided configuration that we should use.
@@ -64,25 +68,22 @@ pub(super) struct DeserializerState<'db> {
 
 enum TypeChunk<'dom> {
     // These chunks are decoded in stage 1
-    String(Vec<&'dom str>),
-    BinaryString(Vec<&'dom [u8]>),
-    ContentId(Vec<ContentId>),
-    Tags(Vec<Tags>),
-    MaterialColors(Vec<MaterialColors>),
-    SharedString(Vec<SharedString>),
-    NetAssetRef(Vec<NetAssetRef>),
-    Faces(Vec<Faces>),
-    Axes(Vec<Axes>),
-    BrickColor(Vec<BrickColor>),
-    CFrame(Vec<CFrame>),
-    NumberSequence(Vec<NumberSequence>),
-    ColorSequence(Vec<ColorSequence>),
-    NumberRange(Vec<NumberRange>),
-    PhysicalProperties(Vec<PhysicalProperties>),
-    OptionalCFrame(Vec<Option<CFrame>>),
-    UniqueId(Vec<UniqueId>),
-    Font(Vec<Font>),
-    Content(Vec<Content>),
+    String(VecIntoIter<&'dom str>),
+    BinaryString(VecIntoIter<&'dom [u8]>),
+    ContentId(VecIntoIter<ContentId>),
+    Tags(VecIntoIter<Tags>),
+    MaterialColors(VecIntoIter<MaterialColors>),
+    SharedString(VecIntoIter<SharedString>),
+    NetAssetRef(VecIntoIter<NetAssetRef>),
+    BrickColor(VecIntoIter<BrickColor>),
+    CFrame(VecIntoIter<CFrame>),
+    NumberSequence(VecIntoIter<NumberSequence>),
+    ColorSequence(VecIntoIter<ColorSequence>),
+    NumberRange(VecIntoIter<NumberRange>),
+    PhysicalProperties(VecIntoIter<PhysicalProperties>),
+    OptionalCFrame(VecIntoIter<Option<CFrame>>),
+    Font(VecIntoIter<Font>),
+    Content(VecIntoIter<Content>),
     // These chunks are decoded in stage 2
     Bool(BoolIter<'dom>),
     Int32(Int32Iter<'dom>),
@@ -91,6 +92,8 @@ enum TypeChunk<'dom> {
     UDim(UDimIter<'dom>),
     UDim2(UDim2Iter<'dom>),
     Ray(RayIter<'dom>),
+    Faces(FacesIter<'dom>),
+    Axes(AxesIter<'dom>),
     Color3(Color3Iter<'dom>),
     Vector2(Vector2Iter<'dom>),
     Vector3(Vector3Iter<'dom>),
@@ -100,6 +103,7 @@ enum TypeChunk<'dom> {
     Rect(RectIter<'dom>),
     Color3uint8(Color3uint8Iter<'dom>),
     Int64(Int64Iter<'dom>),
+    UniqueId(UniqueIdIter<'dom>),
     SecurityCapabilities(SecurityCapabilitiesIter<'dom>),
 }
 
