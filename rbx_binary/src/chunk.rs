@@ -238,9 +238,9 @@ pub fn parse_chunks<R: Read>(reader: R) -> io::Result<Vec<CompressedChunk>> {
     let mut chunks = Vec::new();
     loop {
         let chunk = chunk_parser.next_chunk()?;
-        let name = chunk.name();
+        let is_end = chunk.name() == *b"END\0";
         chunks.push(chunk);
-        if name == *b"END\0" {
+        if is_end {
             break;
         }
     }
