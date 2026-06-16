@@ -22,6 +22,9 @@ use crate::{
 
 use super::{error::InnerError, header::FileHeader, Deserializer};
 
+#[cfg(feature = "rayon")]
+use rayon::iter::{IntoParallelIterator, ParallelIterator};
+
 pub(super) struct DeserializerState<'db, R> {
     /// The user-provided configuration that we should use.
     deserializer: &'db Deserializer<'db>,
