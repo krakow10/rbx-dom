@@ -15,7 +15,7 @@ use rbx_dom_weak::{
 use rbx_reflection::{ClassDescriptor, PropertyKind, PropertySerialization, ReflectionDatabase};
 
 use crate::{
-    chunk::Chunk,
+    chunk::{parse_chunks, Chunks},
     core::{find_property_descriptors, RbxReadExt, RbxReadInterleaved, ReadSlice},
     types::Type,
 };
@@ -216,6 +216,53 @@ impl<'db, R: Read> DeserializerState<'db, R> {
         let mut tree = WeakDom::new(InstanceBuilder::new("DataModel"));
 
         let header = FileHeader::decode(&mut input)?;
+        let chunks = parse_chunks(input)?;
+
+        #[cfg(not(feature = "rayon"))]
+        let chunks = chunks.into_iter().map(|c| c.decode());
+
+        // decompress all chunks in parallel
+        #[cfg(feature = "rayon")]
+        let chunks = chunks
+            .into_par_iter()
+            .map(|c| c.decode())
+            .collect::<Vec<_>>();
+
+        let chunks_len = chunks.len();
+        let mut chunks = Chunks::new(chunks);
+
+        let chunk = chunks.chunks.next().unwrap()?;
+
+        let (meta, chunk) = chunks.optional(chunk, *b"META")?;
+        let (sstr, chunk) = chunks.optional(chunk, *b"SSTR")?;
+
+        let mut inst = Vec::with_capacity(header.num_types as usize);
+        let chunk = chunks.repeated(chunk, *b"INST", &mut inst)?;
+
+        // calculate capacity by deduction
+        let mut prop = Vec::with_capacity(chunks_len.saturating_sub(
+            1 + 1
+                + (meta.is_some() as usize)
+                + (sstr.is_some() as usize)
+                + header.num_types as usize,
+        ));
+        let chunk = chunks.repeated(chunk, *b"PROP", &mut prop)?;
+
+        let prnt = Chunks::once(chunk, "PRNT")?;
+
+        let chunk = chunks.chunks.next().unwrap()?;
+        let end = Chunks::once(chunk, "END\0")?;
+
+        meta;
+        sstr;
+
+        // All of the instance types described by the file so far.
+        // The index is the type_id.
+        let type_infos = HashMap::with_capacity(header.num_types as usize);
+        inst;
+        prop;
+        prnt;
+        end;
 
         let type_infos = HashMap::with_capacity(header.num_types as usize);
         let instance_key_by_ref = HashMap::with_capacity(1 + header.num_instances as usize);
@@ -235,10 +282,6 @@ impl<'db, R: Read> DeserializerState<'db, R> {
             root_instance_refs: Vec::new(),
             unknown_type_ids: HashSet::new(),
         })
-    }
-
-    pub(super) fn next_chunk(&mut self) -> Result<Chunk, InnerError> {
-        Ok(Chunk::decode(&mut self.input)?)
     }
 
     #[profiling::function]

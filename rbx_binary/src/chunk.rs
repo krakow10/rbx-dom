@@ -53,6 +53,18 @@ impl Chunk {
             data,
         })
     }
+    // returns expected_chunk
+    pub fn once(self, expected: &'static str) -> Result<Self, UnexpectedChunk> {
+        if self.name != expected.as_bytes() {
+            return Err(UnexpectedChunk {
+                expected,
+                actual: core::str::from_utf8(&self.name)
+                    .unwrap_or_default()
+                    .to_owned(),
+            });
+        }
+        Ok(self)
+    }
 }
 
 /// Holds a chunk that is currently being written.
@@ -133,7 +145,7 @@ impl Write for ChunkBuilder {
     }
 }
 
-#[derive(Debug)]
+#[derive(Clone, Debug)]
 struct ChunkHeader {
     /// 4-byte short name for the chunk, like "INST" or "PRNT"
     name: [u8; 4],
@@ -187,4 +199,123 @@ fn decode_chunk_header<R: Read>(source: &mut R) -> io::Result<ChunkHeader> {
         len,
         reserved,
     })
+}
+
+#[derive(Clone, Debug)]
+pub struct CompressedChunk {
+    header: ChunkHeader,
+    /// The chunk payload data
+    data: Vec<u8>,
+}
+impl CompressedChunk {
+    const fn name(&self) -> [u8; 4] {
+        self.header.name
+    }
+    pub fn decode(self) -> io::Result<Chunk> {
+        let data = if self.header.compressed_len == 0 {
+            log::trace!("No compression");
+            self.data
+        } else {
+            if self.data.get(0..4) == Some(ZSTD_MAGIC_NUMBER) {
+                log::trace!("ZSTD compression");
+                zstd::bulk::decompress(&self.data, self.header.len as usize)?
+            } else {
+                log::trace!("LZ4 compression");
+                lz4_flex::block::decompress(&self.data, self.header.len as usize)
+                    .map_err(io::Error::other)?
+            }
+        };
+
+        assert_eq!(data.len(), self.header.len as usize);
+
+        Ok(Chunk {
+            name: self.header.name,
+            data,
+        })
+    }
+}
+
+struct ChunkParser<R> {
+    reader: R,
+}
+impl<R> ChunkParser<R> {
+    const fn new(reader: R) -> Self {
+        Self { reader }
+    }
+    fn next_chunk(&mut self) -> io::Result<CompressedChunk>
+    where
+        R: Read,
+    {
+        let header = decode_chunk_header(&mut self.reader)?;
+
+        let len = if header.compressed_len == 0 {
+            header.len
+        } else {
+            header.compressed_len
+        };
+
+        let mut data = Vec::with_capacity(len as usize);
+        (&mut self.reader).take(len as u64).read_to_end(&mut data)?;
+
+        Ok(CompressedChunk { header, data })
+    }
+}
+
+pub fn parse_chunks<R: Read>(reader: R) -> io::Result<Vec<CompressedChunk>> {
+    let mut chunk_parser = ChunkParser::new(reader);
+
+    let mut chunks = Vec::new();
+    loop {
+        let chunk = chunk_parser.next_chunk()?;
+        let name = chunk.name();
+        chunks.push(chunk);
+        if name == *b"END\0" {
+            break;
+        }
+    }
+
+    Ok(chunks)
+}
+
+pub struct UnexpectedChunk {
+    pub expected: &'static str,
+    pub actual: String,
+}
+
+pub struct Chunks<I> {
+    chunks: I,
+}
+
+impl<I: Iterator<Item = io::Result<Chunk>>> Chunks<I> {
+    pub fn new<C: IntoIterator<IntoIter = I, Item = io::Result<Chunk>>>(chunks: C) -> Self {
+        Self {
+            chunks: chunks.into_iter(),
+        }
+    }
+    // returns (Option<expected_chunk>, next_chunk)
+    pub fn optional(
+        &mut self,
+        chunk: Chunk,
+        expected: [u8; 4],
+    ) -> io::Result<(Option<Chunk>, Chunk)> {
+        if chunk.name == expected {
+            let next_chunk = self.chunks.next().unwrap()?;
+            Ok((Some(chunk), next_chunk))
+        } else {
+            Ok((None, chunk))
+        }
+    }
+    // populates `chunks` and returns next_chunk
+    pub fn repeated(
+        &mut self,
+        mut chunk: Chunk,
+        expected: [u8; 4],
+        chunks_out: &mut Vec<Chunk>,
+    ) -> io::Result<Chunk> {
+        while chunk.name == expected {
+            chunks_out.push(chunk);
+            chunk = self.chunks.next().unwrap()?;
+        }
+        Ok(chunk)
+    }
 }

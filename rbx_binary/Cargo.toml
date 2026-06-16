@@ -15,6 +15,7 @@ authors = [
 edition = "2018"
 
 [features]
+rayon = []
 unstable_text_format = ["serde"]
 
 [dependencies]

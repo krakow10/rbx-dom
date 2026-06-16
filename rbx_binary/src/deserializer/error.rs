@@ -2,7 +2,7 @@ use std::io;
 
 use thiserror::Error;
 
-use crate::types::InvalidTypeError;
+use crate::{chunk::UnexpectedChunk, types::InvalidTypeError};
 
 /// Represents an error that occurred during deserialization.
 #[derive(Debug, Error)]
@@ -16,6 +16,12 @@ impl From<InnerError> for Error {
         Self {
             source: Box::new(inner),
         }
+    }
+}
+
+impl From<UnexpectedChunk> for InnerError {
+    fn from(UnexpectedChunk { expected, actual }: UnexpectedChunk) -> Self {
+        Self::UnexpectedChunk { expected, actual }
     }
 }
 
@@ -37,6 +43,12 @@ pub(crate) enum InnerError {
     UnknownChunkVersion {
         chunk_name: &'static str,
         version: u32,
+    },
+
+    #[error("Unexpected chunk {actual}, expected {expected}")]
+    UnexpectedChunk {
+        expected: &'static str,
+        actual: String,
     },
 
     #[error(transparent)]
