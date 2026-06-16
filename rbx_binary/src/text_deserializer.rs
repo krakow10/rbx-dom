@@ -20,7 +20,7 @@ use rbx_dom_weak::types::{
 use serde::{ser::SerializeSeq, Serialize, Serializer};
 
 use crate::{
-    chunk::Chunk,
+    chunk::parse_chunks,
     core::{RbxReadExt, RbxReadInterleaved, ReadSlice},
     deserializer::FileHeader,
     types::Type,
@@ -36,39 +36,30 @@ pub struct DecodedModel {
 impl DecodedModel {
     pub fn from_reader<R: Read>(mut reader: R) -> Self {
         let header = FileHeader::decode(&mut reader).expect("invalid file header");
-        let mut chunks = Vec::new();
+        let compressed_chunks = parse_chunks(reader).expect("missing END chunk");
 
         // The number of instance with a given type ID. Used to correctly decode
         // lists of properties from the PROP chunk.
         let mut count_by_type_id = HashMap::new();
 
-        loop {
-            let chunk = Chunk::decode(&mut reader).expect("invalid chunk");
-
-            match &chunk.name {
-                b"META" => chunks.push(decode_meta_chunk(chunk.data.as_slice())),
-                b"SSTR" => chunks.push(decode_sstr_chunk(chunk.data.as_slice())),
-                b"INST" => chunks.push(decode_inst_chunk(
-                    chunk.data.as_slice(),
-                    &mut count_by_type_id,
-                )),
-                b"PROP" => chunks.push(decode_prop_chunk(
-                    chunk.data.as_slice(),
-                    &mut count_by_type_id,
-                )),
-                b"PRNT" => chunks.push(decode_prnt_chunk(chunk.data.as_slice())),
-                b"END\0" => {
-                    chunks.push(DecodedChunk::End);
-                    break;
-                }
-                _ => {
-                    chunks.push(DecodedChunk::Unknown {
-                        name: String::from_utf8_lossy(&chunk.name[..]).to_string(),
+        let chunks = compressed_chunks
+            .into_iter()
+            .map(|compressed_chunk| {
+                let chunk = compressed_chunk.decode().expect("invalid chunk");
+                match &chunk.name {
+                    b"META" => decode_meta_chunk(chunk.data.as_slice()),
+                    b"SSTR" => decode_sstr_chunk(chunk.data.as_slice()),
+                    b"INST" => decode_inst_chunk(chunk.data.as_slice(), &mut count_by_type_id),
+                    b"PROP" => decode_prop_chunk(chunk.data.as_slice(), &mut count_by_type_id),
+                    b"PRNT" => decode_prnt_chunk(chunk.data.as_slice()),
+                    b"END\0" => DecodedChunk::End,
+                    _ => DecodedChunk::Unknown {
+                        name: String::from_utf8_lossy(&chunk.name).into_owned(),
                         contents: chunk.data,
-                    });
+                    },
                 }
-            }
-        }
+            })
+            .collect();
 
         DecodedModel {
             num_types: header.num_types,

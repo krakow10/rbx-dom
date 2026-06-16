@@ -11,6 +11,11 @@ use crate::{
 
 const ZSTD_MAGIC_NUMBER: &[u8] = &[0x28, 0xb5, 0x2f, 0xfd];
 
+pub struct UnexpectedChunk {
+    pub expected: &'static str,
+    pub actual: String,
+}
+
 /// Represents one chunk from a binary model file.
 #[derive(Debug)]
 pub struct Chunk {
@@ -19,47 +24,13 @@ pub struct Chunk {
 }
 
 impl Chunk {
-    /// Reads and decodes a `Chunk` from the given reader.
-    pub fn decode<R: Read>(mut reader: R) -> io::Result<Chunk> {
-        let header = decode_chunk_header(&mut reader)?;
-
-        log::trace!("{header}");
-
-        let data = if header.compressed_len == 0 {
-            log::trace!("No compression");
-            let mut data = Vec::with_capacity(header.len as usize);
-            reader.take(header.len as u64).read_to_end(&mut data)?;
-            data
-        } else {
-            let mut compressed_data = Vec::with_capacity(header.compressed_len as usize);
-            reader
-                .take(header.compressed_len as u64)
-                .read_to_end(&mut compressed_data)?;
-
-            if &compressed_data[0..4] == ZSTD_MAGIC_NUMBER {
-                log::trace!("ZSTD compression");
-                zstd::bulk::decompress(&compressed_data, header.len as usize)?
-            } else {
-                log::trace!("LZ4 compression");
-                lz4_flex::block::decompress(&compressed_data, header.len as usize)
-                    .map_err(io::Error::other)?
-            }
-        };
-
-        assert_eq!(data.len(), header.len as usize);
-
-        Ok(Chunk {
-            name: header.name,
-            data,
-        })
-    }
     // returns expected_chunk
     pub fn once(self, expected: &'static str) -> Result<Self, UnexpectedChunk> {
         if self.name != expected.as_bytes() {
             return Err(UnexpectedChunk {
                 expected,
                 actual: core::str::from_utf8(&self.name)
-                    .unwrap_or_default()
+                    .unwrap_or("UTF8Error")
                     .to_owned(),
             });
         }
@@ -275,11 +246,6 @@ pub fn parse_chunks<R: Read>(reader: R) -> io::Result<Vec<CompressedChunk>> {
     }
 
     Ok(chunks)
-}
-
-pub struct UnexpectedChunk {
-    pub expected: &'static str,
-    pub actual: String,
 }
 
 pub struct Chunks<I> {
