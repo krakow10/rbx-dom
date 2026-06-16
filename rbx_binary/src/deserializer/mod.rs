@@ -1,3 +1,4 @@
+mod chunks;
 mod error;
 mod header;
 mod state;

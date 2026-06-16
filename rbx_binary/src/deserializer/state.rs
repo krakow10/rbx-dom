@@ -15,12 +15,12 @@ use rbx_dom_weak::{
 use rbx_reflection::{ClassDescriptor, PropertyKind, PropertySerialization, ReflectionDatabase};
 
 use crate::{
-    chunk::{parse_chunks, Chunks},
+    chunk::parse_chunks,
     core::{find_property_descriptors, RbxReadExt, RbxReadInterleaved, ReadSlice},
     types::Type,
 };
 
-use super::{error::InnerError, header::FileHeader, Deserializer};
+use super::{chunks::Chunks, error::InnerError, header::FileHeader, Deserializer};
 
 #[cfg(feature = "rayon")]
 use rayon::iter::{IntoParallelIterator, ParallelIterator};
@@ -271,31 +271,7 @@ impl<'db> DeserializerState<'db> {
             .map(|c| c.decode())
             .collect::<Vec<_>>();
 
-        let chunks_len = chunks.len();
-        let mut chunks = Chunks::new(chunks);
-
-        // Expect chunks to appear in a particular order
-        let chunk = chunks.try_next()?;
-
-        let (meta, chunk) = chunks.optional(chunk, *b"META")?;
-        let (sstr, chunk) = chunks.optional(chunk, *b"SSTR")?;
-
-        let mut inst = Vec::with_capacity(header.num_types as usize);
-        let chunk = chunks.repeated(chunk, *b"INST", &mut inst)?;
-
-        // calculate capacity by deduction
-        let mut prop = Vec::with_capacity(chunks_len.saturating_sub(
-            1 + 1
-                + (meta.is_some() as usize)
-                + (sstr.is_some() as usize)
-                + header.num_types as usize,
-        ));
-        let chunk = chunks.repeated(chunk, *b"PROP", &mut prop)?;
-
-        let prnt = chunk.once("PRNT")?;
-
-        let chunk = chunks.try_next()?;
-        let end = chunk.once("END\0")?;
+        let chunks = Chunks::new(&header, chunks)?;
 
         // Do the rest of the preparation work for parallel decoding
 
@@ -318,17 +294,17 @@ impl<'db> DeserializerState<'db> {
             unknown_type_ids: HashSet::new(),
         };
 
-        if let Some(chunk) = meta {
+        if let Some(chunk) = chunks.meta {
             state.decode_meta_chunk(&chunk)?;
         }
-        if let Some(chunk) = sstr {
+        if let Some(chunk) = chunks.sstr {
             state.decode_meta_chunk(&chunk)?;
         }
 
-        inst;
-        prop;
-        prnt;
-        end;
+        chunks.inst;
+        chunks.prop;
+        chunks.prnt;
+        chunks.end;
 
         Ok(state)
     }

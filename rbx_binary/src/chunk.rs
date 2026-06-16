@@ -25,7 +25,7 @@ pub struct Chunk {
 
 impl Chunk {
     // returns expected_chunk
-    pub fn once(self, expected: &'static str) -> Result<Vec<u8>, UnexpectedChunk> {
+    pub fn once(self, expected: &'static str) -> Result<Box<[u8]>, UnexpectedChunk> {
         if self.name != expected.as_bytes() {
             return Err(UnexpectedChunk {
                 expected,
@@ -34,7 +34,7 @@ impl Chunk {
                     .to_owned(),
             });
         }
-        Ok(self.data)
+        Ok(self.data.into_boxed_slice())
     }
 }
 
@@ -248,11 +248,11 @@ pub fn parse_chunks<R: Read>(reader: R) -> io::Result<Vec<CompressedChunk>> {
     Ok(chunks)
 }
 
-pub struct Chunks<I> {
+pub struct ChunkCategorizer<I> {
     chunks: I,
 }
 
-impl<I: Iterator<Item = io::Result<Chunk>>> Chunks<I> {
+impl<I: Iterator<Item = io::Result<Chunk>>> ChunkCategorizer<I> {
     pub fn new<C: IntoIterator<IntoIter = I, Item = io::Result<Chunk>>>(chunks: C) -> Self {
         Self {
             chunks: chunks.into_iter(),
@@ -266,10 +266,10 @@ impl<I: Iterator<Item = io::Result<Chunk>>> Chunks<I> {
         &mut self,
         chunk: Chunk,
         expected: [u8; 4],
-    ) -> io::Result<(Option<Vec<u8>>, Chunk)> {
+    ) -> io::Result<(Option<Box<[u8]>>, Chunk)> {
         if chunk.name == expected {
             let next_chunk = self.try_next()?;
-            Ok((Some(chunk.data), next_chunk))
+            Ok((Some(chunk.data.into_boxed_slice()), next_chunk))
         } else {
             Ok((None, chunk))
         }
@@ -279,10 +279,10 @@ impl<I: Iterator<Item = io::Result<Chunk>>> Chunks<I> {
         &mut self,
         mut chunk: Chunk,
         expected: [u8; 4],
-        chunks_out: &mut Vec<Vec<u8>>,
+        chunks_out: &mut Vec<Box<[u8]>>,
     ) -> io::Result<Chunk> {
         while chunk.name == expected {
-            chunks_out.push(chunk.data);
+            chunks_out.push(chunk.data.into_boxed_slice());
             chunk = self.try_next()?;
         }
         Ok(chunk)
