@@ -69,17 +69,22 @@ struct TypeInfo<'dom> {
     /// The common name for this type like `Folder` or `UserInputService`.
     type_name: Ustr,
 
-    /// The referent for each instance in order.
-    referent: Vec<Ref>,
-
-    /// The children for each instance in order.
-    children: Vec<Vec<Ref>>,
-
-    /// The parent for each instance in order.
-    parent: Vec<Ref>,
+    /// The referent, children, and parent for each instance in order.
+    instances: Vec<Instance>,
 
     /// A collection of property chunks for this type, with the value for each instance in order.
-    properties: UstrMap<TypeChunk<'dom>>,
+    properties: UstrMap<Vec<Variant>>,
+
+    /// A reference to the type's class descriptor from rbx_reflection, if this
+    /// is a known class.
+    class_descriptor: Option<&'dom ClassDescriptor<'dom>>,
+}
+
+struct Instance {
+    referent: Ref,
+    children: Vec<Ref>,
+    parent: Ref,
+    name: String,
 }
 
 /// Properties may be serialized under different names or types than
@@ -263,13 +268,13 @@ impl<'db> DeserializerState<'db> {
         let type_id = chunk.read_le_u32()?;
         let type_name = chunk.read_string()?;
         let object_format = chunk.read_u8()?;
-        let number_instances = chunk.read_le_u32()?;
+        let number_instances = chunk.read_le_u32()? as usize;
 
         log::trace!(
             "INST chunk (type ID {type_id}, type name {type_name}, format {object_format}, {number_instances} instances)",
         );
 
-        let referents = chunk.read_referent_array(number_instances as usize)?;
+        let referents = chunk.read_referent_array(number_instances)?;
 
         let (class_descriptor, prop_capacity) =
             if let Some(class) = self.deserializer.database.classes.get(type_name) {
@@ -293,6 +298,7 @@ impl<'db> DeserializerState<'db> {
             type_id,
             TypeInfo {
                 type_name: type_name.into(),
+                instances: Vec::with_capacity(number_instances),
                 properties: UstrMap::with_capacity(prop_capacity),
                 class_descriptor,
             },
@@ -311,14 +317,14 @@ impl<'db> DeserializerState<'db> {
         let type_id = chunk.read_le_u32()?;
         let prop_name = chunk.read_string()?;
 
-        let &TypeInfo {
-            type_name,
-            ref properties,
-            class_descriptor,
-        } = self
+        let type_info = self
             .type_infos
-            .get(&type_id)
+            .get_mut(&type_id)
             .ok_or(InnerError::InvalidTypeId { type_id })?;
+
+        let type_name = type_info.type_name;
+        let class_descriptor = type_info.class_descriptor;
+        let instances = &mut type_info.instances;
 
         // PROP chunks that contain no type byte are ignored by Roblox. This can
         // happen when a new type is introduced.
@@ -356,8 +362,6 @@ impl<'db> DeserializerState<'db> {
             type_id
         );
 
-        let instances = &mut self.instances[instances.start..instances.end];
-
         // The `Name` prop is special and is routed to a different spot for
         // rbx_dom_weak, so we handle it specially here.
         if prop_name == "Name" {
@@ -368,7 +372,7 @@ impl<'db> DeserializerState<'db> {
             for instance in instances {
                 let binary_string = chunk.read_binary_string()?;
                 let value = match std::str::from_utf8(binary_string) {
-                    Ok(value) => Cow::Borrowed(value),
+                    Ok(value) => value.to_owned(),
                     Err(_) => {
                         log::warn!(
                             "Performing lossy string conversion on property {}.{} because it did not contain UTF-8.
@@ -377,10 +381,10 @@ This may cause unexpected or broken behavior in your final results if you rely o
                             prop_name
                         );
 
-                        String::from_utf8_lossy(binary_string)
+                        String::from_utf8_lossy(binary_string).into_owned()
                     }
                 };
-                instance.builder.set_name(value);
+                instance.name = value;
             }
 
             return Ok(());
@@ -1454,7 +1458,7 @@ rbx-dom may require changes to fully support this property. Please open an issue
 
         // TypeInfoContext implements IntoParallelIterator and yields Instances.
         // iterating over type_infos is parallel-flattened with the iterators for each class, giving per-instance parallelism.
-        let instances = instances.flat_map(|(_, type_info)| TypeInfoIter { type_info });
+        let instances = instances.flat_map(|(_, type_info)| type_info);
 
         // Collect into a vec in parallel and then convert into a HashMap.
         // This is done internally in rayon when parallel collecting a HashMap, but we can grab the referent from the instance if we do it manually.
