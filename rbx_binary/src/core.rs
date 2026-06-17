@@ -107,12 +107,13 @@ pub trait RbxReadExt: Read {
 pub struct InterleavedArrayIter<'a, const N: usize> {
     bytes: &'a [u8],
     index: usize,
+    index_limit: usize,
     len: usize,
 }
 impl<'a, const N: usize> Iterator for InterleavedArrayIter<'a, N> {
     type Item = [u8; N];
     fn next(&mut self) -> Option<Self::Item> {
-        if self.index < self.len {
+        if self.index < self.index_limit {
             let output = core::array::from_fn(|i| self.bytes[self.index + self.len * i]);
             self.index += 1;
             Some(output)
@@ -183,9 +184,12 @@ pub trait RbxReadInterleaved<'a>: ReadSlice<'a> {
         &mut self,
         len: usize,
     ) -> io::Result<InterleavedArrayIter<'a, N>> {
-        let bytes = self.read_slice(len * N)?;
-        let index = 0;
-        Ok(InterleavedArrayIter { bytes, index, len })
+        Ok(InterleavedArrayIter {
+            bytes: self.read_slice(len * N)?,
+            index: 0,
+            index_limit: 0,
+            len,
+        })
     }
 
     /// Creates an iterator of `len` big-endian i32 values.
