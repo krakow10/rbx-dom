@@ -114,12 +114,17 @@ struct TypeInfo<'dom> {
     /// The common name for this type like `Folder` or `UserInputService`.
     type_name: Ustr,
 
-    /// A collection of the property chunks for this type, readily convertible into a parallel iterator.
-    properties: UstrMap<TypeChunk<'dom>>,
+    /// The referent for each instance in order.
+    referent: Vec<Ref>,
 
-    /// A reference to the type's class descriptor from rbx_reflection, if this
-    /// is a known class.
-    class_descriptor: Option<&'dom ClassDescriptor<'dom>>,
+    /// The children for each instance in order.
+    children: Vec<Vec<Ref>>,
+
+    /// The parent for each instance in order.
+    parent: Vec<Ref>,
+
+    /// A collection of property chunks for this type, with the value for each instance in order.
+    properties: UstrMap<TypeChunk<'dom>>,
 }
 
 /// Iterator which yields items of Instance.
