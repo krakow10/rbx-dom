@@ -127,6 +127,91 @@ impl<'a, const N: usize> ExactSizeIterator for InterleavedArrayIter<'a, N> {
     }
 }
 
+pub struct InterleavedI32Iter<'a> {
+    iter: InterleavedArrayIter<'a, { size_of::<i32>() }>,
+}
+impl<'a> Iterator for InterleavedI32Iter<'a> {
+    type Item = i32;
+    fn next(&mut self) -> Option<Self::Item> {
+        self.iter
+            .next()
+            .map(|out| untransform_i32(i32::from_be_bytes(out)))
+    }
+}
+impl<'a> ExactSizeIterator for InterleavedI32Iter<'a> {
+    fn len(&self) -> usize {
+        self.iter.len
+    }
+}
+
+pub struct InterleavedU32Iter<'a> {
+    iter: InterleavedArrayIter<'a, { size_of::<u32>() }>,
+}
+impl<'a> Iterator for InterleavedU32Iter<'a> {
+    type Item = u32;
+    fn next(&mut self) -> Option<Self::Item> {
+        self.iter.next().map(u32::from_be_bytes)
+    }
+}
+impl<'a> ExactSizeIterator for InterleavedU32Iter<'a> {
+    fn len(&self) -> usize {
+        self.iter.len
+    }
+}
+
+pub struct InterleavedF32Iter<'a> {
+    iter: InterleavedArrayIter<'a, { size_of::<f32>() }>,
+}
+impl<'a> Iterator for InterleavedF32Iter<'a> {
+    type Item = f32;
+    fn next(&mut self) -> Option<Self::Item> {
+        self.iter
+            .next()
+            .map(|out| f32::from_bits(u32::from_be_bytes(out).rotate_right(1)))
+    }
+}
+impl<'a> ExactSizeIterator for InterleavedF32Iter<'a> {
+    fn len(&self) -> usize {
+        self.iter.len
+    }
+}
+
+pub struct InterleavedRefIter<'a> {
+    iter: InterleavedI32Iter<'a>,
+    last: i32,
+}
+impl<'a> Iterator for InterleavedRefIter<'a> {
+    type Item = i32;
+    fn next(&mut self) -> Option<Self::Item> {
+        let mut referent = self.iter.next()?;
+        referent += self.last;
+        self.last = referent;
+        Some(referent)
+    }
+}
+impl<'a> ExactSizeIterator for InterleavedRefIter<'a> {
+    fn len(&self) -> usize {
+        self.iter.iter.len
+    }
+}
+
+pub struct InterleavedI64Iter<'a> {
+    iter: InterleavedArrayIter<'a, { size_of::<i64>() }>,
+}
+impl<'a> Iterator for InterleavedI64Iter<'a> {
+    type Item = i64;
+    fn next(&mut self) -> Option<Self::Item> {
+        self.iter
+            .next()
+            .map(|out| untransform_i64(i64::from_be_bytes(out)))
+    }
+}
+impl<'a> ExactSizeIterator for InterleavedI64Iter<'a> {
+    fn len(&self) -> usize {
+        self.iter.len
+    }
+}
+
 pub trait RbxReadInterleaved<'a>: ReadSlice<'a> {
     /// Create an iterator that reads chunks of N interleaved bytes.
     /// Consumes `N * len` bytes from Self.
@@ -141,61 +226,44 @@ pub trait RbxReadInterleaved<'a>: ReadSlice<'a> {
 
     /// Creates an iterator of `len` big-endian i32 values.
     /// The values are transformed during iteration.
-    fn read_interleaved_i32_array(
-        &mut self,
-        len: usize,
-    ) -> io::Result<impl ExactSizeIterator<Item = i32> + 'a> {
-        Ok(self
-            .read_interleaved_bytes(len)?
-            .map(|out| untransform_i32(i32::from_be_bytes(out))))
+    fn read_interleaved_i32_array(&mut self, len: usize) -> io::Result<InterleavedI32Iter<'a>> {
+        Ok(InterleavedI32Iter {
+            iter: self.read_interleaved_bytes(len)?,
+        })
     }
 
     /// Creates an iterator of `len` big-endian u32 values.
     /// The values are transformed during iteration.
-    fn read_interleaved_u32_array(
-        &mut self,
-        len: usize,
-    ) -> io::Result<impl ExactSizeIterator<Item = u32> + 'a> {
-        Ok(self.read_interleaved_bytes(len)?.map(u32::from_be_bytes))
+    fn read_interleaved_u32_array(&mut self, len: usize) -> io::Result<InterleavedU32Iter<'a>> {
+        Ok(InterleavedU32Iter {
+            iter: self.read_interleaved_bytes(len)?,
+        })
     }
 
     /// Creates an iterator of `len` big-endian f32 values.
     /// The values are properly unrotated during iteration.
-    fn read_interleaved_f32_array(
-        &mut self,
-        len: usize,
-    ) -> io::Result<impl ExactSizeIterator<Item = f32> + 'a> {
-        Ok(self
-            .read_interleaved_bytes(len)?
-            .map(|out| f32::from_bits(u32::from_be_bytes(out).rotate_right(1))))
+    fn read_interleaved_f32_array(&mut self, len: usize) -> io::Result<InterleavedF32Iter<'a>> {
+        Ok(InterleavedF32Iter {
+            iter: self.read_interleaved_bytes(len)?,
+        })
     }
 
     /// Creates an iterator of `len` big-endian i32 values.
     /// The values are properly untransformed and accumulated
     /// so as to properly read arrays of referent values.
-    fn read_referent_array(
-        &mut self,
-        len: usize,
-    ) -> io::Result<impl ExactSizeIterator<Item = i32> + 'a> {
-        let mut last = 0;
-        Ok(self
-            .read_interleaved_i32_array(len)?
-            .map(move |mut referent| {
-                referent += last;
-                last = referent;
-                referent
-            }))
+    fn read_referent_array(&mut self, len: usize) -> io::Result<InterleavedRefIter<'a>> {
+        Ok(InterleavedRefIter {
+            iter: self.read_interleaved_i32_array(len)?,
+            last: 0,
+        })
     }
 
     /// Creates an iterator of `len` big-endian i64 values.
     /// The values are transformed during iteration.
-    fn read_interleaved_i64_array(
-        &mut self,
-        len: usize,
-    ) -> io::Result<impl ExactSizeIterator<Item = i64> + 'a> {
-        Ok(self
-            .read_interleaved_bytes(len)?
-            .map(|out| untransform_i64(i64::from_be_bytes(out))))
+    fn read_interleaved_i64_array(&mut self, len: usize) -> io::Result<InterleavedI64Iter<'a>> {
+        Ok(InterleavedI64Iter {
+            iter: self.read_interleaved_bytes(len)?,
+        })
     }
 }
 
