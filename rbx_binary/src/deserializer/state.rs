@@ -24,7 +24,7 @@ use super::{chunks::Chunks, error::InnerError, header::FileHeader, Deserializer}
 
 #[cfg(feature = "rayon")]
 use rayon::iter::{
-    plumbing::{bridge, Consumer, ProducerCallback, UnindexedConsumer},
+    plumbing::{bridge, Consumer, Producer, ProducerCallback, UnindexedConsumer},
     IndexedParallelIterator, IntoParallelIterator, ParallelIterator,
 };
 #[cfg(feature = "rayon")]
@@ -151,6 +151,28 @@ impl<'dom> IndexedParallelIterator for TypeInfoIter<'dom> {
     }
 
     fn with_producer<CB: ProducerCallback<Self::Item>>(self, callback: CB) -> CB::Output {
+        callback.callback(TypeInfoProducer {
+            type_info: self.type_info,
+            num_instances: self.num_instances,
+        })
+    }
+}
+
+struct TypeInfoProducer<'dom> {
+    type_info: TypeInfo<'dom>,
+    num_instances: usize,
+}
+
+impl<'dom> Producer for TypeInfoProducer<'dom> {
+    type Item = Instance;
+
+    type IntoIter;
+
+    fn into_iter(self) -> Self::IntoIter {
+        todo!()
+    }
+
+    fn split_at(self, index: usize) -> (Self, Self) {
         todo!()
     }
 }
