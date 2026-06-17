@@ -51,10 +51,7 @@ pub(super) struct DeserializerState<'db> {
 
     /// Key into `instances`.  Contains a Ref to sidestep
     /// mutable + immutable aliasing when reading Content and Ref properties.
-    instance_key_by_ref: HashMap<i32, InstanceKey>,
-
-    /// All of the instances known by the deserializer.
-    instances: Vec<Instance>,
+    referents: HashMap<i32, Ref>,
 
     /// Referents for all of the instances with no parent, in order they appear
     /// in the file.
@@ -85,26 +82,27 @@ enum TypeChunk<'dom> {
     Font(VecIntoIter<Font>),
     Content(VecIntoIter<Content>),
     // These chunks are decoded in stage 2
-    Bool(BoolIter<'dom>),
-    Int32(Int32Iter<'dom>),
-    Float32(Float32Iter<'dom>),
-    Float64(Float64Iter<'dom>),
-    UDim(UDimIter<'dom>),
-    UDim2(UDim2Iter<'dom>),
-    Ray(RayIter<'dom>),
-    Faces(FacesIter<'dom>),
-    Axes(AxesIter<'dom>),
-    Color3(Color3Iter<'dom>),
-    Vector2(Vector2Iter<'dom>),
-    Vector3(Vector3Iter<'dom>),
-    Enum(EnumIter<'dom>),
-    Ref(RefIter<'dom>),
-    Vector3int16(Vector3int16Iter<'dom>),
-    Rect(RectIter<'dom>),
-    Color3uint8(Color3uint8Iter<'dom>),
-    Int64(Int64Iter<'dom>),
-    UniqueId(UniqueIdIter<'dom>),
-    SecurityCapabilities(SecurityCapabilitiesIter<'dom>),
+    // TODO: write custom parallel iterators for each one e.g. BoolIter<'dom>
+    Bool(VecIntoIter<bool>),
+    Int32(VecIntoIter<i32>),
+    Float32(VecIntoIter<f32>),
+    Float64(VecIntoIter<f64>),
+    UDim(VecIntoIter<UDim>),
+    UDim2(VecIntoIter<UDim2>),
+    Ray(VecIntoIter<Ray>),
+    Faces(VecIntoIter<Faces>),
+    Axes(VecIntoIter<Axes>),
+    Color3(VecIntoIter<Color3>),
+    Vector2(VecIntoIter<Vector2>),
+    Vector3(VecIntoIter<Vector3>),
+    Enum(VecIntoIter<Enum>),
+    Ref(VecIntoIter<Ref>),
+    Vector3int16(VecIntoIter<Vector3int16>),
+    Rect(VecIntoIter<Rect>),
+    Color3uint8(VecIntoIter<Color3uint8>),
+    Int64(VecIntoIter<i64>),
+    UniqueId(VecIntoIter<UniqueId>),
+    SecurityCapabilities(VecIntoIter<SecurityCapabilities>),
 }
 
 /// Represents a unique instance class. Binary models define all their instance
@@ -119,24 +117,6 @@ struct TypeInfo<'dom> {
     /// A reference to the type's class descriptor from rbx_reflection, if this
     /// is a known class.
     class_descriptor: Option<&'dom ClassDescriptor<'dom>>,
-}
-
-/// A key into an array of instances which also contains the instance ref
-/// to sidestep mutable + immutable aliasing.
-struct InstanceKey {
-    key: usize,
-    referent: Ref,
-}
-
-/// Contains all the information we need to gather in order to construct an
-/// instance. Incrementally built up by the deserializer as we decode different
-/// chunks.
-struct Instance {
-    /// A work-in-progress builder that will be used to construct this instance.
-    builder: InstanceBuilder,
-
-    /// Document-defined IDs for the children of this instance.
-    children: Vec<i32>,
 }
 
 /// Properties may be serialized under different names or types than
@@ -224,35 +204,6 @@ fn find_canonical_property<'de>(
     }
 }
 
-fn add_property(instance: &mut Instance, canonical_property: &CanonicalProperty, value: Variant) {
-    if let Some(PropertySerialization::Migrate(migration)) = canonical_property.migration {
-        let old_property_name = canonical_property.name;
-        match migration.perform(&value) {
-            Ok(new_value) => {
-                for &new_property_name in migration.new_property_names() {
-                    if !instance.builder.has_property(new_property_name) {
-                        log::trace!(
-                                "Attempting to migrate property {old_property_name} to {new_property_name}"
-                            );
-
-                        instance
-                            .builder
-                            .add_property(new_property_name, new_value.clone());
-                    }
-                }
-            }
-
-            Err(e) => {
-                log::warn!("Failed to migrate property {old_property_name} because: {e}");
-            }
-        };
-    } else {
-        instance
-            .builder
-            .add_property(canonical_property.name, value)
-    }
-}
-
 impl<'db> DeserializerState<'db> {
     pub(super) fn new<R: Read>(
         deserializer: &'db Deserializer<'db>,
@@ -279,8 +230,7 @@ impl<'db> DeserializerState<'db> {
         tree.reserve(header.num_instances as usize);
 
         let type_infos = HashMap::with_capacity(header.num_types as usize);
-        let instance_key_by_ref = HashMap::with_capacity(1 + header.num_instances as usize);
-        let instances = Vec::with_capacity(1 + header.num_instances as usize);
+        let referents = HashMap::with_capacity(1 + header.num_instances as usize);
 
         let mut state = DeserializerState {
             deserializer,
@@ -288,8 +238,7 @@ impl<'db> DeserializerState<'db> {
             metadata: HashMap::new(),
             shared_strings: Vec::new(),
             type_infos,
-            instance_key_by_ref,
-            instances,
+            referents,
             root_instance_refs: Vec::new(),
             unknown_type_ids: HashSet::new(),
         };
@@ -368,35 +317,20 @@ impl<'db> DeserializerState<'db> {
 
         // TODO: Check object_format and check for service markers if it's 1?
 
-        let start = self.instances.len();
-        for (key, referent) in referents.enumerate() {
-            let builder = InstanceBuilder::with_property_capacity(type_name, prop_capacity);
-
-            let replaced_referent = self.instance_key_by_ref.insert(
-                referent,
-                InstanceKey {
-                    key: start + key,
-                    referent: builder.referent(),
-                },
-            );
+        for referent in referents {
+            let replaced_referent = self.referents.insert(referent, Ref::new());
 
             // Every referent should be unique
             if replaced_referent.is_some() {
                 return Err(InnerError::DuplicateReferent { referent });
             };
-
-            self.instances.push(Instance {
-                builder,
-                children: Vec::new(),
-            });
         }
-        let end = self.instances.len();
 
         let replaced_type_info = self.type_infos.insert(
             type_id,
             TypeInfo {
                 type_name: type_name.into(),
-                instances: start..end,
+                properties: UstrMap::with_capacity(prop_capacity),
                 class_descriptor,
             },
         );
@@ -416,7 +350,7 @@ impl<'db> DeserializerState<'db> {
 
         let &TypeInfo {
             type_name,
-            ref instances,
+            ref properties,
             class_descriptor,
         } = self
             .type_infos
