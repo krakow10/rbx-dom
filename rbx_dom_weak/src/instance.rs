@@ -236,4 +236,23 @@ impl Instance {
     pub fn parent(&self) -> Ref {
         self.parent
     }
+    /// Create an instance when all internal fields are known.
+    /// Used internally for fast deserialization.
+    pub fn from_raw(
+        referent: Ref,
+        children: Vec<Ref>,
+        parent: Ref,
+        name: String,
+        class: Ustr,
+        properties: UstrMap<Variant>,
+    ) -> Self {
+        Self {
+            referent,
+            children,
+            parent,
+            name,
+            class,
+            properties,
+        }
+    }
 }
