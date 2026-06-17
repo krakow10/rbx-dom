@@ -218,8 +218,12 @@ impl<'db> DeserializerState<'db> {
         }
         state.decode_prnt_chunk(&chunks.prnt)?;
 
-        chunks.inst;
-        chunks.prop;
+        for chunk in chunks.inst {
+            state.decode_inst_chunk(&chunk)?;
+        }
+        for chunk in chunks.prop {
+            state.decode_prop_chunk(&chunk)?;
+        }
 
         Ok(state)
     }
