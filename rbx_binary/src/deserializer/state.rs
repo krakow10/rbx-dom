@@ -159,25 +159,32 @@ impl<'dom> IndexedParallelIterator for TypeInfoIter<'dom> {
     }
 
     fn with_producer<CB: ProducerCallback<Self::Item>>(self, callback: CB) -> CB::Output {
-        callback.callback(TypeInfoProducer {
-            type_info: self.type_info,
+        // TODO: roll referent, children, parent, properties together with MultiZip or something
+        callback.callback(PropertiesProducer {
+            properties: self.type_info.properties,
             num_instances: self.num_instances,
         })
     }
 }
 
-struct TypeInfoProducerIter {}
+struct PropertiesProducerIter<'dom> {
+    /// A collection of property chunks for this type, with the value for each instance in order.
+    properties: UstrMap<TypeChunk<'dom>>,
 
-/// Iterator Producer which can by split
-struct TypeInfoProducer<'dom> {
-    type_info: TypeInfo<'dom>,
     num_instances: usize,
 }
 
-impl<'dom> Producer for TypeInfoProducer<'dom> {
+/// Iterator Producer which can by split
+struct PropertiesProducer<'dom> {
+    /// A collection of property chunks for this type, with the value for each instance in order.
+    properties: UstrMap<TypeChunk<'dom>>,
+    num_instances: usize,
+}
+
+impl<'dom> Producer for PropertiesProducer<'dom> {
     type Item = Instance;
 
-    type IntoIter = TypeInfoProducerIter;
+    type IntoIter = PropertiesProducerIter<'dom>;
 
     fn into_iter(self) -> Self::IntoIter {
         todo!()
