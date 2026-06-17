@@ -1445,20 +1445,24 @@ rbx-dom may require changes to fully support this property. Please open an issue
 
         let root_ref = Ref::new();
 
-        // A lot of effort is put in to compute the required information ahead of time so that this operation can have maximum parallelism.
+        // The necessary effort is put in to compute the required information ahead of time so that this operation can have maximum parallelism.
+        // Each TypeInfo is populated with all the information needed to create Instances in parallel.
         #[cfg(feature = "rayon")]
         let instances = self.type_infos.into_par_iter();
         #[cfg(not(feature = "rayon"))]
         let instances = self.type_infos.into_iter();
 
+        // TypeInfoContext implements IntoParallelIterator and yields Instances.
+        // iterating over type_infos is parallel-flattened with the iterators for each class, giving per-instance parallelism.
         let instances = instances.flat_map(|(_, type_info)| TypeInfoIter { type_info });
 
         // Collect into a vec in parallel and then convert into a HashMap.
-        // This is done internally in rayon when "parallel collect"-ing a HashMap, but we can grab the referent from the instance if we do it manually.
+        // This is done internally in rayon when parallel collecting a HashMap, but we can grab the referent from the instance if we do it manually.
         #[cfg(feature = "rayon")]
         let instances = instances.collect::<Vec<_>>().into_iter();
 
         let instances = instances
+            // grab the referent from the instance
             .map(|instance| (instance.referent(), instance))
             .collect();
 
