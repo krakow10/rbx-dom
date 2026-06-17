@@ -119,6 +119,11 @@ struct TypeInfo<'dom> {
     class_descriptor: Option<&'dom ClassDescriptor<'dom>>,
 }
 
+struct TypeInfoIter<'dom> {
+    type_info: TypeInfo<'dom>,
+    // the right stuff goes here
+}
+
 /// Properties may be serialized under different names or types than
 /// they ultimately should have in the DOM. CanonicalProperty
 /// represents the "proper" name and type of a property, and possibly
@@ -1480,39 +1485,25 @@ rbx-dom may require changes to fully support this property. Please open an issue
     pub(super) fn finish(mut self) -> WeakDom {
         log::trace!("Constructing tree from deserialized data");
 
-        // Track all the instances we need to construct. Order of construction
-        // is important to preserve for both determinism and sometimes
-        // functionality of models we handle.
-        let mut instances_to_construct = VecDeque::new();
+        let root_ref = Ref::new();
 
-        // Any instance with a parent of -1 will be at the top level of the
-        // tree. Because of the way rbx_dom_weak generally works, we need to
-        // start at the top of the tree to begin construction.
-        let root_ref = self.tree.root_ref();
-        for &referent in &self.root_instance_refs {
-            instances_to_construct.push_back((referent, root_ref));
-        }
+        // A lot of effort is put in to compute the required information ahead of time so that this operation can have maximum parallelism.
+        #[cfg(feature = "rayon")]
+        let instances = self.type_infos.into_par_iter();
+        #[cfg(not(feature = "rayon"))]
+        let instances = self.type_infos.into_iter();
 
-        // Ensure we hit the global ustr lock array only once
-        let empty_ustr = Ustr::default();
+        let instances = instances.flat_map(|(_, type_info)| TypeInfoIter { type_info });
 
-        while let Some((referent, parent_ref)) = instances_to_construct.pop_front() {
-            // We need to drain the instances Vec in a random order without
-            // disturbing the indices. Replace each instance with an impostor!
-            // We guarantee this is done once by removing the key from `instance_key_by_ref`.
-            let instance_key = self.instance_key_by_ref.remove(&referent).unwrap().key;
-            let impostor = Instance {
-                builder: InstanceBuilder::new(empty_ustr),
-                children: Vec::new(),
-            };
-            let instance = core::mem::replace(&mut self.instances[instance_key], impostor);
-            let id = self.tree.insert(parent_ref, instance.builder);
+        // Collect into a vec in parallel and then convert into a HashMap.
+        // This is done internally in rayon when "parallel collect"-ing a HashMap, but we can grab the referent from the instance if we do it manually.
+        #[cfg(feature = "rayon")]
+        let instances = instances.collect::<Vec<_>>().into_iter();
 
-            for referent in instance.children {
-                instances_to_construct.push_back((referent, id));
-            }
-        }
+        let instances = instances
+            .map(|instance| (instance.referent(), instance))
+            .collect();
 
-        self.tree
+        WeakDom::from_raw(root_ref, instances)
     }
 }
