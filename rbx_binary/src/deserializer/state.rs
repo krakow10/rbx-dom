@@ -10,7 +10,7 @@ use rbx_dom_weak::{
         SharedString, Tags, UDim, UDim2, UniqueId, Variant, VariantType, Vector2, Vector3,
         Vector3int16,
     },
-    InstanceBuilder, Ustr, UstrMap, WeakDom,
+    Instance, InstanceBuilder, Ustr, UstrMap, WeakDom,
 };
 use rbx_reflection::{ClassDescriptor, PropertyKind, PropertySerialization, ReflectionDatabase};
 
@@ -23,7 +23,10 @@ use crate::{
 use super::{chunks::Chunks, error::InnerError, header::FileHeader, Deserializer};
 
 #[cfg(feature = "rayon")]
-use rayon::iter::{IntoParallelIterator, ParallelIterator};
+use rayon::iter::{
+    plumbing::{Consumer, ProducerCallback, UnindexedConsumer},
+    IndexedParallelIterator, IntoParallelIterator, ParallelIterator,
+};
 #[cfg(feature = "rayon")]
 type VecIntoIter<T> = rayon::vec::IntoIter<T>;
 #[cfg(not(feature = "rayon"))]
@@ -122,6 +125,30 @@ struct TypeInfo<'dom> {
 struct TypeInfoIter<'dom> {
     type_info: TypeInfo<'dom>,
     // the right stuff goes here
+}
+
+impl<'dom> ParallelIterator for TypeInfoIter<'dom> {
+    type Item = Instance;
+
+    fn drive_unindexed<C>(self, consumer: C) -> C::Result
+    where
+        C: UnindexedConsumer<Self::Item>,
+    {
+        todo!()
+    }
+}
+impl<'dom> IndexedParallelIterator for TypeInfoIter<'dom> {
+    fn len(&self) -> usize {
+        todo!()
+    }
+
+    fn drive<C: Consumer<Self::Item>>(self, consumer: C) -> C::Result {
+        todo!()
+    }
+
+    fn with_producer<CB: ProducerCallback<Self::Item>>(self, callback: CB) -> CB::Output {
+        todo!()
+    }
 }
 
 /// Properties may be serialized under different names or types than
@@ -1482,7 +1509,7 @@ rbx-dom may require changes to fully support this property. Please open an issue
     /// Combines together all the decoded information to build and emplace
     /// instances in our tree.
     #[profiling::function]
-    pub(super) fn finish(mut self) -> WeakDom {
+    pub(super) fn finish(self) -> WeakDom {
         log::trace!("Constructing tree from deserialized data");
 
         let root_ref = Ref::new();
