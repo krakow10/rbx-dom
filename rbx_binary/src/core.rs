@@ -10,40 +10,6 @@ pub static FILE_MAGIC_HEADER: &[u8] = b"<roblox!";
 pub static FILE_SIGNATURE: &[u8] = b"\x89\xff\x0d\x0a\x1a\x0a";
 pub const FILE_VERSION: u16 = 0;
 
-pub struct ReadInterleavedBytesIter<'a, const N: usize> {
-    bytes: &'a [u8],
-    index: usize,
-    len: usize,
-}
-
-impl<'a, const N: usize> ReadInterleavedBytesIter<'a, N> {
-    fn new(bytes: &'a [u8], len: usize) -> Self {
-        let index = 0;
-        Self { bytes, index, len }
-    }
-}
-
-impl<'a, const N: usize> Iterator for ReadInterleavedBytesIter<'a, N> {
-    type Item = [u8; N];
-    fn next(&mut self) -> Option<Self::Item> {
-        if self.index < self.len {
-            let output = core::array::from_fn(|i| self.bytes[self.index + self.len * i]);
-            self.index += 1;
-            Some(output)
-        } else {
-            None
-        }
-    }
-    fn size_hint(&self) -> (usize, Option<usize>) {
-        (self.len, Some(self.len))
-    }
-}
-impl<'a, const N: usize> ExactSizeIterator for ReadInterleavedBytesIter<'a, N> {
-    fn len(&self) -> usize {
-        self.len
-    }
-}
-
 pub trait RbxReadExt: Read {
     fn read_le_u32(&mut self) -> io::Result<u32> {
         let mut buffer = [0; 4];
@@ -138,16 +104,39 @@ pub trait RbxReadExt: Read {
     }
 }
 
+pub struct InterleavedArrayIter<'a, const N: usize> {
+    bytes: &'a [u8],
+    index: usize,
+    len: usize,
+}
+impl<'a, const N: usize> Iterator for InterleavedArrayIter<'a, N> {
+    type Item = [u8; N];
+    fn next(&mut self) -> Option<Self::Item> {
+        if self.index < self.len {
+            let output = core::array::from_fn(|i| self.bytes[self.index + self.len * i]);
+            self.index += 1;
+            Some(output)
+        } else {
+            None
+        }
+    }
+}
+impl<'a, const N: usize> ExactSizeIterator for InterleavedArrayIter<'a, N> {
+    fn len(&self) -> usize {
+        self.len
+    }
+}
+
 pub trait RbxReadInterleaved<'a>: ReadSlice<'a> {
     /// Create an iterator that reads chunks of N interleaved bytes.
     /// Consumes `N * len` bytes from Self.
     fn read_interleaved_bytes<const N: usize>(
         &mut self,
         len: usize,
-    ) -> io::Result<ReadInterleavedBytesIter<'a, N>> {
-        let out = self.read_slice(len * N)?;
-
-        Ok(ReadInterleavedBytesIter::new(out, len))
+    ) -> io::Result<InterleavedArrayIter<'a, N>> {
+        let bytes = self.read_slice(len * N)?;
+        let index = 0;
+        Ok(InterleavedArrayIter { bytes, index, len })
     }
 
     /// Creates an iterator of `len` big-endian i32 values.
