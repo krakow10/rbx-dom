@@ -2,6 +2,7 @@ mod chunks;
 mod error;
 mod header;
 mod state;
+mod rayon;
 
 use std::io::Read;
 

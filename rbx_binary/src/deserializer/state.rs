@@ -10,7 +10,7 @@ use rbx_dom_weak::{
         SharedString, Tags, UDim, UDim2, UniqueId, Variant, VariantType, Vector2, Vector3,
         Vector3int16,
     },
-    Instance, InstanceBuilder, Ustr, UstrMap, WeakDom,
+    InstanceBuilder, Ustr, UstrMap, WeakDom,
 };
 use rbx_reflection::{ClassDescriptor, PropertyKind, PropertySerialization, ReflectionDatabase};
 
@@ -23,10 +23,7 @@ use crate::{
 use super::{chunks::Chunks, error::InnerError, header::FileHeader, Deserializer};
 
 #[cfg(feature = "rayon")]
-use rayon::iter::{
-    plumbing::{bridge, Consumer, Producer, ProducerCallback, UnindexedConsumer},
-    IndexedParallelIterator, IntoParallelIterator, ParallelIterator,
-};
+use rayon::iter::{IndexedParallelIterator, IntoParallelIterator, ParallelIterator};
 #[cfg(feature = "rayon")]
 type VecIntoIter<T> = rayon::vec::IntoIter<T>;
 #[cfg(not(feature = "rayon"))]
@@ -66,48 +63,6 @@ pub(super) struct DeserializerState<'db> {
     unknown_type_ids: HashSet<u8>,
 }
 
-enum TypeChunk<'dom> {
-    // These chunks are decoded in stage 1
-    String(VecIntoIter<&'dom str>),
-    BinaryString(VecIntoIter<&'dom [u8]>),
-    ContentId(VecIntoIter<ContentId>),
-    Tags(VecIntoIter<Tags>),
-    MaterialColors(VecIntoIter<MaterialColors>),
-    SharedString(VecIntoIter<SharedString>),
-    NetAssetRef(VecIntoIter<NetAssetRef>),
-    BrickColor(VecIntoIter<BrickColor>),
-    CFrame(VecIntoIter<CFrame>),
-    NumberSequence(VecIntoIter<NumberSequence>),
-    ColorSequence(VecIntoIter<ColorSequence>),
-    NumberRange(VecIntoIter<NumberRange>),
-    PhysicalProperties(VecIntoIter<PhysicalProperties>),
-    OptionalCFrame(VecIntoIter<Option<CFrame>>),
-    Font(VecIntoIter<Font>),
-    Content(VecIntoIter<Content>),
-    // These chunks are decoded in stage 2
-    // TODO: write custom parallel iterators for each one e.g. BoolIter<'dom>
-    Bool(VecIntoIter<bool>),
-    Int32(VecIntoIter<i32>),
-    Float32(VecIntoIter<f32>),
-    Float64(VecIntoIter<f64>),
-    UDim(VecIntoIter<UDim>),
-    UDim2(VecIntoIter<UDim2>),
-    Ray(VecIntoIter<Ray>),
-    Faces(VecIntoIter<Faces>),
-    Axes(VecIntoIter<Axes>),
-    Color3(VecIntoIter<Color3>),
-    Vector2(VecIntoIter<Vector2>),
-    Vector3(VecIntoIter<Vector3>),
-    Enum(VecIntoIter<Enum>),
-    Ref(VecIntoIter<Ref>),
-    Vector3int16(VecIntoIter<Vector3int16>),
-    Rect(VecIntoIter<Rect>),
-    Color3uint8(VecIntoIter<Color3uint8>),
-    Int64(VecIntoIter<i64>),
-    UniqueId(VecIntoIter<UniqueId>),
-    SecurityCapabilities(VecIntoIter<SecurityCapabilities>),
-}
-
 /// Represents a unique instance class. Binary models define all their instance
 /// types up front and give them a short u32 identifier.
 struct TypeInfo<'dom> {
@@ -125,74 +80,6 @@ struct TypeInfo<'dom> {
 
     /// A collection of property chunks for this type, with the value for each instance in order.
     properties: UstrMap<TypeChunk<'dom>>,
-}
-
-/// Iterator which yields items of Instance.
-// In rayon this is literally not an iterator.
-// It's a thing that can generate a producer, and a producer can generate a (sequential) iterator.
-struct TypeInfoIter<'dom> {
-    type_info: TypeInfo<'dom>,
-    num_instances: usize,
-}
-
-impl<'dom> ParallelIterator for TypeInfoIter<'dom> {
-    type Item = Instance;
-
-    fn drive_unindexed<C>(self, consumer: C) -> C::Result
-    where
-        C: UnindexedConsumer<Self::Item>,
-    {
-        bridge(self, consumer)
-    }
-
-    fn opt_len(&self) -> Option<usize> {
-        Some(self.num_instances)
-    }
-}
-impl<'dom> IndexedParallelIterator for TypeInfoIter<'dom> {
-    fn len(&self) -> usize {
-        self.num_instances
-    }
-
-    fn drive<C: Consumer<Self::Item>>(self, consumer: C) -> C::Result {
-        bridge(self, consumer)
-    }
-
-    fn with_producer<CB: ProducerCallback<Self::Item>>(self, callback: CB) -> CB::Output {
-        // TODO: roll referent, children, parent, properties together with MultiZip or something
-        callback.callback(PropertiesProducer {
-            properties: self.type_info.properties,
-            num_instances: self.num_instances,
-        })
-    }
-}
-
-struct PropertiesProducerIter<'dom> {
-    /// A collection of property chunks for this type, with the value for each instance in order.
-    properties: UstrMap<TypeChunk<'dom>>,
-
-    num_instances: usize,
-}
-
-/// Iterator Producer which can by split
-struct PropertiesProducer<'dom> {
-    /// A collection of property chunks for this type, with the value for each instance in order.
-    properties: UstrMap<TypeChunk<'dom>>,
-    num_instances: usize,
-}
-
-impl<'dom> Producer for PropertiesProducer<'dom> {
-    type Item = Instance;
-
-    type IntoIter = PropertiesProducerIter<'dom>;
-
-    fn into_iter(self) -> Self::IntoIter {
-        todo!()
-    }
-
-    fn split_at(self, index: usize) -> (Self, Self) {
-        todo!()
-    }
 }
 
 /// Properties may be serialized under different names or types than
