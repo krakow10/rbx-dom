@@ -122,6 +122,9 @@ struct TypeInfo<'dom> {
     class_descriptor: Option<&'dom ClassDescriptor<'dom>>,
 }
 
+/// Iterator which yields items of Instance.
+// In rayon this is literally not an iterator.
+// It's a thing that can generate a producer, and a producer can generate a (sequential) iterator.
 struct TypeInfoIter<'dom> {
     type_info: TypeInfo<'dom>,
     num_instances: usize,
@@ -158,6 +161,9 @@ impl<'dom> IndexedParallelIterator for TypeInfoIter<'dom> {
     }
 }
 
+struct TypeInfoProducerIter {}
+
+/// Iterator Producer which can by split
 struct TypeInfoProducer<'dom> {
     type_info: TypeInfo<'dom>,
     num_instances: usize,
@@ -166,7 +172,7 @@ struct TypeInfoProducer<'dom> {
 impl<'dom> Producer for TypeInfoProducer<'dom> {
     type Item = Instance;
 
-    type IntoIter;
+    type IntoIter = TypeInfoProducerIter;
 
     fn into_iter(self) -> Self::IntoIter {
         todo!()
