@@ -214,7 +214,7 @@ impl<'db> DeserializerState<'db> {
             state.decode_meta_chunk(&chunk)?;
         }
         if let Some(chunk) = chunks.sstr {
-            state.decode_meta_chunk(&chunk)?;
+            state.decode_sstr_chunk(&chunk)?;
         }
         state.decode_prnt_chunk(&chunks.prnt)?;
 
