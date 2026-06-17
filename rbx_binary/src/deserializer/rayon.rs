@@ -1,5 +1,3 @@
-use std::ops::RangeBounds;
-use std::range::Range;
 use std::{iter, mem, ptr, slice};
 
 use rayon::iter::{
@@ -55,9 +53,6 @@ pub enum TypeChunk<'dom> {
     SecurityCapabilities(Vec<SecurityCapabilities>),
 }
 
-// We need access to DrainProducer, but it's a private type
-// === PASTED RAYON INTERNALS === //
-
 /// Parallel iterator that moves out of a vector.
 #[derive(Debug, Clone)]
 pub struct TypeChunkIntoIter<'dom> {
@@ -65,7 +60,7 @@ pub struct TypeChunkIntoIter<'dom> {
 }
 
 impl<'dom> IntoParallelIterator for TypeChunk<'dom> {
-    type Item = Properties;
+    type Item = Variant;
     type Iter = TypeChunkIntoIter<'dom>;
 
     fn into_par_iter(self) -> Self::Iter {
@@ -74,7 +69,7 @@ impl<'dom> IntoParallelIterator for TypeChunk<'dom> {
 }
 
 impl<'dom> ParallelIterator for TypeChunkIntoIter<'dom> {
-    type Item = Properties;
+    type Item = Variant;
 
     fn drive_unindexed<C>(self, consumer: C) -> C::Result
     where
@@ -100,105 +95,56 @@ impl<'dom> IndexedParallelIterator for TypeChunkIntoIter<'dom> {
         self.inner.len()
     }
 
-    fn with_producer<CB>(mut self, callback: CB) -> CB::Output
-    where
-        CB: ProducerCallback<Self::Item>,
-    {
-        // Drain every item, and then the vector only needs to free its buffer.
-        self.inner.par_drain(..).with_producer(callback)
-    }
-}
-
-impl<'data, T: Send> ParallelDrainRange<usize> for &'data mut Vec<T> {
-    type Iter = Drain<'data, T>;
-    type Item = T;
-
-    fn par_drain<R: RangeBounds<usize>>(self, range: R) -> Self::Iter {
-        Drain {
-            orig_len: self.len(),
-            range: simplify_range(range, self.len()),
-            vec: self,
-        }
-    }
-}
-
-/// Draining parallel iterator that moves a range out of a vector, but keeps the total capacity.
-#[derive(Debug)]
-pub struct Drain<'data, T: Send> {
-    vec: &'data mut Vec<T>,
-    range: Range<usize>,
-    orig_len: usize,
-}
-
-impl<'data, T: Send> ParallelIterator for Drain<'data, T> {
-    type Item = T;
-
-    fn drive_unindexed<C>(self, consumer: C) -> C::Result
-    where
-        C: UnindexedConsumer<Self::Item>,
-    {
-        bridge(self, consumer)
-    }
-
-    fn opt_len(&self) -> Option<usize> {
-        Some(self.len())
-    }
-}
-
-impl<'data, T: Send> IndexedParallelIterator for Drain<'data, T> {
-    fn drive<C>(self, consumer: C) -> C::Result
-    where
-        C: Consumer<Self::Item>,
-    {
-        bridge(self, consumer)
-    }
-
-    fn len(&self) -> usize {
-        self.range.len()
-    }
-
     fn with_producer<CB>(self, callback: CB) -> CB::Output
     where
         CB: ProducerCallback<Self::Item>,
     {
-        unsafe {
-            // Make the vector forget about the drained items, and temporarily the tail too.
-            self.vec.set_len(self.range.start);
-
-            // Create the producer as the exclusive "owner" of the slice.
-            let producer = DrainProducer::from_vec(self.vec, self.range.len());
-
-            // The producer will move or drop each item from the drained range.
-            callback.callback(producer)
+        match self.inner {
+            TypeChunk::String(mut items) => items
+                .par_drain(..)
+                .map(Variant::from)
+                .with_producer(callback),
+            TypeChunk::BinaryString(items) => todo!(),
+            TypeChunk::ContentId(content_ids) => todo!(),
+            TypeChunk::Tags(items) => todo!(),
+            TypeChunk::MaterialColors(items) => todo!(),
+            TypeChunk::SharedString(shared_strings) => todo!(),
+            TypeChunk::NetAssetRef(net_asset_refs) => todo!(),
+            TypeChunk::BrickColor(brick_colors) => todo!(),
+            TypeChunk::CFrame(cframes) => todo!(),
+            TypeChunk::NumberSequence(number_sequences) => todo!(),
+            TypeChunk::ColorSequence(color_sequences) => todo!(),
+            TypeChunk::NumberRange(number_ranges) => todo!(),
+            TypeChunk::PhysicalProperties(items) => todo!(),
+            TypeChunk::OptionalCFrame(cframes) => todo!(),
+            TypeChunk::Font(fonts) => todo!(),
+            TypeChunk::Content(contents) => todo!(),
+            TypeChunk::Bool(items) => todo!(),
+            TypeChunk::Int32(items) => todo!(),
+            TypeChunk::Float32(items) => todo!(),
+            TypeChunk::Float64(items) => todo!(),
+            TypeChunk::UDim(udims) => todo!(),
+            TypeChunk::UDim2(udim2s) => todo!(),
+            TypeChunk::Ray(items) => todo!(),
+            TypeChunk::Faces(items) => todo!(),
+            TypeChunk::Axes(items) => todo!(),
+            TypeChunk::Color3(color3s) => todo!(),
+            TypeChunk::Vector2(vector2s) => todo!(),
+            TypeChunk::Vector3(vector3s) => todo!(),
+            TypeChunk::Enum(items) => todo!(),
+            TypeChunk::Ref(items) => todo!(),
+            TypeChunk::Vector3int16(vector3int16s) => todo!(),
+            TypeChunk::Rect(rects) => todo!(),
+            TypeChunk::Color3uint8(color3uint8s) => todo!(),
+            TypeChunk::Int64(items) => todo!(),
+            TypeChunk::UniqueId(unique_ids) => todo!(),
+            TypeChunk::SecurityCapabilities(items) => todo!(),
         }
     }
 }
 
-impl<'data, T: Send> Drop for Drain<'data, T> {
-    fn drop(&mut self) {
-        let Range { start, end } = self.range;
-        if self.vec.len() == self.orig_len {
-            // We must not have produced, so just call a normal drain to remove the items.
-            self.vec.drain(start..end);
-        } else if start == end {
-            // Empty range, so just restore the length to its original state
-            unsafe {
-                self.vec.set_len(self.orig_len);
-            }
-        } else if end < self.orig_len {
-            // The producer was responsible for consuming the drained items.
-            // Move the tail items to their new place, then set the length to include them.
-            unsafe {
-                let ptr = self.vec.as_mut_ptr().add(start);
-                let tail_ptr = self.vec.as_ptr().add(end);
-                let tail_len = self.orig_len - end;
-                ptr::copy(tail_ptr, ptr, tail_len);
-                self.vec.set_len(start + tail_len);
-            }
-        }
-    }
-}
-
+// We need access to DrainProducer, but it's a private type
+// === PASTED RAYON INTERNALS === //
 pub(crate) struct DrainProducer<'data, T: Send> {
     slice: &'data mut [T],
 }
@@ -304,7 +250,6 @@ impl<'data, T: 'data> Drop for SliceDrain<'data, T> {
         unsafe { ptr::drop_in_place::<[T]>(slice_ptr) };
     }
 }
-
 // === END OF PASTED RAYON INTERNALS === //
 
 /// Iterator which yields items of Instance.
