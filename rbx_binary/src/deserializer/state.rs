@@ -23,7 +23,7 @@ use crate::{
 use super::{chunks::Chunks, error::InnerError, header::FileHeader, Deserializer};
 
 #[cfg(feature = "rayon")]
-use rayon::iter::{IndexedParallelIterator, IntoParallelIterator, ParallelIterator};
+use rayon::iter::{IntoParallelIterator, ParallelIterator};
 #[cfg(feature = "rayon")]
 type VecIntoIter<T> = rayon::vec::IntoIter<T>;
 #[cfg(not(feature = "rayon"))]
@@ -49,9 +49,8 @@ pub(super) struct DeserializerState<'db> {
     /// The index is the type_id.
     type_infos: HashMap<u32, TypeInfo<'db>>,
 
-    /// Key into `instances`.  Contains a Ref to sidestep
-    /// mutable + immutable aliasing when reading Content and Ref properties.
-    referents: HashMap<i32, Ref>,
+    /// referent id -> (referent, parent)
+    referents: HashMap<i32, (Ref, Ref)>,
 
     /// Referents for all of the instances with no parent, in order they appear
     /// in the file.
@@ -217,11 +216,10 @@ impl<'db> DeserializerState<'db> {
         if let Some(chunk) = chunks.sstr {
             state.decode_meta_chunk(&chunk)?;
         }
+        state.decode_prnt_chunk(&chunks.prnt)?;
 
         chunks.inst;
         chunks.prop;
-        chunks.prnt;
-        chunks.end;
 
         Ok(state)
     }
@@ -1418,14 +1416,16 @@ rbx-dom may require changes to fully support this property. Please open an issue
         let subjects = chunk.read_referent_array(number_objects as usize)?;
         let parents = chunk.read_referent_array(number_objects as usize)?;
 
-        for (id, parent_ref) in subjects.zip(parents) {
-            if parent_ref == -1 {
-                self.root_instance_refs.push(id);
-            } else {
-                let instance_key = self.instance_key_by_ref[&parent_ref].key;
-                self.instances[instance_key].children.push(id);
-            }
-        }
+        let referents_map: HashMap<_, _> = subjects
+            .zip(parents)
+            .map(|(id, parent_id)| (id, (Ref::new(), parent_id)))
+            .collect();
+        self.referents = referents_map
+            .iter()
+            .map(|(&id, (referent, parent_id))| {
+                (id, (*referent, referents_map.get(parent_id).unwrap().0))
+            })
+            .collect();
 
         Ok(())
     }
