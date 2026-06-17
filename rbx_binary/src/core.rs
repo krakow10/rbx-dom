@@ -127,54 +127,35 @@ impl<'a, const N: usize> ExactSizeIterator for InterleavedArrayIter<'a, N> {
     }
 }
 
-pub struct InterleavedI32Iter<'a> {
-    iter: InterleavedArrayIter<'a, { size_of::<i32>() }>,
-}
-impl<'a> Iterator for InterleavedI32Iter<'a> {
-    type Item = i32;
-    fn next(&mut self) -> Option<Self::Item> {
-        self.iter
-            .next()
-            .map(|out| untransform_i32(i32::from_be_bytes(out)))
-    }
-}
-impl<'a> ExactSizeIterator for InterleavedI32Iter<'a> {
-    fn len(&self) -> usize {
-        self.iter.len
-    }
-}
-
-pub struct InterleavedU32Iter<'a> {
-    iter: InterleavedArrayIter<'a, { size_of::<u32>() }>,
-}
-impl<'a> Iterator for InterleavedU32Iter<'a> {
-    type Item = u32;
-    fn next(&mut self) -> Option<Self::Item> {
-        self.iter.next().map(u32::from_be_bytes)
-    }
-}
-impl<'a> ExactSizeIterator for InterleavedU32Iter<'a> {
-    fn len(&self) -> usize {
-        self.iter.len
-    }
+macro_rules! impl_interleaved_iter {
+    ($ident:ident, $type:ty, $transform:expr) => {
+        pub struct $ident<'a> {
+            iter: InterleavedArrayIter<'a, { size_of::<$type>() }>,
+        }
+        impl<'a> Iterator for $ident<'a> {
+            type Item = $type;
+            fn next(&mut self) -> Option<Self::Item> {
+                self.iter.next().map($transform)
+            }
+        }
+        impl<'a> ExactSizeIterator for $ident<'a> {
+            fn len(&self) -> usize {
+                self.iter.len
+            }
+        }
+    };
 }
 
-pub struct InterleavedF32Iter<'a> {
-    iter: InterleavedArrayIter<'a, { size_of::<f32>() }>,
-}
-impl<'a> Iterator for InterleavedF32Iter<'a> {
-    type Item = f32;
-    fn next(&mut self) -> Option<Self::Item> {
-        self.iter
-            .next()
-            .map(|out| f32::from_bits(u32::from_be_bytes(out).rotate_right(1)))
-    }
-}
-impl<'a> ExactSizeIterator for InterleavedF32Iter<'a> {
-    fn len(&self) -> usize {
-        self.iter.len
-    }
-}
+impl_interleaved_iter!(InterleavedI32Iter, i32, |value| untransform_i32(
+    i32::from_be_bytes(value)
+));
+impl_interleaved_iter!(InterleavedU32Iter, u32, u32::from_be_bytes);
+impl_interleaved_iter!(InterleavedF32Iter, f32, |value| f32::from_bits(
+    u32::from_be_bytes(value).rotate_right(1)
+));
+impl_interleaved_iter!(InterleavedI64Iter, i64, |value| untransform_i64(
+    i64::from_be_bytes(value)
+));
 
 pub struct InterleavedRefIter<'a> {
     iter: InterleavedI32Iter<'a>,
@@ -192,23 +173,6 @@ impl<'a> Iterator for InterleavedRefIter<'a> {
 impl<'a> ExactSizeIterator for InterleavedRefIter<'a> {
     fn len(&self) -> usize {
         self.iter.iter.len
-    }
-}
-
-pub struct InterleavedI64Iter<'a> {
-    iter: InterleavedArrayIter<'a, { size_of::<i64>() }>,
-}
-impl<'a> Iterator for InterleavedI64Iter<'a> {
-    type Item = i64;
-    fn next(&mut self) -> Option<Self::Item> {
-        self.iter
-            .next()
-            .map(|out| untransform_i64(i64::from_be_bytes(out)))
-    }
-}
-impl<'a> ExactSizeIterator for InterleavedI64Iter<'a> {
-    fn len(&self) -> usize {
-        self.iter.len
     }
 }
 
