@@ -50,7 +50,7 @@ pub(super) struct DeserializerState<'db> {
     type_infos: HashMap<u32, TypeInfo<'db>>,
 
     /// referent id -> (referent, parent)
-    referents: HashMap<i32, (Ref, Ref)>,
+    instances: HashMap<i32, Instance>,
 
     /// Referents for all of the instances with no parent, in order they appear
     /// in the file.
@@ -197,7 +197,7 @@ impl<'db> DeserializerState<'db> {
         tree.reserve(header.num_instances as usize);
 
         let type_infos = HashMap::with_capacity(header.num_types as usize);
-        let referents = HashMap::with_capacity(1 + header.num_instances as usize);
+        let instances = HashMap::with_capacity(1 + header.num_instances as usize);
 
         let mut state = DeserializerState {
             deserializer,
@@ -205,7 +205,7 @@ impl<'db> DeserializerState<'db> {
             metadata: HashMap::new(),
             shared_strings: Vec::new(),
             type_infos,
-            referents,
+            instances,
             root_instance_refs: Vec::new(),
             unknown_type_ids: HashSet::new(),
         };
@@ -270,13 +270,13 @@ impl<'db> DeserializerState<'db> {
         let type_id = chunk.read_le_u32()?;
         let type_name = chunk.read_string()?;
         let object_format = chunk.read_u8()?;
-        let number_instances = chunk.read_le_u32()? as usize;
+        let number_instances = chunk.read_le_u32()?;
 
         log::trace!(
             "INST chunk (type ID {type_id}, type name {type_name}, format {object_format}, {number_instances} instances)",
         );
 
-        let referents = chunk.read_referent_array(number_instances)?;
+        let referents = chunk.read_referent_array(number_instances as usize)?;
 
         let (class_descriptor, prop_capacity) =
             if let Some(class) = self.deserializer.database.classes.get(type_name) {
@@ -287,20 +287,20 @@ impl<'db> DeserializerState<'db> {
 
         // TODO: Check object_format and check for service markers if it's 1?
 
-        for referent in referents {
-            let replaced_referent = self.referents.insert(referent, Ref::new());
-
-            // Every referent should be unique
-            if replaced_referent.is_some() {
-                return Err(InnerError::DuplicateReferent { referent });
-            };
-        }
+        let instances = referents
+            .map(|referent| {
+                // Every referent should be unique
+                let instance = self.instances.remove(&referent).ok_or(referent)?;
+                Ok(instance)
+            })
+            .collect::<Result<Vec<_>, i32>>()
+            .map_err(|referent| InnerError::DuplicateReferent { referent })?;
 
         let replaced_type_info = self.type_infos.insert(
             type_id,
             TypeInfo {
                 type_name: type_name.into(),
-                instances: Vec::with_capacity(number_instances),
+                instances,
                 properties: UstrMap::with_capacity(prop_capacity),
                 class_descriptor,
             },
@@ -1424,10 +1424,18 @@ rbx-dom may require changes to fully support this property. Please open an issue
             .zip(parents)
             .map(|(id, parent_id)| (id, (Ref::new(), parent_id)))
             .collect();
-        self.referents = referents_map
+        self.instances = referents_map
             .iter()
-            .map(|(&id, (referent, parent_id))| {
-                (id, (*referent, referents_map.get(parent_id).unwrap().0))
+            .map(|(&id, &(referent, ref parent_id))| {
+                (
+                    id,
+                    Instance {
+                        referent,
+                        parent: referents_map.get(parent_id).unwrap().0,
+                        name: String::new(),
+                        children: todo!(),
+                    },
+                )
             })
             .collect();
 
