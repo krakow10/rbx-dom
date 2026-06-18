@@ -8,12 +8,17 @@ use std::io::Read;
 use rbx_dom_weak::WeakDom;
 use rbx_reflection::ReflectionDatabase;
 
-use self::state::DeserializerState;
+use self::state::*;
 
-#[cfg(any(test, feature = "unstable_text_format"))]
+use crate::chunk::parse_chunks;
+use chunks::Chunks;
+
 pub(crate) use self::header::FileHeader;
 
 pub use self::error::Error;
+
+#[cfg(feature = "rayon")]
+use rayon::iter::{IntoParallelIterator, ParallelIterator};
 
 /// A configurable deserializer for Roblox binary models and places.
 ///
@@ -70,10 +75,45 @@ impl<'db> Deserializer<'db> {
     /// this deserializer.
     pub fn deserialize<R: Read>(&self, reader: R) -> Result<WeakDom, Error> {
         profiling::scope!("rbx_binary::deserialize");
+        let header = FileHeader::decode(&mut reader)?;
+        let chunks = parse_chunks(reader)?;
 
-        let deserializer = DeserializerState::new(self, reader)?;
+        #[cfg(not(feature = "rayon"))]
+        let chunks = chunks.into_iter().map(|c| c.decode());
 
-        Ok(deserializer.finish())
+        // decompress all chunks in parallel
+        #[cfg(feature = "rayon")]
+        let chunks = chunks
+            .into_par_iter()
+            .map(|c| c.decode())
+            .collect::<Vec<_>>();
+
+        let chunks = Chunks::new(&header, chunks)?;
+
+        // Do the rest of the preparation work for parallel decoding
+        let mut type_infos = HashMap::with_capacity(header.num_types as usize);
+        let root_instance_refs = Vec::new();
+        let unknown_type_ids = HashSet::new();
+
+        // Metadata is not used by rbx_binary.
+        // if let Some(chunk) = chunks.meta {
+        //     decode_meta_chunk(&chunk)?;
+        // }
+        let shared_strings = if let Some(chunk) = chunks.sstr {
+            decode_sstr_chunk(&chunk)?
+        } else {
+            Vec::new()
+        };
+        let mut instances = decode_prnt_chunk(&chunks.prnt)?;
+
+        for chunk in chunks.inst {
+            decode_inst_chunk(&chunk, self.database, &mut instances, &mut type_infos)?;
+        }
+        for chunk in chunks.prop {
+            decode_prop_chunk(&chunk)?;
+        }
+
+        Ok(finish(type_infos))
     }
 }
 

@@ -1,6 +1,6 @@
-use std::{borrow::Cow, collections::VecDeque, convert::TryInto, io::Read};
+use std::{borrow::Cow, collections::VecDeque, convert::TryInto};
 
-use ahash::{HashMap, HashMapExt, HashSet, HashSetExt};
+use ahash::{HashMap, HashMapExt};
 use rbx_dom_weak::{
     types::{
         Attributes, Axes, BinaryString, BrickColor, CFrame, Color3, Color3uint8, ColorSequence,
@@ -10,17 +10,16 @@ use rbx_dom_weak::{
         SharedString, Tags, UDim, UDim2, UniqueId, Variant, VariantType, Vector2, Vector3,
         Vector3int16,
     },
-    InstanceBuilder, Ustr, UstrMap, WeakDom,
+    Ustr, UstrMap, WeakDom,
 };
 use rbx_reflection::{ClassDescriptor, PropertyKind, PropertySerialization, ReflectionDatabase};
 
 use crate::{
-    chunk::parse_chunks,
     core::{find_property_descriptors, RbxReadExt, RbxReadInterleaved, ReadSlice},
     types::Type,
 };
 
-use super::{chunks::Chunks, error::InnerError, header::FileHeader, Deserializer};
+use super::error::InnerError;
 
 #[cfg(feature = "rayon")]
 use rayon::iter::{IntoParallelIterator, ParallelIterator};
@@ -29,38 +28,20 @@ type VecIntoIter<T> = rayon::vec::IntoIter<T>;
 #[cfg(not(feature = "rayon"))]
 type VecIntoIter<T> = std::vec::IntoIter<T>;
 
-pub(super) struct DeserializerState<'db> {
-    /// The user-provided configuration that we should use.
-    deserializer: &'db Deserializer<'db>,
+/// The metadata contained in the file, which affects how some constructs
+/// are interpreted by Roblox.
+type Metadata<'a> = HashMap<&'a str, &'a str>;
 
-    /// The tree that instances should be written into. Eventually returned to
-    /// the user.
-    tree: WeakDom,
+/// The SharedStrings contained in the file, if any, in the order that they
+/// appear in the file.
+type SharedStrings = Vec<SharedString>;
 
-    /// The metadata contained in the file, which affects how some constructs
-    /// are interpreted by Roblox.
-    metadata: HashMap<String, String>,
+/// All of the instance types described by the file so far.
+/// The index is the type_id.
+type TypeInfos<'db> = HashMap<u32, TypeInfo<'db>>;
 
-    /// The SharedStrings contained in the file, if any, in the order that they
-    /// appear in the file.
-    shared_strings: Vec<SharedString>,
-
-    /// All of the instance types described by the file so far.
-    /// The index is the type_id.
-    type_infos: HashMap<u32, TypeInfo<'db>>,
-
-    /// referent id -> (referent, parent)
-    instances: HashMap<i32, Instance>,
-
-    /// Referents for all of the instances with no parent, in order they appear
-    /// in the file.
-    root_instance_refs: Vec<i32>,
-
-    /// Contains a set of unknown type IDs that we've encountered so far while
-    /// deserializing this file. We use this map in order to ensure we only
-    /// print one warning per unknown type ID when deserializing a file.
-    unknown_type_ids: HashSet<u8>,
-}
+/// referent id -> (referent, parent)
+type Instances = HashMap<i32, Instance>;
 
 /// Represents a unique instance class. Binary models define all their instance
 /// types up front and give them a short u32 identifier.
@@ -170,81 +151,27 @@ fn find_canonical_property<'de>(
         }
     }
 }
-
-impl<'db> DeserializerState<'db> {
-    pub(super) fn new<R: Read>(
-        deserializer: &'db Deserializer<'db>,
-        mut input: R,
-    ) -> Result<Self, InnerError> {
-        let header = FileHeader::decode(&mut input)?;
-        let chunks = parse_chunks(input)?;
-
-        #[cfg(not(feature = "rayon"))]
-        let chunks = chunks.into_iter().map(|c| c.decode());
-
-        // decompress all chunks in parallel
-        #[cfg(feature = "rayon")]
-        let chunks = chunks
-            .into_par_iter()
-            .map(|c| c.decode())
-            .collect::<Vec<_>>();
-
-        let chunks = Chunks::new(&header, chunks)?;
-
-        // Do the rest of the preparation work for parallel decoding
-
-        let mut tree = WeakDom::new(InstanceBuilder::new("DataModel"));
-        tree.reserve(header.num_instances as usize);
-
-        let type_infos = HashMap::with_capacity(header.num_types as usize);
-        let instances = HashMap::with_capacity(1 + header.num_instances as usize);
-
-        let mut state = DeserializerState {
-            deserializer,
-            tree,
-            metadata: HashMap::new(),
-            shared_strings: Vec::new(),
-            type_infos,
-            instances,
-            root_instance_refs: Vec::new(),
-            unknown_type_ids: HashSet::new(),
-        };
-
-        if let Some(chunk) = chunks.meta {
-            state.decode_meta_chunk(&chunk)?;
-        }
-        if let Some(chunk) = chunks.sstr {
-            state.decode_sstr_chunk(&chunk)?;
-        }
-        state.decode_prnt_chunk(&chunks.prnt)?;
-
-        for chunk in chunks.inst {
-            state.decode_inst_chunk(&chunk)?;
-        }
-        for chunk in chunks.prop {
-            state.decode_prop_chunk(&chunk)?;
-        }
-
-        Ok(state)
-    }
+pub(super) use tab_saver::*;
+mod tab_saver {
+    use super::*;
 
     #[profiling::function]
-    pub(super) fn decode_meta_chunk(&mut self, mut chunk: &[u8]) -> Result<(), InnerError> {
+    pub fn decode_meta_chunk<'a>(mut chunk: &'a [u8]) -> Result<Metadata<'a>, InnerError> {
         let len = chunk.read_le_u32()?;
-        self.metadata.reserve(len as usize);
+        let mut metadata = HashMap::with_capacity(len as usize);
 
         for _ in 0..len {
-            let key = chunk.read_string()?.to_owned();
-            let value = chunk.read_string()?.to_owned();
+            let key = chunk.read_string()?;
+            let value = chunk.read_string()?;
 
-            self.metadata.insert(key, value);
+            metadata.insert(key, value);
         }
 
-        Ok(())
+        Ok(metadata)
     }
 
     #[profiling::function]
-    pub(super) fn decode_sstr_chunk(&mut self, mut chunk: &[u8]) -> Result<(), InnerError> {
+    pub fn decode_sstr_chunk(mut chunk: &[u8]) -> Result<SharedStrings, InnerError> {
         let version = chunk.read_le_u32()?;
 
         if version != 0 {
@@ -255,18 +182,24 @@ impl<'db> DeserializerState<'db> {
         }
 
         let num_entries = chunk.read_le_u32()?;
+        let mut shared_strings = Vec::with_capacity(num_entries as usize);
 
         for _ in 0..num_entries {
             let _hash = chunk.read_slice(16)?; // We don't do anything with the hash.
             let data = chunk.read_binary_string()?.to_owned();
-            self.shared_strings.push(SharedString::new(data));
+            shared_strings.push(SharedString::new(data));
         }
 
-        Ok(())
+        Ok(shared_strings)
     }
 
     #[profiling::function]
-    pub(super) fn decode_inst_chunk(&mut self, mut chunk: &[u8]) -> Result<(), InnerError> {
+    pub fn decode_inst_chunk<'db>(
+        mut chunk: &[u8],
+        database: &'db ReflectionDatabase<'_>,
+        instances: &mut HashMap<i32, Instance>,
+        type_infos: &mut TypeInfos<'db>,
+    ) -> Result<(), InnerError> {
         let type_id = chunk.read_le_u32()?;
         let type_name = chunk.read_string()?;
         let object_format = chunk.read_u8()?;
@@ -278,25 +211,22 @@ impl<'db> DeserializerState<'db> {
 
         let referents = chunk.read_referent_array(number_instances as usize)?;
 
-        let (class_descriptor, prop_capacity) =
-            if let Some(class) = self.deserializer.database.classes.get(type_name) {
-                (Some(class), class.default_properties.len())
-            } else {
-                (None, 0)
-            };
+        let (class_descriptor, prop_capacity) = if let Some(class) = database.classes.get(type_name)
+        {
+            (Some(class), class.default_properties.len())
+        } else {
+            (None, 0)
+        };
 
         // TODO: Check object_format and check for service markers if it's 1?
 
         let instances = referents
-            .map(|referent| {
-                // Every referent should be unique
-                let instance = self.instances.remove(&referent).ok_or(referent)?;
-                Ok(instance)
-            })
+            .map(|referent| instances.remove(&referent).ok_or(referent))
             .collect::<Result<Vec<_>, i32>>()
+            // Every referent should be unique
             .map_err(|referent| InnerError::DuplicateReferent { referent })?;
 
-        let replaced_type_info = self.type_infos.insert(
+        let replaced_type_info = type_infos.insert(
             type_id,
             TypeInfo {
                 type_name: type_name.into(),
@@ -315,12 +245,12 @@ impl<'db> DeserializerState<'db> {
     }
 
     #[profiling::function]
-    pub(super) fn decode_prop_chunk(&mut self, mut chunk: &[u8]) -> Result<(), InnerError> {
+    pub fn decode_prop_chunk(mut chunk: &[u8]) -> Result<(), InnerError> {
         let type_id = chunk.read_le_u32()?;
         let prop_name = chunk.read_string()?;
 
-        let type_info = self
-            .type_infos
+        // TODO: collect prop chunk results first, then assemble into TypeInfos
+        let type_info = type_infos
             .get_mut(&type_id)
             .ok_or(InnerError::InvalidTypeId { type_id })?;
 
@@ -1403,7 +1333,7 @@ rbx-dom may require changes to fully support this property. Please open an issue
     }
 
     #[profiling::function]
-    pub(super) fn decode_prnt_chunk(&mut self, mut chunk: &[u8]) -> Result<(), InnerError> {
+    pub fn decode_prnt_chunk(mut chunk: &[u8]) -> Result<Instances, InnerError> {
         let version = chunk.read_u8()?;
 
         if version != 0 {
@@ -1424,7 +1354,7 @@ rbx-dom may require changes to fully support this property. Please open an issue
             .zip(parents)
             .map(|(id, parent_id)| (id, (Ref::new(), parent_id)))
             .collect();
-        self.instances = referents_map
+        let instances = referents_map
             .iter()
             .map(|(&id, &(referent, ref parent_id))| {
                 (
@@ -1439,11 +1369,11 @@ rbx-dom may require changes to fully support this property. Please open an issue
             })
             .collect();
 
-        Ok(())
+        Ok(instances)
     }
 
     #[profiling::function]
-    pub(super) fn decode_end_chunk(&mut self, _chunk: &[u8]) -> Result<(), InnerError> {
+    pub fn decode_end_chunk(_chunk: &[u8]) -> Result<(), InnerError> {
         log::trace!("END chunk");
 
         // We don't do any validation on the END chunk. There's no useful
@@ -1456,7 +1386,7 @@ rbx-dom may require changes to fully support this property. Please open an issue
     /// Combines together all the decoded information to build and emplace
     /// instances in our tree.
     #[profiling::function]
-    pub(super) fn finish(self) -> WeakDom {
+    pub fn finish(type_infos: TypeInfos<'_>) -> WeakDom {
         log::trace!("Constructing tree from deserialized data");
 
         let root_ref = Ref::new();
@@ -1464,9 +1394,9 @@ rbx-dom may require changes to fully support this property. Please open an issue
         // The necessary effort is put in to compute the required information ahead of time so that this operation can have maximum parallelism.
         // Each TypeInfo is populated with all the information needed to create Instances in parallel.
         #[cfg(feature = "rayon")]
-        let instances = self.type_infos.into_par_iter();
+        let instances = type_infos.into_par_iter();
         #[cfg(not(feature = "rayon"))]
-        let instances = self.type_infos.into_iter();
+        let instances = type_infos.into_iter();
 
         // TypeInfoContext implements IntoParallelIterator and yields Instances.
         // iterating over type_infos is parallel-flattened with the iterators for each class, giving per-instance parallelism.
