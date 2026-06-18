@@ -5,6 +5,7 @@ mod state;
 
 use std::io::Read;
 
+use ahash::{HashMap, HashMapExt, HashSet, HashSetExt};
 use rbx_dom_weak::WeakDom;
 use rbx_reflection::ReflectionDatabase;
 
@@ -73,10 +74,10 @@ impl<'db> Deserializer<'db> {
 
     /// Deserialize a Roblox binary model or place from the given stream using
     /// this deserializer.
-    pub fn deserialize<R: Read>(&self, reader: R) -> Result<WeakDom, Error> {
+    pub fn deserialize<R: Read>(&self, mut reader: R) -> Result<WeakDom, Error> {
         profiling::scope!("rbx_binary::deserialize");
         let header = FileHeader::decode(&mut reader)?;
-        let chunks = parse_chunks(reader)?;
+        let chunks = parse_chunks(reader).map_err(error::InnerError::from)?;
 
         #[cfg(not(feature = "rayon"))]
         let chunks = chunks.into_iter().map(|c| c.decode());
