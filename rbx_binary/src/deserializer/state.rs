@@ -151,6 +151,8 @@ fn find_canonical_property<'de>(
         }
     }
 }
+
+// keep the tab depth the same
 pub(super) use tab_saver::*;
 mod tab_saver {
     use super::*;
