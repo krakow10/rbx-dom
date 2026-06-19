@@ -366,7 +366,7 @@ mod tab_saver {
         database: &'de ReflectionDatabase<'de>,
         type_infos: &TypeInfos<'de>,
         shared_strings: &[SharedString],
-        instance_by_id: &HashMap<i32, Instance>,
+        instances: &HashMap<i32, Instance>,
     ) -> Result<PropChunkResult<'a>, InnerError> {
         let type_id = chunk.read_le_u32()?;
         let prop_name = chunk.read_string()?;
@@ -894,7 +894,7 @@ rbx-dom may require changes to fully support this property. Please open an issue
                 VariantType::Ref => {
                     let values = chunk
                         .read_referent_array(num_instances)?
-                        .map(|value| instance_by_id.get(&value).map_or(Ref::none(),|instance|instance.referent));
+                        .map(|value| instances.get(&value).map_or(Ref::none(),|instance|instance.referent));
 
                     Ok(PropChunk::from_iter(type_id, property, values))
                 }
@@ -1337,7 +1337,7 @@ rbx-dom may require changes to fully support this property. Please open an issue
                             1 => Content::from_uri(uris.pop_back().unwrap()),
                             2 => {
                                 let read_value = objects.pop_back().unwrap();
-                                if let Some(instance) = instance_by_id.get(&read_value) {
+                                if let Some(instance) = instances.get(&read_value) {
                                     Content::from_referent(instance.referent)
                                 } else {
                                     Content::none()
