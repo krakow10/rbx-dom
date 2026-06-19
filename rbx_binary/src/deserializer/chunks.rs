@@ -32,6 +32,7 @@ impl Chunks {
         let mut chunks = ChunkCategorizer::new(chunks);
 
         // Expect chunks to appear in a particular order
+        // TODO: don't expect chunks to be in a particular order
         let chunk = chunks.try_next()?;
 
         let (meta, chunk) = chunks.optional(chunk, *b"META")?;

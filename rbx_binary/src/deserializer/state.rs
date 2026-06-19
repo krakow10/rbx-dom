@@ -158,10 +158,9 @@ impl<'db> PropChunk<'db> {
             }
         }
 
-        SomeFromFn{
-            f,
-            len,
-        }.collect::<Result<Vec<_>,PropChunkError>()?;
+        let values = SomeFromFn { f, len }
+            .map(|result| result.map(Into::into))
+            .collect::<Result<Vec<Variant>, PropChunkError>>()?;
 
         Ok(Self {
             type_id,
@@ -364,17 +363,19 @@ mod tab_saver {
     }
 
     #[profiling::function]
-    pub fn decode_prop_chunk<'a>(
+    pub fn decode_prop_chunk<'a, 'de: 'a>(
         mut chunk: &'a [u8],
-        database: &ReflectionDatabase<'_>,
-        type_infos: &TypeInfos<'_>,
+        database: &'de ReflectionDatabase<'de>,
+        type_infos: &TypeInfos<'de>,
+        shared_strings: &[SharedString],
+        ref_by_id: &HashMap<i32, Ref>,
     ) -> Result<PropChunk<'a>, PropChunkError> {
         let type_id = chunk.read_le_u32()?;
         let prop_name = chunk.read_string()?;
 
         // TODO: collect prop chunk results first, then assemble into TypeInfos
         let type_info = type_infos
-            .get_mut(&type_id)
+            .get(&type_id)
             .ok_or(PropChunkError::InvalidTypeId { type_id })?;
 
         let type_name = type_info.type_name;
@@ -440,6 +441,7 @@ This may cause unexpected or broken behavior in your final results if you rely o
         }
 
         let canonical_type = property.ty;
+        let canonical_name = property.name;
 
         match binary_type {
             Type::String => match canonical_type {
@@ -452,19 +454,23 @@ This may cause unexpected or broken behavior in your final results if you rely o
                             "Performing lossy string conversion on property {}.{} because it did not contain UTF-8.
 This may cause unexpected or broken behavior in your final results if you rely on this property being non UTF-8.",
                                     type_name,
-                                    property.name
+                                    canonical_name
                                 );
 
                             String::from_utf8_lossy(binary_string).into_owned()
                         }
                     })
                 }),
-                VariantType::ContentId => PropChunk::from_fn(type_id, property, num_instances, || {
-                    Ok(ContentId::from(chunk.read_string()?.to_owned()))
-                }),
-                VariantType::BinaryString => PropChunk::from_fn(type_id, property, num_instances, || {
-                    Ok(BinaryString::from(chunk.read_binary_string()?.to_owned()))
-                }),
+                VariantType::ContentId => {
+                    PropChunk::from_fn(type_id, property, num_instances, || {
+                        Ok(ContentId::from(chunk.read_string()?.to_owned()))
+                    })
+                }
+                VariantType::BinaryString => {
+                    PropChunk::from_fn(type_id, property, num_instances, || {
+                        Ok(BinaryString::from(chunk.read_binary_string()?.to_owned()))
+                    })
+                }
                 VariantType::Tags => PropChunk::from_fn(type_id, property, num_instances, || {
                     let buffer = chunk.read_binary_string()?;
 
@@ -478,29 +484,32 @@ This may cause unexpected or broken behavior in your final results if you rely o
 
                     Ok(value)
                 }),
-                VariantType::Attributes => PropChunk::from_fn(type_id, property, num_instances, || {
-                    let buffer = chunk.read_binary_string()?;
+                VariantType::Attributes => {
+                    PropChunk::from_fn(type_id, property, num_instances, || {
+                        let buffer = chunk.read_binary_string()?;
 
-                    Ok(match Attributes::from_reader(buffer) {
-                        Ok(value) => Variant::from(value),
-                        Err(err) => {
-                            log::warn!(
+                        Ok(match Attributes::from_reader(buffer) {
+                            Ok(value) => Variant::from(value),
+                            Err(err) => {
+                                log::warn!(
                                     "Failed to parse Attributes on {} because {:?}; falling back to BinaryString.
 rbx-dom may require changes to fully support this property. Please open an issue at https://github.com/rojo-rbx/rbx-dom/issues and show this warning.",
                                     type_name,
                                     err
                                 );
 
-                            Variant::from(BinaryString::from(buffer))
-                        }
+                                Variant::from(BinaryString::from(buffer))
+                            }
+                        })
                     })
-                }),
-                VariantType::MaterialColors => PropChunk::from_fn(type_id, property, num_instances, || {
-                    let buffer = chunk.read_binary_string()?;
-                    Ok(match MaterialColors::decode(buffer) {
-                        Ok(value) => Variant::from(value),
-                        Err(err) => {
-                            log::warn!(
+                }
+                VariantType::MaterialColors => {
+                    PropChunk::from_fn(type_id, property, num_instances, || {
+                        let buffer = chunk.read_binary_string()?;
+                        Ok(match MaterialColors::decode(buffer) {
+                            Ok(value) => Variant::from(value),
+                            Err(err) => {
+                                log::warn!(
                                     "Failed to parse MaterialColors on {} because {:?}; falling back to BinaryString.
 
 rbx-dom may require changes to fully support this property. Please open an issue at https://github.com/rojo-rbx/rbx-dom/issues and show this warning.",
@@ -508,10 +517,11 @@ rbx-dom may require changes to fully support this property. Please open an issue
                                     err
                                 );
 
-                            Variant::from(BinaryString::from(buffer))
-                        }
+                                Variant::from(BinaryString::from(buffer))
+                            }
+                        })
                     })
-                }),
+                }
                 invalid_type => {
                     return Err(PropChunkError::PropTypeMismatch {
                         type_name: type_name.to_string(),
@@ -576,9 +586,12 @@ rbx-dom may require changes to fully support this property. Please open an issue
                 }
             },
             Type::Float64 => match canonical_type {
-                VariantType::Float64 => {
-                    PropChunk::from_fn(type_id, property, num_instances, || Ok(chunk.read_le_f64()?))
-                }
+                VariantType::Float64 => PropChunk::from_fn(
+                    type_id,
+                    property,
+                    num_instances,
+                    || Ok(chunk.read_le_f64()?),
+                ),
                 // This branch allows values serialized as Float32 to be converted to Float64 when we expect a Float64
                 // Basically, we convert Float32 to Float64 when we expect a Float64 but read a Float32
                 // See: #301
@@ -717,7 +730,7 @@ rbx-dom may require changes to fully support this property. Please open an issue
             },
             Type::BrickColor => match canonical_type {
                 VariantType::BrickColor => {
-                    let values = chunk.read_interleaved_u32_array(num_instances)?;
+                    let mut values = chunk.read_interleaved_u32_array(num_instances)?;
 
                     PropChunk::from_fn(type_id, property, num_instances, || {
                         let value = values.next().unwrap();
@@ -876,11 +889,9 @@ rbx-dom may require changes to fully support this property. Please open an issue
             },
             Type::Ref => match canonical_type {
                 VariantType::Ref => {
-                    let values = chunk.read_referent_array(num_instances)?.map(|value| {
-                        instance_by_ref
-                            .get(&value)
-                            .map_or(Ref::none(), |instance| instance.referent)
-                    });
+                    let values = chunk
+                        .read_referent_array(num_instances)?
+                        .map(|value| ref_by_id.get(&value).copied().unwrap_or(Ref::none()));
 
                     Ok(PropChunk::from_iter(type_id, property, values))
                 }
@@ -894,13 +905,15 @@ rbx-dom may require changes to fully support this property. Please open an issue
                 }
             },
             Type::Vector3int16 => match canonical_type {
-                VariantType::Vector3int16 => PropChunk::from_fn(type_id, property, num_instances, || {
-                    Ok(Vector3int16::new(
-                        chunk.read_le_i16()?,
-                        chunk.read_le_i16()?,
-                        chunk.read_le_i16()?,
-                    ))
-                }),
+                VariantType::Vector3int16 => {
+                    PropChunk::from_fn(type_id, property, num_instances, || {
+                        Ok(Vector3int16::new(
+                            chunk.read_le_i16()?,
+                            chunk.read_le_i16()?,
+                            chunk.read_le_i16()?,
+                        ))
+                    })
+                }
                 invalid_type => {
                     return Err(PropChunkError::PropTypeMismatch {
                         type_name: type_name.to_string(),
@@ -940,20 +953,22 @@ rbx-dom may require changes to fully support this property. Please open an issue
                 }
             },
             Type::NumberSequence => match canonical_type {
-                VariantType::NumberSequence => PropChunk::from_fn(type_id, property, num_instances, || {
-                    let keypoint_count = chunk.read_le_u32()?;
-                    let mut keypoints = Vec::with_capacity(keypoint_count as usize);
+                VariantType::NumberSequence => {
+                    PropChunk::from_fn(type_id, property, num_instances, || {
+                        let keypoint_count = chunk.read_le_u32()?;
+                        let mut keypoints = Vec::with_capacity(keypoint_count as usize);
 
-                    for _ in 0..keypoint_count {
-                        keypoints.push(NumberSequenceKeypoint::new(
-                            chunk.read_le_f32()?,
-                            chunk.read_le_f32()?,
-                            chunk.read_le_f32()?,
-                        ))
-                    }
+                        for _ in 0..keypoint_count {
+                            keypoints.push(NumberSequenceKeypoint::new(
+                                chunk.read_le_f32()?,
+                                chunk.read_le_f32()?,
+                                chunk.read_le_f32()?,
+                            ))
+                        }
 
-                    Ok(NumberSequence { keypoints })
-                }),
+                        Ok(NumberSequence { keypoints })
+                    })
+                }
                 invalid_type => {
                     return Err(PropChunkError::PropTypeMismatch {
                         type_name: type_name.to_string(),
@@ -996,9 +1011,11 @@ rbx-dom may require changes to fully support this property. Please open an issue
                 }
             },
             Type::NumberRange => match canonical_type {
-                VariantType::NumberRange => PropChunk::from_fn(type_id, property, num_instances, || {
-                    Ok(NumberRange::new(chunk.read_le_f32()?, chunk.read_le_f32()?))
-                }),
+                VariantType::NumberRange => {
+                    PropChunk::from_fn(type_id, property, num_instances, || {
+                        Ok(NumberRange::new(chunk.read_le_f32()?, chunk.read_le_f32()?))
+                    })
+                }
                 invalid_type => {
                     return Err(PropChunkError::PropTypeMismatch {
                         type_name: type_name.to_string(),
@@ -1034,35 +1051,41 @@ rbx-dom may require changes to fully support this property. Please open an issue
                 }
             },
             Type::PhysicalProperties => match canonical_type {
-                VariantType::PhysicalProperties => PropChunk::from_fn(type_id, property, num_instances, || {
-                    let discriminator = chunk.read_u8()?;
-                    let value = match discriminator {
-                        0b00 | 0b10 => Variant::PhysicalProperties(PhysicalProperties::Default),
-                        0b01 => Variant::PhysicalProperties(PhysicalProperties::Custom(
-                            CustomPhysicalProperties::new(
-                                chunk.read_le_f32()?,
-                                chunk.read_le_f32()?,
-                                chunk.read_le_f32()?,
-                                chunk.read_le_f32()?,
-                                chunk.read_le_f32()?,
-                                1.0,
-                            ),
-                        )),
-                        0b11 => Variant::PhysicalProperties(PhysicalProperties::Custom(
-                            CustomPhysicalProperties::new(
-                                chunk.read_le_f32()?,
-                                chunk.read_le_f32()?,
-                                chunk.read_le_f32()?,
-                                chunk.read_le_f32()?,
-                                chunk.read_le_f32()?,
-                                chunk.read_le_f32()?,
-                            ),
-                        )),
-                        _ => return Err(PropChunkError::BadPhysicalPropertiesType(discriminator)),
-                    };
+                VariantType::PhysicalProperties => {
+                    PropChunk::from_fn(type_id, property, num_instances, || {
+                        let discriminator = chunk.read_u8()?;
+                        let value = match discriminator {
+                            0b00 | 0b10 => Variant::PhysicalProperties(PhysicalProperties::Default),
+                            0b01 => Variant::PhysicalProperties(PhysicalProperties::Custom(
+                                CustomPhysicalProperties::new(
+                                    chunk.read_le_f32()?,
+                                    chunk.read_le_f32()?,
+                                    chunk.read_le_f32()?,
+                                    chunk.read_le_f32()?,
+                                    chunk.read_le_f32()?,
+                                    1.0,
+                                ),
+                            )),
+                            0b11 => Variant::PhysicalProperties(PhysicalProperties::Custom(
+                                CustomPhysicalProperties::new(
+                                    chunk.read_le_f32()?,
+                                    chunk.read_le_f32()?,
+                                    chunk.read_le_f32()?,
+                                    chunk.read_le_f32()?,
+                                    chunk.read_le_f32()?,
+                                    chunk.read_le_f32()?,
+                                ),
+                            )),
+                            _ => {
+                                return Err(PropChunkError::BadPhysicalPropertiesType(
+                                    discriminator,
+                                ))
+                            }
+                        };
 
-                    Ok(value)
-                }),
+                        Ok(value)
+                    })
+                }
                 invalid_type => {
                     return Err(PropChunkError::PropTypeMismatch {
                         type_name: type_name.to_string(),
@@ -1113,7 +1136,7 @@ rbx-dom may require changes to fully support this property. Please open an issue
             },
             Type::SharedString => match canonical_type {
                 VariantType::SharedString => {
-                    let values = chunk.read_interleaved_u32_array(num_instances)?;
+                    let mut values = chunk.read_interleaved_u32_array(num_instances)?;
 
                     PropChunk::from_fn(type_id, property, num_instances, || {
                         let value = values.next().unwrap();
@@ -1131,7 +1154,7 @@ rbx-dom may require changes to fully support this property. Please open an issue
                     })
                 }
                 VariantType::NetAssetRef => {
-                    let values = chunk.read_interleaved_u32_array(num_instances)?;
+                    let mut values = chunk.read_interleaved_u32_array(num_instances)?;
 
                     PropChunk::from_fn(type_id, property, num_instances, || {
                         let value = values.next().unwrap();
@@ -1291,7 +1314,7 @@ rbx-dom may require changes to fully support this property. Please open an issue
             },
             Type::Content => match canonical_type {
                 VariantType::Content => {
-                    let values = chunk.read_interleaved_i32_array(num_instances)?;
+                    let mut values = chunk.read_interleaved_i32_array(num_instances)?;
 
                     let uri_count = chunk.read_le_u32()? as usize;
                     let mut uris = VecDeque::with_capacity(uri_count);
@@ -1315,8 +1338,8 @@ rbx-dom may require changes to fully support this property. Please open an issue
                             1 => Content::from_uri(uris.pop_back().unwrap()),
                             2 => {
                                 let read_value = objects.pop_back().unwrap();
-                                if let Some(key) = instance_key_by_ref.get(&read_value) {
-                                    Content::from_referent(key.referent)
+                                if let Some(referent) = ref_by_id.get(&read_value) {
+                                    Content::from_referent(*referent)
                                 } else {
                                     Content::none()
                                 }
