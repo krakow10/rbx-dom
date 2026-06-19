@@ -110,8 +110,43 @@ impl<'db> Deserializer<'db> {
         for chunk in chunks.inst {
             decode_inst_chunk(&chunk, self.database, &mut instances, &mut type_infos)?;
         }
-        for chunk in chunks.prop {
-            decode_prop_chunk(&chunk)?;
+
+        let database = self.database;
+        let prop_chunks: Vec<_> = chunks
+            .prop
+            .into_par_iter()
+            .map(|chunk| {
+                decode_prop_chunk(&chunk, database, &type_infos, &shared_strings, ref_by_id)
+            })
+            .collect();
+
+        let mut unknown_type_ids = HashSet::new();
+
+        for prop_chunk in prop_chunks {
+            match prop_chunk? {
+                PropChunkResult::PropChunk(PropChunk {
+                    type_id,
+                    canonical_property,
+                    values,
+                }) => type_infos[&type_id].add_properties(canonical_property, values),
+                PropChunkResult::MissingTypeByte => {}
+                PropChunkResult::UnknownBinaryType {
+                    type_name,
+                    prop_name,
+                    binary_type_byte,
+                } => {
+                    if unknown_type_ids.insert(binary_type_byte) {
+                        log::warn!(
+                            "Unknown value type ID {byte:#04x} ({byte}) in Roblox \
+                             binary model file. Found in property {class}.{prop}.",
+                            byte = binary_type_byte,
+                            class = type_name,
+                            prop = prop_name,
+                        );
+                    }
+                }
+                PropChunkResult::UnknownProperty => {}
+            }
         }
 
         Ok(finish(type_infos))

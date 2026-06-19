@@ -1,4 +1,4 @@
-use std::{borrow::Cow, collections::VecDeque, convert::TryInto};
+use std::{collections::VecDeque, convert::TryInto};
 
 use ahash::{HashMap, HashMapExt};
 use rbx_dom_weak::{
@@ -60,6 +60,41 @@ struct TypeInfo<'dom> {
     class_descriptor: Option<&'dom ClassDescriptor<'dom>>,
 }
 
+impl<'dom> TypeInfo<'dom> {
+    pub(super) fn add_properties(
+        &mut self,
+        canonical_property: CanonicalProperty,
+        values: Vec<Variant>,
+    ) {
+        if let Some(PropertySerialization::Migrate(migration)) = canonical_property.migration {
+            let old_property_name = canonical_property.name;
+            for &new_property_name in migration.new_property_names() {
+                let new_property_name = Ustr::from(new_property_name);
+                if !self.properties.contains_key(&new_property_name) {
+                    log::trace!(
+                        "Attempting to migrate property {old_property_name} to {new_property_name}"
+                    );
+                    let migrated_values = values
+                        .iter()
+                        .map(|value| migration.perform(value))
+                        .collect::<Result<Vec<_>, _>>();
+
+                    match migrated_values {
+                        Ok(values) => {
+                            self.properties.insert(new_property_name, values);
+                        }
+                        Err(e) => log::warn!(
+                            "Failed to migrate property {old_property_name} because: {e}"
+                        ),
+                    }
+                }
+            }
+        } else {
+            self.properties.insert(canonical_property.name, values);
+        }
+    }
+}
+
 struct Instance {
     referent: Ref,
     children: Vec<Ref>,
@@ -67,58 +102,21 @@ struct Instance {
     name: String,
 }
 
-// TODO: rethink this, really only MissingTypeByte, UnknownProperty are necessary.  They are eventually ignored and become None
-#[derive(Debug, thiserror::Error)]
-enum PropChunkError {
-    #[error("Io Error: {0}")]
-    Io(#[from] std::io::Error),
-    #[error("Missing Type Byte")]
+pub enum PropChunkResult<'a> {
+    PropChunk(PropChunk<'a>),
     MissingTypeByte,
-    #[error("Invalid Type Id {type_id}")]
-    InvalidTypeId { type_id: u32 },
-    #[error("Unknown Binary Type {binary_type_byte}")]
-    UnknownBinaryType { binary_type_byte: u8 },
-    #[error("Unknown Property")]
+    UnknownBinaryType {
+        type_name: Ustr,
+        prop_name: &'a str,
+        binary_type_byte: u8,
+    },
     UnknownProperty,
-    #[error("Invalid property data: Property {type_name}.{prop_name} was expected to be {valid_value}, but it was {actual_value}")]
-    InvalidPropData {
-        type_name: String,
-        prop_name: String,
-        valid_value: &'static str,
-        actual_value: String,
-    },
-    #[error(
-        "Type mismatch: Property {type_name}.{prop_name} should be {valid_type_names}, but it was {actual_type_name}",
-    )]
-    PropTypeMismatch {
-        type_name: String,
-        prop_name: String,
-        valid_type_names: &'static str,
-        actual_type_name: String,
-    },
-    #[error("Invalid property data: CFrame property {type_name}.{prop_name} had an invalid rotation ID {id:02x}")]
-    BadRotationId {
-        type_name: String,
-        prop_name: String,
-        id: u8,
-    },
-    #[error("'PhysicalProperties' discriminator {0:b} is not supported")]
-    BadPhysicalPropertiesType(u8),
-    #[error("Expected type id for {expected_type_name} ({expected_type_id:02x}) when reading OptionalCFrame; got {actual_type_id:02x}")]
-    BadOptionalCFrameFormat {
-        expected_type_name: String,
-        expected_type_id: u8,
-        actual_type_id: u8,
-    },
-
-    #[error("'Content' type {0} is not implemented")]
-    BadContentType(i32),
 }
 
-struct PropChunk<'db> {
-    type_id: u32,
-    canonical_property: CanonicalProperty<'db>,
-    values: Vec<Variant>,
+pub struct PropChunk<'a> {
+    pub type_id: u32,
+    pub canonical_property: CanonicalProperty<'a>,
+    pub values: Vec<Variant>,
 }
 
 impl<'db> PropChunk<'db> {
@@ -128,10 +126,10 @@ impl<'db> PropChunk<'db> {
         canonical_property: CanonicalProperty<'db>,
         len: usize,
         f: F,
-    ) -> Result<Self, PropChunkError>
+    ) -> Result<Self, InnerError>
     where
         V: Into<Variant>,
-        F: FnMut() -> Result<V, PropChunkError>,
+        F: FnMut() -> Result<V, InnerError>,
     {
         // helper to create value iterators
         struct SomeFromFn<F> {
@@ -160,7 +158,7 @@ impl<'db> PropChunk<'db> {
 
         let values = SomeFromFn { f, len }
             .map(|result| result.map(Into::into))
-            .collect::<Result<Vec<Variant>, PropChunkError>>()?;
+            .collect::<Result<Vec<Variant>, InnerError>>()?;
 
         Ok(Self {
             type_id,
@@ -369,14 +367,14 @@ mod tab_saver {
         type_infos: &TypeInfos<'de>,
         shared_strings: &[SharedString],
         ref_by_id: &HashMap<i32, Ref>,
-    ) -> Result<PropChunk<'a>, PropChunkError> {
+    ) -> Result<PropChunkResult<'a>, InnerError> {
         let type_id = chunk.read_le_u32()?;
         let prop_name = chunk.read_string()?;
 
         // TODO: collect prop chunk results first, then assemble into TypeInfos
         let type_info = type_infos
             .get(&type_id)
-            .ok_or(PropChunkError::InvalidTypeId { type_id })?;
+            .ok_or(InnerError::InvalidTypeId { type_id })?;
 
         let type_name = type_info.type_name;
         let class_descriptor = type_info.class_descriptor;
@@ -391,12 +389,18 @@ mod tab_saver {
         // that end immediately after the prop name, so we do the same.
         let binary_type_byte = match chunk.read_u8() {
             Ok(byte) => byte,
-            Err(_) => return Err(PropChunkError::MissingTypeByte),
+            Err(_) => return Ok(PropChunkResult::MissingTypeByte),
         };
 
         let binary_type: Type = match binary_type_byte.try_into() {
             Ok(ty) => ty,
-            Err(_) => return Err(PropChunkError::UnknownBinaryType { binary_type_byte }),
+            Err(_) => {
+                return Ok(PropChunkResult::UnknownBinaryType {
+                    type_name,
+                    prop_name,
+                    binary_type_byte,
+                })
+            }
         };
 
         log::trace!(
@@ -412,7 +416,7 @@ mod tab_saver {
         {
             property
         } else {
-            return Err(PropChunkError::UnknownProperty);
+            return Ok(PropChunkResult::UnknownProperty);
         };
 
         // The `Name` prop is special and is routed to a different spot for
@@ -437,7 +441,7 @@ This may cause unexpected or broken behavior in your final results if you rely o
                         String::from_utf8_lossy(binary_string).into_owned()
                     }
                 })
-            });
+            }).map(PropChunkResult::PropChunk);
         }
 
         let canonical_type = property.ty;
@@ -474,13 +478,12 @@ This may cause unexpected or broken behavior in your final results if you rely o
                 VariantType::Tags => PropChunk::from_fn(type_id, property, num_instances, || {
                     let buffer = chunk.read_binary_string()?;
 
-                    let value =
-                        Tags::decode(buffer).map_err(|_| PropChunkError::InvalidPropData {
-                            type_name: type_name.to_string(),
-                            prop_name: prop_name.to_owned(),
-                            valid_value: "a list of valid null-delimited UTF-8 strings",
-                            actual_value: "invalid UTF-8".to_string(),
-                        })?;
+                    let value = Tags::decode(buffer).map_err(|_| InnerError::InvalidPropData {
+                        type_name: type_name.to_string(),
+                        prop_name: prop_name.to_owned(),
+                        valid_value: "a list of valid null-delimited UTF-8 strings",
+                        actual_value: "invalid UTF-8".to_string(),
+                    })?;
 
                     Ok(value)
                 }),
@@ -523,7 +526,7 @@ rbx-dom may require changes to fully support this property. Please open an issue
                     })
                 }
                 invalid_type => {
-                    return Err(PropChunkError::PropTypeMismatch {
+                    return Err(InnerError::PropTypeMismatch {
                         type_name: type_name.to_string(),
                         prop_name: prop_name.to_owned(),
                         valid_type_names:
@@ -537,7 +540,7 @@ rbx-dom may require changes to fully support this property. Please open an issue
                     PropChunk::from_fn(type_id, property, num_instances, || Ok(chunk.read_bool()?))
                 }
                 invalid_type => {
-                    return Err(PropChunkError::PropTypeMismatch {
+                    return Err(InnerError::PropTypeMismatch {
                         type_name: type_name.to_string(),
                         prop_name: prop_name.to_owned(),
                         valid_type_names: "Bool",
@@ -562,7 +565,7 @@ rbx-dom may require changes to fully support this property. Please open an issue
                         .map(i64::from),
                 )),
                 invalid_type => {
-                    return Err(PropChunkError::PropTypeMismatch {
+                    return Err(InnerError::PropTypeMismatch {
                         type_name: type_name.to_string(),
                         prop_name: prop_name.to_owned(),
                         valid_type_names: "Int32",
@@ -577,7 +580,7 @@ rbx-dom may require changes to fully support this property. Please open an issue
                     chunk.read_interleaved_f32_array(num_instances)?,
                 )),
                 invalid_type => {
-                    return Err(PropChunkError::PropTypeMismatch {
+                    return Err(InnerError::PropTypeMismatch {
                         type_name: type_name.to_string(),
                         prop_name: prop_name.to_owned(),
                         valid_type_names: "Float32",
@@ -603,7 +606,7 @@ rbx-dom may require changes to fully support this property. Please open an issue
                         .map(f64::from),
                 )),
                 invalid_type => {
-                    return Err(PropChunkError::PropTypeMismatch {
+                    return Err(InnerError::PropTypeMismatch {
                         type_name: type_name.to_string(),
                         prop_name: prop_name.to_owned(),
                         valid_type_names: "Float64",
@@ -623,7 +626,7 @@ rbx-dom may require changes to fully support this property. Please open an issue
                     Ok(PropChunk::from_iter(type_id, property, values))
                 }
                 invalid_type => {
-                    return Err(PropChunkError::PropTypeMismatch {
+                    return Err(InnerError::PropTypeMismatch {
                         type_name: type_name.to_string(),
                         prop_name: prop_name.to_owned(),
                         valid_type_names: "UDim",
@@ -652,7 +655,7 @@ rbx-dom may require changes to fully support this property. Please open an issue
                     Ok(PropChunk::from_iter(type_id, property, values))
                 }
                 invalid_type => {
-                    return Err(PropChunkError::PropTypeMismatch {
+                    return Err(InnerError::PropTypeMismatch {
                         type_name: type_name.to_string(),
                         prop_name: prop_name.to_owned(),
                         valid_type_names: "UDim2",
@@ -675,7 +678,7 @@ rbx-dom may require changes to fully support this property. Please open an issue
                     ))
                 }),
                 invalid_type => {
-                    return Err(PropChunkError::PropTypeMismatch {
+                    return Err(InnerError::PropTypeMismatch {
                         type_name: type_name.to_string(),
                         prop_name: prop_name.to_owned(),
                         valid_type_names: "Ray",
@@ -687,7 +690,7 @@ rbx-dom may require changes to fully support this property. Please open an issue
                 VariantType::Faces => PropChunk::from_fn(type_id, property, num_instances, || {
                     let value = chunk.read_u8()?;
                     let faces =
-                        Faces::from_bits(value).ok_or_else(|| PropChunkError::InvalidPropData {
+                        Faces::from_bits(value).ok_or_else(|| InnerError::InvalidPropData {
                             type_name: type_name.to_string(),
                             prop_name: prop_name.to_owned(),
                             valid_value: "less than 63",
@@ -697,7 +700,7 @@ rbx-dom may require changes to fully support this property. Please open an issue
                     Ok(faces)
                 }),
                 invalid_type => {
-                    return Err(PropChunkError::PropTypeMismatch {
+                    return Err(InnerError::PropTypeMismatch {
                         type_name: type_name.to_string(),
                         prop_name: prop_name.to_owned(),
                         valid_type_names: "Faces",
@@ -710,7 +713,7 @@ rbx-dom may require changes to fully support this property. Please open an issue
                     let value = chunk.read_u8()?;
 
                     let axes =
-                        Axes::from_bits(value).ok_or_else(|| PropChunkError::InvalidPropData {
+                        Axes::from_bits(value).ok_or_else(|| InnerError::InvalidPropData {
                             type_name: type_name.to_string(),
                             prop_name: prop_name.to_owned(),
                             valid_value: "less than 7",
@@ -720,7 +723,7 @@ rbx-dom may require changes to fully support this property. Please open an issue
                     Ok(axes)
                 }),
                 invalid_type => {
-                    return Err(PropChunkError::PropTypeMismatch {
+                    return Err(InnerError::PropTypeMismatch {
                         type_name: type_name.to_string(),
                         prop_name: prop_name.to_owned(),
                         valid_type_names: "Axes",
@@ -738,7 +741,7 @@ rbx-dom may require changes to fully support this property. Please open an issue
                             .try_into()
                             .ok()
                             .and_then(BrickColor::from_number)
-                            .ok_or_else(|| PropChunkError::InvalidPropData {
+                            .ok_or_else(|| InnerError::InvalidPropData {
                                 type_name: type_name.to_string(),
                                 prop_name: prop_name.to_owned(),
                                 valid_value: "a valid BrickColor",
@@ -749,7 +752,7 @@ rbx-dom may require changes to fully support this property. Please open an issue
                     })
                 }
                 invalid_type => {
-                    return Err(PropChunkError::PropTypeMismatch {
+                    return Err(InnerError::PropTypeMismatch {
                         type_name: type_name.to_string(),
                         prop_name: prop_name.to_owned(),
                         valid_type_names: "BrickColor",
@@ -768,7 +771,7 @@ rbx-dom may require changes to fully support this property. Please open an issue
                     Ok(PropChunk::from_iter(type_id, property, values))
                 }
                 invalid_type => {
-                    return Err(PropChunkError::PropTypeMismatch {
+                    return Err(InnerError::PropTypeMismatch {
                         type_name: type_name.to_string(),
                         prop_name: prop_name.to_owned(),
                         valid_type_names: "Color3",
@@ -786,7 +789,7 @@ rbx-dom may require changes to fully support this property. Please open an issue
                     Ok(PropChunk::from_iter(type_id, property, values))
                 }
                 invalid_type => {
-                    return Err(PropChunkError::PropTypeMismatch {
+                    return Err(InnerError::PropTypeMismatch {
                         type_name: type_name.to_string(),
                         prop_name: prop_name.to_owned(),
                         valid_type_names: "Vector2",
@@ -805,7 +808,7 @@ rbx-dom may require changes to fully support this property. Please open an issue
                     Ok(PropChunk::from_iter(type_id, property, values))
                 }
                 invalid_type => {
-                    return Err(PropChunkError::PropTypeMismatch {
+                    return Err(InnerError::PropTypeMismatch {
                         type_name: type_name.to_string(),
                         prop_name: prop_name.to_owned(),
                         valid_type_names: "Vector3",
@@ -840,7 +843,7 @@ rbx-dom may require changes to fully support this property. Please open an issue
                         } else if let Ok(basic_rotation) = Matrix3::from_basic_rotation_id(id) {
                             rotations.push(basic_rotation);
                         } else {
-                            return Err(PropChunkError::BadRotationId {
+                            return Err(InnerError::BadRotationId {
                                 type_name: type_name.to_string(),
                                 prop_name: prop_name.to_owned(),
                                 id,
@@ -862,7 +865,7 @@ rbx-dom may require changes to fully support this property. Please open an issue
                     Ok(PropChunk::from_iter(type_id, property, values))
                 }
                 invalid_type => {
-                    return Err(PropChunkError::PropTypeMismatch {
+                    return Err(InnerError::PropTypeMismatch {
                         type_name: type_name.to_string(),
                         prop_name: prop_name.to_owned(),
                         valid_type_names: "CFrame",
@@ -879,7 +882,7 @@ rbx-dom may require changes to fully support this property. Please open an issue
                     Ok(PropChunk::from_iter(type_id, property, values))
                 }
                 invalid_type => {
-                    return Err(PropChunkError::PropTypeMismatch {
+                    return Err(InnerError::PropTypeMismatch {
                         type_name: type_name.to_string(),
                         prop_name: prop_name.to_owned(),
                         valid_type_names: "Enum",
@@ -896,7 +899,7 @@ rbx-dom may require changes to fully support this property. Please open an issue
                     Ok(PropChunk::from_iter(type_id, property, values))
                 }
                 invalid_type => {
-                    return Err(PropChunkError::PropTypeMismatch {
+                    return Err(InnerError::PropTypeMismatch {
                         type_name: type_name.to_string(),
                         prop_name: prop_name.to_owned(),
                         valid_type_names: "Ref",
@@ -915,7 +918,7 @@ rbx-dom may require changes to fully support this property. Please open an issue
                     })
                 }
                 invalid_type => {
-                    return Err(PropChunkError::PropTypeMismatch {
+                    return Err(InnerError::PropTypeMismatch {
                         type_name: type_name.to_string(),
                         prop_name: prop_name.to_owned(),
                         valid_type_names: "Vector3int16",
@@ -944,7 +947,7 @@ rbx-dom may require changes to fully support this property. Please open an issue
                     })
                 }),
                 invalid_type => {
-                    return Err(PropChunkError::PropTypeMismatch {
+                    return Err(InnerError::PropTypeMismatch {
                         type_name: type_name.to_string(),
                         prop_name: prop_name.to_owned(),
                         valid_type_names: "Font",
@@ -970,7 +973,7 @@ rbx-dom may require changes to fully support this property. Please open an issue
                     })
                 }
                 invalid_type => {
-                    return Err(PropChunkError::PropTypeMismatch {
+                    return Err(InnerError::PropTypeMismatch {
                         type_name: type_name.to_string(),
                         prop_name: prop_name.to_owned(),
                         valid_type_names: "NumberSequence",
@@ -1002,7 +1005,7 @@ rbx-dom may require changes to fully support this property. Please open an issue
                     })
                 }
                 invalid_type => {
-                    return Err(PropChunkError::PropTypeMismatch {
+                    return Err(InnerError::PropTypeMismatch {
                         type_name: type_name.to_string(),
                         prop_name: prop_name.to_owned(),
                         valid_type_names: "ColorSequence",
@@ -1017,7 +1020,7 @@ rbx-dom may require changes to fully support this property. Please open an issue
                     })
                 }
                 invalid_type => {
-                    return Err(PropChunkError::PropTypeMismatch {
+                    return Err(InnerError::PropTypeMismatch {
                         type_name: type_name.to_string(),
                         prop_name: prop_name.to_owned(),
                         valid_type_names: "NumberRange",
@@ -1042,7 +1045,7 @@ rbx-dom may require changes to fully support this property. Please open an issue
                     Ok(PropChunk::from_iter(type_id, property, values))
                 }
                 invalid_type => {
-                    return Err(PropChunkError::PropTypeMismatch {
+                    return Err(InnerError::PropTypeMismatch {
                         type_name: type_name.to_string(),
                         prop_name: prop_name.to_owned(),
                         valid_type_names: "Rect",
@@ -1076,18 +1079,14 @@ rbx-dom may require changes to fully support this property. Please open an issue
                                     chunk.read_le_f32()?,
                                 ),
                             )),
-                            _ => {
-                                return Err(PropChunkError::BadPhysicalPropertiesType(
-                                    discriminator,
-                                ))
-                            }
+                            _ => return Err(InnerError::BadPhysicalPropertiesType(discriminator)),
                         };
 
                         Ok(value)
                     })
                 }
                 invalid_type => {
-                    return Err(PropChunkError::PropTypeMismatch {
+                    return Err(InnerError::PropTypeMismatch {
                         type_name: type_name.to_string(),
                         prop_name: prop_name.to_owned(),
                         valid_type_names: "PhysicalProperties",
@@ -1111,7 +1110,7 @@ rbx-dom may require changes to fully support this property. Please open an issue
                     Ok(PropChunk::from_iter(type_id, property, values))
                 }
                 invalid_type => {
-                    return Err(PropChunkError::PropTypeMismatch {
+                    return Err(InnerError::PropTypeMismatch {
                         type_name: type_name.to_string(),
                         prop_name: prop_name.to_owned(),
                         valid_type_names: "Color3",
@@ -1126,7 +1125,7 @@ rbx-dom may require changes to fully support this property. Please open an issue
                     Ok(PropChunk::from_iter(type_id, property, values))
                 }
                 invalid_type => {
-                    return Err(PropChunkError::PropTypeMismatch {
+                    return Err(InnerError::PropTypeMismatch {
                         type_name: type_name.to_string(),
                         prop_name: prop_name.to_owned(),
                         valid_type_names: "Int64",
@@ -1142,7 +1141,7 @@ rbx-dom may require changes to fully support this property. Please open an issue
                         let value = values.next().unwrap();
                         let shared_string =
                             shared_strings.get(value as usize).ok_or_else(|| {
-                                PropChunkError::InvalidPropData {
+                                InnerError::InvalidPropData {
                                     type_name: type_name.to_string(),
                                     prop_name: prop_name.to_owned(),
                                     valid_value: "a valid SharedString",
@@ -1161,7 +1160,7 @@ rbx-dom may require changes to fully support this property. Please open an issue
                         let net_asset = NetAssetRef::from(
                             shared_strings
                                 .get(value as usize)
-                                .ok_or_else(|| PropChunkError::InvalidPropData {
+                                .ok_or_else(|| InnerError::InvalidPropData {
                                     type_name: type_name.to_string(),
                                     prop_name: prop_name.to_owned(),
                                     valid_value: "a valid NetAssetRef",
@@ -1174,7 +1173,7 @@ rbx-dom may require changes to fully support this property. Please open an issue
                     })
                 }
                 invalid_type => {
-                    return Err(PropChunkError::PropTypeMismatch {
+                    return Err(InnerError::PropTypeMismatch {
                         type_name: type_name.to_string(),
                         prop_name: prop_name.to_owned(),
                         valid_type_names: "SharedString",
@@ -1191,7 +1190,7 @@ rbx-dom may require changes to fully support this property. Please open an issue
                     // in case we're wrong and we do need it!
                     let actual_type_id = chunk.read_u8()?;
                     if actual_type_id != Type::CFrame as u8 {
-                        return Err(PropChunkError::BadOptionalCFrameFormat {
+                        return Err(InnerError::BadOptionalCFrameFormat {
                             expected_type_name: String::from("CFrame"),
                             expected_type_id: Type::CFrame as u8,
                             actual_type_id,
@@ -1221,7 +1220,7 @@ rbx-dom may require changes to fully support this property. Please open an issue
                         } else if let Ok(basic_rotation) = Matrix3::from_basic_rotation_id(id) {
                             rotations.push(basic_rotation);
                         } else {
-                            return Err(PropChunkError::BadRotationId {
+                            return Err(InnerError::BadRotationId {
                                 type_name: type_name.to_string(),
                                 prop_name: prop_name.to_owned(),
                                 id,
@@ -1238,7 +1237,7 @@ rbx-dom may require changes to fully support this property. Please open an issue
                     // in case we're wrong and we do need it!
                     let actual_type_id = chunk.read_u8()?;
                     if actual_type_id != Type::Bool as u8 {
-                        return Err(PropChunkError::BadOptionalCFrameFormat {
+                        return Err(InnerError::BadOptionalCFrameFormat {
                             expected_type_name: String::from("Bool"),
                             expected_type_id: Type::Bool as u8,
                             actual_type_id,
@@ -1264,7 +1263,7 @@ rbx-dom may require changes to fully support this property. Please open an issue
                     Ok(PropChunk::from_iter(type_id, property, values))
                 }
                 invalid_type => {
-                    return Err(PropChunkError::PropTypeMismatch {
+                    return Err(InnerError::PropTypeMismatch {
                         type_name: type_name.to_string(),
                         prop_name: prop_name.to_owned(),
                         valid_type_names: "OptionalCFrame",
@@ -1287,7 +1286,7 @@ rbx-dom may require changes to fully support this property. Please open an issue
                     Ok(PropChunk::from_iter(type_id, property, values))
                 }
                 invalid_type => {
-                    return Err(PropChunkError::PropTypeMismatch {
+                    return Err(InnerError::PropTypeMismatch {
                         type_name: type_name.to_string(),
                         prop_name: prop_name.to_owned(),
                         valid_type_names: "UniqueId",
@@ -1304,7 +1303,7 @@ rbx-dom may require changes to fully support this property. Please open an issue
                     Ok(PropChunk::from_iter(type_id, property, values))
                 }
                 invalid_type => {
-                    return Err(PropChunkError::PropTypeMismatch {
+                    return Err(InnerError::PropTypeMismatch {
                         type_name: type_name.to_string(),
                         prop_name: prop_name.to_owned(),
                         valid_type_names: "SecurityCapabilities",
@@ -1344,13 +1343,13 @@ rbx-dom may require changes to fully support this property. Please open an issue
                                     Content::none()
                                 }
                             }
-                            n => return Err(PropChunkError::BadContentType(n)),
+                            n => return Err(InnerError::BadContentType(n)),
                         };
                         Ok(value)
                     })
                 }
                 invalid_type => {
-                    return Err(PropChunkError::PropTypeMismatch {
+                    return Err(InnerError::PropTypeMismatch {
                         type_name: type_name.to_string(),
                         prop_name: prop_name.to_owned(),
                         valid_type_names: "Content",
@@ -1358,7 +1357,7 @@ rbx-dom may require changes to fully support this property. Please open an issue
                     });
                 }
             },
-        }
+        }.map(PropChunkResult::PropChunk)
     }
 
     #[profiling::function]
