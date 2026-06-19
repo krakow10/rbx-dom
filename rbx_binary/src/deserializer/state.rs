@@ -67,6 +67,7 @@ struct Instance {
     name: String,
 }
 
+// TODO: rethink this, really only MissingTypeByte, UnknownProperty are necessary.  They are eventually ignored and become None
 #[derive(Debug, thiserror::Error)]
 enum PropChunkError {
     #[error("Io Error: {0}")]
@@ -109,6 +110,9 @@ enum PropChunkError {
         expected_type_id: u8,
         actual_type_id: u8,
     },
+
+    #[error("'Content' type {0} is not implemented")]
+    BadContentType(i32),
 }
 
 struct PropChunk<'db> {
@@ -684,7 +688,8 @@ rbx-dom may require changes to fully support this property. Please open an issue
                 VariantType::BrickColor => {
                     let values = chunk.read_interleaved_u32_array(num_instances)?;
 
-                    for (value, instance) in values.zip(instances) {
+                    PropChunk::from_fn(type_id, property, || {
+                        let value = values.next().unwrap();
                         let color = value
                             .try_into()
                             .ok()
@@ -696,8 +701,8 @@ rbx-dom may require changes to fully support this property. Please open an issue
                                 actual_value: value.to_string(),
                             })?;
 
-                        add_property(instance, &property, color.into());
-                    }
+                        Ok(color)
+                    })
                 }
                 invalid_type => {
                     return Err(PropChunkError::PropTypeMismatch {
@@ -1080,6 +1085,7 @@ rbx-dom may require changes to fully support this property. Please open an issue
                     let values = chunk.read_interleaved_u32_array(num_instances)?;
 
                     PropChunk::from_fn(type_id, property, || {
+                        let value = values.next().unwrap();
                         let shared_string =
                             shared_strings.get(value as usize).ok_or_else(|| {
                                 PropChunkError::InvalidPropData {
@@ -1097,6 +1103,7 @@ rbx-dom may require changes to fully support this property. Please open an issue
                     let values = chunk.read_interleaved_u32_array(num_instances)?;
 
                     PropChunk::from_fn(type_id, property, || {
+                        let value = values.next().unwrap();
                         let net_asset = NetAssetRef::from(
                             shared_strings
                                 .get(value as usize)
@@ -1184,22 +1191,23 @@ rbx-dom may require changes to fully support this property. Please open an issue
                         });
                     }
 
+                    let markers = chunk.read_slice(num_instances)?;
+
                     let values = x
                         .zip(y)
                         .zip(z)
                         .map(|((x, y), z)| Vector3::new(x, y, z))
                         .zip(rotations)
-                        .map(|(position, rotation)| {
-                            Ok(if chunk.read_u8()? == 0 {
+                        .zip(markers.iter().copied())
+                        .map(|((position, rotation), marker)| {
+                            if marker == 0 {
                                 None
                             } else {
                                 Some(CFrame::new(position, rotation))
-                            })
+                            }
                         });
 
-                    for (value, instance) in values.zip(instances) {
-                        add_property(instance, &property, value.into());
-                    }
+                    Ok(PropChunk::from_iter(type_id, property, values))
                 }
                 invalid_type => {
                     return Err(PropChunkError::PropTypeMismatch {
@@ -1213,21 +1221,16 @@ rbx-dom may require changes to fully support this property. Please open an issue
             Type::UniqueId => match canonical_type {
                 VariantType::UniqueId => {
                     let n = num_instances;
-                    let values = chunk.read_interleaved_bytes::<16>(n)?;
-
-                    for (value, instance) in values.zip(instances) {
+                    let values = chunk.read_interleaved_bytes::<16>(n)?.map(|value| {
                         let mut value = value.as_slice();
-                        add_property(
-                            instance,
-                            &property,
-                            UniqueId::new(
-                                value.read_be_u32()?,
-                                value.read_be_u32()?,
-                                value.read_be_i64()?.rotate_right(1),
-                            )
-                            .into(),
+                        UniqueId::new(
+                            value.read_be_u32().unwrap(),
+                            value.read_be_u32().unwrap(),
+                            value.read_be_i64().unwrap().rotate_right(1),
                         )
-                    }
+                    });
+
+                    Ok(PropChunk::from_iter(type_id, property, values))
                 }
                 invalid_type => {
                     return Err(PropChunkError::PropTypeMismatch {
@@ -1244,9 +1247,7 @@ rbx-dom may require changes to fully support this property. Please open an issue
 
                     let values = values.map(|value| SecurityCapabilities::from_bits(value as u64));
 
-                    for (value, instance) in values.zip(instances) {
-                        add_property(instance, &property, value.into())
-                    }
+                    Ok(PropChunk::from_iter(type_id, property, values))
                 }
                 invalid_type => {
                     return Err(PropChunkError::PropTypeMismatch {
@@ -1277,22 +1278,22 @@ rbx-dom may require changes to fully support this property. Please open an issue
                     // future, it's a referent array.
                     let _bytes = chunk.read_slice(external_count * 4)?;
 
-                    for (ty, instance) in values.zip(instances) {
-                        let value = match ty {
+                    PropChunk::from_fn(type_id, property, || {
+                        let value = match values.next().unwrap() {
                             0 => Content::none(),
                             1 => Content::from_uri(uris.pop_back().unwrap()),
                             2 => {
                                 let read_value = objects.pop_back().unwrap();
-                                if let Some(key) = self.instance_key_by_ref.get(&read_value) {
+                                if let Some(key) = instance_key_by_ref.get(&read_value) {
                                     Content::from_referent(key.referent)
                                 } else {
                                     Content::none()
                                 }
                             }
-                            n => return Err(InnerError::BadContentType(n)),
+                            n => return Err(PropChunkError::BadContentType(n)),
                         };
-                        add_property(instance, &property, value.into())
-                    }
+                        Ok(value)
+                    })
                 }
                 invalid_type => {
                     return Err(PropChunkError::PropTypeMismatch {
@@ -1304,8 +1305,6 @@ rbx-dom may require changes to fully support this property. Please open an issue
                 }
             },
         }
-
-        Ok(())
     }
 
     #[profiling::function]
