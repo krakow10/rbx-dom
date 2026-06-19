@@ -19,7 +19,7 @@ pub(crate) use self::header::FileHeader;
 pub use self::error::Error;
 
 #[cfg(feature = "rayon")]
-use rayon::iter::{IntoParallelIterator, ParallelIterator};
+use rayon::iter::{IntoParallelIterator, IntoParallelRefIterator, ParallelIterator};
 
 /// A configurable deserializer for Roblox binary models and places.
 ///
@@ -93,8 +93,7 @@ impl<'db> Deserializer<'db> {
 
         // Do the rest of the preparation work for parallel decoding
         let mut type_infos = HashMap::with_capacity(header.num_types as usize);
-        let root_instance_refs = Vec::new();
-        let unknown_type_ids = HashSet::new();
+        // let root_instance_refs = Vec::new();
 
         // Metadata is not used by rbx_binary.
         // if let Some(chunk) = chunks.meta {
@@ -112,23 +111,27 @@ impl<'db> Deserializer<'db> {
         }
 
         let database = self.database;
-        let prop_chunks: Vec<_> = chunks
-            .prop
-            .into_par_iter()
-            .map(|chunk| {
-                decode_prop_chunk(&chunk, database, &type_infos, &shared_strings, &instances)
-            })
-            .collect();
+        #[cfg(feature = "rayon")]
+        let prop_chunks = chunks.prop.par_iter();
+        #[cfg(not(feature = "rayon"))]
+        let prop_chunks = chunks.prop.iter();
+        let prop_chunks = prop_chunks.map(|chunk| {
+            decode_prop_chunk(chunk, database, &type_infos, &shared_strings, &instances)
+        });
+        #[cfg(feature = "rayon")]
+        let prop_chunks: Vec<_> = prop_chunks.collect();
 
         let mut unknown_type_ids = HashSet::new();
-
         for prop_chunk in prop_chunks {
             match prop_chunk? {
                 PropChunkResult::PropChunk(PropChunk {
                     type_id,
                     canonical_property,
                     values,
-                }) => type_infos[&type_id].add_properties(canonical_property, values),
+                }) => type_infos
+                    .get_mut(&type_id)
+                    .unwrap()
+                    .add_properties(canonical_property, values),
                 PropChunkResult::UnknownBinaryType {
                     type_name,
                     prop_name,
