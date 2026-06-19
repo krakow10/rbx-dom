@@ -67,12 +67,6 @@ struct Instance {
     name: String,
 }
 
-struct PropChunk<'a> {
-    type_id: u32,
-    prop_name: &'a str,
-    values: Vec<Variant>,
-}
-
 #[derive(Debug, thiserror::Error)]
 enum PropChunkError {
     #[error("Io Error: {0}")]
@@ -85,6 +79,74 @@ enum PropChunkError {
     UnknownBinaryType { binary_type_byte: u8 },
     #[error("Unknown Property")]
     UnknownProperty,
+    #[error("Invalid property data: Property {type_name}.{prop_name} was expected to be {valid_value}, but it was {actual_value}")]
+    InvalidPropData {
+        type_name: String,
+        prop_name: String,
+        valid_value: &'static str,
+        actual_value: String,
+    },
+    #[error(
+        "Type mismatch: Property {type_name}.{prop_name} should be {valid_type_names}, but it was {actual_type_name}",
+    )]
+    PropTypeMismatch {
+        type_name: String,
+        prop_name: String,
+        valid_type_names: &'static str,
+        actual_type_name: String,
+    },
+    #[error("Invalid property data: CFrame property {type_name}.{prop_name} had an invalid rotation ID {id:02x}")]
+    BadRotationId {
+        type_name: String,
+        prop_name: String,
+        id: u8,
+    },
+    #[error("'PhysicalProperties' discriminator {0:b} is not supported")]
+    BadPhysicalPropertiesType(u8),
+    #[error("Expected type id for {expected_type_name} ({expected_type_id:02x}) when reading OptionalCFrame; got {actual_type_id:02x}")]
+    BadOptionalCFrameFormat {
+        expected_type_name: String,
+        expected_type_id: u8,
+        actual_type_id: u8,
+    },
+}
+
+struct PropChunk<'db> {
+    type_id: u32,
+    canonical_property: CanonicalProperty<'db>,
+    values: Vec<Variant>,
+}
+
+impl<'db> PropChunk<'db> {
+    /// Generate a property chunk given a function that generates property values.
+    fn from_fn<V, F>(
+        type_id: u32,
+        canonical_property: CanonicalProperty<'db>,
+        f: F,
+    ) -> Result<Self, PropChunkError>
+    where
+        V: Into<Variant>,
+        F: FnMut() -> Result<V, PropChunkError>,
+    {
+        Ok(Self {
+            type_id,
+            canonical_property,
+            values,
+        })
+    }
+    /// Generate a property chunk from an infallible iterator
+    fn from_iter<V, I>(type_id: u32, canonical_property: CanonicalProperty<'db>, values: I) -> Self
+    where
+        V: Into<Variant>,
+        I: IntoIterator<Item = V, IntoIter: ExactSizeIterator>,
+    {
+        let values = values.into_iter().map(Into::into).collect();
+        Self {
+            type_id,
+            canonical_property,
+            values,
+        }
+    }
 }
 
 /// Properties may be serialized under different names or types than
@@ -308,40 +370,7 @@ mod tab_saver {
             type_id
         );
 
-        // The `Name` prop is special and is routed to a different spot for
-        // rbx_dom_weak, so we handle it specially here.
-        if prop_name == "Name" {
-            // TODO: If an instance is never assigned a name through this code
-            // path, we should use the reflection database to figure out its
-            // default name. This should be rare: effectively never!
-
-            let values = (0..num_instances)
-                .map(|_| {
-                    let binary_string = chunk.read_binary_string()?;
-                    Ok(match std::str::from_utf8(binary_string) {
-                        Ok(value) => value.to_owned(),
-                        Err(_) => {
-                            log::warn!(
-                                "Performing lossy string conversion on property {}.{} because it did not contain UTF-8.
-This may cause unexpected or broken behavior in your final results if you rely on this property being non UTF-8.",
-                                type_name,
-                                prop_name
-                            );
-
-                            String::from_utf8_lossy(binary_string).into_owned()
-                        }
-                    }
-                    .into())
-                })
-                .collect::<Result<Vec<_>, std::io::Error>>()?;
-
-            return Ok(PropChunk {
-                values,
-                type_id,
-                prop_name,
-            });
-        }
-
+        // TODO: figure out how to skip this for Name property
         let property = if let Some(property) =
             find_canonical_property(database, binary_type, class_descriptor, prop_name)
         {
@@ -350,90 +379,93 @@ This may cause unexpected or broken behavior in your final results if you rely o
             return Err(PropChunkError::UnknownProperty);
         };
 
+        // The `Name` prop is special and is routed to a different spot for
+        // rbx_dom_weak, so we handle it specially here.
+        if prop_name == "Name" {
+            // TODO: If an instance is never assigned a name through this code
+            // path, we should use the reflection database to figure out its
+            // default name. This should be rare: effectively never!
+
+            return PropChunk::from_fn(type_id, property, || {
+                let binary_string = chunk.read_binary_string()?;
+                Ok(match std::str::from_utf8(binary_string) {
+                    Ok(value) => value.to_owned(),
+                    Err(_) => {
+                        log::warn!(
+                            "Performing lossy string conversion on property {}.{} because it did not contain UTF-8.
+This may cause unexpected or broken behavior in your final results if you rely on this property being non UTF-8.",
+                                type_name,
+                                prop_name
+                            );
+
+                        String::from_utf8_lossy(binary_string).into_owned()
+                    }
+                })
+            });
+        }
+
         let canonical_type = property.ty;
 
         match binary_type {
             Type::String => match canonical_type {
-                VariantType::String => {
-                    for instance in instances {
-                        let binary_string = chunk.read_binary_string()?;
-                        let value = match std::str::from_utf8(binary_string) {
-                            Ok(value) => Cow::Borrowed(value),
-                            Err(_) => {
-                                log::warn!(
+                VariantType::String => PropChunk::from_fn(type_id, property, || {
+                    let binary_string = chunk.read_binary_string()?;
+                    Ok(match std::str::from_utf8(binary_string) {
+                        Ok(value) => value.to_owned(),
+                        Err(_) => {
+                            log::warn!(
                             "Performing lossy string conversion on property {}.{} because it did not contain UTF-8.
 This may cause unexpected or broken behavior in your final results if you rely on this property being non UTF-8.",
                                     type_name,
                                     property.name
                                 );
 
-                                String::from_utf8_lossy(binary_string)
-                            }
-                        };
+                            String::from_utf8_lossy(binary_string).into_owned()
+                        }
+                    })
+                }),
+                VariantType::ContentId => PropChunk::from_fn(type_id, property, || {
+                    Ok(ContentId::from(chunk.read_string()?.to_owned()))
+                }),
+                VariantType::BinaryString => PropChunk::from_fn(type_id, property, || {
+                    Ok(BinaryString::from(chunk.read_binary_string()?.to_owned()))
+                }),
+                VariantType::Tags => PropChunk::from_fn(type_id, property, || {
+                    let buffer = chunk.read_binary_string()?;
 
-                        add_property(instance, &property, value.as_ref().into());
-                    }
-                }
-                VariantType::ContentId => {
-                    for instance in instances {
-                        let value = chunk.read_string()?.to_owned();
-                        add_property(instance, &property, ContentId::from(value).into());
-                    }
-                }
-                VariantType::BinaryString => {
-                    for instance in instances {
-                        let value: BinaryString = chunk.read_binary_string()?.to_owned().into();
-                        add_property(instance, &property, value.into());
-                    }
-                }
-                VariantType::Tags => {
-                    for instance in instances {
-                        let buffer = chunk.read_binary_string()?;
+                    let value =
+                        Tags::decode(buffer).map_err(|_| PropChunkError::InvalidPropData {
+                            type_name: type_name.to_string(),
+                            prop_name: prop_name.to_owned(),
+                            valid_value: "a list of valid null-delimited UTF-8 strings",
+                            actual_value: "invalid UTF-8".to_string(),
+                        })?;
 
-                        let value =
-                            Tags::decode(buffer).map_err(|_| InnerError::InvalidPropData {
-                                type_name: type_name.to_string(),
-                                prop_name: prop_name.to_owned(),
-                                valid_value: "a list of valid null-delimited UTF-8 strings",
-                                actual_value: "invalid UTF-8".to_string(),
-                            })?;
+                    Ok(value)
+                }),
+                VariantType::Attributes => PropChunk::from_fn(type_id, property, || {
+                    let buffer = chunk.read_binary_string()?;
 
-                        add_property(instance, &property, value.into());
-                    }
-                }
-                VariantType::Attributes => {
-                    for instance in instances {
-                        let buffer = chunk.read_binary_string()?;
-
-                        match Attributes::from_reader(buffer) {
-                            Ok(value) => {
-                                add_property(instance, &property, value.into());
-                            }
-                            Err(err) => {
-                                log::warn!(
+                    Ok(match Attributes::from_reader(buffer) {
+                        Ok(value) => Variant::from(value),
+                        Err(err) => {
+                            log::warn!(
                                     "Failed to parse Attributes on {} because {:?}; falling back to BinaryString.
-
 rbx-dom may require changes to fully support this property. Please open an issue at https://github.com/rojo-rbx/rbx-dom/issues and show this warning.",
                                     type_name,
                                     err
                                 );
 
-                                add_property(
-                                    instance,
-                                    &property,
-                                    BinaryString::from(buffer).into(),
-                                );
-                            }
+                            Variant::from(BinaryString::from(buffer))
                         }
-                    }
-                }
-                VariantType::MaterialColors => {
-                    for instance in instances {
-                        let buffer = chunk.read_binary_string()?;
-                        match MaterialColors::decode(buffer) {
-                            Ok(value) => add_property(instance, &property, value.into()),
-                            Err(err) => {
-                                log::warn!(
+                    })
+                }),
+                VariantType::MaterialColors => PropChunk::from_fn(type_id, property, || {
+                    let buffer = chunk.read_binary_string()?;
+                    Ok(match MaterialColors::decode(buffer) {
+                        Ok(value) => Variant::from(value),
+                        Err(err) => {
+                            log::warn!(
                                     "Failed to parse MaterialColors on {} because {:?}; falling back to BinaryString.
 
 rbx-dom may require changes to fully support this property. Please open an issue at https://github.com/rojo-rbx/rbx-dom/issues and show this warning.",
@@ -441,17 +473,12 @@ rbx-dom may require changes to fully support this property. Please open an issue
                                     err
                                 );
 
-                                add_property(
-                                    instance,
-                                    &property,
-                                    BinaryString::from(buffer).into(),
-                                );
-                            }
+                            Variant::from(BinaryString::from(buffer))
                         }
-                    }
-                }
+                    })
+                }),
                 invalid_type => {
-                    return Err(InnerError::PropTypeMismatch {
+                    return Err(PropChunkError::PropTypeMismatch {
                         type_name: type_name.to_string(),
                         prop_name: prop_name.to_owned(),
                         valid_type_names:
@@ -462,13 +489,10 @@ rbx-dom may require changes to fully support this property. Please open an issue
             },
             Type::Bool => match canonical_type {
                 VariantType::Bool => {
-                    for instance in instances {
-                        let value = chunk.read_bool()?;
-                        add_property(instance, &property, value.into());
-                    }
+                    PropChunk::from_fn(type_id, property, || Ok(chunk.read_bool()?))
                 }
                 invalid_type => {
-                    return Err(InnerError::PropTypeMismatch {
+                    return Err(PropChunkError::PropTypeMismatch {
                         type_name: type_name.to_string(),
                         prop_name: prop_name.to_owned(),
                         valid_type_names: "Bool",
@@ -477,26 +501,23 @@ rbx-dom may require changes to fully support this property. Please open an issue
                 }
             },
             Type::Int32 => match canonical_type {
-                VariantType::Int32 => {
-                    let values = chunk.read_interleaved_i32_array(instances.len())?;
-
-                    for (value, instance) in values.zip(instances) {
-                        add_property(instance, &property, value.into());
-                    }
-                }
+                VariantType::Int32 => Ok(PropChunk::from_iter(
+                    type_id,
+                    property,
+                    chunk.read_interleaved_i32_array(num_instances)?,
+                )),
                 // This branch allows values serialized as Int32 to be converted to Int64 when we expect a Int64
                 // Basically, we convert Int32 to Int64 when we expect a Int64 but read a Int32
                 // See: #301
-                VariantType::Int64 => {
-                    let values = chunk.read_interleaved_i32_array(instances.len())?;
-
-                    for (value, instance) in values.zip(instances) {
-                        let value_converted = i64::from(value);
-                        add_property(instance, &property, value_converted.into());
-                    }
-                }
+                VariantType::Int64 => Ok(PropChunk::from_iter(
+                    type_id,
+                    property,
+                    chunk
+                        .read_interleaved_i32_array(num_instances)?
+                        .map(i64::from),
+                )),
                 invalid_type => {
-                    return Err(InnerError::PropTypeMismatch {
+                    return Err(PropChunkError::PropTypeMismatch {
                         type_name: type_name.to_string(),
                         prop_name: prop_name.to_owned(),
                         valid_type_names: "Int32",
@@ -505,15 +526,13 @@ rbx-dom may require changes to fully support this property. Please open an issue
                 }
             },
             Type::Float32 => match canonical_type {
-                VariantType::Float32 => {
-                    let values = chunk.read_interleaved_f32_array(instances.len())?;
-
-                    for (value, instance) in values.zip(instances) {
-                        add_property(instance, &property, value.into());
-                    }
-                }
+                VariantType::Float32 => Ok(PropChunk::from_iter(
+                    type_id,
+                    property,
+                    chunk.read_interleaved_f32_array(num_instances)?,
+                )),
                 invalid_type => {
-                    return Err(InnerError::PropTypeMismatch {
+                    return Err(PropChunkError::PropTypeMismatch {
                         type_name: type_name.to_string(),
                         prop_name: prop_name.to_owned(),
                         valid_type_names: "Float32",
@@ -523,24 +542,20 @@ rbx-dom may require changes to fully support this property. Please open an issue
             },
             Type::Float64 => match canonical_type {
                 VariantType::Float64 => {
-                    for instance in instances {
-                        let value = chunk.read_le_f64()?;
-                        add_property(instance, &property, value.into());
-                    }
+                    PropChunk::from_fn(type_id, property, || Ok(chunk.read_le_f64()?))
                 }
                 // This branch allows values serialized as Float32 to be converted to Float64 when we expect a Float64
                 // Basically, we convert Float32 to Float64 when we expect a Float64 but read a Float32
                 // See: #301
-                VariantType::Float32 => {
-                    let values = chunk.read_interleaved_f32_array(instances.len())?;
-
-                    for (value, instance) in values.zip(instances) {
-                        let converted_value = f64::from(value);
-                        add_property(instance, &property, converted_value.into());
-                    }
-                }
+                VariantType::Float32 => Ok(PropChunk::from_iter(
+                    type_id,
+                    property,
+                    chunk
+                        .read_interleaved_f32_array(num_instances)?
+                        .map(f64::from),
+                )),
                 invalid_type => {
-                    return Err(InnerError::PropTypeMismatch {
+                    return Err(PropChunkError::PropTypeMismatch {
                         type_name: type_name.to_string(),
                         prop_name: prop_name.to_owned(),
                         valid_type_names: "Float64",
@@ -550,19 +565,17 @@ rbx-dom may require changes to fully support this property. Please open an issue
             },
             Type::UDim => match canonical_type {
                 VariantType::UDim => {
-                    let scales = chunk.read_interleaved_f32_array(instances.len())?;
-                    let offsets = chunk.read_interleaved_i32_array(instances.len())?;
+                    let scales = chunk.read_interleaved_f32_array(num_instances)?;
+                    let offsets = chunk.read_interleaved_i32_array(num_instances)?;
 
                     let values = scales
                         .zip(offsets)
                         .map(|(scale, offset)| UDim::new(scale, offset));
 
-                    for (value, instance) in values.zip(instances) {
-                        add_property(instance, &property, value.into());
-                    }
+                    Ok(PropChunk::from_iter(type_id, property, values))
                 }
                 invalid_type => {
-                    return Err(InnerError::PropTypeMismatch {
+                    return Err(PropChunkError::PropTypeMismatch {
                         type_name: type_name.to_string(),
                         prop_name: prop_name.to_owned(),
                         valid_type_names: "UDim",
@@ -572,7 +585,7 @@ rbx-dom may require changes to fully support this property. Please open an issue
             },
             Type::UDim2 => match canonical_type {
                 VariantType::UDim2 => {
-                    let prop_count = instances.len();
+                    let prop_count = num_instances;
                     let scale_x = chunk.read_interleaved_f32_array(prop_count)?;
                     let scale_y = chunk.read_interleaved_f32_array(prop_count)?;
                     let offset_x = chunk.read_interleaved_i32_array(prop_count)?;
@@ -588,12 +601,10 @@ rbx-dom may require changes to fully support this property. Please open an issue
 
                     let values = x.zip(y).map(|(x, y)| UDim2::new(x, y));
 
-                    for (value, instance) in values.zip(instances) {
-                        add_property(instance, &property, value.into());
-                    }
+                    Ok(PropChunk::from_iter(type_id, property, values))
                 }
                 invalid_type => {
-                    return Err(InnerError::PropTypeMismatch {
+                    return Err(PropChunkError::PropTypeMismatch {
                         type_name: type_name.to_string(),
                         prop_name: prop_name.to_owned(),
                         valid_type_names: "UDim2",
@@ -602,28 +613,21 @@ rbx-dom may require changes to fully support this property. Please open an issue
                 }
             },
             Type::Ray => match canonical_type {
-                VariantType::Ray => {
-                    for instance in instances {
-                        let origin_x = chunk.read_le_f32()?;
-                        let origin_y = chunk.read_le_f32()?;
-                        let origin_z = chunk.read_le_f32()?;
-                        let direction_x = chunk.read_le_f32()?;
-                        let direction_y = chunk.read_le_f32()?;
-                        let direction_z = chunk.read_le_f32()?;
+                VariantType::Ray => PropChunk::from_fn(type_id, property, || {
+                    let origin_x = chunk.read_le_f32()?;
+                    let origin_y = chunk.read_le_f32()?;
+                    let origin_z = chunk.read_le_f32()?;
+                    let direction_x = chunk.read_le_f32()?;
+                    let direction_y = chunk.read_le_f32()?;
+                    let direction_z = chunk.read_le_f32()?;
 
-                        add_property(
-                            instance,
-                            &property,
-                            Ray::new(
-                                Vector3::new(origin_x, origin_y, origin_z),
-                                Vector3::new(direction_x, direction_y, direction_z),
-                            )
-                            .into(),
-                        );
-                    }
-                }
+                    Ok(Ray::new(
+                        Vector3::new(origin_x, origin_y, origin_z),
+                        Vector3::new(direction_x, direction_y, direction_z),
+                    ))
+                }),
                 invalid_type => {
-                    return Err(InnerError::PropTypeMismatch {
+                    return Err(PropChunkError::PropTypeMismatch {
                         type_name: type_name.to_string(),
                         prop_name: prop_name.to_owned(),
                         valid_type_names: "Ray",
@@ -632,22 +636,20 @@ rbx-dom may require changes to fully support this property. Please open an issue
                 }
             },
             Type::Faces => match canonical_type {
-                VariantType::Faces => {
-                    for instance in instances {
-                        let value = chunk.read_u8()?;
-                        let faces =
-                            Faces::from_bits(value).ok_or_else(|| InnerError::InvalidPropData {
-                                type_name: type_name.to_string(),
-                                prop_name: prop_name.to_owned(),
-                                valid_value: "less than 63",
-                                actual_value: value.to_string(),
-                            })?;
+                VariantType::Faces => PropChunk::from_fn(type_id, property, || {
+                    let value = chunk.read_u8()?;
+                    let faces =
+                        Faces::from_bits(value).ok_or_else(|| PropChunkError::InvalidPropData {
+                            type_name: type_name.to_string(),
+                            prop_name: prop_name.to_owned(),
+                            valid_value: "less than 63",
+                            actual_value: value.to_string(),
+                        })?;
 
-                        add_property(instance, &property, faces.into());
-                    }
-                }
+                    Ok(faces)
+                }),
                 invalid_type => {
-                    return Err(InnerError::PropTypeMismatch {
+                    return Err(PropChunkError::PropTypeMismatch {
                         type_name: type_name.to_string(),
                         prop_name: prop_name.to_owned(),
                         valid_type_names: "Faces",
@@ -656,23 +658,21 @@ rbx-dom may require changes to fully support this property. Please open an issue
                 }
             },
             Type::Axes => match canonical_type {
-                VariantType::Axes => {
-                    for instance in instances {
-                        let value = chunk.read_u8()?;
+                VariantType::Axes => PropChunk::from_fn(type_id, property, || {
+                    let value = chunk.read_u8()?;
 
-                        let axes =
-                            Axes::from_bits(value).ok_or_else(|| InnerError::InvalidPropData {
-                                type_name: type_name.to_string(),
-                                prop_name: prop_name.to_owned(),
-                                valid_value: "less than 7",
-                                actual_value: value.to_string(),
-                            })?;
+                    let axes =
+                        Axes::from_bits(value).ok_or_else(|| PropChunkError::InvalidPropData {
+                            type_name: type_name.to_string(),
+                            prop_name: prop_name.to_owned(),
+                            valid_value: "less than 7",
+                            actual_value: value.to_string(),
+                        })?;
 
-                        add_property(instance, &property, axes.into());
-                    }
-                }
+                    Ok(axes)
+                }),
                 invalid_type => {
-                    return Err(InnerError::PropTypeMismatch {
+                    return Err(PropChunkError::PropTypeMismatch {
                         type_name: type_name.to_string(),
                         prop_name: prop_name.to_owned(),
                         valid_type_names: "Axes",
@@ -682,14 +682,14 @@ rbx-dom may require changes to fully support this property. Please open an issue
             },
             Type::BrickColor => match canonical_type {
                 VariantType::BrickColor => {
-                    let values = chunk.read_interleaved_u32_array(instances.len())?;
+                    let values = chunk.read_interleaved_u32_array(num_instances)?;
 
                     for (value, instance) in values.zip(instances) {
                         let color = value
                             .try_into()
                             .ok()
                             .and_then(BrickColor::from_number)
-                            .ok_or_else(|| InnerError::InvalidPropData {
+                            .ok_or_else(|| PropChunkError::InvalidPropData {
                                 type_name: type_name.to_string(),
                                 prop_name: prop_name.to_owned(),
                                 valid_value: "a valid BrickColor",
@@ -700,7 +700,7 @@ rbx-dom may require changes to fully support this property. Please open an issue
                     }
                 }
                 invalid_type => {
-                    return Err(InnerError::PropTypeMismatch {
+                    return Err(PropChunkError::PropTypeMismatch {
                         type_name: type_name.to_string(),
                         prop_name: prop_name.to_owned(),
                         valid_type_names: "BrickColor",
@@ -710,18 +710,16 @@ rbx-dom may require changes to fully support this property. Please open an issue
             },
             Type::Color3 => match canonical_type {
                 VariantType::Color3 => {
-                    let r = chunk.read_interleaved_f32_array(instances.len())?;
-                    let g = chunk.read_interleaved_f32_array(instances.len())?;
-                    let b = chunk.read_interleaved_f32_array(instances.len())?;
+                    let r = chunk.read_interleaved_f32_array(num_instances)?;
+                    let g = chunk.read_interleaved_f32_array(num_instances)?;
+                    let b = chunk.read_interleaved_f32_array(num_instances)?;
 
                     let values = r.zip(g).zip(b).map(|((r, g), b)| Color3::new(r, g, b));
 
-                    for (value, instance) in values.zip(instances) {
-                        add_property(instance, &property, value.into());
-                    }
+                    Ok(PropChunk::from_iter(type_id, property, values))
                 }
                 invalid_type => {
-                    return Err(InnerError::PropTypeMismatch {
+                    return Err(PropChunkError::PropTypeMismatch {
                         type_name: type_name.to_string(),
                         prop_name: prop_name.to_owned(),
                         valid_type_names: "Color3",
@@ -731,17 +729,15 @@ rbx-dom may require changes to fully support this property. Please open an issue
             },
             Type::Vector2 => match canonical_type {
                 VariantType::Vector2 => {
-                    let x = chunk.read_interleaved_f32_array(instances.len())?;
-                    let y = chunk.read_interleaved_f32_array(instances.len())?;
+                    let x = chunk.read_interleaved_f32_array(num_instances)?;
+                    let y = chunk.read_interleaved_f32_array(num_instances)?;
 
                     let values = x.zip(y).map(|(x, y)| Vector2::new(x, y));
 
-                    for (value, instance) in values.zip(instances) {
-                        add_property(instance, &property, value.into());
-                    }
+                    Ok(PropChunk::from_iter(type_id, property, values))
                 }
                 invalid_type => {
-                    return Err(InnerError::PropTypeMismatch {
+                    return Err(PropChunkError::PropTypeMismatch {
                         type_name: type_name.to_string(),
                         prop_name: prop_name.to_owned(),
                         valid_type_names: "Vector2",
@@ -751,18 +747,16 @@ rbx-dom may require changes to fully support this property. Please open an issue
             },
             Type::Vector3 => match canonical_type {
                 VariantType::Vector3 => {
-                    let x = chunk.read_interleaved_f32_array(instances.len())?;
-                    let y = chunk.read_interleaved_f32_array(instances.len())?;
-                    let z = chunk.read_interleaved_f32_array(instances.len())?;
+                    let x = chunk.read_interleaved_f32_array(num_instances)?;
+                    let y = chunk.read_interleaved_f32_array(num_instances)?;
+                    let z = chunk.read_interleaved_f32_array(num_instances)?;
 
                     let values = x.zip(y).zip(z).map(|((x, y), z)| Vector3::new(x, y, z));
 
-                    for (value, instance) in values.zip(instances) {
-                        add_property(instance, &property, value.into());
-                    }
+                    Ok(PropChunk::from_iter(type_id, property, values))
                 }
                 invalid_type => {
-                    return Err(InnerError::PropTypeMismatch {
+                    return Err(PropChunkError::PropTypeMismatch {
                         type_name: type_name.to_string(),
                         prop_name: prop_name.to_owned(),
                         valid_type_names: "Vector3",
@@ -772,9 +766,9 @@ rbx-dom may require changes to fully support this property. Please open an issue
             },
             Type::CFrame => match canonical_type {
                 VariantType::CFrame => {
-                    let mut rotations = Vec::with_capacity(instances.len());
+                    let mut rotations = Vec::with_capacity(num_instances);
 
-                    for _ in 0..instances.len() {
+                    for _ in 0..num_instances {
                         let id = chunk.read_u8()?;
                         if id == 0 {
                             rotations.push(Matrix3::new(
@@ -797,7 +791,7 @@ rbx-dom may require changes to fully support this property. Please open an issue
                         } else if let Ok(basic_rotation) = Matrix3::from_basic_rotation_id(id) {
                             rotations.push(basic_rotation);
                         } else {
-                            return Err(InnerError::BadRotationId {
+                            return Err(PropChunkError::BadRotationId {
                                 type_name: type_name.to_string(),
                                 prop_name: prop_name.to_owned(),
                                 id,
@@ -805,9 +799,9 @@ rbx-dom may require changes to fully support this property. Please open an issue
                         }
                     }
 
-                    let x = chunk.read_interleaved_f32_array(instances.len())?;
-                    let y = chunk.read_interleaved_f32_array(instances.len())?;
-                    let z = chunk.read_interleaved_f32_array(instances.len())?;
+                    let x = chunk.read_interleaved_f32_array(num_instances)?;
+                    let y = chunk.read_interleaved_f32_array(num_instances)?;
+                    let z = chunk.read_interleaved_f32_array(num_instances)?;
 
                     let values = x
                         .zip(y)
@@ -816,12 +810,10 @@ rbx-dom may require changes to fully support this property. Please open an issue
                         .zip(rotations)
                         .map(|(position, rotation)| CFrame::new(position, rotation));
 
-                    for (value, instance) in values.zip(instances) {
-                        add_property(instance, &property, value.into());
-                    }
+                    Ok(PropChunk::from_iter(type_id, property, values))
                 }
                 invalid_type => {
-                    return Err(InnerError::PropTypeMismatch {
+                    return Err(PropChunkError::PropTypeMismatch {
                         type_name: type_name.to_string(),
                         prop_name: prop_name.to_owned(),
                         valid_type_names: "CFrame",
@@ -831,14 +823,14 @@ rbx-dom may require changes to fully support this property. Please open an issue
             },
             Type::Enum => match canonical_type {
                 VariantType::Enum => {
-                    let values = chunk.read_interleaved_u32_array(instances.len())?;
+                    let values = chunk
+                        .read_interleaved_u32_array(num_instances)?
+                        .map(Enum::from_u32);
 
-                    for (value, instance) in values.zip(instances) {
-                        add_property(instance, &property, Enum::from_u32(value).into());
-                    }
+                    Ok(PropChunk::from_iter(type_id, property, values))
                 }
                 invalid_type => {
-                    return Err(InnerError::PropTypeMismatch {
+                    return Err(PropChunkError::PropTypeMismatch {
                         type_name: type_name.to_string(),
                         prop_name: prop_name.to_owned(),
                         valid_type_names: "Enum",
@@ -848,19 +840,16 @@ rbx-dom may require changes to fully support this property. Please open an issue
             },
             Type::Ref => match canonical_type {
                 VariantType::Ref => {
-                    let values = chunk.read_referent_array(instances.len())?;
+                    let values = chunk.read_referent_array(num_instances)?.map(|value| {
+                        instance_by_ref
+                            .get(&value)
+                            .map_or(Ref::none(), |instance| instance.referent)
+                    });
 
-                    for (value, instance) in values.zip(instances) {
-                        let rbx_value = if let Some(key) = self.instance_key_by_ref.get(&value) {
-                            key.referent
-                        } else {
-                            Ref::none()
-                        };
-                        add_property(instance, &property, rbx_value.into());
-                    }
+                    Ok(PropChunk::from_iter(type_id, property, values))
                 }
                 invalid_type => {
-                    return Err(InnerError::PropTypeMismatch {
+                    return Err(PropChunkError::PropTypeMismatch {
                         type_name: type_name.to_string(),
                         prop_name: prop_name.to_owned(),
                         valid_type_names: "Ref",
@@ -869,22 +858,15 @@ rbx-dom may require changes to fully support this property. Please open an issue
                 }
             },
             Type::Vector3int16 => match canonical_type {
-                VariantType::Vector3int16 => {
-                    for instance in instances {
-                        add_property(
-                            instance,
-                            &property,
-                            Vector3int16::new(
-                                chunk.read_le_i16()?,
-                                chunk.read_le_i16()?,
-                                chunk.read_le_i16()?,
-                            )
-                            .into(),
-                        )
-                    }
-                }
+                VariantType::Vector3int16 => PropChunk::from_fn(type_id, property, || {
+                    Ok(Vector3int16::new(
+                        chunk.read_le_i16()?,
+                        chunk.read_le_i16()?,
+                        chunk.read_le_i16()?,
+                    ))
+                }),
                 invalid_type => {
-                    return Err(InnerError::PropTypeMismatch {
+                    return Err(PropChunkError::PropTypeMismatch {
                         type_name: type_name.to_string(),
                         prop_name: prop_name.to_owned(),
                         valid_type_names: "Vector3int16",
@@ -893,34 +875,27 @@ rbx-dom may require changes to fully support this property. Please open an issue
                 }
             },
             Type::Font => match canonical_type {
-                VariantType::Font => {
-                    for instance in instances {
-                        let family = chunk.read_string()?.to_owned();
-                        let weight = FontWeight::from_u16(chunk.read_le_u16()?).unwrap_or_default();
-                        let style = FontStyle::from_u8(chunk.read_u8()?).unwrap_or_default();
-                        let cached_face_id = chunk.read_string()?.to_owned();
+                VariantType::Font => PropChunk::from_fn(type_id, property, || {
+                    let family = chunk.read_string()?.to_owned();
+                    let weight = FontWeight::from_u16(chunk.read_le_u16()?).unwrap_or_default();
+                    let style = FontStyle::from_u8(chunk.read_u8()?).unwrap_or_default();
+                    let cached_face_id = chunk.read_string()?.to_owned();
 
-                        let cached_face_id = if cached_face_id.is_empty() {
-                            None
-                        } else {
-                            Some(cached_face_id)
-                        };
+                    let cached_face_id = if cached_face_id.is_empty() {
+                        None
+                    } else {
+                        Some(cached_face_id)
+                    };
 
-                        add_property(
-                            instance,
-                            &property,
-                            Font {
-                                family,
-                                weight,
-                                style,
-                                cached_face_id,
-                            }
-                            .into(),
-                        );
-                    }
-                }
+                    Ok(Font {
+                        family,
+                        weight,
+                        style,
+                        cached_face_id,
+                    })
+                }),
                 invalid_type => {
-                    return Err(InnerError::PropTypeMismatch {
+                    return Err(PropChunkError::PropTypeMismatch {
                         type_name: type_name.to_string(),
                         prop_name: prop_name.to_owned(),
                         valid_type_names: "Font",
@@ -929,24 +904,22 @@ rbx-dom may require changes to fully support this property. Please open an issue
                 }
             },
             Type::NumberSequence => match canonical_type {
-                VariantType::NumberSequence => {
-                    for instance in instances {
-                        let keypoint_count = chunk.read_le_u32()?;
-                        let mut keypoints = Vec::with_capacity(keypoint_count as usize);
+                VariantType::NumberSequence => PropChunk::from_fn(type_id, property, || {
+                    let keypoint_count = chunk.read_le_u32()?;
+                    let mut keypoints = Vec::with_capacity(keypoint_count as usize);
 
-                        for _ in 0..keypoint_count {
-                            keypoints.push(NumberSequenceKeypoint::new(
-                                chunk.read_le_f32()?,
-                                chunk.read_le_f32()?,
-                                chunk.read_le_f32()?,
-                            ))
-                        }
-
-                        add_property(instance, &property, NumberSequence { keypoints }.into())
+                    for _ in 0..keypoint_count {
+                        keypoints.push(NumberSequenceKeypoint::new(
+                            chunk.read_le_f32()?,
+                            chunk.read_le_f32()?,
+                            chunk.read_le_f32()?,
+                        ))
                     }
-                }
+
+                    Ok(NumberSequence { keypoints })
+                }),
                 invalid_type => {
-                    return Err(InnerError::PropTypeMismatch {
+                    return Err(PropChunkError::PropTypeMismatch {
                         type_name: type_name.to_string(),
                         prop_name: prop_name.to_owned(),
                         valid_type_names: "NumberSequence",
@@ -956,7 +929,7 @@ rbx-dom may require changes to fully support this property. Please open an issue
             },
             Type::ColorSequence => match canonical_type {
                 VariantType::ColorSequence => {
-                    for instance in instances {
+                    PropChunk::from_fn(type_id, property, || {
                         let keypoint_count = chunk.read_le_u32()? as usize;
                         let mut keypoints = Vec::with_capacity(keypoint_count);
 
@@ -974,11 +947,11 @@ rbx-dom may require changes to fully support this property. Please open an issue
                             chunk.read_le_f32()?;
                         }
 
-                        add_property(instance, &property, ColorSequence { keypoints }.into())
-                    }
+                        Ok(ColorSequence { keypoints })
+                    })
                 }
                 invalid_type => {
-                    return Err(InnerError::PropTypeMismatch {
+                    return Err(PropChunkError::PropTypeMismatch {
                         type_name: type_name.to_string(),
                         prop_name: prop_name.to_owned(),
                         valid_type_names: "ColorSequence",
@@ -987,17 +960,11 @@ rbx-dom may require changes to fully support this property. Please open an issue
                 }
             },
             Type::NumberRange => match canonical_type {
-                VariantType::NumberRange => {
-                    for instance in instances {
-                        add_property(
-                            instance,
-                            &property,
-                            NumberRange::new(chunk.read_le_f32()?, chunk.read_le_f32()?).into(),
-                        )
-                    }
-                }
+                VariantType::NumberRange => PropChunk::from_fn(type_id, property, || {
+                    Ok(NumberRange::new(chunk.read_le_f32()?, chunk.read_le_f32()?))
+                }),
                 invalid_type => {
-                    return Err(InnerError::PropTypeMismatch {
+                    return Err(PropChunkError::PropTypeMismatch {
                         type_name: type_name.to_string(),
                         prop_name: prop_name.to_owned(),
                         valid_type_names: "NumberRange",
@@ -1007,7 +974,7 @@ rbx-dom may require changes to fully support this property. Please open an issue
             },
             Type::Rect => match canonical_type {
                 VariantType::Rect => {
-                    let len = instances.len();
+                    let len = num_instances;
                     let x_min = chunk.read_interleaved_f32_array(len)?;
                     let y_min = chunk.read_interleaved_f32_array(len)?;
                     let x_max = chunk.read_interleaved_f32_array(len)?;
@@ -1019,12 +986,10 @@ rbx-dom may require changes to fully support this property. Please open an issue
                         },
                     );
 
-                    for (value, instance) in values.zip(instances) {
-                        add_property(instance, &property, value.into())
-                    }
+                    Ok(PropChunk::from_iter(type_id, property, values))
                 }
                 invalid_type => {
-                    return Err(InnerError::PropTypeMismatch {
+                    return Err(PropChunkError::PropTypeMismatch {
                         type_name: type_name.to_string(),
                         prop_name: prop_name.to_owned(),
                         valid_type_names: "Rect",
@@ -1033,39 +998,37 @@ rbx-dom may require changes to fully support this property. Please open an issue
                 }
             },
             Type::PhysicalProperties => match canonical_type {
-                VariantType::PhysicalProperties => {
-                    for instance in instances {
-                        let discriminator = chunk.read_u8()?;
-                        let value = match discriminator {
-                            0b00 | 0b10 => Variant::PhysicalProperties(PhysicalProperties::Default),
-                            0b01 => Variant::PhysicalProperties(PhysicalProperties::Custom(
-                                CustomPhysicalProperties::new(
-                                    chunk.read_le_f32()?,
-                                    chunk.read_le_f32()?,
-                                    chunk.read_le_f32()?,
-                                    chunk.read_le_f32()?,
-                                    chunk.read_le_f32()?,
-                                    1.0,
-                                ),
-                            )),
-                            0b11 => Variant::PhysicalProperties(PhysicalProperties::Custom(
-                                CustomPhysicalProperties::new(
-                                    chunk.read_le_f32()?,
-                                    chunk.read_le_f32()?,
-                                    chunk.read_le_f32()?,
-                                    chunk.read_le_f32()?,
-                                    chunk.read_le_f32()?,
-                                    chunk.read_le_f32()?,
-                                ),
-                            )),
-                            _ => return Err(InnerError::BadPhysicalPropertiesType(discriminator)),
-                        };
+                VariantType::PhysicalProperties => PropChunk::from_fn(type_id, property, || {
+                    let discriminator = chunk.read_u8()?;
+                    let value = match discriminator {
+                        0b00 | 0b10 => Variant::PhysicalProperties(PhysicalProperties::Default),
+                        0b01 => Variant::PhysicalProperties(PhysicalProperties::Custom(
+                            CustomPhysicalProperties::new(
+                                chunk.read_le_f32()?,
+                                chunk.read_le_f32()?,
+                                chunk.read_le_f32()?,
+                                chunk.read_le_f32()?,
+                                chunk.read_le_f32()?,
+                                1.0,
+                            ),
+                        )),
+                        0b11 => Variant::PhysicalProperties(PhysicalProperties::Custom(
+                            CustomPhysicalProperties::new(
+                                chunk.read_le_f32()?,
+                                chunk.read_le_f32()?,
+                                chunk.read_le_f32()?,
+                                chunk.read_le_f32()?,
+                                chunk.read_le_f32()?,
+                                chunk.read_le_f32()?,
+                            ),
+                        )),
+                        _ => return Err(PropChunkError::BadPhysicalPropertiesType(discriminator)),
+                    };
 
-                        add_property(instance, &property, value);
-                    }
-                }
+                    Ok(value)
+                }),
                 invalid_type => {
-                    return Err(InnerError::PropTypeMismatch {
+                    return Err(PropChunkError::PropTypeMismatch {
                         type_name: type_name.to_string(),
                         prop_name: prop_name.to_owned(),
                         valid_type_names: "PhysicalProperties",
@@ -1075,7 +1038,7 @@ rbx-dom may require changes to fully support this property. Please open an issue
             },
             Type::Color3uint8 => match canonical_type {
                 VariantType::Color3 => {
-                    let len = instances.len();
+                    let len = num_instances;
                     let r = chunk.read_slice(len)?;
                     let g = chunk.read_slice(len)?;
                     let b = chunk.read_slice(len)?;
@@ -1086,12 +1049,10 @@ rbx-dom may require changes to fully support this property. Please open an issue
                         .zip(b)
                         .map(|((r, g), b)| Color3uint8::new(*r, *g, *b));
 
-                    for (value, instance) in values.zip(instances) {
-                        add_property(instance, &property, value.into());
-                    }
+                    Ok(PropChunk::from_iter(type_id, property, values))
                 }
                 invalid_type => {
-                    return Err(InnerError::PropTypeMismatch {
+                    return Err(PropChunkError::PropTypeMismatch {
                         type_name: type_name.to_string(),
                         prop_name: prop_name.to_owned(),
                         valid_type_names: "Color3",
@@ -1101,14 +1062,12 @@ rbx-dom may require changes to fully support this property. Please open an issue
             },
             Type::Int64 => match canonical_type {
                 VariantType::Int64 => {
-                    let values = chunk.read_interleaved_i64_array(instances.len())?;
+                    let values = chunk.read_interleaved_i64_array(num_instances)?;
 
-                    for (value, instance) in values.zip(instances) {
-                        add_property(instance, &property, value.into());
-                    }
+                    Ok(PropChunk::from_iter(type_id, property, values))
                 }
                 invalid_type => {
-                    return Err(InnerError::PropTypeMismatch {
+                    return Err(PropChunkError::PropTypeMismatch {
                         type_name: type_name.to_string(),
                         prop_name: prop_name.to_owned(),
                         valid_type_names: "Int64",
@@ -1118,12 +1077,12 @@ rbx-dom may require changes to fully support this property. Please open an issue
             },
             Type::SharedString => match canonical_type {
                 VariantType::SharedString => {
-                    let values = chunk.read_interleaved_u32_array(instances.len())?;
+                    let values = chunk.read_interleaved_u32_array(num_instances)?;
 
-                    for (value, instance) in values.zip(instances) {
+                    PropChunk::from_fn(type_id, property, || {
                         let shared_string =
-                            self.shared_strings.get(value as usize).ok_or_else(|| {
-                                InnerError::InvalidPropData {
+                            shared_strings.get(value as usize).ok_or_else(|| {
+                                PropChunkError::InvalidPropData {
                                     type_name: type_name.to_string(),
                                     prop_name: prop_name.to_owned(),
                                     valid_value: "a valid SharedString",
@@ -1131,17 +1090,17 @@ rbx-dom may require changes to fully support this property. Please open an issue
                                 }
                             })?;
 
-                        add_property(instance, &property, shared_string.clone().into());
-                    }
+                        Ok(shared_string.clone())
+                    })
                 }
                 VariantType::NetAssetRef => {
-                    let values = chunk.read_interleaved_u32_array(instances.len())?;
+                    let values = chunk.read_interleaved_u32_array(num_instances)?;
 
-                    for (value, instance) in values.zip(instances) {
+                    PropChunk::from_fn(type_id, property, || {
                         let net_asset = NetAssetRef::from(
-                            self.shared_strings
+                            shared_strings
                                 .get(value as usize)
-                                .ok_or_else(|| InnerError::InvalidPropData {
+                                .ok_or_else(|| PropChunkError::InvalidPropData {
                                     type_name: type_name.to_string(),
                                     prop_name: prop_name.to_owned(),
                                     valid_value: "a valid NetAssetRef",
@@ -1150,11 +1109,11 @@ rbx-dom may require changes to fully support this property. Please open an issue
                                 .clone(),
                         );
 
-                        add_property(instance, &property, net_asset.into());
-                    }
+                        Ok(net_asset)
+                    })
                 }
                 invalid_type => {
-                    return Err(InnerError::PropTypeMismatch {
+                    return Err(PropChunkError::PropTypeMismatch {
                         type_name: type_name.to_string(),
                         prop_name: prop_name.to_owned(),
                         valid_type_names: "SharedString",
@@ -1164,21 +1123,21 @@ rbx-dom may require changes to fully support this property. Please open an issue
             },
             Type::OptionalCFrame => match canonical_type {
                 VariantType::OptionalCFrame => {
-                    let mut rotations = Vec::with_capacity(instances.len());
+                    let mut rotations = Vec::with_capacity(num_instances);
 
                     // Roblox writes a type marker for CFrame here that we don't
                     // need to use. We explicitly check for this right now just
                     // in case we're wrong and we do need it!
                     let actual_type_id = chunk.read_u8()?;
                     if actual_type_id != Type::CFrame as u8 {
-                        return Err(InnerError::BadOptionalCFrameFormat {
+                        return Err(PropChunkError::BadOptionalCFrameFormat {
                             expected_type_name: String::from("CFrame"),
                             expected_type_id: Type::CFrame as u8,
                             actual_type_id,
                         });
                     }
 
-                    for _ in 0..instances.len() {
+                    for _ in 0..num_instances {
                         let id = chunk.read_u8()?;
                         if id == 0 {
                             rotations.push(Matrix3::new(
@@ -1201,7 +1160,7 @@ rbx-dom may require changes to fully support this property. Please open an issue
                         } else if let Ok(basic_rotation) = Matrix3::from_basic_rotation_id(id) {
                             rotations.push(basic_rotation);
                         } else {
-                            return Err(InnerError::BadRotationId {
+                            return Err(PropChunkError::BadRotationId {
                                 type_name: type_name.to_string(),
                                 prop_name: prop_name.to_owned(),
                                 id,
@@ -1209,16 +1168,16 @@ rbx-dom may require changes to fully support this property. Please open an issue
                         }
                     }
 
-                    let x = chunk.read_interleaved_f32_array(instances.len())?;
-                    let y = chunk.read_interleaved_f32_array(instances.len())?;
-                    let z = chunk.read_interleaved_f32_array(instances.len())?;
+                    let x = chunk.read_interleaved_f32_array(num_instances)?;
+                    let y = chunk.read_interleaved_f32_array(num_instances)?;
+                    let z = chunk.read_interleaved_f32_array(num_instances)?;
 
                     // Roblox writes a type marker for Bool here that we don't
                     // need to use. We explicitly check for this right now just
                     // in case we're wrong and we do need it!
                     let actual_type_id = chunk.read_u8()?;
                     if actual_type_id != Type::Bool as u8 {
-                        return Err(InnerError::BadOptionalCFrameFormat {
+                        return Err(PropChunkError::BadOptionalCFrameFormat {
                             expected_type_name: String::from("Bool"),
                             expected_type_id: Type::Bool as u8,
                             actual_type_id,
@@ -1231,11 +1190,11 @@ rbx-dom may require changes to fully support this property. Please open an issue
                         .map(|((x, y), z)| Vector3::new(x, y, z))
                         .zip(rotations)
                         .map(|(position, rotation)| {
-                            if chunk.read_u8().ok()? == 0 {
+                            Ok(if chunk.read_u8()? == 0 {
                                 None
                             } else {
                                 Some(CFrame::new(position, rotation))
-                            }
+                            })
                         });
 
                     for (value, instance) in values.zip(instances) {
@@ -1243,7 +1202,7 @@ rbx-dom may require changes to fully support this property. Please open an issue
                     }
                 }
                 invalid_type => {
-                    return Err(InnerError::PropTypeMismatch {
+                    return Err(PropChunkError::PropTypeMismatch {
                         type_name: type_name.to_string(),
                         prop_name: prop_name.to_owned(),
                         valid_type_names: "OptionalCFrame",
@@ -1253,7 +1212,7 @@ rbx-dom may require changes to fully support this property. Please open an issue
             },
             Type::UniqueId => match canonical_type {
                 VariantType::UniqueId => {
-                    let n = instances.len();
+                    let n = num_instances;
                     let values = chunk.read_interleaved_bytes::<16>(n)?;
 
                     for (value, instance) in values.zip(instances) {
@@ -1271,7 +1230,7 @@ rbx-dom may require changes to fully support this property. Please open an issue
                     }
                 }
                 invalid_type => {
-                    return Err(InnerError::PropTypeMismatch {
+                    return Err(PropChunkError::PropTypeMismatch {
                         type_name: type_name.to_string(),
                         prop_name: prop_name.to_owned(),
                         valid_type_names: "UniqueId",
@@ -1281,7 +1240,7 @@ rbx-dom may require changes to fully support this property. Please open an issue
             },
             Type::SecurityCapabilities => match canonical_type {
                 VariantType::SecurityCapabilities => {
-                    let values = chunk.read_interleaved_i64_array(instances.len())?;
+                    let values = chunk.read_interleaved_i64_array(num_instances)?;
 
                     let values = values.map(|value| SecurityCapabilities::from_bits(value as u64));
 
@@ -1290,7 +1249,7 @@ rbx-dom may require changes to fully support this property. Please open an issue
                     }
                 }
                 invalid_type => {
-                    return Err(InnerError::PropTypeMismatch {
+                    return Err(PropChunkError::PropTypeMismatch {
                         type_name: type_name.to_string(),
                         prop_name: prop_name.to_owned(),
                         valid_type_names: "SecurityCapabilities",
@@ -1300,7 +1259,7 @@ rbx-dom may require changes to fully support this property. Please open an issue
             },
             Type::Content => match canonical_type {
                 VariantType::Content => {
-                    let values = chunk.read_interleaved_i32_array(instances.len())?;
+                    let values = chunk.read_interleaved_i32_array(num_instances)?;
 
                     let uri_count = chunk.read_le_u32()? as usize;
                     let mut uris = VecDeque::with_capacity(uri_count);
@@ -1336,7 +1295,7 @@ rbx-dom may require changes to fully support this property. Please open an issue
                     }
                 }
                 invalid_type => {
-                    return Err(InnerError::PropTypeMismatch {
+                    return Err(PropChunkError::PropTypeMismatch {
                         type_name: type_name.to_string(),
                         prop_name: prop_name.to_owned(),
                         valid_type_names: "Content",
