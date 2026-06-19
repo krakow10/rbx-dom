@@ -126,12 +126,43 @@ impl<'db> PropChunk<'db> {
     fn from_fn<V, F>(
         type_id: u32,
         canonical_property: CanonicalProperty<'db>,
+        len: usize,
         f: F,
     ) -> Result<Self, PropChunkError>
     where
         V: Into<Variant>,
         F: FnMut() -> Result<V, PropChunkError>,
     {
+        // helper to create value iterators
+        struct SomeFromFn<F> {
+            f: F,
+            len: usize,
+        }
+
+        impl<T, F> Iterator for SomeFromFn<F>
+        where
+            F: FnMut() -> T,
+        {
+            type Item = T;
+
+            fn next(&mut self) -> Option<Self::Item> {
+                Some((self.f)())
+            }
+        }
+        impl<F, T> ExactSizeIterator for SomeFromFn<F>
+        where
+            F: FnMut() -> T,
+        {
+            fn len(&self) -> usize {
+                self.len
+            }
+        }
+
+        SomeFromFn{
+            f,
+            len,
+        }.collect::<Result<Vec<_>,PropChunkError>()?;
+
         Ok(Self {
             type_id,
             canonical_property,
@@ -390,7 +421,7 @@ mod tab_saver {
             // path, we should use the reflection database to figure out its
             // default name. This should be rare: effectively never!
 
-            return PropChunk::from_fn(type_id, property, || {
+            return PropChunk::from_fn(type_id, property, num_instances, || {
                 let binary_string = chunk.read_binary_string()?;
                 Ok(match std::str::from_utf8(binary_string) {
                     Ok(value) => value.to_owned(),
@@ -412,7 +443,7 @@ This may cause unexpected or broken behavior in your final results if you rely o
 
         match binary_type {
             Type::String => match canonical_type {
-                VariantType::String => PropChunk::from_fn(type_id, property, || {
+                VariantType::String => PropChunk::from_fn(type_id, property, num_instances, || {
                     let binary_string = chunk.read_binary_string()?;
                     Ok(match std::str::from_utf8(binary_string) {
                         Ok(value) => value.to_owned(),
@@ -428,13 +459,13 @@ This may cause unexpected or broken behavior in your final results if you rely o
                         }
                     })
                 }),
-                VariantType::ContentId => PropChunk::from_fn(type_id, property, || {
+                VariantType::ContentId => PropChunk::from_fn(type_id, property, num_instances, || {
                     Ok(ContentId::from(chunk.read_string()?.to_owned()))
                 }),
-                VariantType::BinaryString => PropChunk::from_fn(type_id, property, || {
+                VariantType::BinaryString => PropChunk::from_fn(type_id, property, num_instances, || {
                     Ok(BinaryString::from(chunk.read_binary_string()?.to_owned()))
                 }),
-                VariantType::Tags => PropChunk::from_fn(type_id, property, || {
+                VariantType::Tags => PropChunk::from_fn(type_id, property, num_instances, || {
                     let buffer = chunk.read_binary_string()?;
 
                     let value =
@@ -447,7 +478,7 @@ This may cause unexpected or broken behavior in your final results if you rely o
 
                     Ok(value)
                 }),
-                VariantType::Attributes => PropChunk::from_fn(type_id, property, || {
+                VariantType::Attributes => PropChunk::from_fn(type_id, property, num_instances, || {
                     let buffer = chunk.read_binary_string()?;
 
                     Ok(match Attributes::from_reader(buffer) {
@@ -464,7 +495,7 @@ rbx-dom may require changes to fully support this property. Please open an issue
                         }
                     })
                 }),
-                VariantType::MaterialColors => PropChunk::from_fn(type_id, property, || {
+                VariantType::MaterialColors => PropChunk::from_fn(type_id, property, num_instances, || {
                     let buffer = chunk.read_binary_string()?;
                     Ok(match MaterialColors::decode(buffer) {
                         Ok(value) => Variant::from(value),
@@ -493,7 +524,7 @@ rbx-dom may require changes to fully support this property. Please open an issue
             },
             Type::Bool => match canonical_type {
                 VariantType::Bool => {
-                    PropChunk::from_fn(type_id, property, || Ok(chunk.read_bool()?))
+                    PropChunk::from_fn(type_id, property, num_instances, || Ok(chunk.read_bool()?))
                 }
                 invalid_type => {
                     return Err(PropChunkError::PropTypeMismatch {
@@ -546,7 +577,7 @@ rbx-dom may require changes to fully support this property. Please open an issue
             },
             Type::Float64 => match canonical_type {
                 VariantType::Float64 => {
-                    PropChunk::from_fn(type_id, property, || Ok(chunk.read_le_f64()?))
+                    PropChunk::from_fn(type_id, property, num_instances, || Ok(chunk.read_le_f64()?))
                 }
                 // This branch allows values serialized as Float32 to be converted to Float64 when we expect a Float64
                 // Basically, we convert Float32 to Float64 when we expect a Float64 but read a Float32
@@ -617,7 +648,7 @@ rbx-dom may require changes to fully support this property. Please open an issue
                 }
             },
             Type::Ray => match canonical_type {
-                VariantType::Ray => PropChunk::from_fn(type_id, property, || {
+                VariantType::Ray => PropChunk::from_fn(type_id, property, num_instances, || {
                     let origin_x = chunk.read_le_f32()?;
                     let origin_y = chunk.read_le_f32()?;
                     let origin_z = chunk.read_le_f32()?;
@@ -640,7 +671,7 @@ rbx-dom may require changes to fully support this property. Please open an issue
                 }
             },
             Type::Faces => match canonical_type {
-                VariantType::Faces => PropChunk::from_fn(type_id, property, || {
+                VariantType::Faces => PropChunk::from_fn(type_id, property, num_instances, || {
                     let value = chunk.read_u8()?;
                     let faces =
                         Faces::from_bits(value).ok_or_else(|| PropChunkError::InvalidPropData {
@@ -662,7 +693,7 @@ rbx-dom may require changes to fully support this property. Please open an issue
                 }
             },
             Type::Axes => match canonical_type {
-                VariantType::Axes => PropChunk::from_fn(type_id, property, || {
+                VariantType::Axes => PropChunk::from_fn(type_id, property, num_instances, || {
                     let value = chunk.read_u8()?;
 
                     let axes =
@@ -688,7 +719,7 @@ rbx-dom may require changes to fully support this property. Please open an issue
                 VariantType::BrickColor => {
                     let values = chunk.read_interleaved_u32_array(num_instances)?;
 
-                    PropChunk::from_fn(type_id, property, || {
+                    PropChunk::from_fn(type_id, property, num_instances, || {
                         let value = values.next().unwrap();
                         let color = value
                             .try_into()
@@ -863,7 +894,7 @@ rbx-dom may require changes to fully support this property. Please open an issue
                 }
             },
             Type::Vector3int16 => match canonical_type {
-                VariantType::Vector3int16 => PropChunk::from_fn(type_id, property, || {
+                VariantType::Vector3int16 => PropChunk::from_fn(type_id, property, num_instances, || {
                     Ok(Vector3int16::new(
                         chunk.read_le_i16()?,
                         chunk.read_le_i16()?,
@@ -880,7 +911,7 @@ rbx-dom may require changes to fully support this property. Please open an issue
                 }
             },
             Type::Font => match canonical_type {
-                VariantType::Font => PropChunk::from_fn(type_id, property, || {
+                VariantType::Font => PropChunk::from_fn(type_id, property, num_instances, || {
                     let family = chunk.read_string()?.to_owned();
                     let weight = FontWeight::from_u16(chunk.read_le_u16()?).unwrap_or_default();
                     let style = FontStyle::from_u8(chunk.read_u8()?).unwrap_or_default();
@@ -909,7 +940,7 @@ rbx-dom may require changes to fully support this property. Please open an issue
                 }
             },
             Type::NumberSequence => match canonical_type {
-                VariantType::NumberSequence => PropChunk::from_fn(type_id, property, || {
+                VariantType::NumberSequence => PropChunk::from_fn(type_id, property, num_instances, || {
                     let keypoint_count = chunk.read_le_u32()?;
                     let mut keypoints = Vec::with_capacity(keypoint_count as usize);
 
@@ -934,7 +965,7 @@ rbx-dom may require changes to fully support this property. Please open an issue
             },
             Type::ColorSequence => match canonical_type {
                 VariantType::ColorSequence => {
-                    PropChunk::from_fn(type_id, property, || {
+                    PropChunk::from_fn(type_id, property, num_instances, || {
                         let keypoint_count = chunk.read_le_u32()? as usize;
                         let mut keypoints = Vec::with_capacity(keypoint_count);
 
@@ -965,7 +996,7 @@ rbx-dom may require changes to fully support this property. Please open an issue
                 }
             },
             Type::NumberRange => match canonical_type {
-                VariantType::NumberRange => PropChunk::from_fn(type_id, property, || {
+                VariantType::NumberRange => PropChunk::from_fn(type_id, property, num_instances, || {
                     Ok(NumberRange::new(chunk.read_le_f32()?, chunk.read_le_f32()?))
                 }),
                 invalid_type => {
@@ -1003,7 +1034,7 @@ rbx-dom may require changes to fully support this property. Please open an issue
                 }
             },
             Type::PhysicalProperties => match canonical_type {
-                VariantType::PhysicalProperties => PropChunk::from_fn(type_id, property, || {
+                VariantType::PhysicalProperties => PropChunk::from_fn(type_id, property, num_instances, || {
                     let discriminator = chunk.read_u8()?;
                     let value = match discriminator {
                         0b00 | 0b10 => Variant::PhysicalProperties(PhysicalProperties::Default),
@@ -1084,7 +1115,7 @@ rbx-dom may require changes to fully support this property. Please open an issue
                 VariantType::SharedString => {
                     let values = chunk.read_interleaved_u32_array(num_instances)?;
 
-                    PropChunk::from_fn(type_id, property, || {
+                    PropChunk::from_fn(type_id, property, num_instances, || {
                         let value = values.next().unwrap();
                         let shared_string =
                             shared_strings.get(value as usize).ok_or_else(|| {
@@ -1102,7 +1133,7 @@ rbx-dom may require changes to fully support this property. Please open an issue
                 VariantType::NetAssetRef => {
                     let values = chunk.read_interleaved_u32_array(num_instances)?;
 
-                    PropChunk::from_fn(type_id, property, || {
+                    PropChunk::from_fn(type_id, property, num_instances, || {
                         let value = values.next().unwrap();
                         let net_asset = NetAssetRef::from(
                             shared_strings
@@ -1278,7 +1309,7 @@ rbx-dom may require changes to fully support this property. Please open an issue
                     // future, it's a referent array.
                     let _bytes = chunk.read_slice(external_count * 4)?;
 
-                    PropChunk::from_fn(type_id, property, || {
+                    PropChunk::from_fn(type_id, property, num_instances, || {
                         let value = match values.next().unwrap() {
                             0 => Content::none(),
                             1 => Content::from_uri(uris.pop_back().unwrap()),
