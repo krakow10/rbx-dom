@@ -116,7 +116,7 @@ impl<'db> Deserializer<'db> {
             .prop
             .into_par_iter()
             .map(|chunk| {
-                decode_prop_chunk(&chunk, database, &type_infos, &shared_strings, ref_by_id)
+                decode_prop_chunk(&chunk, database, &type_infos, &shared_strings, &instances)
             })
             .collect();
 
@@ -129,7 +129,6 @@ impl<'db> Deserializer<'db> {
                     canonical_property,
                     values,
                 }) => type_infos[&type_id].add_properties(canonical_property, values),
-                PropChunkResult::MissingTypeByte => {}
                 PropChunkResult::UnknownBinaryType {
                     type_name,
                     prop_name,
@@ -145,7 +144,7 @@ impl<'db> Deserializer<'db> {
                         );
                     }
                 }
-                PropChunkResult::UnknownProperty => {}
+                PropChunkResult::MissingTypeByte | PropChunkResult::UnknownProperty => {}
             }
         }
 
