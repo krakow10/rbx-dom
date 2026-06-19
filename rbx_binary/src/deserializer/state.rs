@@ -67,6 +67,26 @@ struct Instance {
     name: String,
 }
 
+struct PropChunk<'a> {
+    type_id: u32,
+    prop_name: &'a str,
+    values: Vec<Variant>,
+}
+
+#[derive(Debug, thiserror::Error)]
+enum PropChunkError {
+    #[error("Io Error: {0}")]
+    Io(#[from] std::io::Error),
+    #[error("Missing Type Byte")]
+    MissingTypeByte,
+    #[error("Invalid Type Id {type_id}")]
+    InvalidTypeId { type_id: u32 },
+    #[error("Unknown Binary Type {binary_type_byte}")]
+    UnknownBinaryType { binary_type_byte: u8 },
+    #[error("Unknown Property")]
+    UnknownProperty,
+}
+
 /// Properties may be serialized under different names or types than
 /// they ultimately should have in the DOM. CanonicalProperty
 /// represents the "proper" name and type of a property, and possibly
@@ -247,18 +267,22 @@ mod tab_saver {
     }
 
     #[profiling::function]
-    pub fn decode_prop_chunk(mut chunk: &[u8]) -> Result<(), InnerError> {
+    pub fn decode_prop_chunk<'a>(
+        mut chunk: &'a [u8],
+        database: &ReflectionDatabase<'_>,
+        type_infos: &TypeInfos<'_>,
+    ) -> Result<PropChunk<'a>, PropChunkError> {
         let type_id = chunk.read_le_u32()?;
         let prop_name = chunk.read_string()?;
 
         // TODO: collect prop chunk results first, then assemble into TypeInfos
         let type_info = type_infos
             .get_mut(&type_id)
-            .ok_or(InnerError::InvalidTypeId { type_id })?;
+            .ok_or(PropChunkError::InvalidTypeId { type_id })?;
 
         let type_name = type_info.type_name;
         let class_descriptor = type_info.class_descriptor;
-        let instances = &mut type_info.instances;
+        let num_instances = type_info.instances.len();
 
         // PROP chunks that contain no type byte are ignored by Roblox. This can
         // happen when a new type is introduced.
@@ -269,24 +293,12 @@ mod tab_saver {
         // that end immediately after the prop name, so we do the same.
         let binary_type_byte = match chunk.read_u8() {
             Ok(byte) => byte,
-            Err(_) => return Ok(()),
+            Err(_) => return Err(PropChunkError::MissingTypeByte),
         };
 
         let binary_type: Type = match binary_type_byte.try_into() {
             Ok(ty) => ty,
-            Err(_) => {
-                if self.unknown_type_ids.insert(binary_type_byte) {
-                    log::warn!(
-                        "Unknown value type ID {byte:#04x} ({byte}) in Roblox \
-                         binary model file. Found in property {class}.{prop}.",
-                        byte = binary_type_byte,
-                        class = type_name,
-                        prop = prop_name,
-                    );
-                }
-
-                return Ok(());
-            }
+            Err(_) => return Err(PropChunkError::UnknownBinaryType { binary_type_byte }),
         };
 
         log::trace!(
@@ -303,36 +315,39 @@ mod tab_saver {
             // path, we should use the reflection database to figure out its
             // default name. This should be rare: effectively never!
 
-            for instance in instances {
-                let binary_string = chunk.read_binary_string()?;
-                let value = match std::str::from_utf8(binary_string) {
-                    Ok(value) => value.to_owned(),
-                    Err(_) => {
-                        log::warn!(
-                            "Performing lossy string conversion on property {}.{} because it did not contain UTF-8.
+            let values = (0..num_instances)
+                .map(|_| {
+                    let binary_string = chunk.read_binary_string()?;
+                    Ok(match std::str::from_utf8(binary_string) {
+                        Ok(value) => value.to_owned(),
+                        Err(_) => {
+                            log::warn!(
+                                "Performing lossy string conversion on property {}.{} because it did not contain UTF-8.
 This may cause unexpected or broken behavior in your final results if you rely on this property being non UTF-8.",
-                            type_name,
-                            prop_name
-                        );
+                                type_name,
+                                prop_name
+                            );
 
-                        String::from_utf8_lossy(binary_string).into_owned()
+                            String::from_utf8_lossy(binary_string).into_owned()
+                        }
                     }
-                };
-                instance.name = value;
-            }
+                    .into())
+                })
+                .collect::<Result<Vec<_>, std::io::Error>>()?;
 
-            return Ok(());
+            return Ok(PropChunk {
+                values,
+                type_id,
+                prop_name,
+            });
         }
 
-        let property = if let Some(property) = find_canonical_property(
-            self.deserializer.database,
-            binary_type,
-            class_descriptor,
-            prop_name,
-        ) {
+        let property = if let Some(property) =
+            find_canonical_property(database, binary_type, class_descriptor, prop_name)
+        {
             property
         } else {
-            return Ok(());
+            return Err(PropChunkError::UnknownProperty);
         };
 
         let canonical_type = property.ty;
