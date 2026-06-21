@@ -1,6 +1,7 @@
 use std::{collections::VecDeque, convert::TryInto};
 
 use ahash::{HashMap, HashMapExt};
+use rayon::iter::IndexedParallelIterator;
 use rbx_dom_weak::{
     types::{
         Attributes, Axes, BinaryString, BrickColor, CFrame, Color3, Color3uint8, ColorSequence,
@@ -92,6 +93,27 @@ impl<'dom> TypeInfo<'dom> {
         } else {
             self.properties.insert(canonical_property.name, values);
         }
+    }
+}
+
+impl IntoParallelIterator for TypeInfo<'_> {
+    type Item = HashMap<Ustr, Variant>;
+    type Iter = super::rayon_transpose::TransposeIntoIter<Ustr, Variant, ahash::RandomState>;
+
+    fn into_par_iter(self) -> Self::Iter {
+        let class = self.type_name;
+        super::rayon_transpose::TransposeIntoIter::new(self.properties)
+            .zip_eq(self.instances)
+            .map(|(properties, instance)| {
+                rbx_dom_weak::Instance::from_raw(
+                    instance.referent,
+                    instance.children,
+                    instance.parent,
+                    instance.name,
+                    class,
+                    properties,
+                )
+            })
     }
 }
 
