@@ -217,20 +217,26 @@ where
                 let ptr: *const V = iter.iter.next_back()?;
                 Some((key.clone(), unsafe { ptr::read(ptr) }))
             })
-            .collect::<Option<Self::Item>>()
+            .collect()
     }
 }
 
-impl<'data, K: Clone + Eq + Hash, V: 'data, S: BuildHasher + Default> ExactSizeIterator
-    for TransposeSliceDrain<'data, K, V, S>
+impl<'data, K, V, S> ExactSizeIterator for TransposeSliceDrain<'data, K, V, S>
+where
+    K: Clone + Eq + Hash,
+    V: 'data,
+    S: BuildHasher + Default,
 {
     fn len(&self) -> usize {
         self.len
     }
 }
 
-impl<'data, K: Clone + Eq + Hash, V: 'data, S: BuildHasher + Default> iter::FusedIterator
-    for TransposeSliceDrain<'data, K, V, S>
+impl<'data, K, V, S> iter::FusedIterator for TransposeSliceDrain<'data, K, V, S>
+where
+    K: Clone + Eq + Hash,
+    V: 'data,
+    S: BuildHasher + Default,
 {
 }
 
