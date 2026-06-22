@@ -1442,7 +1442,8 @@ rbx-dom may require changes to fully support this property. Please open an issue
                         referent,
                         parent: referents_map.get(parent_id).unwrap().0,
                         name: String::new(),
-                        children: todo!(),
+                        //TODO: actually implement this
+                        children: Vec::new(),
                     },
                 )
             })
