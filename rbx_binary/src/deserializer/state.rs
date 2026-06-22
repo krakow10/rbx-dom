@@ -1419,7 +1419,7 @@ rbx-dom may require changes to fully support this property. Please open an issue
 
     /// Returns the root ref and ready-to-go instance relational fields
     #[profiling::function]
-    pub fn decode_prnt_chunk(mut chunk: &[u8]) -> Result<(Ref, Instances), InnerError> {
+    pub fn decode_prnt_chunk(mut chunk: &[u8]) -> Result<(Instance, Instances), InnerError> {
         let version = chunk.read_u8()?;
 
         if version != 0 {
@@ -1437,6 +1437,7 @@ rbx-dom may require changes to fully support this property. Please open an issue
         let parents = chunk.read_referent_array(number_objects as usize)?;
 
         let root_ref = Ref::new();
+        let mut root_ref_children = Vec::new();
 
         let referents_map: HashMap<_, _> = subjects
             .zip(parents)
@@ -1446,6 +1447,7 @@ rbx-dom may require changes to fully support this property. Please open an issue
             .iter()
             .map(|(&id, &(referent, parent_id))| {
                 let parent = if parent_id == -1 {
+                    root_ref_children.push(referent);
                     root_ref
                 } else {
                     referents_map
@@ -1465,7 +1467,14 @@ rbx-dom may require changes to fully support this property. Please open an issue
             })
             .collect();
 
-        Ok((root_ref, instances))
+        let root = Instance {
+            referent: root_ref,
+            children: root_ref_children,
+            parent: Ref::none(),
+            name: "DataModel".to_owned(),
+        };
+
+        Ok((root, instances))
     }
 
     #[profiling::function]
@@ -1482,7 +1491,7 @@ rbx-dom may require changes to fully support this property. Please open an issue
     /// Combines together all the decoded information to build and emplace
     /// instances in our tree.
     #[profiling::function]
-    pub fn finish(root_ref: Ref, type_infos: TypeInfos<'_>) -> WeakDom {
+    pub fn finish(root: Instance, type_infos: TypeInfos<'_>) -> WeakDom {
         log::trace!("Constructing tree from deserialized data");
 
         // The necessary effort is put in to compute the required information ahead of time so that this operation can have maximum parallelism.
@@ -1501,9 +1510,21 @@ rbx-dom may require changes to fully support this property. Please open an issue
         #[cfg(feature = "rayon")]
         let instances = instances.collect::<Vec<_>>().into_iter();
 
+        let root_ref = root.referent;
+        let root_class = Ustr::from(&root.name);
+        let root = rbx_dom_weak::Instance::from_raw(
+            root.referent,
+            root.children,
+            root.parent,
+            root.name,
+            root_class,
+            UstrMap::new(),
+        );
+
         let instances = instances
             // grab the referent from the instance
             .map(|instance| (instance.referent(), instance))
+            .chain([(root_ref, root)])
             .collect();
 
         WeakDom::from_raw(root_ref, instances)
