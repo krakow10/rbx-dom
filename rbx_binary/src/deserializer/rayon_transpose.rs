@@ -66,8 +66,8 @@ struct TransposeDrain<'data, K, V: Send, S> {
     len: usize,
 }
 
-impl<'data, T: Send> ParallelIterator for Drain<'data, T> {
-    type Item = T;
+impl<'data, K: Send, V: Send, S: Send> ParallelIterator for TransposeDrain<'data, K, V, S> {
+    type Item = HashMap<K, V, S>;
 
     fn drive_unindexed<C>(self, consumer: C) -> C::Result
     where
@@ -81,7 +81,7 @@ impl<'data, T: Send> ParallelIterator for Drain<'data, T> {
     }
 }
 
-impl<'data, T: Send> IndexedParallelIterator for Drain<'data, T> {
+impl<'data, K: Send, V: Send, S: Send> IndexedParallelIterator for TransposeDrain<'data, K, V, S> {
     fn drive<C>(self, consumer: C) -> C::Result
     where
         C: Consumer<Self::Item>,
@@ -102,7 +102,7 @@ impl<'data, T: Send> IndexedParallelIterator for Drain<'data, T> {
             self.vec.set_len(self.range.start);
 
             // Create the producer as the exclusive "owner" of the slice.
-            let producer = DrainProducer::from_vec(self.vec, self.range.len());
+            let producer = TransposeDrainProducer::from_vec(self.vec, self.range.len());
 
             // The producer will move or drop each item from the drained range.
             callback.callback(producer)
@@ -141,56 +141,82 @@ struct TransposeDrainProducer<'data, K, V: Send, S> {
     len: usize,
 }
 
-impl<T: Send> DrainProducer<'_, T> {
+impl<'data, K: Clone + Eq + Hash, V: Send, S: BuildHasher + Default>
+    TransposeDrainProducer<'data, K, V, S>
+{
     /// Creates a draining producer, which *moves* items from the slice.
     ///
     /// Unsafe because `!Copy` data must not be read after the borrow is released.
-    pub(crate) unsafe fn new(slice: &mut [T]) -> DrainProducer<'_, T> {
-        DrainProducer { slice }
+    pub(crate) unsafe fn new(map: HashMap<K, &'data mut [V], S>, len: usize) -> Self {
+        Self { map, len }
     }
 
     /// Creates a draining producer, which *moves* items from the tail of the vector.
     ///
     /// Unsafe because we're moving from beyond `vec.len()`, so the caller must ensure
     /// that data is initialized and not read after the borrow is released.
-    unsafe fn from_vec(vec: &mut Vec<T>, len: usize) -> DrainProducer<'_, T> {
-        let start = vec.len();
-        assert!(vec.capacity() - start >= len);
-
-        // The pointer is derived from `Vec` directly, not through a `Deref`,
-        // so it has provenance over the whole allocation.
-        unsafe {
-            let ptr = vec.as_mut_ptr().add(start);
-            DrainProducer::new(slice::from_raw_parts_mut(ptr, len))
-        }
+    unsafe fn from_transpose(transpose: &mut TransposeDrain<'data, K, V, S>) -> Self {
+        let len = transpose.len;
+        let map = transpose
+            .map
+            .iter_mut()
+            .map(|(key, vec)| {
+                // The pointer is derived from `Vec` directly, not through a `Deref`,
+                // so it has provenance over the whole allocation.
+                let slice = unsafe {
+                    let ptr = vec.as_mut_ptr();
+                    slice::from_raw_parts_mut(ptr, len)
+                };
+                (key.clone(), slice)
+            })
+            .collect();
+        Self::new(map, len)
     }
 }
 
-impl<'data, T: 'data + Send> Producer for DrainProducer<'data, T> {
-    type Item = T;
-    type IntoIter = SliceDrain<'data, T>;
+impl<
+        'data,
+        K: 'data + Send + Clone + Eq + Hash,
+        V: 'data + Send,
+        S: 'data + Send + BuildHasher + Default,
+    > Producer for TransposeDrainProducer<'data, K, V, S>
+{
+    type Item = HashMap<K, V, S>;
+    type IntoIter = TransposeSliceDrain<'data, K, V, S>;
 
-    fn into_iter(mut self) -> Self::IntoIter {
-        // replace the slice so we don't drop it twice
-        let slice = mem::take(&mut self.slice);
-        SliceDrain {
-            iter: slice.iter_mut(),
+    fn into_iter(self) -> Self::IntoIter {
+        TransposeSliceDrain {
+            map: self
+                .map
+                .into_iter()
+                // replace the slice so we don't drop it twice
+                .map(|(key, mut slice)| (key, mem::take(&mut slice).iter_mut()))
+                .collect(),
+            len: self.len,
         }
     }
 
-    fn split_at(mut self, index: usize) -> (Self, Self) {
-        // replace the slice so we don't drop it twice
-        let slice = mem::take(&mut self.slice);
-        let (left, right) = slice.split_at_mut(index);
-        unsafe { (DrainProducer::new(left), DrainProducer::new(right)) }
+    fn split_at(self, index: usize) -> (Self, Self) {
+        // TODO: figure out if there is a way to reuse the allocation of self
+        let (left, right) = self
+            .map
+            .into_iter()
+            .map(|(key, slice)| {
+                let (left, right) = slice.split_at_mut(index);
+                ((key.clone(), left), (key, right))
+            })
+            .collect();
+        unsafe { (Self::new(left, self.len), Self::new(right, self.len)) }
     }
 }
 
-impl<'data, T: 'data + Send> Drop for DrainProducer<'data, T> {
+impl<'data, K, V: 'data + Send, S> Drop for TransposeDrainProducer<'data, K, V, S> {
     fn drop(&mut self) {
-        // extract the slice so we can use `Drop for [T]`
-        let slice_ptr: *mut [T] = mem::take::<&'data mut [T]>(&mut self.slice);
-        unsafe { ptr::drop_in_place::<[T]>(slice_ptr) };
+        for slice in self.map.values_mut() {
+            // extract the slice so we can use `Drop for [T]`
+            let slice_ptr: *mut [V] = mem::take::<&'data mut [V]>(slice);
+            unsafe { ptr::drop_in_place::<[V]>(slice_ptr) };
+        }
     }
 }
 
