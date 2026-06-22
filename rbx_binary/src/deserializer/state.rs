@@ -1417,8 +1417,9 @@ rbx-dom may require changes to fully support this property. Please open an issue
         }.map(PropChunkResult::PropChunk)
     }
 
+    /// Returns the root ref and ready-to-go instance relational fields
     #[profiling::function]
-    pub fn decode_prnt_chunk(mut chunk: &[u8]) -> Result<Instances, InnerError> {
+    pub fn decode_prnt_chunk(mut chunk: &[u8]) -> Result<(Ref, Instances), InnerError> {
         let version = chunk.read_u8()?;
 
         if version != 0 {
@@ -1435,20 +1436,27 @@ rbx-dom may require changes to fully support this property. Please open an issue
         let subjects = chunk.read_referent_array(number_objects as usize)?;
         let parents = chunk.read_referent_array(number_objects as usize)?;
 
+        let root_ref = Ref::new();
+
         let referents_map: HashMap<_, _> = subjects
             .zip(parents)
             .map(|(id, parent_id)| (id, (Ref::new(), parent_id)))
             .collect();
         let instances = referents_map
             .iter()
-            .map(|(&id, &(referent, ref parent_id))| {
+            .map(|(&id, &(referent, parent_id))| {
+                let parent = if parent_id == -1 {
+                    root_ref
+                } else {
+                    referents_map
+                        .get(&parent_id)
+                        .map_or(Ref::none(), |&(r, _)| r)
+                };
                 (
                     id,
                     Instance {
                         referent,
-                        parent: referents_map
-                            .get(parent_id)
-                            .map_or(Ref::none(), |&(r, _)| r),
+                        parent,
                         name: String::new(),
                         //TODO: actually implement this
                         children: Vec::new(),
@@ -1457,7 +1465,7 @@ rbx-dom may require changes to fully support this property. Please open an issue
             })
             .collect();
 
-        Ok(instances)
+        Ok((root_ref, instances))
     }
 
     #[profiling::function]
@@ -1474,10 +1482,8 @@ rbx-dom may require changes to fully support this property. Please open an issue
     /// Combines together all the decoded information to build and emplace
     /// instances in our tree.
     #[profiling::function]
-    pub fn finish(type_infos: TypeInfos<'_>) -> WeakDom {
+    pub fn finish(root_ref: Ref, type_infos: TypeInfos<'_>) -> WeakDom {
         log::trace!("Constructing tree from deserialized data");
-
-        let root_ref = Ref::new();
 
         // The necessary effort is put in to compute the required information ahead of time so that this operation can have maximum parallelism.
         // Each TypeInfo is populated with all the information needed to create Instances in parallel.

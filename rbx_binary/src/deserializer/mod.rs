@@ -1,8 +1,8 @@
 mod chunks;
 mod error;
 mod header;
-mod state;
 mod rayon_transpose;
+mod state;
 
 use std::io::Read;
 
@@ -105,7 +105,7 @@ impl<'db> Deserializer<'db> {
         } else {
             Vec::new()
         };
-        let mut instances = decode_prnt_chunk(&chunks.prnt)?;
+        let (root_ref, mut instances) = decode_prnt_chunk(&chunks.prnt)?;
 
         for chunk in chunks.inst {
             decode_inst_chunk(&chunk, self.database, &mut instances, &mut type_infos)?;
@@ -152,7 +152,7 @@ impl<'db> Deserializer<'db> {
             }
         }
 
-        Ok(finish(type_infos))
+        Ok(finish(root_ref, type_infos))
     }
 }
 
