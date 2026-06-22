@@ -187,7 +187,7 @@ pub trait RbxReadInterleaved<'a>: ReadSlice<'a> {
         Ok(InterleavedArrayIter {
             bytes: self.read_slice(len * N)?,
             index: 0,
-            index_limit: 0,
+            index_limit: len,
             len,
         })
     }
