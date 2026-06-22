@@ -1446,7 +1446,9 @@ rbx-dom may require changes to fully support this property. Please open an issue
                     id,
                     Instance {
                         referent,
-                        parent: referents_map.get(parent_id).unwrap().0,
+                        parent: referents_map
+                            .get(parent_id)
+                            .map_or(Ref::none(), |&(r, _)| r),
                         name: String::new(),
                         //TODO: actually implement this
                         children: Vec::new(),
