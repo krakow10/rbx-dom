@@ -170,15 +170,14 @@ where
     type IntoIter = TransposeSliceDrain<'data, K, V, S>;
 
     fn into_iter(self) -> Self::IntoIter {
-        TransposeSliceDrain {
-            map: self
-                .map
-                .into_iter()
-                // replace the slice so we don't drop it twice
-                .map(|(key, mut slice)| (key, SliceDrain::new(mem::take(&mut slice.slice))))
-                .collect(),
-            len: self.len,
-        }
+        let len = self.len;
+        let map = self
+            .map
+            .into_iter()
+            // replace the slice so we don't drop it twice
+            .map(|(key, mut slice)| (key, SliceDrain::new(mem::take(&mut slice.slice))))
+            .collect();
+        TransposeSliceDrain { map, len }
     }
 
     fn split_at(self, index: usize) -> (Self, Self) {
