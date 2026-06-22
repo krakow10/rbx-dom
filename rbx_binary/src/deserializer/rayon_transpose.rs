@@ -51,7 +51,7 @@ where
 
     fn with_producer<CB: ProducerCallback<Self::Item>>(mut self, callback: CB) -> CB::Output {
         // Create the producer as the exclusive "owner" of the slice.
-        let producer = TransposeDrainProducer::from_transpose(&mut self);
+        let producer = TransposeProducer::from_transpose(&mut self);
 
         // The producer will move or drop each item from the drained range.
         callback.callback(producer)
@@ -59,18 +59,18 @@ where
 }
 
 // ////////////////////////////////////////////////////////////////////////
-struct TransposeDrainProducer<'data, K, V: Send, S> {
-    map: HashMap<K, DrainProducer<'data, V>, S>,
+struct TransposeProducer<'data, K, V: Send, S> {
+    map: HashMap<K, SliceProducer<'data, V>, S>,
     len: usize,
 }
 
-impl<'data, K, V, S> TransposeDrainProducer<'data, K, V, S>
+impl<'data, K, V, S> TransposeProducer<'data, K, V, S>
 where
     K: Clone + Eq + Hash,
     V: Send,
     S: BuildHasher + Default,
 {
-    fn new(map: HashMap<K, DrainProducer<'data, V>, S>, len: usize) -> Self {
+    fn new(map: HashMap<K, SliceProducer<'data, V>, S>, len: usize) -> Self {
         Self { map, len }
     }
 
@@ -79,13 +79,13 @@ where
         let map = transpose
             .map
             .iter_mut()
-            .map(|(key, vec)| (key.clone(), unsafe { DrainProducer::from_vec(vec) }))
+            .map(|(key, vec)| (key.clone(), unsafe { SliceProducer::from_vec(vec) }))
             .collect();
         Self::new(map, len)
     }
 }
 
-impl<'data, K, V, S> Producer for TransposeDrainProducer<'data, K, V, S>
+impl<'data, K, V, S> Producer for TransposeProducer<'data, K, V, S>
 where
     K: 'data + Send + Clone + Eq + Hash,
     V: 'data + Send,
@@ -110,13 +110,13 @@ where
         let (left, right) = self
             .map
             .into_iter()
-            .map(|(key, mut drain_producer)| {
-                let slice = mem::take(&mut drain_producer.slice);
+            .map(|(key, mut slice_producer)| {
+                let slice = mem::take(&mut slice_producer.slice);
                 let (left, right) = slice.split_at_mut(index);
                 unsafe {
                     (
-                        (key.clone(), DrainProducer::new(left)),
-                        (key, DrainProducer::new(right)),
+                        (key.clone(), SliceProducer::new(left)),
+                        (key, SliceProducer::new(right)),
                     )
                 }
             })
@@ -125,11 +125,11 @@ where
     }
 }
 
-pub(crate) struct DrainProducer<'data, T: Send> {
+struct SliceProducer<'data, T: Send> {
     slice: &'data mut [T],
 }
 
-impl<'data, T: Send> DrainProducer<'data, T> {
+impl<'data, T: Send> SliceProducer<'data, T> {
     /// Creates a draining producer, which *moves* items from the slice.
     ///
     /// Unsafe because `!Copy` data must not be read after the borrow is released.
@@ -138,8 +138,7 @@ impl<'data, T: Send> DrainProducer<'data, T> {
     }
     /// Creates a draining producer, which *moves* items from the tail of the vector.
     ///
-    /// Unsafe because we're moving from beyond `vec.len()`, so the caller must ensure
-    /// that data is initialized and not read after the borrow is released.
+    /// Unsafe because data must not be read after the borrow is released.
     unsafe fn from_vec(vec: &'data mut Vec<T>) -> Self {
         let len = vec.len();
 
@@ -157,7 +156,7 @@ impl<'data, T: Send> DrainProducer<'data, T> {
     }
 }
 
-impl<'data, T: Send> Drop for DrainProducer<'data, T> {
+impl<'data, T: Send> Drop for SliceProducer<'data, T> {
     fn drop(&mut self) {
         // extract the slice so we can use `Drop for [T]`
         let slice_ptr: *mut [T] = mem::take::<&'data mut [T]>(&mut self.slice);
@@ -240,7 +239,7 @@ where
 {
 }
 
-pub(crate) struct SliceDrain<'data, T> {
+struct SliceDrain<'data, T> {
     iter: slice::IterMut<'data, T>,
 }
 
