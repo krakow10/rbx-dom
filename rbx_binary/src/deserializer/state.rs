@@ -25,10 +25,6 @@ use super::error::InnerError;
 use rayon::iter::plumbing::{bridge, Consumer, ProducerCallback, UnindexedConsumer};
 #[cfg(feature = "rayon")]
 use rayon::iter::{IndexedParallelIterator, IntoParallelIterator, ParallelIterator};
-#[cfg(feature = "rayon")]
-type VecIntoIter<T> = rayon::vec::IntoIter<T>;
-#[cfg(not(feature = "rayon"))]
-type VecIntoIter<T> = std::vec::IntoIter<T>;
 
 /// The metadata contained in the file, which affects how some constructs
 /// are interpreted by Roblox.
@@ -47,7 +43,7 @@ type Instances = HashMap<i32, Instance>;
 
 /// Represents a unique instance class. Binary models define all their instance
 /// types up front and give them a short u32 identifier.
-struct TypeInfo<'dom> {
+pub(super) struct TypeInfo<'dom> {
     /// The common name for this type like `Folder` or `UserInputService`.
     type_name: Ustr,
 
@@ -97,7 +93,7 @@ impl<'dom> TypeInfo<'dom> {
     }
 }
 
-struct TypeInfoIntoIter<'a> {
+pub(super) struct TypeInfoIntoIter<'a> {
     type_info: TypeInfo<'a>,
 }
 
@@ -150,7 +146,7 @@ impl IndexedParallelIterator for TypeInfoIntoIter<'_> {
     }
 }
 
-struct Instance {
+pub(super) struct Instance {
     referent: Ref,
     children: Vec<Ref>,
     parent: Ref,
@@ -242,7 +238,7 @@ impl<'db> PropChunk<'db> {
 /// contains a migration for some properties Roblox has replaced with
 /// others (like Font, which has been superceded by FontFace).
 #[derive(Debug)]
-struct CanonicalProperty<'db> {
+pub(super) struct CanonicalProperty<'db> {
     name: Ustr,
     ty: VariantType,
     migration: Option<&'db PropertySerialization<'db>>,
