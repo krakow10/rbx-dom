@@ -111,12 +111,12 @@ where
         self.len
     }
 
-    fn with_producer<CB>(mut self, callback: CB) -> CB::Output
+    fn with_producer<CB>(self, callback: CB) -> CB::Output
     where
         CB: ProducerCallback<Self::Item>,
     {
         // Create the producer as the exclusive "owner" of the slice.
-        let producer = TransposeDrainProducer::from_transpose(&mut self);
+        let producer = TransposeDrainProducer::from_transpose(self);
 
         // The producer will move or drop each item from the drained range.
         callback.callback(producer)
@@ -150,23 +150,21 @@ where
         Self { map, len }
     }
 
-    fn from_transpose<'a: 'data>(transpose: &'a mut TransposeDrain<'data, K, V, S>) -> Self {
+    fn from_transpose(mut transpose: TransposeDrain<'data, K, V, S>) -> Self {
         let len = transpose.len;
-        let map = transpose
-            .map
-            .iter_mut()
+        let map = mem::take(&mut transpose.map)
+            .into_iter()
             .map(|(key, vec)| (key.clone(), unsafe { DrainProducer::from_vec(vec) }))
             .collect();
         Self::new(map, len)
     }
 }
 
-impl<
-        'data,
-        K: 'data + Send + Clone + Eq + Hash,
-        V: 'data + Send,
-        S: 'data + Send + BuildHasher + Default,
-    > Producer for TransposeDrainProducer<'data, K, V, S>
+impl<'data, K, V, S> Producer for TransposeDrainProducer<'data, K, V, S>
+where
+    K: 'data + Send + Clone + Eq + Hash,
+    V: 'data + Send,
+    S: 'data + Send + BuildHasher + Default,
 {
     type Item = HashMap<K, V, S>;
     type IntoIter = TransposeSliceDrain<'data, K, V, S>;
