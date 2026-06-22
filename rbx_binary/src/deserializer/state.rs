@@ -185,6 +185,7 @@ impl<'db> PropChunk<'db> {
         // helper to create value iterators
         struct SomeFromFn<F> {
             f: F,
+            index: usize,
             len: usize,
         }
 
@@ -195,7 +196,12 @@ impl<'db> PropChunk<'db> {
             type Item = T;
 
             fn next(&mut self) -> Option<Self::Item> {
-                Some((self.f)())
+                if self.index < self.len {
+                    self.index += 1;
+                    Some((self.f)())
+                } else {
+                    None
+                }
             }
         }
         impl<F, T> ExactSizeIterator for SomeFromFn<F>
@@ -207,7 +213,7 @@ impl<'db> PropChunk<'db> {
             }
         }
 
-        let values = SomeFromFn { f, len }
+        let values = SomeFromFn { f, len, index: 0 }
             .map(|result| result.map(Into::into))
             .collect::<Result<Vec<Variant>, InnerError>>()?;
 
