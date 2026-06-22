@@ -60,7 +60,12 @@ struct TransposeDrain<'data, K, V: Send, S> {
     len: usize,
 }
 
-impl<'data, K, V: Send, S> TransposeDrain<'data, K, V, S> {
+impl<'data, K, V, S> TransposeDrain<'data, K, V, S>
+where
+    K: Clone + Eq + Hash,
+    V: Send,
+    S: BuildHasher + Default,
+{
     fn new(map: &'data mut HashMap<K, Vec<V>, S>, len: usize) -> Self {
         let map = map
             .iter_mut()
@@ -135,14 +140,17 @@ struct TransposeDrainProducer<'data, K, V: Send, S> {
     len: usize,
 }
 
-impl<'data, K: Clone + Eq + Hash, V: Send, S: BuildHasher + Default>
-    TransposeDrainProducer<'data, K, V, S>
+impl<'data, K, V, S> TransposeDrainProducer<'data, K, V, S>
+where
+    K: Clone + Eq + Hash,
+    V: Send,
+    S: BuildHasher + Default,
 {
     fn new(map: HashMap<K, DrainProducer<'data, V>, S>, len: usize) -> Self {
         Self { map, len }
     }
 
-    fn from_transpose(transpose: &'data mut TransposeDrain<'data, K, V, S>) -> Self {
+    fn from_transpose<'a: 'data>(transpose: &'a mut TransposeDrain<'data, K, V, S>) -> Self {
         let len = transpose.len;
         let map = transpose
             .map
@@ -212,15 +220,17 @@ impl<'data, T: Send> DrainProducer<'data, T> {
     /// that data is initialized and not read after the borrow is released.
     unsafe fn from_vec(vec: &'data mut Vec<T>) -> Self {
         let len = vec.len();
-        unsafe {
-            vec.set_len(0);
-        }
+
+        // Make the vector forget about the drained items.
+        unsafe { vec.set_len(0) };
+
         // The pointer is derived from `Vec` directly, not through a `Deref`,
         // so it has provenance over the whole allocation.
         let slice = unsafe {
             let ptr = vec.as_mut_ptr();
             slice::from_raw_parts_mut(ptr, len)
         };
+
         Self { slice }
     }
 }
@@ -241,8 +251,11 @@ struct TransposeSliceDrain<'data, K, V, S> {
     len: usize,
 }
 
-impl<'data, K: Clone + Eq + Hash, V: 'data, S: BuildHasher + Default> Iterator
-    for TransposeSliceDrain<'data, K, V, S>
+impl<'data, K, V, S> Iterator for TransposeSliceDrain<'data, K, V, S>
+where
+    K: Clone + Eq + Hash,
+    V: 'data,
+    S: BuildHasher + Default,
 {
     type Item = HashMap<K, V, S>;
 
@@ -267,8 +280,11 @@ impl<'data, K: Clone + Eq + Hash, V: 'data, S: BuildHasher + Default> Iterator
     }
 }
 
-impl<'data, K: Clone + Eq + Hash, V: 'data, S: BuildHasher + Default> DoubleEndedIterator
-    for TransposeSliceDrain<'data, K, V, S>
+impl<'data, K, V, S> DoubleEndedIterator for TransposeSliceDrain<'data, K, V, S>
+where
+    K: Clone + Eq + Hash,
+    V: 'data,
+    S: BuildHasher + Default,
 {
     fn next_back(&mut self) -> Option<Self::Item> {
         self.map
