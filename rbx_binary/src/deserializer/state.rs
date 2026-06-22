@@ -131,19 +131,22 @@ impl IndexedParallelIterator for TypeInfoIntoIter<'_> {
 
     fn with_producer<CB: ProducerCallback<Self::Item>>(self, callback: CB) -> CB::Output {
         let class = self.type_info.type_name;
-        super::rayon_transpose::TransposeIntoIter::new(self.type_info.properties)
-            .zip_eq(self.type_info.instances)
-            .map(|(properties, instance)| {
-                rbx_dom_weak::Instance::from_raw(
-                    instance.referent,
-                    instance.children,
-                    instance.parent,
-                    instance.name,
-                    class,
-                    properties,
-                )
-            })
-            .with_producer(callback)
+        super::rayon_transpose::TransposeIntoIter::new(
+            self.type_info.properties,
+            self.type_info.instances.len(),
+        )
+        .zip_eq(self.type_info.instances)
+        .map(|(properties, instance)| {
+            rbx_dom_weak::Instance::from_raw(
+                instance.referent,
+                instance.children,
+                instance.parent,
+                instance.name,
+                class,
+                properties,
+            )
+        })
+        .with_producer(callback)
     }
 }
 
