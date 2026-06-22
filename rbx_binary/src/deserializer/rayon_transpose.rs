@@ -6,7 +6,7 @@ use std::{iter, mem, ptr, slice};
 use rayon::iter::plumbing::{bridge, Consumer, Producer, ProducerCallback, UnindexedConsumer};
 use rayon::iter::{IndexedParallelIterator, ParallelDrainRange, ParallelIterator};
 
-/// Parallel iterator that moves out of a hashmap of vectors.
+/// Parallel iterator that moves HashMap<K,V> out of a hashmap of vectors.
 #[derive(Debug, Clone)]
 pub struct TransposeIntoIter<K, V, S> {
     map: HashMap<K, Vec<V>, S>,
@@ -111,7 +111,7 @@ impl<'data, T: Send> IndexedParallelIterator for Drain<'data, T> {
             self.vec.set_len(self.range.start);
 
             // Create the producer as the exclusive "owner" of the slice.
-            let producer = DrainProducer::from_vec(self.vec, self.range.len());
+            let producer = TransposeProducer::new(self.map, self.range.len());
 
             // The producer will move or drop each item from the drained range.
             callback.callback(producer)
