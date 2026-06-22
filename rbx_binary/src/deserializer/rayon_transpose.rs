@@ -50,78 +50,11 @@ where
     }
 
     fn with_producer<CB: ProducerCallback<Self::Item>>(mut self, callback: CB) -> CB::Output {
-        TransposeDrain::new(&mut self.map, self.len).with_producer(callback)
-    }
-}
-
-/// Draining parallel iterator that moves a range out of a vector, but keeps the total capacity.
-struct TransposeDrain<'data, K, V: Send, S> {
-    map: HashMap<K, &'data mut Vec<V>, S>,
-    len: usize,
-}
-
-impl<'data, K, V, S> TransposeDrain<'data, K, V, S>
-where
-    K: Clone + Eq + Hash,
-    V: Send,
-    S: BuildHasher + Default,
-{
-    fn new(map: &'data mut HashMap<K, Vec<V>, S>, len: usize) -> Self {
-        let map = map
-            .iter_mut()
-            .map(|(key, vec)| (key.clone(), vec))
-            .collect();
-        Self { map, len }
-    }
-}
-impl<'data, K, V, S> ParallelIterator for TransposeDrain<'data, K, V, S>
-where
-    K: 'data + Send + Clone + Eq + Hash,
-    V: 'data + Send,
-    S: 'data + Send + BuildHasher + Default,
-{
-    type Item = HashMap<K, V, S>;
-
-    fn drive_unindexed<C: UnindexedConsumer<Self::Item>>(self, consumer: C) -> C::Result {
-        bridge(self, consumer)
-    }
-
-    fn opt_len(&self) -> Option<usize> {
-        Some(self.len)
-    }
-}
-
-impl<'data, K, V, S> IndexedParallelIterator for TransposeDrain<'data, K, V, S>
-where
-    K: 'data + Send + Clone + Eq + Hash,
-    V: 'data + Send,
-    S: 'data + Send + BuildHasher + Default,
-{
-    fn drive<C: Consumer<Self::Item>>(self, consumer: C) -> C::Result {
-        bridge(self, consumer)
-    }
-
-    fn len(&self) -> usize {
-        self.len
-    }
-
-    fn with_producer<CB: ProducerCallback<Self::Item>>(self, callback: CB) -> CB::Output {
         // Create the producer as the exclusive "owner" of the slice.
-        let producer = TransposeDrainProducer::from_transpose(self);
+        let producer = TransposeDrainProducer::from_transpose(&mut self);
 
         // The producer will move or drop each item from the drained range.
         callback.callback(producer)
-    }
-}
-
-impl<'data, K, V: Send, S> Drop for TransposeDrain<'data, K, V, S> {
-    fn drop(&mut self) {
-        for vec in self.map.values_mut() {
-            if vec.len() == self.len {
-                // We must not have produced, so just call a normal drain to remove the items.
-                vec.clear();
-            }
-        }
     }
 }
 
@@ -141,10 +74,11 @@ where
         Self { map, len }
     }
 
-    fn from_transpose(mut transpose: TransposeDrain<'data, K, V, S>) -> Self {
+    fn from_transpose(transpose: &'data mut TransposeIntoIter<K, V, S>) -> Self {
         let len = transpose.len;
-        let map = mem::take(&mut transpose.map)
-            .into_iter()
+        let map = transpose
+            .map
+            .iter_mut()
             .map(|(key, vec)| (key.clone(), unsafe { DrainProducer::from_vec(vec) }))
             .collect();
         Self::new(map, len)
