@@ -46,7 +46,7 @@ where
     }
 
     fn len(&self) -> usize {
-        self.map.len()
+        self.len
     }
 
     fn with_producer<CB: ProducerCallback<Self::Item>>(mut self, callback: CB) -> CB::Output {
