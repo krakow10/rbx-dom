@@ -1,7 +1,6 @@
 use std::{collections::VecDeque, convert::TryInto};
 
 use ahash::{HashMap, HashMapExt};
-use rayon::iter::IndexedParallelIterator;
 use rbx_dom_weak::{
     types::{
         Attributes, Axes, BinaryString, BrickColor, CFrame, Color3, Color3uint8, ColorSequence,
@@ -23,7 +22,9 @@ use crate::{
 use super::error::InnerError;
 
 #[cfg(feature = "rayon")]
-use rayon::iter::{IntoParallelIterator, ParallelIterator};
+use rayon::iter::plumbing::{bridge, Consumer, ProducerCallback, UnindexedConsumer};
+#[cfg(feature = "rayon")]
+use rayon::iter::{IndexedParallelIterator, IntoParallelIterator, ParallelIterator};
 #[cfg(feature = "rayon")]
 type VecIntoIter<T> = rayon::vec::IntoIter<T>;
 #[cfg(not(feature = "rayon"))]
@@ -96,14 +97,42 @@ impl<'dom> TypeInfo<'dom> {
     }
 }
 
-impl IntoParallelIterator for TypeInfo<'_> {
-    type Item = HashMap<Ustr, Variant>;
-    type Iter = super::rayon_transpose::TransposeIntoIter<Ustr, Variant, ahash::RandomState>;
+struct TypeInfoIntoIter<'a> {
+    type_info: TypeInfo<'a>,
+}
+
+impl<'a> IntoParallelIterator for TypeInfo<'a> {
+    type Item = rbx_dom_weak::Instance;
+    type Iter = TypeInfoIntoIter<'a>;
 
     fn into_par_iter(self) -> Self::Iter {
-        let class = self.type_name;
-        super::rayon_transpose::TransposeIntoIter::new(self.properties)
-            .zip_eq(self.instances)
+        TypeInfoIntoIter { type_info: self }
+    }
+}
+impl ParallelIterator for TypeInfoIntoIter<'_> {
+    type Item = rbx_dom_weak::Instance;
+
+    fn drive_unindexed<C: UnindexedConsumer<Self::Item>>(self, consumer: C) -> C::Result {
+        bridge(self, consumer)
+    }
+
+    fn opt_len(&self) -> Option<usize> {
+        Some(self.type_info.instances.len())
+    }
+}
+impl IndexedParallelIterator for TypeInfoIntoIter<'_> {
+    fn drive<C: Consumer<Self::Item>>(self, consumer: C) -> C::Result {
+        bridge(self, consumer)
+    }
+
+    fn len(&self) -> usize {
+        self.type_info.instances.len()
+    }
+
+    fn with_producer<CB: ProducerCallback<Self::Item>>(self, callback: CB) -> CB::Output {
+        let class = self.type_info.type_name;
+        super::rayon_transpose::TransposeIntoIter::new(self.type_info.properties)
+            .zip_eq(self.type_info.instances)
             .map(|(properties, instance)| {
                 rbx_dom_weak::Instance::from_raw(
                     instance.referent,
@@ -114,6 +143,7 @@ impl IntoParallelIterator for TypeInfo<'_> {
                     properties,
                 )
             })
+            .with_producer(callback)
     }
 }
 

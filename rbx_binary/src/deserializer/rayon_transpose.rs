@@ -1,6 +1,5 @@
 use std::collections::HashMap;
-use std::ops::RangeBounds;
-use std::range::Range;
+use std::ops::{Range, RangeBounds};
 use std::{iter, mem, ptr, slice};
 
 use rayon::iter::plumbing::{bridge, Consumer, Producer, ProducerCallback, UnindexedConsumer};
@@ -21,10 +20,7 @@ impl<K, V, S> TransposeIntoIter<K, V, S> {
 impl<K: Send, V: Send, S: Send> ParallelIterator for TransposeIntoIter<K, V, S> {
     type Item = HashMap<K, V, S>;
 
-    fn drive_unindexed<C>(self, consumer: C) -> C::Result
-    where
-        C: UnindexedConsumer<Self::Item>,
-    {
+    fn drive_unindexed<C: UnindexedConsumer<Self::Item>>(self, consumer: C) -> C::Result {
         bridge(self, consumer)
     }
 
@@ -34,10 +30,7 @@ impl<K: Send, V: Send, S: Send> ParallelIterator for TransposeIntoIter<K, V, S> 
 }
 
 impl<K: Send, V: Send, S: Send> IndexedParallelIterator for TransposeIntoIter<K, V, S> {
-    fn drive<C>(self, consumer: C) -> C::Result
-    where
-        C: Consumer<Self::Item>,
-    {
+    fn drive<C: Consumer<Self::Item>>(self, consumer: C) -> C::Result {
         bridge(self, consumer)
     }
 
@@ -45,10 +38,7 @@ impl<K: Send, V: Send, S: Send> IndexedParallelIterator for TransposeIntoIter<K,
         self.map.len()
     }
 
-    fn with_producer<CB>(mut self, callback: CB) -> CB::Output
-    where
-        CB: ProducerCallback<Self::Item>,
-    {
+    fn with_producer<CB: ProducerCallback<Self::Item>>(mut self, callback: CB) -> CB::Output {
         // Drain every item, and then the vector only needs to free its buffer.
         self.map.par_drain(..).with_producer(callback)
     }
