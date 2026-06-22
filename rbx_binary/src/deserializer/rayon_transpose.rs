@@ -82,10 +82,7 @@ where
 {
     type Item = HashMap<K, V, S>;
 
-    fn drive_unindexed<C>(self, consumer: C) -> C::Result
-    where
-        C: UnindexedConsumer<Self::Item>,
-    {
+    fn drive_unindexed<C: UnindexedConsumer<Self::Item>>(self, consumer: C) -> C::Result {
         bridge(self, consumer)
     }
 
@@ -100,10 +97,7 @@ where
     V: 'data + Send,
     S: 'data + Send + BuildHasher + Default,
 {
-    fn drive<C>(self, consumer: C) -> C::Result
-    where
-        C: Consumer<Self::Item>,
-    {
+    fn drive<C: Consumer<Self::Item>>(self, consumer: C) -> C::Result {
         bridge(self, consumer)
     }
 
@@ -111,10 +105,7 @@ where
         self.len
     }
 
-    fn with_producer<CB>(self, callback: CB) -> CB::Output
-    where
-        CB: ProducerCallback<Self::Item>,
-    {
+    fn with_producer<CB: ProducerCallback<Self::Item>>(self, callback: CB) -> CB::Output {
         // Create the producer as the exclusive "owner" of the slice.
         let producer = TransposeDrainProducer::from_transpose(self);
 
