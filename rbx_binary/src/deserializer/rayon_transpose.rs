@@ -196,7 +196,7 @@ where
                 }
             })
             .collect();
-        (Self::new(left, self.len), Self::new(right, self.len))
+        (Self::new(left, index), Self::new(right, self.len - index))
     }
 }
 
