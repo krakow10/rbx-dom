@@ -160,9 +160,11 @@ where
 
     fn next(&mut self) -> Option<Self::Item> {
         let mut hash_map = self.hash_maps.next()?;
-        for (key, iter) in &mut self.map {
-            hash_map.insert(key.clone(), iter.next()?);
-        }
+        hash_map.extend(
+            self.map
+                .iter_mut()
+                .map(|(key, iter)| (key.clone(), iter.next().unwrap())),
+        );
         Some(hash_map)
     }
 
@@ -183,9 +185,11 @@ where
 {
     fn next_back(&mut self) -> Option<Self::Item> {
         let mut hash_map = self.hash_maps.next_back()?;
-        for (key, iter) in &mut self.map {
-            hash_map.insert(key.clone(), iter.next_back()?);
-        }
+        hash_map.extend(
+            self.map
+                .iter_mut()
+                .map(|(key, iter)| (key.clone(), iter.next_back().unwrap())),
+        );
         Some(hash_map)
     }
 }
