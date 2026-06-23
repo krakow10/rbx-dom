@@ -54,8 +54,10 @@ where
 
     fn with_producer<CB: ProducerCallback<Self::Item>>(mut self, callback: CB) -> CB::Output {
         // Allocate the HashMaps single-threaded to avoid allocator lock contention
-        let mut hash_maps =
-            vec![HashMap::with_capacity_and_hasher(self.map.len(), S::default()); self.len];
+        let mut hash_maps = vec![];
+        hash_maps.resize_with(self.len, || {
+            HashMap::with_capacity_and_hasher(self.map.len(), S::default())
+        });
 
         // Create the producer as the exclusive "owner" of the slice.
         let producer = TransposeProducer::from_transpose(&mut self, &mut hash_maps);
