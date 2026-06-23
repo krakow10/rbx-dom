@@ -1,6 +1,7 @@
 mod chunks;
 mod error;
 mod header;
+mod rayon_drainproducer;
 mod rayon_transpose;
 mod state;
 

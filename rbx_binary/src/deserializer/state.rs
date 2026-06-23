@@ -127,7 +127,7 @@ impl IndexedParallelIterator for TypeInfoIntoIter<'_> {
 
     fn with_producer<CB: ProducerCallback<Self::Item>>(self, callback: CB) -> CB::Output {
         let class = self.type_info.type_name;
-        super::rayon_transpose::TransposeIntoIter::new(
+        super::rayon_transpose::HashMapVecTranspose::new(
             self.type_info.properties,
             self.type_info.instances.len(),
         )
