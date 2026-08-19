@@ -122,14 +122,8 @@ impl FromStr for SomeRef {
 
     #[inline]
     fn from_str(input: &str) -> Result<Self, Self::Err> {
-        // TODO: use NonZero::from_str_radix when it is stabilized in Rust 1.95
-        // https://github.com/rust-lang/rust/issues/152193
-        let value = u128::from_str_radix(input, 16)?;
-
-        Self::new(value).ok_or_else(|| {
-            // generate a ParseIntError with IntErrorKind::Zero
-            "0".parse::<NonZeroU128>().err().unwrap()
-        })
+        let value = NonZeroU128::from_str_radix(input, 16)?;
+        Self(value)
     }
 }
 
