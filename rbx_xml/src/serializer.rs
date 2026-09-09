@@ -278,10 +278,10 @@ fn serialize_shared_strings<W: Write>(
 
     writer.write(XmlWriteEvent::start_element("SharedStrings"))?;
 
-    let mut sorted: Vec<_> = state.shared_strings_to_emit.iter().collect();
-    sorted.sort_unstable_by_key(|&(k, _)| k);
+    let mut sorted_shared_strings: Vec<_> = state.shared_strings_to_emit.iter().collect();
+    sorted_shared_strings.sort_unstable_by_key(|&(k, _)| k);
 
-    for (full_hash, value) in sorted {
+    for (full_hash, value) in sorted_shared_strings {
         // Roblox expects SharedString hashes to be the same length as an MD5
         // hash: 16 bytes, so we truncate our larger hashes to fit.
         let truncated_hash = &full_hash.as_bytes()[..16];
