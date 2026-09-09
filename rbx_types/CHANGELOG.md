@@ -1,12 +1,5 @@
 # rbx_types Changelog
 
-# Unreleased
-* Change Attributes to use a HashMap internally. ([#664])
-* Attributes::new() is no longer const. ([#664])
-* Attributes iteration order is now random. ([#664])
-
-[#664]: https://github.com/rojo-rbx/rbx-dom/pull/664
-
 # 3.1.0 (2025-11-27)
 * Fixed `serde::Deserialize` implementations for `BinaryString`, `SharedString`, `NetAssetRef`, `Faces`, and `Axes` to properly utilize visitors. ([#563])
 * Added `CFrame::identity` convenience method to construct an identity CFrame. ([#567])
