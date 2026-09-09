@@ -1,4 +1,4 @@
-use std::{collections::BTreeMap, fs, path::PathBuf};
+use std::{fs, path::PathBuf};
 
 use anyhow::bail;
 use clap::Parser;
@@ -10,6 +10,7 @@ use rbx_types::{
     VariantType, Vector2, Vector2int16, Vector3, Vector3int16,
 };
 use serde::Serialize;
+use vecmap::VecMap;
 
 /// Generate a file with every kind of type into a file for debugging rbx_dom_lua.
 #[derive(Debug, Parser)]
@@ -24,7 +25,25 @@ impl ValuesSubcommand {
             bail!("The output path must have a .json extension")
         }
 
-        let mut values: BTreeMap<&str, Variant> = BTreeMap::new();
+        struct TestBuilder<'a>(Vec<(&'a str, TestEntry)>);
+        impl<'a> TestBuilder<'a> {
+            fn insert(&mut self, key: &'a str, value: Variant) {
+                self.0.push((
+                    key,
+                    TestEntry {
+                        ty: value.ty(),
+                        value,
+                    },
+                ));
+            }
+            fn into_sorted_vecmap(self) -> VecMap<&'a str, TestEntry> {
+                let mut sorted = VecMap::from(self.0);
+                sorted.sort_unstable_keys();
+                sorted
+            }
+        }
+
+        let mut values = TestBuilder(Vec::new());
 
         values.insert(
             "Attributes",
@@ -198,18 +217,7 @@ impl ValuesSubcommand {
         values.insert("Vector3", Vector3::new(-300.0, 0.0, 1500.0).into());
         values.insert("Vector3int16", Vector3int16::new(60, 37, -450).into());
 
-        let entries: BTreeMap<&str, TestEntry> = values
-            .into_iter()
-            .map(|(key, value)| {
-                (
-                    key,
-                    TestEntry {
-                        ty: value.ty(),
-                        value,
-                    },
-                )
-            })
-            .collect();
+        let entries = values.into_sorted_vecmap();
 
         fs::write(&self.output, serde_json::to_string_pretty(&entries)?)?;
 
