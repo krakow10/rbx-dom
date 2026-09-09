@@ -1741,8 +1741,7 @@ fn fallback_default_value(rbx_type: VariantType) -> Option<&'static Variant> {
     static DEFAULT_OPTIONALCFRAME: Variant = Variant::OptionalCFrame(None);
     static DEFAULT_TAGS: Variant = Variant::Tags(Tags::new());
     static DEFAULT_CONTENTID: Variant = Variant::ContentId(ContentId::new());
-    static DEFAULT_ATTRIBUTES: LazyLock<Variant> =
-        LazyLock::new(|| Variant::Attributes(Attributes::new()));
+    static DEFAULT_ATTRIBUTES: Variant = Variant::Attributes(Attributes::new());
     static DEFAULT_UNIQUEID: Variant = Variant::UniqueId(UniqueId::nil());
     static DEFAULT_FONT: LazyLock<Variant> = LazyLock::new(|| Variant::Font(Font::default()));
     static DEFAULT_MATERIALCOLORS: Variant = Variant::MaterialColors(MaterialColors::new());
