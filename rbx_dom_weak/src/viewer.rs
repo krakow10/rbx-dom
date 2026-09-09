@@ -76,7 +76,7 @@ impl DomViewer {
             .map(|referent| self.view_instance(dom, referent))
             .collect();
 
-        let mut properties: VecMap<_, _> = instance
+        let properties: Vec<_> = instance
             .properties
             .iter()
             .map(|(key, value)| {
@@ -125,6 +125,8 @@ impl DomViewer {
             })
             .collect();
 
+        // SAFETY: HashMap has no duplicates
+        let mut properties = unsafe { VecMap::from_vec_unchecked(properties) };
         properties.sort_unstable_keys();
 
         ViewedInstance {

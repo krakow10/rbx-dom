@@ -12,7 +12,9 @@ where
     V: Serialize,
     S: Serializer,
 {
-    let mut ordered: VecMap<_, _> = value.iter().collect();
+    let values: Vec<_> = value.iter().collect();
+    // SAFETY: HashMap has no duplicates
+    let mut ordered = unsafe { VecMap::from_vec_unchecked(values) };
     ordered.sort_unstable_keys();
     ordered.serialize(serializer)
 }
@@ -22,7 +24,9 @@ where
     V: Hash + Ord + Serialize,
     S: Serializer,
 {
-    let mut ordered: VecSet<_> = value.iter().collect();
+    let values: Vec<_> = value.iter().collect();
+    // SAFETY: HashSet has no duplicates
+    let mut ordered = unsafe { VecSet::from_vec_unchecked(values) };
     ordered.sort_unstable();
     ordered.serialize(serializer)
 }
