@@ -13,7 +13,7 @@ where
 {
     use serde::ser::SerializeMap;
     let mut ordered: Vec<_> = value.iter().collect();
-    ordered.sort_unstable_by(|(k0, _), (k1, _)| k0.cmp(k1));
+    ordered.sort_unstable_by_key(|&(k, _)| k);
     let mut map = serializer.serialize_map(Some(ordered.len()))?;
     for (key, value) in ordered {
         map.serialize_entry(key, value)?;
