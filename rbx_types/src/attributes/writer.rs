@@ -1,5 +1,5 @@
 use std::{
-    collections::BTreeMap,
+    collections::HashMap,
     io::{self, Write},
 };
 
@@ -13,7 +13,7 @@ use crate::{
 
 /// Writes the attribute property (AttributesSerialize) from a map of attribute names -> values.
 pub(crate) fn write_attributes<W: Write>(
-    map: &BTreeMap<String, Variant>,
+    map: &HashMap<String, Variant>,
     mut writer: W,
 ) -> Result<(), AttributeError> {
     if map.is_empty() {
@@ -22,7 +22,10 @@ pub(crate) fn write_attributes<W: Write>(
 
     writer.write_all(&(map.len() as u32).to_le_bytes())?;
 
-    for (name, variant) in map {
+    let mut sorted: Vec<_> = map.iter().collect();
+    sorted.sort_unstable_by_key(|(k, _)| k.as_str());
+
+    for (name, variant) in sorted {
         write_string(&mut writer, name)?;
 
         let type_id = type_id::from_variant_type(variant.ty())

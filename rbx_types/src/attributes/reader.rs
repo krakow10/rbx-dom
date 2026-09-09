@@ -1,5 +1,5 @@
 use std::{
-    collections::BTreeMap,
+    collections::HashMap,
     io::{self, Read},
 };
 
@@ -14,8 +14,8 @@ use super::{type_id, AttributeError};
 /// Reads through an attribute property (AttributesSerialize) and returns a map of attribute names -> values.
 pub(crate) fn read_attributes<R: Read>(
     mut value: R,
-) -> Result<BTreeMap<String, Variant>, AttributeError> {
-    let mut attributes = BTreeMap::new();
+) -> Result<HashMap<String, Variant>, AttributeError> {
+    let mut attributes = HashMap::new();
 
     let len = match read_option_u32(&mut value) {
         Ok(Some(len)) => len,

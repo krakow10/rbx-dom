@@ -9,7 +9,7 @@ mod writer;
 
 use std::{
     borrow::Borrow,
-    collections::{btree_map, BTreeMap},
+    collections::{hash_map, HashMap},
     hash::Hash,
     io::{Read, Write},
     iter::FromIterator,
@@ -22,6 +22,20 @@ use self::writer::write_attributes;
 
 pub(crate) use self::error::AttributeError;
 
+#[cfg(feature = "serde")]
+use serde::{Serialize, Serializer};
+#[cfg(feature = "serde")]
+pub(crate) fn ordered_map<S, K, V>(value: &HashMap<K, V>, serializer: S) -> Result<S::Ok, S::Error>
+where
+    K: Hash + Ord + Serialize,
+    V: Serialize,
+    S: Serializer,
+{
+    let mut ordered: vecmap::VecMap<_, _> = value.iter().collect();
+    ordered.sort_unstable_keys();
+    ordered.serialize(serializer)
+}
+
 #[derive(Debug, Default, Clone, PartialEq)]
 #[cfg_attr(
     feature = "serde",
@@ -29,14 +43,15 @@ pub(crate) use self::error::AttributeError;
     serde(transparent)
 )]
 pub struct Attributes {
-    data: BTreeMap<String, Variant>,
+    #[cfg_attr(feature = "serde", serde(serialize_with = "ordered_map"))]
+    data: HashMap<String, Variant>,
 }
 
 impl Attributes {
     /// Creates an empty `Attributes` struct
-    pub const fn new() -> Self {
+    pub fn new() -> Self {
         Self {
-            data: BTreeMap::new(),
+            data: HashMap::new(),
         }
     }
 
@@ -95,7 +110,9 @@ impl Attributes {
     /// it drops the remaining removed elements.
     #[inline]
     pub fn drain(&mut self) -> AttributesDrain<'_> {
-        AttributesDrain { inner: self }
+        AttributesDrain {
+            inner: self.data.drain(),
+        }
     }
 
     /// Returns the number of attributes.
@@ -150,7 +167,7 @@ impl FromIterator<(String, Variant)> for Attributes {
 /// An owning iterator over the entries of an `Attributes`.
 /// This is created by [`Attributes::into_iter`].
 pub struct AttributesIntoIter {
-    iter: btree_map::IntoIter<String, Variant>,
+    iter: hash_map::IntoIter<String, Variant>,
 }
 
 impl Iterator for AttributesIntoIter {
@@ -164,7 +181,7 @@ impl Iterator for AttributesIntoIter {
 /// A borrowed iterator over the entries of an `Attributes`.
 /// This is created by [`Attributes::iter`].
 pub struct AttributesIter<'a> {
-    iter: btree_map::Iter<'a, String, Variant>,
+    iter: hash_map::Iter<'a, String, Variant>,
 }
 
 impl<'a> Iterator for AttributesIter<'a> {
@@ -180,20 +197,14 @@ impl<'a> Iterator for AttributesIter<'a> {
 ///
 /// If dropped before fully used, all remaining values will be dropped.
 pub struct AttributesDrain<'a> {
-    inner: &'a mut Attributes,
+    inner: hash_map::Drain<'a, String, Variant>,
 }
 
 impl Iterator for AttributesDrain<'_> {
     type Item = (String, Variant);
 
     fn next(&mut self) -> Option<Self::Item> {
-        self.inner.data.pop_first()
-    }
-}
-
-impl Drop for AttributesDrain<'_> {
-    fn drop(&mut self) {
-        self.inner.clear()
+        self.inner.next()
     }
 }
 
@@ -280,7 +291,7 @@ mod tests {
         ]);
         assert!(!attributes.is_empty());
 
-        let mut map = BTreeMap::new();
+        let mut map = HashMap::new();
         for (key, value) in attributes.drain() {
             map.insert(key, value);
         }
