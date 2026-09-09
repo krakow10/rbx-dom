@@ -184,7 +184,7 @@ impl<'de, K: Ord + Deserialize<'de>, V: Deserialize<'de>> Deserialize<'de> for S
             where
                 A: serde::de::MapAccess<'de>,
             {
-                let mut inner = map.size_hint().map_or_default(Vec::with_capacity);
+                let mut inner = Vec::with_capacity(map.size_hint().unwrap_or(0));
                 while let Some((key, value)) = map.next_value()? {
                     inner.push((key, value));
                 }
