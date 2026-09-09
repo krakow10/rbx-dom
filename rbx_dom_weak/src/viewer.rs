@@ -1,7 +1,4 @@
-use std::{
-    collections::{BTreeMap, HashMap},
-    fmt::Write,
-};
+use std::{collections::HashMap, fmt::Write};
 
 use crate::{
     types::{Ref, Variant},
@@ -9,6 +6,7 @@ use crate::{
 };
 use serde::{Deserialize, Serialize};
 use ustr::Ustr;
+use vecmap::VecMap;
 
 /// Contains state for viewing and redacting nondeterministic portions of
 /// WeakDom objects, making them suitable for usage in snapshot tests.
@@ -78,7 +76,7 @@ impl DomViewer {
             .map(|referent| self.view_instance(dom, referent))
             .collect();
 
-        let properties = instance
+        let mut properties: VecMap<_, _> = instance
             .properties
             .iter()
             .map(|(key, value)| {
@@ -127,6 +125,8 @@ impl DomViewer {
             })
             .collect();
 
+        properties.sort_unstable_keys();
+
         ViewedInstance {
             referent: self.referent_to_id.get(&referent).unwrap().clone(),
             name: instance.name.clone(),
@@ -150,7 +150,7 @@ pub struct ViewedInstance {
     referent: String,
     name: String,
     class: Ustr,
-    properties: BTreeMap<Ustr, ViewedValue>,
+    properties: VecMap<Ustr, ViewedValue>,
     children: Vec<ViewedInstance>,
 }
 
