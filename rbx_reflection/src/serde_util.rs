@@ -1,9 +1,10 @@
 use std::{
-    collections::{BTreeMap, BTreeSet, HashMap, HashSet},
+    collections::{HashMap, HashSet},
     hash::Hash,
 };
 
 use serde::{Serialize, Serializer};
+use vecmap::{VecMap, VecSet};
 
 pub(crate) fn ordered_map<S, K, V>(value: &HashMap<K, V>, serializer: S) -> Result<S::Ok, S::Error>
 where
@@ -11,7 +12,8 @@ where
     V: Serialize,
     S: Serializer,
 {
-    let ordered: BTreeMap<_, _> = value.iter().collect();
+    let mut ordered: VecMap<_, _> = value.iter().collect();
+    ordered.sort_unstable_keys();
     ordered.serialize(serializer)
 }
 
@@ -20,6 +22,7 @@ where
     V: Hash + Ord + Serialize,
     S: Serializer,
 {
-    let ordered: BTreeSet<_> = value.iter().collect();
+    let mut ordered: VecSet<_> = value.iter().collect();
+    ordered.sort_unstable();
     ordered.serialize(serializer)
 }
