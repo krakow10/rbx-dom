@@ -4,7 +4,6 @@ use std::{
 };
 
 use serde::{Serialize, Serializer};
-use vecmap::{VecMap, VecSet};
 
 pub(crate) fn ordered_map<S, K, V>(value: &HashMap<K, V>, serializer: S) -> Result<S::Ok, S::Error>
 where
@@ -12,11 +11,14 @@ where
     V: Serialize,
     S: Serializer,
 {
-    let values: Vec<_> = value.iter().collect();
-    // SAFETY: HashMap has no duplicates
-    let mut ordered = unsafe { VecMap::from_vec_unchecked(values) };
-    ordered.sort_unstable_keys();
-    ordered.serialize(serializer)
+    use serde::ser::SerializeMap;
+    let mut ordered: Vec<_> = value.iter().collect();
+    ordered.sort_unstable_by(|(k0, _), (k1, _)| k0.cmp(k1));
+    let mut map = serializer.serialize_map(Some(ordered.len()))?;
+    for (key, value) in ordered {
+        map.serialize_entry(key, value)?;
+    }
+    map.end()
 }
 
 pub(crate) fn ordered_set<S, V>(value: &HashSet<V>, serializer: S) -> Result<S::Ok, S::Error>
@@ -24,9 +26,7 @@ where
     V: Hash + Ord + Serialize,
     S: Serializer,
 {
-    let values: Vec<_> = value.iter().collect();
-    // SAFETY: HashSet has no duplicates
-    let mut ordered = unsafe { VecSet::from_vec_unchecked(values) };
+    let mut ordered: Vec<_> = value.iter().collect();
     ordered.sort_unstable();
     ordered.serialize(serializer)
 }

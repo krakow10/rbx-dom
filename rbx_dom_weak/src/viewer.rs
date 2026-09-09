@@ -6,7 +6,6 @@ use crate::{
 };
 use serde::{Deserialize, Serialize};
 use ustr::Ustr;
-use vecmap::VecMap;
 
 /// Contains state for viewing and redacting nondeterministic portions of
 /// WeakDom objects, making them suitable for usage in snapshot tests.
@@ -76,7 +75,7 @@ impl DomViewer {
             .map(|referent| self.view_instance(dom, referent))
             .collect();
 
-        let properties: Vec<_> = instance
+        let properties = instance
             .properties
             .iter()
             .map(|(key, value)| {
@@ -125,9 +124,7 @@ impl DomViewer {
             })
             .collect();
 
-        // SAFETY: HashMap has no duplicates
-        let mut properties = unsafe { VecMap::from_vec_unchecked(properties) };
-        properties.sort_unstable_keys();
+        let properties = SortedVecMap::new(properties);
 
         ViewedInstance {
             referent: self.referent_to_id.get(&referent).unwrap().clone(),
@@ -145,6 +142,59 @@ impl Default for DomViewer {
     }
 }
 
+/// A pre-sorted list of key-value pairs which
+/// serializes as a map rather than a list of tuples.
+#[derive(Debug, Clone)]
+struct SortedVecMap<K, V> {
+    inner: Vec<(K, V)>,
+}
+impl<K: Ord, V> SortedVecMap<K, V> {
+    fn new(mut inner: Vec<(K, V)>) -> Self {
+        inner.sort_unstable_by(|(k0, _), (k1, _)| k0.cmp(k1));
+        Self { inner }
+    }
+}
+impl<K: Serialize, V: Serialize> Serialize for SortedVecMap<K, V> {
+    fn serialize<S>(&self, serializer: S) -> Result<S::Ok, S::Error>
+    where
+        S: serde::Serializer,
+    {
+        use serde::ser::SerializeMap;
+        let mut map = serializer.serialize_map(Some(self.inner.len()))?;
+        for (key, value) in &self.inner {
+            map.serialize_entry(key, value)?;
+        }
+        map.end()
+    }
+}
+impl<'de, K: Ord + Deserialize<'de>, V: Deserialize<'de>> Deserialize<'de> for SortedVecMap<K, V> {
+    fn deserialize<D>(deserializer: D) -> Result<Self, D::Error>
+    where
+        D: serde::Deserializer<'de>,
+    {
+        struct SortedVecMapVisitor<K, V>(core::marker::PhantomData<(K, V)>);
+        impl<'de, K: Ord + Deserialize<'de>, V: Deserialize<'de>> serde::de::Visitor<'de>
+            for SortedVecMapVisitor<K, V>
+        {
+            type Value = SortedVecMap<K, V>;
+            fn expecting(&self, out: &mut std::fmt::Formatter) -> std::fmt::Result {
+                write!(out, "a map of key-value pairs")
+            }
+            fn visit_map<A>(self, mut map: A) -> Result<Self::Value, A::Error>
+            where
+                A: serde::de::MapAccess<'de>,
+            {
+                let mut inner = map.size_hint().map_or_default(Vec::with_capacity);
+                while let Some((key, value)) = map.next_value()? {
+                    inner.push((key, value));
+                }
+                Ok(SortedVecMap::new(inner))
+            }
+        }
+        deserializer.deserialize_map(SortedVecMapVisitor(core::marker::PhantomData))
+    }
+}
+
 /// A transformed view into a `WeakDom` or `Instance` that has been redacted and
 /// transformed to be more readable.
 #[derive(Debug, Clone, Serialize, Deserialize)]
@@ -152,7 +202,7 @@ pub struct ViewedInstance {
     referent: String,
     name: String,
     class: Ustr,
-    properties: VecMap<Ustr, ViewedValue>,
+    properties: SortedVecMap<Ustr, ViewedValue>,
     children: Vec<ViewedInstance>,
 }
 
