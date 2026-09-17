@@ -104,12 +104,12 @@ pub(crate) fn write_attributes<W: Write>(
                 write_u32(&mut writer, enum_item.value)?;
             }
             Variant::TweenInfo(tween_info) => {
-                write_f32(&mut writer, tween_info.time())?;
-                write_f32(&mut writer, tween_info.delay_time())?;
-                write_i32(&mut writer, tween_info.repeat_count())?;
-                write_u32(&mut writer, tween_info.easing_style().to_u32())?;
-                write_u32(&mut writer, tween_info.easing_direction().to_u32())?;
-                write_u8(&mut writer, tween_info.reverses() as u8)?;
+                write_f32(&mut writer, tween_info.time)?;
+                write_f32(&mut writer, tween_info.delay_time)?;
+                write_i32(&mut writer, tween_info.repeat_count)?;
+                write_u32(&mut writer, tween_info.easing_style.to_u32())?;
+                write_u32(&mut writer, tween_info.easing_direction.to_u32())?;
+                write_u8(&mut writer, tween_info.reverses as u8)?;
             }
 
             other_variant => unreachable!("variant {:?} was not implemented", other_variant),
