@@ -213,21 +213,13 @@ pub(crate) fn read_attributes<R: Read>(
             }
             .into(),
 
-            VariantType::TweenInfo => {
-                let time = read_f32(&mut value)?;
-                let delay_time = read_f32(&mut value)?;
-                let repeat_count = read_i32(&mut value)?;
-                let easing_style = Enum::from_u32(read_u32(&mut value)?);
-                let easing_direction = Enum::from_u32(read_u32(&mut value)?);
-                let reverses = read_u8(&mut value)? != 0;
-                TweenInfo {
-                    time,
-                    easing_style,
-                    easing_direction,
-                    repeat_count,
-                    reverses,
-                    delay_time,
-                }
+            VariantType::TweenInfo => TweenInfo {
+                time: read_f32(&mut value)?,
+                delay_time: read_f32(&mut value)?,
+                repeat_count: read_i32(&mut value)?,
+                easing_style: Enum::from_u32(read_u32(&mut value)?),
+                easing_direction: Enum::from_u32(read_u32(&mut value)?),
+                reverses: read_u8(&mut value)? != 0,
             }
             .into(),
 
