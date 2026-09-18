@@ -3,7 +3,7 @@ use std::{borrow::Cow, collections::BTreeMap, io::Write};
 use ahash::{HashMap, HashMapExt, HashSet, HashSetExt};
 use rbx_dom_weak::{
     types::{Ref, SharedString, SharedStringHash, Tags, Variant, VariantType},
-    ustr, Instance, WeakDom,
+    ustr, Ustr, WeakDom,
 };
 use rbx_reflection::{PropertyKind, PropertySerialization, ReflectionDatabase};
 
@@ -28,16 +28,8 @@ pub fn encode_internal<W: Write>(
     writer.write(XmlWriteEvent::start_element("roblox").attr("version", "4"))?;
 
     let mut property_buffer = Vec::new();
-    let mut property_map = HashMap::new();
     for id in ids {
-        serialize_instance(
-            &mut writer,
-            &mut state,
-            tree,
-            *id,
-            &mut property_map,
-            &mut property_buffer,
-        )?;
+        serialize_instance(&mut writer, &mut state, tree, *id, &mut property_buffer)?;
     }
 
     serialize_shared_strings(&mut writer, &mut state)?;
@@ -135,6 +127,15 @@ pub struct EmitState<'db> {
     /// A map of all shared strings referenced so far while generating XML. This
     /// map will be written as the file's SharedString dictionary.
     shared_strings_to_emit: BTreeMap<SharedStringHash, SharedString>,
+
+    /// The always-written properties for each class, with their default values,
+    /// keyed by class name and computed lazily on the first instance of each
+    /// class.
+    ///
+    /// The inner `Option` distinguishes "not computed yet" (`None`) from
+    /// "computed" (`Some`), since a computed list can be legitimately empty
+    /// and `get_always_written_properties` allocates for every call.
+    injected_properties_by_class: HashMap<Ustr, Option<Vec<(&'db str, &'db Variant)>>>,
 }
 
 impl<'db> EmitState<'db> {
@@ -144,6 +145,7 @@ impl<'db> EmitState<'db> {
             referent_map: HashMap::new(),
             next_referent: 0,
             shared_strings_to_emit: BTreeMap::new(),
+            injected_properties_by_class: HashMap::new(),
         }
     }
 
@@ -162,79 +164,34 @@ impl<'db> EmitState<'db> {
     pub fn add_shared_string(&mut self, value: SharedString) {
         self.shared_strings_to_emit.insert(value.hash(), value);
     }
-}
 
-fn inject_always_written<'dom, 'db: 'dom>(
-    state: &mut EmitState<'db>,
-    property_map: &mut HashMap<&'dom str, Cow<'dom, Variant>>,
-    instance: &Instance,
-) -> Result<(), NewEncodeError> {
-    let database = state.options.database;
-    let Some(class_descriptor) = database.classes.get(instance.class.as_str()) else {
-        // We don't want to fail when we encounter an unknown class!
-        return Ok(());
-    };
-
-    for prop_name in database.get_always_written_properties(class_descriptor) {
-        // If there's no default value for the injected property,
-        // that's a database failure...
-        // But we probably don't want to fail serializing because of it.
-        let Some(default) = database.find_default_property(class_descriptor, prop_name) else {
-            continue;
-        };
-        match (default, instance.properties.get(&ustr(prop_name))) {
-            (Variant::Attributes(default), Some(Variant::Attributes(existing))) => {
-                let mut new = default.clone();
-                // We want user-defined attributes to win, so we don't
-                // override them here.
-                for (name, value) in existing {
-                    new.insert(name.clone(), value.clone());
+    /// Get this class's always-written properties with their default values,
+    /// computing them once per class so that instances of the same class
+    /// don't repeat the database lookups and default value clones.
+    fn injected_properties(&mut self, class: Ustr) -> &[(&'db str, &'db Variant)] {
+        let database = self.options.database;
+        let entry = self
+            .injected_properties_by_class
+            .entry(class)
+            .or_insert_with(|| None);
+        if entry.is_none() {
+            let mut properties = Vec::new();
+            // We don't want to fail when we encounter an unknown class!
+            let class_descriptor = database.classes.get(class.as_str());
+            if let Some(class_descriptor) = class_descriptor {
+                for prop_name in database.get_always_written_properties(class_descriptor) {
+                    let Some(default) =
+                        database.find_default_property(class_descriptor, prop_name)
+                    else {
+                        continue;
+                    };
+                    properties.push((prop_name, default));
                 }
-                property_map.insert(prop_name, Cow::Owned(new.into()));
             }
-            (_, Some(Variant::Attributes(_))) => {
-                return Err(NewEncodeError::new(
-                    EncodeErrorKind::UnableToMergeProperties {
-                        class_name: instance.class.to_string(),
-                        property_name: prop_name.to_string(),
-                        actual_type: default.ty(),
-                        expected_type: VariantType::Attributes,
-                    },
-                ))
-            }
-            (Variant::Tags(default), Some(Variant::Tags(existing))) => {
-                // This is technically inefficient, but that's fine
-                // because Tags being merged should be extremely rare.
-                let mut tag_map: HashSet<&str> = HashSet::new();
-                tag_map.extend(existing.iter());
-                tag_map.extend(default.iter());
-                let mut new_tags = Tags::new();
-                for tag in tag_map {
-                    new_tags.push(tag)
-                }
-                property_map.insert(prop_name, Cow::Owned(new_tags.into()));
-            }
-            (_, Some(Variant::Tags(_))) => {
-                return Err(NewEncodeError::new(
-                    EncodeErrorKind::UnableToMergeProperties {
-                        class_name: instance.class.to_string(),
-                        property_name: prop_name.to_string(),
-                        actual_type: default.ty(),
-                        expected_type: VariantType::Tags,
-                    },
-                ))
-            }
-            (_, None) => {
-                property_map.insert(prop_name, Cow::Owned(default.clone()));
-            }
-            (_, Some(_)) => {
-                // A property by this name already exists, do nothing
-                continue;
-            }
+            *entry = Some(properties);
         }
+        entry.as_ref().unwrap()
     }
-
-    Ok(())
 }
 
 /// Serialize a single instance.
@@ -246,7 +203,6 @@ fn serialize_instance<'db: 'dom, 'dom, W: Write>(
     state: &mut EmitState<'db>,
     tree: &'dom WeakDom,
     id: Ref,
-    property_map: &mut HashMap<&'dom str, Cow<'dom, Variant>>,
     property_buffer: &mut Vec<(&'dom str, Cow<'dom, Variant>)>,
 ) -> Result<(), NewEncodeError> {
     let instance = tree.get_by_ref(id).unwrap();
@@ -267,23 +223,75 @@ fn serialize_instance<'db: 'dom, 'dom, W: Write>(
         &Variant::String(instance.name.clone()),
     )?;
 
-    // Because we may be inserting properties, we have to first move them into
-    // a map so that we know whether we're overwriting them...
-    property_map.extend(
-        instance
-            .properties
-            .iter()
-            .map(|(k, v)| (k.as_str(), Cow::Borrowed(v))),
-    );
+    // Some classes have properties that must be written for Roblox to read
+    // them correctly. Their default values are generated once per class and
+    // merged with any instance values here.
+    let injected: &[(&'db str, &'db Variant)] = if state.options.use_reflection() {
+        state.injected_properties(instance.class)
+    } else {
+        &[]
+    };
 
-    // If we're using the database, we need to inject always-written properties
-    if state.options.use_reflection() {
-        inject_always_written(state, property_map, instance)?;
+    // Merge each of the instance's property values with the injected default,
+    // if any.
+    for (name, value) in instance.properties.iter() {
+        let default = injected
+            .iter()
+            .find(|(injected_name, _)| *injected_name == name.as_str())
+            .map(|(_, default)| *default);
+
+        let property_value: Cow<'dom, Variant> = match (default, value) {
+            (Some(Variant::Attributes(default)), Variant::Attributes(existing)) => {
+                let mut new = default.clone();
+                // We want user-defined attributes to win, so we don't
+                // override them here.
+                for (name, value) in existing {
+                    new.insert(name.clone(), value.clone());
+                }
+                Cow::Owned(new.into())
+            }
+            (Some(default), value) if value.ty() == VariantType::Attributes => {
+                return Err(NewEncodeError::new(EncodeErrorKind::UnableToMergeProperties {
+                    class_name: instance.class.to_string(),
+                    property_name: name.as_str().to_string(),
+                    actual_type: default.ty(),
+                    expected_type: VariantType::Attributes,
+                }));
+            }
+            (Some(Variant::Tags(default)), Variant::Tags(existing)) => {
+                // This is technically inefficient, but that's fine
+                // because Tags being merged should be extremely rare.
+                let mut tag_map: HashSet<&str> = HashSet::new();
+                tag_map.extend(existing.iter());
+                tag_map.extend(default.iter());
+                let mut new_tags = Tags::new();
+                for tag in tag_map {
+                    new_tags.push(tag)
+                }
+                Cow::Owned(new_tags.into())
+            }
+            (Some(default), value) if value.ty() == VariantType::Tags => {
+                return Err(NewEncodeError::new(EncodeErrorKind::UnableToMergeProperties {
+                    class_name: instance.class.to_string(),
+                    property_name: name.as_str().to_string(),
+                    actual_type: default.ty(),
+                    expected_type: VariantType::Tags,
+                }));
+            }
+            _ => Cow::Borrowed(value),
+        };
+
+        property_buffer.push((name.as_str(), property_value));
     }
 
-    // Move references to our properties into property_buffer so we can sort
-    // them and iterate them in order.
-    property_buffer.extend(property_map.drain());
+    // Inject any always-written property the instance didn't define, using
+    // the class's default value.
+    for &(name, default) in injected {
+        if !instance.properties.contains_key(&ustr(name)) {
+            property_buffer.push((name, Cow::Borrowed(default)));
+        }
+    }
+
     property_buffer.sort_unstable_by_key(|(key, _)| *key);
 
     for (property_name, value) in property_buffer.drain(..) {
@@ -356,14 +364,7 @@ fn serialize_instance<'db: 'dom, 'dom, W: Write>(
     writer.write(XmlWriteEvent::end_element())?;
 
     for child_id in instance.children() {
-        serialize_instance(
-            writer,
-            state,
-            tree,
-            *child_id,
-            property_map,
-            property_buffer,
-        )?;
+        serialize_instance(writer, state, tree, *child_id, property_buffer)?;
     }
 
     writer.write(XmlWriteEvent::end_element())?;

@@ -67,11 +67,6 @@ pub(super) struct SerializerState<'dom, 'db, W> {
     /// A map of SharedStrings to where it is in the SSTR chunk. This is used
     /// for writing PROP chunks.
     shared_string_ids: HashMap<SharedString, u32>,
-
-    /// A buffer used to store properties when collecting them for `TypeInfo`s.
-    /// Used instead of `Instance.properties` because some classes require
-    /// properties to be injected for Roblox to read them correctly.
-    property_buffer: HashMap<Ustr, Cow<'dom, Variant>>,
 }
 
 #[derive(Debug, Clone)]
@@ -106,6 +101,13 @@ struct TypeInfo<'dom, 'db> {
     /// A reference to the type's class descriptor from rbx_reflection, if this
     /// is a known class.
     class_descriptor: Option<&'db ClassDescriptor<'db>>,
+
+    /// All of the always-written properties for this class with their default
+    /// values from the reflection database.
+    ///
+    /// Generated once per `TypeInfo` so that each instance of the class
+    /// doesn't repeat the database lookups or clone the default values.
+    injected_properties: Vec<(Ustr, &'db Variant)>,
 
     /// A set containing the properties that we have seen so far in the file and
     /// processed. This helps us avoid traversing the reflection database
@@ -257,6 +259,24 @@ impl<'dom, 'db> TypeInfos<'dom, 'db> {
 
             let class_descriptor = self.database.classes.get(class.as_str());
 
+            // Generate the default values for this class's always-written
+            // properties once, up front, so that each instance of the class
+            // doesn't repeat the database lookups and default value clones.
+            let database = self.database;
+            let injected_properties = class_descriptor
+                .iter()
+                .flat_map(|class_descriptor| {
+                    database
+                        .get_always_written_properties(class_descriptor)
+                        .into_iter()
+                        .filter_map(move |prop_name| {
+                            database
+                                .find_default_property(class_descriptor, prop_name)
+                                .map(|default| (Ustr::from(prop_name), default))
+                        })
+                })
+                .collect::<Vec<_>>();
+
             let is_service = if let Some(descriptor) = &class_descriptor {
                 descriptor.tags.contains(&ClassTag::Service)
             } else {
@@ -270,6 +290,7 @@ impl<'dom, 'db> TypeInfos<'dom, 'db> {
                 instances: Vec::new(),
                 properties: Vec::new(),
                 class_descriptor,
+                injected_properties,
                 resolved_properties_by_visited_name: UstrMap::new(),
                 prop_info_indices_by_canonical_name: UstrMap::new(),
             });
@@ -531,7 +552,6 @@ impl<'dom, 'db: 'dom, W: Write> SerializerState<'dom, 'db, W> {
             type_infos: TypeInfos::new(serializer.database),
             shared_strings: Vec::new(),
             shared_string_ids: HashMap::new(),
-            property_buffer: HashMap::new(),
         }
     }
 
@@ -611,7 +631,6 @@ impl<'dom, 'db: 'dom, W: Write> SerializerState<'dom, 'db, W> {
             type_infos,
             shared_strings,
             shared_string_ids,
-            property_buffer,
             ..
         } = self;
 
@@ -646,80 +665,77 @@ impl<'dom, 'db: 'dom, W: Write> SerializerState<'dom, 'db, W> {
         // migrated properties.
         let mut deferred_migrations = Vec::new();
 
-        property_buffer.extend(
-            instance
-                .properties
-                .iter()
-                .map(|(k, v)| (*k, Cow::Borrowed(v))),
-        );
-
-        // Some classes have properties that must be inserted for Roblox to
-        // read them correctly. We handle that here.
-        if let Some(class_descriptor) = type_info.class_descriptor {
-            for prop_name in database.get_always_written_properties(class_descriptor) {
-                let Some(default) = database.find_default_property(class_descriptor, prop_name)
-                else {
-                    // If there's no default value for the injected property,
-                    // that's a database failure...
-                    // But we probably don't want to fail serializing because of it.
-                    continue;
-                };
-                let prop_name = Ustr::from(prop_name);
-                match (default, property_buffer.get(&prop_name).map(Cow::as_ref)) {
-                    (Variant::Attributes(default), Some(Variant::Attributes(existing))) => {
-                        let mut new = default.clone();
-                        // We want user-defined attributes to win, so we don't
-                        // override them here.
-                        for (name, value) in existing {
-                            new.insert(name.clone(), value.clone());
-                        }
-                        property_buffer.insert(prop_name, Cow::Owned(new.into()));
-                    }
-                    (_, Some(Variant::Attributes(_))) => {
-                        return Err(InnerError::UnableToMergeProperties {
-                            class_name: instance.class.to_string(),
-                            property_name: prop_name.to_string(),
-                            actual_type: default.ty(),
-                            expected_type: VariantType::Attributes,
-                        })
-                    }
-                    (Variant::Tags(default), Some(Variant::Tags(existing))) => {
-                        // This is technically inefficient, but that's fine
-                        // because Tags being merged should be extremely rare.
-                        let mut tag_map: HashSet<&str> = HashSet::new();
-                        tag_map.extend(existing.iter());
-                        tag_map.extend(default.iter());
-                        let mut new_tags = Tags::new();
-                        for tag in tag_map {
-                            new_tags.push(tag)
-                        }
-                        property_buffer.insert(prop_name, Cow::Owned(new_tags.into()));
-                    }
-                    (_, Some(Variant::Tags(_))) => {
-                        return Err(InnerError::UnableToMergeProperties {
-                            class_name: instance.class.to_string(),
-                            property_name: prop_name.to_string(),
-                            actual_type: default.ty(),
-                            expected_type: VariantType::Tags,
-                        })
-                    }
-                    (_, None) => {
-                        property_buffer.insert(prop_name, Cow::Owned(default.clone()));
-                    }
-                    (_, Some(_)) => {
-                        // A property by this name already exists, do nothing
-                        continue;
-                    }
-                }
+        // Resolve injected properties once, on the first instance of the
+        // class, so that a PropInfo exists for them even if no instance
+        // defines them. Instances that lack an injected property get its
+        // `PropInfo.default_value` when the values are padded at write time.
+        if desired_len == 0 {
+            let len = type_info.injected_properties.len();
+            for i in 0..len {
+                let (prop_name, default) = type_info.injected_properties[i];
+                let _ = type_info.resolve_visited_property(
+                    &mut push_sstr,
+                    database,
+                    instance.class,
+                    prop_name,
+                    default,
+                )?;
             }
         }
 
-        for (prop_name, prop_value) in property_buffer.drain() {
+        for (prop_name, prop_value) in instance.properties.iter() {
+            let injected_default = type_info
+                .injected_properties
+                .iter()
+                .find(|(name, _)| *name == *prop_name)
+                .map(|(_, default)| *default);
+
+            let prop_value: Cow<'dom, Variant> = match (injected_default, prop_value) {
+                (Some(Variant::Attributes(default)), Variant::Attributes(existing)) => {
+                    let mut new = default.clone();
+                    // We want user-defined attributes to win, so we don't
+                    // override them here.
+                    for (name, value) in existing {
+                        new.insert(name.clone(), value.clone());
+                    }
+                    Cow::Owned(new.into())
+                }
+                (Some(default), value) if value.ty() == VariantType::Attributes => {
+                    return Err(InnerError::UnableToMergeProperties {
+                        class_name: instance.class.to_string(),
+                        property_name: prop_name.to_string(),
+                        actual_type: default.ty(),
+                        expected_type: VariantType::Attributes,
+                    })
+                }
+                (Some(Variant::Tags(default)), Variant::Tags(existing)) => {
+                    // This is technically inefficient, but that's fine
+                    // because Tags being merged should be extremely rare.
+                    let mut tag_map: HashSet<&str> = HashSet::new();
+                    tag_map.extend(existing.iter());
+                    tag_map.extend(default.iter());
+                    let mut new_tags = Tags::new();
+                    for tag in tag_map {
+                        new_tags.push(tag)
+                    }
+                    Cow::Owned(new_tags.into())
+                }
+                (Some(default), value) if value.ty() == VariantType::Tags => {
+                    return Err(InnerError::UnableToMergeProperties {
+                        class_name: instance.class.to_string(),
+                        property_name: prop_name.to_string(),
+                        actual_type: default.ty(),
+                        expected_type: VariantType::Tags,
+                    })
+                }
+                _ => Cow::Borrowed(prop_value),
+            };
+
             let resolved_property = type_info.resolve_visited_property(
                 &mut push_sstr,
                 database,
                 instance.class,
-                prop_name,
+                *prop_name,
                 &prop_value,
             )?;
 
