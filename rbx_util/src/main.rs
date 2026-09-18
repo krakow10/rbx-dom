@@ -1,4 +1,5 @@
 mod convert;
+mod make_tween_info;
 mod remove_prop;
 mod view_binary;
 
@@ -8,6 +9,7 @@ use std::{path::Path, str::FromStr};
 use clap::Parser;
 
 use convert::ConvertCommand;
+use make_tween_info::MakeTweenInfoCommand;
 use remove_prop::RemovePropCommand;
 use view_binary::ViewBinaryCommand;
 
@@ -26,6 +28,7 @@ impl Options {
             Subcommand::ViewBinary(command) => command.run(),
             Subcommand::Convert(command) => command.run(),
             Subcommand::RemoveProp(command) => command.run(),
+            Subcommand::MakeTweenInfo(command) => command.run(),
         }
     }
 }
@@ -38,6 +41,8 @@ enum Subcommand {
     Convert(ConvertCommand),
     /// Removes a specific property from a specific class within a Roblox file.
     RemoveProp(RemovePropCommand),
+    /// Generates an rbxm file containing a variety of TweenInfo attributes.
+    MakeTweenInfo(MakeTweenInfoCommand),
 }
 
 #[derive(Debug, Parser, Clone, Copy)]
