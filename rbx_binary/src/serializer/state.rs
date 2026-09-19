@@ -263,19 +263,17 @@ impl<'dom, 'db> TypeInfos<'dom, 'db> {
             // properties once, up front, so that each instance of the class
             // doesn't repeat the database lookups and default value clones.
             let database = self.database;
-            let injected_properties = class_descriptor
-                .iter()
-                .flat_map(|class_descriptor| {
-                    database
-                        .get_always_written_properties(class_descriptor)
-                        .into_iter()
-                        .filter_map(move |prop_name| {
-                            database
-                                .find_default_property(class_descriptor, prop_name)
-                                .map(|default| (Ustr::from(prop_name), default))
-                        })
-                })
-                .collect::<Vec<_>>();
+            let injected_properties = class_descriptor.map_or(Vec::new(), |class_descriptor| {
+                database
+                    .get_always_written_properties(class_descriptor)
+                    .into_iter()
+                    .filter_map(move |prop_name| {
+                        database
+                            .find_default_property(class_descriptor, prop_name)
+                            .map(|default| (Ustr::from(prop_name), default))
+                    })
+                    .collect()
+            });
 
             let is_service = if let Some(descriptor) = &class_descriptor {
                 descriptor.tags.contains(&ClassTag::Service)
