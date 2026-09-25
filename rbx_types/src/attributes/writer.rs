@@ -104,7 +104,7 @@ impl<W: Write, const STATE: bool> AttributeWriter<W, STATE> {
 // Helper macro to automate 3 lines of code per method.
 macro_rules! impl_write_attribute {
     (
-        $($variant:ident => fn $method: ident ($self:ident, $value:ident : $ty:ty) $impl: block)*
+        $($variant:ident => pub fn $method: ident ($self:ident, $value:ident : $ty:ty) $impl: block)*
     ) => {
         impl<W: Write> AttributeWriter<W, true> {
             $(
@@ -119,16 +119,16 @@ macro_rules! impl_write_attribute {
     };
 }
 impl_write_attribute! {
-    Bool => fn write_attribute_bool(self, value: bool) {
+    Bool => pub fn write_attribute_bool(self, value: bool) {
         self.write_bool(value)?;
     }
-    BrickColor => fn write_attribute_brick_color(self, value: BrickColor) {
+    BrickColor => pub fn write_attribute_brick_color(self, value: BrickColor) {
         self.write_u32(value as u32)?;
     }
-    Color3 => fn write_attribute_color3(self, value: Color3) {
+    Color3 => pub fn write_attribute_color3(self, value: Color3) {
         self.write_color3(value)?;
     }
-    ColorSequence => fn write_attribute_color_sequence(self, sequence: &ColorSequence) {
+    ColorSequence => pub fn write_attribute_color_sequence(self, sequence: &ColorSequence) {
         self.write_u32(sequence.keypoints.len() as u32)?;
 
         for keypoint in &sequence.keypoints {
@@ -137,20 +137,20 @@ impl_write_attribute! {
             self.write_color3(keypoint.color)?;
         }
     }
-    Int32 => fn write_attribute_i32(self, value: i32) {
+    Int32 => pub fn write_attribute_i32(self, value: i32) {
         self.write_i32(value)?;
     }
-    Float32 => fn write_attribute_f32(self, value: f32) {
+    Float32 => pub fn write_attribute_f32(self, value: f32) {
         self.write_f32(value)?;
     }
-    Float64 => fn write_attribute_f64(self, value: f64) {
+    Float64 => pub fn write_attribute_f64(self, value: f64) {
         self.write_f64(value)?;
     }
-    NumberRange => fn write_attribute_number_range(self, range: NumberRange) {
+    NumberRange => pub fn write_attribute_number_range(self, range: NumberRange) {
         self.write_f32(range.min)?;
         self.write_f32(range.max)?;
     }
-    NumberSequence => fn write_attribute_number_sequence(self, sequence: &NumberSequence) {
+    NumberSequence => pub fn write_attribute_number_sequence(self, sequence: &NumberSequence) {
         self.write_u32(sequence.keypoints.len() as u32)?;
 
         for keypoint in &sequence.keypoints {
@@ -159,29 +159,29 @@ impl_write_attribute! {
             self.write_f32(keypoint.value)?;
         }
     }
-    Rect => fn write_attribute_rect(self, rect: Rect) {
+    Rect => pub fn write_attribute_rect(self, rect: Rect) {
         self.write_vector2(rect.min)?;
         self.write_vector2(rect.max)?;
     }
-    BinaryString => fn write_attribute_string(self, value: &[u8]) {
+    BinaryString => pub fn write_attribute_string(self, value: &[u8]) {
         self.write_string(value)?;
     }
-    UDim => fn write_attribute_udim(self, udim: UDim) {
+    UDim => pub fn write_attribute_udim(self, udim: UDim) {
         self.write_udim(udim)?;
     }
-    UDim2 => fn write_attribute_udim2(self, udim2: UDim2) {
+    UDim2 => pub fn write_attribute_udim2(self, udim2: UDim2) {
         self.write_udim(udim2.x)?;
         self.write_udim(udim2.y)?;
     }
-    Vector2 => fn write_attribute_vector2(self, vector2: Vector2) {
+    Vector2 => pub fn write_attribute_vector2(self, vector2: Vector2) {
         self.write_vector2(vector2)?;
     }
-    Vector3 => fn write_attribute_vector3(self, vector3: Vector3) {
+    Vector3 => pub fn write_attribute_vector3(self, vector3: Vector3) {
         self.write_f32(vector3.x)?;
         self.write_f32(vector3.y)?;
         self.write_f32(vector3.z)?;
     }
-    CFrame => fn write_attribute_cframe(self, cframe: CFrame) {
+    CFrame => pub fn write_attribute_cframe(self, cframe: CFrame) {
         self.write_vector3(cframe.position)?;
 
         let matrix = cframe.orientation;
@@ -196,13 +196,13 @@ impl_write_attribute! {
             self.write_vector3(matrix.z)?;
         }
     }
-    Font => fn write_attribute_font(self, font: &Font) {
+    Font => pub fn write_attribute_font(self, font: &Font) {
         self.write_u16(font.weight.as_u16())?;
         self.write_u8(font.style.as_u8())?;
         self.write_string(font.family.as_bytes())?;
         self.write_string(font.cached_face_id.as_deref().unwrap_or_default().as_bytes())?;
     }
-    EnumItem => fn write_attribute_enum_item(self, enum_item: &EnumItem) {
+    EnumItem => pub fn write_attribute_enum_item(self, enum_item: &EnumItem) {
         self.write_string(enum_item.ty.as_bytes())?;
         self.write_u32(enum_item.value)?;
     }
