@@ -1,6 +1,6 @@
 use std::io::{Read, Write};
 
-use rbx_dom_weak::types::{Attributes, BinaryString, Ref, Variant};
+use rbx_dom_weak::types::{AttributeError, Attributes, BinaryString, Ref, Variant};
 
 use crate::{
     core::XmlType,
@@ -24,7 +24,7 @@ fn serialize_attributes<'a>(
     buf: &mut Vec<u8>,
     attributes: &'a Attributes,
     additional: &mut AdditionalAttributes<'a>,
-) -> Result<(), rbx_dom_weak::types::Error> {
+) -> Result<(), AttributeError> {
     let attribute_writer = rbx_dom_weak::types::AttributeWriter::new(buf);
     let mut attribute_writer = attribute_writer.write_len(attributes.len() as u32)?;
     for (name, variant) in attributes {
@@ -62,11 +62,7 @@ fn serialize_attributes<'a>(
                 additional.refs.push((name, *referent));
                 continue;
             }
-            other => {
-                return Err(rbx_dom_weak::types::error_unsupported_variant_type(
-                    other.ty(),
-                ))
-            }
+            other => return Err(AttributeError::UnsupportedVariantType(other.ty())),
         }?;
     }
     Ok(())
@@ -86,7 +82,7 @@ pub fn write_attributes<W: Write>(
     // are no attributes. Serializing an empty attributes does exactly that.
     if !value.is_empty() || property_name == "PropertiesSerialize" {
         if let Err(write_error) = serialize_attributes(&mut buffer, value, &mut additional) {
-            return Err(writer.error(write_error));
+            return Err(writer.error(rbx_dom_weak::types::Error::from(write_error)));
         }
     };
 

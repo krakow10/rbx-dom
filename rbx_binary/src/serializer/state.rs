@@ -7,11 +7,12 @@ use std::{
 use ahash::{HashMap, HashMapExt};
 use rbx_dom_weak::{
     types::{
-        Attributes, Axes, BinaryString, BrickColor, CFrame, Color3, Color3uint8, ColorSequence,
-        ColorSequenceKeypoint, Content, ContentId, ContentType, Enum, EnumItem, Faces, Font,
-        MaterialColors, Matrix3, NetAssetRef, NumberRange, NumberSequence, NumberSequenceKeypoint,
-        PhysicalProperties, Ray, Rect, Ref, SecurityCapabilities, SharedString, Tags, UDim, UDim2,
-        UniqueId, Variant, VariantType, Vector2, Vector3, Vector3int16,
+        AttributeError, Attributes, Axes, BinaryString, BrickColor, CFrame, Color3, Color3uint8,
+        ColorSequence, ColorSequenceKeypoint, Content, ContentId, ContentType, Enum, EnumItem,
+        Faces, Font, MaterialColors, Matrix3, NetAssetRef, NumberRange, NumberSequence,
+        NumberSequenceKeypoint, PhysicalProperties, Ray, Rect, Ref, SecurityCapabilities,
+        SharedString, Tags, UDim, UDim2, UniqueId, Variant, VariantType, Vector2, Vector3,
+        Vector3int16,
     },
     Instance, Ustr, UstrMap, WeakDom,
 };
@@ -519,7 +520,7 @@ fn write_attributes(
     buf: &mut Vec<u8>,
     attributes: &Attributes,
     id_to_referent: &HashMap<Ref, i32>,
-) -> Result<(), rbx_dom_weak::types::Error> {
+) -> Result<(), AttributeError> {
     let attribute_writer = rbx_dom_weak::types::AttributeWriter::new(buf);
     let mut attribute_writer = attribute_writer.write_len(attributes.len() as u32)?;
     for (name, variant) in attributes {
@@ -557,11 +558,7 @@ fn write_attributes(
                 let referent = id_to_referent.get(referent).cloned().unwrap_or(-1);
                 attribute_writer.write_attribute_ref(name, referent)
             }
-            other => {
-                return Err(rbx_dom_weak::types::error_unsupported_variant_type(
-                    other.ty(),
-                ))
-            }
+            other => return Err(AttributeError::UnsupportedVariantType(other.ty())),
         }?;
     }
     Ok(())
